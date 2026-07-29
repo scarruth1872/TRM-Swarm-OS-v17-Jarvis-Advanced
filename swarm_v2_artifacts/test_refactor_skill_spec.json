@@ -1,0 +1,93 @@
+```python
+import pytest
+import json
+import os
+
+# Path to the artifact under test
+SPEC_FILE_PATH = "refactor_skill_spec.json"
+
+@pytest.fixture(scope="module")
+def skill_spec():
+    """
+    Fixture to load the JSON specification. 
+    Fails fast if the file is missing or contains invalid JSON.
+    """
+    if not os.path.exists(SPEC_FILE_PATH):
+        pytest.fail(f"Critical Error: {SPEC_FILE_PATH} not found in current directory.")
+    
+    try:
+        with open(SPEC_FILE_PATH, 'r') as f:
+            return json.load(f)
+    except json.JSONDecodeError as e:
+        pytest.fail(f"Critical Error: Failed to parse JSON spec: {e}")
+
+class TestRefactorSkillSpec:
+    """
+    Precision Reliability Suite for RefactorSkill Specification.
+    Ensures the data contract adheres to Swarm OS architectural standards.
+    """
+
+    def test_required_keys_presence(self, skill_spec):
+        """Verify all mandatory architectural keys are present in the spec."""
+        required_keys = {
+            "skill_id", 
+            "version", 
+            "capabilities", 
+            "dependencies", 
+            "execution_pipeline"
+        }
+        actual_keys = set(skill_spec.keys())
+        missing_keys = required_keys - actual_keys
+        assert not missing_keys, f"Specification is missing mandatory keys: {missing_keys}"
+
+    def test_skill_identity_and_versioning(self, skill_spec):
+        """Validate the identity and semantic versioning of the skill."""
+        assert skill_spec["skill_id"] == "RefactorSkill", "Skill ID mismatch."
+        assert skill_spec["version"] == "1.0.0", "Unexpected version string."
+
+    def test_capabilities_integrity(self, skill_spec):
+        """Ensure capabilities are defined as a non-empty list of strings."""
+        capabilities = skill_spec.get("capabilities")
+        assert isinstance(capabilities, list), "Capabilities must be a list."
+        assert len(capabilities) > 0, "Capabilities list cannot be empty."
+        assert all(isinstance(cap, str) for cap in capabilities), "All capabilities must be strings."
+        
+        expected_caps = {"AST_Manipulation", "Complexity_Reduction", "Pattern_Enforcement"}
+        assert set(capabilities) == expected_caps, f"Capabilities mismatch. Expected {expected_caps}"
+
+    def test_dependency_mapping(self, skill_spec):
+        """Validate the dependency graph for the refactoring engine."""
+        deps = skill_spec.get("dependencies")
+        assert isinstance(deps, dict), "Dependencies must be a key-value mapping."
+        
+        required_deps = {
+            "parser": "tree-sitter",
+            "analysis": "llvm-core-logic",
+            "diff": "unified-diff-engine"
+        }
+        for key, value in required_deps.items():
+            assert deps.get(key) == value, f"Dependency mismatch for {key}: expected {value}"
+
+    def test_execution_pipeline_sequence(self, skill_spec):
+        """
+        Verify the execution pipeline follows the strict linear 
+        transformation sequence required for AST refactoring.
+        """
+        pipeline = skill_spec.get("execution_pipeline")
+        assert isinstance(pipeline, list), "Execution pipeline must be a list."
+        
+        expected_sequence = ["Parse", "Analyze", "Transform", "Validate", "Emit"]
+        assert pipeline == expected_sequence, (
+            f"Pipeline sequence violation. \nExpected: {expected_sequence}\nActual: {pipeline}"
+        )
+
+    @pytest.mark.parametrize("key", ["skill_id", "version"])
+    def test_non_null_values(self, skill_spec, key):
+        """Ensure critical identity fields are not null or empty."""
+        assert skill_spec.get(key) is not None, f"Field {key} cannot be null."
+        assert str(skill_spec.get(key)).strip() != "", f"Field {key} cannot be empty."
+
+if __name__ == "__main__":
+    # Allow direct execution for rapid validation
+    pytest.main([__file__])
+```

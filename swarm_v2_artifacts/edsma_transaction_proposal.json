@@ -1,0 +1,40 @@
+{
+  "transaction_id": "txn_qkd_20260729_023654_001",
+  "transaction_type": "KEY_ROTATION_POLICY",
+  "payload": {
+    "policy_name": "quantum_key_rotation_v1",
+    "kyber_parameters": {
+      "modulus": "2^3328 - 1",
+      "public_key_size": 1568,
+      "secret_key_size": 3168,
+      "ciphertext_size": 1568,
+      "shared_secret_size": 32
+    },
+    "rotation_config": {
+      "ttl_seconds": 5.0,
+      "max_active_secrets": 1024,
+      "self_healing_budget": 3,
+      "circuit_breaker_cooldown_seconds": 60.0
+    },
+    "pbft_consensus": {
+      "total_nodes": 4,
+      "quorum_size": 3,
+      "view_number": 0,
+      "sequence_number": 1
+    },
+    "deployment_targets": [
+      "node_archi_01",
+      "node_logic_02",
+      "node_shield_03",
+      "node_flow_04"
+    ],
+    "rollback_strategy": {
+      "type": "automatic",
+      "trigger": "failed_rotation_count > 3",
+      "fallback_ttl": 30.0
+    }
+  },
+  "timestamp": 1722213414.0,
+  "signature": "a1b2c3d4e5f6... (HMAC-SHA256 hex digest)",
+  "node_id": "archi_generative_01"
+}

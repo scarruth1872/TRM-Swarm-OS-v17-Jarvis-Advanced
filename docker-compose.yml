@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # ─── TRM Swarm OS ───────────────────────────────────────────
+  trm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trm-swarm
+    ports:
+      - "8021:8021"
+    volumes:
+      - .:/app
+      - artifacts:/app/artifacts
+    environment:
+      - PYTHONPATH=/app
+    command: python -m uvicorn swarm_v2.app_v2:app --host 0.0.0.0 --port 8021
+    depends_on:
+      - ollama
+    restart: unless-stopped
+    networks:
+      - swarm-net
+
+  # ─── Jarvis ─────────────────────────────────────────────────
+  jarvis:
+    image: node:20-alpine
+    container_name: jarvis
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ./Jarvis-Advanced-main:/app
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - OLLAMA_HOST=http://ollama:11434
+      - LORA_HOST=http://lora:5115
+      - TRM_HOST=http://trm:8021
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - trm
+      - ollama
+    restart: unless-stopped
+    networks:
+      - swarm-net
+
+  # ─── LoRA Inference Server ──────────────────────────────────
+  lora:
+    image: python:3.11-slim
+    container_name: jarvis-lora
+    ports:
+      - "5115:5115"
+    working_dir: /app
+    volumes:
+      - ./Jarvis-Advanced-main:/app
+      - ./jarvis_qwen3_adapter:/app/jarvis_qwen3_adapter
+    environment:
+      - PYTHONPATH=/app
+    command: sh -c "pip install fastapi uvicorn torch peft transformers && python jarvis_inference_server.py"
+    depends_on:
+      - trm
+    restart: unless-stopped
+    networks:
+      - swarm-net
+
+  # ─── Ollama (local LLM) ────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    command: serve
+    restart: unless-stopped
+    networks:
+      - swarm-net
+
+volumes:
+  ollama_data:
+  artifacts:
+
+networks:
+  swarm-net:
+    driver: bridge

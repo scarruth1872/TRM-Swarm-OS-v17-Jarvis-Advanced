@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  swarm-os-core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: swarm_os_core
+    restart: always
+    ports:
+      - "8021:8021"
+    environment:
+      - PYTHONPATH=.
+      - NODE_ENV=production
+    volumes:
+      - .:/app
+    networks:
+      - swarm_net
+
+  jarvis-advanced:
+    build:
+      context: ../Jarvis-Advanced-main/Jarvis-Advanced-main
+      dockerfile: Dockerfile.bonsai
+    container_name: jarvis_advanced_gateway
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - NODE_ENV=production
+    networks:
+      - swarm_net
+
+  swarm-dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    container_name: swarm_dashboard_ui
+    restart: always
+    ports:
+      - "5183:5183"
+    networks:
+      - swarm_net
+
+networks:
+  swarm_net:
+    driver: bridge

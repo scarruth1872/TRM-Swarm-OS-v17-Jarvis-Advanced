@@ -1,0 +1,16 @@
+{
+  "module": "TestGeneratorSkill",
+  "version": "1.0.0",
+  "directories": {
+    "src/parser": "AST and CFG extraction logic",
+    "src/synthesizer": "Neural test case generation and prompt engineering",
+    "src/mocks": "Dynamic mock generation engine",
+    "src/runtime": "Sandbox execution and validation environment",
+    "src/utils": "Language-specific boilerplate templates"
+  },
+  "dependencies": {
+    "tree-sitter": "Multi-language parsing",
+    "docker-sdk": "Isolated sandbox execution",
+    "llvm": "Low-level CFG analysis (for compiled languages)"
+  }
+}

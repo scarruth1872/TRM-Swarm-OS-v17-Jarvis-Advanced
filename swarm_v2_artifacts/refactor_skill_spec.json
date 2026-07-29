@@ -1,0 +1,21 @@
+{
+  "skill_id": "RefactorSkill",
+  "version": "1.0.0",
+  "capabilities": [
+    "AST_Manipulation",
+    "Complexity_Reduction",
+    "Pattern_Enforcement"
+  ],
+  "dependencies": {
+    "parser": "tree-sitter",
+    "analysis": "llvm-core-logic",
+    "diff": "unified-diff-engine"
+  },
+  "execution_pipeline": [
+    "Parse",
+    "Analyze",
+    "Transform",
+    "Validate",
+    "Emit"
+  ]
+}

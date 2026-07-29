@@ -1,0 +1,17 @@
+{
+  "component": "DiagramSkill",
+  "layers": {
+    "api_gateway": "REST/gRPC Interface",
+    "processing_core": {
+      "parser": "NLP-based Entity Extractor",
+      "mapper": "Semantic Logic Engine",
+      "generator": "DSL Template Engine"
+    },
+    "validation_layer": "Grammar-based Linter",
+    "output_adapter": "Multi-format Formatter"
+  },
+  "dependencies": {
+    "nlp_engine": "Transformer-based NER",
+    "dsl_specs": ["Mermaid.js", "PlantUML", "Graphviz"]
+  }
+}

@@ -1,0 +1,23 @@
+# Research Finding: transformer architecture improvements
+Generated at: 2026-07-09T03:31:03.716517
+
+## Summary
+💡 **AI Answer:** Recent research highlights limitations of the transformer architecture and explores alternative approaches. Key papers include "On Limitations of the Transformer Architecture" and "Reducing the Transformer Architecture to a Minimum." These works propose improvements and alternatives to traditional transformer models.
+
+🔍 Found 3 sources:
+
+[1] **What comes after transformers? – A selective survey ... - arXiv**
+    🔗 https://arxiv.org/html/2408.00386v1
+    📝 – A selective survey connecting ideas in deep learning††thanks: This is an extended version of the published paper by Johannes Schneider and Michalis Vlachos titled “A survey of deep learning: From activations to transformers” which appeared at the International Conference on Agents and Artificial I...
+[2] **On Limitations of the Transformer Architecture**
+    🔗 https://arxiv.org/html/2402.08164v1
+    📝 We use Communication Complexity to prove that the Transformer layer is incapable of composing functions (e.g., identify a grandparent of a person in a genealogy) if the domains of the functions are large enough; we show through examples that this inability is already empirically present when the dom...
+[3] **Reducing the Transformer Architecture to a Minimum**
+    🔗 https://arxiv.org/abs/2410.13732
+    📝 # Computer Science > Machine Learning. # Title:Reducing the Transformer Architecture to a Minimum. | Subjects: | Machine Learning (cs.LG) |. | Cite as: | arXiv:2410.13732 [cs.LG] |. |  | (or  arXiv:2410.13732v2 [cs.LG] for this version) |. |  |  Focus to learn more  arXiv-issued DOI via DataCite |. ...
+
+## Sources
+- transformer architecture improvements (Web Search)
+
+## Strategic Relevance
+This finding has been ingested into Global Memory and is available for all swarm agents during synthesis cycles.

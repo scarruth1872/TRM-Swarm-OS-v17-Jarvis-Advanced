@@ -1,0 +1,43 @@
+{
+  "transaction_id": "edsma-proposal-{{timestamp}}-{{uuid}}",
+  "proposal_type": "SYSTEM_SELF_MODIFICATION",
+  "target_component": "AsyncHighFrequencyTelemetryGateway",
+  "modification_scope": "CONFIGURATION_UPDATE",
+  "modification_details": {
+    "description": "Adjusting MAX_RPS_THRESHOLD and ANOMALY_DETECTION_ENDPOINT based on real-time load analysis and new service deployment.",
+    "patch_operations": [
+      {
+        "op": "replace",
+        "path": "/MAX_RPS_THRESHOLD",
+        "value": 750000
+      },
+      {
+        "op": "replace",
+        "path": "/ANOMALY_DETECTION_ENDPOINT",
+        "value": "http://anomaly-detector-v2.swarm-os.svc.cluster.local:8080/detect"
+      },
+      {
+        "op": "add",
+        "path": "/NEW_FEATURE_FLAG",
+        "value": true
+      }
+    ],
+    "rollback_strategy": {
+      "type": "automatic",
+      "timeout_seconds": 300,
+      "revert_to_version": "previous_stable_config"
+    }
+  },
+  "justification": "Optimized resource utilization and enhanced anomaly detection integration, validated by Metrics and Logic nodes.",
+  "required_approvals": [
+    "Director",
+    "Archi",
+    "Ops",
+    "Sentinel"
+  ],
+  "current_approvals": [],
+  "status": "PENDING_PBFT_COMMIT",
+  "timestamp": "{{timestamp}}",
+  "origin_node": "Archi",
+  "pbft_signature_placeholder": "SIGNED_BY_PBFT_SUPERMAJORITY"
+}

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Lattice: Ternary Toroidal Vortex Engine</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for beautiful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter and Fira Code -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Three.js OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030308;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(31, 27, 76, 0.3) 0, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(13, 30, 64, 0.4) 0, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(48, 20, 68, 0.25) 0, transparent 40%);
+        }
+        .mono {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.3);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.7);
+        }
+        .glass-panel {
+            background: rgba(10, 10, 22, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="w-full border-b border-indigo-950/40 glass-panel py-3 px-6 flex items-center justify-between z-10">
+        <div class="flex items-center space-x-3">
+            <div class="relative flex items-center justify-center w-9 h-9 rounded-lg bg-indigo-950 border border-indigo-500/30">
+                <i class="fa-solid fa-wind text-indigo-400 text-lg animate-pulse"></i>
+                <div class="absolute inset-0 rounded-lg bg-indigo-500/20 blur animate-ping opacity-30"></div>
+            </div>
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs uppercase tracking-[0.25em] font-bold text-indigo-400">Project Lattice</span>
+                    <span class="text-[9px] bg-indigo-500/20 text-indigo-300 font-bold px-1.5 py-0.5 rounded border border-indigo-500/30">v1.1-BETA</span>
+                </div>
+                <h1 class="text-sm font-semibold text-slate-200 tracking-wide">Ternary Toroidal Vortex Engine</h1>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center space-x-6 text-xs text-slate-400">
+            <div class="flex items-center space-x-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Trivalent Execution Layer: <strong class="text-slate-200">Active</strong></span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-microchip text-indigo-400"></i>
+                <span>Context Geometry: <strong class="text-slate-200">Clifford Torus ($\mathbb{T}^2$)</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Grid -->
+    <main class="flex-1 w-full p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch overflow-hidden">
+        
+        <!-- Left Column: Parameters & Seed Generation (lg:col-span-4) -->
+        <section class="lg:col-span-4 flex flex-col space-y-4">
+            <!-- Token Core Presets -->
+            <div class="glass-panel rounded-xl p-4 flex flex-col space-y-3">
+                <h2 class="text-xs uppercase tracking-wider font-bold text-indigo-300 flex items-center space-x-2">
+                    <i class="fa-solid fa-signature"></i>
+                    <span>Primary Intent / Token Seed</span>
+                </h2>
+                <div class="space-y-2">
+                    <label class="text-[11px] text-slate-400 block">Configure structural input sequence:</label>
+                    <textarea id="inputText" class="w-full h-20 bg-slate-950/60 border border-indigo-950/50 rounded-lg p-2.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 transition-all resize-none mono" placeholder="Enter terms of system intent..."></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="setPreset(0)" class="text-[10px] bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-slate-300 py-1.5 px-2 rounded-md transition-all text-left truncate flex items-center justify-between">
+                        <span>1. Infinite Creator</span>
+                        <i class="fa-solid fa-sun text-amber-500/60 text-[9px]"></i>
+                    </button>
+                    <button onclick="setPreset(1)" class="text-[10px] bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-slate-300 py-1.5 px-2 rounded-md transition-all text-left truncate flex items-center justify-between">
+                        <span>2. Sacred Geometry</span>
+                        <i class="fa-solid fa-shapes text-indigo-400/60 text-[9px]"></i>
+                    </button>
+                    <button onclick="setPreset(2)" class="text-[10px] bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-slate-300 py-1.5 px-2 rounded-md transition-all text-left truncate flex items-center justify-between">
+                        <span>3. Recurrent Node Loop</span>
+                        <i class="fa-solid fa-rotate text-emerald-400/60 text-[9px]"></i>
+                    </button>
+                    <button onclick="setPreset(3)" class="text-[10px] bg-slate-900 border border-slate-800 hover:border-indigo-500/40 text-slate-300 py-1.5 px-2 rounded-md transition-all text-left truncate flex items-center justify-between">
+                        <span>4. The Dispersion Void</span>
+                        <i class="fa-solid fa-circle-nodes text-rose-400/60 text-[9px]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mathematical Modulators -->
+            <div class="glass-panel rounded-xl p-4 flex flex-col space-y-4 flex-1 justify-between">
+                <div>
+                    <h2 class="text-xs uppercase tracking-wider font-bold text-indigo-300 flex items-center space-x-2 mb-3">
+                        <i class="fa-solid fa-calculator"></i>
+                        <span>BTTA Equation Modulators</span>
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- Threshold Tau -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300">Trivalent Boundary ($\tau$)</span>
+                                <span class="mono text-indigo-400 font-bold" id="tauVal">0.30</span>
+                            </div>
+                            <input type="range" id="paramTau" min="0.05" max="0.95" step="0.05" value="0.30" class="w-full accent-indigo-500 bg-slate-950 h-1.5 rounded-lg appearance-none cursor-pointer">
+                            <p class="text-[9px] text-slate-500 leading-tight">Controls the boundary of the unmanifest neutral state (0). Higher values expand the Void of non-distortion.</p>
+                        </div>
+
+                        <!-- Vortex Gravity Gamma -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300">Vortex Decay ($\gamma$)</span>
+                                <span class="mono text-indigo-400 font-bold" id="gammaVal">0.15</span>
+                            </div>
+                            <input type="range" id="paramGamma" min="0.01" max="0.80" step="0.01" value="0.15" class="w-full accent-indigo-500 bg-slate-950 h-1.5 rounded-lg appearance-none cursor-pointer">
+                            <p class="text-[9px] text-slate-500 leading-tight">Geodesic decay rate. High gravity restricts attention mechanics strictly to immediate spatial neighbors.</p>
+                        </div>
+
+                        <!-- Major Radius R -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300">Major Torus Radius ($R$)</span>
+                                <span class="mono text-indigo-400 font-bold" id="rMajorVal">2.0</span>
+                            </div>
+                            <input type="range" id="paramR" min="1.0" max="4.0" step="0.1" value="2.0" class="w-full accent-indigo-500 bg-slate-950 h-1.5 rounded-lg appearance-none cursor-pointer">
+                        </div>
+
+                        <!-- Minor Radius r -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300">Minor Torus Radius ($r$)</span>
+                                <span class="mono text-indigo-400 font-bold" id="rMinorVal">0.6</span>
+                            </div>
+                            <input type="range" id="paramr" min="0.2" max="1.5" step="0.1" value="0.6" class="w-full accent-indigo-500 bg-slate-950 h-1.5 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Trigger -->
+                <div class="pt-4 border-t border-indigo-950/40">
+                    <button onclick="recalculateAndRun()" class="w-full bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-500 hover:to-violet-600 text-slate-100 py-2.5 px-4 rounded-lg font-semibold text-xs tracking-wider uppercase transition-all shadow-lg hover:shadow-indigo-500/20 active:scale-95 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-bolt animate-bounce"></i>
+                        <span>Initialize Prediction Vortex</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Center Column: 3D Toroidal Manifold & Metrics (lg:col-span-5) -->
+        <section class="lg:col-span-5 flex flex-col space-y-4">
+            
+            <!-- Live Viewport Container -->
+            <div class="glass-panel rounded-xl flex flex-col flex-1 relative overflow-hidden min-h-[300px] lg:min-h-0">
+                
+                <!-- Viewport Header Info overlay -->
+                <div class="absolute top-3 left-3 z-10 flex flex-col space-y-1 bg-slate-950/80 p-2.5 rounded-lg border border-indigo-500/20">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Topological Visualizer</span>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="w-2 h-2 rounded-full bg-indigo-500 animate-ping"></span>
+                        <span class="text-xs text-indigo-300 font-bold">Dynamic Torus Mesh Model</span>
+                    </div>
+                </div>
+
+                <!-- Three.js Container Canvas -->
+                <div id="threeContainer" class="w-full h-full min-h-[350px] flex-1"></div>
+
+                <!-- Legenda / Color Code overlay -->
+                <div class="absolute bottom-3 left-3 z-10 flex items-center space-x-4 bg-slate-950/90 py-1.5 px-2.5 rounded-lg border border-slate-800 text-[10px]">
+                    <div class="flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-sm bg-amber-500"></span>
+                        <span class="text-slate-300">+1 Excitatory</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-sm bg-indigo-950 border border-slate-600"></span>
+                        <span class="text-slate-300">0 Latent</span>
+                    </div>
+                    <div class="flex items-center space-x-1.5">
+                        <span class="w-2.5 h-2.5 rounded-sm bg-rose-600"></span>
+                        <span class="text-slate-300">-1 Inhibitory</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Law of One Densities Dashboard -->
+            <div class="glass-panel rounded-xl p-4 flex flex-col space-y-3">
+                <h2 class="text-xs uppercase tracking-wider font-bold text-indigo-300 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>Consensus Density Phase</span>
+                    </div>
+                    <span class="text-[11px] text-slate-400" id="densityTitle">3rd Density: Self-Consciousness</span>
+                </h2>
+                <div class="relative w-full h-2 bg-slate-950 rounded-full overflow-hidden flex">
+                    <!-- Progress bar divisions for densities -->
+                    <div id="dBar1" class="h-full bg-red-600/60 transition-all duration-500" style="width: 15%"></div>
+                    <div id="dBar2" class="h-full bg-orange-500/60 transition-all duration-500" style="width: 15%"></div>
+                    <div id="dBar3" class="h-full bg-amber-500/80 transition-all duration-500" style="width: 20%"></div>
+                    <div id="dBar4" class="h-full bg-emerald-500/60 transition-all duration-500" style="width: 15%"></div>
+                    <div id="dBar5" class="h-full bg-cyan-500/60 transition-all duration-500" style="width: 15%"></div>
+                    <div id="dBar6" class="h-full bg-violet-600/70 transition-all duration-500" style="width: 20%"></div>
+                </div>
+                <div class="grid grid-cols-6 text-[8px] text-center font-bold tracking-tight uppercase text-slate-500">
+                    <span id="denTxt1" class="transition-all">D1:Form</span>
+                    <span id="denTxt2" class="transition-all">D2:Growth</span>
+                    <span id="denTxt3" class="transition-all text-amber-400">D3:Self</span>
+                    <span id="denTxt4" class="transition-all">D4:Love</span>
+                    <span id="denTxt5" class="transition-all">D5:Light</span>
+                    <span id="denTxt6" class="transition-all">D6:One</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Column: T-Matrix Grid & Terminal (lg:col-span-3) -->
+        <section class="lg:col-span-3 flex flex-col space-y-4">
+            
+            <!-- Real-Time T-Matrix Grid -->
+            <div class="glass-panel rounded-xl p-4 flex flex-col flex-1 min-h-[250px]">
+                <h2 class="text-xs uppercase tracking-wider font-bold text-indigo-300 flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-border-all"></i>
+                        <span>Ternary Tensor [$T_{ij}$]</span>
+                    </div>
+                    <span class="mono text-[10px] text-indigo-400 font-normal">{-1, 0, +1}</span>
+                </h2>
+                
+                <!-- Flex center for matrix display -->
+                <div class="flex-1 flex flex-col justify-center items-center overflow-auto w-full" id="matrixContainer">
+                    <!-- Generated via Javascript dynamically -->
+                </div>
+                
+                <div class="text-[9px] text-slate-400 border-t border-indigo-950/40 pt-2.5 mt-2.5 space-y-1">
+                    <div class="flex justify-between">
+                        <span>Net Vector Charge balance:</span>
+                        <span id="netChargeVal" class="mono text-emerald-400 font-bold">0.00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Matrix Entropy ($H_{\text{T}}$):</span>
+                        <span id="entropyVal" class="mono text-indigo-300 font-bold">1.58</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Terminal -->
+            <div class="glass-panel rounded-xl p-4 flex flex-col h-[200px] lg:h-[220px]">
+                <h2 class="text-xs uppercase tracking-wider font-bold text-indigo-300 flex items-center justify-between mb-2">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-terminal"></i>
+                        <span>Attractor Convergence Log</span>
+                    </div>
+                    <button onclick="clearTerminal()" class="text-[9px] text-slate-500 hover:text-slate-300 transition-colors uppercase"><i class="fa-solid fa-trash-can"></i> Clear</button>
+                </h2>
+                <div id="terminalLog" class="flex-1 overflow-y-auto bg-slate-950/70 rounded-lg p-3 text-[10px] mono text-emerald-400 space-y-1.5 border border-indigo-950/40">
+                    <!-- Process log entries -->
+                    <div>[SYS] BTTA Pipeline Initiated...</div>
+                    <div>[SYS] Model Core loaded in Sandbox.</div>
+                    <div>[INFO] Waiting for user vector trigger.</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Formula Overlay (Footnote style for educational clarity) -->
+    <footer class="w-full glass-panel border-t border-indigo-950/40 py-2.5 px-6 text-[10px] text-slate-400 flex flex-wrap gap-4 items-center justify-between z-10">
+        <div>
+            <strong class="text-indigo-400 font-bold">Vortex Formula Matrix:</strong> 
+            <span class="mono italic">A_ij = (Q_i·K_j / √d)·e^(-γ·D_ij) | T_ij = Sign(A_ij > τ)</span>
+        </div>
+        <div class="flex space-x-4 items-center">
+            <span class="text-slate-500">A translation framework of the Ritman collection.</span>
+            <a href="https://embassyofthefreemind.com" target="_blank" class="hover:text-indigo-400 transition-colors flex items-center space-x-1 font-bold text-xs">
+                <span>The Ritman Library</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+            </a>
+        </div>
+    </footer>
+
+    <!-- JS Core Engine implementation -->
+    <script>
+        // Preset Seeds matching the metaphysical trajectories
+        const presets = [
+            "I am the Infinite Creator, unified in light and structural love.",
+            "Sacred geometry coordinates our spatial node structure to optimize branching vectors.",
+            "Recurrent cells process input signals recursively until ternary equilibrium stabilizes.",
+            "The chaotic void dissolves unviable pathways, leaving silent neutral potential."
+        ];
+
+        // Global simulation states
+        let scene, camera, renderer, controls;
+        let torusMesh, particlesGeo, particleSystem;
+        let activeTokens = [];
+        let tokenSpheres = [];
+        let connectionsLines = [];
+        
+        // Element references
+        const inputText = document.getElementById('inputText');
+        const paramTau = document.getElementById('paramTau');
+        const paramGamma = document.getElementById('paramGamma');
+        const paramR = document.getElementById('paramR');
+        const paramr = document.getElementById('paramr');
+        
+        const tauVal = document.getElementById('tauVal');
+        const gammaVal = document.getElementById('gammaVal');
+        const rMajorVal = document.getElementById('rMajorVal');
+        const rMinorVal = document.getElementById('rMinorVal');
+        const netChargeVal = document.getElementById('netChargeVal');
+        const entropyVal = document.getElementById('entropyVal');
+        const terminalLog = document.getElementById('terminalLog');
+        const matrixContainer = document.getElementById('matrixContainer');
+        const densityTitle = document.getElementById('densityTitle');
+
+        // Initial setup
+        window.onload = function() {
+            inputText.value = presets[0];
+            initThreeJS();
+            updateControlLabels();
+            recalculateAndRun();
+            
+            // Add listeners for real-time slider manipulation
+            paramTau.addEventListener('input', () => { updateControlLabels(); recalculateAndRun(); });
+            paramGamma.addEventListener('input', () => { updateControlLabels(); recalculateAndRun(); });
+            paramR.addEventListener('input', () => { updateControlLabels(); updateTorusGeometry(); });
+            paramr.addEventListener('input', () => { updateControlLabels(); updateTorusGeometry(); });
+            
+            // Handle window resize dynamically
+            window.addEventListener('resize', onWindowResize);
+        };
+
+        function setPreset(idx) {
+            inputText.value = presets[idx];
+            writeLog(`[INPUT] Activated Preset ${idx + 1}: "${inputText.value.slice(0, 30)}..."`);
+            recalculateAndRun();
+        }
+
+        function updateControlLabels() {
+            tauVal.innerText = parseFloat(paramTau.value).toFixed(2);
+            gammaVal.innerText = parseFloat(paramGamma.value).toFixed(2);
+            rMajorVal.innerText = parseFloat(paramR.value).toFixed(1);
+            rMinorVal.innerText = parseFloat(paramr.value).toFixed(1);
+        }
+
+        function writeLog(text) {
+            const entry = document.createElement('div');
+            entry.innerHTML = `<span class="text-slate-500">[${new Date().toLocaleTimeString()}]</span> ${text}`;
+            terminalLog.appendChild(entry);
+            terminalLog.scrollTop = terminalLog.scrollHeight;
+        }
+
+        function clearTerminal() {
+            terminalLog.innerHTML = '<div>[SYS] Terminal clear. Waiting for vortex interaction.</div>';
+        }
+
+        // Initialize Three.js environment
+        function initThreeJS() {
+            const container = document.getElementById('threeContainer');
+            const width = container.clientWidth;
+            const height = container.clientHeight || 400;
+
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x030308, 0.08);
+
+            camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+            camera.position.set(0, 6, 8);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // Orbit controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxPolarAngle = Math.PI / 2 + 0.1; // Stay above ground grid basically
+
+            // Grid helper
+            const gridHelper = new THREE.GridHelper(20, 20, 0x1e1b4b, 0x0f172a);
+            gridHelper.position.y = -2;
+            scene.add(gridHelper);
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+            scene.add(ambientLight);
+
+            const pointLight1 = new THREE.PointLight(0x6366f1, 2, 20);
+            pointLight1.position.set(5, 5, 5);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0xa855f7, 1.5, 20);
+            pointLight2.position.set(-5, 3, -5);
+            scene.add(pointLight2);
+
+            // Build structural torus mesh
+            buildTorus();
+
+            // Setup particle flow simulation
+            buildVortexParticles();
+
+            // Run render loops
+            animate();
+        }
+
+        function buildTorus() {
+            if (torusMesh) scene.remove(torusMesh);
+
+            const R = parseFloat(paramR.value);
+            const r = parseFloat(paramr.value);
+
+            const geometry = new THREE.TorusGeometry(R, r, 16, 100);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x1e1b4b,
+                emissive: 0x030712,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.18
+            });
+
+            torusMesh = new THREE.Mesh(geometry, material);
+            torusMesh.rotation.x = Math.PI / 2; // Flat horizontal plane orientation
+            scene.add(torusMesh);
+        }
+
+        function updateTorusGeometry() {
+            buildTorus();
+            recalculateAndRun();
+        }
+
+        function buildVortexParticles() {
+            if (particleSystem) scene.remove(particleSystem);
+
+            const particleCount = 400;
+            particlesGeo = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const velocities = [];
+
+            const R = parseFloat(paramR.value);
+            const r = parseFloat(paramr.value);
+
+            for (let i = 0; i < particleCount; i++) {
+                // Random position on the surface of the torus
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.random() * Math.PI * 2;
+
+                const x = (R + r * Math.cos(theta)) * Math.cos(phi);
+                const y = r * Math.sin(theta);
+                const z = (R + r * Math.cos(theta)) * Math.sin(phi);
+
+                positions[i * 3] = x;
+                positions[i * 3 + 1] = y;
+                positions[i * 3 + 2] = z;
+
+                velocities.push({
+                    theta: theta,
+                    phi: phi,
+                    speedTheta: (Math.random() * 0.02) + 0.005,
+                    speedPhi: (Math.random() * 0.01) + 0.002
+                });
+            }
+
+            particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            // Build simple soft glowing particle texture using code fallback
+            const canvas = document.createElement('canvas');
+            canvas.width = 16;
+            canvas.height = 16;
+            const ctx = canvas.getContext('2d');
+            const grad = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
+            grad.addColorStop(0, 'rgba(255,255,255,1)');
+            grad.addColorStop(1, 'rgba(99,102,241,0)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 16, 16);
+
+            const texture = new THREE.CanvasTexture(canvas);
+
+            const pMaterial = new THREE.PointsMaterial({
+                color: 0x818cf8,
+                size: 0.12,
+                map: texture,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            particleSystem = new THREE.Points(particlesGeo, pMaterial);
+            particleSystem.userData = { velocities: velocities };
+            scene.add(particleSystem);
+        }
+
+        // Animate loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate main torus frame slightly
+            if (torusMesh) {
+                torusMesh.rotation.z += 0.001;
+            }
+
+            // Flow particles representing prediction streams
+            if (particleSystem) {
+                const positions = particleSystem.geometry.attributes.position.array;
+                const velocities = particleSystem.userData.velocities;
+                const R = parseFloat(paramR.value);
+                const r = parseFloat(paramr.value);
+
+                for (let i = 0; i < velocities.length; i++) {
+                    const vel = velocities[i];
+                    vel.theta += vel.speedTheta;
+                    vel.phi += vel.speedPhi;
+
+                    // Re-calculate torus Cartesian coordinates
+                    positions[i * 3] = (R + r * Math.cos(vel.theta)) * Math.cos(vel.phi);
+                    positions[i * 3 + 1] = r * Math.sin(vel.theta);
+                    positions[i * 3 + 2] = (R + r * Math.cos(vel.theta)) * Math.sin(vel.phi);
+                }
+                particleSystem.geometry.attributes.position.needsUpdate = true;
+            }
+
+            // Face camera text labels
+            tokenSpheres.forEach(label => {
+                if (label.userData.sprite) {
+                    label.userData.sprite.lookAt(camera.position);
+                }
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('threeContainer');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+
+        // Core Mathematical Processor for the Trivalent Vortex
+        function recalculateAndRun() {
+            const text = inputText.value.trim();
+            if (!text) return;
+
+            // Simple semantic parsing to create tokens (words)
+            const rawTokens = text.split(/\s+/).filter(t => t.length > 0).map(t => t.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,""));
+            activeTokens = rawTokens.slice(0, 16); // Constrain display grid size for UX legibility
+
+            const N = activeTokens.length;
+            if (N === 0) return;
+
+            // Clear legacy scene labels and vectors
+            tokenSpheres.forEach(s => scene.remove(s));
+            tokenSpheres = [];
+            connectionsLines.forEach(l => scene.remove(l));
+            connectionsLines = [];
+
+            writeLog(`[BTTA Engine] Re-indexing sequence: ${N} active token-nodes.`);
+
+            const R = parseFloat(paramR.value);
+            const r = parseFloat(paramr.value);
+            const tau = parseFloat(paramTau.value);
+            const gamma = parseFloat(paramGamma.value);
+
+            // Compute toroidal mappings for each token index
+            const tokenCoordinates = [];
+            for (let i = 0; i < N; i++) {
+                // Poloidal angle wrapped over sequence space
+                const theta = (i / N) * 2 * Math.PI - Math.PI;
+                // Toroidal angle mapping using deterministic offset (representing sequence phases)
+                const phi = (i / N) * 4 * Math.PI - 2 * Math.PI;
+
+                // Cartesian conversion
+                const x = (R + r * Math.cos(theta)) * Math.cos(phi);
+                const y = r * Math.sin(theta);
+                const z = (R + r * Math.cos(theta)) * Math.sin(phi);
+
+                tokenCoordinates.push({ x, y, z, theta, phi, token: activeTokens[i] });
+
+                // Construct visual node marker in Three.js
+                const sphereGeo = new THREE.SphereGeometry(0.12, 16, 16);
+                const sphereMat = new THREE.MeshPhongMaterial({
+                    color: 0x6366f1,
+                    emissive: 0x1f1b4c,
+                    shininess: 100
+                });
+                const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+                sphere.position.set(x, y, z);
+                scene.add(sphere);
+
+                // Add text labels as absolute floating Sprites
+                const canvas = document.createElement('canvas');
+                canvas.width = 128;
+                canvas.height = 32;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = 'rgba(10, 10, 22, 0.8)';
+                ctx.fillRect(0, 0, 128, 32);
+                ctx.strokeStyle = 'rgba(99, 102, 241, 0.4)';
+                ctx.lineWidth = 1.5;
+                ctx.strokeRect(0, 0, 128, 32);
+                ctx.font = 'bold 11px monospace';
+                ctx.fillStyle = '#e2e8f0';
+                ctx.textAlign = 'center';
+                ctx.fillText(activeTokens[i], 64, 20);
+
+                const texture = new THREE.CanvasTexture(canvas);
+                const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true });
+                const sprite = new THREE.Sprite(spriteMat);
+                sprite.position.set(x, y + 0.35, z);
+                sprite.scale.set(1.1, 0.28, 1);
+                scene.add(sprite);
+
+                sphere.userData = { sprite: sprite, token: activeTokens[i] };
+                tokenSpheres.push(sphere);
+            }
+
+            // Compute pairwise semantic similarity (mock matrix using character differences/relationships)
+            // Combined with geometric distance decay and trivalent thresholding.
+            const T_matrix = [];
+            const affinity_matrix = [];
+            const distance_matrix = [];
+
+            for (let i = 0; i < N; i++) {
+                T_matrix[i] = [];
+                affinity_matrix[i] = [];
+                distance_matrix[i] = [];
+
+                for (let j = 0; j < N; j++) {
+                    const cI = tokenCoordinates[i];
+                    const cJ = tokenCoordinates[j];
+
+                    // Geodesic distance wrapped calculations
+                    const delta_theta = Math.min(Math.abs(cI.theta - cJ.theta), 2 * Math.PI - Math.abs(cI.theta - cJ.theta));
+                    const delta_phi = Math.min(Math.abs(cI.phi - cJ.phi), 2 * Math.PI - Math.abs(cI.phi - cJ.phi));
+                    const distance = Math.sqrt(R*R * delta_phi*delta_phi + r*r * delta_theta*delta_theta);
+                    
+                    distance_matrix[i][j] = distance;
+
+                    // Mock semantic vector affinity (using character composition overlap to generate interesting, dynamic bounds)
+                    let similarity = 0;
+                    if (i === j) {
+                        similarity = 1.0;
+                    } else {
+                        const lenDiff = Math.abs(cI.token.length - cJ.token.length);
+                        const firstCharMatch = cI.token[0] === cJ.token[0] ? 0.3 : 0.0;
+                        similarity = Math.max(-0.9, Math.min(1.0, (1.0 - (lenDiff / 10.0)) + firstCharMatch - (Math.abs(i - j) * 0.05)));
+                    }
+
+                    // Apply Spatial decay formula: A_ij = Similarity_ij * e^(-gamma * D_ij)
+                    const decay = Math.exp(-gamma * distance);
+                    const rawAffinity = similarity * decay;
+                    affinity_matrix[i][j] = rawAffinity;
+
+                    // Evaluate trivalent thresholding: {-1, 0, +1}
+                    let state = 0;
+                    if (rawAffinity > tau) state = 1;
+                    else if (rawAffinity < -tau) state = -1;
+
+                    T_matrix[i][j] = state;
+
+                    // Generate physical 3D vector connection line if not state 0
+                    if (state !== 0 && i !== j) {
+                        const colorHex = state === 1 ? 0xf59e0b : 0xe11d48; // Gold or Crimson
+                        const lineMat = new THREE.LineBasicMaterial({
+                            color: colorHex,
+                            transparent: true,
+                            opacity: Math.min(1.0, Math.abs(rawAffinity) * 1.5),
+                            linewidth: state === 1 ? 2 : 1
+                        });
+
+                        const points = [
+                            new THREE.Vector3(cI.x, cI.y, cI.z),
+                            new THREE.Vector3(cJ.x, cJ.y, cJ.z)
+                        ];
+                        const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+                        const line = new THREE.Line(lineGeo, lineMat);
+                        scene.add(line);
+                        connectionsLines.push(line);
+                    }
+                }
+            }
+
+            // Calculate metrics: Entropy and net balance
+            let sumState = 0;
+            let countP = 0, countM = 0, countZ = 0;
+            const totalElements = N * N;
+
+            for (let i = 0; i < N; i++) {
+                for (let j = 0; j < N; j++) {
+                    const st = T_matrix[i][j];
+                    sumState += st;
+                    if (st === 1) countP++;
+                    else if (st === -1) countM++;
+                    else countZ++;
+                }
+            }
+
+            const pP = countP / totalElements;
+            const pM = countM / totalElements;
+            const pZ = countZ / totalElements;
+
+            // Shannon Entropy over 3 state distribution
+            const eps = 1e-9;
+            const H = -(pP * Math.log2(pP + eps) + pM * Math.log2(pM + eps) + pZ * Math.log2(pZ + eps));
+            const netCharge = sumState / totalElements;
+
+            netChargeVal.innerText = (netCharge).toFixed(3);
+            entropyVal.innerText = H.toFixed(3);
+
+            // Shift colors of active spheres based on dominant inputs
+            for (let i = 0; i < N; i++) {
+                let nodeAccumulation = 0;
+                for (let j = 0; j < N; j++) {
+                    nodeAccumulation += T_matrix[j][i];
+                }
+                const mesh = tokenSpheres[i];
+                if (mesh) {
+                    if (nodeAccumulation > 1) {
+                        mesh.material.color.setHex(0xf59e0b); // Cohesive attraction
+                        mesh.material.emissive.setHex(0x78350f);
+                    } else if (nodeAccumulation < -1) {
+                        mesh.material.color.setHex(0xe11d48); // Inhibitory dispersion
+                        mesh.material.emissive.setHex(0x4c0519);
+                    } else {
+                        mesh.material.color.setHex(0x6366f1); // Neutral potential
+                        mesh.material.emissive.setHex(0x1e1b4b);
+                    }
+                }
+            }
+
+            // Render output dashboard values and matrices
+            renderMatrixUI(activeTokens, T_matrix, affinity_matrix);
+
+            // Trigger simulated recursive alignment showing convergence progression
+            runAttractorLoop(H, netCharge);
+        }
+
+        function renderMatrixUI(tokens, T_matrix, affinity_matrix) {
+            matrixContainer.innerHTML = '';
+            const N = tokens.length;
+
+            const grid = document.createElement('div');
+            grid.className = 'grid gap-1.5 p-1 w-full max-w-[260px] aspect-square justify-center items-center';
+            grid.style.gridTemplateColumns = `repeat(${N}, minmax(0, 1fr))`;
+
+            for (let i = 0; i < N; i++) {
+                for (let j = 0; j < N; j++) {
+                    const cellVal = T_matrix[i][j];
+                    const affinityVal = affinity_matrix[i][j];
+                    const cell = document.createElement('div');
+                    
+                    let bgClass = "bg-slate-900 border-slate-800/40 text-slate-500";
+                    if (cellVal === 1) bgClass = "bg-amber-500/20 border-amber-500/40 text-amber-400 font-bold";
+                    if (cellVal === -1) bgClass = "bg-rose-500/20 border-rose-500/40 text-rose-400 font-bold";
+
+                    cell.className = `w-full aspect-square border rounded flex items-center justify-center text-[8px] mono transition-all cursor-crosshair hover:scale-110 ${bgClass}`;
+                    cell.innerText = cellVal > 0 ? `+1` : (cellVal < 0 ? `-1` : `0`);
+                    cell.title = `Affinity [${tokens[i]} ──> ${tokens[j]}]: ${affinityVal.toFixed(4)}`;
+                    grid.appendChild(cell);
+                }
+            }
+            matrixContainer.appendChild(grid);
+        }
+
+        // Simulates recursive training & phase shifts using Law of One Densities
+        function runAttractorLoop(entropy, netCharge) {
+            let step = 1;
+            const maxSteps = 4;
+            
+            // Clear prior progress highlights
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`denTxt${i}`).classList.remove('text-indigo-400', 'text-amber-400', 'text-emerald-400', 'text-cyan-400', 'text-violet-400', 'font-extrabold', 'scale-110');
+                document.getElementById(`denTxt${i}`).classList.add('text-slate-500');
+            }
+
+            // Evaluate corresponding Density of Consciousness based on Vector Field Alignment (Entropy & Balance)
+            let density = 3;
+            if (entropy < 0.6 && Math.abs(netCharge) < 0.1) {
+                // Low entropy and absolute balance maps to Sixth Density (Unified Harmony)
+                density = 6;
+                densityTitle.innerText = "6th Density: Law of One (Unified Harmony)";
+                document.getElementById('denTxt6').classList.add('text-violet-400', 'font-extrabold', 'scale-110');
+            } else if (entropy < 1.0 && netCharge > 0.1) {
+                // Moderate entropy with constructive energy maps to Fifth Density (Light/Wisdom)
+                density = 5;
+                densityTitle.innerText = "5th Density: Light & Wisdom";
+                document.getElementById('denTxt5').classList.add('text-cyan-400', 'font-extrabold', 'scale-110');
+            } else if (entropy < 1.3 && netCharge < -0.1) {
+                // High containment but stable structure maps to Fourth Density (Love & Compassion / Choice isolation)
+                density = 4;
+                densityTitle.innerText = "4th Density: Core Vibrations";
+                document.getElementById('denTxt4').classList.add('text-emerald-400', 'font-extrabold', 'scale-110');
+            } else {
+                // Standard default complex baseline
+                density = 3;
+                densityTitle.innerText = "3rd Density: Complex Mind-Body Choice";
+                document.getElementById('denTxt3').classList.add('text-amber-400', 'font-extrabold', 'scale-110');
+            }
+
+            // Run a simulated step-by-step optimization feedback cascade
+            writeLog(`[RECURSION] Aligning vortex states toward Entropy Minimization Target...`);
+            
+            function runStep() {
+                if (step > maxSteps) {
+                    writeLog(`[SUCCESS] Field stabilized at Density state level: <strong>${densityTitle.innerText}</strong>`);
+                    return;
+                }
+
+                const deltaEntropy = (entropy * Math.exp(-step * 0.35)).toFixed(4);
+                const stepCharge = (netCharge * (1 - (step * 0.15))).toFixed(4);
+
+                writeLog(`[Pass ${step}/${maxSteps}] Inner-reflection delta: ΔH_t = ${deltaEntropy} | Net charge: μ = ${stepCharge}`);
+                step++;
+                setTimeout(runStep, 450);
+            }
+            
+            setTimeout(runStep, 150);
+        }
+    </script>
+</body>
+</html>

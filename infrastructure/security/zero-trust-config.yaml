@@ -1,0 +1,49 @@
+# Swarm OS Phase 4 - Zero-Trust Security Mesh Configuration
+# Enforces STRICT mTLS and fine-grained authorization for all internal services.
+
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: swarm-mtls-default
+  namespace: swarm-system
+spec:
+  mtls:
+    mode: STRICT
+
+---
+
+# Authorization Policy: Allow only authenticated agents with the 'reasoning' role to access the Memory Service
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: memory-access-policy
+  namespace: swarm-system
+spec:
+  selector:
+    matchLabels:
+      app: global-memory
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/swarm-system/sa/agent-reasoning-*"]
+    to:
+    - operation:
+        methods: ["GET", "POST"]
+        paths: ["/api/v1/memory/*"]
+
+---
+
+# Request Authentication: Validate JWT for external API requests
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: api-jwt-auth
+  namespace: swarm-system
+spec:
+  selector:
+    matchLabels:
+      app: swarm-api
+  jwtRules:
+  - issuer: "https://auth.swarmos.local"
+    jwksUri: "https://auth.swarmos.local/.well-known/jwks.json"
+    forwardOriginalToken: true

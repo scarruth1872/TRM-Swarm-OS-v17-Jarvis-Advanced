@@ -1,0 +1,20 @@
+# etcd Configuration for Swarm OS Dynamic Config Service
+# Provides distributed, consistent key-value store for runtime configuration.
+name: 'swarm-os-config-0'
+data-dir: '/var/lib/etcd'
+initial-advertise-peer-urls: 'http://localhost:2380'
+listen-peer-urls: 'http://0.0.0.0:2380'
+listen-client-urls: 'http://0.0.0.0:2379'
+advertise-client-urls: 'http://localhost:2379'
+initial-cluster: 'swarm-os-config-0=http://localhost:2380'
+initial-cluster-token: 'swarm-os-config-token'
+initial-cluster-state: 'new'
+enable-v2: false
+logger: 'zap'
+log-outputs: ['stderr']
+log-level: 'info'
+auto-compaction-mode: 'periodic'
+auto-compaction-retention: '1h'
+quota-backend-bytes: '8589934592' # 8GB
+max-request-bytes: '1572864'    # 1.5MB
+max-txn-ops: 128

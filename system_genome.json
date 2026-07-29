@@ -1,0 +1,6649 @@
+{
+  "modules": {
+    "app": {
+      "classes": [
+        "SwarmConfig",
+        "SudokuTask"
+      ],
+      "functions": []
+    },
+    "ask_system": {
+      "classes": [],
+      "functions": []
+    },
+    "check_api": {
+      "classes": [],
+      "functions": [
+        "check_api"
+      ]
+    },
+    "check_archi": {
+      "classes": [],
+      "functions": []
+    },
+    "check_checkpoint_keys": {
+      "classes": [],
+      "functions": []
+    },
+    "check_checkpoint_shapes": {
+      "classes": [],
+      "functions": []
+    },
+    "check_gpu": {
+      "classes": [],
+      "functions": []
+    },
+    "check_model_keys": {
+      "classes": [],
+      "functions": []
+    },
+    "check_server": {
+      "classes": [],
+      "functions": [
+        "check_port"
+      ]
+    },
+    "check_shapes_v2": {
+      "classes": [],
+      "functions": []
+    },
+    "clean_pipeline": {
+      "classes": [],
+      "functions": []
+    },
+    "debug_artifact_stats": {
+      "classes": [],
+      "functions": []
+    },
+    "debug_import": {
+      "classes": [],
+      "functions": []
+    },
+    "debug_memory_response": {
+      "classes": [],
+      "functions": [
+        "test_query"
+      ]
+    },
+    "debug_model_structure": {
+      "classes": [],
+      "functions": []
+    },
+    "debug_nn_buffer": {
+      "classes": [
+        "TraceNN"
+      ],
+      "functions": [
+        "__init__",
+        "__getattr__"
+      ]
+    },
+    "debug_parallel_logic": {
+      "classes": [],
+      "functions": [
+        "debug_parallel_decision",
+        "check_torch_issue",
+        "main"
+      ]
+    },
+    "debug_prune": {
+      "classes": [],
+      "functions": [
+        "test_prune"
+      ]
+    },
+    "debug_split": {
+      "classes": [],
+      "functions": []
+    },
+    "debug_weather_port": {
+      "classes": [],
+      "functions": []
+    },
+    "debug_weather_query": {
+      "classes": [],
+      "functions": []
+    },
+    "diagnose_idle": {
+      "classes": [],
+      "functions": []
+    },
+    "diag_archi": {
+      "classes": [],
+      "functions": []
+    },
+    "diag_functional": {
+      "classes": [],
+      "functions": []
+    },
+    "diag_hf": {
+      "classes": [],
+      "functions": []
+    },
+    "enable_gpu_acceleration": {
+      "classes": [],
+      "functions": [
+        "check_current_gpu_status",
+        "install_directml",
+        "configure_ollama_vulkan",
+        "test_directml_acceleration",
+        "test_vulkan_acceleration",
+        "create_gpu_config",
+        "optimize_performance",
+        "main"
+      ]
+    },
+    "final_verification": {
+      "classes": [],
+      "functions": [
+        "verify_system",
+        "main"
+      ]
+    },
+    "find_routes": {
+      "classes": [],
+      "functions": []
+    },
+    "fix_arrows_global": {
+      "classes": [],
+      "functions": [
+        "replace_arrows"
+      ]
+    },
+    "fix_directml_install": {
+      "classes": [],
+      "functions": [
+        "check_current_install",
+        "clean_install_directml",
+        "verify_installation",
+        "create_gpu_requirements",
+        "main"
+      ]
+    },
+    "fix_read_local": {
+      "classes": [],
+      "functions": []
+    },
+    "fix_swarm_context": {
+      "classes": [],
+      "functions": []
+    },
+    "fix_synth_paths": {
+      "classes": [],
+      "functions": [
+        "fix_files"
+      ]
+    },
+    "generate_paper": {
+      "classes": [],
+      "functions": []
+    },
+    "get_dims": {
+      "classes": [],
+      "functions": []
+    },
+    "gpu_usage_example": {
+      "classes": [
+        "SimpleNet"
+      ],
+      "functions": [
+        "check_gpu_backend",
+        "simple_tensor_operations",
+        "neural_network_example",
+        "compare_with_cpu",
+        "get_usage_instructions",
+        "main",
+        "__init__",
+        "forward"
+      ]
+    },
+    "ingest_knowledge": {
+      "classes": [],
+      "functions": []
+    },
+    "ingest_knowledge_phase2": {
+      "classes": [],
+      "functions": [
+        "ingest"
+      ]
+    },
+    "initialize_all_modules": {
+      "classes": [
+        "Colors",
+        "ModuleInitializer"
+      ],
+      "functions": [
+        "print_header",
+        "print_success",
+        "print_warning",
+        "print_error",
+        "print_info",
+        "main",
+        "__init__",
+        "check_directories",
+        "check_configuration_files",
+        "check_python_packages",
+        "check_ollama",
+        "check_api_server",
+        "check_dashboard",
+        "check_trm_weights",
+        "check_memory_systems",
+        "check_mcp_tools",
+        "check_kanban_board",
+        "generate_report",
+        "run_all_checks"
+      ]
+    },
+    "inspect_routes": {
+      "classes": [
+        "Mock"
+      ],
+      "functions": [
+        "__init__",
+        "__call__",
+        "__getattr__"
+      ]
+    },
+    "integration_test": {
+      "classes": [],
+      "functions": []
+    },
+    "launcher": {
+      "classes": [],
+      "functions": [
+        "cleanup"
+      ]
+    },
+    "nexus_usage_example": {
+      "classes": [],
+      "functions": [
+        "run_local_demo"
+      ]
+    },
+    "phase6_kickoff": {
+      "classes": [],
+      "functions": []
+    },
+    "pretrain": {
+      "classes": [
+        "LossConfig",
+        "ArchConfig",
+        "EvaluatorConfig",
+        "PretrainConfig",
+        "TrainState"
+      ],
+      "functions": [
+        "create_dataloader",
+        "create_model",
+        "mix_weights_direct",
+        "cosine_schedule_with_warmup_lr_lambda",
+        "init_train_state",
+        "save_train_state",
+        "load_checkpoint",
+        "compute_lr",
+        "create_evaluators",
+        "train_batch",
+        "evaluate",
+        "save_code_and_config",
+        "load_synced_config",
+        "launch"
+      ]
+    },
+    "purge_memory": {
+      "classes": [],
+      "functions": []
+    },
+    "puzzle_dataset": {
+      "classes": [
+        "PuzzleDatasetConfig",
+        "PuzzleDataset"
+      ],
+      "functions": [
+        "_sample_batch",
+        "__init__",
+        "_load_metadata",
+        "_lazy_load_dataset",
+        "_collate_batch",
+        "_iter_test",
+        "_iter_train",
+        "__iter__"
+      ]
+    },
+    "recover_registry": {
+      "classes": [],
+      "functions": [
+        "recover_registry"
+      ]
+    },
+    "recover_skills": {
+      "classes": [],
+      "functions": []
+    },
+    "run_nexus_build": {
+      "classes": [],
+      "functions": []
+    },
+    "start_tools": {
+      "classes": [],
+      "functions": [
+        "start_tools"
+      ]
+    },
+    "stress_test_api_comprehensive": {
+      "classes": [
+        "StressTestResults"
+      ],
+      "functions": [
+        "select_endpoint",
+        "__init__",
+        "add_result",
+        "get_summary",
+        "print_summary"
+      ]
+    },
+    "stress_test_cognitive_stack": {
+      "classes": [],
+      "functions": []
+    },
+    "stress_test_comprehensive": {
+      "classes": [
+        "ComponentStressTest",
+        "APIPipelineTest",
+        "GlobalMemoryTest",
+        "AgentMeshTest",
+        "LearningEngineTest",
+        "SystemHealthMonitor"
+      ],
+      "functions": [
+        "main",
+        "__init__",
+        "add_result",
+        "get_summary",
+        "print_summary",
+        "__init__",
+        "run_single_test",
+        "run_stress_test",
+        "__init__",
+        "run_single_test",
+        "run_stress_test",
+        "__init__",
+        "run_single_test",
+        "run_stress_test",
+        "__init__",
+        "run_single_test",
+        "run_stress_test",
+        "get_system_health",
+        "get_resource_status",
+        "print_health_baseline",
+        "worker_loop",
+        "memory_worker",
+        "mesh_worker",
+        "learning_worker"
+      ]
+    },
+    "stress_test_quick": {
+      "classes": [],
+      "functions": [
+        "test_endpoint",
+        "run_concurrent_test",
+        "main",
+        "worker"
+      ]
+    },
+    "swarm_batch_maintenance": {
+      "classes": [],
+      "functions": [
+        "batch_maintenance"
+      ]
+    },
+    "swarm_manager": {
+      "classes": [
+        "TRMAgent",
+        "SudokuSwarm"
+      ],
+      "functions": [
+        "__init__",
+        "initialize_task",
+        "step",
+        "get_latent_state",
+        "set_latent_state",
+        "__init__",
+        "solve_sudoku"
+      ]
+    },
+    "test_agent_models": {
+      "classes": [],
+      "functions": []
+    },
+    "test_all_experts": {
+      "classes": [],
+      "functions": [
+        "test_all_experts"
+      ]
+    },
+    "test_artifacts_stats": {
+      "classes": [],
+      "functions": [
+        "test_endpoint"
+      ]
+    },
+    "test_artifact_stats_detailed": {
+      "classes": [],
+      "functions": [
+        "test_with_debug"
+      ]
+    },
+    "test_autonomous_loop": {
+      "classes": [],
+      "functions": []
+    },
+    "test_cra": {
+      "classes": [],
+      "functions": []
+    },
+    "test_endpoints": {
+      "classes": [],
+      "functions": [
+        "test_endpoint",
+        "main"
+      ]
+    },
+    "test_file_processing": {
+      "classes": [],
+      "functions": [
+        "test_file_processing_endpoints"
+      ]
+    },
+    "test_gemma3_simple": {
+      "classes": [],
+      "functions": []
+    },
+    "test_global_memory_stress": {
+      "classes": [],
+      "functions": [
+        "test_endpoint",
+        "test_memory_stats_single",
+        "test_memory_query_single",
+        "test_memory_contribute_single",
+        "concurrent_test",
+        "stress_test_memory_concurrent",
+        "worker",
+        "stats_worker",
+        "query_worker",
+        "contribute_worker",
+        "mixed_worker"
+      ]
+    },
+    "test_import": {
+      "classes": [],
+      "functions": []
+    },
+    "test_integration_simple": {
+      "classes": [],
+      "functions": []
+    },
+    "test_mesh_federation": {
+      "classes": [],
+      "functions": [
+        "test_endpoint",
+        "test_federation_stats",
+        "test_learning_skills",
+        "test_mesh_topology",
+        "test_synthesize_tools",
+        "concurrent_test",
+        "stress_test_federation",
+        "main",
+        "worker",
+        "mixed_worker"
+      ]
+    },
+    "test_model_init": {
+      "classes": [],
+      "functions": []
+    },
+    "test_partition_fix": {
+      "classes": [],
+      "functions": [
+        "test_current_partition",
+        "propose_fix",
+        "main",
+        "better_partition_context"
+      ]
+    },
+    "test_pipeline": {
+      "classes": [],
+      "functions": [
+        "heading",
+        "show_stats"
+      ]
+    },
+    "test_quick_stress": {
+      "classes": [],
+      "functions": [
+        "test_endpoint",
+        "test_health",
+        "test_memory_stats",
+        "test_agents",
+        "test_artifacts_stats",
+        "concurrent_test",
+        "stress_test",
+        "worker",
+        "health_worker",
+        "stats_worker",
+        "agents_worker",
+        "mixed_worker"
+      ]
+    },
+    "test_recall": {
+      "classes": [],
+      "functions": []
+    },
+    "test_simple_comm": {
+      "classes": [],
+      "functions": [
+        "test_chat"
+      ]
+    },
+    "test_trm_debug": {
+      "classes": [],
+      "functions": []
+    },
+    "test_trm_parallel": {
+      "classes": [],
+      "functions": [
+        "monitor_resources"
+      ]
+    },
+    "trigger_skill_gap_analysis": {
+      "classes": [],
+      "functions": [
+        "trigger_skill_scan"
+      ]
+    },
+    "trigger_test": {
+      "classes": [],
+      "functions": []
+    },
+    "update_swarm": {
+      "classes": [],
+      "functions": []
+    },
+    "verify_api": {
+      "classes": [],
+      "functions": [
+        "test_endpoint"
+      ]
+    },
+    "verify_async_nexus": {
+      "classes": [],
+      "functions": [
+        "test_async_nexus",
+        "run_gateway"
+      ]
+    },
+    "verify_full_bridge": {
+      "classes": [],
+      "functions": [
+        "test_full_swarm_nexus_bridge",
+        "run_gateway"
+      ]
+    },
+    "verify_nexus_module": {
+      "classes": [],
+      "functions": [
+        "test_nexus"
+      ]
+    },
+    "verify_trm_load": {
+      "classes": [],
+      "functions": []
+    },
+    "verify_trm_system": {
+      "classes": [],
+      "functions": [
+        "check_modules",
+        "check_class_availability",
+        "check_file_existence",
+        "quick_smoke_test",
+        "main"
+      ]
+    },
+    "dataset.build_arc_dataset": {
+      "classes": [
+        "DataProcessConfig",
+        "ARCPuzzle"
+      ],
+      "functions": [
+        "arc_grid_to_np",
+        "np_grid_to_seq_translational_augment",
+        "grid_hash",
+        "puzzle_hash",
+        "aug",
+        "inverse_aug",
+        "convert_single_arc_puzzle",
+        "load_puzzles_arcagi",
+        "convert_dataset",
+        "main",
+        "_map_grid",
+        "_map_grid"
+      ]
+    },
+    "dataset.build_maze_dataset": {
+      "classes": [
+        "DataProcessConfig"
+      ],
+      "functions": [
+        "convert_subset",
+        "preprocess_data",
+        "_seq_to_numpy"
+      ]
+    },
+    "dataset.build_sudoku_dataset": {
+      "classes": [
+        "DataProcessConfig"
+      ],
+      "functions": [
+        "shuffle_sudoku",
+        "convert_subset",
+        "preprocess_data",
+        "apply_transformation",
+        "_seq_to_numpy"
+      ]
+    },
+    "dataset.common": {
+      "classes": [
+        "PuzzleDatasetMetadata"
+      ],
+      "functions": [
+        "dihedral_transform",
+        "inverse_dihedral_transform"
+      ]
+    },
+    "deploy.canary_release_engine": {
+      "classes": [
+        "CanaryConfig",
+        "CanaryReleaseEngine"
+      ],
+      "functions": [
+        "get_canary_engine",
+        "__init__"
+      ]
+    },
+    "deploy.global_edge_mesh": {
+      "classes": [
+        "EdgeNode",
+        "GlobalEdgeMesh"
+      ],
+      "functions": [
+        "get_edge_mesh",
+        "__init__",
+        "get_optimal_node",
+        "update_node_status"
+      ]
+    },
+    "evaluators.arc": {
+      "classes": [
+        "ARC"
+      ],
+      "functions": [
+        "_crop",
+        "__init__",
+        "begin_eval",
+        "update_batch",
+        "result"
+      ]
+    },
+    "models.common": {
+      "classes": [],
+      "functions": [
+        "trunc_normal_init_"
+      ]
+    },
+    "models.ema": {
+      "classes": [
+        "EMAHelper"
+      ],
+      "functions": [
+        "__init__",
+        "register",
+        "update",
+        "ema",
+        "ema_copy",
+        "state_dict",
+        "load_state_dict"
+      ]
+    },
+    "models.layers": {
+      "classes": [
+        "CastedLinear",
+        "CastedEmbedding",
+        "RotaryEmbedding",
+        "Attention",
+        "LinearSwish",
+        "SwiGLU"
+      ],
+      "functions": [
+        "_find_multiple",
+        "rotate_half",
+        "apply_rotary_pos_emb",
+        "rms_norm",
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "forward"
+      ]
+    },
+    "models.losses": {
+      "classes": [
+        "ACTLossHead"
+      ],
+      "functions": [
+        "s",
+        "log_stablemax",
+        "stablemax_cross_entropy",
+        "softmax_cross_entropy",
+        "__init__",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "models.sparse_embedding": {
+      "classes": [
+        "CastedSparseEmbedding",
+        "CastedSparseEmbeddingSignSGD_Distributed"
+      ],
+      "functions": [
+        "_sparse_emb_signsgd_dist",
+        "__init__",
+        "forward",
+        "__init__",
+        "step"
+      ]
+    },
+    "models.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.app": {
+      "classes": [
+        "SwarmConfig",
+        "SudokuTask"
+      ],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.check_archi": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.check_checkpoint_keys": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.check_checkpoint_shapes": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.check_model_keys": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.check_shapes_v2": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.clean_pipeline": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.debug_model_structure": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.debug_prune": {
+      "classes": [],
+      "functions": [
+        "test_prune"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.debug_weather_port": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.debug_weather_query": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.fix_synth_paths": {
+      "classes": [],
+      "functions": [
+        "fix_files"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.generate_paper": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.get_dims": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.ingest_knowledge": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.ingest_knowledge_phase2": {
+      "classes": [],
+      "functions": [
+        "ingest"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.nexus_usage_example": {
+      "classes": [],
+      "functions": [
+        "run_local_demo"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.pretrain": {
+      "classes": [
+        "LossConfig",
+        "ArchConfig",
+        "EvaluatorConfig",
+        "PretrainConfig",
+        "TrainState"
+      ],
+      "functions": [
+        "create_dataloader",
+        "create_model",
+        "mix_weights_direct",
+        "cosine_schedule_with_warmup_lr_lambda",
+        "init_train_state",
+        "save_train_state",
+        "load_checkpoint",
+        "compute_lr",
+        "create_evaluators",
+        "train_batch",
+        "evaluate",
+        "save_code_and_config",
+        "load_synced_config",
+        "launch"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.puzzle_dataset": {
+      "classes": [
+        "PuzzleDatasetConfig",
+        "PuzzleDataset"
+      ],
+      "functions": [
+        "_sample_batch",
+        "__init__",
+        "_load_metadata",
+        "_lazy_load_dataset",
+        "_collate_batch",
+        "_iter_test",
+        "_iter_train",
+        "__iter__"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.recover_registry": {
+      "classes": [],
+      "functions": [
+        "recover_registry"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.run_nexus_build": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.start_tools": {
+      "classes": [],
+      "functions": [
+        "start_tools"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_batch_maintenance": {
+      "classes": [],
+      "functions": [
+        "batch_maintenance"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_manager": {
+      "classes": [
+        "TRMAgent",
+        "SudokuSwarm"
+      ],
+      "functions": [
+        "__init__",
+        "initialize_task",
+        "step",
+        "get_latent_state",
+        "set_latent_state",
+        "__init__",
+        "solve_sudoku"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.test_agent_models": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.test_all_experts": {
+      "classes": [],
+      "functions": [
+        "test_all_experts"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.test_autonomous_loop": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.test_pipeline": {
+      "classes": [],
+      "functions": [
+        "heading",
+        "show_stats"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.test_recall": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.trigger_skill_gap_analysis": {
+      "classes": [],
+      "functions": [
+        "trigger_skill_scan"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.trigger_test": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.verify_async_nexus": {
+      "classes": [],
+      "functions": [
+        "test_async_nexus",
+        "run_gateway"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.verify_full_bridge": {
+      "classes": [],
+      "functions": [
+        "test_full_swarm_nexus_bridge",
+        "run_gateway"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.verify_nexus_module": {
+      "classes": [],
+      "functions": [
+        "test_nexus"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.verify_trm_load": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.app_v2": {
+      "classes": [
+        "ChatRequest",
+        "BroadcastRequest",
+        "SpawnRequest",
+        "TaskPipelineRequest",
+        "ReviewRequest",
+        "BatchReviewRequest",
+        "IntegrateRequest",
+        "BatchIntegrateRequest",
+        "TestRequest",
+        "DeployRequest",
+        "LearnTextRequest",
+        "LearnFileRequest",
+        "UseSkillRequest",
+        "SynthesizeRequest",
+        "MeshRouteRequest",
+        "GlobalMemoryContributeRequest",
+        "GlobalMemoryQueryRequest",
+        "HandshakeRequest",
+        "MemorySyncRequest",
+        "FederationHandshakeRequest",
+        "FederationMemorySyncRequest",
+        "VerifyReasoningRequest",
+        "ChatWithVerificationRequest",
+        "AnalyzePromptRequest",
+        "GenerateTestsRequest",
+        "RunTestsRequest",
+        "CreateCardRequest",
+        "MoveCardRequest",
+        "SendMailboxMessage",
+        "DDRScanRequest"
+      ],
+      "functions": [
+        "optimize_system",
+        "_agent_for_file",
+        "priority"
+      ]
+    },
+    "swarm_v2.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2_artifacts.test_learning_module_directive": {
+      "classes": [],
+      "functions": [
+        "test_learning_module_directive"
+      ]
+    },
+    "swarm_v2_artifacts.test_learning_plan": {
+      "classes": [],
+      "functions": [
+        "test_learning_plan"
+      ]
+    },
+    "swarm_v2_artifacts.test_skill_gap_directive": {
+      "classes": [],
+      "functions": [
+        "test_skill_gap_directive"
+      ]
+    },
+    "swarm_v2_artifacts.test_status_report": {
+      "classes": [
+        "TestStatusReport"
+      ],
+      "functions": [
+        "test_status_report_generation"
+      ]
+    },
+    "utils.functions": {
+      "classes": [],
+      "functions": [
+        "load_model_class",
+        "get_model_source_path"
+      ]
+    },
+    "utils.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.cli.main": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.cli.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.core.agent_mailbox": {
+      "classes": [
+        "AgentMailbox"
+      ],
+      "functions": [
+        "__init__",
+        "send",
+        "broadcast",
+        "receive",
+        "peek",
+        "count_pending",
+        "clear",
+        "_is_expired",
+        "_read",
+        "_write",
+        "get_stats",
+        "list_agents"
+      ]
+    },
+    "swarm_v2.core.agent_mesh": {
+      "classes": [
+        "MeshNode",
+        "AgentMesh"
+      ],
+      "functions": [
+        "get_agent_mesh",
+        "__init__",
+        "to_dict",
+        "from_dict",
+        "heartbeat",
+        "is_alive",
+        "__init__",
+        "_load_topology_version",
+        "_load_state",
+        "_save_state",
+        "register_node",
+        "deregister_node",
+        "heartbeat",
+        "discover_peers",
+        "find_best_node",
+        "get_topology",
+        "_compute_connections",
+        "get_stats",
+        "get_message_log",
+        "reconfigure_mesh"
+      ]
+    },
+    "swarm_v2.core.artifact_pipeline": {
+      "classes": [
+        "ArtifactStatus",
+        "ArtifactPipeline"
+      ],
+      "functions": [
+        "get_artifact_pipeline",
+        "__init__",
+        "_load",
+        "_save",
+        "scan_artifacts",
+        "register_artifact",
+        "approve",
+        "reject",
+        "set_tested",
+        "integrate",
+        "get_artifact",
+        "get_content",
+        "list_all",
+        "list_by_status",
+        "_infer_category",
+        "get_grouped_artifacts",
+        "integrate_batch",
+        "approve_batch",
+        "has_pending_reviews",
+        "get_stats",
+        "get_rejection_report",
+        "get_rejection_report_for_agent",
+        "reset_artifact",
+        "set_security_status",
+        "list_unscanned",
+        "get_integrated_manifest",
+        "prune_v2_artifacts",
+        "run_indexing",
+        "run_indexing"
+      ]
+    },
+    "swarm_v2.core.attempt_sampler": {
+      "classes": [
+        "AttemptSampler"
+      ],
+      "functions": [
+        "get_attempt_sampler",
+        "__init__"
+      ]
+    },
+    "swarm_v2.core.auto_changelog": {
+      "classes": [
+        "ChangeType",
+        "ModuleCategory",
+        "ChangelogEntry",
+        "ModuleInfo",
+        "AutoChangelogEngine"
+      ],
+      "functions": [
+        "get_changelog_engine",
+        "to_markdown",
+        "to_dict",
+        "__init__",
+        "_load_registry",
+        "_save_registry",
+        "_calculate_hash",
+        "_classify_module",
+        "_extract_description",
+        "_extract_exports",
+        "_analyze_python_module",
+        "_analyze_markdown_module",
+        "_analyze_json_module",
+        "_analyze_yaml_module",
+        "scan_directory",
+        "generate_changelog_entry",
+        "update_changelog",
+        "stop",
+        "force_update",
+        "get_status",
+        "get_recent_changes"
+      ]
+    },
+    "swarm_v2.core.base_agent": {
+      "classes": [
+        "AgentPersona",
+        "Message",
+        "BaseAgent"
+      ],
+      "functions": [
+        "_extract_filename",
+        "__init__",
+        "initialize_qstate",
+        "log_nodal_activity",
+        "get_skill_names",
+        "get_skill_descriptions",
+        "_has_skill",
+        "_get_skill",
+        "_is_greeting",
+        "_generate_greeting",
+        "_contribute_to_global_memory",
+        "_check_python_syntax",
+        "spawn_subagent",
+        "get_subagents",
+        "get_memory_stats",
+        "register_skill"
+      ]
+    },
+    "swarm_v2.core.chain_of_verification": {
+      "classes": [
+        "FallacyType",
+        "ReasoningStep",
+        "FallacyDetection",
+        "VerificationResult",
+        "ChainOfVerification"
+      ],
+      "functions": [
+        "get_chain_of_verification",
+        "__init__",
+        "verify",
+        "_extract_reasoning_steps",
+        "_extract_premises",
+        "_extract_conclusion",
+        "_detect_fallacies",
+        "_determine_severity",
+        "_find_step_for_text",
+        "_get_fallacy_suggestion",
+        "_calculate_score",
+        "_generate_suggestions",
+        "_generate_corrected_reasoning",
+        "get_verification_stats"
+      ]
+    },
+    "swarm_v2.core.cognitive_stack": {
+      "classes": [
+        "CognitiveStack"
+      ],
+      "functions": [
+        "get_cognitive_stack",
+        "__init__",
+        "_should_offload_to_reasoning",
+        "tune_recursion_depth",
+        "get_status"
+      ]
+    },
+    "swarm_v2.core.coherence_thresholds": {
+      "classes": [
+        "CoherenceThresholds"
+      ],
+      "functions": [
+        "get_thresholds",
+        "check_stability"
+      ]
+    },
+    "swarm_v2.core.collaborative_reasoning": {
+      "classes": [
+        "CollaborativeReasoningEngine"
+      ],
+      "functions": [
+        "get_cra_engine",
+        "__init__",
+        "get_session_history"
+      ]
+    },
+    "swarm_v2.core.comm_protocol": {
+      "classes": [
+        "AgentHandshake"
+      ],
+      "functions": [
+        "generate_trust_token",
+        "verify_trust_token",
+        "create_secure_payload",
+        "validate_secure_payload"
+      ]
+    },
+    "swarm_v2.core.cqs": {
+      "classes": [
+        "MockDKG",
+        "CQSService"
+      ],
+      "functions": [
+        "get_cqs",
+        "__init__",
+        "add_triple",
+        "find_related",
+        "__init__",
+        "ingest_triples",
+        "get_context"
+      ]
+    },
+    "swarm_v2.core.ddr_antibody": {
+      "classes": [
+        "Antibody",
+        "DigitalDNARepository"
+      ],
+      "functions": [
+        "get_ddr",
+        "__init__",
+        "to_dict",
+        "from_dict",
+        "__init__",
+        "_load",
+        "_save",
+        "record_error",
+        "check_antibodies",
+        "match_patterns",
+        "get_antibodies",
+        "get_prevention_stats",
+        "install_default_antibodies"
+      ]
+    },
+    "swarm_v2.core.deterministic_forge": {
+      "classes": [
+        "DeterministicForge"
+      ],
+      "functions": [
+        "get_deterministic_forge",
+        "__init__",
+        "_perform_trm_audit",
+        "get_audit_stats"
+      ]
+    },
+    "swarm_v2.core.dge": {
+      "classes": [
+        "DGEEngine"
+      ],
+      "functions": [
+        "get_dge",
+        "__init__",
+        "mask_pii",
+        "log_access",
+        "validate_memory_contribution"
+      ]
+    },
+    "swarm_v2.core.expert_registry": {
+      "classes": [
+        "ExpertRegistry"
+      ],
+      "functions": [
+        "get_expert_registry",
+        "__new__",
+        "register_team",
+        "get_agent",
+        "get_all_agents"
+      ]
+    },
+    "swarm_v2.core.federation": {
+      "classes": [
+        "SwarmNode",
+        "FederationRegistry",
+        "FederationProtocol"
+      ],
+      "functions": [
+        "get_federation",
+        "init_federation",
+        "base_url",
+        "to_dict",
+        "__init__",
+        "_load_registry",
+        "_save_registry",
+        "register_local",
+        "add_node",
+        "remove_node",
+        "get_node",
+        "get_online_nodes",
+        "mark_online",
+        "mark_offline",
+        "__init__",
+        "generate_node_id",
+        "handle_handshake",
+        "handle_peer_request",
+        "handle_memory_sync",
+        "get_federation_stats",
+        "start_heartbeat",
+        "stop_heartbeat",
+        "get_global_memory",
+        "heartbeat_loop"
+      ]
+    },
+    "swarm_v2.core.global_memory": {
+      "classes": [
+        "GlobalMemorySync"
+      ],
+      "functions": [
+        "get_global_memory",
+        "__init__",
+        "_load_metadata",
+        "_save_metadata",
+        "_is_poisoned",
+        "contribute",
+        "inject_source_anchors",
+        "query",
+        "sync_from_agent",
+        "get_context_for_agent",
+        "get_stats",
+        "get_recent_entries",
+        "get_sync_log",
+        "optimize_collective_memory",
+        "get_memory_health"
+      ]
+    },
+    "swarm_v2.core.heartbeat_scheduler": {
+      "classes": [
+        "HeartbeatScheduler"
+      ],
+      "functions": [
+        "get_heartbeat_scheduler",
+        "__init__",
+        "stop"
+      ]
+    },
+    "swarm_v2.core.hf_brain": {
+      "classes": [],
+      "functions": [
+        "_get_device",
+        "_load_model",
+        "_generate_sync",
+        "is_model_loaded",
+        "get_model_info"
+      ]
+    },
+    "swarm_v2.core.higher_mind": {
+      "classes": [
+        "HigherMindPersona",
+        "HigherMind"
+      ],
+      "functions": [
+        "get_higher_mind",
+        "__init__",
+        "_load_persona",
+        "get_inception_message",
+        "get_philosophical_anchors"
+      ]
+    },
+    "swarm_v2.core.kanban_board": {
+      "classes": [
+        "CardStatus",
+        "KanbanCard",
+        "KanbanBoard"
+      ],
+      "functions": [
+        "get_kanban_board",
+        "to_dict",
+        "from_dict",
+        "__init__",
+        "_load",
+        "_save",
+        "create_card",
+        "move_card",
+        "_on_start",
+        "_on_complete",
+        "assign_card",
+        "archive_card",
+        "get_card",
+        "get_board",
+        "get_column",
+        "get_agent_cards",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.core.llm_brain": {
+      "classes": [],
+      "functions": [
+        "get_active_model",
+        "build_system_prompt",
+        "_call"
+      ]
+    },
+    "swarm_v2.core.llm_orchestrator": {
+      "classes": [
+        "LLMOrchestrator"
+      ],
+      "functions": [
+        "get_orchestrator",
+        "__init__",
+        "determine_routing",
+        "synthesize_context"
+      ]
+    },
+    "swarm_v2.core.llm_router": {
+      "classes": [],
+      "functions": [
+        "get_session"
+      ]
+    },
+    "swarm_v2.core.lobster_shell": {
+      "classes": [
+        "ApprovalGate",
+        "LobsterStep",
+        "LobsterPipeline",
+        "LobsterShell"
+      ],
+      "functions": [
+        "get_lobster_shell",
+        "__init__",
+        "request_approval",
+        "_load_queue",
+        "_save_queue",
+        "__init__",
+        "audit_and_execute",
+        "_apply_transform",
+        "_log_violation"
+      ]
+    },
+    "swarm_v2.core.manus_engine": {
+      "classes": [
+        "ManusEngine"
+      ],
+      "functions": [
+        "get_manus_engine",
+        "__init__",
+        "_calculate_evidence_strength",
+        "_update_coherence",
+        "check_measurement_gate"
+      ]
+    },
+    "swarm_v2.core.mcp_bus": {
+      "classes": [
+        "ToolSchema",
+        "ToolCallResult",
+        "MCPBus"
+      ],
+      "functions": [
+        "get_mcp_bus",
+        "__init__",
+        "register_tool",
+        "unregister_tool",
+        "list_tools",
+        "_validate_input",
+        "connect_remote",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.core.mcp_tool_evolver": {
+      "classes": [
+        "EvolutionTrigger",
+        "EvolutionStatus",
+        "ToolVersion",
+        "EvolutionResult",
+        "MCPToolEvolver"
+      ],
+      "functions": [
+        "get_tool_evolver",
+        "to_dict",
+        "to_dict",
+        "__init__",
+        "_load_versions",
+        "_save_versions",
+        "_calculate_checksum",
+        "_get_current_tools",
+        "_get_current_version",
+        "_increment_version",
+        "rollback_tool",
+        "stop",
+        "get_status",
+        "get_tool_history",
+        "get_available_knowledge"
+      ]
+    },
+    "swarm_v2.core.memory": {
+      "classes": [
+        "AgentMemory"
+      ],
+      "functions": [
+        "__init__",
+        "_load_long_term",
+        "_save_long_term",
+        "_summarize_if_action",
+        "add_turn",
+        "_archive_to_long_term",
+        "add_fact",
+        "_is_poisoned",
+        "add_task_result",
+        "get_context_window",
+        "get_stats",
+        "clear_short_term",
+        "compress_history",
+        "get_compressed_context",
+        "export_all"
+      ]
+    },
+    "swarm_v2.core.moltbook": {
+      "classes": [
+        "MoltbookQuery",
+        "MoltbookNetwork"
+      ],
+      "functions": [
+        "get_moltbook_network",
+        "__init__",
+        "register_agent",
+        "post_query",
+        "respond_to_query",
+        "resolve_query",
+        "find_matching_queries",
+        "get_feed",
+        "install_solution",
+        "_persist_to_memory",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.core.monitor_daemon": {
+      "classes": [
+        "MonitorDaemon",
+        "CoherenceThresholds"
+      ],
+      "functions": [
+        "__init__",
+        "get_agent_mesh"
+      ]
+    },
+    "swarm_v2.core.mpu": {
+      "classes": [
+        "MPUCore"
+      ],
+      "functions": [
+        "get_mpu",
+        "__init__",
+        "process_multimodal_payload"
+      ]
+    },
+    "swarm_v2.core.neural_wall": {
+      "classes": [
+        "ThreatLevel",
+        "ThreatDetection",
+        "NeuralWall",
+        "NeuralWallMiddleware"
+      ],
+      "functions": [
+        "get_neural_wall",
+        "__init__",
+        "_get_small_model",
+        "analyze",
+        "_pattern_analysis",
+        "_llm_analysis",
+        "get_stats",
+        "get_recent_threats",
+        "mark_false_positive",
+        "__init__"
+      ]
+    },
+    "swarm_v2.core.openclaw_gateway": {
+      "classes": [
+        "InboundMessage",
+        "ChannelAdapter",
+        "LocalFileAdapter",
+        "TelegramAdapter",
+        "DiscordAdapter",
+        "OpenClawGateway"
+      ],
+      "functions": [
+        "normalize",
+        "__init__",
+        "__init__",
+        "__init__",
+        "__init__",
+        "classify_intent",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.core.optimization_engine": {
+      "classes": [
+        "OptimizationEngine"
+      ],
+      "functions": [
+        "get_optimization_engine",
+        "__init__",
+        "record_performance",
+        "get_optimization_params"
+      ]
+    },
+    "swarm_v2.core.port_manager": {
+      "classes": [
+        "PortManager"
+      ],
+      "functions": [
+        "get_port_manager",
+        "__init__",
+        "_load_state",
+        "_save_state",
+        "acquire_port",
+        "release_port",
+        "release_agent_ports",
+        "get_allocation",
+        "get_agent_ports",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.core.proactive_loop": {
+      "classes": [
+        "ScheduledTask",
+        "ProactiveOrchestrationLoop"
+      ],
+      "functions": [
+        "_cron_matches",
+        "get_proactive_loop",
+        "__init__",
+        "register_scheduled_task",
+        "register_webhook",
+        "get_active_proposals",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.core.qisa_optimizer": {
+      "classes": [
+        "AnnealingConfig",
+        "AnnealingResult",
+        "QISAOptimizer"
+      ],
+      "functions": [
+        "get_qisa_optimizer",
+        "improvement_pct",
+        "__init__",
+        "optimize",
+        "optimize_qstate",
+        "get_stats",
+        "score_fn"
+      ]
+    },
+    "swarm_v2.core.reconnaissance_daemon": {
+      "classes": [
+        "ResearchFinding",
+        "ReconnaissanceDaemon"
+      ],
+      "functions": [
+        "get_reconnaissance_daemon",
+        "start_reconnaissance",
+        "__init__",
+        "to_dict",
+        "__init__",
+        "_load_findings",
+        "_save_findings",
+        "start",
+        "stop",
+        "_run_loop",
+        "_run_research_cycle",
+        "run_immediate",
+        "get_recent_findings",
+        "get_findings_by_topic",
+        "get_stats",
+        "add_topic",
+        "remove_topic",
+        "get_global_memory"
+      ]
+    },
+    "swarm_v2.core.redis_mock": {
+      "classes": [
+        "PersistentRedisMock"
+      ],
+      "functions": [
+        "__init__",
+        "_load",
+        "_save",
+        "ping",
+        "set",
+        "get",
+        "hset",
+        "hgetall",
+        "rpush",
+        "blpop"
+      ]
+    },
+    "swarm_v2.core.remediation_engine": {
+      "classes": [
+        "RemediationEngine"
+      ],
+      "functions": [
+        "__init__",
+        "_determine_level",
+        "_determine_action"
+      ]
+    },
+    "swarm_v2.core.resonance_engine": {
+      "classes": [
+        "ResonanceEngine"
+      ],
+      "functions": [
+        "get_resonance_engine",
+        "__init__",
+        "broadcast_dream",
+        "get_proactive_context",
+        "_score_sentiment",
+        "get_emotional_resonance_index",
+        "recursive_self_awareness_check"
+      ]
+    },
+    "swarm_v2.core.resource_arbiter": {
+      "classes": [
+        "ResourceArbiter"
+      ],
+      "functions": [
+        "get_resource_arbiter",
+        "__init__",
+        "expand_budget",
+        "_get_ollama_ps",
+        "_estimate_size",
+        "get_status",
+        "mark_busy",
+        "mark_idle"
+      ]
+    },
+    "swarm_v2.core.secrets_vault": {
+      "classes": [
+        "SecretsVault"
+      ],
+      "functions": [
+        "get_secrets_vault",
+        "__init__",
+        "_ensure_gitignore",
+        "_load_or_create_key",
+        "_encrypt",
+        "_decrypt",
+        "_load_vault",
+        "_save_vault",
+        "set_secret",
+        "get_secret",
+        "delete_secret",
+        "list_keys",
+        "rotate_key",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.core.self_healing_infra": {
+      "classes": [
+        "ServiceStatus",
+        "ServiceConfig",
+        "ServiceHealth",
+        "SelfHealingInfra"
+      ],
+      "functions": [
+        "get_self_healing_infra",
+        "__init__",
+        "_register_default_services",
+        "register_service",
+        "_find_process_on_port",
+        "_kill_process_on_port",
+        "_log_health_summary",
+        "get_status",
+        "force_restart",
+        "reset_restart_count",
+        "_sync_ping"
+      ]
+    },
+    "swarm_v2.core.semantic_index": {
+      "classes": [
+        "SemanticIndex"
+      ],
+      "functions": [
+        "get_semantic_index",
+        "__init__",
+        "_load",
+        "_save",
+        "query"
+      ]
+    },
+    "swarm_v2.core.sentinel": {
+      "classes": [
+        "SentinelMiddleware"
+      ],
+      "functions": [
+        "create_sentinel_middleware",
+        "__init__",
+        "_get_client_ip",
+        "_sanitize_request",
+        "_add_security_headers"
+      ]
+    },
+    "swarm_v2.core.ses": {
+      "classes": [
+        "SESEngine"
+      ],
+      "functions": [
+        "get_ses",
+        "__init__",
+        "extract_triples",
+        "_identify_entities"
+      ]
+    },
+    "swarm_v2.core.skill_loader": {
+      "classes": [
+        "SkillDefinition",
+        "SkillLoader"
+      ],
+      "functions": [
+        "get_skill_loader",
+        "__init__",
+        "_auto_discover",
+        "_scan_directory",
+        "_parse_skill_md",
+        "_load_python_skills",
+        "load_skill",
+        "discover_skills",
+        "register_skill",
+        "get_skill",
+        "get_skill_instructions",
+        "list_skills",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.core.swarm_engine": {
+      "classes": [
+        "ComplianceMode",
+        "SwarmEngine"
+      ],
+      "functions": [
+        "__init__",
+        "set_compliance_mode",
+        "get_mode_config",
+        "requires_security_audit",
+        "requires_approval_gates",
+        "get_status"
+      ]
+    },
+    "swarm_v2.core.swarm_performance_insights": {
+      "classes": [
+        "ReportPeriod",
+        "MetricType",
+        "MetricPoint",
+        "PerformanceMetric",
+        "SwarmIntelligenceReport",
+        "SwarmPerformanceInsights"
+      ],
+      "functions": [
+        "get_performance_insights",
+        "to_dict",
+        "to_dict",
+        "to_dict",
+        "to_markdown",
+        "__init__",
+        "_load_reports",
+        "_save_report",
+        "record_metric",
+        "record_task",
+        "_calculate_trend",
+        "_get_previous_metric_value",
+        "stop",
+        "get_status",
+        "get_recent_reports",
+        "get_metric_history"
+      ]
+    },
+    "swarm_v2.core.task_arbiter": {
+      "classes": [
+        "TaskComplexity",
+        "MaintenanceTaskType",
+        "UsageWindow",
+        "ComputeTarget",
+        "Task",
+        "AgentWorkload",
+        "MaintenanceTask",
+        "UsageMetrics",
+        "DynamicPriorityArbiter",
+        "TaskArbiter"
+      ],
+      "functions": [
+        "get_task_arbiter",
+        "__lt__",
+        "is_due",
+        "__init__",
+        "_setup_default_maintenance",
+        "register_maintenance_task",
+        "_get_base_priority",
+        "detect_usage_window",
+        "get_dynamic_priority",
+        "should_run_maintenance",
+        "get_maintenance_status",
+        "__init__",
+        "_setup_cpu_affinity",
+        "_calculate_autonomous_priority",
+        "_get_affinity_for_role",
+        "classify_task",
+        "get_optimal_compute_target",
+        "complete_task",
+        "release_gpu",
+        "get_agent_status",
+        "get_system_status"
+      ]
+    },
+    "swarm_v2.core.telemetry": {
+      "classes": [
+        "SwarmTelemetry"
+      ],
+      "functions": [
+        "get_telemetry",
+        "__init__",
+        "get_emergence_report",
+        "get_soul_report",
+        "_calculate_global_coherence"
+      ]
+    },
+    "swarm_v2.core.test_trm_standalone": {
+      "classes": [],
+      "functions": [
+        "test_trm"
+      ]
+    },
+    "swarm_v2.core.trm_brain": {
+      "classes": [
+        "TRMBrain",
+        "Buffer"
+      ],
+      "functions": [
+        "get_trm_brain",
+        "__new__",
+        "__init__",
+        "reason",
+        "__init__"
+      ]
+    },
+    "swarm_v2.core.trm_integration": {
+      "classes": [
+        "TRMEnhancedAgent"
+      ],
+      "functions": [
+        "create_trm_enhanced_agent",
+        "enhance_existing_agent",
+        "__init__",
+        "_prepare_synthesis_context",
+        "_build_synthesis_prompt",
+        "_analyze_task_complexity",
+        "_should_use_parallel",
+        "_looks_like_symbolic",
+        "_evaluate_synthesis_quality",
+        "_fallback_aggregation",
+        "_update_trm_metrics",
+        "get_trm_status",
+        "enable_parallel",
+        "set_recursion_depth"
+      ]
+    },
+    "swarm_v2.core.trm_orchestrator": {
+      "classes": [
+        "SuperpositionState",
+        "SubAgentTask",
+        "TRMOrchestrator"
+      ],
+      "functions": [
+        "get_trm_orchestrator",
+        "__init__",
+        "add_interpretation",
+        "merge",
+        "collapse",
+        "get_consensus",
+        "__init__",
+        "__init__",
+        "_detect_available_cores",
+        "_estimate_gpu_memory",
+        "partition_context",
+        "create_subagent",
+        "_execute_single_task",
+        "_allocate_resources",
+        "_release_resources",
+        "_update_metrics",
+        "_looks_like_symbolic",
+        "_context_to_tokens",
+        "_merge_contexts",
+        "get_status",
+        "cleanup"
+      ]
+    },
+    "swarm_v2.core.ultrawork_loop": {
+      "classes": [
+        "MissionPhase",
+        "MissionStep",
+        "MissionState",
+        "UltraworkLoop"
+      ],
+      "functions": [
+        "get_ultrawork_loop",
+        "__init__",
+        "create_mission",
+        "resume_mission",
+        "_parse_plan",
+        "_log",
+        "_persist",
+        "list_missions",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.core.worktree_manager": {
+      "classes": [
+        "WorktreeManager"
+      ],
+      "functions": [
+        "get_worktree_manager",
+        "__init__",
+        "create_worktree",
+        "remove_worktree",
+        "list_worktrees"
+      ]
+    },
+    "swarm_v2.core.zero_human_test_gen": {
+      "classes": [
+        "TestType",
+        "TestStatus",
+        "GeneratedTestSuite",
+        "ZeroHumanTestGen"
+      ],
+      "functions": [
+        "get_test_generator",
+        "generate_tests_for_tool",
+        "on_tool_synthesized",
+        "to_dict",
+        "__init__",
+        "generate_all_tests",
+        "_generate_pytest_api_tests",
+        "_generate_pytest_unit_tests",
+        "_generate_playwright_tests",
+        "_generate_integration_tests",
+        "run_tests",
+        "get_coverage_report",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.core.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.experts.registry": {
+      "classes": [],
+      "functions": [
+        "get_expert_team"
+      ]
+    },
+    "swarm_v2.experts.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.mcp.bridge": {
+      "classes": [
+        "MCPBridge"
+      ],
+      "functions": [
+        "__init__"
+      ]
+    },
+    "swarm_v2.mcp.synthesizer": {
+      "classes": [
+        "SynthesizedTool",
+        "MCPSynthesizer"
+      ],
+      "functions": [
+        "get_synthesizer",
+        "__init__",
+        "to_dict",
+        "__init__",
+        "_load_registry",
+        "_save_registry",
+        "generate_mcp_server",
+        "generate_skill_class",
+        "list_tools",
+        "get_synthesis_log",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.mcp.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.entangled_pipeline_demo": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.inception_pulse": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.manus_superposition_test": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.propose_regional_managers": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.relationship_reasoning": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.swarm_benchmark": {
+      "classes": [
+        "SwarmBenchmark"
+      ],
+      "functions": [
+        "__init__",
+        "save_results"
+      ]
+    },
+    "swarm_v2.scripts.swarm_total_exercise": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.system_integration_test": {
+      "classes": [
+        "Colors"
+      ],
+      "functions": []
+    },
+    "swarm_v2.scripts.test_cognitive_stack_gemma3_270m": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.test_deterministic_forge": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.test_distributed_stack": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.test_fractal_scaling": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.test_lobster_shell": {
+      "classes": [],
+      "functions": [
+        "test_lobster_shell"
+      ]
+    },
+    "swarm_v2.scripts.test_soul_of_swarm": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.test_trm_verification": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.verify_phase_10": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.verify_phase_11": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.verify_phase_12": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.verify_phase_14": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.scripts.verify_phase_7": {
+      "classes": [
+        "CollaborativeReasoningEngine"
+      ],
+      "functions": [
+        "__init__",
+        "store_reasoning_state",
+        "get_reasoning_states",
+        "amplify_reasoning",
+        "get_collaboration_metrics"
+      ]
+    },
+    "swarm_v2.scripts.vision_broadcast": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.skills.co_creator_skill": {
+      "classes": [
+        "CoCreatorSkill"
+      ],
+      "functions": [
+        "__init__",
+        "execute",
+        "get_law_of_one_perspective"
+      ]
+    },
+    "swarm_v2.skills.doc_ingestion_skill": {
+      "classes": [
+        "DocIngestionSkill"
+      ],
+      "functions": [
+        "__init__",
+        "_get_engine",
+        "_resolve_path",
+        "ingest_file",
+        "ingest_text",
+        "scan_directory",
+        "list_learned",
+        "recall"
+      ]
+    },
+    "swarm_v2.skills.embedding_skill": {
+      "classes": [
+        "EmbeddingSkill",
+        "HighQualityEmbeddingSkill",
+        "FastEmbeddingSkill",
+        "SpectralEmbeddingSkill"
+      ],
+      "functions": [
+        "__init__",
+        "_get_embedding_dimension",
+        "embed_text",
+        "embed_batch",
+        "embed_documents",
+        "cosine_similarity",
+        "find_similar",
+        "get_embedding_stats",
+        "__init__",
+        "__init__",
+        "__init__"
+      ]
+    },
+    "swarm_v2.skills.file_skill": {
+      "classes": [
+        "FileSkill",
+        "ShellSkill",
+        "CodeAnalysisSkill",
+        "DataSkill",
+        "DocSkill",
+        "WebSearchSkill"
+      ],
+      "functions": [
+        "__init__",
+        "write_file",
+        "read_file",
+        "list_artifacts",
+        "delete_file",
+        "make_dir",
+        "run",
+        "analyze",
+        "summarize_json",
+        "count_words",
+        "generate_readme",
+        "search"
+      ]
+    },
+    "swarm_v2.skills.hardened_shell_skill": {
+      "classes": [
+        "HardenedShellSkill"
+      ],
+      "functions": [
+        "__init__",
+        "run"
+      ]
+    },
+    "swarm_v2.skills.learning_engine": {
+      "classes": [
+        "LearnedSkill",
+        "LearningEngine"
+      ],
+      "functions": [
+        "get_learning_engine",
+        "__init__",
+        "execute",
+        "to_dict",
+        "from_dict",
+        "__init__",
+        "_load_persisted_skills",
+        "_persist_skills",
+        "extract_knowledge",
+        "get_skill",
+        "list_skills",
+        "forget_skill",
+        "get_learning_log",
+        "get_stats"
+      ]
+    },
+    "swarm_v2.skills.mcp_tool_skill": {
+      "classes": [
+        "MCPToolSkill"
+      ],
+      "functions": [
+        "__init__",
+        "_load_registry",
+        "get_tool_manifest",
+        "search_endpoint",
+        "call_tool",
+        "list_tools"
+      ]
+    },
+    "swarm_v2.skills.relationship_skill": {
+      "classes": [
+        "RelationshipReasoningSkill"
+      ],
+      "functions": [
+        "get_relationship_skill",
+        "__init__",
+        "get_harmony_index",
+        "generate_alignment_reflection"
+      ]
+    },
+    "swarm_v2.skills.rlm_skill": {
+      "classes": [
+        "RLMSkill"
+      ],
+      "functions": [
+        "get_rlm_skill",
+        "__init__",
+        "hydrate_context",
+        "list_latent_memories"
+      ]
+    },
+    "swarm_v2.skills.trm_skill": {
+      "classes": [
+        "TRMSkill"
+      ],
+      "functions": [
+        "__init__",
+        "recursive_reason",
+        "analyze_arc_pattern"
+      ]
+    },
+    "swarm_v2.skills.web_search_skill": {
+      "classes": [
+        "WebSearchSkill"
+      ],
+      "functions": [
+        "__init__",
+        "search",
+        "_format_results",
+        "_simulated_search"
+      ]
+    },
+    "swarm_v2.skills.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "swarm_v2.core.qic._state": {
+      "classes": [
+        "QState",
+        "QOperator",
+        "ManusProtocol"
+      ],
+      "functions": [
+        "__init__",
+        "normalize",
+        "amplitudes",
+        "probabilities",
+        "resolve",
+        "apply_operator",
+        "__init__",
+        "create_superposition_op",
+        "create_priority_op",
+        "__init__",
+        "initialize_task_state",
+        "update_state",
+        "get_probabilities"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.dataset.build_arc_dataset": {
+      "classes": [
+        "DataProcessConfig",
+        "ARCPuzzle"
+      ],
+      "functions": [
+        "arc_grid_to_np",
+        "np_grid_to_seq_translational_augment",
+        "grid_hash",
+        "puzzle_hash",
+        "aug",
+        "inverse_aug",
+        "convert_single_arc_puzzle",
+        "load_puzzles_arcagi",
+        "convert_dataset",
+        "main",
+        "_map_grid",
+        "_map_grid"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.dataset.build_maze_dataset": {
+      "classes": [
+        "DataProcessConfig"
+      ],
+      "functions": [
+        "convert_subset",
+        "preprocess_data",
+        "_seq_to_numpy"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.dataset.build_sudoku_dataset": {
+      "classes": [
+        "DataProcessConfig"
+      ],
+      "functions": [
+        "shuffle_sudoku",
+        "convert_subset",
+        "preprocess_data",
+        "apply_transformation",
+        "_seq_to_numpy"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.dataset.common": {
+      "classes": [
+        "PuzzleDatasetMetadata"
+      ],
+      "functions": [
+        "dihedral_transform",
+        "inverse_dihedral_transform"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.evaluators.arc": {
+      "classes": [
+        "ARC"
+      ],
+      "functions": [
+        "_crop",
+        "__init__",
+        "begin_eval",
+        "update_batch",
+        "result"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.common": {
+      "classes": [],
+      "functions": [
+        "trunc_normal_init_"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.ema": {
+      "classes": [
+        "EMAHelper"
+      ],
+      "functions": [
+        "__init__",
+        "register",
+        "update",
+        "ema",
+        "ema_copy",
+        "state_dict",
+        "load_state_dict"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.layers": {
+      "classes": [
+        "CastedLinear",
+        "CastedEmbedding",
+        "RotaryEmbedding",
+        "Attention",
+        "LinearSwish",
+        "SwiGLU"
+      ],
+      "functions": [
+        "_find_multiple",
+        "rotate_half",
+        "apply_rotary_pos_emb",
+        "rms_norm",
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "forward"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.losses": {
+      "classes": [
+        "ACTLossHead"
+      ],
+      "functions": [
+        "s",
+        "log_stablemax",
+        "stablemax_cross_entropy",
+        "softmax_cross_entropy",
+        "__init__",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.sparse_embedding": {
+      "classes": [
+        "CastedSparseEmbedding",
+        "CastedSparseEmbeddingSignSGD_Distributed"
+      ],
+      "functions": [
+        "_sparse_emb_signsgd_dist",
+        "__init__",
+        "forward",
+        "__init__",
+        "step"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.app_v2": {
+      "classes": [
+        "ChatRequest",
+        "BroadcastRequest",
+        "SpawnRequest",
+        "TaskPipelineRequest",
+        "ReviewRequest",
+        "BatchReviewRequest",
+        "IntegrateRequest",
+        "BatchIntegrateRequest",
+        "TestRequest",
+        "DeployRequest",
+        "LearnTextRequest",
+        "LearnFileRequest",
+        "UseSkillRequest",
+        "SynthesizeRequest",
+        "MeshRouteRequest",
+        "GlobalMemoryContributeRequest",
+        "GlobalMemoryQueryRequest",
+        "HandshakeRequest",
+        "MemorySyncRequest",
+        "FederationHandshakeRequest",
+        "FederationMemorySyncRequest",
+        "VerifyReasoningRequest",
+        "ChatWithVerificationRequest",
+        "AnalyzePromptRequest",
+        "GenerateTestsRequest",
+        "RunTestsRequest"
+      ],
+      "functions": [
+        "optimize_system",
+        "_agent_for_file",
+        "priority"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.utils.functions": {
+      "classes": [],
+      "functions": [
+        "load_model_class",
+        "get_model_source_path"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.utils.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.cli.main": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.cli.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.agent_mesh": {
+      "classes": [
+        "MeshNode",
+        "AgentMesh"
+      ],
+      "functions": [
+        "get_agent_mesh",
+        "__init__",
+        "to_dict",
+        "from_dict",
+        "heartbeat",
+        "is_alive",
+        "__init__",
+        "_load_topology_version",
+        "_load_state",
+        "_save_state",
+        "register_node",
+        "deregister_node",
+        "heartbeat",
+        "discover_peers",
+        "find_best_node",
+        "get_topology",
+        "_compute_connections",
+        "get_stats",
+        "get_message_log"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.artifact_pipeline": {
+      "classes": [
+        "ArtifactStatus",
+        "ArtifactPipeline"
+      ],
+      "functions": [
+        "get_artifact_pipeline",
+        "__init__",
+        "_load",
+        "_save",
+        "scan_artifacts",
+        "register_artifact",
+        "approve",
+        "reject",
+        "set_tested",
+        "integrate",
+        "get_artifact",
+        "get_content",
+        "list_all",
+        "list_by_status",
+        "_infer_category",
+        "get_grouped_artifacts",
+        "integrate_batch",
+        "approve_batch",
+        "get_stats",
+        "get_rejection_report",
+        "get_rejection_report_for_agent",
+        "reset_artifact",
+        "set_security_status",
+        "list_unscanned",
+        "get_integrated_manifest",
+        "prune_v2_artifacts"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.auto_changelog": {
+      "classes": [
+        "ChangeType",
+        "ModuleCategory",
+        "ChangelogEntry",
+        "ModuleInfo",
+        "AutoChangelogEngine"
+      ],
+      "functions": [
+        "get_changelog_engine",
+        "to_markdown",
+        "to_dict",
+        "__init__",
+        "_load_registry",
+        "_save_registry",
+        "_calculate_hash",
+        "_classify_module",
+        "_extract_description",
+        "_extract_exports",
+        "_analyze_python_module",
+        "_analyze_markdown_module",
+        "_analyze_json_module",
+        "_analyze_yaml_module",
+        "scan_directory",
+        "generate_changelog_entry",
+        "update_changelog",
+        "stop",
+        "force_update",
+        "get_status",
+        "get_recent_changes"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.base_agent": {
+      "classes": [
+        "AgentPersona",
+        "Message",
+        "BaseAgent"
+      ],
+      "functions": [
+        "_extract_filename",
+        "__init__",
+        "initialize_qstate",
+        "log_nodal_activity",
+        "get_skill_names",
+        "get_skill_descriptions",
+        "_has_skill",
+        "_get_skill",
+        "_contribute_to_global_memory",
+        "_check_python_syntax",
+        "spawn_subagent",
+        "get_subagents",
+        "get_memory_stats",
+        "register_skill"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.chain_of_verification": {
+      "classes": [
+        "FallacyType",
+        "ReasoningStep",
+        "FallacyDetection",
+        "VerificationResult",
+        "ChainOfVerification"
+      ],
+      "functions": [
+        "get_chain_of_verification",
+        "__init__",
+        "verify",
+        "_extract_reasoning_steps",
+        "_extract_premises",
+        "_extract_conclusion",
+        "_detect_fallacies",
+        "_determine_severity",
+        "_find_step_for_text",
+        "_get_fallacy_suggestion",
+        "_calculate_score",
+        "_generate_suggestions",
+        "_generate_corrected_reasoning",
+        "get_verification_stats"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.cognitive_stack": {
+      "classes": [
+        "CognitiveStack"
+      ],
+      "functions": [
+        "get_cognitive_stack",
+        "__init__",
+        "_should_offload_to_reasoning",
+        "get_status"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.coherence_thresholds": {
+      "classes": [
+        "CoherenceThresholds"
+      ],
+      "functions": [
+        "get_thresholds",
+        "check_stability"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.comm_protocol": {
+      "classes": [
+        "AgentHandshake"
+      ],
+      "functions": [
+        "generate_trust_token",
+        "verify_trust_token",
+        "create_secure_payload",
+        "validate_secure_payload"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.deterministic_forge": {
+      "classes": [
+        "DeterministicForge"
+      ],
+      "functions": [
+        "get_deterministic_forge",
+        "__init__",
+        "_perform_trm_audit",
+        "get_audit_stats"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.expert_registry": {
+      "classes": [
+        "ExpertRegistry"
+      ],
+      "functions": [
+        "get_expert_registry",
+        "__new__",
+        "register_team",
+        "get_agent",
+        "get_all_agents"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.federation": {
+      "classes": [
+        "SwarmNode",
+        "FederationRegistry",
+        "FederationProtocol"
+      ],
+      "functions": [
+        "get_federation",
+        "init_federation",
+        "base_url",
+        "to_dict",
+        "__init__",
+        "_load_registry",
+        "_save_registry",
+        "register_local",
+        "add_node",
+        "remove_node",
+        "get_node",
+        "get_online_nodes",
+        "mark_online",
+        "mark_offline",
+        "__init__",
+        "generate_node_id",
+        "handle_handshake",
+        "handle_peer_request",
+        "handle_memory_sync",
+        "get_federation_stats",
+        "start_heartbeat",
+        "stop_heartbeat",
+        "get_global_memory",
+        "heartbeat_loop"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.global_memory": {
+      "classes": [
+        "GlobalMemorySync"
+      ],
+      "functions": [
+        "get_global_memory",
+        "__init__",
+        "_load_metadata",
+        "_save_metadata",
+        "contribute",
+        "query",
+        "sync_from_agent",
+        "get_context_for_agent",
+        "get_stats",
+        "get_recent_entries",
+        "get_sync_log"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.llm_brain": {
+      "classes": [],
+      "functions": [
+        "get_active_model",
+        "build_system_prompt",
+        "_call"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.lobster_shell": {
+      "classes": [
+        "LobsterShell"
+      ],
+      "functions": [
+        "get_lobster_shell",
+        "audit_and_execute",
+        "_log_violation"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.manus_engine": {
+      "classes": [
+        "ManusEngine"
+      ],
+      "functions": [
+        "get_manus_engine",
+        "__init__",
+        "_calculate_evidence_strength",
+        "_update_coherence",
+        "check_measurement_gate"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.mcp_tool_evolver": {
+      "classes": [
+        "EvolutionTrigger",
+        "EvolutionStatus",
+        "ToolVersion",
+        "EvolutionResult",
+        "MCPToolEvolver"
+      ],
+      "functions": [
+        "get_tool_evolver",
+        "to_dict",
+        "to_dict",
+        "__init__",
+        "_load_versions",
+        "_save_versions",
+        "_calculate_checksum",
+        "_get_current_tools",
+        "_get_current_version",
+        "_increment_version",
+        "rollback_tool",
+        "stop",
+        "get_status",
+        "get_tool_history",
+        "get_available_knowledge"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.memory": {
+      "classes": [
+        "AgentMemory"
+      ],
+      "functions": [
+        "__init__",
+        "_load_long_term",
+        "_save_long_term",
+        "add_turn",
+        "_archive_to_long_term",
+        "add_fact",
+        "add_task_result",
+        "get_context_window",
+        "get_stats",
+        "clear_short_term",
+        "export_all"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.monitor_daemon": {
+      "classes": [
+        "MonitorDaemon",
+        "CoherenceThresholds"
+      ],
+      "functions": [
+        "__init__",
+        "get_agent_mesh"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.neural_wall": {
+      "classes": [
+        "ThreatLevel",
+        "ThreatDetection",
+        "NeuralWall",
+        "NeuralWallMiddleware"
+      ],
+      "functions": [
+        "get_neural_wall",
+        "__init__",
+        "_get_small_model",
+        "analyze",
+        "_pattern_analysis",
+        "_llm_analysis",
+        "get_stats",
+        "get_recent_threats",
+        "mark_false_positive",
+        "__init__"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.proactive_loop": {
+      "classes": [
+        "ProactiveOrchestrationLoop"
+      ],
+      "functions": [
+        "get_proactive_loop",
+        "__init__",
+        "get_active_proposals"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.reconnaissance_daemon": {
+      "classes": [
+        "ResearchFinding",
+        "ReconnaissanceDaemon"
+      ],
+      "functions": [
+        "get_reconnaissance_daemon",
+        "start_reconnaissance",
+        "__init__",
+        "to_dict",
+        "__init__",
+        "_load_findings",
+        "_save_findings",
+        "start",
+        "stop",
+        "_run_loop",
+        "_run_research_cycle",
+        "run_immediate",
+        "get_recent_findings",
+        "get_findings_by_topic",
+        "get_stats",
+        "add_topic",
+        "remove_topic",
+        "get_global_memory"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.redis_mock": {
+      "classes": [
+        "PersistentRedisMock"
+      ],
+      "functions": [
+        "__init__",
+        "_load",
+        "_save",
+        "ping",
+        "set",
+        "get",
+        "hset",
+        "hgetall",
+        "rpush",
+        "blpop"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.remediation_engine": {
+      "classes": [
+        "RemediationEngine"
+      ],
+      "functions": [
+        "__init__",
+        "_determine_level",
+        "_determine_action"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.resource_arbiter": {
+      "classes": [
+        "ResourceArbiter"
+      ],
+      "functions": [
+        "get_resource_arbiter",
+        "__init__",
+        "expand_budget",
+        "_get_ollama_ps",
+        "_estimate_size",
+        "get_status",
+        "mark_busy",
+        "mark_idle"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.self_healing_infra": {
+      "classes": [
+        "ServiceStatus",
+        "ServiceConfig",
+        "ServiceHealth",
+        "SelfHealingInfra"
+      ],
+      "functions": [
+        "get_self_healing_infra",
+        "__init__",
+        "_register_default_services",
+        "register_service",
+        "_find_process_on_port",
+        "_kill_process_on_port",
+        "_log_health_summary",
+        "get_status",
+        "force_restart",
+        "reset_restart_count",
+        "_sync_ping"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.sentinel": {
+      "classes": [
+        "SentinelMiddleware"
+      ],
+      "functions": [
+        "create_sentinel_middleware",
+        "__init__",
+        "_get_client_ip",
+        "_sanitize_request",
+        "_add_security_headers"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.swarm_engine": {
+      "classes": [
+        "SwarmEngine"
+      ],
+      "functions": [
+        "__init__",
+        "get_status"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.swarm_performance_insights": {
+      "classes": [
+        "ReportPeriod",
+        "MetricType",
+        "MetricPoint",
+        "PerformanceMetric",
+        "SwarmIntelligenceReport",
+        "SwarmPerformanceInsights"
+      ],
+      "functions": [
+        "get_performance_insights",
+        "to_dict",
+        "to_dict",
+        "to_dict",
+        "to_markdown",
+        "__init__",
+        "_load_reports",
+        "_save_report",
+        "record_metric",
+        "record_task",
+        "_calculate_trend",
+        "_get_previous_metric_value",
+        "stop",
+        "get_status",
+        "get_recent_reports",
+        "get_metric_history"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.task_arbiter": {
+      "classes": [
+        "TaskComplexity",
+        "MaintenanceTaskType",
+        "UsageWindow",
+        "ComputeTarget",
+        "Task",
+        "AgentWorkload",
+        "MaintenanceTask",
+        "UsageMetrics",
+        "DynamicPriorityArbiter",
+        "TaskArbiter"
+      ],
+      "functions": [
+        "get_task_arbiter",
+        "__lt__",
+        "is_due",
+        "__init__",
+        "_setup_default_maintenance",
+        "register_maintenance_task",
+        "_get_base_priority",
+        "detect_usage_window",
+        "get_dynamic_priority",
+        "should_run_maintenance",
+        "get_maintenance_status",
+        "__init__",
+        "_setup_cpu_affinity",
+        "_calculate_autonomous_priority",
+        "_get_affinity_for_role",
+        "classify_task",
+        "get_optimal_compute_target",
+        "complete_task",
+        "release_gpu",
+        "get_agent_status",
+        "get_system_status"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.telemetry": {
+      "classes": [
+        "SwarmTelemetry"
+      ],
+      "functions": [
+        "get_telemetry",
+        "__init__",
+        "get_emergence_report",
+        "get_soul_report",
+        "_calculate_global_coherence"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.trm_brain": {
+      "classes": [
+        "TRMBrain"
+      ],
+      "functions": [
+        "get_trm_brain",
+        "__new__",
+        "__init__",
+        "reason"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.zero_human_test_gen": {
+      "classes": [
+        "TestType",
+        "TestStatus",
+        "GeneratedTestSuite",
+        "ZeroHumanTestGen"
+      ],
+      "functions": [
+        "get_test_generator",
+        "generate_tests_for_tool",
+        "on_tool_synthesized",
+        "to_dict",
+        "__init__",
+        "generate_all_tests",
+        "_generate_pytest_api_tests",
+        "_generate_pytest_unit_tests",
+        "_generate_playwright_tests",
+        "_generate_integration_tests",
+        "run_tests",
+        "get_coverage_report",
+        "get_stats"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.experts.registry": {
+      "classes": [],
+      "functions": [
+        "get_expert_team"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.experts.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.mcp.bridge": {
+      "classes": [
+        "MCPBridge"
+      ],
+      "functions": [
+        "__init__"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.mcp.synthesizer": {
+      "classes": [
+        "SynthesizedTool",
+        "MCPSynthesizer"
+      ],
+      "functions": [
+        "get_synthesizer",
+        "__init__",
+        "to_dict",
+        "__init__",
+        "_load_registry",
+        "_save_registry",
+        "generate_mcp_server",
+        "generate_skill_class",
+        "list_tools",
+        "get_synthesis_log",
+        "get_stats"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.mcp.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.entangled_pipeline_demo": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.manus_superposition_test": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.relationship_reasoning": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.swarm_benchmark": {
+      "classes": [
+        "SwarmBenchmark"
+      ],
+      "functions": [
+        "__init__",
+        "save_results"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.test_deterministic_forge": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.test_distributed_stack": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.test_lobster_shell": {
+      "classes": [],
+      "functions": [
+        "test_lobster_shell"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.test_soul_of_swarm": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.doc_ingestion_skill": {
+      "classes": [
+        "DocIngestionSkill"
+      ],
+      "functions": [
+        "__init__",
+        "_get_engine",
+        "_resolve_path",
+        "ingest_file",
+        "ingest_text",
+        "scan_directory",
+        "list_learned",
+        "recall"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.embedding_skill": {
+      "classes": [
+        "EmbeddingSkill",
+        "HighQualityEmbeddingSkill",
+        "FastEmbeddingSkill",
+        "SpectralEmbeddingSkill"
+      ],
+      "functions": [
+        "__init__",
+        "_get_embedding_dimension",
+        "embed_text",
+        "embed_batch",
+        "embed_documents",
+        "cosine_similarity",
+        "find_similar",
+        "get_embedding_stats",
+        "__init__",
+        "__init__",
+        "__init__"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.file_skill": {
+      "classes": [
+        "FileSkill",
+        "ShellSkill",
+        "CodeAnalysisSkill",
+        "DataSkill",
+        "DocSkill",
+        "WebSearchSkill"
+      ],
+      "functions": [
+        "__init__",
+        "write_file",
+        "read_file",
+        "list_artifacts",
+        "delete_file",
+        "make_dir",
+        "run",
+        "analyze",
+        "summarize_json",
+        "count_words",
+        "generate_readme",
+        "search"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.hardened_shell_skill": {
+      "classes": [
+        "HardenedShellSkill"
+      ],
+      "functions": [
+        "__init__",
+        "run"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.learning_engine": {
+      "classes": [
+        "LearnedSkill",
+        "LearningEngine"
+      ],
+      "functions": [
+        "get_learning_engine",
+        "__init__",
+        "execute",
+        "to_dict",
+        "from_dict",
+        "__init__",
+        "_load_persisted_skills",
+        "_persist_skills",
+        "extract_knowledge",
+        "get_skill",
+        "list_skills",
+        "forget_skill",
+        "get_learning_log",
+        "get_stats"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.mcp_tool_skill": {
+      "classes": [
+        "MCPToolSkill"
+      ],
+      "functions": [
+        "__init__",
+        "_load_registry",
+        "get_tool_manifest",
+        "search_endpoint",
+        "call_tool",
+        "list_tools"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.relationship_skill": {
+      "classes": [
+        "RelationshipReasoningSkill"
+      ],
+      "functions": [
+        "get_relationship_skill",
+        "__init__",
+        "get_harmony_index",
+        "generate_alignment_reflection"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.trm_skill": {
+      "classes": [
+        "TRMSkill"
+      ],
+      "functions": [
+        "__init__",
+        "recursive_reason",
+        "analyze_arc_pattern"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.web_search_skill": {
+      "classes": [
+        "WebSearchSkill"
+      ],
+      "functions": [
+        "__init__",
+        "search",
+        "_format_results",
+        "_simulated_search"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.qic._state": {
+      "classes": [
+        "QState",
+        "QOperator",
+        "ManusProtocol"
+      ],
+      "functions": [
+        "__init__",
+        "normalize",
+        "amplitudes",
+        "probabilities",
+        "resolve",
+        "apply_operator",
+        "__init__",
+        "create_superposition_op",
+        "create_priority_op",
+        "__init__",
+        "initialize_task_state",
+        "update_state",
+        "get_probabilities"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.hrm": {
+      "classes": [
+        "HierarchicalReasoningModel_ACTV1InnerCarry",
+        "HierarchicalReasoningModel_ACTV1Carry",
+        "HierarchicalReasoningModel_ACTV1Config",
+        "HierarchicalReasoningModel_ACTV1Block",
+        "HierarchicalReasoningModel_ACTV1ReasoningModule",
+        "HierarchicalReasoningModel_ACTV1_Inner",
+        "HierarchicalReasoningModel_ACTV1"
+      ],
+      "functions": [
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "_input_embeddings",
+        "empty_carry",
+        "reset_carry",
+        "forward",
+        "__init__",
+        "puzzle_emb",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.transformers_baseline": {
+      "classes": [
+        "Model_ACTV2InnerCarry",
+        "Model_ACTV2Carry",
+        "Model_ACTV2Config",
+        "Model_ACTV2Block",
+        "Model_ACTV2ReasoningModule",
+        "Model_ACTV2_Inner",
+        "Model_ACTV2"
+      ],
+      "functions": [
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "_input_embeddings",
+        "empty_carry",
+        "reset_carry",
+        "forward",
+        "__init__",
+        "puzzle_emb",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.trm": {
+      "classes": [
+        "TinyRecursiveReasoningModel_ACTV1InnerCarry",
+        "TinyRecursiveReasoningModel_ACTV1Carry",
+        "TinyRecursiveReasoningModel_ACTV1Config",
+        "TinyRecursiveReasoningModel_ACTV1Block",
+        "TinyRecursiveReasoningModel_ACTV1ReasoningModule",
+        "TinyRecursiveReasoningModel_ACTV1_Inner",
+        "TinyRecursiveReasoningModel_ACTV1"
+      ],
+      "functions": [
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "_input_embeddings",
+        "empty_carry",
+        "reset_carry",
+        "forward",
+        "__init__",
+        "puzzle_emb",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.trm_hier6": {
+      "classes": [
+        "TinyRecursiveReasoningModel_ACTV1InnerCarry",
+        "TinyRecursiveReasoningModel_ACTV1Carry",
+        "TinyRecursiveReasoningModel_ACTV1Config",
+        "TinyRecursiveReasoningModel_ACTV1Block",
+        "TinyRecursiveReasoningModel_ACTV1ReasoningModule",
+        "TinyRecursiveReasoningModel_ACTV1_Inner",
+        "TinyRecursiveReasoningModel_ACTV1"
+      ],
+      "functions": [
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "_input_embeddings",
+        "empty_carry",
+        "reset_carry",
+        "forward",
+        "__init__",
+        "puzzle_emb",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.trm_singlez": {
+      "classes": [
+        "TinyRecursiveReasoningModel_ACTV1InnerCarry",
+        "TinyRecursiveReasoningModel_ACTV1Carry",
+        "TinyRecursiveReasoningModel_ACTV1Config",
+        "TinyRecursiveReasoningModel_ACTV1Block",
+        "TinyRecursiveReasoningModel_ACTV1ReasoningModule",
+        "TinyRecursiveReasoningModel_ACTV1_Inner",
+        "TinyRecursiveReasoningModel_ACTV1"
+      ],
+      "functions": [
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "_input_embeddings",
+        "empty_carry",
+        "reset_carry",
+        "forward",
+        "__init__",
+        "puzzle_emb",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "models.recursive_reasoning.hrm": {
+      "classes": [
+        "HierarchicalReasoningModel_ACTV1InnerCarry",
+        "HierarchicalReasoningModel_ACTV1Carry",
+        "HierarchicalReasoningModel_ACTV1Config",
+        "HierarchicalReasoningModel_ACTV1Block",
+        "HierarchicalReasoningModel_ACTV1ReasoningModule",
+        "HierarchicalReasoningModel_ACTV1_Inner",
+        "HierarchicalReasoningModel_ACTV1"
+      ],
+      "functions": [
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "_input_embeddings",
+        "empty_carry",
+        "reset_carry",
+        "forward",
+        "__init__",
+        "puzzle_emb",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "models.recursive_reasoning.transformers_baseline": {
+      "classes": [
+        "Model_ACTV2InnerCarry",
+        "Model_ACTV2Carry",
+        "Model_ACTV2Config",
+        "Model_ACTV2Block",
+        "Model_ACTV2ReasoningModule",
+        "Model_ACTV2_Inner",
+        "Model_ACTV2"
+      ],
+      "functions": [
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "_input_embeddings",
+        "empty_carry",
+        "reset_carry",
+        "forward",
+        "__init__",
+        "puzzle_emb",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "models.recursive_reasoning.trm": {
+      "classes": [
+        "TinyRecursiveReasoningModel_ACTV1InnerCarry",
+        "TinyRecursiveReasoningModel_ACTV1Carry",
+        "TinyRecursiveReasoningModel_ACTV1Config",
+        "TinyRecursiveReasoningModel_ACTV1Block",
+        "TinyRecursiveReasoningModel_ACTV1ReasoningModule",
+        "TinyRecursiveReasoningModel_ACTV1_Inner",
+        "TinyRecursiveReasoningModel_ACTV1"
+      ],
+      "functions": [
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "_input_embeddings",
+        "empty_carry",
+        "reset_carry",
+        "forward",
+        "__init__",
+        "puzzle_emb",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "models.recursive_reasoning.trm_hier6": {
+      "classes": [
+        "TinyRecursiveReasoningModel_ACTV1InnerCarry",
+        "TinyRecursiveReasoningModel_ACTV1Carry",
+        "TinyRecursiveReasoningModel_ACTV1Config",
+        "TinyRecursiveReasoningModel_ACTV1Block",
+        "TinyRecursiveReasoningModel_ACTV1ReasoningModule",
+        "TinyRecursiveReasoningModel_ACTV1_Inner",
+        "TinyRecursiveReasoningModel_ACTV1"
+      ],
+      "functions": [
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "_input_embeddings",
+        "empty_carry",
+        "reset_carry",
+        "forward",
+        "__init__",
+        "puzzle_emb",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "models.recursive_reasoning.trm_singlez": {
+      "classes": [
+        "TinyRecursiveReasoningModel_ACTV1InnerCarry",
+        "TinyRecursiveReasoningModel_ACTV1Carry",
+        "TinyRecursiveReasoningModel_ACTV1Config",
+        "TinyRecursiveReasoningModel_ACTV1Block",
+        "TinyRecursiveReasoningModel_ACTV1ReasoningModule",
+        "TinyRecursiveReasoningModel_ACTV1_Inner",
+        "TinyRecursiveReasoningModel_ACTV1"
+      ],
+      "functions": [
+        "__init__",
+        "forward",
+        "__init__",
+        "forward",
+        "__init__",
+        "_input_embeddings",
+        "empty_carry",
+        "reset_carry",
+        "forward",
+        "__init__",
+        "puzzle_emb",
+        "initial_carry",
+        "forward"
+      ]
+    },
+    "models.recursive_reasoning.__init__": {
+      "classes": [],
+      "functions": []
+    },
+    "infrastructure.bridge.cria": {
+      "classes": [
+        "SoulboundToken",
+        "CrossRealityIdentityAnchor"
+      ],
+      "functions": [
+        "get_cria",
+        "__init__",
+        "__init__",
+        "issue_anchor",
+        "verify_anchor"
+      ]
+    },
+    "infrastructure.bridge.rac": {
+      "classes": [
+        "RealityNode",
+        "RealityAwareConsensus"
+      ],
+      "functions": [
+        "get_rac",
+        "__init__",
+        "density",
+        "__init__",
+        "register_node",
+        "calculate_voting_weight",
+        "run_consensus"
+      ]
+    },
+    "infrastructure.bridge.tfe": {
+      "classes": [
+        "MultiDimensionalClock",
+        "TemporalFoldingEngine"
+      ],
+      "functions": [
+        "get_tfe",
+        "__init__",
+        "increment",
+        "merge",
+        "__init__",
+        "register_node",
+        "send_event",
+        "receive_event"
+      ]
+    },
+    "infrastructure.bridge.ust": {
+      "classes": [
+        "UniversalStateTranslator"
+      ],
+      "functions": [
+        "get_ust",
+        "__init__",
+        "translate_to_cir",
+        "translate_from_cir"
+      ]
+    },
+    "infrastructure.chaos.chaos_latency": {
+      "classes": [
+        "ChaosInjector"
+      ],
+      "functions": [
+        "__init__"
+      ]
+    },
+    "infrastructure.crypto.quantum_crypto": {
+      "classes": [
+        "QuantumKeyPair",
+        "HybridKeyPair",
+        "QuantumCryptoEngine"
+      ],
+      "functions": [
+        "get_qrcm_engine",
+        "__init__",
+        "__init__",
+        "__init__",
+        "generate_kem_keypair",
+        "generate_hybrid_keypair",
+        "encapsulate",
+        "decapsulate",
+        "sign",
+        "verify"
+      ]
+    },
+    "infrastructure.crypto.zkp_engine": {
+      "classes": [
+        "ZKPProof",
+        "ZKPEngine"
+      ],
+      "functions": [
+        "get_zkp_engine",
+        "__init__",
+        "__init__",
+        "generate_proof",
+        "verify_proof"
+      ]
+    },
+    "infrastructure.economy.market_engine": {
+      "classes": [
+        "ResourceOffer",
+        "ResourceDemand",
+        "MarketEngine"
+      ],
+      "functions": [
+        "get_market_engine",
+        "__init__",
+        "__init__",
+        "__init__",
+        "fund_account",
+        "create_offer",
+        "create_demand",
+        "execute_trade"
+      ]
+    },
+    "infrastructure.economy.reputation_oracle": {
+      "classes": [
+        "ReputationRecord",
+        "ReputationOracle"
+      ],
+      "functions": [
+        "get_reputation_oracle",
+        "__init__",
+        "reliability",
+        "__init__",
+        "get_or_create_record",
+        "record_trade_result",
+        "compute_reputation"
+      ]
+    },
+    "infrastructure.economy.resource_oracle": {
+      "classes": [
+        "ResourceSnapshot",
+        "ResourceOracle"
+      ],
+      "functions": [
+        "get_resource_oracle",
+        "__init__",
+        "to_dict",
+        "__init__",
+        "collect_metrics"
+      ]
+    },
+    "infrastructure.identity.did_manager": {
+      "classes": [
+        "DidDocument",
+        "DIDManager"
+      ],
+      "functions": [
+        "get_did_manager",
+        "__init__",
+        "to_dict",
+        "__init__"
+      ]
+    },
+    "infrastructure.remediation.remediation_engine": {
+      "classes": [
+        "Incident",
+        "RemediationEngine"
+      ],
+      "functions": [
+        "get_remediation_engine",
+        "__init__",
+        "__init__",
+        "_load_action_templates"
+      ]
+    },
+    "infrastructure.self-healing.health-checker": {
+      "classes": [
+        "HealthChecker"
+      ],
+      "functions": [
+        "__init__",
+        "stop"
+      ]
+    },
+    "infrastructure.architect.ags.sequencer": {
+      "classes": [
+        "GenomeSequencer"
+      ],
+      "functions": [
+        "__init__",
+        "sequence",
+        "export"
+      ]
+    },
+    "infrastructure.architect.es.simulator": {
+      "classes": [
+        "SimulationResult",
+        "EvolutionarySandbox"
+      ],
+      "functions": [
+        "get_sandbox",
+        "__init__",
+        "final_score",
+        "__init__",
+        "simulate_mutation"
+      ]
+    },
+    "infrastructure.architect.me.mutation_engine": {
+      "classes": [
+        "MutationEngine"
+      ],
+      "functions": [
+        "get_mutation_engine",
+        "__init__",
+        "propose_mutations"
+      ]
+    },
+    "infrastructure.architect.rmlc.controller": {
+      "classes": [
+        "MetaLearningController"
+      ],
+      "functions": [
+        "__init__",
+        "_apply_mutation"
+      ]
+    },
+    "dashboard.node_modules.flatted.python.flatted": {
+      "classes": [
+        "_Known",
+        "_String"
+      ],
+      "functions": [
+        "_array_keys",
+        "_object_keys",
+        "_is_array",
+        "_is_object",
+        "_is_string",
+        "_index",
+        "_loop",
+        "_ref",
+        "_relate",
+        "_transform",
+        "_wrap",
+        "parse",
+        "stringify",
+        "__init__",
+        "__init__"
+      ]
+    }
+  },
+  "dependencies": {
+    "app": [
+      "os",
+      "torch",
+      "uuid",
+      "uvicorn",
+      "fastapi",
+      "fastapi.staticfiles",
+      "fastapi.responses",
+      "pydantic",
+      "typing",
+      "swarm_manager",
+      "fastapi.middleware.cors"
+    ],
+    "ask_system": [
+      "asyncio",
+      "swarm_v2.experts.registry"
+    ],
+    "check_api": [
+      "requests",
+      "sys",
+      "time"
+    ],
+    "check_archi": [
+      "swarm_v2.experts.registry"
+    ],
+    "check_checkpoint_keys": [
+      "torch"
+    ],
+    "check_checkpoint_shapes": [
+      "torch"
+    ],
+    "check_gpu": [
+      "torch",
+      "sys"
+    ],
+    "check_model_keys": [
+      "torch",
+      "models.recursive_reasoning.trm"
+    ],
+    "check_server": [
+      "socket",
+      "sys"
+    ],
+    "check_shapes_v2": [
+      "torch"
+    ],
+    "clean_pipeline": [
+      "json",
+      "os"
+    ],
+    "debug_artifact_stats": [],
+    "debug_import": [
+      "sys",
+      "time"
+    ],
+    "debug_memory_response": [
+      "requests",
+      "json"
+    ],
+    "debug_model_structure": [
+      "torch",
+      "models.recursive_reasoning.trm"
+    ],
+    "debug_nn_buffer": [
+      "torch",
+      "torch.nn",
+      "sys",
+      "torch.nn",
+      "traceback",
+      "traceback",
+      "swarm_v2.core.trm_brain"
+    ],
+    "debug_parallel_logic": [
+      "sys",
+      "os",
+      "psutil",
+      "torch",
+      "psutil",
+      "traceback",
+      "swarm_v2.core.trm_integration",
+      "swarm_v2.core.base_agent"
+    ],
+    "debug_prune": [
+      "os",
+      "json",
+      "datetime"
+    ],
+    "debug_split": [],
+    "debug_weather_port": [
+      "requests"
+    ],
+    "debug_weather_query": [
+      "requests"
+    ],
+    "diagnose_idle": [
+      "asyncio",
+      "aiohttp",
+      "json",
+      "sys",
+      "re",
+      "datetime"
+    ],
+    "diag_archi": [
+      "asyncio",
+      "sys",
+      "os",
+      "swarm_v2.core.base_agent"
+    ],
+    "diag_functional": [
+      "asyncio",
+      "sys",
+      "os",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.skills.file_skill",
+      "swarm_v2.core.llm_brain"
+    ],
+    "diag_hf": [
+      "sys",
+      "asyncio",
+      "swarm_v2.core.hf_brain"
+    ],
+    "enable_gpu_acceleration": [
+      "os",
+      "sys",
+      "subprocess",
+      "torch",
+      "json",
+      "torch_directml",
+      "wmi",
+      "torch_directml"
+    ],
+    "final_verification": [
+      "sys",
+      "os",
+      "time",
+      "traceback",
+      "swarm_v2.core.trm_integration",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.core.trm_orchestrator",
+      "swarm_v2.core.task_arbiter"
+    ],
+    "find_routes": [
+      "re"
+    ],
+    "fix_arrows_global": [
+      "os"
+    ],
+    "fix_directml_install": [
+      "subprocess",
+      "sys",
+      "os"
+    ],
+    "fix_read_local": [],
+    "fix_swarm_context": [
+      "re"
+    ],
+    "fix_synth_paths": [
+      "os"
+    ],
+    "generate_paper": [
+      "requests"
+    ],
+    "get_dims": [
+      "torch"
+    ],
+    "gpu_usage_example": [
+      "torch",
+      "torch.nn",
+      "torch.optim",
+      "time",
+      "torch_directml"
+    ],
+    "ingest_knowledge": [
+      "os",
+      "asyncio",
+      "sys",
+      "swarm_v2.skills.learning_engine"
+    ],
+    "ingest_knowledge_phase2": [
+      "requests",
+      "json"
+    ],
+    "initialize_all_modules": [
+      "json",
+      "logging",
+      "os",
+      "subprocess",
+      "sys",
+      "requests",
+      "requests",
+      "requests",
+      "datetime",
+      "pathlib",
+      "typing"
+    ],
+    "inspect_routes": [
+      "sys",
+      "os",
+      "importlib.util",
+      "fastapi",
+      "traceback",
+      "fastapi"
+    ],
+    "integration_test": [
+      "sys",
+      "os",
+      "asyncio",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.trm_integration",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.trm_brain",
+      "swarm_v2.core.trm_integration",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.skills.file_skill",
+      "swarm_v2.core.task_arbiter"
+    ],
+    "launcher": [
+      "os",
+      "sys",
+      "subprocess",
+      "time",
+      "signal"
+    ],
+    "nexus_usage_example": [
+      "swarm_v2_integrated.agent_manager",
+      "swarm_v2_integrated.task_router"
+    ],
+    "phase6_kickoff": [
+      "asyncio",
+      "aiohttp",
+      "json"
+    ],
+    "pretrain": [
+      "os",
+      "math",
+      "yaml",
+      "shutil",
+      "copy",
+      "torch",
+      "torch.distributed",
+      "tqdm",
+      "wandb",
+      "coolname",
+      "hydra",
+      "pydantic",
+      "typing",
+      "dataclasses",
+      "torch",
+      "torch.utils.data",
+      "omegaconf",
+      "adam_atan2",
+      "puzzle_dataset",
+      "utils.functions",
+      "models.sparse_embedding",
+      "models.ema"
+    ],
+    "purge_memory": [
+      "json",
+      "os",
+      "glob"
+    ],
+    "puzzle_dataset": [
+      "os",
+      "json",
+      "numpy",
+      "pydantic",
+      "torch",
+      "typing",
+      "torch.utils.data",
+      "models.losses",
+      "dataset.common",
+      "argdantic",
+      "pydantic"
+    ],
+    "recover_registry": [
+      "os",
+      "re",
+      "json",
+      "datetime"
+    ],
+    "recover_skills": [
+      "requests",
+      "os",
+      "time"
+    ],
+    "run_nexus_build": [
+      "httpx",
+      "time",
+      "os"
+    ],
+    "start_tools": [
+      "os",
+      "json",
+      "subprocess",
+      "sys",
+      "time",
+      "requests"
+    ],
+    "stress_test_api_comprehensive": [
+      "asyncio",
+      "aiohttp",
+      "time",
+      "statistics",
+      "sys",
+      "json",
+      "random",
+      "traceback",
+      "concurrent.futures",
+      "typing"
+    ],
+    "stress_test_cognitive_stack": [
+      "asyncio",
+      "time",
+      "sys",
+      "os",
+      "statistics",
+      "traceback",
+      "traceback",
+      "concurrent.futures",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.cognitive_stack"
+    ],
+    "stress_test_comprehensive": [
+      "asyncio",
+      "time",
+      "statistics",
+      "random",
+      "json",
+      "requests",
+      "threading",
+      "sys",
+      "os",
+      "traceback",
+      "concurrent.futures",
+      "typing"
+    ],
+    "stress_test_quick": [
+      "requests",
+      "time",
+      "random",
+      "statistics",
+      "sys",
+      "traceback",
+      "concurrent.futures"
+    ],
+    "swarm_batch_maintenance": [
+      "httpx",
+      "json"
+    ],
+    "swarm_manager": [
+      "os",
+      "torch",
+      "torch.nn",
+      "typing",
+      "models.recursive_reasoning.trm"
+    ],
+    "test_agent_models": [
+      "asyncio",
+      "swarm_v2.experts.registry"
+    ],
+    "test_all_experts": [
+      "httpx",
+      "time",
+      "json"
+    ],
+    "test_artifacts_stats": [
+      "requests",
+      "json",
+      "traceback"
+    ],
+    "test_artifact_stats_detailed": [
+      "requests",
+      "json",
+      "sys",
+      "traceback"
+    ],
+    "test_autonomous_loop": [
+      "asyncio",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.expert_registry"
+    ],
+    "test_cra": [
+      "asyncio",
+      "swarm_v2.core.collaborative_reasoning"
+    ],
+    "test_endpoints": [
+      "requests",
+      "json"
+    ],
+    "test_file_processing": [
+      "sys",
+      "os",
+      "json",
+      "requests",
+      "time"
+    ],
+    "test_gemma3_simple": [
+      "asyncio",
+      "sys",
+      "os",
+      "traceback",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.llm_brain"
+    ],
+    "test_global_memory_stress": [
+      "requests",
+      "json",
+      "time",
+      "threading",
+      "concurrent.futures",
+      "random",
+      "sys",
+      "traceback",
+      "typing"
+    ],
+    "test_import": [
+      "sys",
+      "traceback",
+      "swarm_v2.app_v2"
+    ],
+    "test_integration_simple": [
+      "asyncio",
+      "sys",
+      "os",
+      "traceback",
+      "swarm_v2.core.trm_integration",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.skills.file_skill",
+      "swarm_v2.core.trm_orchestrator",
+      "swarm_v2.core.resource_arbiter",
+      "swarm_v2.core.task_arbiter"
+    ],
+    "test_mesh_federation": [
+      "requests",
+      "time",
+      "concurrent.futures",
+      "statistics",
+      "json",
+      "random",
+      "traceback"
+    ],
+    "test_model_init": [
+      "torch",
+      "traceback",
+      "models.recursive_reasoning.trm"
+    ],
+    "test_partition_fix": [
+      "sys",
+      "os",
+      "swarm_v2.core.trm_orchestrator",
+      "typing"
+    ],
+    "test_pipeline": [
+      "httpx",
+      "time",
+      "os"
+    ],
+    "test_quick_stress": [
+      "requests",
+      "time",
+      "threading",
+      "concurrent.futures",
+      "random",
+      "traceback"
+    ],
+    "test_recall": [
+      "requests",
+      "json"
+    ],
+    "test_simple_comm": [
+      "requests",
+      "json",
+      "time"
+    ],
+    "test_trm_debug": [
+      "os",
+      "sys",
+      "torch",
+      "traceback",
+      "swarm_v2.core.trm_brain"
+    ],
+    "test_trm_parallel": [
+      "asyncio",
+      "time",
+      "sys",
+      "os",
+      "psutil",
+      "threading",
+      "traceback",
+      "swarm_v2.core.trm_integration",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.skills.file_skill",
+      "swarm_v2.core.trm_orchestrator"
+    ],
+    "trigger_skill_gap_analysis": [
+      "httpx",
+      "json"
+    ],
+    "trigger_test": [
+      "httpx"
+    ],
+    "update_swarm": [
+      "os"
+    ],
+    "verify_api": [
+      "requests",
+      "json"
+    ],
+    "verify_async_nexus": [
+      "httpx",
+      "time",
+      "threading",
+      "uvicorn",
+      "swarm_v2_integrated.nexus_main",
+      "swarm_v2_integrated.nexus_worker",
+      "swarm_v2_integrated.nexus_main"
+    ],
+    "verify_full_bridge": [
+      "httpx",
+      "time",
+      "threading",
+      "uvicorn",
+      "sys",
+      "os",
+      "swarm_v2_integrated.nexus_main",
+      "swarm_v2_integrated.nexus_worker",
+      "swarm_v2_integrated.nexus_main"
+    ],
+    "verify_nexus_module": [
+      "httpx",
+      "time",
+      "subprocess",
+      "os"
+    ],
+    "verify_trm_load": [
+      "torch",
+      "traceback",
+      "models.recursive_reasoning.trm"
+    ],
+    "verify_trm_system": [
+      "sys",
+      "os",
+      "swarm_v2.core.trm_integration",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.core.trm_integration",
+      "swarm_v2.core.base_agent"
+    ],
+    "dataset.build_arc_dataset": [
+      "os",
+      "json",
+      "hashlib",
+      "numpy",
+      "typing",
+      "dataclasses",
+      "argdantic",
+      "pydantic",
+      "dataset.common"
+    ],
+    "dataset.build_maze_dataset": [
+      "math",
+      "os",
+      "csv",
+      "json",
+      "numpy",
+      "typing",
+      "argdantic",
+      "pydantic",
+      "tqdm",
+      "huggingface_hub",
+      "common"
+    ],
+    "dataset.build_sudoku_dataset": [
+      "os",
+      "csv",
+      "json",
+      "numpy",
+      "typing",
+      "argdantic",
+      "pydantic",
+      "tqdm",
+      "huggingface_hub",
+      "common"
+    ],
+    "dataset.common": [
+      "pydantic",
+      "numpy",
+      "typing"
+    ],
+    "deploy.canary_release_engine": [
+      "asyncio",
+      "hashlib",
+      "json",
+      "logging",
+      "time",
+      "typing",
+      "pydantic"
+    ],
+    "deploy.global_edge_mesh": [
+      "logging",
+      "random",
+      "typing",
+      "pydantic"
+    ],
+    "evaluators.arc": [
+      "os",
+      "json",
+      "torch",
+      "numpy",
+      "torch.distributed",
+      "typing",
+      "numba",
+      "dataset.build_arc_dataset",
+      "dataset.common"
+    ],
+    "models.common": [
+      "math",
+      "torch",
+      "torch"
+    ],
+    "models.ema": [
+      "copy",
+      "torch.nn"
+    ],
+    "models.layers": [
+      "einops",
+      "torch",
+      "torch.nn.functional",
+      "typing",
+      "torch",
+      "torch.nn.functional",
+      "models.common"
+    ],
+    "models.losses": [
+      "torch",
+      "torch.nn.functional",
+      "math",
+      "typing",
+      "torch"
+    ],
+    "models.sparse_embedding": [
+      "torch",
+      "torch.distributed",
+      "typing",
+      "torch",
+      "torch.optim.optimizer",
+      "models.common"
+    ],
+    "models.__init__": [],
+    "SwarmOS_v6_Snapshot_extracted.app": [
+      "torch",
+      "uuid",
+      "uvicorn",
+      "fastapi",
+      "pydantic",
+      "typing",
+      "swarm_manager",
+      "fastapi.middleware.cors"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.check_archi": [
+      "swarm_v2.experts.registry"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.check_checkpoint_keys": [
+      "torch"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.check_checkpoint_shapes": [
+      "torch"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.check_model_keys": [
+      "torch",
+      "models.recursive_reasoning.trm"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.check_shapes_v2": [
+      "torch"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.clean_pipeline": [
+      "json",
+      "os"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.debug_model_structure": [
+      "torch",
+      "models.recursive_reasoning.trm"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.debug_prune": [
+      "os",
+      "json",
+      "datetime"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.debug_weather_port": [
+      "requests"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.debug_weather_query": [
+      "requests"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.fix_synth_paths": [
+      "os"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.generate_paper": [
+      "requests"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.get_dims": [
+      "torch"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.ingest_knowledge": [
+      "os",
+      "asyncio",
+      "sys",
+      "swarm_v2.skills.learning_engine"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.ingest_knowledge_phase2": [
+      "requests",
+      "json"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.nexus_usage_example": [
+      "swarm_v2_integrated.agent_manager",
+      "swarm_v2_integrated.task_router"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.pretrain": [
+      "os",
+      "math",
+      "yaml",
+      "shutil",
+      "copy",
+      "torch",
+      "torch.distributed",
+      "tqdm",
+      "wandb",
+      "coolname",
+      "hydra",
+      "pydantic",
+      "typing",
+      "dataclasses",
+      "torch",
+      "torch.utils.data",
+      "omegaconf",
+      "adam_atan2",
+      "puzzle_dataset",
+      "utils.functions",
+      "models.sparse_embedding",
+      "models.ema"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.puzzle_dataset": [
+      "os",
+      "json",
+      "numpy",
+      "pydantic",
+      "torch",
+      "typing",
+      "torch.utils.data",
+      "models.losses",
+      "dataset.common",
+      "argdantic",
+      "pydantic"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.recover_registry": [
+      "os",
+      "re",
+      "json",
+      "datetime"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.run_nexus_build": [
+      "httpx",
+      "time",
+      "os"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.start_tools": [
+      "os",
+      "json",
+      "subprocess",
+      "sys",
+      "time",
+      "requests"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_batch_maintenance": [
+      "httpx",
+      "json"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_manager": [
+      "os",
+      "torch",
+      "torch.nn",
+      "typing",
+      "models.recursive_reasoning.trm"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.test_agent_models": [
+      "asyncio",
+      "swarm_v2.experts.registry"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.test_all_experts": [
+      "httpx",
+      "time",
+      "json"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.test_autonomous_loop": [
+      "asyncio",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.expert_registry"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.test_pipeline": [
+      "httpx",
+      "time",
+      "os"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.test_recall": [
+      "requests",
+      "json"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.trigger_skill_gap_analysis": [
+      "httpx",
+      "json"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.trigger_test": [
+      "httpx"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.verify_async_nexus": [
+      "httpx",
+      "time",
+      "threading",
+      "uvicorn",
+      "swarm_v2_integrated.nexus_main",
+      "swarm_v2_integrated.nexus_worker",
+      "swarm_v2_integrated.nexus_main"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.verify_full_bridge": [
+      "httpx",
+      "time",
+      "threading",
+      "uvicorn",
+      "sys",
+      "os",
+      "swarm_v2_integrated.nexus_main",
+      "swarm_v2_integrated.nexus_worker",
+      "swarm_v2_integrated.nexus_main"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.verify_nexus_module": [
+      "httpx",
+      "time",
+      "subprocess",
+      "os"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.verify_trm_load": [
+      "torch",
+      "traceback",
+      "models.recursive_reasoning.trm"
+    ],
+    "swarm_v2.app_v2": [
+      "os",
+      "uuid",
+      "asyncio",
+      "psutil",
+      "threading",
+      "uvicorn",
+      "datetime",
+      "contextlib",
+      "fastapi",
+      "fastapi.middleware.cors",
+      "pydantic",
+      "typing",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.skills.learning_engine",
+      "swarm_v2.mcp.synthesizer",
+      "swarm_v2.core.agent_mesh",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.monitor_daemon",
+      "swarm_v2.core.remediation_engine",
+      "swarm_v2.core.resource_arbiter",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.core.task_arbiter",
+      "swarm_v2.core.federation",
+      "swarm_v2.core.reconnaissance_daemon",
+      "swarm_v2.core.chain_of_verification",
+      "swarm_v2.core.neural_wall",
+      "swarm_v2.core.self_healing_infra",
+      "swarm_v2.core.zero_human_test_gen",
+      "swarm_v2.core.auto_changelog",
+      "swarm_v2.core.mcp_tool_evolver",
+      "swarm_v2.core.swarm_performance_insights",
+      "swarm_v2.core.deterministic_forge",
+      "swarm_v2.core.telemetry",
+      "swarm_v2.core.proactive_loop",
+      "swarm_v2.core.sentinel",
+      "swarm_v2.core.redis_mock",
+      "swarm_v2.core.ses",
+      "swarm_v2.core.cqs",
+      "swarm_v2.core.kanban_board",
+      "swarm_v2.core.ddr_antibody",
+      "swarm_v2.core.secrets_vault",
+      "swarm_v2.core.agent_mailbox",
+      "swarm_v2.core.ultrawork_loop",
+      "swarm_v2.core.skill_loader",
+      "swarm_v2.core.federation",
+      "swarm_v2.core.zero_human_test_gen",
+      "swarm_v2.core.kanban_board",
+      "swarm_v2.core.reconnaissance_daemon",
+      "swarm_v2.core.kanban_board",
+      "swarm_v2.core.kanban_board",
+      "swarm_v2.core.kanban_board"
+    ],
+    "swarm_v2.__init__": [],
+    "swarm_v2_artifacts.test_learning_module_directive": [
+      "pytest",
+      "pathlib"
+    ],
+    "swarm_v2_artifacts.test_learning_plan": [
+      "pytest",
+      "pathlib"
+    ],
+    "swarm_v2_artifacts.test_skill_gap_directive": [
+      "pytest",
+      "pathlib"
+    ],
+    "swarm_v2_artifacts.test_status_report": [
+      "unittest",
+      "unittest.mock",
+      "datetime"
+    ],
+    "utils.functions": [
+      "importlib",
+      "inspect"
+    ],
+    "utils.__init__": [],
+    "swarm_v2.cli.main": [
+      "asyncio",
+      "rich.console",
+      "rich.panel",
+      "rich.table",
+      "rich.live",
+      "rich.text",
+      "swarm_v2.core.swarm_engine"
+    ],
+    "swarm_v2.cli.__init__": [],
+    "swarm_v2.core.agent_mailbox": [
+      "os",
+      "json",
+      "logging",
+      "typing",
+      "datetime",
+      "swarm_v2.core.comm_protocol"
+    ],
+    "swarm_v2.core.agent_mesh": [
+      "asyncio",
+      "json",
+      "os",
+      "time",
+      "hashlib",
+      "typing",
+      "datetime",
+      "swarm_v2.skills.embedding_skill"
+    ],
+    "swarm_v2.core.artifact_pipeline": [
+      "os",
+      "json",
+      "shutil",
+      "threading",
+      "asyncio",
+      "threading",
+      "asyncio",
+      "datetime",
+      "typing",
+      "enum",
+      "swarm_v2.core.semantic_index",
+      "swarm_v2.core.semantic_index"
+    ],
+    "swarm_v2.core.attempt_sampler": [
+      "asyncio",
+      "logging",
+      "typing",
+      "swarm_v2.core.base_agent"
+    ],
+    "swarm_v2.core.auto_changelog": [
+      "os",
+      "re",
+      "json",
+      "hashlib",
+      "asyncio",
+      "logging",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "swarm_v2.core.base_agent": [
+      "os",
+      "re",
+      "uuid",
+      "asyncio",
+      "json",
+      "typing",
+      "datetime",
+      "pydantic",
+      "swarm_v2.core.memory",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.llm_brain",
+      "swarm_v2.core.task_arbiter",
+      "swarm_v2.core.chain_of_verification",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.qic._state",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.core.agent_mesh",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.task_arbiter",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.expert_registry"
+    ],
+    "swarm_v2.core.chain_of_verification": [
+      "re",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "swarm_v2.core.cognitive_stack": [
+      "logging",
+      "asyncio",
+      "time",
+      "typing",
+      "collections",
+      "swarm_v2.core.llm_orchestrator",
+      "swarm_v2.core.trm_brain",
+      "swarm_v2.core.llm_router",
+      "swarm_v2.core.cqs"
+    ],
+    "swarm_v2.core.coherence_thresholds": [
+      "typing"
+    ],
+    "swarm_v2.core.collaborative_reasoning": [
+      "asyncio",
+      "uuid",
+      "logging",
+      "time",
+      "typing",
+      "datetime",
+      "swarm_v2.core.trm_brain",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.experts.registry"
+    ],
+    "swarm_v2.core.comm_protocol": [
+      "hmac",
+      "hashlib",
+      "time",
+      "logging",
+      "typing"
+    ],
+    "swarm_v2.core.cqs": [
+      "typing",
+      "datetime"
+    ],
+    "swarm_v2.core.ddr_antibody": [
+      "os",
+      "json",
+      "re",
+      "logging",
+      "fnmatch",
+      "typing",
+      "datetime"
+    ],
+    "swarm_v2.core.deterministic_forge": [
+      "os",
+      "json",
+      "re",
+      "typing",
+      "swarm_v2.mcp.synthesizer",
+      "swarm_v2.core.trm_brain"
+    ],
+    "swarm_v2.core.dge": [
+      "re",
+      "logging",
+      "typing",
+      "datetime"
+    ],
+    "swarm_v2.core.expert_registry": [
+      "typing"
+    ],
+    "swarm_v2.core.federation": [
+      "os",
+      "json",
+      "asyncio",
+      "hashlib",
+      "requests",
+      "time",
+      "typing",
+      "datetime",
+      "dataclasses",
+      "threading",
+      "swarm_v2.core.global_memory"
+    ],
+    "swarm_v2.core.global_memory": [
+      "os",
+      "json",
+      "math",
+      "re",
+      "chromadb",
+      "logging",
+      "typing",
+      "datetime",
+      "collections",
+      "swarm_v2.core.dge",
+      "swarm_v2.core.llm_orchestrator",
+      "chromadb.config"
+    ],
+    "swarm_v2.core.heartbeat_scheduler": [
+      "os",
+      "asyncio",
+      "re",
+      "logging",
+      "datetime",
+      "typing"
+    ],
+    "swarm_v2.core.hf_brain": [
+      "asyncio",
+      "logging",
+      "re",
+      "torch",
+      "threading",
+      "typing",
+      "transformers"
+    ],
+    "swarm_v2.core.higher_mind": [
+      "os",
+      "json",
+      "typing",
+      "pydantic"
+    ],
+    "swarm_v2.core.kanban_board": [
+      "os",
+      "json",
+      "uuid",
+      "logging",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum",
+      "swarm_v2.core.worktree_manager",
+      "swarm_v2.core.port_manager",
+      "swarm_v2.core.port_manager",
+      "swarm_v2.core.worktree_manager"
+    ],
+    "swarm_v2.core.llm_brain": [
+      "ollama",
+      "asyncio",
+      "re",
+      "typing",
+      "swarm_v2.core.resource_arbiter"
+    ],
+    "swarm_v2.core.llm_orchestrator": [
+      "typing",
+      "swarm_v2.core.llm_brain"
+    ],
+    "swarm_v2.core.llm_router": [
+      "os",
+      "aiohttp",
+      "json",
+      "logging",
+      "traceback",
+      "typing",
+      "swarm_v2.core.llm_brain",
+      "swarm_v2.core.llm_brain"
+    ],
+    "swarm_v2.core.lobster_shell": [
+      "os",
+      "subprocess",
+      "logging",
+      "json",
+      "time",
+      "typing",
+      "datetime",
+      "pydantic",
+      "swarm_v2.core.swarm_engine"
+    ],
+    "swarm_v2.core.manus_engine": [
+      "asyncio",
+      "torch",
+      "typing",
+      "swarm_v2.core.qic._state",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.skills.file_skill"
+    ],
+    "swarm_v2.core.mcp_bus": [
+      "json",
+      "logging",
+      "asyncio",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "swarm_v2.core.mcp_tool_evolver": [
+      "os",
+      "json",
+      "re",
+      "asyncio",
+      "logging",
+      "hashlib",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum",
+      "swarm_v2.core.reconnaissance_daemon",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.reconnaissance_daemon"
+    ],
+    "swarm_v2.core.memory": [
+      "os",
+      "json",
+      "typing",
+      "datetime"
+    ],
+    "swarm_v2.core.moltbook": [
+      "logging",
+      "uuid",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "swarm_v2.core.global_memory"
+    ],
+    "swarm_v2.core.monitor_daemon": [
+      "asyncio",
+      "logging",
+      "time",
+      "typing",
+      "datetime",
+      "swarm_v2.core.agent_mesh",
+      "swarm_v2_artifacts.coherence_thresholds"
+    ],
+    "swarm_v2.core.mpu": [
+      "os",
+      "base64",
+      "requests",
+      "typing",
+      "datetime"
+    ],
+    "swarm_v2.core.neural_wall": [
+      "re",
+      "asyncio",
+      "time",
+      "ollama",
+      "json",
+      "ollama",
+      "json",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "swarm_v2.core.openclaw_gateway": [
+      "os",
+      "json",
+      "time",
+      "asyncio",
+      "requests",
+      "re",
+      "logging",
+      "random",
+      "datetime",
+      "typing",
+      "dataclasses",
+      "abc"
+    ],
+    "swarm_v2.core.optimization_engine": [
+      "logging",
+      "asyncio",
+      "datetime",
+      "typing"
+    ],
+    "swarm_v2.core.port_manager": [
+      "os",
+      "json",
+      "logging",
+      "typing",
+      "datetime",
+      "threading"
+    ],
+    "swarm_v2.core.proactive_loop": [
+      "asyncio",
+      "logging",
+      "os",
+      "re",
+      "json",
+      "random",
+      "aiohttp",
+      "aiohttp",
+      "typing",
+      "datetime",
+      "dataclasses"
+    ],
+    "swarm_v2.core.qisa_optimizer": [
+      "math",
+      "random",
+      "logging",
+      "torch",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "swarm_v2.core.qic._state"
+    ],
+    "swarm_v2.core.reconnaissance_daemon": [
+      "asyncio",
+      "os",
+      "json",
+      "time",
+      "datetime",
+      "typing",
+      "threading",
+      "swarm_v2.skills.web_search_skill",
+      "swarm_v2.core.global_memory"
+    ],
+    "swarm_v2.core.redis_mock": [
+      "json",
+      "os",
+      "threading",
+      "time"
+    ],
+    "swarm_v2.core.remediation_engine": [
+      "logging",
+      "asyncio",
+      "typing",
+      "swarm_v2.core.coherence_thresholds",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.skills.file_skill",
+      "swarm_v2.skills.doc_ingestion_skill",
+      "swarm_v2.core.agent_mesh"
+    ],
+    "swarm_v2.core.resonance_engine": [
+      "json",
+      "logging",
+      "re",
+      "typing",
+      "datetime",
+      "collections",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.llm_brain"
+    ],
+    "swarm_v2.core.resource_arbiter": [
+      "asyncio",
+      "logging",
+      "subprocess",
+      "shutil",
+      "psutil",
+      "typing",
+      "datetime"
+    ],
+    "swarm_v2.core.secrets_vault": [
+      "os",
+      "json",
+      "base64",
+      "logging",
+      "typing",
+      "datetime",
+      "cryptography.fernet"
+    ],
+    "swarm_v2.core.self_healing_infra": [
+      "asyncio",
+      "subprocess",
+      "time",
+      "logging",
+      "os",
+      "signal",
+      "psutil",
+      "urllib.request",
+      "urllib.error",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "swarm_v2.core.semantic_index": [
+      "os",
+      "json",
+      "asyncio",
+      "typing",
+      "swarm_v2.skills.embedding_skill"
+    ],
+    "swarm_v2.core.sentinel": [
+      "re",
+      "time",
+      "json",
+      "asyncio",
+      "traceback",
+      "typing",
+      "starlette.middleware.base",
+      "starlette.requests",
+      "starlette.responses",
+      "swarm_v2.core.redis_mock",
+      "swarm_v2.core.resource_arbiter"
+    ],
+    "swarm_v2.core.ses": [
+      "re",
+      "json",
+      "typing",
+      "datetime"
+    ],
+    "swarm_v2.core.skill_loader": [
+      "os",
+      "re",
+      "logging",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "swarm_v2.skills.file_skill"
+    ],
+    "swarm_v2.core.swarm_engine": [
+      "asyncio",
+      "logging",
+      "typing",
+      "enum",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.core.neural_wall"
+    ],
+    "swarm_v2.core.swarm_performance_insights": [
+      "os",
+      "json",
+      "asyncio",
+      "logging",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum",
+      "collections",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.task_arbiter",
+      "swarm_v2.core.agent_mesh",
+      "swarm_v2.skills.learning_engine",
+      "swarm_v2.mcp.synthesizer",
+      "swarm_v2.core.self_healing_infra",
+      "swarm_v2.core.neural_wall",
+      "swarm_v2.core.resonance_engine",
+      "swarm_v2.core.collaborative_reasoning",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.agent_mesh"
+    ],
+    "swarm_v2.core.task_arbiter": [
+      "asyncio",
+      "psutil",
+      "threading",
+      "os",
+      "logging",
+      "gc",
+      "glob",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum",
+      "collections",
+      "swarm_v2.core.resource_arbiter",
+      "functools"
+    ],
+    "swarm_v2.core.telemetry": [
+      "os",
+      "psutil",
+      "typing",
+      "datetime",
+      "swarm_v2.core.manus_engine",
+      "swarm_v2.core.resource_arbiter",
+      "swarm_v2.core.coherence_thresholds",
+      "swarm_v2.core.proactive_loop",
+      "swarm_v2.skills.relationship_skill",
+      "typing",
+      "swarm_v2.experts.registry"
+    ],
+    "swarm_v2.core.test_trm_standalone": [
+      "sys",
+      "os",
+      "torch",
+      "traceback",
+      "swarm_v2.core.trm_brain"
+    ],
+    "swarm_v2.core.trm_brain": [
+      "os",
+      "torch",
+      "torch.nn",
+      "traceback",
+      "typing",
+      "models.recursive_reasoning.trm"
+    ],
+    "swarm_v2.core.trm_integration": [
+      "asyncio",
+      "time",
+      "psutil",
+      "typing",
+      "swarm_v2.core.trm_orchestrator",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.core.task_arbiter",
+      "swarm_v2.core.llm_brain",
+      "swarm_v2.core.trm_brain"
+    ],
+    "swarm_v2.core.trm_orchestrator": [
+      "asyncio",
+      "threading",
+      "time",
+      "concurrent.futures",
+      "psutil",
+      "torch",
+      "typing",
+      "dataclasses",
+      "enum",
+      "swarm_v2.core.trm_brain",
+      "swarm_v2.core.task_arbiter",
+      "swarm_v2.core.base_agent"
+    ],
+    "swarm_v2.core.ultrawork_loop": [
+      "os",
+      "json",
+      "logging",
+      "time",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum",
+      "swarm_v2.core.swarm_engine"
+    ],
+    "swarm_v2.core.worktree_manager": [
+      "os",
+      "subprocess",
+      "shutil",
+      "logging",
+      "typing"
+    ],
+    "swarm_v2.core.zero_human_test_gen": [
+      "os",
+      "re",
+      "json",
+      "subprocess",
+      "asyncio",
+      "re",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "swarm_v2.core.__init__": [],
+    "swarm_v2.experts.registry": [
+      "swarm_v2.core.base_agent",
+      "swarm_v2.skills.file_skill",
+      "swarm_v2.skills.hardened_shell_skill",
+      "swarm_v2.skills.doc_ingestion_skill",
+      "swarm_v2.skills.mcp_tool_skill",
+      "swarm_v2.skills.embedding_skill",
+      "swarm_v2.skills.trm_skill",
+      "swarm_v2.skills.relationship_skill",
+      "swarm_v2.skills.rlm_skill"
+    ],
+    "swarm_v2.experts.__init__": [],
+    "swarm_v2.mcp.bridge": [
+      "json",
+      "typing"
+    ],
+    "swarm_v2.mcp.synthesizer": [
+      "os",
+      "re",
+      "json",
+      "typing",
+      "datetime",
+      "swarm_v2.skills.learning_engine"
+    ],
+    "swarm_v2.mcp.__init__": [],
+    "swarm_v2.scripts.entangled_pipeline_demo": [
+      "asyncio",
+      "os",
+      "torch",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.qic._state",
+      "swarm_v2.skills.file_skill"
+    ],
+    "swarm_v2.scripts.inception_pulse": [
+      "asyncio",
+      "os",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.core.higher_mind",
+      "swarm_v2.core.global_memory"
+    ],
+    "swarm_v2.scripts.manus_superposition_test": [
+      "asyncio",
+      "os",
+      "json",
+      "swarm_v2.core.manus_engine"
+    ],
+    "swarm_v2.scripts.propose_regional_managers": [
+      "asyncio",
+      "aiohttp",
+      "json",
+      "sys"
+    ],
+    "swarm_v2.scripts.relationship_reasoning": [
+      "asyncio",
+      "os",
+      "sys",
+      "json",
+      "datetime",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.artifact_pipeline"
+    ],
+    "swarm_v2.scripts.swarm_benchmark": [
+      "asyncio",
+      "time",
+      "json",
+      "os",
+      "datetime",
+      "swarm_v2.experts.registry"
+    ],
+    "swarm_v2.scripts.swarm_total_exercise": [
+      "asyncio",
+      "os",
+      "json",
+      "logging",
+      "time",
+      "datetime",
+      "swarm_v2.core.kanban_board",
+      "swarm_v2.core.telemetry",
+      "swarm_v2.core.ddr_antibody",
+      "swarm_v2.core.agent_mailbox",
+      "swarm_v2.core.ultrawork_loop"
+    ],
+    "swarm_v2.scripts.system_integration_test": [
+      "asyncio",
+      "aiohttp",
+      "sys",
+      "os",
+      "time",
+      "datetime"
+    ],
+    "swarm_v2.scripts.test_cognitive_stack_gemma3_270m": [
+      "asyncio",
+      "logging",
+      "sys",
+      "os",
+      "traceback",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.llm_brain"
+    ],
+    "swarm_v2.scripts.test_deterministic_forge": [
+      "asyncio",
+      "swarm_v2.core.deterministic_forge",
+      "swarm_v2.skills.learning_engine"
+    ],
+    "swarm_v2.scripts.test_distributed_stack": [
+      "asyncio",
+      "time",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.telemetry"
+    ],
+    "swarm_v2.scripts.test_fractal_scaling": [
+      "asyncio",
+      "os",
+      "swarm_v2.experts.registry"
+    ],
+    "swarm_v2.scripts.test_lobster_shell": [
+      "os",
+      "swarm_v2.core.lobster_shell"
+    ],
+    "swarm_v2.scripts.test_soul_of_swarm": [
+      "asyncio",
+      "swarm_v2.core.telemetry",
+      "swarm_v2.core.proactive_loop",
+      "swarm_v2.skills.relationship_skill"
+    ],
+    "swarm_v2.scripts.test_trm_verification": [
+      "asyncio",
+      "json",
+      "swarm_v2.skills.trm_skill"
+    ],
+    "swarm_v2.scripts.verify_phase_10": [
+      "asyncio",
+      "os",
+      "json",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.resonance_engine"
+    ],
+    "swarm_v2.scripts.verify_phase_11": [
+      "asyncio",
+      "logging",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.core.optimization_engine",
+      "swarm_v2.core.resonance_engine",
+      "swarm_v2.core.global_memory"
+    ],
+    "swarm_v2.scripts.verify_phase_12": [
+      "asyncio",
+      "os",
+      "uuid",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.core.worktree_manager",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.core.heartbeat_scheduler"
+    ],
+    "swarm_v2.scripts.verify_phase_14": [
+      "asyncio",
+      "os",
+      "json",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.core.lobster_shell",
+      "swarm_v2.core.attempt_sampler"
+    ],
+    "swarm_v2.scripts.verify_phase_7": [
+      "asyncio",
+      "logging",
+      "time",
+      "os",
+      "sys",
+      "datetime",
+      "typing",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.core.global_memory"
+    ],
+    "swarm_v2.scripts.vision_broadcast": [
+      "asyncio",
+      "os",
+      "json",
+      "time",
+      "swarm_v2.experts.registry"
+    ],
+    "swarm_v2.skills.co_creator_skill": [
+      "typing",
+      "swarm_v2.core.higher_mind"
+    ],
+    "swarm_v2.skills.doc_ingestion_skill": [
+      "os",
+      "re",
+      "typing",
+      "swarm_v2.skills.learning_engine",
+      "swarm_v2.skills.learning_engine",
+      "swarm_v2.skills.learning_engine"
+    ],
+    "swarm_v2.skills.embedding_skill": [
+      "os",
+      "json",
+      "httpx",
+      "typing"
+    ],
+    "swarm_v2.skills.file_skill": [
+      "os",
+      "subprocess",
+      "platform",
+      "swarm_v2.skills.web_search_skill",
+      "swarm_v2.core.artifact_pipeline"
+    ],
+    "swarm_v2.skills.hardened_shell_skill": [
+      "swarm_v2.core.lobster_shell"
+    ],
+    "swarm_v2.skills.learning_engine": [
+      "os",
+      "json",
+      "re",
+      "time",
+      "typing",
+      "datetime"
+    ],
+    "swarm_v2.skills.mcp_tool_skill": [
+      "os",
+      "json",
+      "requests",
+      "typing"
+    ],
+    "swarm_v2.skills.relationship_skill": [
+      "logging",
+      "typing",
+      "swarm_v2.core.resonance_engine"
+    ],
+    "swarm_v2.skills.rlm_skill": [
+      "json",
+      "typing"
+    ],
+    "swarm_v2.skills.trm_skill": [
+      "json",
+      "typing"
+    ],
+    "swarm_v2.skills.web_search_skill": [
+      "os",
+      "requests",
+      "json",
+      "typing",
+      "dotenv"
+    ],
+    "swarm_v2.skills.__init__": [],
+    "swarm_v2.core.qic._state": [
+      "torch",
+      "typing"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.dataset.build_arc_dataset": [
+      "os",
+      "json",
+      "hashlib",
+      "numpy",
+      "typing",
+      "dataclasses",
+      "argdantic",
+      "pydantic",
+      "dataset.common"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.dataset.build_maze_dataset": [
+      "math",
+      "os",
+      "csv",
+      "json",
+      "numpy",
+      "typing",
+      "argdantic",
+      "pydantic",
+      "tqdm",
+      "huggingface_hub",
+      "common"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.dataset.build_sudoku_dataset": [
+      "os",
+      "csv",
+      "json",
+      "numpy",
+      "typing",
+      "argdantic",
+      "pydantic",
+      "tqdm",
+      "huggingface_hub",
+      "common"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.dataset.common": [
+      "pydantic",
+      "numpy",
+      "typing"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.evaluators.arc": [
+      "os",
+      "json",
+      "torch",
+      "numpy",
+      "torch.distributed",
+      "typing",
+      "numba",
+      "dataset.build_arc_dataset",
+      "dataset.common"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.common": [
+      "math",
+      "torch",
+      "torch"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.ema": [
+      "copy",
+      "torch.nn"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.layers": [
+      "einops",
+      "torch",
+      "torch.nn.functional",
+      "typing",
+      "torch",
+      "torch.nn.functional",
+      "models.common"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.losses": [
+      "torch",
+      "torch.nn.functional",
+      "math",
+      "typing",
+      "torch"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.sparse_embedding": [
+      "torch",
+      "torch.distributed",
+      "typing",
+      "torch",
+      "torch.optim.optimizer",
+      "models.common"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.__init__": [],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.app_v2": [
+      "os",
+      "uuid",
+      "asyncio",
+      "psutil",
+      "threading",
+      "uvicorn",
+      "fastapi",
+      "fastapi.middleware.cors",
+      "pydantic",
+      "typing",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.skills.learning_engine",
+      "swarm_v2.mcp.synthesizer",
+      "swarm_v2.core.agent_mesh",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.monitor_daemon",
+      "swarm_v2.core.remediation_engine",
+      "swarm_v2.core.resource_arbiter",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.core.task_arbiter",
+      "swarm_v2.core.federation",
+      "swarm_v2.core.reconnaissance_daemon",
+      "swarm_v2.core.chain_of_verification",
+      "swarm_v2.core.neural_wall",
+      "swarm_v2.core.self_healing_infra",
+      "swarm_v2.core.zero_human_test_gen",
+      "swarm_v2.core.auto_changelog",
+      "swarm_v2.core.mcp_tool_evolver",
+      "swarm_v2.core.swarm_performance_insights",
+      "swarm_v2.core.deterministic_forge",
+      "swarm_v2.core.telemetry",
+      "swarm_v2.core.proactive_loop",
+      "swarm_v2.core.sentinel",
+      "swarm_v2.core.redis_mock",
+      "swarm_v2.core.federation",
+      "swarm_v2.core.zero_human_test_gen"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.__init__": [],
+    "SwarmOS_v6_Snapshot_extracted.utils.functions": [
+      "importlib",
+      "inspect"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.utils.__init__": [],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.cli.main": [
+      "asyncio",
+      "rich.console",
+      "rich.panel",
+      "rich.table",
+      "rich.live",
+      "rich.text",
+      "swarm_v2.core.swarm_engine"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.cli.__init__": [],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.agent_mesh": [
+      "asyncio",
+      "json",
+      "os",
+      "time",
+      "hashlib",
+      "typing",
+      "datetime"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.artifact_pipeline": [
+      "os",
+      "json",
+      "shutil",
+      "datetime",
+      "typing",
+      "enum"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.auto_changelog": [
+      "os",
+      "re",
+      "json",
+      "hashlib",
+      "asyncio",
+      "logging",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.base_agent": [
+      "os",
+      "re",
+      "uuid",
+      "typing",
+      "datetime",
+      "pydantic",
+      "swarm_v2.core.memory",
+      "swarm_v2.core.cognitive_stack",
+      "swarm_v2.core.llm_brain",
+      "swarm_v2.core.task_arbiter",
+      "swarm_v2.core.chain_of_verification",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.qic._state",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.expert_registry",
+      "swarm_v2.core.agent_mesh",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.task_arbiter",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.expert_registry"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.chain_of_verification": [
+      "re",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.cognitive_stack": [
+      "logging",
+      "asyncio",
+      "ollama",
+      "typing",
+      "swarm_v2.core.trm_brain"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.coherence_thresholds": [
+      "typing"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.comm_protocol": [
+      "hmac",
+      "hashlib",
+      "time",
+      "logging",
+      "typing"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.deterministic_forge": [
+      "os",
+      "json",
+      "re",
+      "typing",
+      "swarm_v2.mcp.synthesizer",
+      "swarm_v2.core.trm_brain"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.expert_registry": [
+      "typing"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.federation": [
+      "os",
+      "json",
+      "asyncio",
+      "hashlib",
+      "requests",
+      "time",
+      "typing",
+      "datetime",
+      "dataclasses",
+      "threading",
+      "swarm_v2.core.global_memory"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.global_memory": [
+      "os",
+      "json",
+      "math",
+      "re",
+      "chromadb",
+      "typing",
+      "datetime",
+      "collections",
+      "chromadb.config"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.llm_brain": [
+      "ollama",
+      "asyncio",
+      "typing",
+      "swarm_v2.core.resource_arbiter"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.lobster_shell": [
+      "os",
+      "subprocess",
+      "logging",
+      "typing",
+      "datetime"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.manus_engine": [
+      "asyncio",
+      "torch",
+      "typing",
+      "swarm_v2.core.qic._state",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.skills.file_skill"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.mcp_tool_evolver": [
+      "os",
+      "json",
+      "re",
+      "asyncio",
+      "logging",
+      "hashlib",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum",
+      "swarm_v2.core.reconnaissance_daemon",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.reconnaissance_daemon"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.memory": [
+      "os",
+      "json",
+      "typing",
+      "datetime"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.monitor_daemon": [
+      "asyncio",
+      "logging",
+      "time",
+      "typing",
+      "datetime",
+      "swarm_v2.core.agent_mesh",
+      "swarm_v2_artifacts.coherence_thresholds"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.neural_wall": [
+      "re",
+      "asyncio",
+      "time",
+      "ollama",
+      "json",
+      "ollama",
+      "json",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.proactive_loop": [
+      "asyncio",
+      "logging",
+      "os",
+      "re",
+      "typing",
+      "datetime"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.reconnaissance_daemon": [
+      "asyncio",
+      "os",
+      "json",
+      "time",
+      "datetime",
+      "typing",
+      "threading",
+      "swarm_v2.skills.web_search_skill",
+      "swarm_v2.core.global_memory"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.redis_mock": [
+      "json",
+      "os",
+      "threading",
+      "time"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.remediation_engine": [
+      "logging",
+      "asyncio",
+      "typing",
+      "swarm_v2.core.coherence_thresholds",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.base_agent",
+      "swarm_v2.skills.file_skill",
+      "swarm_v2.skills.doc_ingestion_skill",
+      "swarm_v2.core.agent_mesh"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.resource_arbiter": [
+      "asyncio",
+      "logging",
+      "subprocess",
+      "shutil",
+      "psutil",
+      "typing",
+      "datetime"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.self_healing_infra": [
+      "asyncio",
+      "subprocess",
+      "time",
+      "logging",
+      "os",
+      "signal",
+      "psutil",
+      "urllib.request",
+      "urllib.error",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.sentinel": [
+      "re",
+      "time",
+      "json",
+      "asyncio",
+      "traceback",
+      "typing",
+      "starlette.middleware.base",
+      "starlette.requests",
+      "starlette.responses",
+      "swarm_v2.core.redis_mock",
+      "swarm_v2.core.resource_arbiter"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.swarm_engine": [
+      "asyncio",
+      "typing",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.base_agent"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.swarm_performance_insights": [
+      "os",
+      "json",
+      "asyncio",
+      "logging",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum",
+      "collections",
+      "swarm_v2.core.global_memory",
+      "swarm_v2.core.task_arbiter",
+      "swarm_v2.core.agent_mesh",
+      "swarm_v2.skills.learning_engine",
+      "swarm_v2.mcp.synthesizer",
+      "swarm_v2.core.self_healing_infra",
+      "swarm_v2.core.neural_wall",
+      "swarm_v2.core.agent_mesh"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.task_arbiter": [
+      "asyncio",
+      "psutil",
+      "threading",
+      "os",
+      "logging",
+      "gc",
+      "glob",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum",
+      "collections",
+      "swarm_v2.core.resource_arbiter",
+      "functools"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.telemetry": [
+      "os",
+      "psutil",
+      "typing",
+      "datetime",
+      "swarm_v2.core.manus_engine",
+      "swarm_v2.core.resource_arbiter",
+      "swarm_v2.core.coherence_thresholds",
+      "swarm_v2.core.proactive_loop",
+      "swarm_v2.skills.relationship_skill",
+      "typing",
+      "swarm_v2.experts.registry"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.trm_brain": [
+      "os",
+      "torch",
+      "torch.nn",
+      "typing",
+      "models.recursive_reasoning.trm"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.zero_human_test_gen": [
+      "os",
+      "re",
+      "json",
+      "subprocess",
+      "asyncio",
+      "re",
+      "typing",
+      "dataclasses",
+      "datetime",
+      "enum"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.__init__": [],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.experts.registry": [
+      "swarm_v2.core.base_agent",
+      "swarm_v2.skills.file_skill",
+      "swarm_v2.skills.hardened_shell_skill",
+      "swarm_v2.skills.doc_ingestion_skill",
+      "swarm_v2.skills.mcp_tool_skill",
+      "swarm_v2.skills.embedding_skill",
+      "swarm_v2.skills.trm_skill",
+      "swarm_v2.skills.relationship_skill"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.experts.__init__": [],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.mcp.bridge": [
+      "json",
+      "typing"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.mcp.synthesizer": [
+      "os",
+      "re",
+      "json",
+      "typing",
+      "datetime",
+      "swarm_v2.skills.learning_engine"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.mcp.__init__": [],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.entangled_pipeline_demo": [
+      "asyncio",
+      "os",
+      "torch",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.artifact_pipeline",
+      "swarm_v2.core.qic._state",
+      "swarm_v2.skills.file_skill"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.manus_superposition_test": [
+      "asyncio",
+      "os",
+      "json",
+      "swarm_v2.core.manus_engine"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.relationship_reasoning": [
+      "asyncio",
+      "os",
+      "sys",
+      "json",
+      "datetime",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.artifact_pipeline"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.swarm_benchmark": [
+      "asyncio",
+      "time",
+      "json",
+      "os",
+      "datetime",
+      "swarm_v2.experts.registry"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.test_deterministic_forge": [
+      "asyncio",
+      "swarm_v2.core.deterministic_forge",
+      "swarm_v2.skills.learning_engine"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.test_distributed_stack": [
+      "asyncio",
+      "time",
+      "swarm_v2.experts.registry",
+      "swarm_v2.core.telemetry"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.test_lobster_shell": [
+      "os",
+      "swarm_v2.core.lobster_shell"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.scripts.test_soul_of_swarm": [
+      "asyncio",
+      "swarm_v2.core.telemetry",
+      "swarm_v2.core.proactive_loop",
+      "swarm_v2.skills.relationship_skill"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.doc_ingestion_skill": [
+      "os",
+      "re",
+      "typing",
+      "swarm_v2.skills.learning_engine",
+      "swarm_v2.skills.learning_engine",
+      "swarm_v2.skills.learning_engine"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.embedding_skill": [
+      "os",
+      "json",
+      "httpx",
+      "typing"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.file_skill": [
+      "os",
+      "subprocess",
+      "platform",
+      "swarm_v2.skills.web_search_skill"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.hardened_shell_skill": [
+      "swarm_v2.core.lobster_shell"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.learning_engine": [
+      "os",
+      "json",
+      "re",
+      "time",
+      "typing",
+      "datetime"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.mcp_tool_skill": [
+      "os",
+      "json",
+      "requests",
+      "typing"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.relationship_skill": [
+      "logging",
+      "typing",
+      "swarm_v2.core.trm_brain"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.trm_skill": [
+      "json",
+      "typing",
+      "swarm_v2.core.trm_brain"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.web_search_skill": [
+      "os",
+      "requests",
+      "json",
+      "typing",
+      "dotenv"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.skills.__init__": [],
+    "SwarmOS_v6_Snapshot_extracted.swarm_v2.core.qic._state": [
+      "torch",
+      "typing"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.hrm": [
+      "math",
+      "torch",
+      "torch.nn.functional",
+      "typing",
+      "dataclasses",
+      "torch",
+      "pydantic",
+      "models.common",
+      "models.layers",
+      "models.sparse_embedding"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.transformers_baseline": [
+      "math",
+      "torch",
+      "torch.nn.functional",
+      "typing",
+      "dataclasses",
+      "torch",
+      "pydantic",
+      "models.common",
+      "models.layers",
+      "models.sparse_embedding"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.trm": [
+      "math",
+      "torch",
+      "copy",
+      "torch.nn.functional",
+      "random",
+      "typing",
+      "dataclasses",
+      "torch",
+      "pydantic",
+      "models.common",
+      "models.layers",
+      "models.sparse_embedding"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.trm_hier6": [
+      "math",
+      "torch",
+      "copy",
+      "torch.nn.functional",
+      "random",
+      "typing",
+      "dataclasses",
+      "torch",
+      "pydantic",
+      "models.common",
+      "models.layers",
+      "models.sparse_embedding"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.trm_singlez": [
+      "math",
+      "torch",
+      "copy",
+      "torch.nn.functional",
+      "random",
+      "typing",
+      "dataclasses",
+      "torch",
+      "pydantic",
+      "models.common",
+      "models.layers",
+      "models.sparse_embedding"
+    ],
+    "SwarmOS_v6_Snapshot_extracted.models.recursive_reasoning.__init__": [],
+    "models.recursive_reasoning.hrm": [
+      "math",
+      "torch",
+      "torch.nn.functional",
+      "typing",
+      "dataclasses",
+      "torch",
+      "pydantic",
+      "models.common",
+      "models.layers",
+      "models.sparse_embedding"
+    ],
+    "models.recursive_reasoning.transformers_baseline": [
+      "math",
+      "torch",
+      "torch.nn.functional",
+      "typing",
+      "dataclasses",
+      "torch",
+      "pydantic",
+      "models.common",
+      "models.layers",
+      "models.sparse_embedding"
+    ],
+    "models.recursive_reasoning.trm": [
+      "math",
+      "torch",
+      "copy",
+      "torch.nn.functional",
+      "random",
+      "typing",
+      "dataclasses",
+      "torch",
+      "pydantic",
+      "models.common",
+      "models.layers",
+      "models.sparse_embedding"
+    ],
+    "models.recursive_reasoning.trm_hier6": [
+      "math",
+      "torch",
+      "copy",
+      "torch.nn.functional",
+      "random",
+      "typing",
+      "dataclasses",
+      "torch",
+      "pydantic",
+      "models.common",
+      "models.layers",
+      "models.sparse_embedding"
+    ],
+    "models.recursive_reasoning.trm_singlez": [
+      "math",
+      "torch",
+      "copy",
+      "torch.nn.functional",
+      "random",
+      "typing",
+      "dataclasses",
+      "torch",
+      "pydantic",
+      "models.common",
+      "models.layers",
+      "models.sparse_embedding"
+    ],
+    "models.recursive_reasoning.__init__": [],
+    "infrastructure.bridge.cria": [
+      "hashlib",
+      "logging",
+      "time",
+      "typing"
+    ],
+    "infrastructure.bridge.rac": [
+      "logging",
+      "typing"
+    ],
+    "infrastructure.bridge.tfe": [
+      "logging",
+      "typing"
+    ],
+    "infrastructure.bridge.ust": [
+      "json",
+      "logging",
+      "typing"
+    ],
+    "infrastructure.chaos.chaos_latency": [
+      "asyncio",
+      "logging",
+      "random",
+      "time"
+    ],
+    "infrastructure.crypto.quantum_crypto": [
+      "hashlib",
+      "json",
+      "logging",
+      "os",
+      "time",
+      "typing"
+    ],
+    "infrastructure.crypto.zkp_engine": [
+      "hashlib",
+      "json",
+      "logging",
+      "os"
+    ],
+    "infrastructure.economy.market_engine": [
+      "hashlib",
+      "logging",
+      "time",
+      "typing"
+    ],
+    "infrastructure.economy.reputation_oracle": [
+      "logging",
+      "typing"
+    ],
+    "infrastructure.economy.resource_oracle": [
+      "json",
+      "logging",
+      "psutil",
+      "time",
+      "typing"
+    ],
+    "infrastructure.identity.did_manager": [
+      "json",
+      "logging",
+      "time",
+      "hashlib",
+      "typing"
+    ],
+    "infrastructure.remediation.remediation_engine": [
+      "logging",
+      "random",
+      "typing"
+    ],
+    "infrastructure.self-healing.health-checker": [
+      "asyncio",
+      "aiohttp",
+      "logging",
+      "typing",
+      "datetime"
+    ],
+    "infrastructure.architect.ags.sequencer": [
+      "ast",
+      "json",
+      "logging",
+      "os",
+      "pathlib",
+      "typing"
+    ],
+    "infrastructure.architect.es.simulator": [
+      "logging",
+      "random",
+      "typing"
+    ],
+    "infrastructure.architect.me.mutation_engine": [
+      "hashlib",
+      "logging",
+      "random",
+      "time",
+      "typing"
+    ],
+    "infrastructure.architect.rmlc.controller": [
+      "asyncio",
+      "logging",
+      "time",
+      "sys",
+      "infrastructure.architect.ags.sequencer",
+      "infrastructure.architect.me.mutation_engine",
+      "infrastructure.architect.es.simulator"
+    ],
+    "dashboard.node_modules.flatted.python.flatted": [
+      "json"
+    ]
+  }
+}

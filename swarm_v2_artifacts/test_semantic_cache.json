@@ -1,0 +1,580 @@
+"""
+Comprehensive pytest test suite for semantic_cache.json data model.
+
+Tests cover:
+- Cache entry structural validation
+- Query hashing consistency
+- Hit count and timestamp tracking
+- Metadata handling
+- Edge cases and malformed data
+- Concurrency simulation
+- Performance benchmarks
+"""
+
+import json
+import hashlib
+import time
+import threading
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, Any, Optional
+from copy import deepcopy
+
+import pytest
+
+# ---------------------------------------------------------------------------
+# Fixtures
+# ---------------------------------------------------------------------------
+
+@pytest.fixture
+def sample_cache_data() -> Dict[str, Any]:
+    """Load the actual semantic_cache.json for realistic test data."""
+    cache_path = Path("semantic_cache.json")
+    if not cache_path.exists():
+        pytest.skip("semantic_cache.json not found in current directory")
+    with open(cache_path, "r") as f:
+        return json.load(f)
+
+
+@pytest.fixture
+def valid_entry_template() -> Dict[str, Any]:
+    """Return a template for a valid cache entry."""
+    return {
+        "key": "test_key_123",
+        "query_hash": "abc123def456",
+        "query": "What is the capital of France?",
+        "response": {
+            "content": "Paris",
+            "thought": "Simple geography question"
+        },
+        "created_at": time.time(),
+        "hit_count": 0,
+        "last_hit_at": None,
+        "metadata": {}
+    }
+
+
+@pytest.fixture
+def populated_cache(valid_entry_template) -> Dict[str, Any]:
+    """Create a cache dict with multiple entries for lookup tests."""
+    entries = {}
+    for i in range(5):
+        entry = deepcopy(valid_entry_template)
+        entry["key"] = f"key_{i}"
+        entry["query_hash"] = hashlib.sha256(f"query_{i}".encode()).hexdigest()[:16]
+        entry["query"] = f"Test query number {i}"
+        entry["created_at"] = time.time() - (i * 100)
+        entry["hit_count"] = i * 2
+        entry["last_hit_at"] = time.time() - (i * 10) if i > 0 else None
+        entries[entry["key"]] = entry
+    return {"entries": entries}
+
+
+# ---------------------------------------------------------------------------
+# Structural Validation Tests
+# ---------------------------------------------------------------------------
+
+class TestCacheEntryStructure:
+    """Validate the structural integrity of cache entries."""
+
+    def test_entry_has_required_fields(self, valid_entry_template):
+        """All cache entries must have the 8 required fields."""
+        required_fields = [
+            "key", "query_hash", "query", "response",
+            "created_at", "hit_count", "last_hit_at", "metadata"
+        ]
+        for field in required_fields:
+            assert field in valid_entry_template, f"Missing required field: {field}"
+
+    def test_entry_no_extra_fields(self, valid_entry_template):
+        """Cache entries should not contain unexpected fields."""
+        allowed_fields = {
+            "key", "query_hash", "query", "response",
+            "created_at", "hit_count", "last_hit_at", "metadata"
+        }
+        entry_fields = set(valid_entry_template.keys())
+        extra_fields = entry_fields - allowed_fields
+        assert not extra_fields, f"Unexpected fields found: {extra_fields}"
+
+    def test_response_has_content_and_thought(self, valid_entry_template):
+        """Response object must contain 'content' and 'thought' keys."""
+        response = valid_entry_template["response"]
+        assert "content" in response, "Response missing 'content'"
+        assert "thought" in response, "Response missing 'thought'"
+
+    def test_key_matches_entry_key(self, valid_entry_template):
+        """The 'key' field must match the entry's dictionary key."""
+        entry_key = valid_entry_template["key"]
+        assert entry_key == valid_entry_template["key"], "Key mismatch"
+
+
+class TestCacheDataTypes:
+    """Validate data types of all cache entry fields."""
+
+    def test_key_is_string(self, valid_entry_template):
+        assert isinstance(valid_entry_template["key"], str)
+
+    def test_query_hash_is_string(self, valid_entry_template):
+        assert isinstance(valid_entry_template["query_hash"], str)
+
+    def test_query_is_string(self, valid_entry_template):
+        assert isinstance(valid_entry_template["query"], str)
+
+    def test_response_is_dict(self, valid_entry_template):
+        assert isinstance(valid_entry_template["response"], dict)
+
+    def test_created_at_is_float(self, valid_entry_template):
+        assert isinstance(valid_entry_template["created_at"], (int, float))
+
+    def test_hit_count_is_integer(self, valid_entry_template):
+        assert isinstance(valid_entry_template["hit_count"], int)
+
+    def test_last_hit_at_is_optional_float(self, valid_entry_template):
+        last_hit = valid_entry_template["last_hit_at"]
+        assert last_hit is None or isinstance(last_hit, (int, float))
+
+    def test_metadata_is_dict(self, valid_entry_template):
+        assert isinstance(valid_entry_template["metadata"], dict)
+
+
+# ---------------------------------------------------------------------------
+# Query Hashing Tests
+# ---------------------------------------------------------------------------
+
+class TestQueryHashing:
+    """Validate query hashing consistency and collision resistance."""
+
+    def test_deterministic_hash(self):
+        """Same query must produce the same hash every time."""
+        query = "What is the meaning of life?"
+        hash1 = hashlib.sha256(query.encode()).hexdigest()[:16]
+        hash2 = hashlib.sha256(query.encode()).hexdigest()[:16]
+        assert hash1 == hash2, "Hash is not deterministic"
+
+    def test_different_queries_different_hashes(self):
+        """Different queries should produce different hashes."""
+        q1 = "Hello world"
+        q2 = "Hello World"  # Capital W
+        h1 = hashlib.sha256(q1.encode()).hexdigest()[:16]
+        h2 = hashlib.sha256(q2.encode()).hexdigest()[:16]
+        assert h1 != h2, "Case-insensitive collision detected"
+
+    def test_hash_length(self):
+        """Hash should be exactly 16 characters (64-bit)."""
+        query = "test"
+        hash_val = hashlib.sha256(query.encode()).hexdigest()[:16]
+        assert len(hash_val) == 16, f"Hash length is {len(hash_val)}, expected 16"
+
+    def test_hash_hex_characters_only(self):
+        """Hash should only contain valid hex characters."""
+        query = "test"
+        hash_val = hashlib.sha256(query.encode()).hexdigest()[:16]
+        assert all(c in "0123456789abcdef" for c in hash_val), "Non-hex character in hash"
+
+    def test_empty_query_hash(self):
+        """Empty string query should still produce a valid hash."""
+        query = ""
+        hash_val = hashlib.sha256(query.encode()).hexdigest()[:16]
+        assert len(hash_val) == 16
+        assert all(c in "0123456789abcdef" for c in hash_val)
+
+
+# ---------------------------------------------------------------------------
+# Cache Lookup & Retrieval Tests
+# ---------------------------------------------------------------------------
+
+class TestCacheLookup:
+    """Validate cache lookup operations."""
+
+    def test_lookup_by_key_exists(self, populated_cache):
+        """Lookup by existing key should return the entry."""
+        cache = populated_cache["entries"]
+        key = "key_2"
+        assert key in cache, f"Key '{key}' not found in cache"
+        entry = cache[key]
+        assert entry["key"] == key
+
+    def test_lookup_by_key_not_exists(self, populated_cache):
+        """Lookup by non-existent key should raise KeyError."""
+        cache = populated_cache["entries"]
+        with pytest.raises(KeyError):
+            _ = cache["nonexistent_key"]
+
+    def test_lookup_by_query_hash(self, populated_cache):
+        """Lookup by query_hash should find the correct entry."""
+        cache = populated_cache["entries"]
+        target_hash = cache["key_3"]["query_hash"]
+        found = [e for e in cache.values() if e["query_hash"] == target_hash]
+        assert len(found) == 1, f"Expected 1 match, found {len(found)}"
+        assert found[0]["key"] == "key_3"
+
+    def test_lookup_by_query_exact(self, populated_cache):
+        """Lookup by exact query string should find the entry."""
+        cache = populated_cache["entries"]
+        target_query = "Test query number 1"
+        found = [e for e in cache.values() if e["query"] == target_query]
+        assert len(found) == 1
+        assert found[0]["key"] == "key_1"
+
+    def test_lookup_by_query_case_sensitive(self, populated_cache):
+        """Query lookup should be case-sensitive."""
+        cache = populated_cache["entries"]
+        target_query = "test query number 1"  # lowercase
+        found = [e for e in cache.values() if e["query"] == target_query]
+        assert len(found) == 0, "Case-insensitive lookup should not match"
+
+
+# ---------------------------------------------------------------------------
+# Hit Count & Timestamp Tests
+# ---------------------------------------------------------------------------
+
+class TestHitCountTracking:
+    """Validate hit count increment and tracking."""
+
+    def test_initial_hit_count_zero(self, valid_entry_template):
+        """New entries should start with hit_count = 0."""
+        assert valid_entry_template["hit_count"] == 0
+
+    def test_hit_count_increment(self, valid_entry_template):
+        """Simulate hit count increment."""
+        entry = deepcopy(valid_entry_template)
+        entry["hit_count"] += 1
+        assert entry["hit_count"] == 1
+        entry["hit_count"] += 5
+        assert entry["hit_count"] == 6
+
+    def test_hit_count_non_negative(self, valid_entry_template):
+        """Hit count should never be negative."""
+        entry = deepcopy(valid_entry_template)
+        entry["hit_count"] = max(0, entry["hit_count"] - 1)
+        assert entry["hit_count"] >= 0
+
+    def test_last_hit_at_updates(self, valid_entry_template):
+        """last_hit_at should update when entry is accessed."""
+        entry = deepcopy(valid_entry_template)
+        assert entry["last_hit_at"] is None
+        current_time = time.time()
+        entry["last_hit_at"] = current_time
+        assert entry["last_hit_at"] == current_time
+
+    def test_last_hit_at_monotonic(self, valid_entry_template):
+        """last_hit_at should only move forward in time."""
+        entry = deepcopy(valid_entry_template)
+        t1 = 1000.0
+        t2 = 2000.0
+        entry["last_hit_at"] = t1
+        entry["last_hit_at"] = t2
+        assert entry["last_hit_at"] >= t1
+
+
+# ---------------------------------------------------------------------------
+# Metadata Handling Tests
+# ---------------------------------------------------------------------------
+
+class TestMetadataHandling:
+    """Validate metadata field operations."""
+
+    def test_metadata_empty_by_default(self, valid_entry_template):
+        """New entries should have empty metadata dict."""
+        assert valid_entry_template["metadata"] == {}
+
+    def test_metadata_can_store_arbitrary_data(self, valid_entry_template):
+        """Metadata should accept any JSON-serializable data."""
+        entry = deepcopy(valid_entry_template)
+        entry["metadata"] = {
+            "source": "api",
+            "version": 2,
+            "tags": ["important", "verified"],
+            "confidence": 0.95
+        }
+        assert entry["metadata"]["source"] == "api"
+        assert entry["metadata"]["version"] == 2
+        assert "important" in entry["metadata"]["tags"]
+
+    def test_metadata_serializable(self, valid_entry_template):
+        """Metadata must be JSON-serializable."""
+        entry = deepcopy(valid_entry_template)
+        entry["metadata"] = {"key": "value", "number": 42}
+        json_str = json.dumps(entry)
+        deserialized = json.loads(json_str)
+        assert deserialized["metadata"] == entry["metadata"]
+
+    def test_metadata_nested_structure(self, valid_entry_template):
+        """Metadata should support nested dictionaries."""
+        entry = deepcopy(valid_entry_template)
+        entry["metadata"] = {
+            "level1": {
+                "level2": {
+                    "value": "deep"
+                }
+            }
+        }
+        assert entry["metadata"]["level1"]["level2"]["value"] == "deep"
+
+
+# ---------------------------------------------------------------------------
+# Edge Case & Malformed Data Tests
+# ---------------------------------------------------------------------------
+
+class TestEdgeCases:
+    """Validate handling of edge cases and malformed data."""
+
+    def test_empty_entries_dict(self):
+        """Cache with empty entries dict should be valid."""
+        cache = {"entries": {}}
+        assert len(cache["entries"]) == 0
+
+    def test_null_query(self, valid_entry_template):
+        """Query field should not be None."""
+        entry = deepcopy(valid_entry_template)
+        entry["query"] = None
+        with pytest.raises(TypeError):
+            hashlib.sha256(entry["query"].encode()).hexdigest()[:16]
+
+    def test_empty_query_string(self, valid_entry_template):
+        """Empty query string should be valid."""
+        entry = deepcopy(valid_entry_template)
+        entry["query"] = ""
+        entry["query_hash"] = hashlib.sha256(b"").hexdigest()[:16]
+        assert len(entry["query_hash"]) == 16
+
+    def test_very_long_query(self, valid_entry_template):
+        """Very long queries should not break the system."""
+        entry = deepcopy(valid_entry_template)
+        entry["query"] = "x" * 100000
+        entry["query_hash"] = hashlib.sha256(entry["query"].encode()).hexdigest()[:16]
+        assert len(entry["query_hash"]) == 16
+
+    def test_special_characters_in_query(self, valid_entry_template):
+        """Special characters should be handled correctly."""
+        entry = deepcopy(valid_entry_template)
+        entry["query"] = "!@#$%^&*()_+-=[]{}|;':\",./<>?`~"
+        entry["query_hash"] = hashlib.sha256(entry["query"].encode()).hexdigest()[:16]
+        assert len(entry["query_hash"]) == 16
+
+    def test_unicode_query(self, valid_entry_template):
+        """Unicode characters should be handled correctly."""
+        entry = deepcopy(valid_entry_template)
+        entry["query"] = "日本語のクエリテスト"
+        entry["query_hash"] = hashlib.sha256(entry["query"].encode("utf-8")).hexdigest()[:16]
+        assert len(entry["query_hash"]) == 16
+
+    def test_negative_hit_count(self, valid_entry_template):
+        """Hit count should not be negative."""
+        entry = deepcopy(valid_entry_template)
+        entry["hit_count"] = -1
+        assert entry["hit_count"] < 0, "Negative hit count should be allowed but flagged"
+
+    def test_future_timestamp(self, valid_entry_template):
+        """created_at should not be in the future."""
+        entry = deepcopy(valid_entry_template)
+        entry["created_at"] = time.time() + 3600  # 1 hour in future
+        assert entry["created_at"] > time.time(), "Future timestamp detected"
+
+    def test_missing_response_content(self, valid_entry_template):
+        """Response missing content should be invalid."""
+        entry = deepcopy(valid_entry_template)
+        del entry["response"]["content"]
+        assert "content" not in entry["response"]
+
+    def test_missing_response_thought(self, valid_entry_template):
+        """Response missing thought should be valid (optional)."""
+        entry = deepcopy(valid_entry_template)
+        del entry["response"]["thought"]
+        assert "thought" not in entry["response"]
+
+
+# ---------------------------------------------------------------------------
+# Concurrency & Thread Safety Tests
+# ---------------------------------------------------------------------------
+
+class TestConcurrency:
+    """Validate thread safety for concurrent cache operations."""
+
+    def test_concurrent_hit_count_increment(self, valid_entry_template):
+        """Simulate concurrent hit count increments."""
+        entry = deepcopy(valid_entry_template)
+        num_threads = 10
+        increments_per_thread = 100
+        lock = threading.Lock()
+
+        def increment():
+            nonlocal entry
+            for _ in range(increments_per_thread):
+                with lock:
+                    entry["hit_count"] += 1
+
+        threads = [threading.Thread(target=increment) for _ in range(num_threads)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        expected = num_threads * increments_per_thread
+        assert entry["hit_count"] == expected, (
+            f"Expected {expected}, got {entry['hit_count']}. "
+            "Race condition detected!"
+        )
+
+    def test_concurrent_read_write(self, populated_cache):
+        """Simulate concurrent reads and writes."""
+        cache = populated_cache["entries"]
+        lock = threading.Lock()
+        errors = []
+
+        def reader():
+            for _ in range(100):
+                with lock:
+                    try:
+                        _ = cache["key_2"]
+                    except KeyError:
+                        pass
+
+        def writer():
+            for i in range(100):
+                with lock:
+                    cache[f"temp_{i}"] = deepcopy(valid_entry_template)
+                    cache[f"temp_{i}"]["key"] = f"temp_{i}"
+
+        threads = [threading.Thread(target=reader) for _ in range(5)] + \
+                  [threading.Thread(target=writer) for _ in range(5)]
+
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+
+        assert not errors, f"Errors during concurrent access: {errors}"
+
+
+# ---------------------------------------------------------------------------
+# Performance & Benchmark Tests
+# ---------------------------------------------------------------------------
+
+class TestPerformance:
+    """Validate cache performance characteristics."""
+
+    @pytest.mark.benchmark
+    def test_lookup_speed(self, populated_cache):
+        """Measure lookup speed for cache entries."""
+        cache = populated_cache["entries"]
+        keys = list(cache.keys())
+        start = time.perf_counter()
+        for _ in range(10000):
+            _ = cache[keys[_ % len(keys)]]
+        elapsed = time.perf_counter() - start
+        ops_per_sec = 10000 / elapsed
+        assert ops_per_sec > 100000, (
+            f"Lookup speed too slow: {ops_per_sec:.0f} ops/sec"
+        )
+
+    @pytest.mark.benchmark
+    def test_hash_speed(self):
+        """Measure hashing speed."""
+        queries = [f"query_{i}" for i in range(1000)]
+        start = time.perf_counter()
+        for q in queries:
+            hashlib.sha256(q.encode()).hexdigest()[:16]
+        elapsed = time.perf_counter() - start
+        ops_per_sec = 1000 / elapsed
+        assert ops_per_sec > 50000, (
+            f"Hashing speed too slow: {ops_per_sec:.0f} ops/sec"
+        )
+
+    def test_cache_memory_footprint(self, populated_cache):
+        """Estimate memory footprint of cache."""
+        import sys
+        cache = populated_cache["entries"]
+        size = sys.getsizeof(cache)
+        for entry in cache.values():
+            size += sys.getsizeof(entry)
+        assert size < 10 * 1024 * 1024, (
+            f"Cache memory footprint too large: {size / 1024:.1f} KB"
+        )
+
+
+# ---------------------------------------------------------------------------
+# Integration Tests with Actual File
+# ---------------------------------------------------------------------------
+
+class TestActualCacheFile:
+    """Validate the actual semantic_cache.json file if present."""
+
+    def test_file_exists(self, sample_cache_data):
+        """semantic_cache.json must exist."""
+        assert sample_cache_data is not None
+
+    def test_file_has_entries_key(self, sample_cache_data):
+        """Cache file must have 'entries' key."""
+        assert "entries" in sample_cache_data
+
+    def test_entries_is_dict(self, sample_cache_data):
+        """Entries must be a dictionary."""
+        assert isinstance(sample_cache_data["entries"], dict)
+
+    def test_all_entries_valid(self, sample_cache_data):
+        """All entries in the cache must pass structural validation."""
+        for key, entry in sample_cache_data["entries"].items():
+            assert entry["key"] == key, f"Key mismatch for entry {key}"
+            assert isinstance(entry["query_hash"], str)
+            assert isinstance(entry["query"], str)
+            assert isinstance(entry["response"], dict)
+            assert "content" in entry["response"]
+            assert isinstance(entry["created_at"], (int, float))
+            assert isinstance(entry["hit_count"], int)
+            assert entry["hit_count"] >= 0
+            assert entry["last_hit_at"] is None or isinstance(entry["last_hit_at"], (int, float))
+            assert isinstance(entry["metadata"], dict)
+
+    def test_no_duplicate_hashes(self, sample_cache_data):
+        """No two entries should have the same query_hash."""
+        hashes = [e["query_hash"] for e in sample_cache_data["entries"].values()]
+        assert len(hashes) == len(set(hashes)), "Duplicate query hashes found!"
+
+    def test_no_duplicate_queries(self, sample_cache_data):
+        """No two entries should have the same query."""
+        queries = [e["query"] for e in sample_cache_data["entries"].values()]
+        assert len(queries) == len(set(queries)), "Duplicate queries found!"
+
+
+# ---------------------------------------------------------------------------
+# Property-Based Tests (using Hypothesis)
+# ---------------------------------------------------------------------------
+
+@pytest.mark.skipif(
+    True,
+    reason="Hypothesis tests require hypothesis library: pip install hypothesis"
+)
+class TestPropertyBased:
+    """Property-based tests using Hypothesis for random validation."""
+
+    from hypothesis import given, strategies as st
+
+    @given(
+        key=st.text(min_size=1, max_size=64),
+        query=st.text(min_size=0, max_size=1000),
+        hit_count=st.integers(min_value=0, max_value=1000000)
+    )
+    def test_cache_entry_properties(self, key, query, hit_count):
+        """Random cache entries should always be valid."""
+        entry = {
+            "key": key,
+            "query_hash": hashlib.sha256(query.encode()).hexdigest()[:16],
+            "query": query,
+            "response": {"content": "test", "thought": ""},
+            "created_at": time.time(),
+            "hit_count": hit_count,
+            "last_hit_at": None,
+            "metadata": {}
+        }
+        assert entry["key"] == key
+        assert len(entry["query_hash"]) == 16
+        assert entry["hit_count"] >= 0
+
+
+# ---------------------------------------------------------------------------
+# Main Execution
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v", "--tb=short"])

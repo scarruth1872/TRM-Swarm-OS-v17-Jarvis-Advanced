@@ -1,0 +1,84 @@
+version: '3.8'
+services:
+  # --- Security Layer ---
+  envoy-proxy:
+    image: envoyproxy/envoy:v1.28-latest
+    volumes:
+      - ./security/envoy.yaml:/etc/envoy/envoy.yaml:ro
+      - ./security/certs:/etc/envoy/certs:ro
+    ports:
+      - "443:443"
+      - "9901:9901"
+    networks:
+      - swarm-net
+    depends_on:
+      - vault
+
+  vault:
+    image: hashicorp/vault:1.15
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: "swarm-root-token"
+      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+    ports:
+      - "8200:8200"
+    volumes:
+      - ./security/vault-config.hcl:/vault/config/vault-config.hcl:ro
+    networks:
+      - swarm-net
+
+  # --- Observability Stack ---
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.91.0
+    volumes:
+      - ./observability/otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "8889:8889"
+    networks:
+      - swarm-net
+    depends_on:
+      - jaeger
+      - prometheus
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.52
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686"
+      - "14250:14250"
+    networks:
+      - swarm-net
+
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    volumes:
+      - ./observability/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - swarm-net
+
+  # --- Configuration Service ---
+  etcd:
+    image: quay.io/coreos/etcd:v3.5.11
+    volumes:
+      - ./config/etcd-config.yaml:/etc/etcd/etcd-config.yaml:ro
+      - etcd-data:/var/lib/etcd
+    command: ["/usr/local/bin/etcd", "--config-file=/etc/etcd/etcd-config.yaml"]
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    networks:
+      - swarm-net
+
+networks:
+  swarm-net:
+    driver: bridge
+
+volumes:
+  etcd-data:

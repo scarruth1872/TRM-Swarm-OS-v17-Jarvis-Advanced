@@ -1,0 +1,68 @@
+[
+  {
+    "antibody_id": "ab-1783449768-b1f6",
+    "error_type": "sql_injection",
+    "file_pattern": "*.py",
+    "line_pattern": "f['\\\"].*SELECT.*{.*}",
+    "fix_description": "Use parameterized queries instead of f-strings in SQL",
+    "severity": "critical",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783449768-b898",
+    "error_type": "hardcoded_secret",
+    "file_pattern": "*.py",
+    "line_pattern": "(SECRET_KEY|API_KEY|PASSWORD)\\s*=\\s*['\\\"]",
+    "fix_description": "Move secrets to SecretsVault or environment variables",
+    "severity": "high",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783449768-b082",
+    "error_type": "eval_usage",
+    "file_pattern": "*.py",
+    "line_pattern": "\\beval\\s*\\(",
+    "fix_description": "Replace eval() with ast.literal_eval() or structured parsing",
+    "severity": "high",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783449768-8d10",
+    "error_type": "debug_print",
+    "file_pattern": "*.py",
+    "line_pattern": "^\\s*print\\s*\\(",
+    "fix_description": "Replace debug print() with logger.debug()",
+    "severity": "low",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783449768-adae",
+    "error_type": "bare_except",
+    "file_pattern": "*.py",
+    "line_pattern": "except\\s*:",
+    "fix_description": "Catch specific exceptions instead of bare except",
+    "severity": "medium",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783449768-6c46",
+    "error_type": "path_traversal",
+    "file_pattern": "*.py",
+    "line_pattern": "\\.\\./\\.\\.",
+    "fix_description": "Validate paths against allowlist; use os.path.abspath()",
+    "severity": "high",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  }
+]

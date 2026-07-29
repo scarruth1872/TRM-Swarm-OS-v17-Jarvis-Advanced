@@ -1,0 +1,63 @@
+# =============================================================================
+# TRM Swarm OS — .dockerignore
+# =============================================================================
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.venv
+venv/
+env/
+
+# --- Node / Dashboard ---
+**/node_modules
+**/package-lock.json
+dashboard/node_modules/
+dashboard/dist/
+
+# --- Environment & secrets ---
+.env
+.env.*
+*.pem
+*.key
+
+# --- IDE & tooling ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Version control ---
+.git
+.gitignore
+.dockerignore
+
+# --- Logs ---
+*.log
+api_log.txt
+debug_log.txt
+integration_log.txt
+
+# --- OS artifacts ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Large media / binaries ---
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.mov
+*.zip
+*.tar.gz
+*.whl

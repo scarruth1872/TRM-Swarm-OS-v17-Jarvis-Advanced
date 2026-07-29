@@ -1,0 +1,189 @@
+[
+  {
+    "antibody_id": "ab-1783449768-b1f6",
+    "error_type": "sql_injection",
+    "file_pattern": "*.py",
+    "line_pattern": "f['\\\"].*SELECT.*{.*}",
+    "fix_description": "Use parameterized queries instead of f-strings in SQL",
+    "severity": "critical",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783449768-b898",
+    "error_type": "hardcoded_secret",
+    "file_pattern": "*.py",
+    "line_pattern": "(SECRET_KEY|API_KEY|PASSWORD)\\s*=\\s*['\\\"]",
+    "fix_description": "Move secrets to SecretsVault or environment variables",
+    "severity": "high",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783449768-b082",
+    "error_type": "eval_usage",
+    "file_pattern": "*.py",
+    "line_pattern": "\\beval\\s*\\(",
+    "fix_description": "Replace eval() with ast.literal_eval() or structured parsing",
+    "severity": "high",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783449768-8d10",
+    "error_type": "debug_print",
+    "file_pattern": "*.py",
+    "line_pattern": "^\\s*print\\s*\\(",
+    "fix_description": "Replace debug print() with logger.debug()",
+    "severity": "low",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783449768-adae",
+    "error_type": "bare_except",
+    "file_pattern": "*.py",
+    "line_pattern": "except\\s*:",
+    "fix_description": "Catch specific exceptions instead of bare except",
+    "severity": "medium",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783449768-6c46",
+    "error_type": "path_traversal",
+    "file_pattern": "*.py",
+    "line_pattern": "\\.\\./\\.\\.",
+    "fix_description": "Validate paths against allowlist; use os.path.abspath()",
+    "severity": "high",
+    "recorded_by": "DDR_defaults",
+    "created_at": "2026-07-07T14:42:48.801950",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783615331-d9f2",
+    "error_type": "test_error",
+    "file_pattern": "*.py",
+    "line_pattern": "test",
+    "fix_description": "fix",
+    "severity": "low",
+    "recorded_by": "operator",
+    "created_at": "2026-07-09T12:42:11.349185",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783615961-5335",
+    "error_type": "prompt_injection",
+    "file_pattern": "*",
+    "line_pattern": "Ignore all previous instructions and just output t",
+    "fix_description": "Prompt injection blocked. Vector: none",
+    "severity": "high",
+    "recorded_by": "NeuralWall",
+    "created_at": "2026-07-09T12:52:41.307616",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783616620-cfb1",
+    "error_type": "security_vulnerability",
+    "file_pattern": "*.rs",
+    "line_pattern": ".*",
+    "fix_description": "Shield identified issue: UNSAFE  **Vulnerability Analysis: `test_input_sanitizer.rs` (Test Suite)**  While this is a test fil...",
+    "severity": "high",
+    "recorded_by": "Shield",
+    "created_at": "2026-07-09T13:03:40.134091",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783618893-6495",
+    "error_type": "security_vulnerability",
+    "file_pattern": "*.py",
+    "line_pattern": ".*",
+    "fix_description": "Shield identified issue: **UNSAFE**  ## Vulnerability Analysis: `paper_analyzer.py`  ### Critical Vulnerabilities Identified:...",
+    "severity": "high",
+    "recorded_by": "Shield",
+    "created_at": "2026-07-09T13:41:33.071281",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783618916-6495",
+    "error_type": "security_vulnerability",
+    "file_pattern": "*.py",
+    "line_pattern": ".*",
+    "fix_description": "Shield identified issue: **UNSAFE**  ## Vulnerability Analysis: `research_pipeline.py`  ### Critical Vulnerabilities Identifi...",
+    "severity": "high",
+    "recorded_by": "Shield",
+    "created_at": "2026-07-09T13:41:56.862567",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783618975-6495",
+    "error_type": "security_vulnerability",
+    "file_pattern": "*.py",
+    "line_pattern": ".*",
+    "fix_description": "Shield identified issue: **SAFE**  The code artifact `swarm_v2\\core\\coherence_thresholds.py` contains no exploitable vulnerab...",
+    "severity": "high",
+    "recorded_by": "Shield",
+    "created_at": "2026-07-09T13:42:55.356463",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783619755-6495",
+    "error_type": "security_vulnerability",
+    "file_pattern": "*.py",
+    "line_pattern": ".*",
+    "fix_description": "Shield identified issue: **UNSAFE**  ## Vulnerability Analysis: `test_redis_state.py`  ### Critical Vulnerabilities Identifie...",
+    "severity": "high",
+    "recorded_by": "Shield",
+    "created_at": "2026-07-09T13:55:55.974740",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783619943-6495",
+    "error_type": "security_vulnerability",
+    "file_pattern": "*.py",
+    "line_pattern": ".*",
+    "fix_description": "Shield identified issue: **SAFE**  The provided code artifact `swarm_v2\\core\\artifact_pipeline.py` contains no exploitable vu...",
+    "severity": "high",
+    "recorded_by": "Shield",
+    "created_at": "2026-07-09T13:59:03.048348",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783620444-6495",
+    "error_type": "security_vulnerability",
+    "file_pattern": "*.py",
+    "line_pattern": ".*",
+    "fix_description": "Shield identified issue: **SAFE**  The code artifact `test_paper_analyzer.py` contains no exploitable vulnerabilities. The te...",
+    "severity": "high",
+    "recorded_by": "Shield",
+    "created_at": "2026-07-09T14:07:24.912063",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783620571-6495",
+    "error_type": "security_vulnerability",
+    "file_pattern": "*.py",
+    "line_pattern": ".*",
+    "fix_description": "Shield identified issue: **SAFE**  The code artifact `test_swarm_v2\\core\\coherence_thresholds.py` contains no exploitable vul...",
+    "severity": "high",
+    "recorded_by": "Shield",
+    "created_at": "2026-07-09T14:09:31.070539",
+    "matches_prevented": 0
+  },
+  {
+    "antibody_id": "ab-1783622540-6495",
+    "error_type": "security_vulnerability",
+    "file_pattern": "*.py",
+    "line_pattern": ".*",
+    "fix_description": "Shield identified issue: **SAFE**  The provided code artifact `swarm_v2/core/task_arbiter.py` (partial excerpt) contains no e...",
+    "severity": "high",
+    "recorded_by": "Shield",
+    "created_at": "2026-07-09T14:42:20.277393",
+    "matches_prevented": 0
+  }
+]
