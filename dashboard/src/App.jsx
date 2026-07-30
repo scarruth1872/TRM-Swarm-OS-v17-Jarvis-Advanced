@@ -20,6 +20,7 @@ import MitosisLog from './components/MitosisLog';
 import GenerativeArchitectStudio from './components/GenerativeArchitectStudio';
 import MobileSyncViewport from './components/MobileSyncViewport';
 import ContinuumGenomicsViewport from './components/ContinuumGenomicsViewport';
+import NeuroDynamicEvolutionEngine from './components/NeuroDynamicEvolutionEngine';
 
 // ─── Component: File Write Action Card ──────────────────────────────────
 const FileWriteCard = ({ filename, lang, code }) => {
@@ -108,6 +109,7 @@ const Sidebar = ({ activeTab, onTabChange, stats }) => {
     { id: 'architect', label: '19 GENERATIVE ARCHITECT', color: 'gold' },
     { id: 'mobilesync', label: '20 MOBILE SYNC', color: 'cyan' },
     { id: 'continuum', label: '21 CONTINUUM LEDGER', color: 'purple' },
+    { id: 'neuro', label: '22 NEURO ENGINE', color: 'indigo' },
   ];
 
   return (
@@ -2916,6 +2918,12 @@ export default function App() {
           {activeTab === 'continuum' && (
             <motion.div key="continuum" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <ContinuumGenomicsViewport />
+            </motion.div>
+          )}
+
+          {activeTab === 'neuro' && (
+            <motion.div key="neuro" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <NeuroDynamicEvolutionEngine />
             </motion.div>
           )}
 
