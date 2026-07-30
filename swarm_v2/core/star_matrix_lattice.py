@@ -99,6 +99,22 @@ class StarMatrixLatticeEngine:
             "resonance_score": resonance
         }
         
+    def register_node(self, node_id: str, name: str, lore: str, coordinates: List[float], mass: float = 1.0) -> Dict[str, Any]:
+        STAR_MATRIX_NODES[node_id] = {
+            "key": node_id,
+            "name": name,
+            "coordinates": coordinates[:2] if len(coordinates) >= 2 else [50.0, 50.0],
+            "mass": mass,
+            "function": f"Dynamic user registered node {name}",
+            "lore": lore,
+            "spectrum": [0.8, 0.7, 0.6, 0.5]
+        }
+        return STAR_MATRIX_NODES[node_id]
+
+    def connect_edge(self, source_id: str, target_id: str) -> float:
+        res = self.compute_resonance(source_id, target_id)
+        return res.get("resonance_score", 0.0)
+
     def get_full_lattice(self) -> Dict[str, Any]:
         node_keys = [n["key"] for n in STAR_MATRIX_NODES.values()]
         resonance_matrix = {}

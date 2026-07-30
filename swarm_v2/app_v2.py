@@ -255,6 +255,7 @@ CODE_PAYLOAD_PREFIXES = (
     "/artifacts/create",
     "/skills/forge",
     "/tools/forge",
+    "/api/continuum",
 )
 
 def _is_code_payload_path(path: str) -> bool:

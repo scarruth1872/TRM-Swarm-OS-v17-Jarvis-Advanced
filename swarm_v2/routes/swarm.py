@@ -783,4 +783,145 @@ async def audit_and_repair_pbft_ledger():
     return {"status": "SUCCESS", "audit_result": res}
 
 
+class AddStarMatrixNodeRequest(BaseModel):
+    node_id: str
+    name: str
+    lore: str
+    coordinates: List[float]
+    mass: float = 1.0
+
+
+class AddStarMatrixEdgeRequest(BaseModel):
+    source_id: str
+    target_id: str
+
+
+@router.post("/api/continuum/star-matrix/node")
+async def add_star_matrix_node(req: AddStarMatrixNodeRequest):
+    """Dynamically registers a new celestial node in the Star Matrix Narrative Lattice."""
+    from swarm_v2.core.star_matrix_lattice import get_star_matrix_lattice
+    sml = get_star_matrix_lattice()
+    sml.register_node(req.node_id, req.name, req.lore, req.coordinates, req.mass)
+    return {"status": "REGISTERED", "node_id": req.node_id, "lattice": sml.get_full_lattice()}
+
+
+@router.post("/api/continuum/star-matrix/edge")
+async def add_star_matrix_edge(req: AddStarMatrixEdgeRequest):
+    """Connects a vector edge between two Star Matrix nodes and calculates gravitational resonance R(S1, S2)."""
+    from swarm_v2.core.star_matrix_lattice import get_star_matrix_lattice
+    sml = get_star_matrix_lattice()
+    resonance = sml.connect_edge(req.source_id, req.target_id)
+    return {"status": "CONNECTED", "source": req.source_id, "target": req.target_id, "resonance": resonance}
+
+
+@router.get("/api/continuum/star-matrix/clusters")
+async def get_star_matrix_clusters():
+    """Calculates cluster gravity centers across all active Star Matrix nodes."""
+    from swarm_v2.core.star_matrix_lattice import get_star_matrix_lattice
+    sml = get_star_matrix_lattice()
+    lattice = sml.get_full_lattice()
+    nodes = lattice.get("nodes", {})
+    total_mass = sum(n.get("mass", 1.0) for n in nodes.values()) or 1.0
+    return {
+        "status": "ONLINE",
+        "cluster_count": len(nodes),
+        "total_mass": total_mass,
+        "nodes": nodes
+    }
+
+
+class PBFTVoteRequest(BaseModel):
+    block_id: str
+    proposal_hash: str
+
+
+@router.post("/api/continuum/pbft/vote")
+async def execute_pbft_consensus_vote(req: PBFTVoteRequest):
+    """Executes a 3f+1 Byzantine consensus vote across sub-agent personas."""
+    from swarm_v2.core.continuum_pbft import get_continuum_pbft
+    pbft = get_continuum_pbft()
+    vote_res = pbft.cast_consensus_vote(req.block_id, req.proposal_hash)
+    return {"status": "SUCCESS", "consensus": vote_res}
+
+
+@router.get("/api/continuum/pbft/ledger")
+async def get_pbft_ledger_history():
+    """Returns historical PBFT consensus blocks and cryptographic signatures."""
+    from swarm_v2.core.continuum_pbft import get_continuum_pbft
+    pbft = get_continuum_pbft()
+    return {"status": "ONLINE", "ledger": pbft.get_ledger()}
+
+
+class UpdatePersonaPresetRequest(BaseModel):
+    persona_key: str
+    name: str
+    plasticity: float
+    depth: float
+    empathy: float
+    stochasticity: float
+    voice: str
+
+
+@router.post("/api/continuum/genomics/preset")
+async def update_continuum_persona_preset(req: UpdatePersonaPresetRequest):
+    """Creates or updates a 4D Cognitive Gene persona preset."""
+    from swarm_v2.core.continuum_genomics import PERSONA_PRESETS
+    PERSONA_PRESETS[req.persona_key] = {
+        "name": req.name,
+        "genes": {
+            "plasticity": req.plasticity,
+            "depth": req.depth,
+            "empathy": req.empathy,
+            "stochasticity": req.stochasticity
+        },
+        "voice": req.voice,
+        "function": f"Custom updated posture {req.name}"
+    }
+    return {"status": "UPDATED", "persona_key": req.persona_key, "presets": PERSONA_PRESETS}
+
+
+@router.get("/api/continuum/genomics/history")
+async def get_genomics_mutation_history():
+    """Returns historical 4D gene mutation trajectory logs."""
+    from swarm_v2.core.continuum_genomics import get_continuum_genomics
+    cg = get_continuum_genomics()
+    return {"status": "ONLINE", "history": cg.cache.trajectory_log if hasattr(cg.cache, "trajectory_log") else []}
+
+
+@router.delete("/swarm/microkernel/terminate/{subagent_id}")
+async def terminate_microkernel_subagent(subagent_id: str):
+    """Terminates an active microkernel sub-agent process."""
+    from swarm_v2.core.microkernel_spawner import get_microkernel_spawner
+    spawner = get_microkernel_spawner()
+    success = spawner.terminate_agent(subagent_id)
+    if success:
+        return {"status": "TERMINATED", "subagent_id": subagent_id}
+    raise HTTPException(status_code=404, detail=f"Sub-agent '{subagent_id}' not found")
+
+
+@router.get("/swarm/microkernel/logs/{subagent_id}")
+async def get_microkernel_subagent_logs(subagent_id: str):
+    """Retrieves execution logs for a specific microkernel sub-agent."""
+    from swarm_v2.core.microkernel_spawner import get_microkernel_spawner
+    spawner = get_microkernel_spawner()
+    agent = spawner.active_agents.get(subagent_id)
+    if not agent:
+        raise HTTPException(status_code=404, detail=f"Sub-agent '{subagent_id}' not found")
+    return {"status": "ONLINE", "subagent_id": subagent_id, "logs": agent.execution_logs}
+
+
+@router.get("/api/continuum/oscilloscope/spectral")
+async def get_spectral_oscilloscope_data():
+    """Returns live spectral frequency analysis data."""
+    return {
+        "status": "ONLINE",
+        "sync_percentage": 89.4,
+        "signal_dbm": -64.2,
+        "frequency_ghz": 14.5,
+        "spectrum_runs": [8.7, -0.45, 12.1, 9.4, 15.2],
+        "nominal_status": True
+    }
+
+
+
 

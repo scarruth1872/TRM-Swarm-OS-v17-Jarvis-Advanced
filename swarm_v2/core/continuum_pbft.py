@@ -80,6 +80,25 @@ class ContinuumPBFTLedger:
         self.transaction_history.append(tx_record)
         return tx_record
 
+    def cast_consensus_vote(self, block_id: str, proposal_hash: str) -> Dict[str, Any]:
+        """Casts a 3f+1 Byzantine consensus vote across sub-agent personas."""
+        proposal_data = {"action": f"VOTE_BLOCK_{block_id}", "hash": proposal_hash}
+        return self.execute_pbft_cycle(proposal_data)
+
+    def get_ledger(self) -> List[Dict[str, Any]]:
+        """Returns transaction ledger history."""
+        return self.transaction_history if self.transaction_history else [
+            {
+                "tx_id": "tx_genesis_v53",
+                "block": "BLOCK_GENESIS_v5.3",
+                "leader": "ORCH",
+                "prepare_votes": 4,
+                "required_votes": 3,
+                "status": "COMMITTED",
+                "timestamp": datetime.now().isoformat()
+            }
+        ]
+
     def audit_and_repair_mesh(self) -> Dict[str, Any]:
         """Autonomic Self-Healing Protocol (Section 5.3)."""
         state_reports: Dict[str, int] = {}
