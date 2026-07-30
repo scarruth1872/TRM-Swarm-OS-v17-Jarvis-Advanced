@@ -9,6 +9,7 @@ from typing import List, Dict, Any, Optional
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
 from swarm_v2.routes.models import (
     ChatRequest,
@@ -641,3 +642,36 @@ def _compute_spatial_grid(nodes):
             "signal_strength": 0.85 if n.get('status') == 'online' else 0.1,
         })
     return grid
+
+
+class SpawnSubAgentRequest(BaseModel):
+    parent_role: str
+    subagent_name: str
+    task_spec: str
+    memory_limit_mb: Optional[int] = 64
+    ttl_seconds: Optional[int] = 15
+
+
+@router.post("/swarm/microkernel/spawn")
+async def spawn_microkernel_subagent(req: SpawnSubAgentRequest):
+    """Syscall endpoint allowing Specialist Agents to spawn Microkernel Sub-Agents."""
+    from swarm_v2.core.microkernel_spawner import get_microkernel_spawner
+    spawner = get_microkernel_spawner()
+    res = spawner.spawn_subagent(
+        parent_role=req.parent_role,
+        subagent_name=req.subagent_name,
+        task_spec=req.task_spec,
+        memory_limit_mb=req.memory_limit_mb or 64,
+        ttl_seconds=req.ttl_seconds or 15
+    )
+    return {"status": "SUCCESS", "subagent": res}
+
+
+@router.get("/swarm/microkernel/status")
+async def get_microkernel_process_table():
+    """Returns live Microkernel Sub-Agent process table metrics."""
+    from swarm_v2.core.microkernel_spawner import get_microkernel_spawner
+    spawner = get_microkernel_spawner()
+    table = spawner.get_process_table()
+    return {"status": "ONLINE", "active_subagents_count": len(table), "process_table": table}
+
