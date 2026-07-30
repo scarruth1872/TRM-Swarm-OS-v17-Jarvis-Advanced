@@ -204,6 +204,8 @@ export default function NeuroDynamicEvolutionEngine() {
     }
   };
 
+  const currentPresetData = EVOLUTIONARY_PRESETS[activePreset] || EVOLUTIONARY_PRESETS.symbiont;
+
   return (
     <div className="p-4 md:p-8 max-w-[1700px] mx-auto text-white font-sans relative">
       
