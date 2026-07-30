@@ -18,6 +18,7 @@ import MeshHeatmap from './components/MeshHeatmap';
 import SpatialMesh from './components/SpatialMesh';
 import MitosisLog from './components/MitosisLog';
 import GenerativeArchitectStudio from './components/GenerativeArchitectStudio';
+import MobileSyncViewport from './components/MobileSyncViewport';
 
 // ─── Component: File Write Action Card ──────────────────────────────────
 const FileWriteCard = ({ filename, lang, code }) => {
@@ -104,6 +105,7 @@ const Sidebar = ({ activeTab, onTabChange, stats }) => {
     { id: 'spatial', label: '17 SPATIAL MESH', color: 'emerald' },
     { id: 'evolution', label: '18 EVOLUTION', color: 'blue' },
     { id: 'architect', label: '19 GENERATIVE ARCHITECT', color: 'gold' },
+    { id: 'mobilesync', label: '20 MOBILE SYNC', color: 'cyan' },
   ];
 
   return (
@@ -2900,6 +2902,12 @@ export default function App() {
           {activeTab === 'architect' && (
             <motion.div key="architect" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <GenerativeArchitectStudio />
+            </motion.div>
+          )}
+
+          {activeTab === 'mobilesync' && (
+            <motion.div key="mobilesync" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <MobileSyncViewport />
             </motion.div>
           )}
 

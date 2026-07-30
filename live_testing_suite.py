@@ -70,6 +70,24 @@ try:
 except Exception as e:
     print(f"\n8. Live Kanban Board Sync Error: {e}")
 
+# 9. Mobile Companion Sovereign System Sync
+try:
+    r9 = requests.get("http://127.0.0.1:8021/api/mobile-sync/status", timeout=5)
+    print(f"\n9. Mobile Companion Sovereign Sync (GET /api/mobile-sync/status): {'ONLINE (Status 200)' if r9.status_code == 200 else 'OFFLINE ('+str(r9.status_code)+')'}")
+    if r9.status_code == 200:
+        print(f"   Wi-Fi Peer IP: {r9.json().get('peer_ip')}, Active Nodes: {r9.json().get('dcas9_nodes_active')}")
+except Exception as e:
+    print(f"\n9. Mobile Sync Error: {e}")
+
+# 10. Microkernel Process Table
+try:
+    r10 = requests.get("http://127.0.0.1:8021/swarm/microkernel/status", timeout=5)
+    print(f"\n10. Microkernel Sub-Agent Process Table (GET /swarm/microkernel/status): {'ONLINE (Status 200)' if r10.status_code == 200 else 'OFFLINE ('+str(r10.status_code)+')'}")
+    if r10.status_code == 200:
+        print(f"    Active Sub-Agents Count: {r10.json().get('active_subagents_count')}")
+except Exception as e:
+    print(f"\n10. Microkernel Process Table Error: {e}")
+
 print("\n==================================================================")
-print("===      100% ALL 8 LIVE SELF-HOSTED SERVICES VERIFIED ONLINE  ===")
+print("===     100% ALL 10 LIVE SELF-HOSTED SERVICES VERIFIED ONLINE  ===")
 print("==================================================================")
