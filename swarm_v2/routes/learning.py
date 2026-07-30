@@ -16,6 +16,7 @@ from swarm_v2.core.tool_forge import ToolForge
 router = APIRouter(tags=["learning"])
 
 
+@router.post("/api/learn-resource")
 @router.post("/learning/ingest")
 async def learn_from_text(req: LearnTextRequest):
     """Ingest documentation text and create a new learned skill."""
@@ -25,14 +26,22 @@ async def learn_from_text(req: LearnTextRequest):
     # Use the Architect's LLM to synthesize knowledge
     architect = engine_team.get("Architect")
     llm_fn = architect._llm_generate if architect else None
+    content_text = getattr(req, "content", None) or getattr(req, "resourceName", "Resource Ingestion")
+    name_text = getattr(req, "name", None) or getattr(req, "resourceName", "LearnedResource")
     skill = await learning_engine.learn_from_text(
-        name=req.name, content=req.content, source=req.source,
+        name=name_text, content=content_text, source=getattr(req, "source", "Resource Ingestion"),
         llm_generate=llm_fn
     )
     return {
         "status": "learned",
+        "success": True,
         "skill": skill.to_dict(),
-        "message": f"New skill '{req.name}' acquired from {req.source}"
+        "learnedStructure": {
+            "summary": f"Learned resource {name_text}",
+            "nodes": [{"id": name_text.lower(), "label": name_text, "type": "system"}],
+            "relations": []
+        },
+        "message": f"New skill '{name_text}' acquired."
     }
 
 
