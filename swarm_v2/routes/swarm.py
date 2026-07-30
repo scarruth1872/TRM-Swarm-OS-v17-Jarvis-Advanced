@@ -715,3 +715,51 @@ async def verify_biometric_ping():
     }
 
 
+# ─── PROJECT CONTINUUM (V5.3) SYSTEM INTEGRATION ENDPOINTS ───────────────
+
+class ContinuumRefractionRequest(BaseModel):
+    prompt: str
+    persona: Optional[str] = "continuum"
+
+
+@router.get("/api/continuum/genomics/status")
+async def get_continuum_genomics_status():
+    """Returns System Genomics 4D vector states & active persona presets."""
+    from swarm_v2.core.continuum_genomics import get_continuum_genomics, PERSONA_PRESETS
+    cg = get_continuum_genomics()
+    return {
+        "status": "ONLINE",
+        "version": "Project Continuum v5.3",
+        "active_persona": cg.active_persona_key,
+        "persona_presets": PERSONA_PRESETS,
+        "momentum_refraction": cg.cache.compute_refraction()
+    }
+
+
+@router.post("/api/continuum/genomics/refract")
+async def refract_prompt_continuum(req: ContinuumRefractionRequest):
+    """Refracts a prompt through historical 4D momentum vectors."""
+    from swarm_v2.core.continuum_genomics import get_continuum_genomics
+    cg = get_continuum_genomics()
+    result = cg.refract_prompt(req.prompt, req.persona)
+    return {"status": "SUCCESS", "refraction": result}
+
+
+@router.get("/api/continuum/star-matrix/lattice")
+async def get_star_matrix_lattice_data():
+    """Returns Star Matrix Narrative Lattice coordinates and Gravitational Resonance matrix."""
+    from swarm_v2.core.star_matrix_lattice import get_star_matrix_lattice
+    sml = get_star_matrix_lattice()
+    return {"status": "ONLINE", "lattice": sml.get_full_lattice()}
+
+
+@router.post("/api/continuum/pbft/audit-repair")
+async def audit_and_repair_pbft_ledger():
+    """Executes Autonomic Self-Healing scan across ORCH, SAGE, MUSE, and SENTINEL."""
+    from swarm_v2.core.continuum_pbft import get_continuum_pbft
+    pbft = get_continuum_pbft()
+    res = pbft.audit_and_repair_mesh()
+    return {"status": "SUCCESS", "audit_result": res}
+
+
+

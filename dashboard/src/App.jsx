@@ -19,6 +19,7 @@ import SpatialMesh from './components/SpatialMesh';
 import MitosisLog from './components/MitosisLog';
 import GenerativeArchitectStudio from './components/GenerativeArchitectStudio';
 import MobileSyncViewport from './components/MobileSyncViewport';
+import ContinuumGenomicsViewport from './components/ContinuumGenomicsViewport';
 
 // ─── Component: File Write Action Card ──────────────────────────────────
 const FileWriteCard = ({ filename, lang, code }) => {
@@ -106,6 +107,7 @@ const Sidebar = ({ activeTab, onTabChange, stats }) => {
     { id: 'evolution', label: '18 EVOLUTION', color: 'blue' },
     { id: 'architect', label: '19 GENERATIVE ARCHITECT', color: 'gold' },
     { id: 'mobilesync', label: '20 MOBILE SYNC', color: 'cyan' },
+    { id: 'continuum', label: '21 CONTINUUM LEDGER', color: 'purple' },
   ];
 
   return (
@@ -2908,6 +2910,12 @@ export default function App() {
           {activeTab === 'mobilesync' && (
             <motion.div key="mobilesync" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <MobileSyncViewport />
+            </motion.div>
+          )}
+
+          {activeTab === 'continuum' && (
+            <motion.div key="continuum" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <ContinuumGenomicsViewport />
             </motion.div>
           )}
 
