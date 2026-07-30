@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Dna, Sparkles, Shield, Orbit, Activity, RefreshCw, CheckCircle2, 
-  Brain, Zap, Layers, Network, Database
+  Brain, Zap, Layers, Network, Database, Radio, Compass
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -16,11 +16,81 @@ export default function ContinuumGenomicsViewport() {
   const [promptText, setPromptText] = useState("Synthesize a self-healing PBFT consensus ledger block");
   const [refractedResult, setRefractedResult] = useState(null);
 
+  // Canvas ref for Active Responsive Oscilloscope & Vector Web Canvas
+  const canvasRef = useRef(null);
+
   useEffect(() => {
     fetchGenomicsStatus();
     fetchStarLattice();
     fetchPbftAudit();
   }, []);
+
+  // Oscilloscope & Vector Web Canvas Animation Loop
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+    let phase = 0;
+
+    const render = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      phase += 0.05;
+
+      // Draw Glowing Vector Web Lines
+      ctx.strokeStyle = 'rgba(168, 85, 247, 0.15)';
+      ctx.lineWidth = 1;
+      const width = canvas.width;
+      const height = canvas.height;
+
+      // Star Matrix Node Coordinates on Canvas
+      const nodes = [
+        { x: width * 0.5, y: height * 0.2, label: 'α (Alpha Singularity)' },
+        { x: width * 0.2, y: height * 0.65, label: 'μ (Monad Anchor)' },
+        { x: width * 0.8, y: height * 0.65, label: 'η (Nexus Confluence)' },
+        { x: width * 0.5, y: height * 0.52, label: 'γ (Unified Core)' },
+      ];
+
+      // Draw connecting glowing vector edges
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.stroke();
+        }
+      }
+
+      // Draw Node Pulsing Orbs
+      nodes.forEach((n, idx) => {
+        const pulse = Math.sin(phase + idx) * 3 + 6;
+        ctx.fillStyle = idx === 3 ? '#ec4899' : '#a855f7';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, pulse, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '10px monospace';
+        ctx.fillText(n.label, n.x - 30, n.y - 12);
+      });
+
+      // Draw Active Oscilloscope Waveform at Bottom
+      ctx.beginPath();
+      ctx.strokeStyle = '#06b6d4';
+      ctx.lineWidth = 1.5;
+      for (let x = 0; x < width; x += 5) {
+        const y = height - 25 + Math.sin(x * 0.02 + phase) * 12 + Math.cos(x * 0.05 - phase) * 4;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [starLattice]);
 
   const fetchGenomicsStatus = async () => {
     try {
@@ -66,19 +136,26 @@ export default function ContinuumGenomicsViewport() {
   };
 
   return (
-    <div className="p-6 max-w-[1400px] mx-auto text-text-primary font-sans">
+    <div className="p-6 max-w-[1400px] mx-auto text-text-primary font-sans relative">
       
-      {/* Top Ledger Header */}
-      <div className="bg-background-secondary/80 border border-white/10 rounded-2xl p-8 mb-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
-        <div className="absolute -right-20 -top-20 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
-        
+      {/* Top Glassmorphism Header */}
+      <div className="bg-background-secondary/80 border border-white/10 rounded-2xl p-8 mb-8 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
+        <div className="absolute -right-20 -top-20 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -left-20 -bottom-20 w-96 h-96 bg-cyan-600/15 rounded-full blur-3xl pointer-events-none" />
+
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div>
-            <span className="px-3 py-1 bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-full text-xs font-mono font-bold tracking-widest uppercase mb-3 inline-block">
-              SYSTEM SPECIFICATION LEDGER v5.3
-            </span>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="px-3 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-full text-xs font-mono font-bold tracking-widest uppercase inline-flex items-center gap-1.5">
+                <Compass size={12} className="animate-spin" style={{ animationDuration: '12s' }} />
+                SYSTEM SPECIFICATION LEDGER v5.3
+              </span>
+              <span className="px-3 py-1 bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded-full text-xs font-mono font-bold tracking-widest uppercase">
+                THE RESONANT PEER
+              </span>
+            </div>
             <h1 className="text-3xl font-black tracking-tight text-white mb-2">
-              Project Continuum — Unified Emergence
+              Project Continuum — Cinematic Glassmorphism Canvas
             </h1>
             <p className="text-text-secondary text-sm max-w-2xl leading-relaxed">
               Ambient, fluid, multi-dimensional intelligence platform engineered across a continuous, 
@@ -89,7 +166,7 @@ export default function ContinuumGenomicsViewport() {
           <div className="flex items-center gap-3">
             <button 
               onClick={fetchPbftAudit}
-              className="px-4 py-2.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer"
+              className="px-4 py-2.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-emerald-500/10"
             >
               <Shield size={14} />
               Run Autonomic PBFT Healing
@@ -98,11 +175,50 @@ export default function ContinuumGenomicsViewport() {
         </div>
       </div>
 
+      {/* Star Matrix Narrative Lattice Interactive Vector Canvas */}
+      <div className="bg-background-secondary/60 border border-white/10 rounded-2xl p-6 backdrop-blur-xl mb-8 relative overflow-hidden">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Orbit className="text-cyan-400 animate-spin" size={20} style={{ animationDuration: '15s' }} />
+            <h2 className="text-lg font-bold text-white font-mono uppercase tracking-wider">
+              Star Matrix Narrative Lattice & Oscilloscope Waveform
+            </h2>
+          </div>
+          <span className="text-xs font-mono text-cyan-400">
+            R(S1, S2) = α · Sim(E1,E2) + β · (M1·M2 / d²)
+          </span>
+        </div>
+
+        {/* Oscilloscope & Node Canvas */}
+        <div className="relative w-full h-[220px] bg-black/50 border border-white/10 rounded-xl overflow-hidden mb-6">
+          <canvas ref={canvasRef} width={1200} height={220} className="w-full h-full" />
+        </div>
+
+        {/* Nodal Lore Grid */}
+        {starLattice && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {Object.entries(starLattice.nodes).map(([key, node]) => (
+              <div key={key} className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-purple-500/40 transition-all">
+                <span className="text-[10px] font-mono text-cyan-400 block font-bold mb-1 uppercase">
+                  {key.replace('_', ' ')}
+                </span>
+                <h3 className="font-bold text-sm text-white mb-1">{node.name}</h3>
+                <p className="text-[11px] text-text-secondary mb-2 line-clamp-2 leading-relaxed">{node.lore}</p>
+                <div className="flex justify-between font-mono text-[10px] text-text-secondary border-t border-white/5 pt-2">
+                  <span>Coord: [{node.coordinates.join(', ')}]</span>
+                  <span className="text-purple-400 font-bold">Mass M={node.mass}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Grid Layout: Personas Matrix & Refraction Engine */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
         
         {/* Left: 4D System Genomics Persona Matrix */}
-        <div className="lg:col-span-7 bg-background-secondary/60 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
+        <div className="lg:col-span-7 bg-background-secondary/60 border border-white/10 rounded-2xl p-6 backdrop-blur-xl">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <Dna className="text-purple-400" size={20} />
@@ -122,7 +238,7 @@ export default function ContinuumGenomicsViewport() {
                   onClick={() => handleRefract(key)}
                   className={`p-4 rounded-xl border transition-all cursor-pointer relative overflow-hidden ${
                     isSelected 
-                      ? 'bg-purple-950/40 border-purple-500/50 shadow-lg shadow-purple-500/10' 
+                      ? 'bg-purple-950/50 border-purple-500/60 shadow-lg shadow-purple-500/15' 
                       : 'bg-white/5 border-white/10 hover:border-white/20'
                   }`}
                 >
@@ -177,10 +293,10 @@ export default function ContinuumGenomicsViewport() {
         </div>
 
         {/* Right: Resonant Prompt Refraction Feedback Loop */}
-        <div className="lg:col-span-5 bg-background-secondary/60 border border-white/10 rounded-2xl p-6 backdrop-blur-md flex flex-col justify-between">
+        <div className="lg:col-span-5 bg-background-secondary/60 border border-white/10 rounded-2xl p-6 backdrop-blur-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="text-accent-cyan" size={20} />
+              <Sparkles className="text-cyan-400" size={20} />
               <h2 className="text-lg font-bold text-white font-mono uppercase tracking-wider">
                 Resonant Refraction Loop
               </h2>
@@ -196,13 +312,13 @@ export default function ContinuumGenomicsViewport() {
                 type="text" 
                 value={promptText}
                 onChange={(e) => setPromptText(e.target.value)}
-                className="w-full bg-black/40 border border-white/10 rounded-lg p-2.5 text-xs font-mono text-white focus:border-accent-cyan outline-none"
+                className="w-full bg-black/40 border border-white/10 rounded-lg p-2.5 text-xs font-mono text-white focus:border-cyan-400 outline-none"
               />
             </div>
 
             <button 
               onClick={() => handleRefract(activePersona)}
-              className="w-full min-h-[44px] bg-accent-cyan/20 hover:bg-accent-cyan/30 text-accent-cyan border border-accent-cyan/30 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer mb-4"
+              className="w-full min-h-[44px] bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer mb-4"
             >
               <Zap size={14} />
               Refract Prompt Through G_bar Momentum
@@ -221,42 +337,9 @@ export default function ContinuumGenomicsViewport() {
 
       </div>
 
-      {/* Star Matrix Narrative Lattice View */}
-      {starLattice && (
-        <div className="bg-background-secondary/60 border border-white/10 rounded-2xl p-6 backdrop-blur-md mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <Orbit className="text-accent-cyan animate-spin" size={20} style={{ animationDuration: '15s' }} />
-              <h2 className="text-lg font-bold text-white font-mono uppercase tracking-wider">
-                Star Matrix Narrative Lattice (Gravitational Resonance)
-              </h2>
-            </div>
-            <span className="text-xs font-mono text-accent-cyan">
-              R(S1,S2) = α·Sim + β·(M1·M2 / d²)
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            {Object.entries(starLattice.nodes).map(([key, node]) => (
-              <div key={key} className="bg-white/5 border border-white/10 rounded-xl p-4">
-                <span className="text-[10px] font-mono text-accent-cyan block font-bold mb-1 uppercase">
-                  {key.replace('_', ' ')}
-                </span>
-                <h3 className="font-bold text-sm text-white mb-1">{node.name}</h3>
-                <p className="text-[11px] text-text-secondary mb-2 line-clamp-2">{node.lore}</p>
-                <div className="flex justify-between font-mono text-[10px] text-text-secondary border-t border-white/5 pt-2">
-                  <span>Coord: [{node.coordinates.join(', ')}]</span>
-                  <span className="text-purple-400 font-bold">Mass M={node.mass}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Autonomic PBFT Consensus Ledger Status */}
       {pbftAudit && (
-        <div className="bg-background-secondary/60 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
+        <div className="bg-background-secondary/60 border border-white/10 rounded-2xl p-6 backdrop-blur-xl">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Shield className="text-emerald-400" size={20} />
