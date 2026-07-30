@@ -924,4 +924,101 @@ async def get_spectral_oscilloscope_data():
 
 
 
+# ─── Cognitive Ingestion & System Event Ledger Endpoints ─────────────────────
+
+
+class CognitiveIngestRequest(BaseModel):
+    force: Optional[bool] = False
+
+
+@router.post("/api/cognitive/ingest")
+async def trigger_cognitive_ingestion(body: CognitiveIngestRequest):
+    """
+    Manually trigger a Jarvis cognitive matrix ingestion cycle.
+    Pulls all cognitive matrices from Jarvis (Port 4000), tokenizes them,
+    runs TRM symbolic reasoning, and commits everything to GlobalMemory.
+    """
+    from swarm_v2.core.cognitive_ingestion_engine import get_ingestion_engine, get_event_ledger
+    engine = get_ingestion_engine()
+    ledger = get_event_ledger()
+    ledger.record(
+        "INGESTION", "Manual cognitive ingestion triggered via REST",
+        {"force": body.force}, source="api_cognitive_ingest"
+    )
+    loop = asyncio.get_event_loop()
+    report = await loop.run_in_executor(None, engine.run_ingestion_cycle)
+    return {"status": "OK", "report": report}
+
+
+@router.get("/api/cognitive/status")
+async def get_cognitive_ingestion_status():
+    """
+    Returns the current status of the Jarvis Cognitive Ingestion Engine,
+    including TRM brain load state, cycle count, last ingestion timestamp,
+    and system event ledger statistics.
+    """
+    from swarm_v2.core.cognitive_ingestion_engine import get_ingestion_engine
+    engine = get_ingestion_engine()
+    return engine.get_status()
+
+
+@router.get("/api/cognitive/snapshot")
+async def get_cognitive_snapshot():
+    """
+    Returns the most recent Jarvis cognitive snapshot — all cognitive matrices
+    fetched from Jarvis (memory, skills, DNA presets, noospheric state, etc.)
+    and their TRM token encodings.
+    """
+    from swarm_v2.core.cognitive_ingestion_engine import get_ingestion_engine
+    engine = get_ingestion_engine()
+    snapshot = engine.get_latest_snapshot()
+    if not snapshot:
+        raise HTTPException(status_code=404, detail="No cognitive snapshot available yet. Trigger /api/cognitive/ingest first.")
+    return snapshot
+
+
+@router.get("/api/system/events")
+async def get_system_events(n: int = 100, category: Optional[str] = None):
+    """
+    Returns the last N system events from the persistent System Event Ledger.
+    The ledger tracks every significant event: API calls, agent decisions,
+    PBFT consensus, self-healing, Jarvis ingestion cycles, TRM outputs, etc.
+    Optional `category` filter: INGESTION, API_CALL, AGENT_DECISION, CONSENSUS,
+    HEALING, SYMBIOSIS, TRM_REASONING, GENOMICS, STAR_MATRIX, MEMORY, SYSTEM.
+    """
+    from swarm_v2.core.cognitive_ingestion_engine import get_event_ledger
+    ledger = get_event_ledger()
+    events = ledger.tail(n=min(n, 500), category=category)
+    return {
+        "count": len(events),
+        "category_filter": category,
+        "events": events
+    }
+
+
+@router.get("/api/system/events/stats")
+async def get_system_event_stats():
+    """Returns aggregate statistics across all System Event Ledger entries."""
+    from swarm_v2.core.cognitive_ingestion_engine import get_event_ledger
+    ledger = get_event_ledger()
+    return ledger.get_stats()
+
+
+@router.post("/api/system/events/record")
+async def record_system_event(body: dict):
+    """
+    Manually record a custom event into the System Event Ledger.
+    Body: { category, event, data, source, severity }
+    """
+    from swarm_v2.core.cognitive_ingestion_engine import get_event_ledger
+    ledger = get_event_ledger()
+    entry = ledger.record(
+        category=body.get("category", "SYSTEM"),
+        event=body.get("event", "Manual event"),
+        data=body.get("data", {}),
+        source=body.get("source", "manual_api"),
+        severity=body.get("severity", "INFO")
+    )
+    return {"status": "recorded", "entry": entry}
+
 

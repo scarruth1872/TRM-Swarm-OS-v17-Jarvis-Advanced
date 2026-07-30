@@ -54,6 +54,7 @@ from swarm_v2.core.background_tasks import (
     proactive_orchestration_loop,
     autonomous_pipeline_loop,
 )
+from swarm_v2.core.cognitive_ingestion_engine import get_ingestion_engine, get_event_ledger
 
 # Memory-Mapped IPC shared memory instance
 ipc_bridge = MemoryMappedIPC()
@@ -234,10 +235,32 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         print(f"[Discovery Startup Error] Failed to start discovery daemons: {e}")
     
+    # ── Jarvis Cognitive Ingestion + System Event Ledger ────────────────
+    try:
+        _ledger = get_event_ledger()
+        _ledger.record(
+            "SYSTEM", "Swarm OS Kernel startup complete",
+            {"port": 8021, "agents": len(engine_team)},
+            source="app_v2_lifespan"
+        )
+        _ingestion_engine = get_ingestion_engine()
+        asyncio.create_task(_ingestion_engine.run_daemon(interval=60))
+        print("[System] Jarvis Cognitive Ingestion daemon started (60s interval).")
+        print("[System] System Event Ledger active:", _ledger.path if hasattr(_ledger, 'path') else 'OK')
+    except Exception as e:
+        print(f"[System] Failed to start Cognitive Ingestion daemon: {e}")
+
     yield
     
     # Shutdown logic
     print("[System] Lifespan shutdown...")
+    try:
+        _ledger = get_event_ledger()
+        _ledger.record("SYSTEM", "Swarm OS Kernel shutdown initiated", source="app_v2_lifespan", severity="WARNING")
+        _ingestion_engine = get_ingestion_engine()
+        _ingestion_engine.stop()
+    except Exception:
+        pass
     await monitor_daemon.stop()
 
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -256,6 +279,8 @@ CODE_PAYLOAD_PREFIXES = (
     "/skills/forge",
     "/tools/forge",
     "/api/continuum",
+    "/api/cognitive",
+    "/api/system",
 )
 
 def _is_code_payload_path(path: str) -> bool:
