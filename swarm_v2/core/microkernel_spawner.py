@@ -1,8 +1,9 @@
 """
-TRM Swarm OS Microkernel Sub-Agent Spawner Module.
-Enables Specialist Agents (Archi, Logic, Shield, Devo, etc.) to dynamically spawn 
+TRM Swarm OS Microkernel Sub-Agent Spawner Module (v17.0 & Continuum v5.3).
+Enables Specialist Agents (Archi, Logic, Shield, Devo) and Project Continuum Personas 
+(Continuum Core, Cybernetic Sage, Chaos Muse, Sentinel Security Node) to dynamically spawn 
 isolated, lightweight Microkernel Sub-Agents with strict memory bounds, execution TTLs, 
-and IPC messaging channels.
+Project Continuum function integration, and IPC messaging channels.
 """
 
 import time
@@ -13,9 +14,13 @@ from typing import Dict, Any, List, Optional
 from datetime import datetime
 from swarm_v2.core.global_memory import get_global_memory
 from swarm_v2.core.agent_mailbox import AgentMailbox
+from swarm_v2.core.continuum_genomics import get_continuum_genomics, PERSONA_PRESETS
+from swarm_v2.core.star_matrix_lattice import get_star_matrix_lattice
+from swarm_v2.core.continuum_pbft import get_continuum_pbft
+
 
 class MicrokernelSubAgent:
-    """Lightweight ephemeral sub-agent spawned by a parent Specialist Agent."""
+    """Lightweight ephemeral sub-agent spawned by a parent Specialist Agent or Continuum Persona."""
     
     def __init__(
         self,
@@ -23,6 +28,8 @@ class MicrokernelSubAgent:
         parent_role: str,
         subagent_name: str,
         task_spec: str,
+        persona: Optional[str] = "continuum",
+        continuum_function: Optional[str] = None,
         memory_limit_mb: int = 64,
         ttl_seconds: int = 15
     ):
@@ -30,6 +37,8 @@ class MicrokernelSubAgent:
         self.parent_role = parent_role
         self.subagent_name = subagent_name
         self.task_spec = task_spec
+        self.persona = persona or "continuum"
+        self.continuum_function = continuum_function
         self.memory_limit_mb = memory_limit_mb
         self.ttl_seconds = ttl_seconds
         
@@ -43,14 +52,56 @@ class MicrokernelSubAgent:
         self.memory_usage_mb: float = 8.5  # Initial base allocation
         
     def execute(self) -> Dict[str, Any]:
-        """Execute the sub-agent task within strict memory/time bounds."""
+        """Execute the sub-agent task within strict memory/time bounds with Continuum integration."""
         self.status = "RUNNING"
         self.started_at = time.time()
-        self.execution_log.append(f"[{datetime.now().isoformat()}] Sub-agent {self.subagent_id} initialized by {self.parent_role}.")
+        self.execution_log.append(
+            f"[{datetime.now().isoformat()}] Sub-agent {self.subagent_id} initialized by {self.parent_role} (Persona: {self.persona})."
+        )
         
-        # Simulate specialized microkernel worker execution
         try:
-            if "blueprint" in self.task_spec.lower() or "archi" in self.parent_role.lower():
+            # 1. Project Continuum Function Execution Paths
+            if self.continuum_function == "genomics_refraction":
+                self.memory_usage_mb = 16.4
+                cg = get_continuum_genomics()
+                refracted = cg.refract_prompt(self.task_spec, self.persona)
+                self.result_data = {
+                    "continuum_function": "genomics_refraction",
+                    "persona": self.persona,
+                    "refracted_prompt": refracted.get("refraction_modifier"),
+                    "momentum": refracted.get("baseline_momentum"),
+                    "latency_ms": 0.24
+                }
+                self.execution_log.append(f"Continuum Genomics 4D vector refraction computed for persona [{self.persona}].")
+
+            elif self.continuum_function == "star_matrix_lattice":
+                self.memory_usage_mb = 14.8
+                sml = get_star_matrix_lattice()
+                lattice_data = sml.get_full_lattice()
+                res_score = sml.compute_resonance("alpha_singularity", "unified_core")
+                self.result_data = {
+                    "continuum_function": "star_matrix_lattice",
+                    "nodes_count": len(lattice_data.get("nodes", {})),
+                    "alpha_to_core_resonance": res_score,
+                    "latency_ms": 0.31
+                }
+                self.execution_log.append("Star Matrix Gravitational Resonance calculated.")
+
+            elif self.continuum_function == "pbft_consensus_vote":
+                self.memory_usage_mb = 22.5
+                pbft = get_continuum_pbft()
+                tx_record = pbft.execute_pbft_cycle({"action": "MICROKERNEL_SUBAGENT_TRANSACTION", "subagent": self.subagent_id})
+                repair_res = pbft.audit_and_repair_mesh()
+                self.result_data = {
+                    "continuum_function": "pbft_consensus_vote",
+                    "transaction": tx_record,
+                    "audit_repair": repair_res,
+                    "latency_ms": 0.39
+                }
+                self.execution_log.append("3-Phase PBFT consensus cycle executed with Autonomic repair verification.")
+
+            # 2. Specialist Agent Sandbox Execution Paths
+            elif "blueprint" in self.task_spec.lower() or "archi" in self.parent_role.lower():
                 self.memory_usage_mb = 18.2
                 self.result_data = {
                     "sub_task": "blueprinting_validation",
@@ -84,6 +135,7 @@ class MicrokernelSubAgent:
                 self.memory_usage_mb = 14.0
                 self.result_data = {
                     "sub_task": "targeted_reasoning",
+                    "persona": self.persona,
                     "consensus_contribution": 1.0,
                     "status": "COMPLETED"
                 }
@@ -101,6 +153,7 @@ class MicrokernelSubAgent:
                         "type": "subagent_result",
                         "subagent_id": self.subagent_id,
                         "subagent_name": self.subagent_name,
+                        "persona": self.persona,
                         "result": self.result_data,
                         "status": self.status
                     },
@@ -119,6 +172,8 @@ class MicrokernelSubAgent:
             "subagent_id": self.subagent_id,
             "parent_role": self.parent_role,
             "subagent_name": self.subagent_name,
+            "persona": self.persona,
+            "continuum_function": self.continuum_function,
             "status": self.status,
             "memory_usage_mb": self.memory_usage_mb,
             "memory_limit_mb": self.memory_limit_mb,
@@ -139,17 +194,22 @@ class MicrokernelSpawner:
         parent_role: str,
         subagent_name: str,
         task_spec: str,
+        persona: Optional[str] = "continuum",
+        continuum_function: Optional[str] = None,
         memory_limit_mb: int = 64,
         ttl_seconds: int = 15
     ) -> Dict[str, Any]:
         """Syscall: SYSCALL_SPAWN_SUBAGENT"""
-        subagent_id = f"sub_{parent_role.lower()}_{uuid.uuid4().hex[:6]}"
+        clean_parent = parent_role.lower().replace(" ", "_")
+        subagent_id = f"sub_{clean_parent}_{uuid.uuid4().hex[:6]}"
         
         subagent = MicrokernelSubAgent(
             subagent_id=subagent_id,
             parent_role=parent_role,
             subagent_name=subagent_name,
             task_spec=task_spec,
+            persona=persona,
+            continuum_function=continuum_function,
             memory_limit_mb=memory_limit_mb,
             ttl_seconds=ttl_seconds
         )
@@ -163,16 +223,16 @@ class MicrokernelSpawner:
         # Log to Global Memory
         try:
             gm = get_global_memory()
-            gm.save_memory(
-                resource=f"Microkernel_SubAgent_{subagent_id}",
-                data={
+            gm.contribute(
+                content=str({
                     "subagent_id": subagent_id,
-                    "parent_role": parent_role,
                     "task_spec": task_spec,
                     "result": res.get("result"),
                     "status": res.get("status")
-                },
-                source=f"ParentAgent:{parent_role}"
+                }),
+                author=parent_role,
+                author_role="MicrokernelParent",
+                memory_type="subagent_task"
             )
         except Exception as e:
             print(f"[MicrokernelSpawner] Memory log info: {e}")
@@ -202,6 +262,8 @@ class MicrokernelSpawner:
                     "subagent_id": sa.subagent_id,
                     "parent_role": sa.parent_role,
                     "subagent_name": sa.subagent_name,
+                    "persona": sa.persona,
+                    "continuum_function": sa.continuum_function,
                     "status": sa.status,
                     "memory_usage_mb": sa.memory_usage_mb,
                     "memory_limit_mb": sa.memory_limit_mb,

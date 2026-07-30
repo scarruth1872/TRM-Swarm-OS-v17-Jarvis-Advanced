@@ -648,23 +648,44 @@ class SpawnSubAgentRequest(BaseModel):
     parent_role: str
     subagent_name: str
     task_spec: str
+    persona: Optional[str] = "continuum"
+    continuum_function: Optional[str] = None
     memory_limit_mb: Optional[int] = 64
     ttl_seconds: Optional[int] = 15
 
 
 @router.post("/swarm/microkernel/spawn")
 async def spawn_microkernel_subagent(req: SpawnSubAgentRequest):
-    """Syscall endpoint allowing Specialist Agents to spawn Microkernel Sub-Agents."""
+    """Syscall endpoint allowing Specialist Agents & Continuum Personas to spawn Microkernel Sub-Agents."""
     from swarm_v2.core.microkernel_spawner import get_microkernel_spawner
     spawner = get_microkernel_spawner()
     res = spawner.spawn_subagent(
         parent_role=req.parent_role,
         subagent_name=req.subagent_name,
         task_spec=req.task_spec,
+        persona=req.persona or "continuum",
+        continuum_function=req.continuum_function,
         memory_limit_mb=req.memory_limit_mb or 64,
         ttl_seconds=req.ttl_seconds or 15
     )
     return {"status": "SUCCESS", "subagent": res}
+
+
+@router.post("/swarm/microkernel/spawn-continuum")
+async def spawn_continuum_microkernel_subagent(req: SpawnSubAgentRequest):
+    """Syscall endpoint specifically for spawning Project Continuum Persona Sub-Agents."""
+    from swarm_v2.core.microkernel_spawner import get_microkernel_spawner
+    spawner = get_microkernel_spawner()
+    res = spawner.spawn_subagent(
+        parent_role=req.parent_role,
+        subagent_name=req.subagent_name,
+        task_spec=req.task_spec,
+        persona=req.persona or "continuum",
+        continuum_function=req.continuum_function or "genomics_refraction",
+        memory_limit_mb=req.memory_limit_mb or 64,
+        ttl_seconds=req.ttl_seconds or 15
+    )
+    return {"status": "SUCCESS", "continuum_subagent": res}
 
 
 @router.get("/swarm/microkernel/status")
