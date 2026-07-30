@@ -139,15 +139,11 @@ async def autonomous_pipeline_loop(pipeline, engine_team):
       - Non-code files (.json, .md, .log, .yaml) auto-approved, not test-run.
       - integrate() now properly awaited (was async but called synchronously).
       - Integration loop drains all approved-but-not-integrated artifacts.
+      - Phase 1 (test/approve) and Phase 2 (integrate) run as separate concurrent tasks.
     """
-    from swarm_v2.core.kanban_board import get_kanban_board
     from swarm_v2.core.artifact_pipeline import ArtifactStatus
-    kb = get_kanban_board()
     log_file = "swarm_v2_memory/pipeline.log"
-
-    # Non-code extensions — skip QA testing, just approve & integrate directly
     NON_CODE_EXTS = ('.md', '.txt', '.json', '.log', '.yaml', '.yml', '.toml', '.cfg', '.ini', '.env')
-    # Subdirectory mapping by file type
     SUBDIR_MAP = {
         'docs': ('.md', '.txt'),
         'config': ('.json', '.yaml', '.yml', '.toml', '.cfg', '.ini', '.env'),
@@ -161,82 +157,94 @@ async def autonomous_pipeline_loop(pipeline, engine_team):
                 return subdir
         return 'code'
 
-    integration_batch_size = 30  # Integrate up to 30 approved artifacts per cycle
+    async def _phase1_pending_loop():
+        """Continuously tests and approves PENDING artifacts."""
+        from swarm_v2.core.kanban_board import get_kanban_board
+        kb = get_kanban_board()
+        while True:
+            try:
+                pipeline.scan_artifacts()
+                pending = pipeline.list_by_status(ArtifactStatus.PENDING)
+                for art in pending[:20]:
+                    filename = art["filename"]
+                    active_cards = kb.get_column("IN_PROGRESS") + kb.get_column("TODO")
+                    matching_card = next(
+                        (c for c in active_cards if filename in c.get("title", "") or filename in c.get("description", "")),
+                        None
+                    )
+                    if matching_card:
+                        kb.move_card(matching_card["card_id"], "REVIEW")
 
+                    ext = os.path.splitext(filename)[1].lower()
+                    if ext in NON_CODE_EXTS:
+                        pipeline.approve(filename, "System", "Auto-approved: static/non-code file")
+                        continue
+
+                    content = pipeline.get_content(filename)
+                    qa = engine_team.get("QA Engineer")
+                    if qa and content and len(content) > 10:
+                        test_filename = f"test_{filename}" if not filename.startswith("test_") else filename
+                        if test_filename != filename:
+                            test_task = (
+                                f"[ACTION] Create a comprehensive pytest test suite for this code file.\n"
+                                f"File: '{filename}':\n\n{content[:1500]}"
+                            )
+                            try:
+                                await qa.process_task(test_task, sender="autonomous_pipeline")
+                            except Exception as qa_err:
+                                print(f"[Pipeline] QA task error for {filename}: {qa_err}")
+                            test_content = pipeline.get_content(test_filename)
+                            passed = (test_content is not None
+                                      and len(test_content) > 50
+                                      and ("def test_" in test_content or "class Test" in test_content))
+                            pipeline.set_tested(filename, test_filename, passed, "Auto-verified by CI loop")
+                            if passed:
+                                pipeline.approve(filename, "System", "Auto-approved after tests passed")
+                        await asyncio.sleep(5)
+            except Exception as e:
+                with open(log_file, "a") as f:
+                    f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} [ERROR] Phase1: {e}\n")
+                print(f"[Pipeline] Phase1 error: {e}")
+            await asyncio.sleep(30)
+
+    async def _phase2_integration_loop():
+        """Continuously integrates APPROVED artifacts — runs independently of Phase 1."""
+        integration_batch_size = 50  # Process 50 per cycle to drain backlog faster
+        while True:
+            try:
+                approved = pipeline.list_by_status(ArtifactStatus.APPROVED)
+                integrated_this_cycle = 0
+                for art in approved:
+                    if integrated_this_cycle >= integration_batch_size:
+                        break
+                    filename = art.get("filename")
+                    if not filename:
+                        continue
+                    if art.get("integrated_at"):  # Race condition guard
+                        continue
+                    try:
+                        subdir = _target_subdir(filename)
+                        result = await pipeline.integrate(filename, target_subdir=subdir)
+                        if result:
+                            integrated_this_cycle += 1
+                    except Exception as int_err:
+                        print(f"[Pipeline] Integration error for {filename}: {int_err}")
+                if integrated_this_cycle > 0:
+                    remaining = max(0, len(approved) - integrated_this_cycle)
+                    print(f"[Pipeline] Integrated {integrated_this_cycle} artifacts. Backlog remaining: ~{remaining}")
+                    with open(log_file, "a") as f:
+                        f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} [INFO] Integrated {integrated_this_cycle}, remaining ~{remaining}\n")
+            except Exception as e:
+                with open(log_file, "a") as f:
+                    f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} [ERROR] Phase2: {e}\n")
+                print(f"[Pipeline] Phase2 error: {e}")
+            await asyncio.sleep(15)  # Run every 15s (faster drain)
+
+    # Launch both phases as concurrent independent tasks
+    asyncio.create_task(_phase1_pending_loop())
+    asyncio.create_task(_phase2_integration_loop())
+    # Keep the parent coroutine alive
     while True:
-        try:
-            pipeline.scan_artifacts()
+        await asyncio.sleep(3600)
 
-            # ── Phase 1: Process PENDING artifacts ──────────────────────────
-            pending = pipeline.list_by_status(ArtifactStatus.PENDING)
-            for art in pending[:20]:  # Limit per cycle to avoid overwhelming QA
-                filename = art["filename"]
 
-                active_cards = kb.get_column("IN_PROGRESS") + kb.get_column("TODO")
-                matching_card = next(
-                    (c for c in active_cards if filename in c.get("title", "") or filename in c.get("description", "")),
-                    None
-                )
-                if matching_card:
-                    kb.move_card(matching_card["card_id"], "REVIEW")
-
-                ext = os.path.splitext(filename)[1].lower()
-
-                # Non-code: auto-approve without QA test run
-                if ext in NON_CODE_EXTS:
-                    pipeline.approve(filename, "System", "Auto-approved: static/non-code file")
-                    continue
-
-                # Code files: run QA Engineer test generation
-                content = pipeline.get_content(filename)
-                qa = engine_team.get("QA Engineer")
-                if qa and content and len(content) > 10:
-                    test_filename = f"test_{filename}" if not filename.startswith("test_") else filename
-                    if test_filename != filename:
-                        test_task = (
-                            f"[ACTION] Create a comprehensive pytest test suite for this code file.\n"
-                            f"File: '{filename}':\n\n{content[:1500]}"
-                        )
-                        try:
-                            await qa.process_task(test_task, sender="autonomous_pipeline")
-                        except Exception as qa_err:
-                            print(f"[Pipeline] QA task error for {filename}: {qa_err}")
-                        test_content = pipeline.get_content(test_filename)
-                        # FIXED: test passes only if QA actually wrote a non-trivial test file
-                        passed = (test_content is not None
-                                  and len(test_content) > 50
-                                  and ("def test_" in test_content or "class Test" in test_content))
-                        pipeline.set_tested(filename, test_filename, passed, "Auto-verified by CI loop")
-                        if passed:
-                            pipeline.approve(filename, "System", "Auto-approved after tests passed")
-                    await asyncio.sleep(5)
-
-            # ── Phase 2: Integrate APPROVED artifacts ─────────────────────────
-            # FIXED: integrate() is async — must be awaited.
-            # Also drains the backlog of 1,500+ stuck approved artifacts.
-            approved = pipeline.list_by_status(ArtifactStatus.APPROVED)
-            integrated_this_cycle = 0
-            for art in approved:
-                if integrated_this_cycle >= integration_batch_size:
-                    break
-                filename = art.get("filename")
-                if not filename:
-                    continue
-                # Skip if already marked integrated (race condition guard)
-                if art.get("integrated_at"):
-                    continue
-                try:
-                    subdir = _target_subdir(filename)
-                    result = await pipeline.integrate(filename, target_subdir=subdir)
-                    if result:
-                        integrated_this_cycle += 1
-                except Exception as int_err:
-                    print(f"[Pipeline] Integration error for {filename}: {int_err}")
-            if integrated_this_cycle > 0:
-                print(f"[Pipeline] Integrated {integrated_this_cycle} artifacts this cycle. Backlog remaining: {max(0, len(approved) - integrated_this_cycle)}")
-
-        except Exception as e:
-            with open(log_file, "a") as f:
-                f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} [ERROR] Pipeline loop: {e}\n")
-            print(f"[Pipeline] Loop error: {e}")
-        await asyncio.sleep(30)
