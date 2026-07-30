@@ -118,7 +118,10 @@ class ArtifactPipeline:
                 if auto_integrate:
                     # Determine subdir for docs/maintenance
                     subdir = "docs" if is_doc else "maintenance"
-                    self.integrate(rel_path, target_subdir=subdir, batch_save=True)
+                    # NOTE: integrate() is async — cannot be called directly here.
+                    # The autonomous_pipeline_loop now drains all APPROVED artifacts each cycle.
+                    # We just mark status=APPROVED so the loop picks it up.
+                    self.artifacts[rel_path]["integrated_path"] = None
                     new_discoveries.append(rel_path)
 
         # Scan agent skills directory (.agent/skills/) - these are CRITICAL for agent personas

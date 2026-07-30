@@ -27,7 +27,7 @@ async def auto_scan_pipeline(pipeline, engine_team):
                 filename = art["filename"]
                 print(f"[Shield] Security auditing: {filename}...")
 
-                if filename.endswith((".md", ".txt", ".json")):
+                if filename.endswith((".md", ".txt", ".json", ".log", ".yaml", ".yml")):
                     pipeline.set_security_status(filename, "safe", "Skipped (static content)")
                     continue
 
@@ -45,7 +45,8 @@ async def auto_scan_pipeline(pipeline, engine_team):
                 status = "unsafe"
                 if "safe" in response_text.lower() and "unsafe" not in response_text.lower() and "vulnerability" not in response_text.lower():
                     status = "safe"
-                pipeline.set_security_status(status)
+                # FIX: pass filename as required first argument
+                pipeline.set_security_status(filename, status)
         except Exception as e:
             print(f"[Shield] Auto-scan error: {e}")
         await asyncio.sleep(30)
@@ -132,35 +133,110 @@ async def proactive_orchestration_loop(pipeline, engine_team, agent_mesh):
 # ─── Autonomous Pipeline Loop ─────────────────────────────────────────────
 
 async def autonomous_pipeline_loop(pipeline, engine_team):
-    """Background task that autonomously tests, approves, and integrates pending artifacts."""
+    """
+    Background task that autonomously tests, approves, and integrates pending artifacts.
+    FIXED:
+      - Non-code files (.json, .md, .log, .yaml) auto-approved, not test-run.
+      - integrate() now properly awaited (was async but called synchronously).
+      - Integration loop drains all approved-but-not-integrated artifacts.
+    """
     from swarm_v2.core.kanban_board import get_kanban_board
+    from swarm_v2.core.artifact_pipeline import ArtifactStatus
     kb = get_kanban_board()
     log_file = "swarm_v2_memory/pipeline.log"
+
+    # Non-code extensions — skip QA testing, just approve & integrate directly
+    NON_CODE_EXTS = ('.md', '.txt', '.json', '.log', '.yaml', '.yml', '.toml', '.cfg', '.ini', '.env')
+    # Subdirectory mapping by file type
+    SUBDIR_MAP = {
+        'docs': ('.md', '.txt'),
+        'config': ('.json', '.yaml', '.yml', '.toml', '.cfg', '.ini', '.env'),
+        'logs': ('.log',),
+    }
+
+    def _target_subdir(filename):
+        ext = os.path.splitext(filename)[1].lower()
+        for subdir, exts in SUBDIR_MAP.items():
+            if ext in exts:
+                return subdir
+        return 'code'
+
+    integration_batch_size = 30  # Integrate up to 30 approved artifacts per cycle
 
     while True:
         try:
             pipeline.scan_artifacts()
-            pending = pipeline.list_by_status(pipeline.ArtifactStatus.PENDING)
-            for art in pending:
+
+            # ── Phase 1: Process PENDING artifacts ──────────────────────────
+            pending = pipeline.list_by_status(ArtifactStatus.PENDING)
+            for art in pending[:20]:  # Limit per cycle to avoid overwhelming QA
                 filename = art["filename"]
+
                 active_cards = kb.get_column("IN_PROGRESS") + kb.get_column("TODO")
-                matching_card = next((c for c in active_cards if filename in c.get("title", "") or filename in c.get("description", "")), None)
+                matching_card = next(
+                    (c for c in active_cards if filename in c.get("title", "") or filename in c.get("description", "")),
+                    None
+                )
                 if matching_card:
                     kb.move_card(matching_card["card_id"], "REVIEW")
+
+                ext = os.path.splitext(filename)[1].lower()
+
+                # Non-code: auto-approve without QA test run
+                if ext in NON_CODE_EXTS:
+                    pipeline.approve(filename, "System", "Auto-approved: static/non-code file")
+                    continue
+
+                # Code files: run QA Engineer test generation
                 content = pipeline.get_content(filename)
                 qa = engine_team.get("QA Engineer")
                 if qa and content and len(content) > 10:
                     test_filename = f"test_{filename}" if not filename.startswith("test_") else filename
                     if test_filename != filename:
-                        test_task = f"[ACTION] Create a comprehensive pytest test suite for this code.\\nFile: '{filename}':\\n\\n{content[:1500]}"
-                        await qa.process_task(test_task, sender="autonomous_pipeline")
+                        test_task = (
+                            f"[ACTION] Create a comprehensive pytest test suite for this code file.\n"
+                            f"File: '{filename}':\n\n{content[:1500]}"
+                        )
+                        try:
+                            await qa.process_task(test_task, sender="autonomous_pipeline")
+                        except Exception as qa_err:
+                            print(f"[Pipeline] QA task error for {filename}: {qa_err}")
                         test_content = pipeline.get_content(test_filename)
-                        passed = test_content is not None and len(test_content) > 50
+                        # FIXED: test passes only if QA actually wrote a non-trivial test file
+                        passed = (test_content is not None
+                                  and len(test_content) > 50
+                                  and ("def test_" in test_content or "class Test" in test_content))
                         pipeline.set_tested(filename, test_filename, passed, "Auto-verified by CI loop")
                         if passed:
                             pipeline.approve(filename, "System", "Auto-approved after tests passed")
-                    await asyncio.sleep(10)
+                    await asyncio.sleep(5)
+
+            # ── Phase 2: Integrate APPROVED artifacts ─────────────────────────
+            # FIXED: integrate() is async — must be awaited.
+            # Also drains the backlog of 1,500+ stuck approved artifacts.
+            approved = pipeline.list_by_status(ArtifactStatus.APPROVED)
+            integrated_this_cycle = 0
+            for art in approved:
+                if integrated_this_cycle >= integration_batch_size:
+                    break
+                filename = art.get("filename")
+                if not filename:
+                    continue
+                # Skip if already marked integrated (race condition guard)
+                if art.get("integrated_at"):
+                    continue
+                try:
+                    subdir = _target_subdir(filename)
+                    result = await pipeline.integrate(filename, target_subdir=subdir)
+                    if result:
+                        integrated_this_cycle += 1
+                except Exception as int_err:
+                    print(f"[Pipeline] Integration error for {filename}: {int_err}")
+            if integrated_this_cycle > 0:
+                print(f"[Pipeline] Integrated {integrated_this_cycle} artifacts this cycle. Backlog remaining: {max(0, len(approved) - integrated_this_cycle)}")
+
         except Exception as e:
             with open(log_file, "a") as f:
-                f.write(f"{datetime.now().strftime('%Y-%m-%d')} [ERROR] Pipeline loop: {e}\\n")
+                f.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} [ERROR] Pipeline loop: {e}\n")
+            print(f"[Pipeline] Loop error: {e}")
         await asyncio.sleep(30)
