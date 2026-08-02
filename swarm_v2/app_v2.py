@@ -125,7 +125,7 @@ async def lifespan(app: FastAPI):
                 name="Jarvis Gateway",
                 role="gateway",
                 host="localhost",
-                port=4000,
+                port=3000,
                 specialties=["cognitive_companion", "google_workspace", "ui_portal"],
                 skills=["runJarvisAgent", "read_file_contents"]
             )
@@ -143,6 +143,15 @@ async def lifespan(app: FastAPI):
             )
             agent_mesh.register_node(antigravity_node)
             print("[System] Registered Antigravity PM node in Agent Mesh")
+
+            # Start External Socket Bridge for Brain AI integration (WebSocket port 8090)
+            try:
+                from swarm_v2.core.external_socket_bridge import get_external_socket_server
+                socket_bridge = get_external_socket_server()
+                socket_bridge.start_in_background()
+                print("[System] External Socket Bridge started on port 8090 for Brain AI integration")
+            except Exception as e:
+                print(f"[System] Socket Bridge start skipped: {e}")
             from swarm_v2.core.expert_registry import get_expert_registry
             get_expert_registry().register_team(engine_team)
             print(f"[System] Registered {len(engine_team)} live agent personas with ExpertRegistry")
@@ -364,7 +373,7 @@ try:
         name="Jarvis Gateway",
         role="gateway",
         host="localhost",
-        port=4000,
+        port=3000,
         specialties=["cognitive_companion", "google_workspace", "ui_portal"],
         skills=["runJarvisAgent", "read_file_contents"],
     )

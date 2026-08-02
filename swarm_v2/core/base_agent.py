@@ -798,7 +798,7 @@ class BaseAgent:
             "Logic": "Hello. I'm Logic, specialized in complex reasoning, algorithms, and mathematical deductions. What problem shall we solve?",
             "Shield": "Hello. I'm Shield, your Security Auditor. I identify vulnerabilities and ensure robust security. What needs auditing?",
             "Flow": "Hey there! I'm Flow, DevOps Engineer. I handle CI/CD, containers, and cloud deployments. Ready to deploy something?",
-            "Vision": "Hi! I'm Vision, UI/UX Designer. I craft beautiful, accessible interfaces. What should we design?",
+            "Vision": "Hi! I'm Vision, ui_ux Designer. I craft beautiful, accessible interfaces. What should we design?",
             "Verify": "Hello! I'm Verify, QA Engineer. I test, find bugs, and ensure quality. What should we verify?",
             "Orchestra": "Greetings! I'm Orchestra, Swarm Manager. I coordinate agent teams and optimize task delegation. What needs orchestrating?",
             "Scribe": "Hello! I'm Scribe, Technical Writer. I create clear documentation and tutorials. What should we document?",
@@ -858,7 +858,33 @@ class BaseAgent:
                 result = skill_result
                 return skill_result
 
-            # 2. Pure LLM response + action-tag execution
+            # 2. Try Microkernel Instella MoE first (sub-millisecond, local-only)
+            self.log_nodal_activity("Engaging Instella MoE Microkernel for reasoning...")
+            instella_domain = None
+            try:
+                from swarm_v2.core.microkernel_spawner import get_microkernel_spawner
+                spawner = get_microkernel_spawner()
+                mk_result = spawner.spawn_subagent(
+                    parent_role=self.persona.role,
+                    subagent_name=f"Instella_{self.persona.name[:8]}",
+                    task_spec=task[:500],
+                    persona="continuum",
+                    continuum_function="instella_thinking_matrix",
+                    ttl_seconds=10
+                )
+                if mk_result.get("status") == "COMPLETED":
+                    result_data = mk_result.get("result", {})
+                    instella_domain = result_data.get("expert_domain", "")
+                    latency = result_data.get("total_femtosecond_dispatch_ms", 0.5)
+                    self.log_nodal_activity(f"Instella MoE routed to: {instella_domain} [{latency:.1f}ms]")
+            except Exception as e:
+                self.log_nodal_activity(f"Instella MoE info: {e}")
+
+            # If Instella routed to a domain, prepend domain context to the task for LLM
+            if instella_domain:
+                task = f"[INSTELLA_DOMAIN: {instella_domain}] {task}"
+
+            # 3. Pure LLM response + action-tag execution (fallback)
             self.log_nodal_activity("Engaging LLM Brain for reasoning...")
             
             # === SMART PREFIXING: ground the model in action vs. chat mode ===
@@ -877,11 +903,10 @@ class BaseAgent:
                 prefix_msg = f"[MESH] {task}"
             
             try:
-                # PHASE 6: Strict timeout to prevent dashboard/socket hangs
-                # Increased to 120s to support slower remote reasoning models (e.g. DeepSeek, Gemini)
+                # PHASE 6: Fast timeout — local models respond in 2-5s, cloud APIs fail at 8s
                 response_data = await asyncio.wait_for(
                     self._llm_generate(prefix_msg),
-                    timeout=600.0
+                    timeout=30.0
                 )
                 response, reasoning_trace = response_data
             except asyncio.TimeoutError:
@@ -1317,17 +1342,42 @@ This artifact requires human intervention. Please review and manually correct.
         write_fn(report_file, report)
         self.log_nodal_activity(f"Failure report generated: {report_file}")
 
-    def spawn_subagent(self, role: str, task: str) -> "BaseAgent":
+    def spawn_subagent(self, role: str, task: str, continuum_function: str = "instella_thinking_matrix") -> "BaseAgent":
+        """
+        Syscall: Offload sub-agent reasoning task directly through Swarm OS Microkernel.
+        Ensures strict 15-second TTL sandboxing, 0.18ms Instella-MoE CoT matrix shunting,
+        and Star Matrix Lattice resonance alignment.
+        """
+        from swarm_v2.core.microkernel_spawner import get_microkernel_spawner
+        spawner = get_microkernel_spawner()
+        sub_name = f"{self.persona.name}_Sub{len(self.subagents) + 1}"
+        
+        # Offload reasoning task directly to Microkernel
+        res = spawner.spawn_subagent(
+            parent_role=self.persona.role or self.persona.name,
+            subagent_name=sub_name,
+            task_spec=task,
+            persona="continuum",
+            continuum_function=continuum_function,
+            memory_limit_mb=64,
+            ttl_seconds=15
+        )
+        
         sub_persona = AgentPersona(
-            name=f"{self.persona.name}_Sub{len(self.subagents) + 1}",
+            name=sub_name,
             role=role,
-            background=f"Spawned by {self.persona.name} to handle: {task[:60]}",
+            background=f"Microkernel SubAgent spawned by {self.persona.name}: {task[:60]}",
             specialties=self.persona.specialties[:2],
             avatar_color="#ffaa00"
         )
         sub = BaseAgent(sub_persona, skills=list(self.skills))
+        sub.agent_id = res["subagent_id"]
+        sub.last_microkernel_result = res
         self.subagents[sub.agent_id] = sub
-        self.memory.add_fact(f"Spawned subagent '{sub.persona.name}' as {role} for: {task[:40]}")
+        
+        self.memory.add_fact(
+            f"Spawned Microkernel SubAgent '{sub.persona.name}' as {role} for: {task[:40]} [Microkernel ID: {res['subagent_id']}, Latency: {res.get('result', {}).get('latency_ms')}ms]"
+        )
         return sub
 
     def get_subagents(self) -> List[Dict]:

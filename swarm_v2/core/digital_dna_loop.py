@@ -359,7 +359,7 @@ class DigitalDNALoop:
             avg_stoch = total_stoch / count
             avg_logical = total_logical / count
             
-            url = "http://localhost:4000/config/dna"
+            url = "http://localhost:3000/config/dna"
             payload = {
                 "stochasticity": avg_stoch,
                 "logical_depth": avg_logical
