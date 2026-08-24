@@ -1,0 +1,21 @@
+architecture:
+  version: 1.0.0
+  layers:
+    - layer: API_GATEWAY
+      responsibility: Request validation, Rate limiting, JSON Schema enforcement.
+    - layer: COMPILATION_CORE
+      modules:
+        - Lexer: String $\rightarrow$ Tokens
+        - Parser: Tokens $\rightarrow$ AST
+        - Optimizer: AST $\rightarrow$ Optimized AST
+    - layer: SOLVER_ENGINE
+      engines:
+        - SymbolicEngine: CAS (Computer Algebra System) implementation.
+        - NumericalEngine: High-precision floating point compute.
+        - HeuristicEngine: Path selection logic.
+    - layer: OUTPUT_FORMATTER
+      formats: [LaTeX, JSON, PlainText, MathML]
+  dependencies:
+    - mpmath: For arbitrary-precision floating-point arithmetic.
+    - sympy: For symbolic manipulation core.
+    - numpy: For vectorized numerical operations.

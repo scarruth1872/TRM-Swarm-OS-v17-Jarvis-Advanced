@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Continuum — Distributed System Monitor</title>
+  <style>
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-secondary: #111827;
+      --bg-tertiary: #1a2332;
+      --border-color: #2a3a4d;
+      --text-primary: #e5e7eb;
+      --text-secondary: #9ca3af;
+      --accent-cyan: #22d3ee;
+      --accent-green: #34d399;
+      --accent-amber: #fbbf24;
+      --accent-red: #f87171;
+      --accent-purple: #a78bfa;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+      --font-sans: 'Inter', 'Segoe UI', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== Header ===== */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--bg-primary);
+    }
+
+    .title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .cluster-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.75rem;
+      background: var(--bg-tertiary);
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header-stat {
+      text-align: right;
+    }
+
+    .header-stat-label {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-stat-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .header-stat-value.green { color: var(--accent-green); }
+    .header-stat-value.cyan { color: var(--accent-cyan); }
+
+    /* ===== Main Content ===== */
+    .main {
+      flex: 1;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ===== Metrics Grid ===== */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .metric-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: border-color 0.2s;
+    }
+
+    .metric-card:hover {
+      border-color: var(--accent-cyan);
+    }
+
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .metric-title {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .metric-icon.cyan { background: rgba(34, 211, 238, 0.1); }
+    .metric-icon.green { background: rgba(52, 211, 153, 0.1); }
+    .metric-icon.amber { background: rgba(251, 191, 36, 0.1); }
+    .metric-icon.purple { background: rgba(167, 139, 250, 0.1); }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-value.cyan { color: var(--accent-cyan); }
+    .metric-value.green { color: var(--accent-green); }
+    .metric-value.amber { color: var(--accent-amber); }
+    .metric-value.purple { color: var(--accent-purple); }
+
+    .metric-sub {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .metric-sparkline {
+      height: 40px;
+      margin-top: 0.75rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+    }
+
+    .spark-bar {
+      flex: 1;
+      background: var(--accent-cyan);
+      opacity: 0.6;
+      border-radius: 2px 2px 0 0;
+      transition: height 0.3s;
+    }
+
+    .spark-bar.green { background: var(--accent-green); }
+    .spark-bar.amber { background: var(--accent-amber); }
+    .spark-bar.purple { background: var(--accent-purple); }
+
+    /* ===== Topology View ===== */
+    .topology-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .section-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.4rem 0.75rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(34, 211, 238, 0.1);
+    }
+
+    .btn.active {
+      background: var(--accent-cyan);
+      color: var(--bg-primary);
+      border-color: var(--accent-cyan);
+    }
+
+    .topology-canvas {
+      height: 300px;
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .node {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .node:hover {
+      border-color: var(--accent-cyan);
+      transform: scale(1.1);
+    }
+
+    .node.healthy { border-color: var(--accent-green); }
+    .node.warning { border-color: var(--accent-amber); }
+    .node.critical { border-color: var(--accent-red); }
+
+    .node-label {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .edge {
+      position: absolute;
+      height: 2px;
+      background: var(--border-color);
+      transform-origin: left center;
+    }
+
+    .edge.high-bandwidth {
+      background: var(--accent-cyan);
+      height: 4px;
+    }
+
+    /* ===== Event Stream ===== */
+    .events-section {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1rem;
+    }
+
+    .events-panel, .control-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .event-feed {
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .event-item {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .event-time {
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .event-level {
+      font-weight: 600;
+      min-width: 60px;
+    }
+
+    .event-level.info { color: var(--accent-cyan); }
+    .event-level.warn { color: var(--accent-amber); }
+    .event-level.error { color: var(--accent-red); }
+
+    .event-message {
+      color: var(--text-primary);
+      word-break: break-all;
+    }
+
+    /* ===== Control Panel ===== */
+    .control-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .control-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .control-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .btn-full {
+      width: 100%;
+      padding: 0.6rem;
+      text-align: center;
+    }
+
+    .btn-danger {
+      border-color: var(--accent-red);
+      color: var(--accent-red);
+    }
+
+    .btn-danger:hover {
+      background: rgba(248, 113, 113, 0.1);
+      border-color: var(--accent-red);
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      padding: 1rem 2rem;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .main {
+        padding: 1rem;
+      }
+      
+      .events-section {
+        grid-template-columns: 1fr;
+      }
+      
+      .header {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .header-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-tertiary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-cyan);
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">C</div>
+      <span class="title">Continuum</span>
+      <div class="cluster-status">
+        <span class="status-dot"></span>
+        <span>Cluster: PROD-01</span>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <div class="header-stat">
+        <div class="header-stat-label">Active Nodes</div>
+        <div class="header-stat-value green">24/24</div>
+      </div>
+      <div class="header-stat">
+        <div class="header-stat-label">Throughput</div>
+        <div class="header-stat-value cyan">1.2M ops/s</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Main Content ===== -->
+  <main class="main">
+    <!-- Metrics Grid -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">CPU Utilization</span>
+          <span class="metric-icon cyan">⚡</span>
+        </div>
+        <div class="metric-value cyan">42.7%</div>
+        <div class="metric-sub">avg across 24 nodes</div>
+        <div class="metric-sparkline">
+          <div class="spark-bar" style="height: 30%"></div>
+          <div class="spark-bar" style="height: 45%"></div>
+          <div class="spark-bar" style="height: 38%"></div>
+          <div class="spark-bar" style="height: 52%"></div>
+          <div class="spark-bar" style="height: 47%"></div>
+          <div class="spark-bar" style="height: 60%"></div>
+          <div class="spark-bar" style="height: 55%"></div>
+          <div class="spark-bar" style="height: 42%"></div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">Memory Allocation</span>
+          <span class="metric-icon green">🧠</span>
+        </div>
+        <div class="metric-value green">68.3%</div>
+        <div class="metric-sub">312.4 GB / 457.6 GB</div>
+        <div class="metric-sparkline">
+          <div class="spark-bar green" style="height: 55%"></div>
+          <div class="spark-bar green" style="height: 60%"></div>
+          <div class="spark-bar green" style="height: 58%"></div>
+          <div class="spark-bar green" style="height: 65%"></div>
+          <div class="spark-bar green" style="height: 62%"></div>
+          <div class="spark-bar green" style="height: 68%"></div>
+          <div class="spark-bar green" style="height: 66%"></div>
+          <div class="spark-bar green" style="height: 68%"></div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">Network I/O</span>
+          <span class="metric-icon amber">🌐</span>
+        </div>
+        <div class="metric-value amber">8.4 Gbps</div>
+        <div class="metric-sub">in: 5.2 / out: 3.2</div>
+        <div class="metric-sparkline">
+          <div class="spark-bar amber" style="height: 40%"></div>
+          <div class="spark-bar amber" style="height: 55%"></div>
+          <div class="spark-bar amber" style="height: 48%"></div>
+          <div class="spark-bar amber" style="height: 70%"></div>
+          <div class="spark-bar amber" style="height: 62%"></div>
+          <div class="spark-bar amber" style="height: 75%"></div>
+          <div class="spark-bar amber" style="height: 68%"></div>
+          <div class="spark-bar amber" style="height: 72%"></div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span class="metric-title">Storage Latency</span>
+          <span class="metric-icon purple">💾</span>
+        </div>
+        <div class="metric-value purple">12.4 ms</div>
+        <div class="metric-sub">p99: 18.7 ms</div>
+        <div class="metric-sparkline">
+          <div class="spark-bar purple" style="height: 30%"></div>
+          <div class="spark-bar purple" style="height: 35%"></div>
+          <div class="spark-bar purple" style="height: 28%"></div>
+          <div class="spark-bar purple" style="height: 42%"></div>
+          <div class="spark-bar purple" style="height: 38%"></div>
+          <div class="spark-bar purple" style="height: 45%"></div>
+          <div class="spark-bar purple" style="height: 40%"></div>
+          <div class="spark-bar purple" style="height: 36%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Topology View -->
+    <div class="topology-section">
+      <div class="section-header">
+        <span class="section-title">System Topology</span>
+        <div class="section-actions">
+          <button class="btn active">Auto-layout</button>
+          <button class="btn">Grid</button>
+          <button class="btn">Radial</button>
+          <button class="btn">Refresh</button>
+        </div>
+      </div>
+      
+      <div class="topology-canvas" id="topologyCanvas">
+        <!-- Nodes will be rendered here -->
+      </div>
+    </div>
+
+    <!-- Events & Control -->
+    <div class="events-section">
+      <div class="events-panel">
+        <div class="section-header">
+          <span class="section-title">Event Stream</span>
+          <div class="section-actions">
+            <button class="btn active">All</button>
+            <button class="btn">Info</button>
+            <button class="btn">Warn</button>
+            <button class="btn">Error</button>
+          </div>
+        </div>
+        
+        <div class="event-feed" id="eventFeed">
+          <div class="event-item">
+            <span class="event-time">02:00:01</span>
+            <span class="event-level info">INFO</span>
+            <span class="event-message">Node node-07 joined cluster successfully</span>
+          </div>
+          <div class="event-item">
+            <span class="event-time">01:59:58</span>
+            <span class="event-level info">INFO</span>
+            <span class="event-message">Snapshot completed: 1.2 GB in 3.4s</span>
+          </div>
+          <div class="event-item">
+            <span class="event-time">01:59:52</span>
+            <span class="event-level warn">WARN</span>
+            <span class="event-message">High latency detected on node-12: 45ms</span>
+          </div>
+          <div class="event-item">
+            <span class="event-time">01:59:47</span>
+            <span class="event-level info">INFO</span>
+            <span class="event-message">Consensus round completed: 24/24 votes</span>
+          </div>
+          <div class="event-item">
+            <span class="event-time">01:59:41</span>
+            <span class="event-level error">ERROR</span>
+            <span class="event-message">Storage write timeout on node-03, retrying...</span>
+          </div>
+          <div class="event-item">
+            <span class="event-time">01:59:35</span>
+            <span class="event-level info">INFO</span>
+            <span class="event-message">Configuration reloaded: version 2026.07.31.01</span>
+          </div>
+          <div class="event-item">
+            <span class="event-time">01:59:30</span>
+            <span class="event-level warn">WARN</span>
+            <span class="event-message">Node-18 CPU usage above 85% for 5 minutes</span>
+          </div>
+          <div class="event-item">
+            <span class="event-time">01:59:24</span>
+            <span class="event-level info">INFO</span>
+            <span class="event-message">Heartbeat received from all 24 nodes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-panel">
+        <div class="section-header">
+          <span class="section-title">Control Panel</span>
+        </div>
+        
+        <div class="control-group">
+          <div class="control-label">Node Management</div>
+          <div class="control-actions">
+            <button class="btn btn-full">Drain Node</button>
+            <button class="btn btn-full">Activate Node</button>
+            <button class="btn btn-full">Restart Node</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">Cluster Actions</div>
+          <div class="control-actions">
+            <button class="btn btn-full">Reload Configuration</button>
+            <button class="btn btn-full">Trigger Snapshot</button>
+            <button class="btn btn-full btn-danger">Emergency Shutdown</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <span>Continuum v12.4.1 — Build 2026.07.31</span>
+    <div class="footer-right">
+      <span>Uptime: 14d 6h 32m</span>
+      <span>Region: us-east-1</span>
+      <span>Version: 2026.07.31.01</span>
+    </div>
+  </footer>
+
+  <script>
+    // ===== Topology Rendering =====
+    const canvas = document.getElementById('topologyCanvas');
+    const canvasWidth = canvas.clientWidth;
+    const canvasHeight = canvas.clientHeight;
+
+    // Node definitions
+    const nodes = [
+      { id: 'node-01', x: 0.15, y: 0.3, status: 'healthy' },
+      { id: 'node-02', x: 0.35, y: 0.2, status: 'healthy' },
+      { id: 'node-03', x: 0.55, y: 0.25, status: 'warning' },
+      { id: 'node-04', x: 0.75, y: 0.35, status: 'healthy' },
+      { id: 'node-05', x: 0.25, y: 0.6, status: 'healthy' },
+      { id: 'node-06', x: 0.45, y: 0.55, status: 'healthy' },
+      { id: 'node-07', x: 0.65, y: 0.6, status: 'healthy' },
+      { id: 'node-08', x: 0.85, y: 0.55, status: 'critical' },
+      { id: 'node-09', x: 0.2, y: 0.85, status: 'healthy' },
+      { id: 'node-10', x: 0.5, y: 0.85, status: 'healthy' },
+      { id: 'node-11', x: 0.8, y: 0.85, status: 'healthy' },
+    ];
+
+    // Edge definitions (source, target, bandwidth)
+    const edges = [
+      { from: 0, to: 1, high: true },
+      { from: 1, to: 2, high: false },
+      { from: 2, to: 3, high: true },
+      { from: 0, to: 4, high: false },
+      { from: 4, to: 5, high: true },
+      { from: 5, to: 6, high: true },
+      { from: 6, to: 7, high: false },
+      { from: 4, to: 8, high: false },
+      { from: 5, to: 9, high: true },
+      { from: 6, to: 10, high: false },
+      { from: 1, to: 5, high: false },
+      { from: 2, to: 6, high: true },
+      { from: 3, to: 7, high: false },
+    ];
+
+    // Render edges
+    edges.forEach(edge => {
+      const fromNode = nodes[edge.from];
+      const toNode = nodes[edge.to];
+      
+      const x1 = fromNode.x * canvasWidth;
+      const y1 = fromNode.y * canvasHeight;
+      const x2 = toNode.x * canvasWidth;
+      const y2 = toNode.y * canvasHeight;
+      
+      const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+      const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+      
+      const edgeEl = document.createElement('div');
+      edgeEl.className = 'edge' + (edge.high ? ' high-bandwidth' : '');
+      edgeEl.style.left = x1 + 'px';
+      edgeEl.style.top = y1 + 'px';
+      edgeEl.style.width = length + 'px';
+      edgeEl.style.transform = `rotate(${angle}deg)`;
+      canvas.appendChild(edgeEl);
+    });
+
+    // Render nodes
+    nodes.forEach(node => {
+      const nodeEl = document.createElement('div');
+      nodeEl.className = `node ${node.status}`;
+      nodeEl.style.left = (node.x * canvasWidth - 30) + 'px';
+      nodeEl.style.top = (node.y * canvasHeight - 30) + 'px';
+      nodeEl.innerHTML = `<span>${node.id.replace('node-', 'N')}</span><span class="node-label">${node.id}</span>`;
+      canvas.appendChild(nodeEl);
+    });
+
+    // ===== Event Stream Simulation =====
+    const eventFeed = document.getElementById('eventFeed');
+    const events = [
+      { level: 'info', message: 'Heartbeat received from all nodes' },
+      { level: 'info', message: 'Cache invalidation completed' },
+      { level: 'warn', message: 'Node-15 memory usage above 90%' },
+      { level: 'info', message: 'Replication factor satisfied: 3/3' },
+      { level: 'error', message: 'Connection timeout to node-22, retrying in 2s' },
+      { level: 'info', message: 'Snapshot scheduled for 02:30 UTC' },
+      { level: 'warn', message: 'Disk I/O saturation on node-08' },
+      { level: 'info', message: 'Consensus round completed: 24/24 votes' },
+    ];
+
+    let eventIndex = 0;
+    setInterval(() => {
+      const event = events[eventIndex % events.length];
+      eventIndex++;
+      
+      const now = new Date();
+      const timeStr = now.toTimeString().split(' ')[0];
+      
+      const eventEl = document.createElement('div');
+      eventEl.className = 'event-item';
+      eventEl.innerHTML = `
+        <span class="event-time">${timeStr}</span>
+        <span class="event-level ${event.level}">${event.level.toUpperCase()}</span>
+        <span class="event-message">${event.message}</span>
+      `;
+      
+      eventFeed.prepend(eventEl);
+      
+      // Remove old events
+      while (eventFeed.children.length > 20) {
+        eventFeed.removeChild(eventFeed.lastChild);
+      }
+    }, 3000);
+
+    // ===== Sparkline Animation =====
+    const sparkBars = document.querySelectorAll('.spark-bar');
+    setInterval(() => {
+      sparkBars.forEach(bar => {
+        const newHeight = 20 + Math.random() * 60;
+        bar.style.height = newHeight + '%';
+      });
+    }, 2000);
+
+    // ===== Control Panel Actions =====
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        if (this.classList.contains('btn-danger')) {
+          if (confirm('Confirm emergency shutdown of entire cluster?')) {
+            alert('Emergency shutdown initiated. All nodes draining...');
+          }
+        } else {
+          // Visual feedback
+          this.style.opacity = '0.5';
+          setTimeout(() => {
+            this.style.opacity = '1';
+          }, 200);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "skill_id": "ContainerSkill",
+  "version": "1.0.0",
+  "dependencies": ["RuntimeAdapter", "ResourceMonitor"],
+  "capabilities": ["Isolation", "EphemeralExecution", "ResourceCapping"],
+  "api_endpoint": "/v1/execute/container",
+  "security_profile": "Rootless-Container-Standard"
+}

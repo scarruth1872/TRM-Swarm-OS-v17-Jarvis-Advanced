@@ -1,0 +1,109 @@
+name: Swarm Component Test Suite
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * *'  # Daily 2 AM UTC
+
+env:
+  PYTHON_VERSION: '3.11'
+  COVERAGE_THRESHOLD: 85
+
+jobs:
+  validate-components:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate components.json schema
+        run: |
+          python -c "
+          import json, sys
+          with open('components.json') as f:
+              data = json.load(f)
+          assert isinstance(data, dict), 'Root must be an object'
+          assert 'components' in data, 'Missing components key'
+          assert isinstance(data['components'], list), 'components must be a list'
+          for comp in data['components']:
+              assert 'name' in comp, f'Missing name in {comp}'
+              assert 'type' in comp, f'Missing type in {comp}'
+          print(f'Validated {len(data[\"components\"])} components')
+          "
+
+  test-matrix:
+    needs: validate-components
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements-dev.txt
+      - name: Lint with ruff
+        run: ruff check .
+      - name: Type check with mypy
+        run: mypy src/ --ignore-missing-imports
+      - name: Security scan with bandit
+        run: bandit -r src/ -f json -o bandit-report.json || true
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=src --cov-report=xml --cov-report=term-missing \
+                 --junitxml=test-results.xml -n auto
+      - name: Enforce coverage threshold
+        run: |
+          coverage=$(python -c "
+          import xml.etree.ElementTree as ET
+          tree = ET.parse('coverage.xml')
+          rate = float(tree.getroot().attrib['line-rate']) * 100
+          print(f'{rate:.2f}')
+          ")
+          echo "Coverage: ${coverage}%"
+          if (( $(echo "$coverage < ${{ env.COVERAGE_THRESHOLD }}" | bc -l) )); then
+            echo "Coverage below threshold of ${{ env.COVERAGE_THRESHOLD }}%"
+            exit 1
+          fi
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.python-version }}
+          path: |
+            test-results.xml
+            coverage.xml
+            bandit-report.json
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: swarm-coverage
+          fail_ci_if_error: false
+
+  flaky-test-detector:
+    runs-on: ubuntu-latest
+    needs: test-matrix
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run tests 3x to detect flakiness
+        run: |
+          for i in 1 2 3; do
+            pytest --tb=no --quiet --reruns 0 -m "not flaky" || exit 1
+          done
+      - name: Report flaky tests
+        if: failure()
+        run: echo "Flaky tests detected. Review test isolation and mocking."

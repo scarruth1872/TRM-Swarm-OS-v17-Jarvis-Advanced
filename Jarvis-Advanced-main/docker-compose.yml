@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # Triage Layer (1.7B)
+  bonsai-1.7b:
+    image: jarvis-bonsai:latest
+    container_name: jarvis-bonsai-1.7b-container
+    cpuset: "0"
+    mem_limit: 1500m
+    ports:
+      - "8581:8580"
+    environment:
+      - MODEL_SIZE=1.7B
+    volumes:
+      - ./models:/app/llama.cpp/models
+    restart: unless-stopped
+
+  # Execution Layer (4B)
+  bonsai-4b:
+    image: jarvis-bonsai:latest
+    container_name: jarvis-bonsai-4b-container
+    cpuset: "1,2"
+    mem_limit: 3000m
+    ports:
+      - "8582:8580"
+    environment:
+      - MODEL_SIZE=4B
+    volumes:
+      - ./models:/app/llama.cpp/models
+    restart: unless-stopped
+
+  # Synthesis Layer (8B)
+  bonsai-8b:
+    image: jarvis-bonsai:latest
+    container_name: jarvis-bonsai-8b-container
+    cpuset: "3,4,5"
+    mem_limit: 5000m
+    ports:
+      - "8583:8580"
+    environment:
+      - MODEL_SIZE=8B
+    volumes:
+      - ./models:/app/llama.cpp/models
+    restart: unless-stopped

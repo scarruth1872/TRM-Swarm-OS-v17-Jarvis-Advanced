@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-08-06T15:32:39",
+  "color_mapping": {
+    "PROCEED": {
+      "lambda_nm": 450,
+      "energy_eV": 2.76,
+      "f_thz": 667
+    },
+    "ANALYZE": {
+      "lambda_nm": 550,
+      "energy_eV": 2.25,
+      "f_thz": 545
+    },
+    "BLOCK": {
+      "lambda_nm": 700,
+      "energy_eV": 1.77,
+      "f_thz": 429
+    }
+  },
+  "wdm_channels": 96,
+  "wdm_k3_distribution": {
+    "PROCEED": 28,
+    "ANALYZE": 27,
+    "BLOCK": 41
+  },
+  "optical_transit_ps": 33,
+  "wdm_throughput_tops": 2.9,
+  "photoacoustic": {
+    "conversion_ratio": 1.1433e-06,
+    "gruneisen_si": 0.1,
+    "acoustic_frequencies": {
+      "PROCEED": 762222222.2,
+      "ANALYZE": 623636363.6,
+      "BLOCK": 490000000.0
+    }
+  },
+  "heterodyne_frequencies": {
+    "PROCEED": 765777777.8,
+    "ANALYZE": 320363636.4,
+    "BLOCK": 1038000000.0
+  }
+}

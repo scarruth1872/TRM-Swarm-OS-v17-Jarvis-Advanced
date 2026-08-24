@@ -1,0 +1,19 @@
+[package]
+name = "swarm_v2_rust_kernel"
+version = "19.1.0"
+edition = "2021"
+authors = ["TRM Swarm OS Platform <monad@trm-swarm-os.org>"]
+description = "Bare-metal zero-GC K3 Ternary Logic, QUIC Protocol & Standalone Boot Executable for TRM Swarm OS v18"
+
+[[bin]]
+name = "trm_swarm_boot"
+path = "src/main.rs"
+
+[lib]
+name = "swarm_rust_kernel"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+rayon = "1.10"
+libc = "0.2"
+memmap2 = "0.9"

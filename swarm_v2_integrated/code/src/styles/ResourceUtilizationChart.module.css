@@ -1,0 +1,38 @@
+/* Styles for the ResourceUtilizationChart component */
+
+.chartContainer {
+  width: 100%;
+  height: 300px; /* Fixed height for consistency */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Background and border are handled by parent DashboardOverview's chartSection */
+}
+
+.noDataMessage {
+  color: var(--text-secondary-color);
+  font-size: 1.2em;
+  text-align: center;
+  padding: 20px;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Recharts specific styling adjustments (if needed, often handled by Recharts itself) */
+/* For example, to adjust tooltip background or text color if default is not suitable */
+.recharts-tooltip-wrapper {
+  background-color: var(--card-background) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 5px;
+  opacity: 0.95;
+}
+
+.recharts-tooltip-label {
+  color: var(--primary-color) !important;
+  font-weight: bold;
+}
+
+.recharts-tooltip-item {
+  color: var(--text-color) !important;
+}

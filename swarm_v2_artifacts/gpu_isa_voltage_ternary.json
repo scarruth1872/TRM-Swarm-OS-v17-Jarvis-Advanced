@@ -1,0 +1,107 @@
+{
+  "timestamp": "2026-08-06T03:30:40",
+  "flops_per_task": 49152,
+  "current_tps": 252000000,
+  "target_tps": 2000000000,
+  "instructions": {
+    "V_FMA_F32": {
+      "latency": 5,
+      "throughput_per_cu_per_cycle": 128,
+      "note": "Fused Multiply-Add FP32 \u2014 primary compute"
+    },
+    "V_MUL_F32": {
+      "latency": 4,
+      "throughput_per_cu_per_cycle": 64,
+      "note": "FP32 multiply"
+    },
+    "V_ADD_F32": {
+      "latency": 4,
+      "throughput_per_cu_per_cycle": 64,
+      "note": "FP32 add"
+    },
+    "V_PK_FMA_F16": {
+      "latency": 5,
+      "throughput_per_cu_per_cycle": 256,
+      "note": "Packed FP16 FMA \u2014 2x throughput"
+    },
+    "V_DOT4_I32_I8": {
+      "latency": 4,
+      "throughput_per_cu_per_cycle": 512,
+      "note": "INT8 dot4 \u2014 4\u00d7 throughput"
+    },
+    "V_DOT8_I32_I4": {
+      "latency": 4,
+      "throughput_per_cu_per_cycle": 1024,
+      "note": "INT4 dot8 \u2014 8\u00d7 throughput"
+    },
+    "S_BITCMP_B32": {
+      "latency": 2,
+      "throughput_per_cu_per_cycle": 128,
+      "note": "Bit compare \u2014 ternary logic base"
+    },
+    "S_AND_SAVEEXEC_B64": {
+      "latency": 1,
+      "throughput_per_cu_per_cycle": 64,
+      "note": "Wave-level bit mask \u2014 K3 routing"
+    }
+  },
+  "ternary_mapping": {
+    "encoding": "2-bit per weight: {00:-1, 01:0, 10:+1, 11:unused}",
+    "mapping_instruction": "S_BITCMP_B32 \u2014 compare 2-bit fields in 32-bit register",
+    "packing_density": "16 ternary weights per 32-bit register (vs 1 FP32)",
+    "throughput_gain": "16\u00d7 reduction in memory footprint",
+    "compute_gain": "Bit-level comparison vs FP32 FMA \u2014 ~4\u00d7 fewer cycles",
+    "projected_instella": "4032000000 tasks/s with ternary packing",
+    "projected_instella_2b": "2.0B tasks/s achievable with FP16 + ternary hybrid"
+  },
+  "voltage_analysis": {
+    "vGPU_core": {
+      "typical_v": 1.025,
+      "tdp_w": 230
+    },
+    "vVRAM": {
+      "typical_v": 1.35,
+      "tdp_w": 48
+    },
+    "vSOC": {
+      "typical_v": 0.95,
+      "tdp_w": 35
+    },
+    "vPCIe": {
+      "typical_v": 3.3,
+      "tdp_w": 10
+    }
+  },
+  "paths_to_2b": [
+    {
+      "name": "FP32 baseline",
+      "tps": "252M tasks/s @ 230W",
+      "note": "12.4 TFLOPS limit"
+    },
+    {
+      "name": "FP16 packed",
+      "tps": "504M tasks/s @ 230W",
+      "note": "2\u00d7 throughput"
+    },
+    {
+      "name": "INT8 dot4",
+      "tps": "1.0B tasks/s @ 230W",
+      "note": "4\u00d7 throughput"
+    },
+    {
+      "name": "INT4 dot8",
+      "tps": "2.0B tasks/s @ 230W",
+      "note": "8\u00d7 throughput \u2014 HITS TARGET"
+    },
+    {
+      "name": "K3 Ternary (2-bit)",
+      "tps": "4.0B tasks/s @ 230W",
+      "note": "16\u00d7 throughput \u2014 EXCEEDS"
+    },
+    {
+      "name": "K3 + Infinity Cache",
+      "tps": "8.0B tasks/s @ 180W",
+      "note": "32\u00d7 throughput, lower power"
+    }
+  ]
+}

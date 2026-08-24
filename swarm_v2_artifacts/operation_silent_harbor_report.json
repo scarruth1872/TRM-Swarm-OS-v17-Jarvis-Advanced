@@ -1,0 +1,84 @@
+{
+  "scenario_name": "Operation Silent Harbor",
+  "status": "SUCCESS_ALL_TARGETS_PASSED",
+  "total_time_seconds": 0.1079,
+  "telemetry_timeline": {
+    "Phase_1_Detection": {
+      "latency_ms": 0.042,
+      "target_status": "PASSED (< 2.0s target)"
+    },
+    "Phase_2_Decision": {
+      "latency_ms": 106.555,
+      "council_verdicts": {
+        "Shield": {
+          "verdict": "+1 (BLOCK_INTRUDER)",
+          "k3_trit": 1,
+          "latency_us": 155.7
+        },
+        "Logic": {
+          "verdict": "+1 (PROCEED)",
+          "k3_trit": 1,
+          "latency_us": 10.7
+        },
+        "Pulse": {
+          "verdict": "+1 (PROCEED)",
+          "k3_trit": 1,
+          "latency_us": 8.0
+        },
+        "Bridge": {
+          "verdict": "+1 (PROCEED)",
+          "k3_trit": 1,
+          "latency_us": 8.4
+        },
+        "Hermes": {
+          "verdict": "+1 (PROCEED)",
+          "k3_trit": 1,
+          "latency_us": 106260.4
+        },
+        "Devo": {
+          "verdict": "+1 (PROCEED)",
+          "k3_trit": 1,
+          "latency_us": 26.4
+        },
+        "THzGateway": {
+          "verdict": "+1 (PROCEED)",
+          "k3_trit": 1,
+          "latency_us": 10.2
+        },
+        "Flow": {
+          "verdict": "+1 (PROCEED)",
+          "k3_trit": 1,
+          "latency_us": 8.4
+        },
+        "Verify": {
+          "verdict": "+1 (PROCEED)",
+          "k3_trit": 1,
+          "latency_us": 14.6
+        }
+      },
+      "target_status": "PASSED (< 10.0s target)"
+    },
+    "Phase_3_Action": {
+      "latency_ms": 1.234,
+      "actions": {
+        "water_scada_override": "COMPLETED",
+        "power_grid_reroute": "COMPLETED",
+        "hospital_ransomware_isolation": "COMPLETED"
+      },
+      "target_status": "PASSED (< 30.0s target)"
+    },
+    "Phase_4_Verification": {
+      "latency_ms": 0.012,
+      "total_scenario_time_seconds": 0.1079,
+      "verification_checks": {
+        "Chlorine_Levels_Restored": true,
+        "Power_Frequency_Stable_60Hz": true,
+        "Ransomware_Fully_Contained": true,
+        "Patient_Records_100_Percent_Intact": true,
+        "Incident_Persisted_to_NAND": true,
+        "Audit_Trail_Immutable": true
+      },
+      "target_status": "PASSED (< 60.0s target)"
+    }
+  }
+}

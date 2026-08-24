@@ -1,0 +1,74 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Noospheric Calibration module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Noospheric Calibration (id: noospheric) is one of Jarvis's core modules. It provides 2 API endpoints. It's a bio-inspired cognitive health model with parameters: activeVector (e.g. 'utp'), methylationProgress (0-100), chromatinAccessibility (0-100), bCellAblationPercent, cytokineStormRisk (0-100), epigeneticPrimingActive, cfDNALevel, ifnAlphaLevel, vagusNerveStatus (IDLE/ACTIVE), haloIntegrity (0-100), engineType (xenobiotic), xenobioticDigestionRate, repairRateMultiplier, zeroDayImmunityLoaded."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/noospheric/status endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/noospheric/status: Return noospheric calibration state."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/noospheric/status endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/noospheric/status: Update noospheric calibration. Body: { activeVector, methylationProgress, chromatinAccessibility, cytokineStormRisk, vagusNerveStatus, xenobioticDigestionRate }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the noospheric calibration system?"
+      },
+      {
+        "role": "assistant",
+        "content": "It's a bio-inspired cognitive health model with parameters: activeVector (e.g. 'utp'), methylationProgress (0-100), chromatinAccessibility (0-100), bCellAblationPercent, cytokineStormRisk (0-100), epigeneticPrimingActive, cfDNALevel, ifnAlphaLevel, vagusNerveStatus (IDLE/ACTIVE), haloIntegrity (0-100), engineType (xenobiotic), xenobioticDigestionRate, repairRateMultiplier, zeroDayImmunityLoaded."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I check my noospheric state?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/noospheric/status returns all calibration parameters as a JSON object. It's persisted to jarvis_noospheric_calibration.json."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Noospheric Calibration module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Noospheric state influences Chat personality. Used by the dashboard's Status panel."
+      }
+    ]
+  }
+]

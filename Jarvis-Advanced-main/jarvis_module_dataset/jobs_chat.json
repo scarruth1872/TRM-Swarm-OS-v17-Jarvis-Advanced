@@ -1,0 +1,122 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Career & Job Matching module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Career & Job Matching (id: jobs) is one of Jarvis's core modules. It provides 6 API endpoints. GET /api/jobs/recommendations returns personalized job listings. POST /api/jobs/match with your profile and skills returns ranked matches. The system scrapes Remotive (GET /api/jobs/remotive) for live global job feeds."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/jobs/recommendations endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/jobs/recommendations: Get personalized job recommendations."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/jobs/match endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/jobs/match: Match user to jobs. Body: { profile, skills? }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/jobs/remotive endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/jobs/remotive: Scrape Remotive job feed."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/jobs endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/jobs: List all jobs."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/jobs endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/jobs: Create a job entry. Body: { title, company, url, description? }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/jobs/sync endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/jobs/sync: Sync job database with external sources."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does job matching work?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/jobs/recommendations returns personalized job listings. POST /api/jobs/match with your profile and skills returns ranked matches. The system scrapes Remotive (GET /api/jobs/remotive) for live global job feeds."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the Career & Job Matching module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 500 on scrape failure"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Career & Job Matching module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Reads skills from Skills System for matching. Persists to jobs database."
+      }
+    ]
+  }
+]

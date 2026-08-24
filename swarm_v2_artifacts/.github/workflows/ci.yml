@@ -1,0 +1,166 @@
+```yaml
+name: Swarm CI Pipeline
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * *'  # Nightly chaos at 02:00 UTC
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: full
+  PYTHONUNBUFFERED: 1
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rust lint
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --all-targets -- -D warnings
+      - name: Python lint
+        run: |
+          pip install ruff
+          ruff check swarm/ tests/
+          ruff format --check swarm/ tests/
+
+  unit-tests:
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run unit tests (shard ${{ matrix.shard }})
+        run: |
+          pytest tests/unit/ \
+            --cov=swarm \
+            --cov-report=xml:coverage-${{ matrix.shard }}.xml \
+            --junitxml=results-${{ matrix.shard }}.xml \
+            --splits=4 \
+            --group=${{ matrix.shard }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.shard }}
+          path: |
+            results-${{ matrix.shard }}.xml
+            coverage-${{ matrix.shard }}.xml
+
+  integration-tests:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: test
+        ports: ['5432:5432']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy ephemeral swarm
+        run: |
+          docker compose -f docker-compose.test.yml up -d
+          ./scripts/wait-for-swarm.sh --timeout 60
+      - name: Run integration tests
+        run: |
+          pytest tests/integration/ \
+            --cov=swarm \
+            --cov-report=xml:integration-coverage.xml \
+            --junitxml=integration-results.xml \
+            --timeout=300
+      - name: Collect swarm logs
+        if: always()
+        run: docker compose -f docker-compose.test.yml logs > swarm-logs.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integration-artifacts
+          path: |
+            integration-results.xml
+            integration-coverage.xml
+            swarm-logs.txt
+
+  coverage-gate:
+    needs: [unit-tests, integration-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+      - name: Merge coverage
+        run: |
+          pip install coverage
+          coverage combine artifacts/*/coverage-*.xml
+          coverage report --fail-under=85
+          coverage json -o coverage-summary.json
+      - name: Enforce branch coverage
+        run: |
+          python -c "
+          import json
+          data = json.load(open('coverage-summary.json'))
+          totals = data['totals']
+          assert totals['percent_covered'] >= 85, f'Coverage {totals[\"percent_covered\"]}% < 85%'
+          assert totals['missing_branches'] / max(totals['num_branches'], 1) < 0.15, 'Branch coverage too low'
+          print(f'Coverage gate passed: {totals[\"percent_covered\"]}%')
+          "
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-summary.json
+
+  nightly-chaos:
+    if: github.event_name == 'schedule'
+    needs: [integration-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy staging swarm
+        run: |
+          docker compose -f docker-compose.staging.yml up -d
+          ./scripts/wait-for-swarm.sh --timeout 120
+      - name: Run chaos experiments
+        run: |
+          pip install chaos-toolkit
+          chaos run chaos/experiments/network-partition.json
+          chaos run chaos/experiments/node-failure.json
+          chaos run chaos/experiments/load-spike.json
+      - name: Verify recovery
+        run: |
+          pytest tests/chaos/recovery_checks.py \
+            --junitxml=chaos-results.xml \
+            --timeout=600
+      - name: Generate chaos report
+        run: python scripts/generate-chaos-report.py --input chaos-results.xml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chaos-report
+          path: chaos-report.html
+
+  deploy-dashboard:
+    needs: [coverage-gate]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build dashboard
+        run: |
+          pip install -r dashboard/requirements.txt
+          python dashboard/build.py --input artifacts/
+      - name: Deploy to monitoring
+        run: |
+          scp -r dashboard/build/ user@monitoring:/var/www/swarm-dashboard/
+          ssh user@monitoring "systemctl reload nginx"
+```

@@ -1,0 +1,37 @@
+FROM ubuntu:22.04
+
+# Avoid prompts during installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install core build dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    cmake \
+    python3 \
+    python3-pip \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Clone the PrismML-Eng llama.cpp fork which supports Q2_0 quantization with group size 128
+RUN git clone --depth 1 https://github.com/PrismML-Eng/llama.cpp.git
+
+WORKDIR /app/llama.cpp
+
+# Compile llama.cpp
+RUN mkdir build && \
+    cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release && \
+    make -j$(nproc)
+
+# Copy the entrypoint script
+COPY entrypoint_bonsai.sh /app/llama.cpp/entrypoint_bonsai.sh
+RUN chmod +x /app/llama.cpp/entrypoint_bonsai.sh
+
+# Expose API server port
+EXPOSE 8580
+
+# Run entrypoint
+ENTRYPOINT ["/app/llama.cpp/entrypoint_bonsai.sh"]

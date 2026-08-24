@@ -1,0 +1,235 @@
+"""
+Coherence Threshold Framework
+Defines the stability thresholds for the Swarm's autonomous self-healing capabilities.
+Part of Phase 4: Shell-01 (Recursive Self-Healing).
+
+This module provides an aggregated severity scoring system for comprehensive system
+state assessment. All metrics are evaluated simultaneously, and the highest applicable
+remediation level is returned, enabling the orchestrator to make informed decisions
+on incomplete or cascading failure data.
+
+Usage:
+    >>> from swarm_v2.core.coherence_thresholds import CoherenceThresholds
+    >>> metrics = {"cpu_load": 95.0, "memory_usage": 90.0, "error_rate": 0.15}
+    >>> level = CoherenceThresholds.check_stability(metrics)
+    >>> print(level)
+    'ROLLBACK_DEPLOYMENT'
+"""
+
+import logging
+from enum import Enum
+from typing import Dict, Any, Tuple, Optional
+
+logger = logging.getLogger(__name__)
+
+
+class _RemediationLevel(str, Enum):
+    """Internal enumeration for remediation action levels.
+    
+    The string value is used for backward compatibility with external callers
+    expecting string-based levels.
+    """
+    STABLE = "STABLE"
+    WARNING = "LOG_WARNING"
+    RESTART = "RESTART_SERVICE"
+    ROLLBACK = "ROLLBACK_DEPLOYMENT"
+    EMERGENCY = "FULL_SYSTEM_RESET"
+
+
+class CoherenceThresholds:
+    # System Stability Thresholds
+    CPU_LOAD_WARNING = 80.0     # Percentage
+    MEMORY_USAGE_WARNING = 85.0 # Percentage
+    DISK_SPACE_WARNING = 90.0   # Percentage
+
+    # Agent Health Thresholds
+    MAX_RESPONSE_LATENCY = 5.0  # Seconds
+    HEARTBEAT_TIMEOUT = 300     # Seconds (5 minutes)
+    ERROR_RATE_LIMIT = 0.1      # 10% failure rate over a window
+
+    # Mesh Integrity Thresholds
+    MIN_ACTIVE_AGENTS = 3       # Minimum agents required for a functional mesh
+    MAX_ORPHANED_TASKS = 5      # Tasks routed but not picked up
+
+    # Remediation Action Levels (kept for backward compatibility)
+    LEVEL_1_WARNING = "LOG_WARNING"
+    LEVEL_2_RESTART = "RESTART_SERVICE"
+    LEVEL_3_ROLLBACK = "ROLLBACK_DEPLOYMENT"
+    LEVEL_4_EMERGENCY = "FULL_SYSTEM_RESET"
+
+    # Severity scoring configuration: metric_name -> (threshold, base_remediation_level)
+    # This mapping drives the aggregated assessment logic.
+    _SEVERITY_WEIGHTS: Dict[str, Tuple[float, _RemediationLevel]] = {
+        "cpu_load": (CPU_LOAD_WARNING, _RemediationLevel.WARNING),
+        "memory_usage": (MEMORY_USAGE_WARNING, _RemediationLevel.WARNING),
+        "error_rate": (ERROR_RATE_LIMIT, _RemediationLevel.RESTART),
+        "response_latency": (MAX_RESPONSE_LATENCY, _RemediationLevel.RESTART),
+        "disk_space": (DISK_SPACE_WARNING, _RemediationLevel.WARNING),
+    }
+
+    # Escalation thresholds based on breach severity ratio
+    _ESCALATION_RATIOS: Dict[float, _RemediationLevel] = {
+        3.0: _RemediationLevel.EMERGENCY,
+        2.0: _RemediationLevel.ROLLBACK,
+    }
+
+    @classmethod
+    def get_thresholds(cls) -> Dict[str, Any]:
+        """Return all defined thresholds as a dictionary.
+        
+        Includes both scalar constants and the severity weights mapping
+        for full transparency.
+        
+        Returns:
+            Dict[str, Any]: A dictionary of all public threshold constants.
+        """
+        thresholds = {}
+        for attr_name in dir(cls):
+            if attr_name.startswith("__") or callable(getattr(cls, attr_name)):
+                continue
+            # Exclude internal mappings and private attributes
+            if attr_name.startswith("_"):
+                continue
+            thresholds[attr_name] = getattr(cls, attr_name)
+        return thresholds
+
+    @classmethod
+    def check_stability(cls, metrics: Dict[str, float]) -> str:
+        """Evaluate system metrics against thresholds using aggregated severity scoring.
+        
+        All provided metrics are evaluated simultaneously. The method returns the
+        highest remediation level required across all breached thresholds, with
+        dynamic escalation based on breach severity ratio.
+        
+        Args:
+            metrics: A dictionary of metric names to their current values.
+                    Example: {"cpu_load": 95.0, "memory_usage": 90.0}
+        
+        Returns:
+            str: The highest remediation level required. One of:
+                - "STABLE"
+                - "LOG_WARNING"
+                - "RESTART_SERVICE"
+                - "ROLLBACK_DEPLOYMENT"
+                - "FULL_SYSTEM_RESET"
+        
+        Raises:
+            TypeError: If metrics is not a dictionary.
+        
+        Examples:
+            >>> CoherenceThresholds.check_stability({"cpu_load": 85.0})
+            'LOG_WARNING'
+            >>> CoherenceThresholds.check_stability({"error_rate": 0.25})
+            'ROLLBACK_DEPLOYMENT'
+            >>> CoherenceThresholds.check_stability({})
+            'STABLE'
+        """
+        if not isinstance(metrics, dict):
+            raise TypeError(f"Expected dict for metrics, got {type(metrics).__name__}")
+
+        if not metrics:
+            logger.debug("Empty metrics dict received, returning STABLE")
+            return _RemediationLevel.STABLE.value
+
+        highest_level = _RemediationLevel.STABLE
+        breached_metrics = []
+
+        for metric_name, value in metrics.items():
+            threshold_config = cls._SEVERITY_WEIGHTS.get(metric_name)
+            if threshold_config is None:
+                logger.warning(f"Unknown metric '{metric_name}' encountered, skipping")
+                continue
+
+            threshold, base_level = threshold_config
+
+            if value > threshold:
+                breach_ratio = value / threshold
+                current_level = cls._determine_remediation_level(breach_ratio, base_level)
+                breached_metrics.append((metric_name, value, threshold, breach_ratio, current_level.value))
+
+                if current_level.value > highest_level.value:
+                    highest_level = current_level
+
+        if breached_metrics:
+            logger.info(
+                "Coherence check: %d metric(s) breached. Highest level: %s. Details: %s",
+                len(breached_metrics),
+                highest_level.value,
+                breached_metrics,
+            )
+        else:
+            logger.debug("Coherence check: all metrics within thresholds")
+
+        return highest_level.value
+
+    @classmethod
+    def _determine_remediation_level(
+        cls, breach_ratio: float, base_level: _RemediationLevel
+    ) -> _RemediationLevel:
+        """Determine the appropriate remediation level based on breach severity.
+        
+        Args:
+            breach_ratio: The ratio of the current value to the threshold.
+            base_level: The base remediation level for this metric.
+        
+        Returns:
+            _RemediationLevel: The escalated or base remediation level.
+        """
+        # Check escalation ratios in descending order
+        for ratio, escalation_level in sorted(
+            cls._ESCALATION_RATIOS.items(), reverse=True
+        ):
+            if breach_ratio >= ratio:
+                logger.debug(
+                    "Escalating from %s to %s (breach ratio: %.2f >= %.2f)",
+                    base_level.value,
+                    escalation_level.value,
+                    breach_ratio,
+                    ratio,
+                )
+                return escalation_level
+
+        return base_level
+
+    @classmethod
+    def register_metric_threshold(
+        cls,
+        metric_name: str,
+        threshold: float,
+        base_level: str,
+    ) -> None:
+        """Register a new metric threshold for coherence checking.
+        
+        This allows dynamic extension of the severity weights without modifying
+        the class source code.
+        
+        Args:
+            metric_name: The name of the metric (e.g., "network_latency").
+            threshold: The threshold value for this metric.
+            base_level: The base remediation level string. Must be one of:
+                       "LOG_WARNING", "RESTART_SERVICE", "ROLLBACK_DEPLOYMENT",
+                       "FULL_SYSTEM_RESET".
+        
+        Raises:
+            ValueError: If base_level is not a valid remediation level.
+        
+        Example:
+            >>> CoherenceThresholds.register_metric_threshold(
+            ...     "network_latency", 2.0, "LOG_WARNING"
+            ... )
+        """
+        try:
+            level = _RemediationLevel(base_level)
+        except ValueError:
+            valid_levels = [l.value for l in _RemediationLevel]
+            raise ValueError(
+                f"Invalid base_level '{base_level}'. Must be one of: {valid_levels}"
+            )
+
+        cls._SEVERITY_WEIGHTS[metric_name] = (threshold, level)
+        logger.info(
+            "Registered new metric threshold: %s -> (%.2f, %s)",
+            metric_name,
+            threshold,
+            base_level,
+        )

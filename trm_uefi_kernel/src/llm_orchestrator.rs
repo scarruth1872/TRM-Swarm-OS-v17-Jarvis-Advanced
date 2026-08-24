@@ -1,0 +1,23 @@
+//! TRM Swarm OS - llm_orchestrator (mechanical no_std port, TRM platform engine).
+//! Constants and structure extracted 1:1 from swarm_v2/core/llm_orchestrator.py.
+//! Functions marked // MANUAL need human verification of math semantics.
+
+extern crate alloc;
+use alloc::string::String;
+use alloc::vec;
+use alloc::vec::Vec;
+
+
+//  get_orchestrator() 
+static SINGLETON_ORCHESTRATOR: core::sync::atomic::AtomicU64 = core::sync::atomic::AtomicU64::new(0);
+pub fn get_orchestrator() -> u64 {
+    // Singleton handle (lazy-init pattern from llm_orchestrator.py).
+    // Returns 1 once configured; 0 until first call initializes.
+    let v = SINGLETON_ORCHESTRATOR.load(core::sync::atomic::Ordering::Relaxed);
+    if v == 0 {
+        SINGLETON_ORCHESTRATOR.store(1, core::sync::atomic::Ordering::Relaxed);
+        1
+    } else {
+        v
+    }
+}

@@ -1,0 +1,134 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Skills System module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Skills System (id: skills) is one of Jarvis's core modules. It provides 5 API endpoints. I have 9 skills: GitHub Code Auditor (core security scanner), Web Oracle Grounding (utility web search), Telegram Uplink Bot Matrix (integration messaging), System Optimizer (automation performance), Open Design Studio (integration creative), Biomimetic Science Research Hub (science biology), Career & Job Matching Assistant (automation jobs), Resonant Memory Graph Sync (core knowledge), TRM Swarm OS Mesh Controller (integration distributed agents)."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/skills endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/skills: List all skills from jarvis_skills.json."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/skills/toggle endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/skills/toggle: Enable/disable a skill. Body: { skillId }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/skills/add endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/skills/add: Register a new skill. Body: { name, description, category, icon? }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/skills/matrix endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/skills/matrix: Get skill matrix from TRM swarm (proxied)."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/skills/matrix/topology endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/skills/matrix/topology: Get skill topology from TRM swarm (proxied)."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What skills do you have?"
+      },
+      {
+        "role": "assistant",
+        "content": "I have 9 skills: GitHub Code Auditor (core security scanner), Web Oracle Grounding (utility web search), Telegram Uplink Bot Matrix (integration messaging), System Optimizer (automation performance), Open Design Studio (integration creative), Biomimetic Science Research Hub (science biology), Career & Job Matching Assistant (automation jobs), Resonant Memory Graph Sync (core knowledge), TRM Swarm OS Mesh Controller (integration distributed agents)."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I register a new skill?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/skills/add with body { 'name': 'MySkill', 'description': 'Does X', 'category': 'utility', 'icon': 'Star' }. The skill is added to jarvis_skills.json and becomes available for the AI to use."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I enable/disable a skill?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/skills/toggle with body { 'skillId': 'web_grounding' }. The skill's 'enabled' flag toggles. Disabled skills are hidden from the AI's tool selection."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the Skills System module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 400 if skillId missing for toggle, 400 if name/description missing for add"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Skills System module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Skills are read by the Chat system to determine capabilities. Skills Matrix proxies to TRM swarm. Skills persist to jarvis_skills.json."
+      }
+    ]
+  }
+]

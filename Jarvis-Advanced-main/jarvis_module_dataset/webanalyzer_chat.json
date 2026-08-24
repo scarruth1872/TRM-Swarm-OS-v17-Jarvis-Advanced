@@ -1,0 +1,74 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Web Intelligence Analyzer module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Web Intelligence Analyzer (id: webanalyzer) is one of Jarvis's core modules. It provides 1 API endpoints. POST /api/web-analyzer with body { 'url': 'example.com' }. It runs: DNS resolution, TLS certificate check, WHOIS lookup (via urllib), content scraping, and optional headless browser rendering. Returns a comprehensive security and content analysis report."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/web-analyzer endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/web-analyzer: Analyze a web domain. Body: { url }. Checks DNS, TLS, WHOIS, headless browser rendering, and scrapes content."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I analyze a website?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/web-analyzer with body { 'url': 'example.com' }. It runs: DNS resolution, TLS certificate check, WHOIS lookup (via urllib), content scraping, and optional headless browser rendering. Returns a comprehensive security and content analysis report."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What analysis does the web analyzer perform?"
+      },
+      {
+        "role": "assistant",
+        "content": "It checks: HTTPS availability, TLS certificate validity (dates, issuer, subject), DNS resolution, domain WHOIS info (registrar, creation date), headless browser page rendering, content extraction, and subdomain enumeration."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the Web Intelligence Analyzer module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 400 if no URL, 500 on DNS/TLS failure"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Web Intelligence Analyzer module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Results can be stored as episodic memories. Used by Web Oracle Grounding skill."
+      }
+    ]
+  }
+]

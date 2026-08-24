@@ -1,0 +1,73 @@
+{
+  "version": "v18.89",
+  "commits": 155,
+  "timestamp": "2026-08-06T03:07:17",
+  "engines": {
+    "cpu_mamba3step": {
+      "hardware": "AMD Ryzen 9 3900X (Zen 2, 12C/24T)",
+      "threads": 16,
+      "pinning": "CCX affinity via SetThreadAffinityMask",
+      "throughput": 13899050,
+      "latency_ns": 71.9,
+      "unit": "steps/s",
+      "backend": "C++ DLL AVX2 FMA3"
+    },
+    "gpu_instella_gate": {
+      "hardware": "AMD Radeon RX 6700 XT (Navi 22, 40 CUs, 12.4 TFLOPS)",
+      "strategy": "VRAM Resident Weight Caching (98KB resident, 1.5KB streamed)",
+      "throughput": 252000000,
+      "latency_ns": 3.96,
+      "unit": "tasks/s",
+      "backend": "Vulkan 1.3 GLSL Compute Shader"
+    },
+    "asic_target": {
+      "process": "3nm GAA",
+      "frequency_ghz": 4.0,
+      "custom_instructions": 8,
+      "throughput": 222222222,
+      "latency_ns": 4.5,
+      "unit": "tasks/s",
+      "die_area_mm2": 12.0
+    }
+  },
+  "pipeline": [
+    "Conversation (natural Q&A)",
+    "Instella MoE single-expert (6us)",
+    "GPU INSTELLA_GATE (3.96ns, Vulkan VRAM)",
+    "THz Bonsai K3 (72us)",
+    "CPU MAMBA3STEP (71.9ns, 16-thread CCX)",
+    "THz Gateway (206us)",
+    "Radix-Trie (500ns, 88 patterns)",
+    "engine_team (LLM fallback)"
+  ],
+  "models_trained": {
+    "per_agent_lora": "15 agents \u00d7 50K pairs, avg loss 0.0042",
+    "bonsai_ternary": "30K curriculum, loss 0.61, 91% confidence",
+    "trm_7m_bonsai_instella": "15 agents, 128K params, loss 0.05",
+    "microkernel_experts": "8 primary \u00d7 2.57M params, 20.5M total"
+  },
+  "persistence": {
+    "cold_start_recovery": "13us (Windows CreateFileMapping)",
+    "ring_bus_mailbox": "169K msgs/s, 5.9us/msg",
+    "nvme_state": "16 \u00d7 512B agent slots"
+  },
+  "benchmarks": {
+    "100M_steps_python": "50K/s",
+    "1B_hybrid_cpu_gpu": "10.7M/s combined",
+    "50M_mt_cpu": "13.9M/s (16-thread)",
+    "10M_10chains": "40/s (full swarm pipeline)"
+  },
+  "interface": {
+    "dashboard_tabs": "22/22 functional",
+    "kanban_cards": "15 clickable with verification",
+    "research_papers": "15 full .md papers",
+    "ddr_antibodies": "1,801 generated",
+    "cron_jobs": "12 autonomous"
+  },
+  "cost": {
+    "local_per_task": 6e-08,
+    "gpt4o_equivalent": 0.03,
+    "savings_factor": "500,000\u00d7",
+    "platform_valuation": 2118706
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "proxy_health": {
+    "status": "PASS",
+    "latency_ms": 6.954,
+    "response": {
+      "status": "ok",
+      "engine": "microkernel",
+      "uptime": 62.71254801750183
+    }
+  },
+  "cpp_dll": {
+    "status": "PASS",
+    "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2\\core\\libswarm_kernel_ops.dll"
+  },
+  "sram_computer": {
+    "status": "PASS",
+    "total_benchmark_time_us": 311.8,
+    "arch_results": {
+      "fpga": {
+        "architecture": "FPGA-lite",
+        "details": {
+          "name": "FPGA-lite",
+          "logic_cells": 1024,
+          "lut_size": 6,
+          "total_gates": 65536
+        },
+        "pattern_hash": "693e5f0f347a",
+        "cells_used": 512,
+        "cells_total": 268435456,
+        "utilization": "0.00%",
+        "write_time_estimate": "0.00ms via C++ DLL",
+        "load_latency_us": 39.9
+      },
+      "cellular": {
+        "architecture": "Cellular Automaton Grid",
+        "details": {
+          "name": "Cellular Automaton Grid",
+          "grid": "1024\u00d71024",
+          "cells": 1048576,
+          "rule": "Game of Life (B3/S23)",
+          "neighbors_per_cell": 8
+        },
+        "pattern_hash": "7c8975e1e60a",
+        "cells_used": 512,
+        "cells_total": 268435456,
+        "utilization": "0.00%",
+        "write_time_estimate": "0.00ms via C++ DLL",
+        "load_latency_us": 7.7
+      },
+      "neural": {
+        "architecture": "SRAM Neural Network",
+        "details": {
+          "name": "SRAM Neural Network",
+          "neurons": 4096,
+          "weights_per_neuron": 16,
+          "total_synapses": 65536,
+          "precision": "16-bit fixed (per weight)"
+        },
+        "pattern_hash": "d8b359416230",
+        "cells_used": 512,
+        "cells_total": 268435456,
+        "utilization": "0.00%",
+        "write_time_estimate": "0.00ms via C++ DLL",
+        "load_latency_us": 8.6
+      },
+      "cam": {
+        "architecture": "Content-Addressable Memory",
+        "details": {
+          "name": "Content-Addressable Memory",
+          "entries": 65536,
+          "key_width": 32,
+          "value_width": 32,
+          "lookup_time": "O(1) \u2014 parallel comparison"
+        },
+        "pattern_hash": "bba91ca85dc9",
+        "cells_used": 512,
+        "cells_total": 268435456,
+        "utilization": "0.00%",
+        "write_time_estimate": "0.00ms via C++ DLL",
+        "load_latency_us": 4.1
+      },
+      "quantum": {
+        "architecture": "Quantum Circuit Simulator",
+        "details": {
+          "name": "Quantum Circuit Simulator",
+          "qubits": 2048,
+          "state_vector_size": 2048,
+          "gates": [
+            "H",
+            "CNOT",
+            "T",
+            "X",
+            "Z",
+            "S"
+          ]
+        },
+        "pattern_hash": "6da83a8c0125",
+        "cells_used": 262144,
+        "cells_total": 268435456,
+        "utilization": "0.10%",
+        "write_time_estimate": "2.36ms via C++ DLL",
+        "load_latency_us": 242.9
+      }
+    }
+  },
+  "k3_ternary_sram": {
+    "status": "PASS",
+    "elapsed_ms": 0.005,
+    "metrics": {
+      "cpu": "Ryzen 9 3900X",
+      "l3_cache": "34MB",
+      "sram_cells": 268435456,
+      "transistors": 1610612736,
+      "transistors_str": "1.61B SRAM",
+      "cache_lines": 524288,
+      "sets": 8192,
+      "ways": 16,
+      "slices": 4,
+      "architectures_available": [
+        "fpga",
+        "cellular",
+        "neural",
+        "cam",
+        "quantum"
+      ],
+      "active_architecture": "Quantum Circuit Simulator"
+    }
+  },
+  "gpu_infinity": {
+    "status": "PASS",
+    "metrics": {
+      "gpu": "AMD Radeon RX 6700 XT",
+      "transistors": "17.2B",
+      "infinity_cache": "96MB SRAM",
+      "cells": "805M",
+      "bandwidth": "2.1 TB/s",
+      "architectures": [
+        "fpga",
+        "neural",
+        "cellular",
+        "k3"
+      ],
+      "active": null
+    },
+    "elapsed_ms": 0.01
+  },
+  "dram_computer": {
+    "status": "PASS",
+    "summary": {
+      "ram": "32GB DDR4-3200",
+      "cells": "274.9B DRAM cells",
+      "banks": 128,
+      "bandwidth": "51.2 GB/s",
+      "refresh": "7.8\u03bcs",
+      "pathways": 3,
+      "architectures": [
+        "fpga",
+        "neural",
+        "stochastic",
+        "row_buffer",
+        "bulk_k3",
+        "rowhammer"
+      ]
+    },
+    "elapsed_ms": 0.02
+  },
+  "agent_routing": {
+    "status": "PASS",
+    "latencies_us": {
+      "Hermes": 227211.4,
+      "Jarvis": 171.0,
+      "Logic": 8.9,
+      "Devo": 6.5
+    },
+    "avg_latency_us": 56849.45
+  }
+}

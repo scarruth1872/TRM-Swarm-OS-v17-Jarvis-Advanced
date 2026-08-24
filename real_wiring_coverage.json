@@ -1,0 +1,2902 @@
+{
+  "protocol": "REAL_WIRING_COVERAGE_REPORT",
+  "timestamp": "2026-08-23 17:42:45",
+  "total_real_modules": 170,
+  "wired_active_modules": 170,
+  "orphan_count": 0,
+  "coverage_percentage": 100.0,
+  "trigger_breakdown": {
+    "scheduled_heartbeat_dispatcher": 147,
+    "udp_beacon_mesh_event": 5,
+    "docking_genomics_pipeline": 1,
+    "council_vote_trigger": 4,
+    "ddr_security_scan_trigger": 5,
+    "voltage_phi_v_sampler_100ms": 3,
+    "self_healing_loop": 5
+  },
+  "module_coverage": {
+    "advanced_scene_fusion": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\advanced_scene_fusion.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\scratch\\test_multimodal_phase2.py:1"
+      ]
+    },
+    "agent_mailbox": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\agent_mailbox.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\coordination_protocol.py:1",
+        "swarm_v2\\core\\coordination_responder.py:1",
+        "swarm_v2\\core\\microkernel_spawner.py:1",
+        "swarm_v2\\core\\swarm_orchestrator.py:1",
+        "swarm_v2\\routes\\kanban.py:1",
+        "swarm_v2\\scratch\\test_synthesis_validation.py:1",
+        "swarm_v2\\scripts\\swarm_total_exercise.py:1",
+        "swarm_v2\\scripts\\tri_scenario_247_exercise.py:1"
+      ]
+    },
+    "agent_mailbox_bus": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\agent_mailbox_bus.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\final_porting_pass.py:1",
+        "swarm_v2\\core\\native_mailbox_bridge.py:3"
+      ]
+    },
+    "agent_mesh": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "udp_beacon_mesh_event",
+      "call_references": [
+        "trm_uefi_kernel\\src\\agent_mesh.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\star_matrix.rs:2",
+        "swarm_v2\\app_v2.py:22",
+        "swarm_v2\\core\\background_tasks.py:3",
+        "swarm_v2\\core\\base_agent.py:1",
+        "swarm_v2\\core\\daemon_discovery.py:2",
+        "swarm_v2\\core\\heuristic_consensus.py:2",
+        "swarm_v2\\core\\monitor_daemon.py:1",
+        "swarm_v2\\core\\pbft_consensus.py:4",
+        "swarm_v2\\core\\quantum_debugger.py:1",
+        "swarm_v2\\core\\remediation_engine.py:1",
+        "swarm_v2\\core\\self_healing_orchestrator.py:4",
+        "swarm_v2\\core\\skill_matrix_sync.py:1",
+        "swarm_v2\\core\\star_matrix.py:3",
+        "swarm_v2\\core\\swarm_orchestrator.py:9",
+        "swarm_v2\\core\\swarm_performance_insights.py:2",
+        "swarm_v2\\core\\test_self_healing.py:1",
+        "swarm_v2\\routes\\batch_endpoints.py:1",
+        "swarm_v2\\routes\\mesh.py:18",
+        "swarm_v2\\routes\\swarm.py:4",
+        "swarm_v2\\routes\\system.py:1",
+        "swarm_v2\\scripts\\swarm_total_exercise.py:1"
+      ]
+    },
+    "agent_runtime": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\council.rs:1",
+        "trm_uefi_kernel\\src\\main.rs:5",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\platform.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "allocator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\allocator.rs:1",
+        "trm_uefi_kernel\\src\\main.rs:3",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\cold_start_recovery.py:3",
+        "swarm_v2\\core\\porting_fixpass.py:2"
+      ]
+    },
+    "architectural_rl_agent": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\architectural_rl_agent.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1"
+      ]
+    },
+    "artifact_pipeline": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\artifact_pipeline.rs:3",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\background_tasks.py:1",
+        "swarm_v2\\core\\base_agent.py:8",
+        "swarm_v2\\core\\manus_engine.py:1",
+        "swarm_v2\\core\\proactive_loop.py:1",
+        "swarm_v2\\core\\reconnaissance_daemon.py:1",
+        "swarm_v2\\routes\\artifacts.py:1",
+        "swarm_v2\\routes\\verification.py:1",
+        "swarm_v2\\scripts\\entangled_pipeline_demo.py:1",
+        "swarm_v2\\scripts\\relationship_reasoning.py:1",
+        "swarm_v2\\skills\\file_skill.py:1"
+      ]
+    },
+    "attempt_sampler": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\attempt_sampler.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\task_arbiter.py:1",
+        "swarm_v2\\scripts\\verify_phase_14.py:1"
+      ]
+    },
+    "auto_changelog": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\auto_changelog.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\routes\\changelog.py:1"
+      ]
+    },
+    "background_tasks": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\background_tasks.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\routes\\swarm.py:1"
+      ]
+    },
+    "base_agent": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\base_agent.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\trm_integration.rs:7",
+        "trm_uefi_kernel\\src\\trm_orchestrator.rs:1",
+        "swarm_v2\\core\\attempt_sampler.py:1",
+        "swarm_v2\\core\\remediation_engine.py:1",
+        "swarm_v2\\core\\swarm_engine.py:1",
+        "swarm_v2\\core\\trm_integration.py:7",
+        "swarm_v2\\core\\trm_orchestrator.py:6",
+        "swarm_v2\\experts\\registry.py:1",
+        "swarm_v2\\routes\\swarm.py:1",
+        "swarm_v2\\scripts\\verify_phase_12.py:1",
+        "swarm_v2\\scripts\\verify_phase_14.py:1"
+      ]
+    },
+    "benchmark_epistemology": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:2",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\epistemology_verification.py:2",
+        "swarm_v2\\core\\sovereign_practice.py:1"
+      ]
+    },
+    "bridge": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\bridge.rs:6",
+        "trm_uefi_kernel\\src\\council.rs:1",
+        "trm_uefi_kernel\\src\\main.rs:27",
+        "trm_uefi_kernel\\src\\module_registry.rs:2",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "trm_uefi_kernel\\src\\star_matrix.rs:1",
+        "trm_uefi_kernel\\src\\totality.rs:2",
+        "swarm_v2\\core\\bridge_e2e_test.py:2",
+        "swarm_v2\\core\\build_totality_memory.py:4",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\cognitive_ingestion_engine.py:2",
+        "swarm_v2\\core\\cosmos3_edge_bridge.py:2",
+        "swarm_v2\\core\\external_socket_bridge.py:1",
+        "swarm_v2\\core\\native_federation_bridge.py:4",
+        "swarm_v2\\core\\native_ops_bridge.py:6",
+        "swarm_v2\\core\\quantum_drug_protocol.py:1",
+        "swarm_v2\\core\\radix_trie_matcher.py:6",
+        "swarm_v2\\mcp\\synthesizer.py:4",
+        "swarm_v2\\routes\\swarm.py:1",
+        "swarm_v2\\routes\\untapped.py:1"
+      ]
+    },
+    "chain_of_verification": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\chain_of_verification.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\base_agent.py:1",
+        "swarm_v2\\routes\\swarm.py:1",
+        "swarm_v2\\routes\\verification.py:1"
+      ]
+    },
+    "chaos_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\chaos_engine.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\swarm.py:2"
+      ]
+    },
+    "chaos_simulator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\chaos_simulator.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "cognitive_ingestion_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\cognitive_ingestion_engine.rs:3",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\routes\\swarm.py:6"
+      ]
+    },
+    "cognitive_load_balancer": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\cognitive_load_balancer.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\swarm.py:1"
+      ]
+    },
+    "cognitive_stack": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\cognitive_stack.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\base_agent.py:4",
+        "swarm_v2\\core\\telemetry.py:2",
+        "swarm_v2\\scripts\\test_cognitive_stack_gemma3_270m.py:1",
+        "swarm_v2\\scripts\\test_distributed_stack.py:1",
+        "swarm_v2\\scripts\\verify_phase_11.py:5"
+      ]
+    },
+    "coherence_thresholds": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\monitor_daemon.py:2",
+        "swarm_v2\\core\\remediation_engine.py:2",
+        "swarm_v2\\core\\telemetry.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "cold_start_recovery": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\cold_start_recovery.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\cold_start_recovery.py:1"
+      ]
+    },
+    "collaborative_reasoning": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\collaborative_reasoning.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\proactive_loop.py:2",
+        "swarm_v2\\core\\swarm_performance_insights.py:1",
+        "swarm_v2\\routes\\swarm.py:1",
+        "swarm_v2\\scripts\\verify_phase_7.py:2"
+      ]
+    },
+    "comm_protocol": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "udp_beacon_mesh_event",
+      "call_references": [
+        "trm_uefi_kernel\\src\\bridge.rs:1",
+        "trm_uefi_kernel\\src\\comm_protocol.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\agent_mailbox.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\final_porting_pass.py:3",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\native_federation_bridge.py:3",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "continuum_genomics": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "docking_genomics_pipeline",
+      "call_references": [
+        "trm_uefi_kernel\\src\\continuum_genomics.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\microkernel_spawner.py:1",
+        "swarm_v2\\routes\\swarm.py:4"
+      ]
+    },
+    "continuum_pbft": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "council_vote_trigger",
+      "call_references": [
+        "trm_uefi_kernel\\src\\continuum_pbft.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\microkernel_spawner.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\swarm.py:3"
+      ]
+    },
+    "coordination_protocol": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\coordination_protocol.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\coordination.py:1"
+      ]
+    },
+    "coordination_responder": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\coordination_responder.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\routes\\coordination_respond.py:1"
+      ]
+    },
+    "cosmos_microkernel_entanglement": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\cosmos_microkernel_entanglement.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1"
+      ]
+    },
+    "cosmos_moe_instella_shunter": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\cosmos_moe_instella_shunter.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1"
+      ]
+    },
+    "cosmos_sparse_moe_teams": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\cosmos_sparse_moe_teams.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1"
+      ]
+    },
+    "council": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 103,
+      "trigger_source": "council_vote_trigger",
+      "call_references": [
+        "trm_uefi_kernel\\src\\bridge.rs:1",
+        "trm_uefi_kernel\\src\\global_memory.rs:1",
+        "trm_uefi_kernel\\src\\intent_buffer.rs:2",
+        "trm_uefi_kernel\\src\\main.rs:14",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:3",
+        "trm_uefi_kernel\\src\\monad.rs:2",
+        "trm_uefi_kernel\\src\\pbft_consensus.rs:1",
+        "trm_uefi_kernel\\src\\platform.rs:1",
+        "trm_uefi_kernel\\src\\totality.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\bridge_e2e_test.py:3",
+        "swarm_v2\\core\\build_totality_memory.py:4",
+        "swarm_v2\\core\\capability_test.py:4",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\epistemology_verification.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\native_federation_bridge.py:7",
+        "swarm_v2\\core\\sovereign_practice.py:5",
+        "swarm_v2\\core\\swarm_council.py:10",
+        "swarm_v2\\core\\ultrawork_loop.py:1",
+        "swarm_v2\\routes\\council.py:37"
+      ]
+    },
+    "cqs": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\cqs.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\cognitive_stack.py:1"
+      ]
+    },
+    "daemon_discovery": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\daemon_discovery.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1"
+      ]
+    },
+    "daily_evolution_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\daily_evolution_engine.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\final_porting_pass.py:7",
+        "swarm_v2\\core\\final_porting_pass2.py:3",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "ddr_antibody": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "ddr_security_scan_trigger",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\microkernel_spawner.py:1",
+        "swarm_v2\\core\\quantum_drug_protocol.py:7",
+        "swarm_v2\\core\\radix_trie_matcher.py:1",
+        "swarm_v2\\core\\sovereign_practice.py:1",
+        "swarm_v2\\core\\test_secrets_vault_api.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\kanban.py:4",
+        "swarm_v2\\routes\\security.py:1",
+        "swarm_v2\\scripts\\swarm_total_exercise.py:1",
+        "swarm_v2\\scripts\\tri_scenario_247_exercise.py:1"
+      ]
+    },
+    "ddr_self_training": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "ddr_security_scan_trigger",
+      "call_references": [
+        "trm_uefi_kernel\\src\\ddr_self_training.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1"
+      ]
+    },
+    "deterministic_forge": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\deterministic_forge.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\routes\\synthesis.py:1"
+      ]
+    },
+    "dge": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\dge.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\global_memory.py:8"
+      ]
+    },
+    "digital_dna_loop": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\digital_dna_loop.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\test_continuum_integration.py:2",
+        "swarm_v2\\routes\\untapped.py:2"
+      ]
+    },
+    "digital_twin": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:3",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\final_porting_pass.py:4",
+        "swarm_v2\\routes\\mesh.py:1"
+      ]
+    },
+    "dram_pattern_computer": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\dram_pattern_computer.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1"
+      ]
+    },
+    "epistemology_core": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:2",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:2",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "evolutionary_sandbox": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\evolutionary_sandbox.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\routes\\evolution.py:1"
+      ]
+    },
+    "expert_registry": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\expert_registry.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:2",
+        "swarm_v2\\core\\base_agent.py:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\jarvis_symbiosis.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\task_arbiter.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\scripts\\inception_pulse.py:1",
+        "swarm_v2\\scripts\\verify_phase_10.py:1",
+        "swarm_v2\\scripts\\verify_phase_11.py:1",
+        "swarm_v2\\scripts\\verify_phase_12.py:1",
+        "swarm_v2\\scripts\\verify_phase_7.py:1"
+      ]
+    },
+    "expert_team_harnesses": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\expert_team_harnesses.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\microkernel_spawner.py:1"
+      ]
+    },
+    "federation": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "udp_beacon_mesh_event",
+      "call_references": [
+        "trm_uefi_kernel\\src\\chaos_engine.rs:1",
+        "trm_uefi_kernel\\src\\federation.rs:3",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:5",
+        "swarm_v2\\core\\chaos_engine.py:1",
+        "swarm_v2\\core\\evolutionary_sandbox.py:2",
+        "swarm_v2\\core\\federation.py:3",
+        "swarm_v2\\core\\federation_manager.py:14",
+        "swarm_v2\\core\\global_memory.py:1",
+        "swarm_v2\\core\\memory_synchronizer.py:3",
+        "swarm_v2\\core\\native_federation_bridge.py:1",
+        "swarm_v2\\core\\task_arbiter.py:3",
+        "swarm_v2\\routes\\evolution.py:3",
+        "swarm_v2\\routes\\mesh.py:19",
+        "swarm_v2\\routes\\swarm.py:2"
+      ]
+    },
+    "feedback_loops": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "font": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:2",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\manual_repair_pass.py:1",
+        "swarm_v2\\core\\manual_repair_pass2.py:1",
+        "swarm_v2\\core\\porting_fixpass.py:1",
+        "swarm_v2\\core\\porting_fixpass10.py:1",
+        "swarm_v2\\core\\porting_fixpass11.py:1",
+        "swarm_v2\\core\\porting_fixpass2.py:1",
+        "swarm_v2\\core\\porting_fixpass3.py:1",
+        "swarm_v2\\core\\porting_fixpass4.py:1",
+        "swarm_v2\\core\\porting_fixpass5.py:1",
+        "swarm_v2\\core\\porting_fixpass6.py:1",
+        "swarm_v2\\core\\porting_fixpass7.py:1",
+        "swarm_v2\\core\\porting_fixpass8.py:1",
+        "swarm_v2\\core\\porting_fixpass9.py:1"
+      ]
+    },
+    "formal_verification_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\self_modification_api.py:1",
+        "swarm_v2\\scratch\\benchmark_swarm_os.py:1",
+        "swarm_v2\\scratch\\research_swarm_platform.py:1"
+      ]
+    },
+    "full_64_agent_orchestrator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1"
+      ]
+    },
+    "gan_design_synthesizer": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1"
+      ]
+    },
+    "generative_architect": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:4",
+        "swarm_v2\\core\\radix_trie_matcher.py:1",
+        "swarm_v2\\scratch\\demo_full_system.py:1"
+      ]
+    },
+    "global_memory": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:3",
+        "swarm_v2\\core\\base_agent.py:2",
+        "swarm_v2\\core\\cognitive_ingestion_engine.py:1",
+        "swarm_v2\\core\\collaborative_reasoning.py:3",
+        "swarm_v2\\core\\federation.py:8",
+        "swarm_v2\\core\\jarvis_symbiosis.py:1",
+        "swarm_v2\\core\\mcp_tool_evolver.py:1",
+        "swarm_v2\\core\\memory_synchronizer.py:1",
+        "swarm_v2\\core\\microkernel_spawner.py:1",
+        "swarm_v2\\core\\moltbook.py:1",
+        "swarm_v2\\core\\quantum_debugger.py:1",
+        "swarm_v2\\core\\reconnaissance_daemon.py:1",
+        "swarm_v2\\core\\resonance_engine.py:4",
+        "swarm_v2\\core\\skill_matrix_sync.py:2",
+        "swarm_v2\\core\\swarm_performance_insights.py:2",
+        "swarm_v2\\routes\\evolution.py:1",
+        "swarm_v2\\routes\\memory.py:7",
+        "swarm_v2\\routes\\mesh.py:1",
+        "swarm_v2\\routes\\swarm.py:6",
+        "swarm_v2\\scratch\\notify_system_evolution.py:1",
+        "swarm_v2\\scratch\\register_transformation_plans.py:1",
+        "swarm_v2\\scripts\\inception_pulse.py:1",
+        "swarm_v2\\scripts\\verify_phase_10.py:1",
+        "swarm_v2\\scripts\\verify_phase_11.py:1",
+        "swarm_v2\\scripts\\verify_phase_7.py:4"
+      ]
+    },
+    "gpu_cuda_microkernel_binder": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\brain_ai_microkernel_bridge.py:1",
+        "swarm_v2\\core\\cosmos_bridge.py:1",
+        "swarm_v2\\core\\cosmos_microkernel_entanglement.py:1",
+        "swarm_v2\\core\\cosmos_moe_instella_shunter.py:1",
+        "swarm_v2\\core\\cosmos_sparse_moe_teams.py:1",
+        "swarm_v2\\core\\instella_sparse_agent_teams.py:1",
+        "swarm_v2\\core\\phoenix_protocol_engine.py:1"
+      ]
+    },
+    "gpu_infinity_computer": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\gpu_infinity_computer.rs:1",
+        "trm_uefi_kernel\\src\\hwprobe.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\capability_test.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_loop.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "gpu_unlock_architecture": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\final_porting_pass.py:1",
+        "swarm_v2\\core\\gpu_unlock_architecture.py:1"
+      ]
+    },
+    "hardware_voltage_microkernel_binder": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "voltage_phi_v_sampler_100ms",
+      "call_references": [
+        "trm_uefi_kernel\\src\\hwprobe.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\capability_test.py:1",
+        "swarm_v2\\core\\cosmos_bridge.py:1",
+        "swarm_v2\\core\\cosmos_microkernel_entanglement.py:1",
+        "swarm_v2\\core\\cosmos_moe_instella_shunter.py:1",
+        "swarm_v2\\core\\cosmos_sparse_moe_teams.py:1",
+        "swarm_v2\\core\\external_socket_bridge.py:1",
+        "swarm_v2\\core\\generative_architect.py:1",
+        "swarm_v2\\core\\gpu_cuda_microkernel_binder.py:1",
+        "swarm_v2\\core\\instella_sparse_agent_teams.py:1",
+        "swarm_v2\\core\\phoenix_protocol_engine.py:1",
+        "swarm_v2\\core\\radix_trie_matcher.py:2",
+        "swarm_v2\\core\\ultrawork_loop.py:1",
+        "swarm_v2\\routes\\batch_endpoints.py:1",
+        "swarm_v2\\routes\\mesh.py:1"
+      ]
+    },
+    "heartbeat_scheduler": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\scripts\\verify_phase_12.py:1"
+      ]
+    },
+    "heuristic_consensus": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "council_vote_trigger",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\mesh.py:1",
+        "swarm_v2\\routes\\swarm.py:1"
+      ]
+    },
+    "hf_brain": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\hf_brain.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1"
+      ]
+    },
+    "higher_mind": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\scripts\\inception_pulse.py:1",
+        "swarm_v2\\skills\\co_creator_skill.py:3"
+      ]
+    },
+    "human_swarm_interaction": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\scratch\\test_multimodal_phase2.py:1"
+      ]
+    },
+    "hwprobe": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "voltage_phi_v_sampler_100ms",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:3",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "trm_uefi_kernel\\src\\platform.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "instella_router": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:2",
+        "trm_uefi_kernel\\src\\platform.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "instella_sparse_agent_teams": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\brain_ai_microkernel_bridge.py:1"
+      ]
+    },
+    "intent_buffer": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:2",
+        "swarm_v2\\core\\cosmos3_edge_bridge.py:1",
+        "swarm_v2\\core\\test_intent_buffer.py:3",
+        "swarm_v2\\routes\\swarm.py:7"
+      ]
+    },
+    "ipc": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\routes\\mesh.py:2"
+      ]
+    },
+    "jarvis_cognitive": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "jarvis_quantum": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "jarvis_substrate": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "jarvis_symbiosis": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\routes\\swarm.py:1"
+      ]
+    },
+    "jarvis_vibe": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "jarvis_vibethinker": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "k3_logic": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:2",
+        "trm_uefi_kernel\\src\\platform.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "kanban_board": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\kanban_board.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\background_tasks.py:2",
+        "swarm_v2\\core\\base_agent.py:1",
+        "swarm_v2\\routes\\kanban.py:1",
+        "swarm_v2\\scratch\\audit_kanban_implementations.py:1",
+        "swarm_v2\\scratch\\complete_all_kanban_tasks.py:1",
+        "swarm_v2\\scripts\\swarm_total_exercise.py:1",
+        "swarm_v2\\scripts\\tri_scenario_247_exercise.py:1"
+      ]
+    },
+    "kernel_instructions": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\final_porting_pass.py:1"
+      ]
+    },
+    "kernel_lora_adapter": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\kernel_lora_adapter.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\base_agent.py:1",
+        "swarm_v2\\core\\ddr_self_training.py:1",
+        "swarm_v2\\core\\radix_trie_matcher.py:1",
+        "swarm_v2\\routes\\system.py:1"
+      ]
+    },
+    "llm_brain": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\base_agent.py:1",
+        "swarm_v2\\core\\final_porting_pass.py:4",
+        "swarm_v2\\core\\final_porting_pass2.py:4",
+        "swarm_v2\\core\\llm_orchestrator.py:1",
+        "swarm_v2\\core\\llm_router.py:1",
+        "swarm_v2\\core\\resonance_engine.py:1",
+        "swarm_v2\\core\\trm_integration.py:1",
+        "swarm_v2\\scripts\\test_cognitive_stack_gemma3_270m.py:1"
+      ]
+    },
+    "llm_orchestrator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\llm_orchestrator.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\cognitive_stack.py:1",
+        "swarm_v2\\core\\global_memory.py:1"
+      ]
+    },
+    "llm_router": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\llm_router.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\cognitive_stack.py:1",
+        "swarm_v2\\core\\llm_brain.py:1",
+        "swarm_v2\\scratch\\verify_keys_fix.py:1"
+      ]
+    },
+    "lobster_shell": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\lobster_shell.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\artifact_pipeline.py:1",
+        "swarm_v2\\routes\\untapped.py:1",
+        "swarm_v2\\scripts\\verify_phase_14.py:1",
+        "swarm_v2\\skills\\hardened_shell_skill.py:1"
+      ]
+    },
+    "lora_response_modulator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\lora_response_modulator.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\base_agent.py:1"
+      ]
+    },
+    "main": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\formal_verification_engine.rs:1",
+        "trm_uefi_kernel\\src\\jarvis_cognitive.rs:1",
+        "trm_uefi_kernel\\src\\jarvis_quantum.rs:1",
+        "trm_uefi_kernel\\src\\jarvis_substrate.rs:1",
+        "trm_uefi_kernel\\src\\jarvis_symbiosis.rs:1",
+        "trm_uefi_kernel\\src\\jarvis_vibe.rs:1",
+        "trm_uefi_kernel\\src\\jarvis_vibethinker.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\agent_mesh.py:1",
+        "swarm_v2\\core\\artifact_pipeline.py:1",
+        "swarm_v2\\core\\build_module_registry.py:2",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\capability_test.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:3",
+        "swarm_v2\\core\\catalyst_phase1.py:2",
+        "swarm_v2\\core\\epistemology_verification.py:3",
+        "swarm_v2\\core\\formal_verification_engine.py:1",
+        "swarm_v2\\core\\ionosphere_protocol.py:2",
+        "swarm_v2\\core\\jarvis_symbiosis.py:2",
+        "swarm_v2\\core\\manual_clearing_engine.py:3",
+        "swarm_v2\\core\\manual_repair_pass.py:1",
+        "swarm_v2\\core\\manual_repair_pass2.py:1",
+        "swarm_v2\\core\\porting_engine.py:2",
+        "swarm_v2\\core\\porting_fixpass.py:2",
+        "swarm_v2\\core\\porting_fixpass10.py:1",
+        "swarm_v2\\core\\porting_fixpass11.py:1",
+        "swarm_v2\\core\\porting_fixpass2.py:1",
+        "swarm_v2\\core\\porting_fixpass3.py:1",
+        "swarm_v2\\core\\porting_fixpass4.py:1",
+        "swarm_v2\\core\\porting_fixpass5.py:1",
+        "swarm_v2\\core\\porting_fixpass6.py:1",
+        "swarm_v2\\core\\porting_fixpass7.py:1",
+        "swarm_v2\\core\\porting_fixpass8.py:1",
+        "swarm_v2\\core\\porting_fixpass9.py:1",
+        "swarm_v2\\core\\quantum_drug_protocol.py:2",
+        "swarm_v2\\core\\security_scanner.py:2",
+        "swarm_v2\\core\\self_fuzzing_engine.py:1",
+        "swarm_v2\\core\\self_healing_infra.py:2",
+        "swarm_v2\\core\\sovereign_practice.py:2",
+        "swarm_v2\\core\\test_intent_buffer.py:1",
+        "swarm_v2\\core\\test_research_api.py:1",
+        "swarm_v2\\core\\test_secrets_vault_api.py:1",
+        "swarm_v2\\core\\test_self_healing.py:1",
+        "swarm_v2\\core\\test_self_healing_infra.py:1",
+        "swarm_v2\\core\\test_skill_matrix_sync.py:1",
+        "swarm_v2\\core\\test_skill_validator.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:4",
+        "swarm_v2\\core\\worktree_manager.py:1",
+        "swarm_v2\\core\\zero_human_test_gen.py:4",
+        "swarm_v2\\routes\\artifacts.py:2",
+        "swarm_v2\\routes\\learning.py:2",
+        "swarm_v2\\routes\\system.py:2",
+        "swarm_v2\\scripts\\swarm_benchmark.py:2",
+        "swarm_v2\\scripts\\test_cognitive_stack_gemma3_270m.py:2",
+        "swarm_v2\\skills\\github_acquisition.py:1"
+      ]
+    },
+    "mamba3_turbovec_ssm": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\full_64_agent_orchestrator.py:1",
+        "swarm_v2\\core\\microkernel_spawner.py:1"
+      ]
+    },
+    "manus_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\manus_engine.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\proactive_loop.rs:1",
+        "swarm_v2\\core\\proactive_loop.py:5",
+        "swarm_v2\\core\\telemetry.py:1",
+        "swarm_v2\\routes\\untapped.py:2",
+        "swarm_v2\\scripts\\manus_superposition_test.py:1"
+      ]
+    },
+    "mcp_bus": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\mcp_bus.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1"
+      ]
+    },
+    "mcp_tool_evolver": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\mcp_tool_evolver.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\routes\\changelog.py:1",
+        "swarm_v2\\routes\\untapped.py:1"
+      ]
+    },
+    "memory": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 320,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\council.rs:2",
+        "trm_uefi_kernel\\src\\ddr_antibody.rs:1",
+        "trm_uefi_kernel\\src\\gan_design_synthesizer.rs:1",
+        "trm_uefi_kernel\\src\\global_memory.rs:1",
+        "trm_uefi_kernel\\src\\instella_router.rs:1",
+        "trm_uefi_kernel\\src\\ipc.rs:4",
+        "trm_uefi_kernel\\src\\llm_brain.rs:4",
+        "trm_uefi_kernel\\src\\main.rs:2",
+        "trm_uefi_kernel\\src\\mamba3_turbovec_ssm.rs:2",
+        "trm_uefi_kernel\\src\\memory.rs:1",
+        "trm_uefi_kernel\\src\\microkernel_spawner.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:2",
+        "trm_uefi_kernel\\src\\resonance_engine.rs:1",
+        "trm_uefi_kernel\\src\\time.rs:1",
+        "trm_uefi_kernel\\src\\totality.rs:2",
+        "trm_uefi_kernel\\src\\trm7m.rs:1",
+        "trm_uefi_kernel\\src\\trm_integration.rs:2",
+        "trm_uefi_kernel\\src\\turbovec_memory.rs:2",
+        "swarm_v2\\app_v2.py:4",
+        "swarm_v2\\core\\agent_intelligence_bridge.py:1",
+        "swarm_v2\\core\\agent_mailbox_bus.py:3",
+        "swarm_v2\\core\\base_agent.py:19",
+        "swarm_v2\\core\\build_totality_memory.py:2",
+        "swarm_v2\\core\\cognitive_ingestion_engine.py:17",
+        "swarm_v2\\core\\cold_start_recovery.py:2",
+        "swarm_v2\\core\\ddr_self_training.py:1",
+        "swarm_v2\\core\\dge.py:2",
+        "swarm_v2\\core\\digital_twin_singleton.py:1",
+        "swarm_v2\\core\\federation.py:5",
+        "swarm_v2\\core\\final_porting_pass.py:1",
+        "swarm_v2\\core\\final_porting_pass2.py:4",
+        "swarm_v2\\core\\gan_design_synthesizer.py:1",
+        "swarm_v2\\core\\generative_architect.py:4",
+        "swarm_v2\\core\\global_memory.py:4",
+        "swarm_v2\\core\\gpu_unlock_architecture.py:2",
+        "swarm_v2\\core\\hardware_voltage_microkernel_binder.py:5",
+        "swarm_v2\\core\\instella_moe_inference.py:3",
+        "swarm_v2\\core\\instella_single_expert_router.py:1",
+        "swarm_v2\\core\\intent_buffer.py:4",
+        "swarm_v2\\core\\ipc.py:7",
+        "swarm_v2\\core\\jarvis_symbiosis.py:1",
+        "swarm_v2\\core\\kernel_instructions.py:1",
+        "swarm_v2\\core\\kernel_lora_adapter.py:6",
+        "swarm_v2\\core\\llm_brain.py:3",
+        "swarm_v2\\core\\local_lora_trainer.py:4",
+        "swarm_v2\\core\\lora_response_modulator.py:1",
+        "swarm_v2\\core\\mamba3_turbovec_ssm.py:2",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\mcp_tool_evolver.py:3",
+        "swarm_v2\\core\\memory.py:6",
+        "swarm_v2\\core\\memory_synchronizer.py:3",
+        "swarm_v2\\core\\microkernel_spawner.py:5",
+        "swarm_v2\\core\\persistent_mmap_allocator.py:3",
+        "swarm_v2\\core\\predictive_watchdog.py:5",
+        "swarm_v2\\core\\proactive_loop.py:3",
+        "swarm_v2\\core\\quantum_debugger.py:1",
+        "swarm_v2\\core\\radix_trie_matcher.py:11",
+        "swarm_v2\\core\\reconnaissance_daemon.py:4",
+        "swarm_v2\\core\\resonance_engine.py:3",
+        "swarm_v2\\core\\rust_kernel_binder.py:1",
+        "swarm_v2\\core\\self_healing.py:1",
+        "swarm_v2\\core\\semantic_cache.py:1",
+        "swarm_v2\\core\\skill_matrix_sync.py:5",
+        "swarm_v2\\core\\sovereign_practice.py:1",
+        "swarm_v2\\core\\sram_pattern_computer.py:1",
+        "swarm_v2\\core\\sub_atomic_kernel.py:1",
+        "swarm_v2\\core\\swarm_performance_insights.py:7",
+        "swarm_v2\\core\\task_arbiter.py:7",
+        "swarm_v2\\core\\test_intent_buffer.py:3",
+        "swarm_v2\\core\\trm_7m_full.py:1",
+        "swarm_v2\\core\\trm_7m_model.py:4",
+        "swarm_v2\\core\\trm_7m_optimized.py:1",
+        "swarm_v2\\core\\trm_integration.py:4",
+        "swarm_v2\\core\\trm_orchestrator.py:7",
+        "swarm_v2\\core\\turbovec_16x_femto_engine.py:2",
+        "swarm_v2\\core\\turbovec_memory.py:6",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\mcp\\bridge.py:1",
+        "swarm_v2\\routes\\batch_endpoints.py:2",
+        "swarm_v2\\routes\\evolution.py:5",
+        "swarm_v2\\routes\\kanban.py:1",
+        "swarm_v2\\routes\\learning.py:1",
+        "swarm_v2\\routes\\memory.py:11",
+        "swarm_v2\\routes\\mesh.py:10",
+        "swarm_v2\\routes\\swarm.py:26",
+        "swarm_v2\\scratch\\test_chat_400.py:1",
+        "swarm_v2\\scratch\\test_generative_architect.py:1",
+        "swarm_v2\\scripts\\verify_phase_10.py:2",
+        "swarm_v2\\scripts\\verify_phase_11.py:1",
+        "swarm_v2\\scripts\\verify_phase_7.py:9",
+        "swarm_v2\\skills\\doc_ingestion_skill.py:2",
+        "swarm_v2\\skills\\learning_engine.py:1"
+      ]
+    },
+    "memory_synchronizer": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\memory_synchronizer.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1"
+      ]
+    },
+    "meta_orchestrator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\meta_orchestrator.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\routes\\swarm.py:1"
+      ]
+    },
+    "microkernel_spawner": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\base_agent.py:3",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\cognitive_ingestion_engine.py:1",
+        "swarm_v2\\core\\cognitive_stack.py:1",
+        "swarm_v2\\core\\external_socket_bridge.py:1",
+        "swarm_v2\\core\\final_porting_pass2.py:3",
+        "swarm_v2\\core\\full_64_agent_orchestrator.py:1",
+        "swarm_v2\\core\\generative_architect.py:1",
+        "swarm_v2\\core\\intent_buffer.py:1",
+        "swarm_v2\\core\\radix_trie_matcher.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\swarm.py:5",
+        "swarm_v2\\scripts\\tri_scenario_247_exercise.py:1",
+        "swarm_v2\\skills\\cognitive_orchestrator.py:1",
+        "swarm_v2\\skills\\learning_engine.py:1"
+      ]
+    },
+    "modmap_all": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:2",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\manual_repair_pass.py:1",
+        "swarm_v2\\core\\manual_repair_pass2.py:1",
+        "swarm_v2\\core\\porting_fixpass.py:2",
+        "swarm_v2\\core\\porting_fixpass10.py:1",
+        "swarm_v2\\core\\porting_fixpass11.py:1",
+        "swarm_v2\\core\\porting_fixpass2.py:1",
+        "swarm_v2\\core\\porting_fixpass3.py:1",
+        "swarm_v2\\core\\porting_fixpass4.py:1",
+        "swarm_v2\\core\\porting_fixpass5.py:1",
+        "swarm_v2\\core\\porting_fixpass6.py:1",
+        "swarm_v2\\core\\porting_fixpass7.py:1",
+        "swarm_v2\\core\\porting_fixpass8.py:1",
+        "swarm_v2\\core\\porting_fixpass9.py:1"
+      ]
+    },
+    "moltbook": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\moltbook.rs:2",
+        "swarm_v2\\core\\moltbook.py:1",
+        "swarm_v2\\routes\\untapped.py:4"
+      ]
+    },
+    "monad": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\council.rs:1",
+        "trm_uefi_kernel\\src\\main.rs:4",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:2",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "trm_uefi_kernel\\src\\star_matrix.rs:2",
+        "trm_uefi_kernel\\src\\totality.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:2",
+        "swarm_v2\\core\\capability_test.py:4",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\final_porting_pass.py:5",
+        "swarm_v2\\core\\ionosphere_protocol.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:3",
+        "swarm_v2\\core\\monad.py:20",
+        "swarm_v2\\core\\quantum_drug_protocol.py:1",
+        "swarm_v2\\core\\sovereign_practice.py:1",
+        "swarm_v2\\core\\star_matrix.py:1",
+        "swarm_v2\\core\\ultrawork_loop.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "monitor_daemon": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monitor_daemon.rs:1",
+        "swarm_v2\\app_v2.py:6",
+        "swarm_v2\\core\\remediation_engine.py:1"
+      ]
+    },
+    "mpu": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\mpu.rs:2"
+      ]
+    },
+    "multimodal_fusion": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\multimodal_fusion.rs:2",
+        "swarm_v2\\app_v2.py:1"
+      ]
+    },
+    "multimodal_ingestion": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\multimodal_ingestion.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\multimodal_fusion.py:1",
+        "swarm_v2\\scratch\\test_multimodal_fusion.py:1"
+      ]
+    },
+    "multimodal_predictive_analytics": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\multimodal_predictive_analytics.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\scratch\\test_multimodal_phase2.py:1"
+      ]
+    },
+    "mutation_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\mutation_engine.rs:2",
+        "swarm_v2\\core\\evolutionary_sandbox.py:1",
+        "swarm_v2\\core\\memory_synchronizer.py:1",
+        "swarm_v2\\core\\mutation_engine.py:1",
+        "swarm_v2\\core\\task_arbiter.py:1",
+        "swarm_v2\\routes\\evolution.py:6"
+      ]
+    },
+    "nand_fs": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:2",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "trm_uefi_kernel\\src\\platform.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "native_ops_bridge": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\native_ops_bridge.rs:1"
+      ]
+    },
+    "neural_wall": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "ddr_security_scan_trigger",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\neural_wall.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\swarm_engine.py:1",
+        "swarm_v2\\core\\swarm_performance_insights.py:1",
+        "swarm_v2\\routes\\security.py:1",
+        "swarm_v2\\scripts\\swarm_total_exercise.py:1"
+      ]
+    },
+    "neuro_continuum": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\neuro_continuum.rs:1",
+        "swarm_v2\\routes\\batch_endpoints.py:2"
+      ]
+    },
+    "openclaw_gateway": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "udp_beacon_mesh_event",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\openclaw_gateway.rs:1",
+        "swarm_v2\\routes\\untapped.py:2"
+      ]
+    },
+    "optimization_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\optimization_engine.rs:2",
+        "swarm_v2\\scripts\\verify_phase_11.py:1"
+      ]
+    },
+    "pbft_consensus": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "council_vote_trigger",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\self_modification_api.py:1",
+        "swarm_v2\\core\\semantic_knowledge_graph.py:1",
+        "swarm_v2\\core\\test_continuum_integration.py:2",
+        "swarm_v2\\core\\ultrawork_tranche.py:4",
+        "swarm_v2\\routes\\untapped.py:2",
+        "swarm_v2\\scratch\\benchmark_swarm_os.py:1",
+        "swarm_v2\\scratch\\research_swarm_platform.py:1"
+      ]
+    },
+    "persistent_mmap_allocator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\persistent_mmap_allocator.rs:1"
+      ]
+    },
+    "persona_matrix": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\persona_matrix.rs:1",
+        "swarm_v2\\core\\base_agent.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "phoenix_protocol_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\phoenix_protocol_engine.rs:2",
+        "swarm_v2\\core\\brain_ai_microkernel_bridge.py:1"
+      ]
+    },
+    "platform": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 185,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\advanced_scene_fusion.rs:1",
+        "trm_uefi_kernel\\src\\agent_mailbox.rs:1",
+        "trm_uefi_kernel\\src\\agent_mesh.rs:1",
+        "trm_uefi_kernel\\src\\agent_runtime.rs:1",
+        "trm_uefi_kernel\\src\\architectural_rl_agent.rs:1",
+        "trm_uefi_kernel\\src\\artifact_pipeline.rs:1",
+        "trm_uefi_kernel\\src\\attempt_sampler.rs:1",
+        "trm_uefi_kernel\\src\\auto_changelog.rs:1",
+        "trm_uefi_kernel\\src\\background_tasks.rs:1",
+        "trm_uefi_kernel\\src\\base_agent.rs:1",
+        "trm_uefi_kernel\\src\\brain_ai_microkernel_bridge.rs:1",
+        "trm_uefi_kernel\\src\\bridge.rs:1",
+        "trm_uefi_kernel\\src\\chain_of_verification.rs:1",
+        "trm_uefi_kernel\\src\\chaos_simulator.rs:1",
+        "trm_uefi_kernel\\src\\cognitive_load_balancer.rs:1",
+        "trm_uefi_kernel\\src\\cognitive_stack.rs:1",
+        "trm_uefi_kernel\\src\\cold_start_recovery.rs:1",
+        "trm_uefi_kernel\\src\\collaborative_reasoning.rs:1",
+        "trm_uefi_kernel\\src\\comm_protocol.rs:1",
+        "trm_uefi_kernel\\src\\continuum_genomics.rs:1",
+        "trm_uefi_kernel\\src\\continuum_pbft.rs:1",
+        "trm_uefi_kernel\\src\\coordination_protocol.rs:1",
+        "trm_uefi_kernel\\src\\coordination_responder.rs:1",
+        "trm_uefi_kernel\\src\\cosmos3_edge_bridge.rs:1",
+        "trm_uefi_kernel\\src\\cosmos_bridge.rs:1",
+        "trm_uefi_kernel\\src\\cosmos_microkernel_entanglement.rs:1",
+        "trm_uefi_kernel\\src\\cosmos_moe_instella_shunter.rs:1",
+        "trm_uefi_kernel\\src\\cosmos_sparse_moe_teams.rs:1",
+        "trm_uefi_kernel\\src\\cqs.rs:1",
+        "trm_uefi_kernel\\src\\daemon_discovery.rs:1",
+        "trm_uefi_kernel\\src\\ddr_self_training.rs:1",
+        "trm_uefi_kernel\\src\\deterministic_forge.rs:1",
+        "trm_uefi_kernel\\src\\dge.rs:1",
+        "trm_uefi_kernel\\src\\digital_dna_loop.rs:1",
+        "trm_uefi_kernel\\src\\dram_pattern_computer.rs:1",
+        "trm_uefi_kernel\\src\\epistemology_core.rs:1",
+        "trm_uefi_kernel\\src\\evolutionary_sandbox.rs:1",
+        "trm_uefi_kernel\\src\\expert_registry.rs:1",
+        "trm_uefi_kernel\\src\\expert_team_harnesses.rs:1",
+        "trm_uefi_kernel\\src\\external_socket_bridge.rs:1",
+        "trm_uefi_kernel\\src\\federation.rs:1",
+        "trm_uefi_kernel\\src\\gpu_infinity_computer.rs:1",
+        "trm_uefi_kernel\\src\\hf_brain.rs:1",
+        "trm_uefi_kernel\\src\\hwprobe.rs:1",
+        "trm_uefi_kernel\\src\\jarvis_symbiosis.rs:1",
+        "trm_uefi_kernel\\src\\kanban_board.rs:1",
+        "trm_uefi_kernel\\src\\kernel_lora_adapter.rs:1",
+        "trm_uefi_kernel\\src\\llm_brain.rs:1",
+        "trm_uefi_kernel\\src\\llm_orchestrator.rs:1",
+        "trm_uefi_kernel\\src\\llm_router.rs:1",
+        "trm_uefi_kernel\\src\\lobster_shell.rs:1",
+        "trm_uefi_kernel\\src\\lora_response_modulator.rs:1",
+        "trm_uefi_kernel\\src\\main.rs:5",
+        "trm_uefi_kernel\\src\\manus_engine.rs:1",
+        "trm_uefi_kernel\\src\\mcp_bus.rs:1",
+        "trm_uefi_kernel\\src\\mcp_tool_evolver.rs:1",
+        "trm_uefi_kernel\\src\\memory.rs:1",
+        "trm_uefi_kernel\\src\\memory_synchronizer.rs:1",
+        "trm_uefi_kernel\\src\\meta_orchestrator.rs:1",
+        "trm_uefi_kernel\\src\\microkernel_chat_bridge.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:3",
+        "trm_uefi_kernel\\src\\moltbook.rs:1",
+        "trm_uefi_kernel\\src\\monitor_daemon.rs:1",
+        "trm_uefi_kernel\\src\\mpu.rs:1",
+        "trm_uefi_kernel\\src\\multimodal_fusion.rs:1",
+        "trm_uefi_kernel\\src\\multimodal_ingestion.rs:1",
+        "trm_uefi_kernel\\src\\multimodal_predictive_analytics.rs:1",
+        "trm_uefi_kernel\\src\\mutation_engine.rs:1",
+        "trm_uefi_kernel\\src\\native_mailbox_bridge.rs:1",
+        "trm_uefi_kernel\\src\\native_ops_bridge.rs:1",
+        "trm_uefi_kernel\\src\\neural_wall.rs:1",
+        "trm_uefi_kernel\\src\\neuro_continuum.rs:1",
+        "trm_uefi_kernel\\src\\openclaw_gateway.rs:1",
+        "trm_uefi_kernel\\src\\optimization_engine.rs:1",
+        "trm_uefi_kernel\\src\\persistent_mmap_allocator.rs:1",
+        "trm_uefi_kernel\\src\\persona_matrix.rs:1",
+        "trm_uefi_kernel\\src\\phoenix_protocol_engine.rs:1",
+        "trm_uefi_kernel\\src\\port_manager.rs:1",
+        "trm_uefi_kernel\\src\\prism_fqm.rs:1",
+        "trm_uefi_kernel\\src\\proactive_loop.rs:1",
+        "trm_uefi_kernel\\src\\qisa_optimizer.rs:1",
+        "trm_uefi_kernel\\src\\quantum_debugger.rs:1",
+        "trm_uefi_kernel\\src\\radix_trie_matcher.rs:1",
+        "trm_uefi_kernel\\src\\reconnaissance_daemon.rs:1",
+        "trm_uefi_kernel\\src\\redis_mock.rs:1",
+        "trm_uefi_kernel\\src\\remediation_engine.rs:1",
+        "trm_uefi_kernel\\src\\resource_arbiter.rs:1",
+        "trm_uefi_kernel\\src\\rust_kernel_binder.rs:1",
+        "trm_uefi_kernel\\src\\secrets_vault.rs:1",
+        "trm_uefi_kernel\\src\\self_fuzzing_engine.rs:1",
+        "trm_uefi_kernel\\src\\self_healing.rs:1",
+        "trm_uefi_kernel\\src\\self_healing_infra.rs:1",
+        "trm_uefi_kernel\\src\\self_healing_orchestrator.rs:1",
+        "trm_uefi_kernel\\src\\self_modification_api.rs:1",
+        "trm_uefi_kernel\\src\\semantic_knowledge_graph.rs:1",
+        "trm_uefi_kernel\\src\\ses.rs:1",
+        "trm_uefi_kernel\\src\\skill_loader.rs:1",
+        "trm_uefi_kernel\\src\\skill_matrix_sync.rs:1",
+        "trm_uefi_kernel\\src\\skill_validator.rs:1",
+        "trm_uefi_kernel\\src\\small_diffusion_engine.rs:1",
+        "trm_uefi_kernel\\src\\sub_atomic_kernel.rs:1",
+        "trm_uefi_kernel\\src\\swarm_orchestrator.rs:1",
+        "trm_uefi_kernel\\src\\swarm_performance_insights.rs:1",
+        "trm_uefi_kernel\\src\\telemetry_fabric.rs:1",
+        "trm_uefi_kernel\\src\\tool_forge.rs:1",
+        "trm_uefi_kernel\\src\\totality.rs:1",
+        "trm_uefi_kernel\\src\\trm7m.rs:2",
+        "trm_uefi_kernel\\src\\trm_7m_full.rs:1",
+        "trm_uefi_kernel\\src\\trm_brain.rs:1",
+        "trm_uefi_kernel\\src\\trm_integration.rs:1",
+        "trm_uefi_kernel\\src\\trm_orchestrator.rs:1",
+        "trm_uefi_kernel\\src\\ultrawork_loop.rs:1",
+        "trm_uefi_kernel\\src\\voltage_node_engine.rs:1",
+        "trm_uefi_kernel\\src\\web_fetch_utility.rs:1",
+        "trm_uefi_kernel\\src\\worktree_manager.rs:1",
+        "swarm_v2\\core\\benchmark_epistemology.py:1",
+        "swarm_v2\\core\\build_module_registry.py:4",
+        "swarm_v2\\core\\build_totality_memory.py:2",
+        "swarm_v2\\core\\capability_test.py:5",
+        "swarm_v2\\core\\cold_start_recovery.py:1",
+        "swarm_v2\\core\\epistemology_verification.py:2",
+        "swarm_v2\\core\\export_trm7m_weights.py:1",
+        "swarm_v2\\core\\final_porting_pass.py:1",
+        "swarm_v2\\core\\final_porting_pass2.py:1",
+        "swarm_v2\\core\\ionosphere_protocol.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:2",
+        "swarm_v2\\core\\manual_repair_pass.py:1",
+        "swarm_v2\\core\\manual_repair_pass2.py:1",
+        "swarm_v2\\core\\monad.py:6",
+        "swarm_v2\\core\\native_federation_bridge.py:2",
+        "swarm_v2\\core\\porting_engine.py:2",
+        "swarm_v2\\core\\porting_fixpass.py:3",
+        "swarm_v2\\core\\porting_fixpass10.py:1",
+        "swarm_v2\\core\\porting_fixpass11.py:1",
+        "swarm_v2\\core\\porting_fixpass2.py:1",
+        "swarm_v2\\core\\porting_fixpass3.py:1",
+        "swarm_v2\\core\\porting_fixpass4.py:1",
+        "swarm_v2\\core\\porting_fixpass5.py:1",
+        "swarm_v2\\core\\porting_fixpass6.py:1",
+        "swarm_v2\\core\\porting_fixpass7.py:1",
+        "swarm_v2\\core\\porting_fixpass8.py:1",
+        "swarm_v2\\core\\porting_fixpass9.py:1",
+        "swarm_v2\\core\\quantum_drug_protocol.py:1",
+        "swarm_v2\\core\\radix_trie_matcher.py:5",
+        "swarm_v2\\core\\sovereign_practice.py:2",
+        "swarm_v2\\core\\ultrawork_loop.py:2",
+        "swarm_v2\\scratch\\create_platform_backup.py:1",
+        "swarm_v2\\scratch\\notify_system_evolution.py:1",
+        "swarm_v2\\scripts\\propose_regional_managers.py:1",
+        "swarm_v2\\scripts\\system_integration_test.py:1",
+        "swarm_v2\\scripts\\tri_scenario_247_exercise.py:1",
+        "swarm_v2\\skills\\file_skill.py:1"
+      ]
+    },
+    "port_manager": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\port_manager.rs:2",
+        "swarm_v2\\core\\kanban_board.py:2"
+      ]
+    },
+    "predictive_watchdog": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:2",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "prism_fqm": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\prism_fqm.rs:2",
+        "swarm_v2\\routes\\swarm.py:2"
+      ]
+    },
+    "proactive_loop": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\proactive_loop.rs:2",
+        "swarm_v2\\app_v2.py:2",
+        "swarm_v2\\core\\meta_orchestrator.py:5",
+        "swarm_v2\\core\\telemetry.py:1",
+        "swarm_v2\\scripts\\test_soul_of_swarm.py:1"
+      ]
+    },
+    "qisa_optimizer": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\qisa_optimizer.rs:2",
+        "swarm_v2\\routes\\untapped.py:1"
+      ]
+    },
+    "quantum_debugger": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\quantum_debugger.rs:2"
+      ]
+    },
+    "quic_protocol": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "udp_beacon_mesh_event",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:3",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "trm_uefi_kernel\\src\\platform.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "radix_trie_matcher": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\radix_trie_matcher.rs:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\microkernel_spawner.py:1",
+        "swarm_v2\\core\\trm_7m_optimized.py:1",
+        "swarm_v2\\core\\ultrawork_loop.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\swarm.py:1"
+      ]
+    },
+    "reconnaissance_daemon": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\reconnaissance_daemon.rs:2",
+        "swarm_v2\\app_v2.py:2",
+        "swarm_v2\\core\\mcp_tool_evolver.py:2",
+        "swarm_v2\\core\\test_research_api.py:1",
+        "swarm_v2\\routes\\research.py:1"
+      ]
+    },
+    "redis_mock": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\redis_mock.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\self_healing.py:1",
+        "swarm_v2\\core\\sentinel.py:1"
+      ]
+    },
+    "remediation_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "self_healing_loop",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\remediation_engine.rs:1",
+        "swarm_v2\\app_v2.py:4",
+        "swarm_v2\\core\\monitor_daemon.py:5",
+        "swarm_v2\\core\\self_healing.py:7",
+        "swarm_v2\\routes\\remediation.py:2"
+      ]
+    },
+    "resonance_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\star_matrix.rs:2",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\star_matrix.py:3",
+        "swarm_v2\\core\\swarm_performance_insights.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:2",
+        "swarm_v2\\routes\\untapped.py:2",
+        "swarm_v2\\scripts\\verify_phase_10.py:1",
+        "swarm_v2\\scripts\\verify_phase_11.py:1",
+        "swarm_v2\\skills\\relationship_skill.py:1"
+      ]
+    },
+    "resource_arbiter": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\resource_arbiter.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\llm_brain.py:1",
+        "swarm_v2\\core\\meta_orchestrator.py:5",
+        "swarm_v2\\core\\sentinel.py:1",
+        "swarm_v2\\core\\task_arbiter.py:4",
+        "swarm_v2\\core\\telemetry.py:2",
+        "swarm_v2\\routes\\system.py:2"
+      ]
+    },
+    "rust_kernel_binder": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\rust_kernel_binder.rs:2",
+        "swarm_v2\\core\\swarm_council.py:1"
+      ]
+    },
+    "secrets_vault": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\secrets_vault.rs:2",
+        "swarm_v2\\core\\pbft_consensus.py:4",
+        "swarm_v2\\core\\test_continuum_integration.py:3",
+        "swarm_v2\\core\\test_secrets_vault_api.py:1",
+        "swarm_v2\\routes\\kanban.py:5"
+      ]
+    },
+    "security_scanner": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "ddr_security_scan_trigger",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:2",
+        "swarm_v2\\routes\\security.py:1"
+      ]
+    },
+    "self_fuzzing_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "self_healing_loop",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\self_fuzzing_engine.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "self_healing": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "self_healing_loop",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\self_healing.rs:1",
+        "swarm_v2\\app_v2.py:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\digital_dna_loop.py:3",
+        "swarm_v2\\core\\heuristic_consensus.py:2",
+        "swarm_v2\\core\\pbft_consensus.py:4",
+        "swarm_v2\\routes\\system.py:1"
+      ]
+    },
+    "self_healing_infra": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "self_healing_loop",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\self_healing_infra.rs:2",
+        "swarm_v2\\app_v2.py:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\swarm_performance_insights.py:1",
+        "swarm_v2\\routes\\system.py:1"
+      ]
+    },
+    "self_healing_orchestrator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "self_healing_loop",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\self_healing_orchestrator.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\swarm_orchestrator.py:1",
+        "swarm_v2\\core\\test_self_healing.py:1",
+        "swarm_v2\\routes\\learning.py:1",
+        "swarm_v2\\routes\\swarm.py:3"
+      ]
+    },
+    "self_modification_api": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\self_modification_api.rs:2",
+        "swarm_v2\\scratch\\demo_full_system.py:1"
+      ]
+    },
+    "semantic_cache": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\llm_brain.py:1",
+        "swarm_v2\\core\\semantic_cache.py:1"
+      ]
+    },
+    "semantic_index": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\core\\artifact_pipeline.py:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "semantic_knowledge_graph": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\semantic_knowledge_graph.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\generative_architect.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\telemetry_fabric.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\scratch\\benchmark_swarm_os.py:1",
+        "swarm_v2\\scratch\\demo_full_system.py:1",
+        "swarm_v2\\scratch\\notify_system_evolution.py:1",
+        "swarm_v2\\scratch\\register_transformation_plans.py:1",
+        "swarm_v2\\scratch\\research_swarm_platform.py:1",
+        "swarm_v2\\scratch\\test_generative_architect.py:1"
+      ]
+    },
+    "sentinel": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "ddr_security_scan_trigger",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "trm_uefi_kernel\\src\\totality.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\build_totality_memory.py:3",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\continuum_genomics.py:1",
+        "swarm_v2\\core\\digital_dna_loop.py:1",
+        "swarm_v2\\core\\test_continuum_integration.py:2"
+      ]
+    },
+    "ses": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\ses.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\intent_buffer.py:3",
+        "swarm_v2\\core\\test_intent_buffer.py:1"
+      ]
+    },
+    "simd_accelerator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "skill_loader": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\skill_loader.rs:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\routes\\learning.py:1"
+      ]
+    },
+    "skill_matrix_sync": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\skill_matrix_sync.rs:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\microkernel_spawner.py:4",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\learning.py:1",
+        "swarm_v2\\scripts\\tri_scenario_247_exercise.py:1",
+        "swarm_v2\\skills\\learning_engine.py:1"
+      ]
+    },
+    "skill_validator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\skill_validator.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "small_diffusion_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\small_diffusion_engine.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\final_porting_pass.py:1",
+        "swarm_v2\\core\\final_porting_pass2.py:3"
+      ]
+    },
+    "sram_pattern_computer": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "star_matrix": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\porting_engine.py:1",
+        "swarm_v2\\core\\test_continuum_integration.py:2"
+      ]
+    },
+    "star_matrix_lattice": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\star_matrix_lattice.rs:2",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\full_64_agent_orchestrator.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\microkernel_spawner.py:3",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\swarm.py:4",
+        "swarm_v2\\scripts\\tri_scenario_247_exercise.py:1"
+      ]
+    },
+    "sub_atomic_kernel": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\sub_atomic_kernel.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "swarm_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\cli\\main.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\lobster_shell.py:1",
+        "swarm_v2\\core\\ultrawork_loop.py:1"
+      ]
+    },
+    "swarm_orchestrator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\swarm_orchestrator.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\routes\\orchestrator.py:1"
+      ]
+    },
+    "swarm_performance_insights": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\swarm_performance_insights.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\routes\\insights.py:1"
+      ]
+    },
+    "symbology_etymology_monad": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\symbology_etymology_monad.rs:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\cosmos_bridge.py:1",
+        "swarm_v2\\core\\cosmos_microkernel_entanglement.py:1",
+        "swarm_v2\\core\\cosmos_moe_instella_shunter.py:1",
+        "swarm_v2\\core\\cosmos_sparse_moe_teams.py:1",
+        "swarm_v2\\core\\instella_sparse_agent_teams.py:1",
+        "swarm_v2\\core\\phoenix_protocol_engine.py:1"
+      ]
+    },
+    "task_arbiter": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\base_agent.py:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\meta_orchestrator.py:2",
+        "swarm_v2\\core\\swarm_performance_insights.py:1",
+        "swarm_v2\\core\\task_arbiter.py:1",
+        "swarm_v2\\core\\trm_integration.py:1",
+        "swarm_v2\\core\\trm_orchestrator.py:2",
+        "swarm_v2\\routes\\mesh.py:1",
+        "swarm_v2\\routes\\system.py:1"
+      ]
+    },
+    "telemetry": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 136,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\generative_architect.rs:1",
+        "trm_uefi_kernel\\src\\hardware_voltage_microkernel_binder.rs:2",
+        "trm_uefi_kernel\\src\\lora_response_modulator.rs:1",
+        "trm_uefi_kernel\\src\\main.rs:1",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:5",
+        "swarm_v2\\core\\advanced_scene_fusion.py:2",
+        "swarm_v2\\core\\brain_ai_microkernel_bridge.py:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\cognitive_load_balancer.py:1",
+        "swarm_v2\\core\\cosmos3_edge_bridge.py:1",
+        "swarm_v2\\core\\daemon_discovery.py:1",
+        "swarm_v2\\core\\feedback_loops.py:2",
+        "swarm_v2\\core\\gan_design_synthesizer.py:1",
+        "swarm_v2\\core\\generative_architect.py:1",
+        "swarm_v2\\core\\hardware_voltage_microkernel_binder.py:12",
+        "swarm_v2\\core\\llm_brain.py:1",
+        "swarm_v2\\core\\local_lora_trainer.py:1",
+        "swarm_v2\\core\\lora_response_modulator.py:2",
+        "swarm_v2\\core\\memory_synchronizer.py:5",
+        "swarm_v2\\core\\meta_orchestrator.py:1",
+        "swarm_v2\\core\\microkernel_spawner.py:4",
+        "swarm_v2\\core\\multimodal_fusion.py:5",
+        "swarm_v2\\core\\multimodal_ingestion.py:3",
+        "swarm_v2\\core\\persistent_mmap_allocator.py:1",
+        "swarm_v2\\core\\predictive_watchdog.py:2",
+        "swarm_v2\\core\\prism_fqm.py:6",
+        "swarm_v2\\core\\proactive_loop.py:2",
+        "swarm_v2\\core\\quantum_debugger.py:1",
+        "swarm_v2\\core\\radix_trie_matcher.py:4",
+        "swarm_v2\\core\\self_healing.py:15",
+        "swarm_v2\\core\\semantic_knowledge_graph.py:1",
+        "swarm_v2\\core\\swarm_council.py:1",
+        "swarm_v2\\core\\telemetry_fabric.py:4",
+        "swarm_v2\\core\\ultrawork_loop.py:4",
+        "swarm_v2\\routes\\kanban.py:1",
+        "swarm_v2\\routes\\mesh.py:1",
+        "swarm_v2\\routes\\swarm.py:16",
+        "swarm_v2\\routes\\system.py:3",
+        "swarm_v2\\scratch\\demo_live_learning.py:2",
+        "swarm_v2\\scratch\\test_chat_400.py:2",
+        "swarm_v2\\scratch\\test_synthesis_validation.py:1",
+        "swarm_v2\\scripts\\swarm_total_exercise.py:4",
+        "swarm_v2\\scripts\\test_distributed_stack.py:3",
+        "swarm_v2\\scripts\\test_soul_of_swarm.py:3",
+        "swarm_v2\\scripts\\tri_scenario_247_exercise.py:1"
+      ]
+    },
+    "telemetry_fabric": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\telemetry_fabric.rs:2",
+        "swarm_v2\\app_v2.py:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\gan_design_synthesizer.py:1",
+        "swarm_v2\\core\\multimodal_fusion.py:1",
+        "swarm_v2\\core\\semantic_knowledge_graph.py:2",
+        "swarm_v2\\scratch\\benchmark_swarm_os.py:2",
+        "swarm_v2\\scratch\\demo_full_system.py:1",
+        "swarm_v2\\scratch\\notify_system_evolution.py:1",
+        "swarm_v2\\scratch\\research_swarm_platform.py:1",
+        "swarm_v2\\scratch\\test_generative_architect.py:2"
+      ]
+    },
+    "thz_bonsai_gateway": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\thz_bonsai_gateway.rs:1",
+        "swarm_v2\\core\\final_porting_pass.py:4",
+        "swarm_v2\\core\\final_porting_pass2.py:3",
+        "swarm_v2\\routes\\swarm.py:1"
+      ]
+    },
+    "thz_wave_gateway": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\external_socket_bridge.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\radix_trie_matcher.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\swarm.py:1"
+      ]
+    },
+    "time": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 861,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\agent_runtime.rs:6",
+        "trm_uefi_kernel\\src\\council.rs:7",
+        "trm_uefi_kernel\\src\\formal_verification_engine.rs:1",
+        "trm_uefi_kernel\\src\\full_64_agent_orchestrator.rs:2",
+        "trm_uefi_kernel\\src\\gan_design_synthesizer.rs:1",
+        "trm_uefi_kernel\\src\\generative_architect.rs:2",
+        "trm_uefi_kernel\\src\\global_memory.rs:1",
+        "trm_uefi_kernel\\src\\gpu_cuda_microkernel_binder.rs:2",
+        "trm_uefi_kernel\\src\\hardware_voltage_microkernel_binder.rs:1",
+        "trm_uefi_kernel\\src\\hwprobe.rs:10",
+        "trm_uefi_kernel\\src\\instella_router.rs:2",
+        "trm_uefi_kernel\\src\\instella_sparse_agent_teams.rs:2",
+        "trm_uefi_kernel\\src\\main.rs:3",
+        "trm_uefi_kernel\\src\\mamba3_turbovec_ssm.rs:2",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "trm_uefi_kernel\\src\\quic_protocol.rs:3",
+        "trm_uefi_kernel\\src\\star_matrix.rs:2",
+        "trm_uefi_kernel\\src\\time.rs:2",
+        "trm_uefi_kernel\\src\\trm7m.rs:2",
+        "trm_uefi_kernel\\src\\turbovec.rs:2",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\advanced_scene_fusion.py:5",
+        "swarm_v2\\core\\agent_intelligence_bridge.py:7",
+        "swarm_v2\\core\\agent_mailbox_bus.py:20",
+        "swarm_v2\\core\\agent_mesh.py:15",
+        "swarm_v2\\core\\architectural_rl_agent.py:3",
+        "swarm_v2\\core\\bench_trm7m_python.py:1",
+        "swarm_v2\\core\\brain_ai_microkernel_bridge.py:7",
+        "swarm_v2\\core\\bridge_e2e_test.py:2",
+        "swarm_v2\\core\\build_module_registry.py:1",
+        "swarm_v2\\core\\build_totality_memory.py:3",
+        "swarm_v2\\core\\catalyst_phase0.py:3",
+        "swarm_v2\\core\\chaos_simulator.py:1",
+        "swarm_v2\\core\\cognitive_ingestion_engine.py:5",
+        "swarm_v2\\core\\cognitive_load_balancer.py:7",
+        "swarm_v2\\core\\cognitive_stack.py:5",
+        "swarm_v2\\core\\cold_start_recovery.py:13",
+        "swarm_v2\\core\\collaborative_reasoning.py:5",
+        "swarm_v2\\core\\comm_protocol.py:7",
+        "swarm_v2\\core\\continuum_pbft.py:3",
+        "swarm_v2\\core\\coordination_protocol.py:11",
+        "swarm_v2\\core\\coordination_responder.py:3",
+        "swarm_v2\\core\\cosmos3_edge_bridge.py:3",
+        "swarm_v2\\core\\cosmos_bridge.py:7",
+        "swarm_v2\\core\\cosmos_microkernel_entanglement.py:5",
+        "swarm_v2\\core\\cosmos_moe_instella_shunter.py:5",
+        "swarm_v2\\core\\cosmos_sparse_moe_teams.py:5",
+        "swarm_v2\\core\\daemon_discovery.py:5",
+        "swarm_v2\\core\\daily_evolution_engine.py:4",
+        "swarm_v2\\core\\ddr_self_training.py:2",
+        "swarm_v2\\core\\digital_dna_loop.py:3",
+        "swarm_v2\\core\\digital_twin_singleton.py:7",
+        "swarm_v2\\core\\dram_pattern_computer.py:3",
+        "swarm_v2\\core\\epistemology_verification.py:6",
+        "swarm_v2\\core\\external_socket_bridge.py:6",
+        "swarm_v2\\core\\federation.py:2",
+        "swarm_v2\\core\\federation_manager.py:1",
+        "swarm_v2\\core\\formal_verification_engine.py:3",
+        "swarm_v2\\core\\full_64_agent_orchestrator.py:3",
+        "swarm_v2\\core\\gan_design_synthesizer.py:3",
+        "swarm_v2\\core\\generative_architect.py:1",
+        "swarm_v2\\core\\gpu_cuda_microkernel_binder.py:3",
+        "swarm_v2\\core\\gpu_infinity_computer.py:5",
+        "swarm_v2\\core\\gpu_unlock_architecture.py:27",
+        "swarm_v2\\core\\hardware_voltage_microkernel_binder.py:12",
+        "swarm_v2\\core\\heuristic_consensus.py:2",
+        "swarm_v2\\core\\human_swarm_interaction.py:7",
+        "swarm_v2\\core\\instella_moe_inference.py:3",
+        "swarm_v2\\core\\instella_single_expert_router.py:3",
+        "swarm_v2\\core\\instella_sparse_agent_teams.py:5",
+        "swarm_v2\\core\\ionosphere_protocol.py:23",
+        "swarm_v2\\core\\k3_ternary_sram.py:3",
+        "swarm_v2\\core\\kernel_instructions.py:6",
+        "swarm_v2\\core\\kernel_lora_adapter.py:3",
+        "swarm_v2\\core\\llm_brain.py:1",
+        "swarm_v2\\core\\lobster_shell.py:1",
+        "swarm_v2\\core\\local_lora_trainer.py:8",
+        "swarm_v2\\core\\mamba3_turbovec_ssm.py:10",
+        "swarm_v2\\core\\manual_clearing_engine.py:2",
+        "swarm_v2\\core\\manual_repair_pass.py:6",
+        "swarm_v2\\core\\microkernel_chat_bridge.py:13",
+        "swarm_v2\\core\\microkernel_spawner.py:18",
+        "swarm_v2\\core\\monad.py:9",
+        "swarm_v2\\core\\monitor_daemon.py:3",
+        "swarm_v2\\core\\multimodal_fusion.py:5",
+        "swarm_v2\\core\\multimodal_ingestion.py:7",
+        "swarm_v2\\core\\multimodal_predictive_analytics.py:6",
+        "swarm_v2\\core\\native_federation_bridge.py:3",
+        "swarm_v2\\core\\neural_wall.py:3",
+        "swarm_v2\\core\\neuro_continuum.py:6",
+        "swarm_v2\\core\\openclaw_gateway.py:1",
+        "swarm_v2\\core\\optimization_engine.py:1",
+        "swarm_v2\\core\\pbft_consensus.py:1",
+        "swarm_v2\\core\\persistent_mmap_allocator.py:8",
+        "swarm_v2\\core\\persona_matrix.py:7",
+        "swarm_v2\\core\\phoenix_protocol_engine.py:9",
+        "swarm_v2\\core\\porting_fixpass.py:2",
+        "swarm_v2\\core\\predictive_watchdog.py:2",
+        "swarm_v2\\core\\quantum_debugger.py:3",
+        "swarm_v2\\core\\quantum_drug_protocol.py:9",
+        "swarm_v2\\core\\reconnaissance_daemon.py:6",
+        "swarm_v2\\core\\redis_mock.py:6",
+        "swarm_v2\\core\\secrets_vault.py:2",
+        "swarm_v2\\core\\self_fuzzing_engine.py:6",
+        "swarm_v2\\core\\self_healing.py:5",
+        "swarm_v2\\core\\self_healing_infra.py:15",
+        "swarm_v2\\core\\self_healing_orchestrator.py:4",
+        "swarm_v2\\core\\self_modification_api.py:3",
+        "swarm_v2\\core\\semantic_cache.py:7",
+        "swarm_v2\\core\\semantic_knowledge_graph.py:12",
+        "swarm_v2\\core\\sentinel.py:5",
+        "swarm_v2\\core\\simd_accelerator.py:15",
+        "swarm_v2\\core\\skill_matrix_sync.py:15",
+        "swarm_v2\\core\\skill_validator.py:3",
+        "swarm_v2\\core\\small_diffusion_engine.py:8",
+        "swarm_v2\\core\\sovereign_practice.py:6",
+        "swarm_v2\\core\\sram_pattern_computer.py:3",
+        "swarm_v2\\core\\star_matrix.py:2",
+        "swarm_v2\\core\\sub_atomic_kernel.py:4",
+        "swarm_v2\\core\\swarm_council.py:1",
+        "swarm_v2\\core\\swarm_orchestrator.py:3",
+        "swarm_v2\\core\\swarm_performance_insights.py:1",
+        "swarm_v2\\core\\task_arbiter.py:1",
+        "swarm_v2\\core\\telemetry_fabric.py:3",
+        "swarm_v2\\core\\ternary_kleene_engine.py:7",
+        "swarm_v2\\core\\thz_bonsai_gateway.py:4",
+        "swarm_v2\\core\\thz_wave_gateway.py:11",
+        "swarm_v2\\core\\trm_7m_full.py:3",
+        "swarm_v2\\core\\trm_7m_model.py:5",
+        "swarm_v2\\core\\trm_7m_optimized.py:8",
+        "swarm_v2\\core\\trm_integration.py:16",
+        "swarm_v2\\core\\trm_orchestrator.py:12",
+        "swarm_v2\\core\\turbovec_16x_femto_engine.py:3",
+        "swarm_v2\\core\\turbovec_memory.py:5",
+        "swarm_v2\\core\\ultrawork_loop.py:3",
+        "swarm_v2\\core\\ultrawork_tranche.py:3",
+        "swarm_v2\\core\\web_fetch_utility.py:5",
+        "swarm_v2\\core\\zero_human_test_gen.py:14",
+        "swarm_v2\\experts\\registry.py:1",
+        "swarm_v2\\generated\\async_cache_rate_limiter.py:7",
+        "swarm_v2\\routes\\batch_endpoints.py:9",
+        "swarm_v2\\routes\\coordination.py:3",
+        "swarm_v2\\routes\\kanban.py:2",
+        "swarm_v2\\routes\\mesh.py:14",
+        "swarm_v2\\routes\\research.py:3",
+        "swarm_v2\\routes\\swarm.py:6",
+        "swarm_v2\\scratch\\benchmark_swarm_os.py:17",
+        "swarm_v2\\scratch\\complete_all_kanban_tasks.py:1",
+        "swarm_v2\\scratch\\demo_full_system.py:9",
+        "swarm_v2\\scratch\\demo_live_learning.py:1",
+        "swarm_v2\\scratch\\notify_system_evolution.py:1",
+        "swarm_v2\\scratch\\research_swarm_platform.py:2",
+        "swarm_v2\\scratch\\test_chat_400.py:1",
+        "swarm_v2\\scripts\\swarm_benchmark.py:13",
+        "swarm_v2\\scripts\\swarm_total_exercise.py:3",
+        "swarm_v2\\scripts\\system_integration_test.py:2",
+        "swarm_v2\\scripts\\test_distributed_stack.py:5",
+        "swarm_v2\\scripts\\tri_scenario_247_exercise.py:13",
+        "swarm_v2\\scripts\\verify_phase_7.py:7",
+        "swarm_v2\\scripts\\vision_broadcast.py:1",
+        "swarm_v2\\skills\\learning_engine.py:1",
+        "swarm_v2\\skills\\web_search_skill.py:1"
+      ]
+    },
+    "tool_forge": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\tool_forge.rs:1",
+        "swarm_v2\\app_v2.py:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\routes\\learning.py:1",
+        "swarm_v2\\routes\\swarm.py:10"
+      ]
+    },
+    "trm7m": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\main.rs:4",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "trm_uefi_kernel\\src\\platform.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:1",
+        "swarm_v2\\core\\capability_test.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\final_porting_pass2.py:2"
+      ]
+    },
+    "trm_7m_full": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\trm_7m_full.rs:1"
+      ]
+    },
+    "trm_7m_optimized": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\final_porting_pass.py:1",
+        "swarm_v2\\core\\final_porting_pass2.py:5"
+      ]
+    },
+    "trm_brain": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\trm_brain.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\cognitive_ingestion_engine.py:1",
+        "swarm_v2\\core\\cognitive_stack.py:1",
+        "swarm_v2\\core\\collaborative_reasoning.py:2",
+        "swarm_v2\\core\\deterministic_forge.py:1",
+        "swarm_v2\\core\\test_trm_standalone.py:1",
+        "swarm_v2\\core\\trm_integration.py:3",
+        "swarm_v2\\core\\trm_orchestrator.py:3",
+        "swarm_v2\\skills\\relationship_skill.py:1",
+        "swarm_v2\\skills\\rlm_skill.py:1",
+        "swarm_v2\\skills\\trm_skill.py:1"
+      ]
+    },
+    "trm_integration": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\trm_integration.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "trm_orchestrator": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\trm_orchestrator.rs:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\trm_integration.py:6"
+      ]
+    },
+    "turbovec": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\instella_router.rs:1",
+        "trm_uefi_kernel\\src\\main.rs:3",
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\monad.rs:1",
+        "trm_uefi_kernel\\src\\platform.rs:1",
+        "swarm_v2\\core\\build_totality_memory.py:2",
+        "swarm_v2\\core\\capability_test.py:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\instella_moe_inference.py:1",
+        "swarm_v2\\core\\instella_single_expert_router.py:1"
+      ]
+    },
+    "turbovec_memory": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\generative_architect.py:1",
+        "swarm_v2\\core\\global_memory.py:1",
+        "swarm_v2\\core\\manual_clearing_engine.py:1",
+        "swarm_v2\\core\\predictive_watchdog.py:1",
+        "swarm_v2\\core\\radix_trie_matcher.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1"
+      ]
+    },
+    "ultrawork_loop": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\ultrawork_loop.rs:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\coordination_protocol.py:1",
+        "swarm_v2\\core\\ultrawork_tranche.py:1",
+        "swarm_v2\\routes\\kanban.py:4",
+        "swarm_v2\\scripts\\swarm_total_exercise.py:1"
+      ]
+    },
+    "voltage_node_engine": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "voltage_phi_v_sampler_100ms",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\voltage_node_engine.rs:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1"
+      ]
+    },
+    "worktree_manager": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "trm_uefi_kernel\\src\\worktree_manager.rs:2",
+        "swarm_v2\\core\\catalyst_phase0.py:1",
+        "swarm_v2\\core\\kanban_board.py:2",
+        "swarm_v2\\scripts\\verify_phase_12.py:1"
+      ]
+    },
+    "zero_human_test_gen": {
+      "status": "REAL_ACTIVE",
+      "runtime_call_count": 100,
+      "trigger_source": "scheduled_heartbeat_dispatcher",
+      "call_references": [
+        "trm_uefi_kernel\\src\\modmap_all.rs:1",
+        "trm_uefi_kernel\\src\\module_registry.rs:1",
+        "swarm_v2\\app_v2.py:1",
+        "swarm_v2\\core\\final_porting_pass.py:6",
+        "swarm_v2\\core\\final_porting_pass2.py:5",
+        "swarm_v2\\routes\\synthesis.py:1",
+        "swarm_v2\\routes\\untapped.py:1",
+        "swarm_v2\\routes\\verification.py:2"
+      ]
+    }
+  }
+}

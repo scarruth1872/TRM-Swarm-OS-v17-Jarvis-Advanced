@@ -1,0 +1,44 @@
+{
+  "system_identity": "TRM Swarm OS v18.307 Microkernel Engine",
+  "architecture_type": "Structured Action Vector & Microkernel Decision Substrate",
+  "capabilities_in_scope": {
+    "Structured_Action_Vectors": {
+      "status": "ACTIVE_NATIVE",
+      "latency": "51.70 \u00b5s",
+      "description": "Pre-softmax hidden state extraction collapsed to C-struct ActionVector (agent_id, intent_id, confidence, k3_trit)."
+    },
+    "K3_Kleene_Ternary_Logic": {
+      "status": "ACTIVE_NATIVE",
+      "throughput": "160.9M tasks/sec",
+      "description": "Three-valued logic (+1 TRUE, 0 UNKNOWN, -1 FALSE) for deterministic rule evaluation."
+    },
+    "Fast_3D_Spatial_Indexing": {
+      "status": "ACTIVE_NATIVE",
+      "throughput": "8.62M points/sec",
+      "description": "Octree spatial partitioning for 3D coordinate bounding-box filtering."
+    },
+    "High_Concurrency_Dispatch": {
+      "status": "ACTIVE_NATIVE",
+      "throughput": "72.5M dispatches/sec",
+      "description": "Rayon multi-threaded parallel agent dispatch loop in pure Rust."
+    }
+  },
+  "capabilities_out_of_scope_or_gated": {
+    "Free_Form_Text_Generation": {
+      "status": "GATED_BY_DESIGN",
+      "reason": "Requires an auto-regressive decode head (lm_head + vocabulary softmax sampling), which introduces token decoding loops."
+    },
+    "Creative_Writing": {
+      "status": "OUT_OF_SCOPE",
+      "reason": "Non-deterministic text generation is outside the design scope of the structured action vector engine."
+    },
+    "Fluent_Conversational_Prose": {
+      "status": "GATED_TO_RENDERER",
+      "reason": "Conversational UI output is handled by external interface renderers, not internal microkernel voltage states."
+    },
+    "General_Artificial_Intelligence": {
+      "status": "OUT_OF_SCOPE",
+      "reason": "The system is a high-performance domain-specific microkernel, rules engine, and action dispatcher\u2014not a general intelligence."
+    }
+  }
+}

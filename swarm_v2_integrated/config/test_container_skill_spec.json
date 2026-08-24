@@ -1,0 +1,100 @@
+```python
+import pytest
+import json
+import re
+from pathlib import Path
+
+# --- CONFIGURATION ---
+SPEC_FILE_PATH = "container_skill_spec.json"
+
+def load_spec():
+    """Helper to load the JSON specification file."""
+    with open(SPEC_FILE_PATH, 'r') as f:
+        return json.load(f)
+
+# --- TEST SUITE ---
+
+class TestContainerSkillSpec:
+    """
+    Precision Reliability Suite for ContainerSkill Specification.
+    Ensures the JSON manifest adheres to the Swarm OS architectural standards.
+    """
+
+    @pytest.fixture(scope="module")
+    def spec_data(self):
+        """Fixture to provide the loaded specification data."""
+        try:
+            return load_spec()
+        except FileNotFoundError:
+            pytest.fail(f"Critical Error: {SPEC_FILE_PATH} not found.")
+        except json.JSONDecodeError:
+            pytest.fail(f"Critical Error: {SPEC_FILE_PATH} contains invalid JSON.")
+
+    def test_mandatory_fields_presence(self, spec_data):
+        """Verify all required architectural keys are present in the spec."""
+        required_keys = {
+            "skill_id", 
+            "version", 
+            "dependencies", 
+            "capabilities", 
+            "api_endpoint", 
+            "security_profile"
+        }
+        actual_keys = set(spec_data.keys())
+        missing_keys = required_keys - actual_keys
+        assert not missing_keys, f"Missing mandatory specification keys: {missing_keys}"
+
+    def test_data_type_integrity(self, spec_data):
+        """Validate that each field contains the correct data type."""
+        expected_types = {
+            "skill_id": str,
+            "version": str,
+            "dependencies": list,
+            "capabilities": list,
+            "api_endpoint": str,
+            "security_profile": str
+        }
+        for key, expected_type in expected_types.items():
+            assert isinstance(spec_data[key], expected_type), \
+                f"Type mismatch for {key}: Expected {expected_type.__name__}, got {type(spec_data[key]).__name__}"
+
+    def test_semantic_versioning(self, spec_data):
+        """Ensure the version string follows SemVer (Major.Minor.Patch)."""
+        version = spec_data.get("version", "")
+        semver_regex = r"^\d+\.\d+\.\d+$"
+        assert re.match(semver_regex, version), \
+            f"Version '{version}' does not adhere to Semantic Versioning (X.Y.Z)"
+
+    def test_api_endpoint_format(self, spec_data):
+        """Validate that the api_endpoint is a valid relative URI path."""
+        endpoint = spec_data.get("api_endpoint", "")
+        assert endpoint.startswith("/v1/"), \
+            f"API endpoint '{endpoint}' must start with the versioned prefix '/v1/'"
+        assert not endpoint.endswith("/"), \
+            f"API endpoint '{endpoint}' should not have a trailing slash for consistency"
+
+    def test_dependencies_not_empty(self, spec_data):
+        """Ensure the skill has defined dependencies to prevent orphaned execution."""
+        deps = spec_data.get("dependencies", [])
+        assert len(deps) > 0, "ContainerSkill must have at least one dependency (e.g., RuntimeAdapter)"
+        for dep in deps:
+            assert isinstance(dep, str) and len(dep) > 0, "Dependency identifiers must be non-empty strings"
+
+    def test_capabilities_standardization(self, spec_data):
+        """Verify that capabilities are defined and follow naming conventions."""
+        caps = spec_data.get("capabilities", [])
+        assert "Isolation" in caps, "Critical capability 'Isolation' is missing from ContainerSkill"
+        for cap in caps:
+            assert cap[0].isupper(), f"Capability '{cap}' should use PascalCase naming convention"
+
+    def test_security_profile_validity(self, spec_data):
+        """Ensure the security profile is set to a recognized standard."""
+        allowed_profiles = ["Rootless-Container-Standard", "Hardened-Sandbox-v2", "Permissive-Dev-Mode"]
+        profile = spec_data.get("security_profile", "")
+        assert profile in allowed_profiles, \
+            f"Security profile '{profile}' is not in the approved list: {allowed_profiles}"
+
+if __name__ == "__main__":
+    # Allow direct execution for rapid diagnostics
+    pytest.main([__file__])
+```

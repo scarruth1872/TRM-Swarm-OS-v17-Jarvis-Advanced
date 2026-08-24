@@ -1,0 +1,62 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the DNA Behavioral Configuration module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The DNA Behavioral Configuration (id: dna) is one of Jarvis's core modules. It provides 1 API endpoints. POST /config/dna updates my dynamic behavioral parameters. This is called by the TRM swarm's digital_dna_loop to push refraction parameters: temperature (response creativity), stochasticity (randomness), emotionalVector (mood bias), and curiosity (exploration drive)."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /config/dna endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /config/dna: Update dynamic behavioral parameters (Phase B Refraction). Body: { temperature?, stochasticity?, emotionalVector?, mood?, curiosity? }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the DNA configuration endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /config/dna updates my dynamic behavioral parameters. This is called by the TRM swarm's digital_dna_loop to push refraction parameters: temperature (response creativity), stochasticity (randomness), emotionalVector (mood bias), and curiosity (exploration drive)."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the TRM swarm update my personality?"
+      },
+      {
+        "role": "assistant",
+        "content": "TRM's digital_dna_loop.py calls POST /config/dna on port 3000 with temperature and stochasticity values. This adjusts my cognitive state in real-time based on swarm telemetry."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the DNA Behavioral Configuration module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Primary integration point between TRM swarm and Jarvis. DNA values are stored in memory and affect chat temperature and response generation."
+      }
+    ]
+  }
+]

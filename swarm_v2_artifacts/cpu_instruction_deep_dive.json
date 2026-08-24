@@ -1,0 +1,142 @@
+{
+  "timestamp": "2026-08-06T01:06:30",
+  "cpu": {
+    "model": "Zen 2 (Matisse)",
+    "cores": 12,
+    "threads": 24
+  },
+  "instruction_sets": {
+    "x86-64_Base": {
+      "width": 64,
+      "key_inst": "MOV"
+    },
+    "SSE4.2": {
+      "width": 128,
+      "key_inst": "MOVDQA"
+    },
+    "AVX2": {
+      "width": 256,
+      "key_inst": "VMOVDQA"
+    },
+    "FMA3": {
+      "width": 256,
+      "key_inst": "VFMADD132PD"
+    },
+    "BMI2": {
+      "width": 64,
+      "key_inst": "BZHI"
+    },
+    "AES-NI": {
+      "width": 128,
+      "key_inst": "AESENC"
+    },
+    "CLFLUSH": {
+      "width": 64,
+      "key_inst": "CLFLUSH"
+    },
+    "LOCK_ATOMIC": {
+      "width": 64,
+      "key_inst": "LOCK CMPXCHG"
+    }
+  },
+  "microarchitecture": {
+    "core_config": "{'name': 'Zen 2 (Matisse)', 'cores': 12, 'threads': 24, 'ccx_count': 2, 'ccd_count': 1, 'io_die': '1",
+    "cache_hierarchy": "{'L1_instruction': '32KB, 8-way, 64B line', 'L1_data': '32KB, 8-way, 64B line, 4-5 cycle latency', '",
+    "execution_units": "{'integer_alu': 4, 'integer_mul': 1, 'fp_add': 2, 'fp_mul': 2, 'load': 2, 'store': 1, 'branch': 1}",
+    "pipeline": "{'frontend': '4-wide decode, 6-wide dispatch, 2-way SMT', 'rename': '180 integer + 160 FP registers ",
+    "vector_capability": "{'avx2_throughput': '2\u00d7256-bit FMA per cycle = 16 FLOPs/cycle @SIMD32', 'theoretical_tflops': '4.0 G"
+  },
+  "hidden_features": {
+    "micro_op_cache": "Zen 2 contains a hidden 4K-entry micro-op cache that caches decoded instructions, bypassing the fron",
+    "loop_stream_detector": "Hardware loop detector that locks small loops (<64B) into the \u03bcop queue, eliminating instruction fet",
+    "stack_engine": "Dedicated hardware stack pointer tracking. PUSH/POP/CALL/RET execute in zero cycles via rename.",
+    "store_to_load_forwarding": "Hardware detects store->load patterns within 4 cycles and forwards data directly.",
+    "prefetch_windows": "Hardware prefetcher recognizes strided access patterns up to 2KB stride with 16 independent streams."
+  },
+  "hidden_vector_layers": [
+    "Layer 1: AVX2 Warm",
+    "Layer 2: FMA Fused",
+    "Layer 3: \u03bcop Fusion",
+    "Layer 4: Store-to-Load Bypass",
+    "Layer 5: Branch Predictor TAGE",
+    "Layer 6: Prefetch Cascade"
+  ],
+  "custom_instructions": [
+    {
+      "mnemonic": "K3CLASS",
+      "desc": "Ternary K3 classification in 1 cycle: {-1,0,+1} output from 256-bit vector"
+    },
+    {
+      "mnemonic": "MAMBA3STEP",
+      "desc": "Single Mamba-3 SSM state evolution: h(t+dt) = h(t) + dt*(A@h + B@x)"
+    },
+    {
+      "mnemonic": "PONDEROMOTIVE",
+      "desc": "Ponderomotive dark-node trap: classify wave envelope into {-1,0,+1} buckets"
+    },
+    {
+      "mnemonic": "LORA_FUSED",
+      "desc": "Fused LoRA forward pass: out = base@x + B@(A@x) with all zero-copy"
+    },
+    {
+      "mnemonic": "RADIX_TRIE_WALK",
+      "desc": "Single-cycle radix trie walk: branch on bit at position N in 256-bit key"
+    },
+    {
+      "mnemonic": "DDR_MATCH",
+      "desc": "1,801-pattern DDR antibody parallel match against 256-bit threat vector"
+    },
+    {
+      "mnemonic": "TURBOVEC_DOT",
+      "desc": "384-dim TurboVec dot product with 256-bit accumulator in L3 cache"
+    },
+    {
+      "mnemonic": "INSTELLA_GATE",
+      "desc": "Instella MoE 64-expert gating: softmax(top-2 from 64 scores)"
+    }
+  ],
+  "vector_evolution": {
+    "Zen 2 (2019)": {
+      "simd": "256-bit AVX2",
+      "tps": 269510
+    },
+    "Zen 3 (2020)": {
+      "simd": "256-bit AVX2",
+      "tps": "~350,000 (estimated, unified L3)"
+    },
+    "Zen 4 (2022)": {
+      "simd": "256-bit AVX2 + AVX-512 (double-pumped)",
+      "tps": "~500,000 (AVX-512 Mamba-3)"
+    },
+    "Zen 5 (2024)": {
+      "simd": "512-bit AVX-512 (native)",
+      "tps": "~800,000 (native 512-bit Mamba-3)"
+    },
+    "TRM Custom Silicon (Hypothetical)": {
+      "simd": "1024-bit TRM Vector Engine",
+      "tps": ">5,000,000 (full custom silicon)"
+    }
+  },
+  "evolution_gaps": [
+    {
+      "gap": "No native K3 ternary operations",
+      "target": "Custom K3CLASS instruction: single-cycle 256-bit ternary classification"
+    },
+    {
+      "gap": "No native Mamba-3 SSM state evolution",
+      "target": "Custom MAMBA3STEP: fused state evolution dh/dt = A\u00b7h + B\u00b7x in 2 cycles"
+    },
+    {
+      "gap": "No sparse expert gating",
+      "target": "Custom INSTELLA_GATE: hardware top-k softmax over 64-element vectors"
+    },
+    {
+      "gap": "No associative DDR pattern matching",
+      "target": "Custom DDR_MATCH: parallel 1,801-pattern match in 4 cycles"
+    },
+    {
+      "gap": "No zero-copy mmap direct path to L3",
+      "target": "Persistent mmap-to-L3 direct mapping with no cache coherence overhead"
+    }
+  ]
+}

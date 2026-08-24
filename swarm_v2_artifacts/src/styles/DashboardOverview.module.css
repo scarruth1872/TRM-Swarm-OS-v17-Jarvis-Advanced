@@ -1,0 +1,78 @@
+/* Styles for the DashboardOverview component */
+
+.dashboardOverview {
+  padding: 20px;
+  background-color: var(--background-color);
+  border-radius: 8px;
+}
+
+.sectionTitle {
+  font-size: 2em;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.statusGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.statusCard {
+  background-color: var(--card-background);
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border: 1px solid var(--border-color);
+}
+
+.statusCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.statusCard h3 {
+  margin-top: 0;
+  color: var(--text-color);
+  font-size: 1.3em;
+  margin-bottom: 15px;
+}
+
+.statusValue {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: var(--secondary-color);
+  margin: 0;
+}
+
+.chartSection {
+  background-color: var(--card-background);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-bottom: 40px;
+  border: 1px solid var(--border-color);
+}
+
+.chartTitle {
+  font-size: 1.8em;
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.lastUpdate {
+  text-align: right;
+  font-size: 0.9em;
+  color: var(--text-secondary-color);
+}
+
+.lastUpdate span {
+  font-weight: bold;
+  color: var(--text-color);
+}

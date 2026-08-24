@@ -1,0 +1,121 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Represents the customized biographical details, mission parameters, and preferences of an authenticated Boss user.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique Firebase authenticated user identifier." },
+        "email": { "type": "string", "description": "The user's account email." },
+        "name": { "type": "string", "description": "Preferred voice alias, e.g., 'Boss' or a real name." },
+        "job": { "type": "string", "description": "Occupation or expert category." },
+        "location": { "type": "string", "description": "Primary base, control room, or operational lab." },
+        "mission": { "type": "string", "description": "The primary core directive or overarching objective of their system." },
+        "interests": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "User specific scientific or analytical domains of interest."
+        },
+        "preferences": {
+          "type": "object",
+          "description": "Key-value mapping of interface parameters (e.g., color accents, audio, language code)."
+        },
+        "setupCompleted": { "type": "boolean", "description": "Indicates if the interactive onboarding sequence has concluded." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of profile creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Timestamp of most recent modifications." }
+      },
+      "required": ["uid", "name", "email"]
+    },
+    "UserMemory": {
+      "title": "User Memory",
+      "description": "Wrapper block storing isolated cognitive contexts for the user.",
+      "type": "object",
+      "properties": {
+        "current_context": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "EpisodicMemoryItem": {
+      "title": "Episodic Memory Item",
+      "description": "Chronological chronicle of past sensory activities, actions, or diagnostic runs.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "description": { "type": "string" },
+        "importance": { "type": "string", "enum": ["low", "medium", "high"] }
+      },
+      "required": ["id", "timestamp", "description"]
+    },
+    "SemanticMemory": {
+      "title": "Semantic Graph Memory",
+      "description": "Long-term knowledge relationships mapped into nodes and connecting edges.",
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": { "type": "object" }
+        },
+        "relations": {
+          "type": "array",
+          "items": { "type": "object" }
+        }
+      }
+    },
+    "ChatMessage": {
+      "title": "Chat Message Log",
+      "description": "Chat log lines for full persistent conversational context replay.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "assistant", "system"] },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "toolDetails": { "type": "object" }
+      },
+      "required": ["id", "role", "content", "timestamp"]
+    },
+    "KeepNote": {
+      "title": "Keep Note",
+      "description": "Custom virtual-Keep note for logging persistent memos and lists.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "color": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["title"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Dynamic user core profile documentation and onboarding registry."
+    },
+    "/users/{userId}/memory/core": {
+      "schema": "UserMemory",
+      "description": "Holds the dynamic session contexts and system focus fields for this user."
+    },
+    "/users/{userId}/memory/episodic": {
+      "schema": "array",
+      "description": "Collection or doc containing a listing of episodic occurrences."
+    },
+    "/users/{userId}/memory/semantic": {
+      "schema": "SemanticMemory",
+      "description": "The user's private semantic relationship graph schema representation."
+    },
+    "/users/{userId}/memory/chat_history": {
+      "schema": "array",
+      "description": "Collection or doc container storing historical conversation turns."
+    },
+    "/users/{userId}/keep_notes/{noteId}": {
+      "schema": "KeepNote",
+      "description": "User specific collection of Keep synchronized or locally serialized virtual notes."
+    }
+  }
+}

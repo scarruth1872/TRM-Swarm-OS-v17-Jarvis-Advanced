@@ -1,0 +1,86 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Telegram Uplink module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Telegram Uplink (id: telegram) is one of Jarvis's core modules. It provides 2 API endpoints. POST /api/telegram/config with body { 'botToken': 'YOUR_BOT_TOKEN' }. This turns on the Telegram uplink skill automatically and starts the polling daemon. Check status with GET /api/telegram/status."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/telegram/config endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/telegram/config: Configure Telegram. Body: { botToken }. Also sets env TELEGRAM_BOT_TOKEN."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/telegram/status endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/telegram/status: Get Telegram polling status. Returns: { polling, botUsername, lastUpdateId? }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I set up Telegram?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/telegram/config with body { 'botToken': 'YOUR_BOT_TOKEN' }. This turns on the Telegram uplink skill automatically and starts the polling daemon. Check status with GET /api/telegram/status."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does Telegram polling work?"
+      },
+      {
+        "role": "assistant",
+        "content": "A background daemon polls Telegram API for updates every 2 seconds. New messages are dispatched back to the chat interface and relayed to the AI for response."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the Telegram Uplink module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 400 if no botToken, 401 on invalid bot token during config"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Telegram Uplink module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Auto-enables Telegram skill. Polling daemon runs as background process in the server. Messages flow through Chat system."
+      }
+    ]
+  }
+]

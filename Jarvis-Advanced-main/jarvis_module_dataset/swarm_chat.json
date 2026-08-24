@@ -1,0 +1,146 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the TRM Swarm Integration module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The TRM Swarm Integration (id: swarm) is one of Jarvis's core modules. It provides 6 API endpoints. Jarvis proxies to TRM at 127.0.0.1:8021 (not localhost). It announces itself as 'jarvis_gateway' on the mesh. It syncs topology, skills matrix, healing status, and can delegate tasks to 12 core agents."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/swarm/intent/predict endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/swarm/intent/predict: Predict swarm intent. Body: { user_input, context? }. Proxies to TRM /swarm/intent/predict."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/swarm/intent/record endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/swarm/intent/record: Record user intent. Body: { intent_data }."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/swarm/spatial/feed endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/swarm/spatial/feed: Send spatial telemetry. Body: { telemetry }."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/swarm/spatial/ambient endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/swarm/spatial/ambient: Get ambient spatial state from TRM."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/swarm/healing/status endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/swarm/healing/status: Get swarm healing status from TRM. Returns: { agent_health_scores, degraded_agents, healing_active }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/swarm/healing/force-reassign endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/swarm/healing/force-reassign: Force skill reassignment. Body: { role, target_role? }."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does Jarvis communicate with the TRM swarm?"
+      },
+      {
+        "role": "assistant",
+        "content": "Jarvis proxies to TRM at 127.0.0.1:8021 (not localhost). It announces itself as 'jarvis_gateway' on the mesh. It syncs topology, skills matrix, healing status, and can delegate tasks to 12 core agents."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I check swarm health through Jarvis?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/swarm/healing/status proxies to TRM's /swarm/healing/status. Returns active nodes, health scores per agent, degraded agents list, and total tasks tracked."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What's the spatial mesh?"
+      },
+      {
+        "role": "assistant",
+        "content": "The spatial mesh (/api/swarm/spatial/ambient, /api/swarm/spatial/feed) tracks agent entanglements and state projections in the TRM's spatial entanglement system. It's used for the dashboard's Spatial Mesh visualization."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the TRM Swarm Integration module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 502 if TRM unreachable (ECONNREFUSED), Timeout after 1000ms on topology fetch"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the TRM Swarm Integration module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Connects to TRM Swarm OS v2 on port 8021. DNA config pushes temp/stochasticity. Mesh registration, intent sync, healing status, skill matrix."
+      }
+    ]
+  }
+]

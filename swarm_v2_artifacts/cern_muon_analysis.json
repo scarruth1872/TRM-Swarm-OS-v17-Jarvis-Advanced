@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-08-06T15:43:43",
+  "muon": {
+    "mass_MeV": 105.66,
+    "mass_electron_ratio": 206.77,
+    "lifetime_us": 2.2,
+    "charge": -1,
+    "spin": 0.5,
+    "penetration": "Deep \u2014 reaches underground mines",
+    "production": "Cosmic rays \u2192 pion decay \u2192 muon",
+    "decay": "\u03bc\u207b \u2192 e\u207b + \u03bd\u0304\u2091 + \u03bd_\u03bc (Michel decay)",
+    "flux_surface": "~1 muon/cm\u00b2/minute at Earth surface"
+  },
+  "silicon_quartz": {
+    "material": "Crystalline Silicon (diamond cubic)",
+    "band_gap_eV": 1.12,
+    "dielectric_constant": 11.7,
+    "electron_mobility_cm2_vs": 1400,
+    "hole_mobility_cm2_vs": 450,
+    "quartz_variant": "SiO\u2082 (amorphous/crystalline silica)",
+    "quartz_band_gap_eV": 8.9,
+    "quartz_piezoelectric": true,
+    "quartz_Cherenkov": "Strong Cherenkov radiator for muons"
+  },
+  "interaction": {
+    "energy_loss_mev_cm": 3.87,
+    "eh_pairs_per_muon": 75207,
+    "cherenkov_wavelength_nm": 400,
+    "cherenkov_angle_deg": 46.7,
+    "piezoelectric_response": "Voltage pulse from mechanical stress"
+  },
+  "microkernel_integration": {
+    "k3_color_match": "Cherenkov blue (450nm) = PROCEED band (400-500nm)",
+    "voltage_modulation": "Muon \u2192 \u03a6_V \u2192 Mamba SSM step",
+    "cosmic_ops_per_second": 5160000000,
+    "muon_frequency_yhz": 0.03
+  },
+  "source": "CERN public data + Wikipedia"
+}

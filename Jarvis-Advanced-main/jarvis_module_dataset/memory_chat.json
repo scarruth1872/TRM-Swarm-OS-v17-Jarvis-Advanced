@@ -1,0 +1,146 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Memory System module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Memory System (id: mem) is one of Jarvis's core modules. It provides 6 API endpoints. POST /api/memory/memorize-event with body { 'description': 'User completed login flow', 'importance': 'medium' }. Returns { status: 'memorized' }."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/memory endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/memory: Return core memory: user profile + current context. Headers: x-user-id."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/memory/update-profile endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/memory/update-profile: Update user profile. Body: { name, alias, age, job, interests, location, mission }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/memory/sync-profile endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/memory/sync-profile: Sync profile from external source. Body: { profile }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/memory/memorize-event endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/memory/memorize-event: Store episodic memory. Body: { description, importance (low/medium/high) }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/memory/add-relation endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/memory/add-relation: Add semantic relation. Body: { source, target, label }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/memory/import-okf endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/memory/import-okf: Import Open Knowledge Format data. Body: { okf_data }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I store a memory?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/memory/memorize-event with body { 'description': 'User completed login flow', 'importance': 'medium' }. Returns { status: 'memorized' }."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What's in my core memory?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/memory returns the user profile (name, alias, age, job, location, mission, interests, birth_date) and current conversation context. Profile is persisted to jarvis_core_memory.json."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I add a knowledge relationship?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/memory/add-relation with body { 'source': 'JarvisOS', 'target': 'TRMSwarm', 'label': 'integrates_with' }. Adds a directed semantic edge to the knowledge graph."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the Memory System module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 400 if required fields missing, 500 on file I/O failure"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Memory System module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Memory feeds into Chat (context generation), Semantic Graph (knowledge persistence), and Episodic Memory (event recall)."
+      }
+    ]
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "validation_status": "VOLTAGE_NODE_TOKENLESS_ENGINE_VERIFIED",
+  "architecture": {
+    "concept": "LLM as continuous voltage node without token decoding",
+    "pre_softmax_probing": true,
+    "action_vector_fields": [
+      "agent_id",
+      "intent_id",
+      "confidence",
+      "k3_trit"
+    ],
+    "rust_baremetal_dll": true
+  },
+  "ensemble_evaluations": [
+    {
+      "status": "PASS",
+      "agent": "Logic",
+      "agent_id": 4,
+      "intent": "READ",
+      "intent_id": 0,
+      "confidence": 0.1122,
+      "k3_trit": 0,
+      "mode": "TOKENLESS_VOLTAGE_TRANSFORM",
+      "model_node": "Llama-3.3-70B-GGUF"
+    },
+    {
+      "status": "PASS",
+      "agent": "Shield",
+      "agent_id": 3,
+      "intent": "WRITE",
+      "intent_id": 1,
+      "confidence": 0.7642,
+      "k3_trit": 1,
+      "mode": "TOKENLESS_VOLTAGE_TRANSFORM",
+      "model_node": "Bonsai-K3-Ternary"
+    },
+    {
+      "status": "PASS",
+      "agent": "Hermes",
+      "agent_id": 0,
+      "intent": "WRITE",
+      "intent_id": 1,
+      "confidence": 0.0427,
+      "k3_trit": 0,
+      "mode": "TOKENLESS_VOLTAGE_TRANSFORM",
+      "model_node": "Instella-64-Expert-MoE"
+    }
+  ],
+  "microkernel_dispatch": {
+    "agent": "Shield",
+    "intent": "WRITE",
+    "latency_us": 143.2
+  }
+}

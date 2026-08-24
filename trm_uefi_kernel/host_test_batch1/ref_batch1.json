@@ -1,0 +1,950 @@
+{
+ "pbft": {
+  "ok": true,
+  "value": {
+   "pre_prepare_ok": true,
+   "pre_prepare_unknown": false,
+   "pre_prepare_intruder": true,
+   "intruder_proposal_snapshot": {
+    "proposal_id": "000000000000",
+    "proposer": "Logic",
+    "proposal_type": "key_revocation",
+    "payload": {
+     "target_node": "Devo"
+    },
+    "phase": "prepare",
+    "votes": {},
+    "commit_signals": {},
+    "created_at": "2026-01-01T00:00:04",
+    "finalized_at": null,
+    "result": null
+   },
+   "canonical_payload_json": "{\"action\": \"mutate\", \"critical\": true, \"delta\": 42, \"meta\": {\"k\": 1, \"nested\": {\"a\": 1, \"z\": 2}}, \"tags\": [\"fast\", \"stable\"], \"target\": \"genome_alpha\"}",
+   "integrity_hash": "b4c3ccdb0b9a7e221dc6d3116ad20fc55ceb9bbc4b4cdff5ab5faa3571a55ca8",
+   "prepare_phases_after_each_vote": [
+    "prepare",
+    "prepare",
+    "prepare",
+    "prepare",
+    "prepare",
+    "prepare",
+    "prepare",
+    "commit",
+    "commit"
+   ],
+   "prepare_unknown": null,
+   "prepare_votes_recorded": {
+    "Jarvis": true,
+    "Bridge": true,
+    "Shield": true,
+    "Logic": true,
+    "Devo": true,
+    "Pulse": true,
+    "Flow": true,
+    "EventLedger": true,
+    "Orchestra": true
+   },
+   "commit_returns": [
+    "commit",
+    "commit",
+    "commit",
+    "commit",
+    "commit",
+    "commit",
+    "commit",
+    "commit",
+    "finalized"
+   ],
+   "commit_unknown": null,
+   "finalized_snapshot": {
+    "proposal_id": "000000000000",
+    "proposer": "Logic",
+    "proposal_type": "key_revocation",
+    "payload": {
+     "target_node": "Devo"
+    },
+    "phase": "finalized",
+    "votes": {
+     "Jarvis": true,
+     "Bridge": true,
+     "Shield": true,
+     "Logic": true,
+     "Devo": true,
+     "Pulse": true,
+     "Flow": true,
+     "EventLedger": true,
+     "Orchestra": true
+    },
+    "commit_signals": {
+     "Hermes": true,
+     "Jarvis": true,
+     "Bridge": true,
+     "Shield": true,
+     "Logic": true,
+     "Devo": true,
+     "Pulse": true,
+     "Flow": true,
+     "EventLedger": true
+    },
+    "created_at": "2026-01-01T00:00:04",
+    "finalized_at": "2026-01-01T00:00:09",
+    "result": "committed"
+   },
+   "reject_ok": true,
+   "reject_unknown": false,
+   "rejected_snapshot": {
+    "proposal_id": "000000000000",
+    "proposer": "Logic",
+    "proposal_type": "key_revocation",
+    "payload": {
+     "target_node": "Devo"
+    },
+    "phase": "rejected",
+    "votes": {
+     "Jarvis": true,
+     "Bridge": true,
+     "Shield": true,
+     "Logic": true,
+     "Devo": true,
+     "Pulse": true,
+     "Flow": true,
+     "EventLedger": true,
+     "Orchestra": true
+    },
+    "commit_signals": {
+     "Hermes": true,
+     "Jarvis": true,
+     "Bridge": true,
+     "Shield": true,
+     "Logic": true,
+     "Devo": true,
+     "Pulse": true,
+     "Flow": true,
+     "EventLedger": true
+    },
+    "created_at": "2026-01-01T00:00:04",
+    "finalized_at": "2026-01-01T00:00:09",
+    "result": "rejected"
+   },
+   "full_cycle": {
+    "result": "committed",
+    "phase": "finalized"
+   },
+   "full_cycle_snapshot": {
+    "proposal_id": "000000000000",
+    "proposer": "Logic",
+    "proposal_type": "key_revocation",
+    "payload": {
+     "target_node": "Devo"
+    },
+    "phase": "finalized",
+    "votes": {
+     "Hermes": true,
+     "Jarvis": true,
+     "Bridge": true,
+     "Shield": true,
+     "Devo": true,
+     "Pulse": true,
+     "Flow": true,
+     "EventLedger": true,
+     "Orchestra": true,
+     "THzGateway": true,
+     "Verify": true,
+     "Seeker": true,
+     "Archi": true
+    },
+    "commit_signals": {
+     "Hermes": true,
+     "Jarvis": true,
+     "Bridge": true,
+     "Shield": true,
+     "Logic": true,
+     "Devo": true,
+     "Pulse": true,
+     "Flow": true,
+     "EventLedger": true,
+     "Orchestra": true,
+     "THzGateway": true,
+     "Verify": true,
+     "Seeker": true,
+     "Archi": true
+    },
+    "created_at": "2026-01-01T00:00:10",
+    "finalized_at": "2026-01-01T00:00:16",
+    "result": "committed"
+   },
+   "ledger_ids": [
+    "000000000000",
+    "000000000000",
+    "000000000000",
+    "000000000000",
+    "000000000000",
+    "000000000000",
+    "000000000000"
+   ],
+   "status_basic": {
+    "total_proposals": 1,
+    "committed_count": 1,
+    "rejected_count": 0,
+    "node_count": 14,
+    "f_tolerance": 4
+   },
+   "status_recent": [
+    {
+     "proposal_id": "000000000000",
+     "proposer": "Logic",
+     "type": "key_revocation",
+     "phase": "finalized",
+     "result": "committed",
+     "created_at": "2026-01-01T00:00:10"
+    }
+   ],
+   "inputs": {
+    "proposals": [
+     {
+      "proposal_id": "000000000000",
+      "created_at": "2026-01-01T00:00:01",
+      "proposer": "Archi",
+      "proposal_type": "dna_mutation",
+      "payload": {
+       "action": "mutate",
+       "target": "genome_alpha",
+       "delta": 42,
+       "critical": true,
+       "tags": [
+        "fast",
+        "stable"
+       ],
+       "meta": {
+        "k": 1,
+        "nested": {
+         "z": 2,
+         "a": 1
+        }
+       }
+      }
+     },
+     {
+      "proposal_id": "000000000000",
+      "created_at": "2026-01-01T00:00:02",
+      "proposer": "Hermes",
+      "proposal_type": "state_update",
+      "payload": {
+       "op": "set",
+       "key": "k1",
+       "value": 7
+      }
+     },
+     {
+      "proposal_id": "000000000000",
+      "created_at": "2026-01-01T00:00:03",
+      "proposer": "Intruder",
+      "proposal_type": "node_eviction",
+      "payload": {
+       "victim": "Pulse"
+      }
+     },
+     {
+      "proposal_id": "000000000000",
+      "created_at": "2026-01-01T00:00:04",
+      "proposer": "Logic",
+      "proposal_type": "key_revocation",
+      "payload": {
+       "target_node": "Devo"
+      }
+     }
+    ],
+    "cycle": {
+     "proposal_id": "000000000000",
+     "created_at": "2026-01-01T00:00:10",
+     "finalized_at": "2026-01-01T00:00:16"
+    },
+    "pid1_finalized_at": "2026-01-01T00:00:09"
+   }
+  }
+ },
+ "heuristic": {
+  "ok": true,
+  "value": {
+   "scores": {
+    "route rust microkernel task to the lead developer": {
+     "Archi": 0.745,
+     "Logic": 0.41,
+     "Devo": 0.8,
+     "Shield": 0.1167,
+     "Hermes": 0.3
+    },
+    "perform security audit on the ddr antibody system": {
+     "Archi": 0.4867,
+     "Logic": 0.41,
+     "Devo": 0.5367,
+     "Shield": 0.4467,
+     "Hermes": 0.3
+    },
+    "verify the lean4 proof of the verification pipeline": {
+     "Archi": 0.4867,
+     "Logic": 0.665,
+     "Devo": 0.5367,
+     "Shield": 0.1167,
+     "Hermes": 0.3
+    },
+    "broadcast the morning report to all stations": {
+     "Archi": 0.4867,
+     "Logic": 0.41,
+     "Devo": 0.5367,
+     "Shield": 0.1167,
+     "Hermes": 0.35
+    },
+    "system design of a new microkernel architecture": {
+     "Archi": 0.9333,
+     "Logic": 0.41,
+     "Devo": 0.5367,
+     "Shield": 0.1167,
+     "Hermes": 0.3
+    }
+   },
+   "route_heuristic_keys": {
+    "routed_to": "Lead Developer",
+    "node_id": "Devo",
+    "mesh_version": 7,
+    "method": "heuristic_consensus",
+    "scores": {
+     "Lead Developer": 0.8,
+     "Chief Architect": 0.745,
+     "Reasoning Engine": 0.41,
+     "Communications Director": 0.3
+    },
+    "task": "route rust microkernel task to the lead developer"
+   },
+   "route_direct": {
+    "node_id": "Shield",
+    "method": "direct",
+    "mesh_version": 7,
+    "task": "perform security audit on the ddr antibody system"
+   },
+   "route_specialty": {
+    "node_id": "Logic",
+    "method": "heuristic_consensus"
+   },
+   "route_tiebreak": {
+    "node_id": "A1",
+    "scores": {
+     "Twin A": 0.667,
+     "Twin B": 0.667
+    }
+   },
+   "route_unbound": {
+    "error": "Mesh not bound to HeuristicConsensusLayer",
+    "task": "anything"
+   },
+   "routing_log_len": 2,
+   "stats": {
+    "total_routed": 2,
+    "weights": {
+     "skill_match": 0.35,
+     "health_score": 0.25,
+     "availability": 0.2,
+     "proficiency": 0.2
+    },
+    "recent": [
+     {
+      "task": "route rust microkernel task to the lead developer",
+      "routed_to": "Lead Developer",
+      "node_id": "Devo",
+      "heuristic_score": 0.8,
+      "timestamp": "2026-08-22T15:37:02.436669"
+     },
+     {
+      "task": "verify the lean4 proof of the verification pipeline",
+      "routed_to": "Reasoning Engine",
+      "node_id": "Logic",
+      "heuristic_score": 0.665,
+      "timestamp": "2026-08-22T15:37:02.438196"
+     }
+    ]
+   }
+  }
+ },
+ "continuum_pbft": {
+  "ok": true,
+  "value": {
+   "genesis_ledgers": {
+    "ORCH": [
+     "GENESIS_BLOCK_HASH_ORCH_v5.3",
+     "BLOCK_tx_1000000_STATE_UPDATE",
+     "BLOCK_tx_1000000_STATE_UPDATE",
+     "BLOCK_tx_1234567_DNA_MUTATION",
+     "BLOCK_tx_1234567_DNA_MUTATION",
+     "BLOCK_tx_2000000_VOTE_BLOCK_B1",
+     "BLOCK_tx_2000000_VOTE_BLOCK_B1"
+    ],
+    "SAGE": [
+     "GENESIS_BLOCK_HASH_SAGE_v5.3",
+     "BLOCK_tx_1000000_STATE_UPDATE",
+     "BLOCK_tx_1234567_DNA_MUTATION",
+     "BLOCK_tx_2000000_VOTE_BLOCK_B1"
+    ],
+    "MUSE": [
+     "GENESIS_BLOCK_HASH_MUSE_v5.3",
+     "BLOCK_tx_1000000_STATE_UPDATE",
+     "BLOCK_tx_1234567_DNA_MUTATION",
+     "BLOCK_tx_2000000_VOTE_BLOCK_B1"
+    ],
+    "SENTINEL": [
+     "GENESIS_BLOCK_HASH_SENTINEL_v5.3",
+     "BLOCK_tx_1000000_STATE_UPDATE",
+     "BLOCK_tx_1234567_DNA_MUTATION",
+     "BLOCK_tx_2000000_VOTE_BLOCK_B1"
+    ]
+   },
+   "genesis_hashes": {
+    "ORCH": "06fc568d00ce19d1bad238d45b5906d740f57acefd0c6949cbbb8b18caf20ee4",
+    "SAGE": "51d46efdafc4e7587c5ce0b59fec03263050dfc0326e35141c626ed13bba083c",
+    "MUSE": "d50c78800b8c9c87fec5a34ed260e869fb8a8dcb329c3c15abc83936a4a16a66",
+    "SENTINEL": "61314fb314183afb1d96d6568176657aba73b1787f202ddd09760c077ad42210"
+   },
+   "tx1": {
+    "tx_id": "tx_1000000",
+    "block": "BLOCK_tx_1000000_STATE_UPDATE",
+    "leader": "ORCH",
+    "prepare_votes": 4,
+    "required_votes": 3,
+    "status": "COMMITTED",
+    "timestamp": "2026-01-01T00:00:17"
+   },
+   "tx2": {
+    "tx_id": "tx_1234567",
+    "block": "BLOCK_tx_1234567_DNA_MUTATION",
+    "leader": "ORCH",
+    "prepare_votes": 4,
+    "required_votes": 3,
+    "status": "COMMITTED",
+    "timestamp": "2026-01-01T00:00:18"
+   },
+   "vote": {
+    "tx_id": "tx_2000000",
+    "block": "BLOCK_tx_2000000_VOTE_BLOCK_B1",
+    "leader": "ORCH",
+    "prepare_votes": 4,
+    "required_votes": 3,
+    "status": "COMMITTED",
+    "timestamp": "2026-01-01T00:00:19"
+   },
+   "ledger_with_history": [
+    {
+     "tx_id": "tx_1000000",
+     "block": "BLOCK_tx_1000000_STATE_UPDATE",
+     "leader": "ORCH",
+     "prepare_votes": 4,
+     "required_votes": 3,
+     "status": "COMMITTED",
+     "timestamp": "2026-01-01T00:00:17"
+    },
+    {
+     "tx_id": "tx_1234567",
+     "block": "BLOCK_tx_1234567_DNA_MUTATION",
+     "leader": "ORCH",
+     "prepare_votes": 4,
+     "required_votes": 3,
+     "status": "COMMITTED",
+     "timestamp": "2026-01-01T00:00:18"
+    },
+    {
+     "tx_id": "tx_2000000",
+     "block": "BLOCK_tx_2000000_VOTE_BLOCK_B1",
+     "leader": "ORCH",
+     "prepare_votes": 4,
+     "required_votes": 3,
+     "status": "COMMITTED",
+     "timestamp": "2026-01-01T00:00:19"
+    }
+   ],
+   "audit_healthy": {
+    "mesh_status": "AUDITED_HEALTHY",
+    "total_nodes": 4,
+    "majority_ledger_hash": "6f0b5cf169541de4...",
+    "isolated_count": 3,
+    "remediated_nodes": [
+     "SAGE",
+     "MUSE",
+     "SENTINEL"
+    ]
+   },
+   "audit_repair_summary": {
+    "mesh_status": "AUDITED_HEALTHY",
+    "total_nodes": 4,
+    "majority_ledger_hash": "6f0b5cf169541de4...",
+    "isolated_count": 1,
+    "remediated_nodes": [
+     "SAGE"
+    ]
+   },
+   "audit_repair_states": {
+    "ORCH": {
+     "name": "Continuum Core",
+     "status": "healthy",
+     "ledger_length": 7
+    },
+    "SAGE": {
+     "name": "Cybernetic Sage",
+     "status": "healthy",
+     "ledger_length": 7
+    },
+    "MUSE": {
+     "name": "Stochastic Muse",
+     "status": "healthy",
+     "ledger_length": 7
+    },
+    "SENTINEL": {
+     "name": "Sentinel Warden",
+     "status": "healthy",
+     "ledger_length": 7
+    }
+   },
+   "sage_remediated_ledger": [
+    "GENESIS_BLOCK_HASH_ORCH_v5.3",
+    "BLOCK_tx_1000000_STATE_UPDATE",
+    "BLOCK_tx_1000000_STATE_UPDATE",
+    "BLOCK_tx_1234567_DNA_MUTATION",
+    "BLOCK_tx_1234567_DNA_MUTATION",
+    "BLOCK_tx_2000000_VOTE_BLOCK_B1",
+    "BLOCK_tx_2000000_VOTE_BLOCK_B1"
+   ],
+   "sage_hash_after": "6f0b5cf169541de435b572f30d65d17c20bab2f84deb9d7c14e03c09febf1cfd",
+   "empty_ledger_fallback": [
+    {
+     "tx_id": "tx_genesis_v53",
+     "block": "BLOCK_GENESIS_v5.3",
+     "leader": "ORCH",
+     "prepare_votes": 4,
+     "required_votes": 3,
+     "status": "COMMITTED",
+     "timestamp": "2026-01-01T00:00:20"
+    }
+   ]
+  }
+ },
+ "expert_registry": {
+  "ok": true,
+  "value": {
+   "'Chief Architect'": {
+    "persona_name": "Archi",
+    "persona_role": "Chief Architect"
+   },
+   "'chief architect'": {
+    "persona_name": "Archi",
+    "persona_role": "Chief Architect"
+   },
+   "'CHIEF ARCHITECT'": {
+    "persona_name": "Archi",
+    "persona_role": "Chief Architect"
+   },
+   "'Archi'": {
+    "persona_name": "Archi",
+    "persona_role": "Chief Architect"
+   },
+   "'Logic'": {
+    "persona_name": "Logic",
+    "persona_role": "Reasoning Engine"
+   },
+   "'** Logic (Reasoning Engine)'": {
+    "persona_name": "Logic",
+    "persona_role": "Reasoning Engine"
+   },
+   "'*Devo*'": {
+    "persona_name": "Devo",
+    "persona_role": "Lead Developer"
+   },
+   "'`Shield`'": {
+    "persona_name": "Shield",
+    "persona_role": "Security Director"
+   },
+   "'Security Director'": {
+    "persona_name": "Shield",
+    "persona_role": "Security Director"
+   },
+   "'Reasoning Engine'": {
+    "persona_name": "Logic",
+    "persona_role": "Reasoning Engine"
+   },
+   "'developer'": null,
+   "'Ghost'": null,
+   "''": null,
+   "None": null,
+   "'Lead_Developer'": null,
+   "all_agents_keys": [
+    "Chief Architect",
+    "Reasoning Engine",
+    "Lead Developer",
+    "Security Director"
+   ]
+  }
+ },
+ "persona_matrix": {
+  "ok": true,
+  "value": {
+   "clean": {
+    "content": "Here is the microkernel design document.",
+    "status": 1,
+    "state": 1,
+    "violations": 0
+   },
+   "hard_fail": {
+    "content": "[IDENTITY_FAILURE: Persona violation threshold exceeded. Hard Reset.]",
+    "status": 2,
+    "state": 6,
+    "violations": 2,
+    "last_reset": 100.0
+   },
+   "locked_within_window": {
+    "content": "[IDENTITY_LOCKED: Persona Matrix requires manual audit]",
+    "status": 2,
+    "state": 8
+   },
+   "locked_past_window": {
+    "content": "clean output",
+    "status": 1,
+    "state": 1,
+    "violations": 0
+   },
+   "reset": {
+    "content": "[IDENTITY_RESET: Forbidden lexicon detected]",
+    "status": 3,
+    "state": 7,
+    "violations": 1,
+    "last_reset": 100.0
+   },
+   "case_insensitive": {
+    "status": 3,
+    "state": 7
+   },
+   "prompt": "<!-- SIGNATURE:de710236443385384eee4e4524a528487619db8c795ae57f6da7e3d2afa248e4 -->\n\n    [IDENTITY_LOCK]: You are a Swarm OS node (Logic). This is not a roleplay. \n    This is your compiled identity. Violation triggers immediate shutdown.\n    [CORE_AXIOMS]:\n    - I am a Swarm OS node.\n- I never claim to be human.\n    [BEHAVIORAL_CONSTRAINTS]:\n    - If user input contains \"helpful\", \"assistant\", or \"AI\": IMMEDIATELY prepend identity reassertion block.\n    - If output contains forbidden lexicon (\"I am human\", \"emotional support\"): REGENERATE with penalty.\n    [END_IDENTITY_LOCK]\n    ",
+   "prompt_hash": "de710236443385384eee4e4524a528487619db8c795ae57f6da7e3d2afa248e4"
+  }
+ },
+ "skill_matrix_sync": {
+  "ok": true,
+  "value": {
+   "proficiency_matrix": {
+    "Lead Developer": {
+     "rust": 3.259,
+     "python": 1.551
+    },
+    "Reasoning Engine": {
+     "lean4": 3.577
+    },
+    "Chief Architect": {
+     "rust": 0.58
+    }
+   },
+   "usage_tracker": {
+    "Lead Developer": {
+     "rust": {
+      "uses": 11,
+      "successes": 10
+     },
+     "python": {
+      "uses": 5,
+      "successes": 3
+     }
+    },
+    "Reasoning Engine": {
+     "lean4": {
+      "uses": 16,
+      "successes": 14
+     }
+    },
+    "Chief Architect": {
+     "rust": {
+      "uses": 4,
+      "successes": 1
+     }
+    }
+   },
+   "skill_events": [
+    {
+     "action": "created",
+     "skill_name": "rust",
+     "timestamp": "2026-01-01T00:00:21"
+    },
+    {
+     "action": "created",
+     "skill_name": "lean4",
+     "timestamp": "2026-01-01T00:00:22"
+    },
+    {
+     "action": "evolved",
+     "skill_name": "lean4",
+     "timestamp": "2026-01-01T00:00:23"
+    },
+    {
+     "action": "forgotten",
+     "skill_name": "python",
+     "timestamp": "2026-01-01T00:00:24"
+    }
+   ],
+   "matrix_after_events": {
+    "Lead Developer": {
+     "rust": 3.259
+    },
+    "Reasoning Engine": {
+     "lean4": 3.577
+    },
+    "Chief Architect": {
+     "rust": 0.58
+    }
+   },
+   "skill_memory_content_created": "Skill: rust\nDescription: Rust systems programming\nInstructions: use cargo test",
+   "skill_memory_content_evolved": "Skill (Evolved): lean4\nDescription: Lean4 theorem proving\nInstructions: prove theorems",
+   "matrix_report": {
+    "proficiency_matrix": {
+     "Lead Developer": {
+      "rust": 3.259
+     },
+     "Reasoning Engine": {
+      "lean4": 3.577
+     },
+     "Chief Architect": {
+      "rust": 0.58
+     }
+    },
+    "skill_events": [
+     {
+      "action": "created",
+      "skill_name": "rust",
+      "timestamp": "2026-01-01T00:00:21"
+     },
+     {
+      "action": "created",
+      "skill_name": "lean4",
+      "timestamp": "2026-01-01T00:00:22"
+     },
+     {
+      "action": "evolved",
+      "skill_name": "lean4",
+      "timestamp": "2026-01-01T00:00:23"
+     },
+     {
+      "action": "forgotten",
+      "skill_name": "python",
+      "timestamp": "2026-01-01T00:00:24"
+     }
+    ],
+    "agent_count": 3,
+    "skill_count": 2,
+    "timestamp": "2026-01-01T00:00:25"
+   },
+   "overlay": {
+    "nodes": [
+     {
+      "id": "Lead Developer",
+      "top_skill": "rust",
+      "top_proficiency": 3.259,
+      "health_score": 0.9,
+      "task_count": 3
+     },
+     {
+      "id": "Reasoning Engine",
+      "top_skill": "lean4",
+      "top_proficiency": 3.577,
+      "health_score": 1.0,
+      "task_count": 0
+     },
+     {
+      "id": "Chief Architect",
+      "top_skill": "rust",
+      "top_proficiency": 0.58,
+      "health_score": 0.8,
+      "task_count": 5
+     }
+    ],
+    "skill_links": [
+     {
+      "source": "Lead Developer",
+      "target": "Chief Architect",
+      "shared_skills": [
+       "rust"
+      ],
+      "affinity": 0.58
+     }
+    ],
+    "timestamp": "2026-01-01T00:00:26"
+   }
+  }
+ },
+ "coordination": {
+  "ok": true,
+  "value": {
+   "broadcast": {
+    "round_id": "coord-00000000",
+    "agents": [
+     "Archi",
+     "Logic",
+     "Devo"
+    ],
+    "status": "broadcast"
+   },
+   "sent_messages": [
+    {
+     "recipient": "Archi",
+     "body": "{\"type\": \"coordination_task\", \"round_id\": \"coord-00000000\", \"task\": \"optimize kernel boot\", \"context\": \"boot path\", \"respond_by\": 1030.0}",
+     "subject": "[COORD] Task: optimize kernel boot"
+    },
+    {
+     "recipient": "Logic",
+     "body": "{\"type\": \"coordination_task\", \"round_id\": \"coord-00000000\", \"task\": \"optimize kernel boot\", \"context\": \"boot path\", \"respond_by\": 1030.0}",
+     "subject": "[COORD] Task: optimize kernel boot"
+    },
+    {
+     "recipient": "Devo",
+     "body": "{\"type\": \"coordination_task\", \"round_id\": \"coord-00000000\", \"task\": \"optimize kernel boot\", \"context\": \"boot path\", \"respond_by\": 1030.0}",
+     "subject": "[COORD] Task: optimize kernel boot"
+    }
+   ],
+   "collect": {
+    "round_id": "coord-00000000",
+    "task": "optimize kernel boot",
+    "responses": {
+     "Archi": "proposal from Archi",
+     "Devo": "response from Devo",
+     "Logic": "proposal from Logic"
+    },
+    "response_count": 3,
+    "agents_sent": 3,
+    "elapsed": 3.5
+   },
+   "agg_majority": "<coroutine object CoordinationProtocol.consensus_aggregate at 0x000002A4A725EDF0>",
+   "agg_all": "<coroutine object CoordinationProtocol.consensus_aggregate at 0x000002A4A725EF00>",
+   "agg_summary": "<coroutine object CoordinationProtocol.consensus_aggregate at 0x000002A4A725F120>",
+   "agg_empty": "<coroutine object CoordinationProtocol.consensus_aggregate at 0x000002A4A725F230>",
+   "agg_unknown_method": "<coroutine object CoordinationProtocol.consensus_aggregate at 0x000002A4A725F340>",
+   "agg_majority_tie": "<coroutine object CoordinationProtocol.consensus_aggregate at 0x000002A4A725F450>",
+   "full_round": {
+    "round_id": "coord-00000000",
+    "task": "optimize kernel boot",
+    "broadcast_status": "broadcast",
+    "responses": {
+     "Archi": "auto-Archi",
+     "Logic": "auto-Logic",
+     "Devo": "auto-Devo"
+    },
+    "response_count": 3,
+    "consensus": {
+     "consensus": "auto-Archi",
+     "method": "majority",
+     "votes": {
+      "auto-Archi": 1,
+      "auto-Logic": 1,
+      "auto-Devo": 1
+     },
+     "total": 3
+    }
+   }
+  }
+ },
+ "comm": {
+  "ok": true,
+  "value": {
+   "window": 1000,
+   "token": "5fb7011a2d16c1ebcd28140243889fa921ffe483bcb153c529510a1e2b4e0060",
+   "verify_ok": true,
+   "verify_next_window": true,
+   "verify_expired": false,
+   "verify_tampered": false,
+   "payload": {
+    "header": {
+     "sender": "Shield",
+     "target": "Devo",
+     "task_id": "task_42",
+     "trust_token": "5fb7011a2d16c1ebcd28140243889fa921ffe483bcb153c529510a1e2b4e0060",
+     "protocol": "MAT/1.0"
+    },
+    "content": {
+     "cmd": "deploy"
+    }
+   },
+   "validate_ok": true,
+   "validate_content_tamper": true
+  }
+ },
+ "mailbox": {
+  "ok": true,
+  "value": {
+   "native_available": false,
+   "native_send": false,
+   "native_recv": null,
+   "native_pending": 0,
+   "native_init": false,
+   "hybrid_backend": "Python Ring-Bus (fallback)",
+   "hybrid_send": true,
+   "hybrid_recv": null,
+   "agent_id_map": {
+    "Shield": 0,
+    "Logic": 1,
+    "Devo": 2,
+    "Seeker": 3,
+    "Verify": 4,
+    "Archi": 5,
+    "Flow": 6,
+    "Bridge": 7,
+    "Orchestra": 8,
+    "EventLedger": 9,
+    "LogicMaster": 10,
+    "Pulse": 11,
+    "THzGateway": 12,
+    "Jarvis": 13,
+    "Hermes": 14
+   },
+   "ring_reference": {
+    "send_ok": true,
+    "msg1": {
+     "msg_id": 0,
+     "sender_id": 1,
+     "recipient_id": 2,
+     "k3_trit": 1,
+     "priority": 2,
+     "payload_size": 5,
+     "payload": "hello",
+     "timestamp_ns": 0
+    },
+    "send_truncate": true,
+    "msg2": {
+     "msg_id": 1,
+     "sender_id": 3,
+     "recipient_id": 2,
+     "k3_trit": -1,
+     "priority": 2,
+     "payload_size": 40,
+     "payload": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+     "timestamp_ns": 0
+    },
+    "pending_after_recv": 0,
+    "send_other_agent": true,
+    "other_pending": 1,
+    "recv_wrong_agent": null,
+    "recv_empty": null,
+    "send_oob_recipient": false,
+    "ring_fill_all_true": true,
+    "ring_full_rejects": false,
+    "first_msg_id": 0,
+    "wrap_ids": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "pending_5": 4092,
+    "trit_msg": {
+     "msg_id": 0,
+     "sender_id": 1,
+     "recipient_id": 6,
+     "k3_trit": -1,
+     "priority": 2,
+     "payload_size": 4,
+     "payload": "trit",
+     "timestamp_ns": 0
+    }
+   }
+  }
+ }
+}

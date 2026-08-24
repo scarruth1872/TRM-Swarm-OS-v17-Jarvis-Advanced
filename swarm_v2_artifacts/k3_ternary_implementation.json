@@ -1,0 +1,23 @@
+{
+  "ts": "2026-08-06T03:37:46",
+  "fp32_baseline": {
+    "python_ns": 2513,
+    "gpu_ns": 3.96,
+    "gpu_tps": 252000000.0
+  },
+  "k3_packing": {
+    "memory_kb": 6,
+    "reduction": 16,
+    "registers": 24
+  },
+  "k3_python": {
+    "ns": 15241620,
+    "note": "Pure Python loop \u2014 6000\u00d7 slower than BLAS"
+  },
+  "k3_gpu_projected": {
+    "ns": 157,
+    "tps": "~6.4B (S_BITCMP_B32 on RDNA2)"
+  },
+  "top_expert_match": false,
+  "note": "Ternary quantization loses FP32 precision \u2014 needs threshold tuning"
+}

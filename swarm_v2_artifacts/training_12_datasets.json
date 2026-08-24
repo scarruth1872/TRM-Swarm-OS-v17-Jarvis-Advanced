@@ -1,0 +1,183 @@
+{
+  "ts": "2026-08-07T09:50:22",
+  "total_datasets": 12,
+  "total_steps": 4377900,
+  "total_time_s": 0.4,
+  "effective_tps": 11565296.0,
+  "results": [
+    {
+      "dataset": "ClinicalTrials",
+      "agent": "EventLedger",
+      "domain": "trial_design",
+      "epochs": 20,
+      "pairs": 10000,
+      "steps": 200000,
+      "time_s": 0.016,
+      "tps": 12286446,
+      "final_loss": 0.41048
+    },
+    {
+      "dataset": "DrugBank",
+      "agent": "Seeker",
+      "domain": "drug_target",
+      "epochs": 30,
+      "pairs": 15500,
+      "steps": 465000,
+      "time_s": 0.035,
+      "tps": 13411746,
+      "final_loss": 0.43093
+    },
+    {
+      "dataset": "STRING",
+      "agent": "LogicMaster",
+      "domain": "ppi_network",
+      "epochs": 15,
+      "pairs": 50000,
+      "steps": 750000,
+      "time_s": 0.054,
+      "tps": 13805213,
+      "final_loss": 0.53309
+    },
+    {
+      "dataset": "PhysioNet",
+      "agent": "Pulse",
+      "domain": "vital_signs",
+      "epochs": 25,
+      "pairs": 20000,
+      "steps": 500000,
+      "time_s": 0.037,
+      "tps": 13540484,
+      "final_loss": 0.4122
+    },
+    {
+      "dataset": "HMP",
+      "agent": "Archi",
+      "domain": "microbiome",
+      "epochs": 20,
+      "pairs": 5000,
+      "steps": 100000,
+      "time_s": 0.034,
+      "tps": 2908811,
+      "final_loss": 0.36653
+    },
+    {
+      "dataset": "GloBI",
+      "agent": "Flow",
+      "domain": "ecology",
+      "epochs": 15,
+      "pairs": 35000,
+      "steps": 525000,
+      "time_s": 0.039,
+      "tps": 13334112,
+      "final_loss": 0.40508
+    },
+    {
+      "dataset": "TCIA",
+      "agent": "THzGateway",
+      "domain": "tumor_imaging",
+      "epochs": 30,
+      "pairs": 10000,
+      "steps": 300000,
+      "time_s": 0.023,
+      "tps": 13221508,
+      "final_loss": 0.28397
+    },
+    {
+      "dataset": "CDC_WONDER",
+      "agent": "Orchestra",
+      "domain": "mortality",
+      "epochs": 10,
+      "pairs": 50000,
+      "steps": 500000,
+      "time_s": 0.038,
+      "tps": 13118401,
+      "final_loss": 0.62211
+    },
+    {
+      "dataset": "NOAA",
+      "agent": "Logic",
+      "domain": "solar",
+      "epochs": 15,
+      "pairs": 15000,
+      "steps": 225000,
+      "time_s": 0.017,
+      "tps": 12917078,
+      "final_loss": 0.504
+    },
+    {
+      "dataset": "JWST",
+      "agent": "THzGateway",
+      "domain": "spectra",
+      "epochs": 20,
+      "pairs": 18000,
+      "steps": 360000,
+      "time_s": 0.027,
+      "tps": 13349946,
+      "final_loss": 0.47755
+    },
+    {
+      "dataset": "NIST",
+      "agent": "Seeker",
+      "domain": "ir_molecular",
+      "epochs": 20,
+      "pairs": 20000,
+      "steps": 400000,
+      "time_s": 0.03,
+      "tps": 13310926,
+      "final_loss": 0.3393
+    },
+    {
+      "dataset": "B3DB",
+      "agent": "Shield",
+      "domain": "bbb_penetration",
+      "epochs": 50,
+      "pairs": 1058,
+      "steps": 52900,
+      "time_s": 0.001,
+      "tps": 37480515,
+      "final_loss": 0.29098
+    }
+  ],
+  "agent_summary": {
+    "EventLedger": {
+      "datasets": 1,
+      "avg_loss": 0.41048
+    },
+    "Seeker": {
+      "datasets": 2,
+      "avg_loss": 0.38512
+    },
+    "LogicMaster": {
+      "datasets": 1,
+      "avg_loss": 0.53309
+    },
+    "Pulse": {
+      "datasets": 1,
+      "avg_loss": 0.4122
+    },
+    "Archi": {
+      "datasets": 1,
+      "avg_loss": 0.36653
+    },
+    "Flow": {
+      "datasets": 1,
+      "avg_loss": 0.40508
+    },
+    "THzGateway": {
+      "datasets": 2,
+      "avg_loss": 0.38076
+    },
+    "Orchestra": {
+      "datasets": 1,
+      "avg_loss": 0.62211
+    },
+    "Logic": {
+      "datasets": 1,
+      "avg_loss": 0.504
+    },
+    "Shield": {
+      "datasets": 1,
+      "avg_loss": 0.29098
+    }
+  }
+}

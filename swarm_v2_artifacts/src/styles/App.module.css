@@ -1,0 +1,57 @@
+/* Styles for the main App component */
+
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.appHeader {
+  background-color: var(--card-background);
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.appTitle {
+  margin: 0;
+  font-size: 1.8em;
+  color: var(--primary-color);
+}
+
+.appNav .navLink {
+  color: var(--text-secondary-color);
+  text-decoration: none;
+  margin-left: 25px;
+  font-size: 1.1em;
+  transition: color 0.3s ease;
+}
+
+.appNav .navLink:hover,
+.appNav .navLink:focus {
+  color: var(--secondary-color);
+  outline: none;
+}
+
+.appMain {
+  flex-grow: 1;
+  padding: 30px 40px;
+  max-width: 1400px; /* Max width for content */
+  margin: 0 auto; /* Center content */
+  width: 100%;
+  box-sizing: border-box; /* Include padding in width */
+}
+
+.appFooter {
+  background-color: var(--card-background);
+  padding: 15px 40px;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 0.9em;
+  color: var(--text-secondary-color);
+}
