@@ -148,15 +148,10 @@ impl RustAgentRuntime {
     }
 }
 
-static mut RUNTIME_INSTANCE: Option<RustAgentRuntime> = None;
+static RUNTIME_INSTANCE: std::sync::OnceLock<RustAgentRuntime> = std::sync::OnceLock::new();
 
 pub fn get_runtime() -> &'static RustAgentRuntime {
-    unsafe {
-        if RUNTIME_INSTANCE.is_none() {
-            RUNTIME_INSTANCE = Some(RustAgentRuntime::new());
-        }
-        RUNTIME_INSTANCE.as_ref().unwrap()
-    }
+    RUNTIME_INSTANCE.get_or_init(RustAgentRuntime::new)
 }
 
 #[repr(C)]

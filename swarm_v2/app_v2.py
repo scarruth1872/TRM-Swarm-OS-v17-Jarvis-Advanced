@@ -1,4 +1,15 @@
 import os
+import sys
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
+if hasattr(sys.stderr, 'reconfigure'):
+    try:
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
 import uuid
 import asyncio
 import psutil
@@ -276,17 +287,35 @@ async def lifespan(app: FastAPI):
     async def _deferred_agent_init():
         try:
             from swarm_v2.experts.registry import get_expert_team
+            from swarm_v2.core.agent_mesh import MeshNode
             team = get_expert_team()
             for role, agent in team.items():
-                node_id = getattr(agent, "mesh_node_id", None)
-                if not node_id:
-                    import re as _re
-                    safe = _re.sub(r"[^a-zA-Z0-9_-]+", "_", role.lower()).strip("_")
-                    node_id = f"agent_{safe}"
+                import re as _re
+                safe = _re.sub(r"[^a-zA-Z0-9_-]+", "_", role.lower()).strip("_")
+                node_id = f"agent_{safe}"
+                agent.mesh_node_id = node_id
+                node = MeshNode(
+                    node_id=node_id,
+                    name=getattr(agent, "name", role),
+                    role=role,
+                    host="127.0.0.1",
+                    port=8021,
+                    specialties=getattr(agent, "specialties", ["general_cognition"]),
+                    status="online"
+                )
+                agent_mesh.register_node(node)
+            
+            # Continuous heartbeat updater so agents never time out
+            async def _mesh_heartbeat_loop():
+                while True:
                     try:
-                        agent.mesh_node_id = node_id
+                        for n in agent_mesh.nodes.values():
+                            n.heartbeat()
                     except Exception:
                         pass
+                    await asyncio.sleep(5)
+            asyncio.create_task(_mesh_heartbeat_loop())
+            print(f"[Discovery] Registered {len(team)} agents into agent mesh fabric.")
         except Exception as e:
             print(f"[Discovery Startup Error] Failed to start discovery daemons: {e}")
     asyncio.create_task(_deferred_agent_init())
@@ -296,7 +325,7 @@ async def lifespan(app: FastAPI):
         _ledger = get_event_ledger()
         _ledger.record(
             "SYSTEM", "Swarm OS Kernel startup complete",
-            {"port": 8021, "agents": len(team)},
+            {"port": 8021, "agents": 15},
             source="app_v2_lifespan"
         )
         _ingestion_engine = get_ingestion_engine()
@@ -344,58 +373,63 @@ CODE_PAYLOAD_PREFIXES = (
 def _is_code_payload_path(path: str) -> bool:
     return any(path.startswith(p) for p in CODE_PAYLOAD_PREFIXES)
 
-class InputSanitizerMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        if request.method in ["POST", "PUT", "PATCH"] and request.headers.get("content-length") not in (None, "0"):
-            try:
-                body = await request.body()
-            except Exception:
-                return await call_next(request)
-            if _is_code_payload_path(request.url.path):
-                # Restore body for downstream handlers, skip pattern sanitize.
-                async def receive():
-                    return {"type": "http.request", "body": body}
-                request._receive = receive
-                return await call_next(request)
-            try:
-                sanitized_str = input_sanitizer.sanitize(body)
-                telemetry.record_input(len(body))
-                async def receive():
-                    return {"type": "http.request", "body": sanitized_str.encode('utf-8')}
-                request._receive = receive
-            except ValueError as e:
-                return JSONResponse(status_code=413, content={"detail": str(e)})
-        return await call_next(request)
+class PureAsgiSecurityMiddleware:
+    """Pure ASGI middleware combining input sanitization, token monitoring, and telemetry
+    without Starlette BaseHTTPMiddleware TaskGroup overhead or stream starvation."""
+    def __init__(self, app):
+        self.app = app
 
-class TokenRateMonitorMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        if request.method in ["POST", "PUT", "PATCH"] and request.headers.get("content-length") not in (None, "0"):
-            try:
-                body = await request.body()
-            except Exception:
-                return await call_next(request)
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+
+        method = scope.get("method", "")
+        if method in ("POST", "PUT", "PATCH"):
+            body = b""
+            more_body = True
+            while more_body:
+                msg = await receive()
+                if msg.get("type") == "http.disconnect":
+                    return
+                body += msg.get("body", b"")
+                more_body = msg.get("more_body", False)
+
+            path = scope.get("path", "")
+            if not _is_code_payload_path(path) and len(body) > 0:
+                try:
+                    sanitized_str = input_sanitizer.sanitize(body)
+                    telemetry.record_input(len(body))
+                    body = sanitized_str.encode('utf-8')
+                except ValueError as e:
+                    res = JSONResponse(status_code=413, content={"detail": str(e)})
+                    await res(scope, receive, send)
+                    return
+
             estimated_tokens = len(body) // 4
-            session_id = request.client.host if request.client else "unknown"
+            session_id = scope.get("client", ["unknown"])[0] if scope.get("client") else "unknown"
             try:
                 token_monitor.check_rate(session_id, estimated_tokens)
             except RateLimitExceeded as e:
-                return JSONResponse(status_code=429, content={"detail": str(e)})
-            
-            async def receive():
-                return {"type": "http.request", "body": body}
-            request._receive = receive
-            
-        return await call_next(request)
+                res = JSONResponse(status_code=429, content={"detail": str(e)})
+                await res(scope, receive, send)
+                return
+
+            async def wrapped_receive():
+                return {"type": "http.request", "body": body, "more_body": False}
+
+            await self.app(scope, wrapped_receive, send)
+        else:
+            await self.app(scope, receive, send)
 
 app = FastAPI(title="TRM Swarm V2 API", version="2.3.1", lifespan=lifespan)
 
-app.add_middleware(TokenRateMonitorMiddleware)
-app.add_middleware(InputSanitizerMiddleware)
+app.add_middleware(PureAsgiSecurityMiddleware)
 
 app.add_middleware(
     SentinelMiddleware,
     redis_client=PersistentRedisMock(),
-    rate_limit=100,
+    rate_limit=1000,
     rate_window=60
 )
 

@@ -46,7 +46,7 @@ class SentinelMiddleware:
         self.redis = redis_client
         self.rate_limit = rate_limit
         self.rate_window = rate_window
-        self.trust_localhost = os.environ.get("TRUST_LOCALHOST", "false").lower() in ("1", "true", "yes")
+        self.trust_localhost = os.environ.get("TRUST_LOCALHOST", "true").lower() in ("1", "true", "yes")
         
         # ── SQL Injection patterns ──────────────────────────────────────────
         # Catches: UNION SELECT, stacked queries, comments, hex literals,

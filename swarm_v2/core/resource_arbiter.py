@@ -43,7 +43,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] [Arbiter] %(message)s",
     handlers=[
-        logging.FileHandler("swarm_v2_artifacts/arbiter.log"),
+        logging.FileHandler("swarm_v2_artifacts/arbiter.log", encoding="utf-8"),
         logging.StreamHandler()
     ]
 )

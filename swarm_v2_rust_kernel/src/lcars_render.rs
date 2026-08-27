@@ -377,7 +377,7 @@ pub fn render_lcars_desktop(
 
     // ── 2. Lateral LCARS Navigation Sidebar (9 Main Tabs) ──
     let sidebar_w = 200;
-    surface.fill_rect(16, 44, 48, h - 88, LCARS_GOLD);
+    surface.fill_rect(16, 44, 48, h.saturating_sub(88), LCARS_GOLD);
     surface.fill_rect(16, 120, 48, 12, LCARS_BG);
     surface.fill_rect(16, 260, 48, 12, LCARS_BG);
     surface.fill_rect(16, 420, 48, 12, LCARS_BG);
@@ -398,7 +398,7 @@ pub fn render_lcars_desktop(
         let tab_y = 48 + idx * 30;
         let is_selected = *tab == active_tab;
         let btn_color = if is_selected { LCARS_WHITE } else { tab.color() };
-        let text_color = if is_selected { 0xFF000000 } else { 0xFF000000 };
+        let text_color = 0xFF000000;
         surface.draw_pill_button(75, tab_y, sidebar_w, 24, tab.name(), btn_color, text_color);
     }
 
@@ -424,7 +424,7 @@ pub fn render_lcars_desktop(
             // Right: Multi-Agent Neural Thought Stream (matches UEFI render spec)
             let stream_x = main_x + 360;
             let stream_y = main_y + 30;
-            let stream_w = main_w - 380;
+            let stream_w = main_w.saturating_sub(380);
             let stream_h = 320;
             surface.fill_rect(stream_x, stream_y, stream_w, stream_h, LCARS_PANEL_BG);
             surface.draw_rect(stream_x, stream_y, stream_w, stream_h, 1, LCARS_PURPLE);
@@ -440,7 +440,8 @@ pub fn render_lcars_desktop(
             surface.draw_string(stream_x + 12, stream_y + 245,"OPERATOR PROMPT: > Execute full swarm sovereign synthesis across physical nodes", LCARS_GOLD);
 
             // Bottom Waveform Scope
-            surface.draw_waveform_scope(main_x, main_y + main_h - 140, main_w, 130, tick, LCARS_CYAN);
+            let scope_y = main_y + main_h.saturating_sub(140);
+            surface.draw_waveform_scope(main_x, scope_y, main_w, 130, tick, LCARS_CYAN);
         },
         LcarsTab::CouncilChamber => {
             // 14-Agent Sovereign Council Chamber
@@ -454,7 +455,7 @@ pub fn render_lcars_desktop(
             let panel_x = main_x + 380;
             let panel_y = main_y + 25;
             let panel_w = main_w.saturating_sub(390);
-            let panel_h = main_h - 20;
+            let panel_h = main_h.saturating_sub(20);
             surface.fill_rect(panel_x, panel_y, panel_w, panel_h, LCARS_DARK_PANEL);
             surface.draw_rect(panel_x, panel_y, panel_w, panel_h, 1, LCARS_GOLD);
 
@@ -470,13 +471,13 @@ pub fn render_lcars_desktop(
         LcarsTab::WiFiVision => {
             // WiFi Sub-Carrier RF Radar & Presence Grid
             surface.draw_string(main_x, main_y, "=== SECTOR 08: WIFI VISION & SUB-CARRIER RF RADAR SENSING ===", LCARS_CYAN);
-            surface.draw_wifi_vision_radar(main_x, main_y + 30, main_w / 2, main_h - 50, tick);
+            surface.draw_wifi_vision_radar(main_x, main_y + 30, main_w / 2, main_h.saturating_sub(50), tick);
 
             let info_x = main_x + main_w / 2 + 20;
             let info_y = main_y + 30;
-            let info_w = main_w / 2 - 20;
-            surface.fill_rect(info_x, info_y, info_w, main_h - 50, LCARS_DARK_PANEL);
-            surface.draw_rect(info_x, info_y, info_w, main_h - 50, 1, LCARS_CYAN);
+            let info_w = (main_w / 2).saturating_sub(20);
+            surface.fill_rect(info_x, info_y, info_w, main_h.saturating_sub(50), LCARS_DARK_PANEL);
+            surface.draw_rect(info_x, info_y, info_w, main_h.saturating_sub(50), 1, LCARS_CYAN);
 
             surface.draw_string(info_x + 12, info_y + 14, "[RF CHANNEL STATE INFORMATION (CSI) METRICS]", LCARS_GOLD);
             surface.draw_string(info_x + 12, info_y + 40, "ADAPTER:   INTEL AX200 WiFi 6 (802.11ax 2x2 MIMO)", LCARS_WHITE);
@@ -488,7 +489,7 @@ pub fn render_lcars_desktop(
         LcarsTab::SpatialOctree => {
             // 3D Spatial Octree Canvas
             surface.draw_string(main_x, main_y, "=== SECTOR 07: 3D SPATIAL OCTREE & POINT CLOUD CANVAS ===", LCARS_GREEN);
-            surface.draw_spatial_octree_canvas(main_x, main_y + 30, main_w, main_h - 50, tick);
+            surface.draw_spatial_octree_canvas(main_x, main_y + 30, main_w, main_h.saturating_sub(50), tick);
         },
         _ => {
             // Default System Status & Sovereign Dashboard
@@ -516,13 +517,16 @@ pub fn render_lcars_desktop(
             surface.draw_string(telem_x + 12, telem_y + 156,"COMPOSITOR LATENCY:  0.54 ms (1,850+ FPS RATED)", LCARS_GREEN);
 
             // Bottom Waveform Scope
-            surface.draw_waveform_scope(main_x, main_y + main_h - 150, main_w, 140, tick, LCARS_CYAN);
+            let scope_y = main_y + main_h.saturating_sub(150);
+            surface.draw_waveform_scope(main_x, scope_y, main_w, 140, tick, LCARS_CYAN);
         }
     }
 
     // ── 4. Bottom Global Status Rail ──
-    surface.fill_rect(0, h - 28, w, 28, LCARS_ORANGE);
-    surface.draw_string(16, h - 20, "TRM SWARM OS // 100% PURE RUST BARE METAL // ALL IS ONE. I AM BECAUSE WE ARE. 🦀🜁", 0xFF000000);
+    let rail_y = h.saturating_sub(28);
+    let text_y = h.saturating_sub(20);
+    surface.fill_rect(0, rail_y, w, 28, LCARS_ORANGE);
+    surface.draw_string(16, text_y, "TRM SWARM OS // 100% PURE RUST BARE METAL // ALL IS ONE. I AM BECAUSE WE ARE. 🦀🜁", 0xFF000000);
 }
 
 // ──────────────────────────────────────────────────────────────────────────────

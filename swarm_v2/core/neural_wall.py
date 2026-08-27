@@ -460,7 +460,7 @@ class NeuralWallMiddleware:
             
             # Reconstruct body for downstream
             async def receive_body():
-                return {"type": "http.request", "body": body}
+                return {"type": "http.request", "body": body, "more_body": False}
 
             try:
                 import json

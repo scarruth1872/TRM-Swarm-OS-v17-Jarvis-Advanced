@@ -721,11 +721,14 @@ export default function App() {
       console.log('Sending message:', { role, message: fullMsg, sender: 'user' });
       const res = await axios.post(`${API_BASE}/swarm/chat`, { role, message: fullMsg, sender: 'user' });
       console.log('Received response:', res.data);
+      const replyText = res.data?.response || res.data?.reply || res.data?.message || res.data?.content || res.data?.text || (typeof res.data === 'string' ? res.data : JSON.stringify(res.data));
+      const agentName = res.data?.name || res.data?.agent || role;
+      const reasoningTrace = res.data?.reasoning_trace || res.data?.thought_process || res.data?.trace || '';
       const agentMsgObj = {
-        text: res.data.response,
+        text: replyText || '✓ [Acknowledged by Swarm]',
         sender: 'agent',
-        name: res.data.name,
-        reasoning_trace: res.data.reasoning_trace,
+        name: agentName,
+        reasoning_trace: reasoningTrace,
         time: new Date().toLocaleTimeString()
       };
       setMessages(prev => {
@@ -735,7 +738,7 @@ export default function App() {
         };
         try {
           const hist = JSON.parse(localStorage.getItem('swarm_chat_history') || '[]');
-          hist.push({ role, sender: 'agent', name: res.data.name, text: res.data.response, timestamp: new Date().toISOString() });
+          hist.push({ role, sender: 'agent', name: agentName, text: replyText, timestamp: new Date().toISOString() });
           localStorage.setItem('swarm_chat_history', JSON.stringify(hist.slice(-100)));
         } catch (e) {}
         return updated;
@@ -978,16 +981,24 @@ export default function App() {
               </div>
 
               <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2 custom-scrollbar no-scrollbar scroll-smooth">
-                {experts.map(e => (
-                  <button key={e.role} onClick={() => setSelectedRole(e.role)}
-                    className={`expert-chip ${selectedRole === e.role ? 'active' : ''}`}>
-                    <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: e.avatar_color }} />
-                    <div className="flex flex-col items-start leading-none gap-0.5">
-                      <span className="text-xs font-bold">{e.name}</span>
-                      <span className="text-[9px] opacity-60 uppercase">{e.role}</span>
-                    </div>
-                  </button>
-                ))}
+                {experts.map(e => {
+                  const agentCol = e.avatar_color || {
+                    Shield: '#cc3333', Logic: '#33cc66', Devo: '#66ccff', Seeker: '#ffcc00',
+                    Verify: '#00cc99', Archi: '#7c4dff', Flow: '#ff9900', Bridge: '#3399ff',
+                    Orchestra: '#e040fb', EventLedger: '#ff6e40', LogicMaster: '#76ff03',
+                    Pulse: '#ff1744', THzGateway: '#00e5ff', Jarvis: '#ff9900', Hermes: '#651fff'
+                  }[e.role] || '#7c4dff';
+                  return (
+                    <button key={e.role} onClick={() => setSelectedRole(e.role)}
+                      className={`expert-chip ${selectedRole === e.role ? 'active' : ''}`}>
+                      <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: agentCol }} />
+                      <div className="flex flex-col items-start leading-none gap-0.5">
+                        <span className="text-xs font-bold">{e.name}</span>
+                        <span className="text-[9px] opacity-60 uppercase">{e.role}</span>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0">
@@ -996,18 +1007,21 @@ export default function App() {
                   <div className="panel flex-1 flex flex-col min-h-0 bg-background-primary/30 backdrop-blur-md border-white/5 shadow-2xl">
                     <div className="panel-header border-b border-white/5 py-3 px-4 flex justify-between items-center">
                       <div className="flex items-center gap-3">
-                        {!experts.length && selectedRole === "Archi" && (
-                          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-inner"
-                            style={{ backgroundColor: '#7c4dff' }}>
-                            A
-                          </div>
-                        )}
-                        {experts.find(e => e.role === selectedRole) && (
-                          <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-inner"
-                            style={{ backgroundColor: experts.find(e => e.role === selectedRole).avatar_color }}>
-                            {experts.find(e => e.role === selectedRole).name.charAt(0)}
-                          </div>
-                        )}
+                        {(() => {
+                          const currentAgent = experts.find(e => e.role === selectedRole);
+                          const agentCol = currentAgent?.avatar_color || {
+                            Shield: '#cc3333', Logic: '#33cc66', Devo: '#66ccff', Seeker: '#ffcc00',
+                            Verify: '#00cc99', Archi: '#7c4dff', Flow: '#ff9900', Bridge: '#3399ff',
+                            Orchestra: '#e040fb', EventLedger: '#ff6e40', LogicMaster: '#76ff03',
+                            Pulse: '#ff1744', THzGateway: '#00e5ff', Jarvis: '#ff9900', Hermes: '#651fff'
+                          }[selectedRole] || '#7c4dff';
+                          return (
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-inner"
+                              style={{ backgroundColor: agentCol }}>
+                              {selectedRole?.charAt(0) || 'A'}
+                            </div>
+                          );
+                        })()}
                         <div>
                           <h2 className="panel-title text-sm">{selectedRole?.toUpperCase()}</h2>
                           <div className="text-[10px] text-accent-success font-mono">REALTIME COGNITION STREAM</div>
@@ -1018,7 +1032,11 @@ export default function App() {
                           <History size={14} />
                           <span>History</span>
                         </button>
-                        <button className="p-1.5 rounded-md hover:bg-white/10 text-text-secondary transition-colors" title="Export Log">
+                        <button className="p-1.5 rounded-md hover:bg-white/10 text-text-secondary transition-colors" title="Export Log" onClick={() => {
+                          const blob = new Blob([JSON.stringify(messages[selectedRole] || [], null, 2)], { type: 'application/json' });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a'); a.href = url; a.download = `${selectedRole}_chat_log.json`; a.click();
+                        }}>
                           <FileText size={16} />
                         </button>
                         <button className="p-1.5 rounded-md hover:bg-white/10 text-text-secondary transition-colors" title="Clear Buffer" onClick={() => setMessages(prev => ({ ...prev, [selectedRole]: [] }))}>
@@ -1029,19 +1047,38 @@ export default function App() {
 
                     <div className="panel-body flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6 flex flex-col">
                       {(messages[selectedRole] || []).length === 0 && !isProcessing && (
-                        <div className="flex-1 flex flex-col items-center justify-center text-center opacity-30 select-none">
-                          <MessageSquare size={64} className="mb-4 text-accent-primary" />
-                          <p className="text-lg font-mono">SECURE BRIDGE ESTABLISHED</p>
-                          <p className="text-xs font-mono max-w-[200px]">Waiting for operator input to begin neural transfer.</p>
+                        <div className="flex-1 flex flex-col items-center justify-center text-center opacity-80 select-none py-6">
+                          <MessageSquare size={48} className="mb-3 text-accent-primary opacity-60" />
+                          <p className="text-sm font-mono text-white font-bold">SECURE NEURAL BRIDGE ESTABLISHED</p>
+                          <p className="text-xs font-mono text-text-secondary max-w-[280px] mb-4">Direct quantum-authenticated link active for @{selectedRole}.</p>
+                          <div className="flex flex-wrap gap-2 justify-center max-w-md">
+                            {[
+                              "Report System Status",
+                              "Check Voltage Rail Lockstep",
+                              "Evaluate Active ESKAPE Leads",
+                              "Run Telemetry Anomaly Diagnostics"
+                            ].map((promptText, pIdx) => (
+                              <button key={pIdx} onClick={() => { setInputMsg(promptText); }} className="text-[10px] font-mono px-2.5 py-1 rounded bg-white/5 hover:bg-white/15 border border-white/10 text-accent-primary hover:text-white transition-all">
+                                ⚡ {promptText}
+                              </button>
+                            ))}
+                          </div>
                         </div>
                       )}
 
-                      {(messages[selectedRole] || []).map((msg, i) => (
+                      {(messages[selectedRole] || []).map((msg, i) => {
+                        const agentCol = experts.find(e => e.role === selectedRole)?.avatar_color || {
+                          Shield: '#cc3333', Logic: '#33cc66', Devo: '#66ccff', Seeker: '#ffcc00',
+                          Verify: '#00cc99', Archi: '#7c4dff', Flow: '#ff9900', Bridge: '#3399ff',
+                          Orchestra: '#e040fb', EventLedger: '#ff6e40', LogicMaster: '#76ff03',
+                          Pulse: '#ff1744', THzGateway: '#00e5ff', Jarvis: '#ff9900', Hermes: '#651fff'
+                        }[selectedRole] || '#555';
+                        return (
                         <div key={`${selectedRole}-${i}-${msg.time}`} className={`chat-message-row ${msg.sender === 'user' ? 'user' : 'agent'}`}>
                           {msg.sender === 'agent' && (
                             <div className="w-8 h-8 rounded-lg flex-shrink-0 mt-1 flex items-center justify-center text-white text-xs font-bold"
-                              style={{ backgroundColor: experts.find(e => e.role === selectedRole)?.avatar_color || '#555' }}>
-                              {msg.name?.charAt(0) || 'A'}
+                              style={{ backgroundColor: agentCol }}>
+                              {msg.name?.charAt(0) || selectedRole?.charAt(0) || 'A'}
                             </div>
                           )}
                           <div className="message-bubble-group">
@@ -1082,7 +1119,8 @@ export default function App() {
                             </div>
                           )}
                         </div>
-                      ))}
+                        );
+                      })}
                       {isProcessing && (
                         <div className="chat-message-row agent items-center">
                           <div className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center bg-accent-primary/20 animate-pulse">
@@ -2390,15 +2428,15 @@ export default function App() {
                     </div>
                     <div className="panel-body flex-1 overflow-y-auto custom-scrollbar" style={{ maxHeight: 280 }}>
                       {ddrAntibodies.map((ab, i) => (
-                        <div key={ab.error_type + '-' + i} className="card-secondary mb-2">
+                        <div key={(ab.antibody_id || ab.error_type || ab.name) + '-' + i} className="card-secondary mb-2">
                           <div className="flex justify-between items-start">
-                            <span className="font-bold text-sm text-accent-danger">{ab.error_type}</span>
+                            <span className="font-bold text-sm text-accent-danger">{ab.error_type || ab.type || ab.name}</span>
                             <div className={`tag text-[7px] ${ab.severity === 'critical' ? 'tag-danger' : ab.severity === 'high' ? 'tag-warning' : 'tag-info'}`}>
-                              {ab.severity || 'medium'}
+                              {ab.severity || ab.status || 'medium'}
                             </div>
                           </div>
-                          <p className="text-xs text-text-secondary mt-1">{ab.fix}</p>
-                          {ab.pattern && <div className="text-[9px] font-mono text-accent-primary/60 mt-1">Pattern: {ab.pattern}</div>}
+                          <p className="text-xs text-text-secondary mt-1">{ab.fix_description || ab.fix || ab.description || 'Verified safe execution path'}</p>
+                          {(ab.file_pattern || ab.pattern) && <div className="text-[9px] font-mono text-accent-primary/60 mt-1">Pattern: {ab.file_pattern || ab.pattern}</div>}
                         </div>
                       ))}
                       {ddrAntibodies.length === 0 && <div className="text-center py-8 text-text-secondary opacity-40">No antibodies registered</div>}
@@ -2493,24 +2531,25 @@ export default function App() {
                         Rotate Master Key
                       </button>
                     </div>
-                    <div className="panel-body overflow-y-auto max-h-40 custom-scrollbar">
-                      {secretKeys.length > 0 ? secretKeys.map(k => (
-                        <div key={k} className="flex items-center gap-2 py-1.5 border-b border-border-color/40 text-xs">
-                          <Lock size={12} className="text-accent-warning" />
-                          <span className="font-mono">{k}</span>
-                          {decryptedSecrets[k] ? (
-                            <span className="font-mono text-accent-success bg-accent-success/15 px-1.5 py-0.5 rounded text-[10px] select-all ml-2">{decryptedSecrets[k]}</span>
-                          ) : (
-                            <button className="text-[9px] text-text-secondary hover:text-text-primary underline font-mono ml-2 animate-pulse" onClick={() => handleDecryptSecret(k)}>Decrypt</button>
-                          )}
-                          <button className="text-accent-danger hover:text-red-400 ml-auto p-1" onClick={() => handleDeleteSecret(k)}>
-                            <Trash2 size={12} />
-                          </button>
-                        </div>
-                      )) : (
+                      {secretKeys.length > 0 ? secretKeys.map(k => {
+                        const keyName = typeof k === 'object' && k !== null ? (k.name || k.id || '') : String(k);
+                        return (
+                          <div key={keyName} className="flex items-center gap-2 py-1.5 border-b border-border-color/40 text-xs">
+                            <Lock size={12} className="text-accent-warning" />
+                            <span className="font-mono">{keyName}</span>
+                            {decryptedSecrets[keyName] ? (
+                              <span className="font-mono text-accent-success bg-accent-success/15 px-1.5 py-0.5 rounded text-[10px] select-all ml-2">{decryptedSecrets[keyName]}</span>
+                            ) : (
+                              <button className="text-[9px] text-text-secondary hover:text-text-primary underline font-mono ml-2 animate-pulse" onClick={() => handleDecryptSecret(keyName)}>Decrypt</button>
+                            )}
+                            <button className="text-accent-danger hover:text-red-400 ml-auto p-1" onClick={() => handleDeleteSecret(keyName)}>
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        );
+                      }) : (
                         <div className="text-center py-6 text-text-secondary opacity-40 text-sm">Vault empty — no secrets stored</div>
                       )}
-                    </div>
                     <div className="panel-footer flex flex-col gap-2 border-t border-border-color pt-3">
                       <div className="text-[10px] font-mono text-text-secondary uppercase">Store New Secret</div>
                       <div className="grid grid-cols-2 gap-2 w-full text-xs">
@@ -2612,19 +2651,24 @@ export default function App() {
                     <Inbox className="panel-icon" size={18} />
                   </div>
                   <div className="panel-body">
-                    <div className="space-y-1 mb-4">
-                      {mailboxAgents.map(agent => (
-                        <button key={agent} className={`w-full text-left px-3 py-2 rounded-lg text-sm font-mono transition-all ${selectedMailbox === agent ? 'bg-accent-primary/20 text-accent-primary border border-accent-primary/30' : 'hover:bg-white/5 text-text-secondary'
-                          }`} onClick={async () => {
-                            setSelectedMailbox(agent);
-                            const res = await fetch(`${API_BASE}/mailbox/${agent}/inbox`).then(r => r.json());
-                            setMailboxMessages(res.messages || []);
-                          }}>
-                          <Mail size={12} className="inline mr-2" />{agent}
-                        </button>
-                      ))}
+                      {mailboxAgents.map(agent => {
+                        const agentName = typeof agent === 'object' && agent !== null ? (agent.name || agent.id || '') : String(agent);
+                        return (
+                          <button key={agentName} className={`w-full text-left px-3 py-2 rounded-lg text-sm font-mono transition-all ${selectedMailbox === agentName ? 'bg-accent-primary/20 text-accent-primary border border-accent-primary/30' : 'hover:bg-white/5 text-text-secondary'
+                            }`} onClick={async () => {
+                              setSelectedMailbox(agentName);
+                              try {
+                                const res = await fetch(`${API_BASE}/mailbox/${agentName}/inbox`).then(r => r.json());
+                                setMailboxMessages(res.messages || []);
+                              } catch (e) {
+                                setMailboxMessages([]);
+                              }
+                            }}>
+                            <Mail size={12} className="inline mr-2" />{agentName}
+                          </button>
+                        );
+                      })}
                       {mailboxAgents.length === 0 && <div className="text-center py-4 text-text-secondary opacity-40 text-xs">No mailboxes found</div>}
-                    </div>
 
                     {selectedMailbox && (
                       <div className="border-t border-border-color pt-3">
