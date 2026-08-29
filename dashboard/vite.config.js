@@ -35,6 +35,9 @@ export default defineConfig({
       '/council':        { target: 'http://127.0.0.1:8022', changeOrigin: true },
       '/ultrawork':      { target: 'http://127.0.0.1:8022', changeOrigin: true },
       '/skills':         { target: 'http://127.0.0.1:8022', changeOrigin: true },
+      '/journal':        { target: 'http://127.0.0.1:8022', changeOrigin: true },
+      '/monad':          { target: 'http://127.0.0.1:8022', changeOrigin: true },
+      '/companion':      { target: 'http://127.0.0.1:3001', changeOrigin: true },
     }
   }
 })
