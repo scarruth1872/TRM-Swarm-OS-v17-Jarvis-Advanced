@@ -106,6 +106,21 @@ class ProxyHandler(BaseHTTPRequestHandler):
             p_lower.startswith("@devo") or 
             p_lower.startswith("@seeker") or 
             "11 drug leads" in p_lower or 
+            "cross-modality" in p_lower or 
+            "causal chain" in p_lower or 
+            "7-modality" in p_lower or 
+            "a215v" in p_lower or 
+            "modality" in p_lower or 
+            "quantum" in p_lower or 
+            "kyber" in p_lower or 
+            "dilithium" in p_lower or 
+            "pqc" in p_lower or 
+            "skywave" in p_lower or 
+            "ionospheric" in p_lower or 
+            "100-node" in p_lower or 
+            "100 node" in p_lower or 
+            "phoenix" in p_lower or 
+            "tiers" in p_lower or 
             p_lower == "status" or 
             p_lower == "council"
         )

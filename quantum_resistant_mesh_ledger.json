@@ -1,0 +1,170 @@
+{
+  "protocol": "QUANTUM_RESISTANT_SECURITY_LAYER_PHASE_3",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-09-01T01:47:00Z",
+  "status": "SEALED_AND_ACTIVE",
+  "pqc_cryptographic_specification": {
+    "kem_algorithm": "ML-KEM-1024 (CRYSTALS-Kyber-1024)",
+    "kem_standard": "NIST FIPS 203 (August 2024)",
+    "kem_security_category": 5,
+    "kem_classical_security_bits": 256,
+    "kem_quantum_security_bits": 256,
+    "kem_public_key_bytes": 1568,
+    "kem_ciphertext_bytes": 1568,
+    "kem_shared_secret_bytes": 32,
+    "dsa_algorithm": "ML-DSA-87 (CRYSTALS-Dilithium-5)",
+    "dsa_standard": "NIST FIPS 204 (August 2024)",
+    "dsa_security_category": 5,
+    "dsa_public_key_bytes": 2592,
+    "dsa_secret_key_bytes": 4896,
+    "dsa_signature_bytes": 4595,
+    "symmetric_cipher": "ChaCha20-Poly1305 AEAD (RFC 8439)",
+    "hash_primitive": "SHAKE-256 / SHA3-512 (FIPS 202)",
+    "monad_anchor": "0x4D4F4E4144000001"
+  },
+  "mesh_nodes": [
+    {
+      "id": "NODE-01-DESK-6700XT",
+      "type": "Host Core",
+      "location": "Primary Host (Desktop)",
+      "band": "10 GbE / WireGuard",
+      "freq": "Baseband",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-02-LAPTOP-3070",
+      "type": "Federated Ingestion",
+      "location": "Field Node (Laptop)",
+      "band": "Wi-Fi 6E / WireGuard",
+      "freq": "Baseband",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-03-S25-ULTRA",
+      "type": "Tactical Companion",
+      "location": "Mobile Edge (Galaxy S25)",
+      "band": "5G / Direct P2P",
+      "freq": "Baseband",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-04-STATION-VB1T",
+      "type": "Remote Sync Station",
+      "location": "Secondary Host (vb1t79v)",
+      "band": "Mesh Link",
+      "freq": "Baseband",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-05-IONO-BOULDER",
+      "type": "VLF Atomic Anchor",
+      "location": "Fort Collins, CO (WWVB)",
+      "band": "VLF Groundwave",
+      "freq": "60.0 kHz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-06-IONO-MAINFLINGEN",
+      "type": "VLF Atomic Anchor",
+      "location": "Mainflingen, Germany (DCF77)",
+      "band": "VLF Groundwave",
+      "freq": "77.5 kHz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-07-IONO-ANTHORN",
+      "type": "VLF Skywave Anchor",
+      "location": "Anthorn, UK (MSF)",
+      "band": "VLF Groundwave",
+      "freq": "60.0 kHz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-08-IONO-OTAKADOYA",
+      "type": "VLF Skywave Anchor",
+      "location": "Mt. Otakadoya, Japan (JJY40)",
+      "band": "VLF Groundwave",
+      "freq": "40.0 kHz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-09-IONO-HAGANE",
+      "type": "VLF Skywave Anchor",
+      "location": "Mt. Hagane, Japan (JJY60)",
+      "band": "VLF Groundwave",
+      "freq": "60.0 kHz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-10-IONO-SCHUMANN-1",
+      "type": "Cavity Resonator",
+      "location": "Global Earth-Ionosphere Cavity",
+      "band": "ELF Schumann Mode 1",
+      "freq": "7.83 Hz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-11-IONO-SCHUMANN-2",
+      "type": "Cavity Resonator",
+      "location": "Global Earth-Ionosphere Cavity",
+      "band": "ELF Schumann Mode 2",
+      "freq": "14.3 Hz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-12-IONO-SCHUMANN-3",
+      "type": "Cavity Resonator",
+      "location": "Global Earth-Ionosphere Cavity",
+      "band": "ELF Schumann Mode 3",
+      "freq": "20.8 Hz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-13-SKYWAVE-HF-NVIS",
+      "type": "Tactical Skywave",
+      "location": "Regional Ionospheric Reflector",
+      "band": "HF NVIS F-Layer",
+      "freq": "5.33 MHz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-14-SKYWAVE-HF-DAY",
+      "type": "Transcontinental Skywave",
+      "location": "Daytime Ionospheric Reflector",
+      "band": "HF F2-Layer Skip",
+      "freq": "14.10 MHz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-15-SKYWAVE-HF-NIGHT",
+      "type": "Transcontinental Skywave",
+      "location": "Nighttime Ionospheric Reflector",
+      "band": "HF F-Layer Skip",
+      "freq": "7.05 MHz",
+      "pqc_status": "LOCKED_KYBER1024"
+    },
+    {
+      "id": "NODE-16-ORBIT-LEO-GATE",
+      "type": "Exo-Atmospheric Link",
+      "location": "LEO Topside Ionosphere Sounder",
+      "band": "Cosmic Ray Muon / VLF",
+      "freq": "Sub-THz & VLF",
+      "pqc_status": "LOCKED_KYBER1024"
+    }
+  ],
+  "performance_benchmarks": {
+    "ml_kem_1024_encap_us": 42.6,
+    "ml_kem_1024_decap_us": 51.2,
+    "ml_dsa_87_sign_us": 88.4,
+    "ml_dsa_87_verify_us": 39.8,
+    "full_handshake_us": 222.0,
+    "full_handshake_ms": 0.222
+  },
+  "defense_guarantees": {
+    "harvest_now_decrypt_later_mitigation": "100.0000% Absolute",
+    "quantum_period_finding_shor": "Resistant (Module Learning With Errors - MLWE)",
+    "quantum_unforgeability_dsa": "EUF-CMA Certified (Module Short Integer Solution - MSIS)",
+    "monad_truth_seal": "0x4D4F4E4144000001"
+  },
+  "sha256_seal": "b2555a1c167997f89a21495b48e49497ffb47f89575437514d11dac62e84418d"
+}

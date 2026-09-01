@@ -1,12 +1,12 @@
 {
   "protocol": "FULL_FEDERATION_SYNC_MANIFEST",
-  "timestamp": "2026-08-27T15:08:29.617451",
+  "timestamp": "2026-09-01T01:54:10Z",
   "monad_anchor": "0x4D4F4E4144000001",
   "nodes": {
     "desktop_node": {
       "id": "TRM-DESK-6700XT",
       "role": "Master Orchestrator / Lead Optimization Node",
-      "outbound_assets": 18,
+      "outbound_assets": 21,
       "manifest": {
         "eskape_spectrum_full.json": {
           "sha256": "062b0cf3449094a6909e17e90afc9454e2678502467172c74693ff78da65a1d8",
@@ -97,6 +97,21 @@
           "sha256": "945effb216076263daea0735995f4a8e5f900d3b8393ece8f58c13ac91a2a8ce",
           "size_bytes": 803840,
           "status": "SYNCHRONIZED"
+        },
+        "cross_modality_7_causal_chain_validation.json": {
+          "sha256": "9d3e2c1fee58cc4b81f2fd37e5c112488aa79248f9581c4f49496f95cb6ee848",
+          "size_bytes": 4829,
+          "status": "SYNCHRONIZED_AND_SEALED"
+        },
+        "quantum_resistant_mesh_ledger.json": {
+          "sha256": "d8becc872b86923c8331b6aa34b02df1ac513d8203baa82b9a7b0628a347c0b8",
+          "size_bytes": 5501,
+          "status": "SYNCHRONIZED_AND_SEALED"
+        },
+        "federation_100_node_mesh_ledger.json": {
+          "sha256": "39215b805a6abd9d76888f73a6c01d47ebbbfa56a11eef99ccf0bf624806fb89",
+          "size_bytes": 33904,
+          "status": "SYNCHRONIZED_AND_SEALED"
         }
       }
     },
@@ -209,7 +224,7 @@
     }
   },
   "synchronization_metrics": {
-    "total_assets_exchanged": 38,
+    "total_assets_exchanged": 41,
     "discrepancy_count": 0,
     "divergence_metric": 0.0,
     "duration_ms": 147.44,

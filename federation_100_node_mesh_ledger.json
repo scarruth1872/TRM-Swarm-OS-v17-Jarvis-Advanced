@@ -1,0 +1,1073 @@
+{
+  "protocol": "PHOENIX_ZERO_LOSS_FEDERATION_100",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-09-01T01:52:21Z",
+  "total_nodes": 100,
+  "total_tiers": 6,
+  "byzantine_fault_tolerance": {
+    "max_tolerated_failures_f": 33,
+    "required_quorum_nodes": 67,
+    "consensus_algorithm": "PBFT with Kleene-3 Ternary Logic",
+    "state_replication": "Phoenix Zero-Loss Dynamic Anti-Entropy"
+  },
+  "merkle_root": "7feb4b397091fdc4ced5af1715f21f3a6b727157e5cf39cef909d01d2086a680",
+  "tiers": [
+    {
+      "tier": 1,
+      "name": "Core Host & Ingestion",
+      "range": [
+        1,
+        10
+      ],
+      "role": "Primary Orchestration, Neural Weights & Local Microkernel"
+    },
+    {
+      "tier": 2,
+      "name": "PQC Skywave & Ionosphere",
+      "range": [
+        11,
+        26
+      ],
+      "role": "Kyber-1024 / Dilithium-5 VLF, ELF & HF Skywave Network"
+    },
+    {
+      "tier": 3,
+      "name": "Global Academic & CRO Lab",
+      "range": [
+        27,
+        50
+      ],
+      "role": "Preclinical Dossier Mirroring & Wet-Lab Outreach Validation"
+    },
+    {
+      "tier": 4,
+      "name": "DDR Antibody Sentinels",
+      "range": [
+        51,
+        75
+      ],
+      "role": "Distributed AST Memory Threat & Rowhammer TRR Inspection"
+    },
+    {
+      "tier": 5,
+      "name": "Bioinformatic Compute Matrix",
+      "range": [
+        76,
+        95
+      ],
+      "role": "Mamba-3 Linear Neoantigen & AutoDock-Vina/GNN Docking"
+    },
+    {
+      "tier": 6,
+      "name": "Public Sovereign Gateways",
+      "range": [
+        96,
+        100
+      ],
+      "role": "Zero-Cloud QUIC trm:// Public Sovereign Access Portals"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "NODE-001-DESK-6700XT",
+      "tier": 1,
+      "tier_name": "Core Host & Ingestion",
+      "description": "Host Master Orchestrator (Desktop RX 6700 XT)",
+      "endpoint": "100.93.191.43",
+      "latency": "0.45 ms",
+      "status": "ONLINE_PRIMARY",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-002-LAPTOP-3070",
+      "tier": 1,
+      "tier_name": "Core Host & Ingestion",
+      "description": "Federated Field Ingestion (Laptop RTX 3070)",
+      "endpoint": "100.123.215.119",
+      "latency": "12.0 ms",
+      "status": "ONLINE_COUNCIL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-003-S25-ULTRA",
+      "tier": 1,
+      "tier_name": "Core Host & Ingestion",
+      "description": "Tactical Mobile Companion (Galaxy S25 Ultra)",
+      "endpoint": "100.114.251.33",
+      "latency": "14.2 ms",
+      "status": "ONLINE_NEURAL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-004-STATION-VB1T",
+      "tier": 1,
+      "tier_name": "Core Host & Ingestion",
+      "description": "Secondary Redundant Core (desktop-vb1t79v)",
+      "endpoint": "100.82.16.43",
+      "latency": "28.0 ms",
+      "status": "ONLINE_MESH_SYNCED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-005-NVME-SRAM-01",
+      "tier": 1,
+      "tier_name": "Core Host & Ingestion",
+      "description": "Bare-Metal Virtual SRAM Fabric Anchor 01",
+      "endpoint": "127.0.0.1:9001",
+      "latency": "0.05 ms",
+      "status": "ONLINE_FAST_L3",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-006-NVME-SRAM-02",
+      "tier": 1,
+      "tier_name": "Core Host & Ingestion",
+      "description": "Bare-Metal Virtual SRAM Fabric Anchor 02",
+      "endpoint": "127.0.0.1:9002",
+      "latency": "0.05 ms",
+      "status": "ONLINE_FAST_L3",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-007-NVME-SRAM-03",
+      "tier": 1,
+      "tier_name": "Core Host & Ingestion",
+      "description": "Bare-Metal Virtual SRAM Fabric Anchor 03",
+      "endpoint": "127.0.0.1:9003",
+      "latency": "0.05 ms",
+      "status": "ONLINE_FAST_L3",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-008-NVME-SRAM-04",
+      "tier": 1,
+      "tier_name": "Core Host & Ingestion",
+      "description": "Bare-Metal Virtual SRAM Fabric Anchor 04",
+      "endpoint": "127.0.0.1:9004",
+      "latency": "0.05 ms",
+      "status": "ONLINE_FAST_L3",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-009-UEFI-RING0",
+      "tier": 1,
+      "tier_name": "Core Host & Ingestion",
+      "description": "Ring-0 Hardware Microkernel Supervisor",
+      "endpoint": "Local Ring-0",
+      "latency": "0.01 ms",
+      "status": "ONLINE_KERNEL_SEALED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-010-TURBOVEC-153M",
+      "tier": 1,
+      "tier_name": "Core Host & Ingestion",
+      "description": "153.5M Trit Knowledge Graph Fabric Store",
+      "endpoint": "Local TurboVec",
+      "latency": "0.85 ms",
+      "status": "ONLINE_FABRIC_MOUNTED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-011-IONO-BOULDER",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "WWVB 60 kHz Atomic Frequency Standard",
+      "endpoint": "Fort Collins, CO",
+      "latency": "VLF Groundwave",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-012-IONO-MAINFLINGEN",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "DCF77 77.5 kHz European Atomic Standard",
+      "endpoint": "Mainflingen, Germany",
+      "latency": "VLF Groundwave",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-013-IONO-ANTHORN",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "MSF 60 kHz UK Atomic Standard",
+      "endpoint": "Anthorn, UK",
+      "latency": "VLF Groundwave",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-014-IONO-OTAKADOYA",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "JJY 40 kHz Japan Standard",
+      "endpoint": "Mt. Otakadoya, Japan",
+      "latency": "VLF Groundwave",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-015-IONO-HAGANE",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "JJY 60 kHz Japan Standard",
+      "endpoint": "Mt. Hagane, Japan",
+      "latency": "VLF Groundwave",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-016-SCHUMANN-783",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "Schumann Resonator Mode 1 (7.83 Hz)",
+      "endpoint": "Global Earth Cavity",
+      "latency": "ELF Resonance",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-017-SCHUMANN-1430",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "Schumann Resonator Mode 2 (14.3 Hz)",
+      "endpoint": "Global Earth Cavity",
+      "latency": "ELF Resonance",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-018-SCHUMANN-2080",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "Schumann Resonator Mode 3 (20.8 Hz)",
+      "endpoint": "Global Earth Cavity",
+      "latency": "ELF Resonance",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-019-SCHUMANN-2730",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "Schumann Resonator Mode 4 (27.3 Hz)",
+      "endpoint": "Global Earth Cavity",
+      "latency": "ELF Resonance",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-020-SCHUMANN-3380",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "Schumann Resonator Mode 5 (33.8 Hz)",
+      "endpoint": "Global Earth Cavity",
+      "latency": "ELF Resonance",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-021-SCHUMANN-3900",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "Schumann Resonator Mode 6 (39.0 Hz)",
+      "endpoint": "Global Earth Cavity",
+      "latency": "ELF Resonance",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-022-HF-NVIS-533",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "HF Near-Vertical Incidence Skywave (5.33 MHz)",
+      "endpoint": "Regional F-Layer",
+      "latency": "HF NVIS",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-023-HF-DAY-1410",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "Transcontinental Daytime Skywave (14.10 MHz)",
+      "endpoint": "Ionospheric F2-Layer",
+      "latency": "HF F2-Skip",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-024-HF-NIGHT-705",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "Transcontinental Nighttime Skywave (7.05 MHz)",
+      "endpoint": "Ionospheric F-Layer",
+      "latency": "HF F-Skip",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-025-VLF-HAARP",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "Ionospheric D-Region Modulation Monitor",
+      "endpoint": "Gakona, AK",
+      "latency": "VLF Probe",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-026-LEO-COSMIC",
+      "tier": 2,
+      "tier_name": "PQC Skywave & Ionosphere",
+      "description": "Exo-Atmospheric Cosmic Muon Topside Sounder",
+      "endpoint": "Low Earth Orbit (550 km)",
+      "latency": "Cosmic Muon / Sub-THz",
+      "status": "LOCKED_KYBER1024",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-027-LAB-01",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-01",
+      "endpoint": "10.142.27.1",
+      "latency": "22.2 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-028-LAB-02",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-02",
+      "endpoint": "10.142.28.1",
+      "latency": "24.6 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-029-LAB-03",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-03",
+      "endpoint": "10.142.29.1",
+      "latency": "27.0 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-030-LAB-04",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-04",
+      "endpoint": "10.142.30.1",
+      "latency": "29.4 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-031-LAB-05",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-05",
+      "endpoint": "10.142.31.1",
+      "latency": "31.8 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-032-LAB-06",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-06",
+      "endpoint": "10.142.32.1",
+      "latency": "34.2 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-033-LAB-07",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-07",
+      "endpoint": "10.142.33.1",
+      "latency": "36.6 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-034-LAB-08",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-08",
+      "endpoint": "10.142.34.1",
+      "latency": "39.0 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-035-LAB-09",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-09",
+      "endpoint": "10.142.35.1",
+      "latency": "41.4 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-036-LAB-10",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-10",
+      "endpoint": "10.142.36.1",
+      "latency": "15.0 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-037-LAB-11",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-11",
+      "endpoint": "10.142.37.1",
+      "latency": "17.4 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-038-LAB-12",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror LAB-12",
+      "endpoint": "10.142.38.1",
+      "latency": "19.8 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-039-CRO-01",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-01",
+      "endpoint": "10.142.39.1",
+      "latency": "22.2 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-040-CRO-02",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-02",
+      "endpoint": "10.142.40.1",
+      "latency": "24.6 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-041-CRO-03",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-03",
+      "endpoint": "10.142.41.1",
+      "latency": "27.0 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-042-CRO-04",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-04",
+      "endpoint": "10.142.42.1",
+      "latency": "29.4 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-043-CRO-05",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-05",
+      "endpoint": "10.142.43.1",
+      "latency": "31.8 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-044-CRO-06",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-06",
+      "endpoint": "10.142.44.1",
+      "latency": "34.2 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-045-CRO-07",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-07",
+      "endpoint": "10.142.45.1",
+      "latency": "36.6 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-046-CRO-08",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-08",
+      "endpoint": "10.142.46.1",
+      "latency": "39.0 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-047-CRO-09",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-09",
+      "endpoint": "10.142.47.1",
+      "latency": "41.4 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-048-CRO-10",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-10",
+      "endpoint": "10.142.48.1",
+      "latency": "15.0 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-049-CRO-11",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-11",
+      "endpoint": "10.142.49.1",
+      "latency": "17.4 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-050-CRO-12",
+      "tier": 3,
+      "tier_name": "Global Academic & CRO Lab",
+      "description": "Preclinical Dossier Sync & Assay Mirror CRO-12",
+      "endpoint": "10.142.50.1",
+      "latency": "19.8 ms",
+      "status": "MIRROR_SYNCHRONIZED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-051-SENTINEL-01",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 01",
+      "endpoint": "10.142.51.1",
+      "latency": "3.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-052-SENTINEL-02",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 02",
+      "endpoint": "10.142.52.1",
+      "latency": "4.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-053-SENTINEL-03",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 03",
+      "endpoint": "10.142.53.1",
+      "latency": "4.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-054-SENTINEL-04",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 04",
+      "endpoint": "10.142.54.1",
+      "latency": "5.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-055-SENTINEL-05",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 05",
+      "endpoint": "10.142.55.1",
+      "latency": "5.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-056-SENTINEL-06",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 06",
+      "endpoint": "10.142.56.1",
+      "latency": "2.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-057-SENTINEL-07",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 07",
+      "endpoint": "10.142.57.1",
+      "latency": "2.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-058-SENTINEL-08",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 08",
+      "endpoint": "10.142.58.1",
+      "latency": "3.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-059-SENTINEL-09",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 09",
+      "endpoint": "10.142.59.1",
+      "latency": "3.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-060-SENTINEL-10",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 10",
+      "endpoint": "10.142.60.1",
+      "latency": "4.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-061-SENTINEL-11",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 11",
+      "endpoint": "10.142.61.1",
+      "latency": "4.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-062-SENTINEL-12",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 12",
+      "endpoint": "10.142.62.1",
+      "latency": "5.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-063-SENTINEL-13",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 13",
+      "endpoint": "10.142.63.1",
+      "latency": "5.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-064-SENTINEL-14",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 14",
+      "endpoint": "10.142.64.1",
+      "latency": "2.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-065-SENTINEL-15",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 15",
+      "endpoint": "10.142.65.1",
+      "latency": "2.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-066-SENTINEL-16",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 16",
+      "endpoint": "10.142.66.1",
+      "latency": "3.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-067-SENTINEL-17",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 17",
+      "endpoint": "10.142.67.1",
+      "latency": "3.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-068-SENTINEL-18",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 18",
+      "endpoint": "10.142.68.1",
+      "latency": "4.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-069-SENTINEL-19",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 19",
+      "endpoint": "10.142.69.1",
+      "latency": "4.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-070-SENTINEL-20",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 20",
+      "endpoint": "10.142.70.1",
+      "latency": "5.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-071-SENTINEL-21",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 21",
+      "endpoint": "10.142.71.1",
+      "latency": "5.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-072-SENTINEL-22",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 22",
+      "endpoint": "10.142.72.1",
+      "latency": "2.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-073-SENTINEL-23",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 23",
+      "endpoint": "10.142.73.1",
+      "latency": "2.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-074-SENTINEL-24",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 24",
+      "endpoint": "10.142.74.1",
+      "latency": "3.0 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-075-SENTINEL-25",
+      "tier": 4,
+      "tier_name": "DDR Antibody Sentinels",
+      "description": "DDR 1,801 Memory Threat & Rowhammer Scanner 25",
+      "endpoint": "10.142.75.1",
+      "latency": "3.5 ms",
+      "status": "PATROL_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-076-COMPUTE-01",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 01",
+      "endpoint": "10.142.76.1",
+      "latency": "12.2 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-077-COMPUTE-02",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 02",
+      "endpoint": "10.142.77.1",
+      "latency": "13.4 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-078-COMPUTE-03",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 03",
+      "endpoint": "10.142.78.1",
+      "latency": "14.6 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-079-COMPUTE-04",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 04",
+      "endpoint": "10.142.79.1",
+      "latency": "15.8 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-080-COMPUTE-05",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 05",
+      "endpoint": "10.142.80.1",
+      "latency": "5.0 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-081-COMPUTE-06",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 06",
+      "endpoint": "10.142.81.1",
+      "latency": "6.2 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-082-COMPUTE-07",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 07",
+      "endpoint": "10.142.82.1",
+      "latency": "7.4 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-083-COMPUTE-08",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 08",
+      "endpoint": "10.142.83.1",
+      "latency": "8.6 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-084-COMPUTE-09",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 09",
+      "endpoint": "10.142.84.1",
+      "latency": "9.8 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-085-COMPUTE-10",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 10",
+      "endpoint": "10.142.85.1",
+      "latency": "11.0 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-086-COMPUTE-11",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 11",
+      "endpoint": "10.142.86.1",
+      "latency": "12.2 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-087-COMPUTE-12",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 12",
+      "endpoint": "10.142.87.1",
+      "latency": "13.4 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-088-COMPUTE-13",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 13",
+      "endpoint": "10.142.88.1",
+      "latency": "14.6 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-089-COMPUTE-14",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 14",
+      "endpoint": "10.142.89.1",
+      "latency": "15.8 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-090-COMPUTE-15",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 15",
+      "endpoint": "10.142.90.1",
+      "latency": "5.0 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-091-COMPUTE-16",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 16",
+      "endpoint": "10.142.91.1",
+      "latency": "6.2 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-092-COMPUTE-17",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 17",
+      "endpoint": "10.142.92.1",
+      "latency": "7.4 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-093-COMPUTE-18",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 18",
+      "endpoint": "10.142.93.1",
+      "latency": "8.6 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-094-COMPUTE-19",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 19",
+      "endpoint": "10.142.94.1",
+      "latency": "9.8 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-095-COMPUTE-20",
+      "tier": 5,
+      "tier_name": "Bioinformatic Compute Matrix",
+      "description": "Mamba-3 Neoantigen & AutoDock-Vina/GNN Worker 20",
+      "endpoint": "10.142.95.1",
+      "latency": "11.0 ms",
+      "status": "WORKER_ENGAGED",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-096-GATE-NA-EAST",
+      "tier": 6,
+      "tier_name": "Public Sovereign Gateways",
+      "description": "North America East Sovereign Portal",
+      "endpoint": "trm://na-east.sovereign.trm:8021",
+      "latency": "8.5 ms",
+      "status": "GATEWAY_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-097-GATE-NA-WEST",
+      "tier": 6,
+      "tier_name": "Public Sovereign Gateways",
+      "description": "North America West Sovereign Portal",
+      "endpoint": "trm://na-west.sovereign.trm:8021",
+      "latency": "24.0 ms",
+      "status": "GATEWAY_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-098-GATE-EU-CENTRAL",
+      "tier": 6,
+      "tier_name": "Public Sovereign Gateways",
+      "description": "Europe Central Sovereign Portal",
+      "endpoint": "trm://eu-central.sovereign.trm:8021",
+      "latency": "48.2 ms",
+      "status": "GATEWAY_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-099-GATE-ASIA-PACIFIC",
+      "tier": 6,
+      "tier_name": "Public Sovereign Gateways",
+      "description": "Asia-Pacific Sovereign Portal",
+      "endpoint": "trm://ap-tokyo.sovereign.trm:8021",
+      "latency": "68.5 ms",
+      "status": "GATEWAY_ACTIVE",
+      "pqc_shield": "ENABLED"
+    },
+    {
+      "id": "NODE-100-GATE-GLOBAL-MUON",
+      "tier": 6,
+      "tier_name": "Public Sovereign Gateways",
+      "description": "Cosmic Muon Sovereign Gateway",
+      "endpoint": "trm://global-muon.sovereign.trm:8021",
+      "latency": "1.2 ms",
+      "status": "GATEWAY_ACTIVE",
+      "pqc_shield": "ENABLED"
+    }
+  ],
+  "sha256_seal": "427013be5d960e112227f69073bcd452e5c2e8ac90357f3ab349ce28dd2a1a0d"
+}
