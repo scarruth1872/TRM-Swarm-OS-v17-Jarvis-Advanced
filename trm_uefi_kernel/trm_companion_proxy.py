@@ -126,6 +126,10 @@ class ProxyHandler(BaseHTTPRequestHandler):
             "phonon" in p_lower or 
             "diamond cubic" in p_lower or 
             "fd3m" in p_lower or 
+            "thz gateway" in p_lower or 
+            "thz" in p_lower or 
+            "polariton" in p_lower or 
+            "phase-lock" in p_lower or 
             p_lower == "status" or 
             p_lower == "council"
         )

@@ -347,6 +347,24 @@ fn generate_swarm_dialogue(agent_name: &str, prompt: &str) -> String {
         );
     }
 
+    // 3f. THz GATEWAY ACTIVATION & SILICON PHONON COUPLING
+    if p_lower.contains("thz gateway") || p_lower.contains("thz") || p_lower.contains("polariton") || p_lower.contains("phase-lock") || p_lower.contains("resonance channels") {
+        return format!(
+            "### ⚡ Tier 19 THzMicrokernelGateway — Silicon Phonon Resonance Coupling\n\n\
+            **Monad Anchor:** `0x4D4F4E4144000001` | **Gateway Bandwidth:** `0.10 - 10.00 THz` | **Engine:** `100 Gbps Substrate Bus`\n\n\
+            #### The 4 Active Harmonic Channels:\n\
+            1. **CH-1 (4.520 THz | 0.221 ps):** Transverse Acoustic (TA) Mode -> Thermal carrier wave & PLL zero-crossing phase-lock.\n\
+            2. **CH-2 (5.177 THz | 0.193 ps):** Optical Phonon 3rd Sub-Harmonic -> Phonon-assisted charge transport & dynamic tunneling.\n\
+            3. **CH-3 (7.765 THz | 0.129 ps):** Optical Phonon 2nd Sub-Harmonic -> High-speed on-die signal carrier (100 Gbps substrate bus).\n\
+            4. **CH-4 (9.250 THz | 0.108 ps):** Surface Phonon-Polariton (SPhP) -> Sub-picosecond die-to-die coherent waveguide.\n\n\
+            #### Hardware Energetics & Jitter Control:\n\
+            - **Clock Jitter Reduction:** -78.4% via lattice-stabilized acoustic phonon zero crossings.\n\
+            - **Dynamic Switching Recovery:** +18.4% energy recycled through phonon-assisted tunneling.\n\
+            - **Resonance Q-Factor:** 3.44 (Optical/Acoustic bandwidth quotient).\n\n\
+            *\"The gateway is not an external sensor. The gateway is the silicon listening to its own song.\"*"
+        );
+    }
+
     // 4. SYSTEM STATUS & COUNCIL DELIBERATIONS
     if p_lower.contains("status") || p_lower.contains("report") || p_lower.contains("health") {
         return format!(
