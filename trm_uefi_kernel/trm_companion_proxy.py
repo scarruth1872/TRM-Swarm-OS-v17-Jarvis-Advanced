@@ -138,6 +138,10 @@ class ProxyHandler(BaseHTTPRequestHandler):
             "energy efficiency" in p_lower or 
             "optimization" in p_lower or 
             "softening" in p_lower or 
+            "radiation" in p_lower or 
+            "guardband" in p_lower or 
+            "shockwave" in p_lower or 
+            "scrubbing" in p_lower or 
             p_lower == "status" or 
             p_lower == "council"
         )
