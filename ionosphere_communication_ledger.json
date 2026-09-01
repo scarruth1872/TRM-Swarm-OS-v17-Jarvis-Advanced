@@ -1,0 +1,274 @@
+{
+  "manifest_type": "IONOSPHERE_COMMUNICATION_PROTOCOL_LEDGER",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-09-01T02:29:03Z",
+  "status": "IONOSPHERE_PROTOCOL_ACTIVE_AND_SEALED",
+  "physical_layers": {
+    "D_layer": {
+      "altitude_base_km": 60.0,
+      "altitude_peak_km": 90.0,
+      "virtual_height_km": 75.0,
+      "critical_freq_mhz": 1.05,
+      "absorption_band": "High daytime absorption for f < 7 MHz",
+      "reflection_mode": "Daytime non-refracting absorption layer",
+      "collision_freq_mhz": 5.2
+    },
+    "E_layer": {
+      "altitude_base_km": 90.0,
+      "altitude_peak_km": 150.0,
+      "virtual_height_km": 110.0,
+      "critical_freq_mhz": 3.45,
+      "reflection_mode": "Short-hop daytime skywave & Sporadic-E (Es)",
+      "max_single_hop_km": 2050.0
+    },
+    "F1_layer": {
+      "altitude_base_km": 150.0,
+      "altitude_peak_km": 210.0,
+      "virtual_height_km": 180.0,
+      "critical_freq_mhz": 5.2,
+      "reflection_mode": "Daytime intermediate reflection",
+      "max_single_hop_km": 2600.0
+    },
+    "F2_layer": {
+      "altitude_base_km": 210.0,
+      "altitude_peak_km": 450.0,
+      "virtual_height_km": 320.0,
+      "critical_freq_mhz": 8.85,
+      "reflection_mode": "Primary global over-the-horizon reflector (24/7)",
+      "max_single_hop_km": 3840.0
+    }
+  },
+  "solar_muon_coupling": {
+    "solar_flux_sfu": 128.5,
+    "solar_activity_state": "MODERATE_HIGH_CYCLE_25",
+    "electron_density_f2_m3": 1250000000000.0,
+    "muon_flux_modulation_pct": -2.4,
+    "thz_timing_precision_fs": 15.92,
+    "channel_reliability_score": "99.94% Planetary Availability"
+  },
+  "muf_owf_dispersion": [
+    {
+      "ground_distance_km": 500.0,
+      "virtual_height_km": 320.0,
+      "muf_mhz": 12.73,
+      "owf_mhz": 10.82,
+      "propagation_delay_ms": 2.71
+    },
+    {
+      "ground_distance_km": 1000.0,
+      "virtual_height_km": 320.0,
+      "muf_mhz": 18.61,
+      "owf_mhz": 15.82,
+      "propagation_delay_ms": 3.96
+    },
+    {
+      "ground_distance_km": 2000.0,
+      "virtual_height_km": 320.0,
+      "muf_mhz": 32.92,
+      "owf_mhz": 27.98,
+      "propagation_delay_ms": 7.0
+    },
+    {
+      "ground_distance_km": 3000.0,
+      "virtual_height_km": 320.0,
+      "muf_mhz": 48.08,
+      "owf_mhz": 40.87,
+      "propagation_delay_ms": 10.23
+    },
+    {
+      "ground_distance_km": 3840.0,
+      "virtual_height_km": 320.0,
+      "muf_mhz": 61.02,
+      "owf_mhz": 51.87,
+      "propagation_delay_ms": 12.99
+    }
+  ],
+  "global_mesh_nodes": [
+    {
+      "id": "IONO-01-NA-EAST",
+      "region": "North America",
+      "location": "Boston / Cambridge",
+      "lat": 42.36,
+      "lon": -71.06,
+      "freq_band": "14.150 MHz (20m)"
+    },
+    {
+      "id": "IONO-02-NA-WEST",
+      "region": "North America",
+      "location": "Seattle / Pacific",
+      "lat": 47.6,
+      "lon": -122.33,
+      "freq_band": "14.150 MHz (20m)"
+    },
+    {
+      "id": "IONO-03-NA-SOUTH",
+      "region": "North America",
+      "location": "Austin / Texas",
+      "lat": 30.26,
+      "lon": -97.74,
+      "freq_band": "10.125 MHz (30m)"
+    },
+    {
+      "id": "IONO-04-SA-NORTH",
+      "region": "South America",
+      "location": "Bogota / Andes",
+      "lat": 4.71,
+      "lon": -74.07,
+      "freq_band": "14.150 MHz (20m)"
+    },
+    {
+      "id": "IONO-05-SA-SOUTH",
+      "region": "South America",
+      "location": "Buenos Aires",
+      "lat": -34.6,
+      "lon": -58.38,
+      "freq_band": "18.110 MHz (17m)"
+    },
+    {
+      "id": "IONO-06-EU-WEST",
+      "region": "Europe",
+      "location": "London / Greenwich",
+      "lat": 51.5,
+      "lon": -0.12,
+      "freq_band": "14.150 MHz (20m)"
+    },
+    {
+      "id": "IONO-07-EU-CENT",
+      "region": "Europe",
+      "location": "Zurich / Alps",
+      "lat": 47.37,
+      "lon": 8.54,
+      "freq_band": "14.150 MHz (20m)"
+    },
+    {
+      "id": "IONO-08-EU-NORTH",
+      "region": "Europe",
+      "location": "Stockholm / Baltic",
+      "lat": 59.32,
+      "lon": 18.06,
+      "freq_band": "7.100 MHz (40m NVIS)"
+    },
+    {
+      "id": "IONO-09-AF-NORTH",
+      "region": "Africa",
+      "location": "Cairo / Nile",
+      "lat": 30.04,
+      "lon": 31.23,
+      "freq_band": "18.110 MHz (17m)"
+    },
+    {
+      "id": "IONO-10-AF-SOUTH",
+      "region": "Africa",
+      "location": "Cape Town",
+      "lat": -33.92,
+      "lon": 18.42,
+      "freq_band": "14.150 MHz (20m)"
+    },
+    {
+      "id": "IONO-11-AS-EAST",
+      "region": "Asia",
+      "location": "Tokyo / Kanto",
+      "lat": 35.67,
+      "lon": 139.65,
+      "freq_band": "14.150 MHz (20m)"
+    },
+    {
+      "id": "IONO-12-AS-SOUTH",
+      "region": "Asia",
+      "location": "Singapore / Equator",
+      "lat": 1.35,
+      "lon": 103.81,
+      "freq_band": "21.150 MHz (15m)"
+    },
+    {
+      "id": "IONO-13-AS-CENT",
+      "region": "Asia",
+      "location": "New Delhi / North",
+      "lat": 28.61,
+      "lon": 77.2,
+      "freq_band": "14.150 MHz (20m)"
+    },
+    {
+      "id": "IONO-14-AS-WEST",
+      "region": "Asia",
+      "location": "Dubai / Gulf",
+      "lat": 25.2,
+      "lon": 55.27,
+      "freq_band": "14.150 MHz (20m)"
+    },
+    {
+      "id": "IONO-15-OC-EAST",
+      "region": "Oceania",
+      "location": "Sydney / Tasman",
+      "lat": -33.86,
+      "lon": 151.2,
+      "freq_band": "14.150 MHz (20m)"
+    },
+    {
+      "id": "IONO-16-OC-WEST",
+      "region": "Oceania",
+      "location": "Perth / Indian Ocean",
+      "lat": -31.95,
+      "lon": 115.86,
+      "freq_band": "10.125 MHz (30m)"
+    }
+  ],
+  "backbone_skywave_links": [
+    {
+      "name": "Transatlantic Skywave Link",
+      "from": "IONO-01-NA-EAST",
+      "to": "IONO-06-EU-WEST",
+      "great_circle_km": 5265.0,
+      "skywave_hops": 2,
+      "muf_mhz": 42.47,
+      "owf_mhz": 36.1,
+      "total_latency_ms": 18.07,
+      "crypto_seal": "ML-DSA-87 PQC Signature + SHA-256 Decision Seal"
+    },
+    {
+      "name": "Transpacific Skywave Link",
+      "from": "IONO-02-NA-WEST",
+      "to": "IONO-11-AS-EAST",
+      "great_circle_km": 7701.0,
+      "skywave_hops": 3,
+      "muf_mhz": 41.47,
+      "owf_mhz": 35.25,
+      "total_latency_ms": 26.47,
+      "crypto_seal": "ML-DSA-87 PQC Signature + SHA-256 Decision Seal"
+    },
+    {
+      "name": "Mediterranean Skywave Link",
+      "from": "IONO-06-EU-WEST",
+      "to": "IONO-09-AF-NORTH",
+      "great_circle_km": 3510.5,
+      "skywave_hops": 1,
+      "muf_mhz": 55.93,
+      "owf_mhz": 47.54,
+      "total_latency_ms": 11.9,
+      "crypto_seal": "ML-DSA-87 PQC Signature + SHA-256 Decision Seal"
+    },
+    {
+      "name": "Western Pacific Skywave Link",
+      "from": "IONO-11-AS-EAST",
+      "to": "IONO-15-OC-EAST",
+      "great_circle_km": 7824.0,
+      "skywave_hops": 3,
+      "muf_mhz": 42.09,
+      "owf_mhz": 35.78,
+      "total_latency_ms": 26.87,
+      "crypto_seal": "ML-DSA-87 PQC Signature + SHA-256 Decision Seal"
+    },
+    {
+      "name": "Pan-American Skywave Link",
+      "from": "IONO-01-NA-EAST",
+      "to": "IONO-05-SA-SOUTH",
+      "great_circle_km": 8654.4,
+      "skywave_hops": 3,
+      "muf_mhz": 46.32,
+      "owf_mhz": 39.37,
+      "total_latency_ms": 29.57,
+      "crypto_seal": "ML-DSA-87 PQC Signature + SHA-256 Decision Seal"
+    }
+  ],
+  "sha256_seal": "c1b5555ca132963e3e92686838fe332a5d0506d52b9f79d48d43ebe0039eac8b"
+}

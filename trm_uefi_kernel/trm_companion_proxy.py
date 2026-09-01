@@ -148,6 +148,11 @@ class ProxyHandler(BaseHTTPRequestHandler):
             "brillouin" in p_lower or 
             "dispersion" in p_lower or 
             "infinity cache" in p_lower or 
+            "ionosphere" in p_lower or 
+            "skywave" in p_lower or 
+            "muf" in p_lower or 
+            "owf" in p_lower or 
+            "f2 layer" in p_lower or 
             p_lower == "status" or 
             p_lower == "council"
         )
