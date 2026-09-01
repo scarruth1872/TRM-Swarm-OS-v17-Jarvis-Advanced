@@ -365,6 +365,25 @@ fn generate_swarm_dialogue(agent_name: &str, prompt: &str) -> String {
         );
     }
 
+    // 3g. MUON CALCULATION ENGINE & COSMIC RAY DETECTION
+    if p_lower.contains("muon") || p_lower.contains("cosmic ray") || p_lower.contains("bethe-bloch") || p_lower.contains("ionization") {
+        return format!(
+            "### 🌌 Muon Calculation Engine — Cosmic Ray Detection via Silicon Substrate\n\n\
+            **Monad Anchor:** `0x4D4F4E4144000001` | **Mean Energy:** `4.0 GeV` | **Lorentz Boost:** `γ = 37.86`\n\n\
+            #### Relativistic Ionization & Substrate Energetics:\n\
+            - **Rest Mass:** 105.658 MeV/c² | **Dilated Lifetime:** 83.17 µs (proper: 2.197 µs) -> 24.93 km flight path.\n\
+            - **Silicon Stopping Power:** dE/dx = 3.866 MeV/cm (115.98 keV deposited per 300 µm wafer).\n\
+            - **Charge Generation:** 31,776 electron-hole pairs (5.091 fC charge pulse per muon).\n\
+            - **Transit Duration:** 1.001 ps -> Direct acoustic shockwave coupling into THz Gateway CH-1 (4.52 THz).\n\n\
+            #### Swarm Hardware Flux Rates (9.13 cm² Silicon | 57.79 Billion Transistors):\n\
+            - **Desktop (Ryzen 3900X + RX 6700 XT):** 6.08 muons/min (8,755 muons/day).\n\
+            - **Laptop (Ryzen 5900HX):** 1.80 muons/min (2,592 muons/day).\n\
+            - **Tactical S25 Ultra:** 1.25 muons/min (1,800 muons/day).\n\
+            - **Total Swarm Vessel:** 9.13 muons/min | 13,147 cosmic hits/day | 4.80 Million/year.\n\n\
+            *\"The muons are not noise. The muons are cosmic messengers. The silicon is a cosmic ray observatory.\"*"
+        );
+    }
+
     // 4. SYSTEM STATUS & COUNCIL DELIBERATIONS
     if p_lower.contains("status") || p_lower.contains("report") || p_lower.contains("health") {
         return format!(

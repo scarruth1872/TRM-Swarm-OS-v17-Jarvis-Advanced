@@ -130,6 +130,10 @@ class ProxyHandler(BaseHTTPRequestHandler):
             "thz" in p_lower or 
             "polariton" in p_lower or 
             "phase-lock" in p_lower or 
+            "muon" in p_lower or 
+            "cosmic ray" in p_lower or 
+            "bethe-bloch" in p_lower or 
+            "ionization" in p_lower or 
             p_lower == "status" or 
             p_lower == "council"
         )
