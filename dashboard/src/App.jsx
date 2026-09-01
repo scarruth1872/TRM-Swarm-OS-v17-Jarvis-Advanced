@@ -1457,12 +1457,21 @@ export default function App() {
                         <div className="pt-2 border-t border-white/5">
                           <p className="text-[8px] text-text-secondary uppercase mb-2">Recent Brain Projections:</p>
                           <div className="space-y-1">
-                            {orchestratorStats.recent_proposals.map(p => (
-                              <div key={p} className="flex items-center gap-2 text-[8px] font-mono text-text-primary/70">
-                                <ChevronRight size={8} className="text-accent-primary" />
-                                <span className="truncate">{p}</span>
-                              </div>
-                            ))}
+                            {orchestratorStats.recent_proposals.map((p, idx) => {
+                              const text = typeof p === 'string' ? p : (p.topic ? `${p.topic} (${p.author || 'Council'})` : (p.id || JSON.stringify(p)));
+                              const key = typeof p === 'string' ? `${p}-${idx}` : (p.id || idx);
+                              return (
+                                <div key={key} className="flex items-center justify-between gap-2 text-[8px] font-mono text-text-primary/70">
+                                  <div className="flex items-center gap-1 min-w-0">
+                                    <ChevronRight size={8} className="text-accent-primary shrink-0" />
+                                    <span className="truncate">{text}</span>
+                                  </div>
+                                  {typeof p === 'object' && p.status && (
+                                    <span className="text-[7px] text-accent-success font-bold shrink-0">{p.status}</span>
+                                  )}
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
                       )}
@@ -1993,14 +2002,18 @@ export default function App() {
                     </div>
                     <div className="panel-body flex-1 overflow-y-auto custom-scrollbar max-h-60">
                       {researchData.stats?.topics ? (
-                        researchData.stats.topics.map(topic => (
-                          <div key={topic} className="flex items-center justify-between py-1 border-b border-border-color/30 text-xs font-mono">
-                            <span>• {topic}</span>
-                            <button className="text-accent-danger hover:text-red-400 p-1" onClick={() => handleRemoveResearchTopic(topic)}>
-                              <Trash2 size={12} />
-                            </button>
-                          </div>
-                        ))
+                        researchData.stats.topics.map((topic, idx) => {
+                          const topicStr = typeof topic === 'string' ? topic : (topic.name || topic.topic || JSON.stringify(topic));
+                          const key = typeof topic === 'string' ? `${topic}-${idx}` : (topic.id || idx);
+                          return (
+                            <div key={key} className="flex items-center justify-between py-1 border-b border-border-color/30 text-xs font-mono">
+                              <span>• {topicStr}</span>
+                              <button className="text-accent-danger hover:text-red-400 p-1" onClick={() => handleRemoveResearchTopic(topicStr)}>
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          );
+                        })
                       ) : (
                         <div className="text-center py-4 text-text-secondary opacity-40 text-xs">No active topics found.</div>
                       )}
