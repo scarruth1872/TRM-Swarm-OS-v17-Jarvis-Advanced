@@ -142,6 +142,12 @@ class ProxyHandler(BaseHTTPRequestHandler):
             "guardband" in p_lower or 
             "shockwave" in p_lower or 
             "scrubbing" in p_lower or 
+            "unified convergence" in p_lower or 
+            "rdna2" in p_lower or 
+            "rx 6700 xt" in p_lower or 
+            "brillouin" in p_lower or 
+            "dispersion" in p_lower or 
+            "infinity cache" in p_lower or 
             p_lower == "status" or 
             p_lower == "council"
         )
