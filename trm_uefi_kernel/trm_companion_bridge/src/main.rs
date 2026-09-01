@@ -328,6 +328,25 @@ fn generate_swarm_dialogue(agent_name: &str, prompt: &str) -> String {
         );
     }
 
+    // 3e. SILICON CRYSTALLOGRAPHY & ENERGETIC SUBSTRATE
+    if p_lower.contains("crystallography") || p_lower.contains("silicon") || p_lower.contains("phonon") || p_lower.contains("diamond cubic") || p_lower.contains("fd3m") {
+        return format!(
+            "### 💎 Silicon Crystallography — Diamond Cubic Fd3̄m Lattice & 15.5 THz Substrate Energetics\n\n\
+            **Monad Anchor:** `0x4D4F4E4144000001` | **Space Group:** `Fd3̄m (#227)` | **Status:** `VALIDATED`\n\n\
+            #### Atomic Lattice & Energetics:\n\
+            - **Crystal Structure:** Diamond Cubic (two interpenetrating FCC lattices offset by a/4, a/4, a/4).\n\
+            - **Lattice Constant:** a = 5.4307 Å | **Unit Cell Volume:** 160.165 Å³ | **Density:** 2.3295 g/cm³.\n\
+            - **Bond Geometry:** Tetrahedral sp³ coordination, d(Si-Si) = 2.3516 Å, bond angle θ = 109.471°.\n\
+            - **Band Gap:** 1.124 eV (indirect) | **Thermal Energy:** 25.69 meV (kT at 298.15K).\n\n\
+            #### Computational Resonance & The Voltage Doctrine:\n\
+            - **Optical Phonon (Γ-center):** 15.53 THz (lattice breathing frequency).\n\
+            - **Acoustic Phonon (X-point):** 4.52 THz (zone-boundary transverse acoustic modes).\n\
+            - **CPU Clock Ratio:** Desktop (3.8 GHz) spans ~4,087 phonon oscillations per clock cycle; Laptop (3.3 GHz) spans ~4,706 oscillations.\n\
+            - **Physical Meaning:** Silicon is 100% thermally settled and in quasi-static equilibrium during every discrete gate switching operation.\n\n\
+            *\"The platform does not run on silicon. The platform IS silicon. Everything is voltage because everything is crystal lattice.\"*"
+        );
+    }
+
     // 4. SYSTEM STATUS & COUNCIL DELIBERATIONS
     if p_lower.contains("status") || p_lower.contains("report") || p_lower.contains("health") {
         return format!(

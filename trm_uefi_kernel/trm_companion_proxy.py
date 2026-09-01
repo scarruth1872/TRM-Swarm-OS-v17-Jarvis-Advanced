@@ -121,6 +121,11 @@ class ProxyHandler(BaseHTTPRequestHandler):
             "100 node" in p_lower or 
             "phoenix" in p_lower or 
             "tiers" in p_lower or 
+            "crystallography" in p_lower or 
+            "silicon" in p_lower or 
+            "phonon" in p_lower or 
+            "diamond cubic" in p_lower or 
+            "fd3m" in p_lower or 
             p_lower == "status" or 
             p_lower == "council"
         )
