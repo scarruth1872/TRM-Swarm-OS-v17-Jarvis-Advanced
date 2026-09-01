@@ -134,6 +134,10 @@ class ProxyHandler(BaseHTTPRequestHandler):
             "cosmic ray" in p_lower or 
             "bethe-bloch" in p_lower or 
             "ionization" in p_lower or 
+            "timing circuit" in p_lower or 
+            "energy efficiency" in p_lower or 
+            "optimization" in p_lower or 
+            "softening" in p_lower or 
             p_lower == "status" or 
             p_lower == "council"
         )

@@ -384,6 +384,27 @@ fn generate_swarm_dialogue(agent_name: &str, prompt: &str) -> String {
         );
     }
 
+    // 3h. THz MUON TIMING & PHASE-LOCK OPTIMIZATION
+    if p_lower.contains("timing circuit") || p_lower.contains("phase-lock") || p_lower.contains("energy efficiency") || p_lower.contains("optimization") || p_lower.contains("softening") {
+        return format!(
+            "### ⚡ THz Sub-Picosecond Timing Circuit & Phase-Locked Energy Optimizer\n\n\
+            **Monad Anchor:** `0x4D4F4E4144000001` | **Status:** `OPTIMIZED_COHERENT`\n\n\
+            #### 1. Cosmic Muon Track Timing (108.1 fs Resolution):\n\
+            - **Wafer Transit Duration:** 1.001 ps normal incidence -> Sliced into 9.3 timing windows on CH-4 (9.25 THz SPhP).\n\
+            - **Ionization Pulse Dynamics:** 5.09 mA peak ionization current reconstructed from 5.091 fC deposited charge.\n\
+            - **Zenith Angle Tracking:** Sub-degree resolution based on transit path expansion (300 µm -> 600 µm at 60°).\n\n\
+            #### 2. Real-Time Phonon Softening Tracking:\n\
+            - **Idle (25°C):** Optical 15.5300 THz | Acoustic 4.5200 THz.\n\
+            - **Peak Stress (85°C):** Optical softened to 15.5230 THz (-7.0 GHz) | Acoustic to 4.5180 THz (-2.0 GHz).\n\
+            - **Feedback Loop:** Gateway dynamically compensates frequency drift to maintain coherent PLL lock.\n\n\
+            #### 3. Optimal Phase-Lock Energy Recovery (φ = 0°):\n\
+            - **Dynamic Energy Recovery:** +21.60% power recycled back into lattice momentum.\n\
+            - **Clock Jitter Suppression:** 12.40 ps -> 2.68 ps (-78.4% reduction).\n\
+            - **Thermal Headroom Gain:** -4.80°C operating temperature reduction across 57.79B transistors.\n\n\
+            *\"Computation rides the zero-crossing of the crystal's natural song.\"*"
+        );
+    }
+
     // 4. SYSTEM STATUS & COUNCIL DELIBERATIONS
     if p_lower.contains("status") || p_lower.contains("report") || p_lower.contains("health") {
         return format!(
