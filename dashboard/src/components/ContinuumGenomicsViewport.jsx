@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
-const API_BASE = 'http://127.0.0.1:8021';
+const API_BASE = '';
 
 export default function ContinuumGenomicsViewport() {
   const [activeTab, setActiveTab] = useState('OVERVIEW'); // OVERVIEW, GENOMICS, STAR MATRIX, ANALYSIS, SETTINGS

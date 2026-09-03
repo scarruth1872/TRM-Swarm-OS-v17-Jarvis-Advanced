@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:8021';
+const API_BASE = '';
 
 // ─── VRAM Heat Cell ───────────────────────────────────────────────────────
 const VRAMHeatCell = ({ node, index, maxValue }) => {

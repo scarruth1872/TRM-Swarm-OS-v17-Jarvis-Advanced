@@ -31,7 +31,7 @@ export default function SpatialMesh() {
   useEffect(() => {
     const fetchTelemetry = async () => {
       try {
-        const response = await fetch('http://localhost:8021/swarm/spatial/entanglement');
+        const response = await fetch('/swarm/spatial/entanglement');
                 const data = await response.json();
                 setEntanglements(data.entanglements || []);
         
@@ -93,7 +93,7 @@ export default function SpatialMesh() {
   const handleSimulate = async () => {
     setIsSimulating(true);
     try {
-      await fetch('http://localhost:8021/swarm/spatial/simulate', { method: 'POST' });
+      await fetch('/swarm/spatial/simulate', { method: 'POST' });
     } catch (err) {
       console.error("Failed to trigger simulation", err);
     } finally {

@@ -11,7 +11,7 @@ export default function MitosisLog() {
     // Poll the Phase 12 endpoint to get biomimetic mitosis telemetry
     const fetchMitosis = async () => {
       try {
-        const response = await fetch('http://localhost:8021/swarm/spatial/mitosis');
+        const response = await fetch('/swarm/spatial/mitosis');
         const data = await response.json();
         setMitosisEvents(data.mitosis_events || []);
       } catch (err) {

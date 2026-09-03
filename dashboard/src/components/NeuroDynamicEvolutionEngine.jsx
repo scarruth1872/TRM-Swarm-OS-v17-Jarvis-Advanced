@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 
-const API_BASE = 'http://127.0.0.1:8021';
+const API_BASE = '';
 
 const EVOLUTIONARY_PRESETS = {
   sage: { name: "Cybernetic Sage", voice: "Schedar", plasticity: 0.40, depth: 0.95, empathy: 0.40, stochasticity: 0.20, color: "var(--lcars-blue)" },

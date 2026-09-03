@@ -1177,16 +1177,62 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 { "name": "TRM-ABX-082.lock", "size": "32 B", "type": "SHA-256 Lock", "status": "PRE_REGISTERED", "preview": "ESKAPE Lead 2" }
             ]
         });
+    } else if method == Method::Get && (url == "/system/resources" || url == "/system/resources/") {
+        response_json = json!({
+            "cpu_percent": 14.2,
+            "memory_percent": 28.6,
+            "vram_total_gb": 12.0,
+            "vram_used_gb": 1.12,
+            "l3_sram_kb": 32768,
+            "voltage_phi_v": 0.9115,
+            "optical_phonon_thz": 15.53,
+            "gpu_name": "AMD Radeon RX 6700 XT",
+            "status": "HEALTHY"
+        });
+
+    } else if method == Method::Get && url.starts_with("/swarm/spatial/entanglement") {
+        response_json = json!({
+            "entanglements": [
+                { "id": "ent-01", "source": "Archi", "target": "Shield", "coherence": 0.998, "state": "BELL_STATE_PHI_PLUS" },
+                { "id": "ent-02", "source": "Logic", "target": "Verify", "coherence": 0.995, "state": "K3_TERNARY_LOCKED" },
+                { "id": "ent-03", "source": "THzGateway", "target": "Pulse", "coherence": 0.999, "state": "PHONON_RESONANCE_LOCKED" }
+            ],
+            "status": "COHERENT"
+        });
+    } else if method == Method::Get && url.starts_with("/swarm/spatial/mitosis") {
+        response_json = json!({
+            "mitosis_events": [
+                { "timestamp": 1787406600, "parent_agent_id": "Seeker", "child_agent_id": "Seeker-Clone-01", "stress_threshold_exceeded": 0.92 }
+            ]
+        });
+    } else if method == Method::Post && url.starts_with("/swarm/spatial/simulate") {
+        response_json = json!({ "status": "SIMULATION_CYCLED", "coherence": 0.9998 });
+
     } else if method == Method::Get && (url.starts_with("/mesh") || url.starts_with("/mesh/topology")) {
+        let nodes: Vec<serde_json::Value> = AGENTS.iter().map(|a| json!({
+            "id": a.name.to_lowercase(),
+            "name": a.name,
+            "role": a.role,
+            "status": "ACTIVE",
+            "ping_ms": 0.12,
+            "vram_used": 1.12,
+            "vram_total": 12.0
+        })).collect();
+
         response_json = json!({
             "status": "ONLINE",
-            "node_count": 2,
-            "nodes": [
-                { "id": "node-1", "name": "Jarvis OS Gateway", "role": "Gateway", "status": "ACTIVE", "ping_ms": 0.12 },
-                { "id": "node-2", "name": "Antigravity Sovereign Microkernel", "role": "Kernel", "status": "ACTIVE", "ping_ms": 0.08 }
+            "node_count": nodes.len(),
+            "nodes": nodes,
+            "connections": [
+                { "from": "archi", "to": "shield", "latency_ms": 0.08 },
+                { "from": "jarvis", "to": "pulse", "latency_ms": 0.10 },
+                { "from": "logic", "to": "verify", "latency_ms": 0.07 },
+                { "from": "seeker", "to": "flow", "latency_ms": 0.11 },
+                { "from": "hermes", "to": "bridge", "latency_ms": 0.09 },
+                { "from": "thzgateway", "to": "pulse", "latency_ms": 0.06 }
             ],
             "links": [
-                { "source": "node-1", "target": "node-2", "latency_ms": 0.10, "status": "CONNECTED" }
+                { "source": "archi", "target": "shield", "latency_ms": 0.08, "status": "CONNECTED" }
             ],
             "p2p_beacon_port": 8022
         });
