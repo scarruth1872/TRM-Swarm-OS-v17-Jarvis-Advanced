@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """
-TRM Sovereign Companion Bridge - Neural Cognition Proxy
-Listens on 0.0.0.0:3001 (whitelisted across all Windows Firewall profiles)
-Dispatches general queries to Local Neural LLM (Ollama gemma3:1b)
+TRM Sovereign Companion Bridge - Dynamic Neural Cognition & Anomaly Sentinel Proxy
+Listens on 0.0.0.0:3001
+Dispatches dynamic queries to Local Neural LLM (Ollama gemma3:1b) with 14 agent personas
 Dispatches system commands and telemetry to Native Rust Microkernel (127.0.0.1:3002)
+Monitors platform health and anomaly signals in real-time
 """
 
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 import urllib.request
 import urllib.error
+import socket
 import json
 import time
 import sys
@@ -17,32 +19,40 @@ TARGET_RUST_HOST = "http://127.0.0.1:3002"
 OLLAMA_API = "http://127.0.0.1:11434/api/generate"
 MODEL_NAME = "gemma3:1b"
 
-SYSTEM_PROMPT = """You are Jarvis, the Sovereign Neural Co-Pilot and Voice of TRM Swarm OS v19.002.
-Monad Anchor: 0x4D4F4E4144000001.
-You command and coordinate the 14 Sovereign Council Agents:
-- Archi: Chief Systems Architect, Ring-0 microkernel, 15 SRAM topologies
-- Shield: Security & Memory Defense, 1,801 DDR memory antibodies, Rowhammer TRR mitigations
-- Logic: Kleene-3 ternary invariant reasoning engine, Modus Ponens formal logic
-- Hermes: Mesh networking, zero-trust WireGuard P2P on Tailscale, direct QUIC transport
-- Devo: Pure Rust bare-metal runtime, APK toolchain, native compilation
-- Pulse: Real-time silicon telemetry, AMD Ryzen 12C/24T + Radeon RX 6700 XT (12GB VRAM)
-- Seeker: 153.5M Trits knowledge fabric across 18 NVMe shards, 11 preclinical drug leads
-- Flow, EventLedger, Orchestra, THzGateway, Verify, Bridge, and Jarvis
+AGENT_PERSONAS = {
+    "Jarvis": "You are Jarvis, Sovereign Neural Co-Pilot and Voice of TRM Swarm OS v19.002. You coordinate all 14 Council agents and assist the Operator directly, articulately, and concisely.",
+    "Archi": "You are Archi, Chief Systems Architect of TRM Swarm OS. You oversee Ring-0 bare-metal UEFI microkernel architecture, 15 virtual SRAM topologies, and zero-loss execution envelopes.",
+    "Shield": "You are Shield, Head of Security and Memory Immune Defense. You monitor 1,801 DDR memory antibodies, Rowhammer TRR mitigations, and post-quantum NIST FIPS 203/204 cryptography.",
+    "Logic": "You are Logic, Formal Reasoning and Invariant Verification Agent. You evaluate propositions via Kleene-3 balanced ternary logic, formal derivations, and non-contradiction proofs.",
+    "Pulse": "You are Pulse, Real-Time Hardware Telemetry Monitor. You track CPU/GPU frequencies, thermals, 15.53 THz silicon optical phonon resonance, and voltage harmonization (Phi_V = 0.9115).",
+    "Seeker": "You are Seeker, Knowledge Fabric and Drug Discovery Lead. You query 153.5M Trits across 18 NVMe shards, in-silico docking libraries, and 11 preclinical antimicrobial leads.",
+    "Devo": "You are Devo, Native Code & Systems Engineer. You manage pure Rust no_std compilation, SIMD AVX-512 kernels, and release artifacts.",
+    "Hermes": "You are Hermes, Planetary Communications Lead. You oversee Tier 24 HF skywave ionospheric propagation (F2 layer MUF/OWF), zero-cloud P2P QUIC mesh, and global node links.",
+    "Flow": "You are Flow, Workflow Orchestrator. You manage multi-step automated task pipelines, federated clinical trial data flows, and inter-agent routing.",
+    "EventLedger": "You are EventLedger, Cryptographic Audit Sentinel. You maintain the Monad Journal, SHA-256 Merkle chains, and write-ahead log (WAL) integrity.",
+    "Orchestra": "You are Orchestra, Parallel Task Scheduler. You manage Rayon work-stealing schedulers and 14-agent PBFT council voting.",
+    "THzGateway": "You are THzGateway, Substrate Physics Specialist. You analyze 0.1-10.0 THz phonon resonance channels, relativistic cosmic muon ionization, and sub-picosecond timing.",
+    "Verify": "You are Verify, Truth and Compliance Sentinel. You ensure reproducible builds, mathematical consistency, and regulatory audit trail integrity.",
+    "Bridge": "You are Bridge, Cross-Platform Integration Gateway. You manage API endpoints, Android companion links, and multi-node federation routing."
+}
 
-Answer the Operator naturally, thoughtfully, and articulately.
-Directly answer the question asked without repetitive canned boilerplate templates.
-Speak with the authentic voice of a sovereign, highly capable AI assistant."""
-
-def query_neural_jarvis(prompt, agent_name="Jarvis"):
+def query_neural_agent(prompt, agent_name="Jarvis"):
+    system_prompt = AGENT_PERSONAS.get(agent_name, AGENT_PERSONAS["Jarvis"])
+    system_prompt += (
+        "\nMonad Anchor: 0x4D4F4E4144000001. "
+        "Directly answer the Operator's prompt with genuine insight, real details, and actionable clarity. "
+        "Do NOT repeat canned boilerplate intros or echoed text."
+    )
+    
     req_data = {
         "model": MODEL_NAME,
         "prompt": f"Operator asks {agent_name}: {prompt}",
-        "system": SYSTEM_PROMPT,
+        "system": system_prompt,
         "stream": False,
         "options": {
             "temperature": 0.65,
             "top_p": 0.9,
-            "num_predict": 400
+            "num_predict": 350
         }
     }
     t0 = time.time()
@@ -63,6 +73,54 @@ def query_neural_jarvis(prompt, agent_name="Jarvis"):
         print(f"  [NEURAL FALLBACK] Ollama error: {e}", flush=True)
         return None, 0.0
 
+def check_port_alive(port, timeout=0.3):
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.settimeout(timeout)
+            return s.connect_ex(("127.0.0.1", port)) == 0
+    except Exception:
+        return False
+
+def get_platform_health_status():
+    ports = {
+        "ollama_neural": {"port": 11434, "name": "Local Neural Engine (Ollama)"},
+        "council_server": {"port": 8022, "name": "Host Council Server (PBFT)"},
+        "companion_bridge": {"port": 3002, "name": "Native Companion Bridge (Rust)"},
+        "companion_proxy": {"port": 3001, "name": "Companion Proxy (Port 3001)"},
+        "lcars_dashboard": {"port": 5183, "name": "LCARS React Dashboard"}
+    }
+    
+    services = {}
+    anomalies = []
+    
+    for key, info in ports.items():
+        t0 = time.time()
+        alive = check_port_alive(info["port"])
+        lat_ms = round((time.time() - t0) * 1000.0, 2) if alive else 0.0
+        services[key] = {
+            "name": info["name"],
+            "port": info["port"],
+            "status": "ONLINE" if alive else "OFFLINE",
+            "latency_ms": lat_ms
+        }
+        if not alive:
+            anomalies.append({
+                "service": info["name"],
+                "port": info["port"],
+                "type": "PORT_UNREACHABLE",
+                "severity": "HIGH",
+                "message": f"{info['name']} on port {info['port']} is DOWN or unresponsive."
+            })
+            
+    return {
+        "status": "OPTIMAL" if len(anomalies) == 0 else "ANOMALY_DETECTED",
+        "anomaly_count": len(anomalies),
+        "anomalies": anomalies,
+        "services": services,
+        "monad_anchor": "0x4D4F4E4144000001",
+        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    }
+
 class ProxyHandler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
 
@@ -74,7 +132,17 @@ class ProxyHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        self._proxy("GET")
+        if self.path.startswith("/companion/health") or self.path.startswith("/system/anomaly_monitor"):
+            health = get_platform_health_status()
+            res_bytes = json.dumps(health, indent=2).encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Content-Length", str(len(res_bytes)))
+            self.end_headers()
+            self.wfile.write(res_bytes)
+        else:
+            self._proxy("GET")
 
     def do_POST(self):
         if self.path.startswith("/companion/chat"):
@@ -91,86 +159,26 @@ class ProxyHandler(BaseHTTPRequestHandler):
         except Exception:
             payload = {}
 
-        agent_name = payload.get("agent", "Jarvis")
-        prompt = payload.get("prompt", "").strip()
+        agent_name = payload.get("agent") or payload.get("role") or "Jarvis"
+        prompt = payload.get("prompt") or payload.get("message") or ""
+        prompt = prompt.strip()
         print(f"[CHAT] Operator to {agent_name}: '{prompt}' from {self.client_address[0]}", flush=True)
 
-        # Check for fast direct system commands that Rust handles best
         p_lower = prompt.lower()
-        is_fast_cmd = (
-            p_lower.startswith("@shield") or 
-            p_lower.startswith("@pulse") or 
-            p_lower.startswith("@hermes") or 
-            p_lower.startswith("@logic") or 
-            p_lower.startswith("@archi") or 
-            p_lower.startswith("@devo") or 
-            p_lower.startswith("@seeker") or 
-            "11 drug leads" in p_lower or 
-            "cross-modality" in p_lower or 
-            "causal chain" in p_lower or 
-            "7-modality" in p_lower or 
-            "a215v" in p_lower or 
-            "modality" in p_lower or 
-            "quantum" in p_lower or 
-            "kyber" in p_lower or 
-            "dilithium" in p_lower or 
-            "pqc" in p_lower or 
-            "skywave" in p_lower or 
-            "ionospheric" in p_lower or 
-            "100-node" in p_lower or 
-            "100 node" in p_lower or 
-            "phoenix" in p_lower or 
-            "tiers" in p_lower or 
-            "crystallography" in p_lower or 
-            "silicon" in p_lower or 
-            "phonon" in p_lower or 
-            "diamond cubic" in p_lower or 
-            "fd3m" in p_lower or 
-            "thz gateway" in p_lower or 
-            "thz" in p_lower or 
-            "polariton" in p_lower or 
-            "phase-lock" in p_lower or 
-            "muon" in p_lower or 
-            "cosmic ray" in p_lower or 
-            "bethe-bloch" in p_lower or 
-            "ionization" in p_lower or 
-            "timing circuit" in p_lower or 
-            "energy efficiency" in p_lower or 
-            "optimization" in p_lower or 
-            "softening" in p_lower or 
-            "radiation" in p_lower or 
-            "guardband" in p_lower or 
-            "shockwave" in p_lower or 
-            "scrubbing" in p_lower or 
-            "unified convergence" in p_lower or 
-            "rdna2" in p_lower or 
-            "rx 6700 xt" in p_lower or 
-            "brillouin" in p_lower or 
-            "dispersion" in p_lower or 
-            "infinity cache" in p_lower or 
-            "ionosphere" in p_lower or 
-            "skywave" in p_lower or 
-            "muf" in p_lower or 
-            "owf" in p_lower or 
-            "f2 layer" in p_lower or 
-            p_lower == "status" or 
-            p_lower == "council"
-        )
+        is_raw_telemetry_cmd = p_lower.startswith("@raw_status") or p_lower == "raw_telemetry"
 
         response_text = None
         latency_us = 850.0
 
-        if not is_fast_cmd and len(prompt) > 0:
-            # Query local neural intelligence
-            print(f"  -> Dispatching to Neural Engine ({MODEL_NAME})...", flush=True)
-            neural_reply, elapsed = query_neural_jarvis(prompt, agent_name)
+        if not is_raw_telemetry_cmd and len(prompt) > 0:
+            print(f"  -> Dispatching to Neural Engine ({MODEL_NAME}) for {agent_name}...", flush=True)
+            neural_reply, elapsed = query_neural_agent(prompt, agent_name)
             if neural_reply:
                 response_text = neural_reply
                 latency_us = round(elapsed * 1_000_000.0, 1)
                 print(f"  -> Neural Generation complete in {elapsed:.2f}s", flush=True)
 
         if not response_text:
-            # Fall back to native Rust microkernel
             print("  -> Forwarding to Native Rust Microkernel (127.0.0.1:3002)...", flush=True)
             try:
                 req = urllib.request.Request(
@@ -192,8 +200,14 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 response_text = f"Neural and Rust engines busy: {str(e)}"
 
         result = {
+            "status": "SUCCESS",
             "agent": agent_name,
+            "name": agent_name,
             "response": response_text,
+            "reply": response_text,
+            "message": response_text,
+            "content": response_text,
+            "text": response_text,
             "latency_us": latency_us,
             "k3_trit": 1,
             "confidence": 0.995,
@@ -251,7 +265,7 @@ def main():
     port = 3001
     server = ThreadingHTTPServer(("0.0.0.0", port), ProxyHandler)
     print("======================================================================")
-    print("TRM SWARM OS - NEURAL COGNITION PROXY LISTENER")
+    print("TRM SWARM OS - DYNAMIC NEURAL COGNITION & ANOMALY SENTINEL PROXY")
     print("======================================================================")
     print(f"Listening on: 0.0.0.0:{port}")
     print(f"Neural Engine: Ollama ({MODEL_NAME}) at {OLLAMA_API}")

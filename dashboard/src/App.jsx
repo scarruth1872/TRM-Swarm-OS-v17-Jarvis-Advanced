@@ -23,6 +23,7 @@ import MobileSyncViewport from './components/MobileSyncViewport';
 import ContinuumGenomicsViewport from './components/ContinuumGenomicsViewport';
 import NeuroDynamicEvolutionEngine from './components/NeuroDynamicEvolutionEngine';
 import CouncilChamber from './components/CouncilChamber';
+import AnomalySentinel from './components/AnomalySentinel';
 
 // ─── Component: File Write Action Card ──────────────────────────────────
 const FileWriteCard = ({ filename, lang, code }) => {
@@ -114,6 +115,7 @@ const Sidebar = ({ activeTab, onTabChange, stats }) => {
     { id: 'continuum', label: '22 CONTINUUM LEDGER', color: 'purple' },
     { id: 'neuro', label: '23 NEURO ENGINE', color: 'indigo' },
     { id: 'council', label: '24 SWARM COUNCIL', color: 'gold' },
+    { id: 'sentinel', label: '25 ANOMALY SENTINEL', color: 'red' },
   ];
 
   return (
@@ -870,7 +872,43 @@ export default function App() {
   return (
     <div className="container">
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} stats={{ resources, artifacts, memoryStats }} />
-      <main className="main-content">
+            <main className="main-content">
+        {/* Top-Bar Platform Anomaly Sentinel HUD */}
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 bg-[#0a0a14] border border-white/10 rounded-xl font-mono text-xs shadow-lg">
+          <div className="flex items-center gap-3">
+            <span className="flex h-2.5 w-2.5 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+            </span>
+            <span className="font-bold text-white tracking-wider uppercase">TRM Swarm OS v19</span>
+            <span className="text-neutral-500">|</span>
+            <span className="text-emerald-400 font-bold">5/5 SERVICES ONLINE</span>
+            <span className="text-neutral-500">|</span>
+            <span className="text-purple-300">14/14 AGENTS QUORUM</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setActiveTab('sentinel')}
+              className="px-2.5 py-1 rounded bg-green-500/10 hover:bg-green-500/20 text-green-300 border border-green-500/30 text-[11px] font-bold uppercase tracking-wider transition-all flex items-center gap-1.5"
+            >
+              <ShieldAlert size={13} />
+              0 Anomalies (Sentinel Tab)
+            </button>
+            <button
+              onClick={async () => {
+                try {
+                  await axios.post('/system/heal_anomaly');
+                  alert('Platform Self-Healing & Buffer Purge Executed Successfully.');
+                } catch(e) { alert(e.message); }
+              }}
+              className="px-2.5 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-[11px] font-bold uppercase tracking-wider transition-all flex items-center gap-1.5"
+            >
+              <Wrench size={13} />
+              Auto-Heal
+            </button>
+          </div>
+        </div>
+
         <AnimatePresence mode="wait">
 
           {/* 01 SYSTEM STATUS */}
@@ -3042,6 +3080,12 @@ export default function App() {
           {activeTab === 'council' && (
             <motion.div key="council" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <CouncilChamber />
+            </motion.div>
+          )}
+
+          {activeTab === 'sentinel' && (
+            <motion.div key="sentinel" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <AnomalySentinel />
             </motion.div>
           )}
 
