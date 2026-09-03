@@ -391,12 +391,27 @@ export default function App() {
           ]);
           setTestingData({ stats: statsRes, runs: runsRes.runs || [] });
         } else if (tab === 'kanban') {
-          const [boardRes, statsRes] = await Promise.all([
-            fetch(`${API_BASE}/kanban/board`).then(r => r.json()),
-            fetch(`${API_BASE}/kanban/stats`).then(r => r.json())
-          ]);
-          setKanbanBoard(boardRes);
-          setKanbanStats(statsRes);
+          try {
+            const [boardRes, statsRes] = await Promise.all([
+              fetch(`${API_BASE}/kanban/board`).then(r => r.json()).catch(() => ({})),
+              fetch(`${API_BASE}/kanban/stats`).then(r => r.json()).catch(() => ({}))
+            ]);
+            const rawBoard = boardRes?.board || boardRes || {};
+            const normalizedBoard = {
+              TODO: rawBoard.TODO || rawBoard.todo || [],
+              IN_PROGRESS: rawBoard.IN_PROGRESS || rawBoard.in_progress || [],
+              REVIEW: rawBoard.REVIEW || rawBoard.review || [],
+              DONE: rawBoard.DONE || rawBoard.done || []
+            };
+            setKanbanBoard(normalizedBoard);
+            const rawStats = statsRes?.stats || statsRes || {};
+            setKanbanStats({
+              total_cards: rawStats.total_cards ?? (normalizedBoard.TODO.length + normalizedBoard.IN_PROGRESS.length + normalizedBoard.REVIEW.length + normalizedBoard.DONE.length),
+              in_progress_count: rawStats.in_progress_count ?? normalizedBoard.IN_PROGRESS.length
+            });
+          } catch (err) {
+            console.error("Failed to load kanban data:", err);
+          }
         } else if (tab === 'ddr') {
           const [abRes, statsRes, keysRes, infraRes] = await Promise.all([
             fetch(`${API_BASE}/ddr/antibodies`).then(r => r.json()),
@@ -2345,7 +2360,15 @@ export default function App() {
                     await axios.post(`${API_BASE}/kanban/cards`, { title: newCardTitle, assignee: newCardAssignee, priority: newCardPriority });
                     setNewCardTitle(''); setNewCardAssignee('');
                     const [b, s] = await Promise.all([fetch(`${API_BASE}/kanban/board`).then(r => r.json()), fetch(`${API_BASE}/kanban/stats`).then(r => r.json())]);
-                    setKanbanBoard(b); setKanbanStats(s);
+                    const rawBoard = b?.board || b || {};
+                    setKanbanBoard({
+                      TODO: rawBoard.TODO || rawBoard.todo || [],
+                      IN_PROGRESS: rawBoard.IN_PROGRESS || rawBoard.in_progress || [],
+                      REVIEW: rawBoard.REVIEW || rawBoard.review || [],
+                      DONE: rawBoard.DONE || rawBoard.done || []
+                    });
+                    const rawStats = s?.stats || s || {};
+                    setKanbanStats(rawStats);
                   }}>
                     <Plus size={16} /><span>Create</span>
                   </button>
@@ -2384,20 +2407,48 @@ export default function App() {
                              <div className="flex gap-1 mt-2">
                                {col === 'TODO' && <button className="glass-button text-[8px] py-0.5 px-2" onClick={async () => {
                                  await axios.post(`${API_BASE}/kanban/cards/${card.card_id}/move`, { target_status: 'IN_PROGRESS' });
-                                 const b = await fetch(`${API_BASE}/kanban/board`).then(r => r.json()); setKanbanBoard(b);
+                                 const b = await fetch(`${API_BASE}/kanban/board`).then(r => r.json());
+                                 const rawBoard = b?.board || b || {};
+                                 setKanbanBoard({
+                                   TODO: rawBoard.TODO || rawBoard.todo || [],
+                                   IN_PROGRESS: rawBoard.IN_PROGRESS || rawBoard.in_progress || [],
+                                   REVIEW: rawBoard.REVIEW || rawBoard.review || [],
+                                   DONE: rawBoard.DONE || rawBoard.done || []
+                                 });
                                }}>▶ Start</button>}
                                {col === 'IN_PROGRESS' && <button className="glass-button text-[8px] py-0.5 px-2" onClick={async () => {
                                  await axios.post(`${API_BASE}/kanban/cards/${card.card_id}/move`, { target_status: 'REVIEW' });
-                                 const b = await fetch(`${API_BASE}/kanban/board`).then(r => r.json()); setKanbanBoard(b);
+                                 const b = await fetch(`${API_BASE}/kanban/board`).then(r => r.json());
+                                 const rawBoard = b?.board || b || {};
+                                 setKanbanBoard({
+                                   TODO: rawBoard.TODO || rawBoard.todo || [],
+                                   IN_PROGRESS: rawBoard.IN_PROGRESS || rawBoard.in_progress || [],
+                                   REVIEW: rawBoard.REVIEW || rawBoard.review || [],
+                                   DONE: rawBoard.DONE || rawBoard.done || []
+                                 });
                                }}>⏫ Review</button>}
                                {col === 'REVIEW' && <>
                                  <button className="glass-button text-[8px] py-0.5 px-2" style={{ color: '#22c55e' }} onClick={async () => {
                                    await axios.post(`${API_BASE}/kanban/cards/${card.card_id}/move`, { target_status: 'DONE' });
-                                   const b = await fetch(`${API_BASE}/kanban/board`).then(r => r.json()); setKanbanBoard(b);
+                                   const b = await fetch(`${API_BASE}/kanban/board`).then(r => r.json());
+                                 const rawBoard = b?.board || b || {};
+                                 setKanbanBoard({
+                                   TODO: rawBoard.TODO || rawBoard.todo || [],
+                                   IN_PROGRESS: rawBoard.IN_PROGRESS || rawBoard.in_progress || [],
+                                   REVIEW: rawBoard.REVIEW || rawBoard.review || [],
+                                   DONE: rawBoard.DONE || rawBoard.done || []
+                                 });
                                  }}>✓ Done</button>
                                  <button className="glass-button text-[8px] py-0.5 px-2" style={{ color: '#f97316' }} onClick={async () => {
                                    await axios.post(`${API_BASE}/kanban/cards/${card.card_id}/move`, { target_status: 'IN_PROGRESS' });
-                                   const b = await fetch(`${API_BASE}/kanban/board`).then(r => r.json()); setKanbanBoard(b);
+                                   const b = await fetch(`${API_BASE}/kanban/board`).then(r => r.json());
+                                 const rawBoard = b?.board || b || {};
+                                 setKanbanBoard({
+                                   TODO: rawBoard.TODO || rawBoard.todo || [],
+                                   IN_PROGRESS: rawBoard.IN_PROGRESS || rawBoard.in_progress || [],
+                                   REVIEW: rawBoard.REVIEW || rawBoard.review || [],
+                                   DONE: rawBoard.DONE || rawBoard.done || []
+                                 });
                                  }}>↩ Rework</button>
                                </>}
                              </div>
