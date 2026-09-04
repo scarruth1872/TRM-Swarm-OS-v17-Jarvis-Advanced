@@ -24,6 +24,13 @@ mod k3_logic;
 mod module_registry;
 mod monad;
 mod nand_fs;
+mod pbft_consensus;
+mod resonance_engine;
+mod security_scanner;
+mod semantic_cache;
+mod semantic_index;
+mod sentinel;
+mod self_healing;
 mod quic_protocol;
 mod star_matrix;
 mod time;
@@ -167,6 +174,115 @@ impl TerminalState {
             let lines = crate::monad::render_wisdom(g);
             for ln in lines.iter().take(6) {
                 self.add_line(ln.as_bytes(), LCARS_CYAN);
+            }
+        } else if cmd.starts_with(b"pbft") {
+            // PHASE 2 ACTIVATION — CONSENSUS cluster executes for real.
+            // pbft_consensus full quorum cycle with the 14-agent model.
+            let mut pbft = crate::pbft_consensus::PbftConsensus::new();
+            let (id, accepted, score) = pbft.run_full_cycle("OPERATOR", "phase2-activation");
+            let (total, acc, rej, phase) = pbft.get_status();
+            let mut p1 = [0u8; 96];
+            let h = b"PBFT CYCLE: proposal #";
+            p1[..h.len()].copy_from_slice(h);
+            let ids = format!("{}", id);
+            p1[h.len()..h.len() + ids.len()].copy_from_slice(ids.as_bytes());
+            let mut ri = h.len() + ids.len();
+            p1[ri..ri + 12].copy_from_slice(b" accepted="); ri += 12;
+            p1[ri] = b'1'; if !accepted { p1[ri] = b'0'; } ri += 1;
+            p1[ri..ri + 8].copy_from_slice(b" score="); ri += 8;
+            let scs = format!("{:.3}", score);
+            p1[ri..ri + scs.len()].copy_from_slice(scs.as_bytes()); ri += scs.len();
+            self.add_line(&p1[..ri], LCARS_CYAN);
+            let mut p2 = [0u8; 96];
+            let h2 = b"PBFT STATUS: total=";
+            p2[..h2.len()].copy_from_slice(h2);
+            let ts = format!("{}", total);
+            p2[h2.len()..h2.len() + ts.len()].copy_from_slice(ts.as_bytes());
+            let mut r2 = h2.len() + ts.len();
+            p2[r2..r2 + 5].copy_from_slice(b" acc="); r2 += 5;
+            let as_ = format!("{}", acc);
+            p2[r2..r2 + as_.len()].copy_from_slice(as_.as_bytes()); r2 += as_.len();
+            p2[r2..r2 + 5].copy_from_slice(b" rej="); r2 += 5;
+            let rs = format!("{}", rej);
+            p2[r2..r2 + rs.len()].copy_from_slice(rs.as_bytes()); r2 += rs.len();
+            p2[r2..r2 + 9].copy_from_slice(b" phase=0x"); r2 += 9;
+            p2[r2] = b'0' + phase as u8; r2 += 1;
+            p2[r2..r2 + 3].copy_from_slice(b" (4)"); r2 += 3;
+            self.add_line(&p2[..r2], LCARS_GREEN);
+            self.add_line(b"PBFT: quorum 2f+1=9 of 14 agents | commit 10 | Byzantine f=4", LCARS_PURPLE);
+        } else if cmd.starts_with(b"cognition") {
+            // PHASE 2 ACTIVATION — COGNITION cluster executes for real.
+            let mut res = crate::resonance_engine::ResonanceEngine::new();
+            res.broadcast_dream("Hermes", "mesh topology stabilized");
+            res.broadcast_dream("Jarvis", "symbiosis skills armed");
+            res.broadcast_dream("Seeker", "knowledge graph updated");
+            let (idx, coh, n) = res.get_emotional_resonance_index();
+            let aware = res.recursive_self_awareness_check();
+            let mut c1 = [0u8; 96];
+            let h = b"RESONANCE: index=";
+            c1[..h.len()].copy_from_slice(h);
+            let is = format!("{:.3}", idx);
+            c1[h.len()..h.len() + is.len()].copy_from_slice(is.as_bytes());
+            let mut ri = h.len() + is.len();
+            c1[ri..ri + 12].copy_from_slice(b" coherence="); ri += 12;
+            let cs = format!("{:.3}", coh);
+            c1[ri..ri + cs.len()].copy_from_slice(cs.as_bytes()); ri += cs.len();
+            c1[ri..ri + 9].copy_from_slice(b" dreams="); ri += 9;
+            let ns = format!("{}", n);
+            c1[ri..ri + ns.len()].copy_from_slice(ns.as_bytes()); ri += ns.len();
+            c1[ri..ri + 8].copy_from_slice(b" aware="); ri += 8;
+            c1[ri] = if aware { b'1' } else { b'0' }; ri += 1;
+            self.add_line(&c1[..ri], LCARS_PURPLE);
+            // semantic index: seed + query
+            let mut si = crate::semantic_index::SemanticIndex::new();
+            si.add("kernel", "native rust boot uefi");
+            si.add("monad", "truth anchor voltage");
+            si.add("council", "fourteen agents consensus");
+            let (best, score) = si.query("rust boot kernel");
+            let mut c2 = [0u8; 96];
+            let h2 = b"SEMANTIC: best='";
+            c2[..h2.len()].copy_from_slice(h2);
+            let bn = best.len().min(20);
+            c2[h2.len()..h2.len() + bn].copy_from_slice(&best.as_bytes()[..bn]);
+            let mut r2 = h2.len() + bn;
+            c2[r2..r2 + 9].copy_from_slice(b"' score="); r2 += 9;
+            let ss = format!("{:.2}", score);
+            c2[r2..r2 + ss.len()].copy_from_slice(ss.as_bytes()); r2 += ss.len();
+            self.add_line(&c2[..r2], LCARS_GREEN);
+        } else if cmd.starts_with(b"defense") {
+            // PHASE 2 ACTIVATION — DEFENSE cluster executes for real.
+            // security_scanner + sentinel + self_healing on live input.
+            let rest = cmd.get(8..).unwrap_or(b"").trim_ascii();
+            let sample: &[u8] = if rest.is_empty() {
+                b"SELECT * FROM users; os.system('rm -rf'); SECRET_KEY='x'"
+            } else {
+                rest
+            };
+            let content = core::str::from_utf8(sample).unwrap_or("");
+            let mut sc = crate::security_scanner::SecurityScanner::new();
+            let (findings, maxsev) = sc.scan(content);
+            let mut s1 = [0u8; 96];
+            let h1 = b"DEFENSE SCAN: ";
+            s1[..h1.len()].copy_from_slice(h1);
+            s1[h1.len()..h1.len() + 3].copy_from_slice(format!("{}", findings).as_bytes());
+            let mut ri = h1.len() + 3;
+            s1[ri..ri + 11].copy_from_slice(b" findings, "); ri += 11;
+            s1[ri..ri + 9].copy_from_slice(b"max_sev=0x"); ri += 9;
+            s1[ri] = b'0' + (maxsev as u8); ri += 1;
+            self.add_line(&s1[..ri], LCARS_RED);
+            // sentinel gate
+            let mut sn = crate::sentinel::Sentinel::new(10);
+            sn.add_allow("kernel");
+            sn.add_block("attacker");
+            let (verdict, _reason) = sn.check("kernel:8022");
+            if verdict == crate::sentinel::VERDICT_ALLOW {
+                self.add_line(b"SENTINEL: kernel:8022 ALLOWED (trusted mesh)", LCARS_GREEN);
+            }
+            // self-healing sanitizer check
+            let san = crate::self_healing::InputSanitizer::new();
+            match san.sanitize(content.as_bytes()) {
+                Ok(_) => self.add_line(b"SELF_HEALING: payload clean", LCARS_GREEN),
+                Err(_) => self.add_line(b"SELF_HEALING: payload blocked (threat detected)", LCARS_ORANGE),
             }
         } else if cmd.starts_with(b"status") {
             // REAL agent health check
