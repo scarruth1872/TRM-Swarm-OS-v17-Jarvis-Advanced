@@ -5,6 +5,13 @@ import axios from 'axios';
 
 const DEFAULT_PAPERS = [
   {
+    id: 186,
+    section: 'Mathematics & Physics',
+    title: 'Article 186 — The 108-Faceted Ternary Expansion & 4D Toroidal Latent Manifold: Continuous-Degree K3 Resolution (217 States), Upward Spiral Recurrence & Monad Axis Geometry',
+    status: 'PUBLISHED',
+    finding: 'Rigorous mathematical validation of the 108-faceted ternary expansion: 216 angular steps (-108 to +108) with central invariant State 0 yielding 217 discrete states; grounded in 108 = 1^1 * 2^2 * 3^3 and pentagon interior angle 108°; 4D Clifford Torus embedding (+108 outward flux, -108 inward flux, 0 Monad axis); mapping Mamba SSM recurrence to helical pitch and standing wave potential under Monad Anchor 0x4D4F4E4144000001.'
+  },
+  {
     id: 184,
     section: 'Computer Architecture',
     title: 'Article 184 — Beyond 15 Patterns: Fractal Telemetry & Infinite Geometric Computation: Recursive Nesting to Depth 5 (11.4M Architectures) via Multi-Dimensional Telemetry Streams',
