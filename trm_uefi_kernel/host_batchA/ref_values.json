@@ -1,0 +1,278 @@
+{
+ "cpbft_genesis_orch_ledger": [
+  "GENESIS_BLOCK_HASH_ORCH_v5.3"
+ ],
+ "cpbft_genesis_hash": "06fc568d00ce19d1bad238d45b5906d740f57acefd0c6949cbbb8b18caf20ee4",
+ "cpbft_hash_abc": "a52dd81bfd5e4e66d96b9f598382f6cbf8c5c3897654e6ae9055e03620fcf38e",
+ "cpbft_pre_prepare_sig": "1a34a172c380bb229c70d9fd9c77b2678d3a65a3e4593cc35d73cd76dfa05fcd",
+ "cpbft_cycle1": {
+  "tx_id": "tx_1700000000123",
+  "block": "BLOCK_tx_1700000000123_STATE_UPDATE",
+  "leader": "ORCH",
+  "prepare_votes": 4,
+  "required_votes": 3,
+  "status": "COMMITTED",
+  "orch_ledger_len": 3,
+  "sage_ledger_len": 2,
+  "orch_last2": [
+   "BLOCK_tx_1700000000123_STATE_UPDATE",
+   "BLOCK_tx_1700000000123_STATE_UPDATE"
+  ],
+  "hist_len": 1
+ },
+ "cpbft_cycle_insufficient": {
+  "status": "FAILED",
+  "reason": "Insufficient prepare votes: 2/3"
+ },
+ "cpbft_audit": {
+  "mesh_status": "AUDITED_HEALTHY",
+  "total_nodes": 4,
+  "majority_hash": "f414dd2ed630fefe...",
+  "isolated_count": 3,
+  "remediated": [
+   "SAGE",
+   "MUSE",
+   "SENTINEL"
+  ],
+  "muse_status": "healthy",
+  "muse_ledger_len": 3,
+  "orch_ledger_len": 3,
+  "states_order": [
+   "healthy",
+   "healthy",
+   "healthy",
+   "healthy"
+  ]
+ },
+ "cpbft_getledger_default": {
+  "n": 1,
+  "block": "BLOCK_GENESIS_v5.3",
+  "votes": 4,
+  "req": 3,
+  "status": "COMMITTED",
+  "tx": "tx_genesis_v53"
+ },
+ "dram": {
+  "specs": {
+   "capacity": 32,
+   "cells": 274877906944,
+   "banks": 128,
+   "rowbuf": 8192,
+   "rowcycle": 45,
+   "refresh": 7.8,
+   "rh_thresh": 100000,
+   "bw": 51.2
+  },
+  "rowbuf": {
+   "name": "Row Buffer Pattern (Deterministic)",
+   "banks": 128,
+   "cper": 65536,
+   "total": 8388608,
+   "access": 45,
+   "bw_str": "23301.7 GB/s per row cycle"
+  },
+  "bulk": {
+   "name": "Bulk K3 Ternary Fabric",
+   "total": 274877906944,
+   "usable": 233646220902.4,
+   "trits": 116823110451.2,
+   "tput": 5981343255.10144
+  },
+  "rowhammer": {
+   "name": "RowHammer Probabilistic Computing",
+   "act": 100000,
+   "prob_str": "0.00100% per activation"
+  },
+  "fpga": {
+   "name": "RAM FPGA-Lite",
+   "luts": 131072,
+   "lut_size": 6,
+   "banks": 128,
+   "reconf": 45
+  },
+  "neural": {
+   "name": "RAM Neural Network",
+   "neurons": 114085068,
+   "synapses": 116823110451,
+   "precision": "Ternary (-1, 0, +1)"
+  },
+  "stochastic": {
+   "name": "RAM Boltzmann Machine",
+   "nodes": 4194304,
+   "type": "RowHammer"
+  },
+  "arch_keys": [
+   "fpga",
+   "neural",
+   "stochastic",
+   "row_buffer",
+   "bulk_k3",
+   "rowhammer"
+  ]
+ },
+ "dram_load": {
+  "arch": "RAM Neural Network",
+  "cells_str": "274.9B",
+  "bw": "51.2 GB/s",
+  "refresh": "Yes \u2014 7.8\u03bcs interval",
+  "current": "RAM Neural Network"
+ },
+ "dram_load_bad": {
+  "err": "Unknown: nope",
+  "avail": [
+   "fpga",
+   "neural",
+   "stochastic",
+   "row_buffer",
+   "bulk_k3",
+   "rowhammer"
+  ]
+ },
+ "dram_summary": {
+  "ram": "32GB DDR4-3200",
+  "cells": "274.9B DRAM cells",
+  "banks": 128,
+  "bw": "51.2 GB/s",
+  "refresh": "7.8\u03bcs",
+  "pathways": 3,
+  "archs": [
+   "fpga",
+   "neural",
+   "stochastic",
+   "row_buffer",
+   "bulk_k3",
+   "rowhammer"
+  ]
+ },
+ "gpu": {
+  "specs": {
+   "model": "AMD Radeon RX 6700 XT",
+   "transistors": 17200000000,
+   "ic_mb": 96,
+   "ic_bytes": 100663296,
+   "ic_cells": 805306368,
+   "ic_tx": 4831838208,
+   "bw": 2.1,
+   "vram_gb": 12,
+   "vram_cells": 103079215104,
+   "cu": 40,
+   "sp": 2560,
+   "wf": 3200,
+   "mhz": 2581
+  },
+  "fpga": {
+   "name": "GPU FPGA-Lite",
+   "logic_cells": 65536,
+   "luts": 65536,
+   "lut_size": 7,
+   "cache": "8MB Infinity Cache"
+  },
+  "neural": {
+   "name": "GPU SRAM Neural Network",
+   "neurons": 8388608,
+   "synapses": 33554432,
+   "cache": "64MB Infinity Cache"
+  },
+  "cellular": {
+   "name": "GPU Cellular Automaton",
+   "cells": 100663296,
+   "ups": 2625.0,
+   "cache": "96MB (full Infinity Cache)"
+  },
+  "k3": {
+   "name": "GPU K3 Ternary Engine",
+   "cells": 805306368,
+   "trits": 402653184,
+   "tput": 845571686.4,
+   "cache": "96MB Infinity Cache",
+   "instr": "S_BITCMP_B32 (RDNA2 native)"
+  },
+  "arch_keys": [
+   "fpga",
+   "neural",
+   "cellular",
+   "k3"
+  ]
+ },
+ "gpu_load_k3": {
+  "arch": "GPU K3 Ternary Engine",
+  "pattern_hash": "1d90d9e06ac1",
+  "cache_util": "96MB Infinity Cache",
+  "bw": "2.1 TB/s",
+  "current": "GPU K3 Ternary Engine"
+ },
+ "gpu_load_bad": {
+  "err": "Unknown: nope",
+  "avail": [
+   "fpga",
+   "neural",
+   "cellular",
+   "k3"
+  ]
+ },
+ "gpu_hashes": {
+  "fpga": "3be25320e252",
+  "neural": "891db0e9f57c",
+  "cellular": "06dd6e50f16e",
+  "k3": "1d90d9e06ac1"
+ },
+ "expert_registry": {
+  "exact": "Logic",
+  "case_insens": "Shield",
+  "persona_name_exact": "Logic",
+  "persona_substr": "Logic",
+  "role_substr": "Shield",
+  "miss": null,
+  "empty": null,
+  "clean_stars": "Logic",
+  "all_keys": [
+   "ORCH",
+   "logic",
+   "shield"
+  ]
+ },
+ "persona_clean": {
+  "content": "I am a helpful sovereign node.",
+  "status": 1,
+  "state": 1,
+  "viol": 0
+ },
+ "persona_fail": {
+  "content": "[IDENTITY_FAILURE: Persona violation threshold exceeded. Hard Reset.]",
+  "status": 2,
+  "state": 6,
+  "viol": 1,
+  "last_reset": 1700000000.0
+ },
+ "persona_reset": {
+  "content": "[IDENTITY_RESET: Forbidden lexicon detected]",
+  "status": 3,
+  "state": 7,
+  "viol": 1
+ },
+ "persona_locked": {
+  "content": "[IDENTITY_LOCKED: Persona Matrix requires manual audit]",
+  "status": 2,
+  "state": 8
+ },
+ "persona_unlock": {
+  "content": "clean text",
+  "status": 1,
+  "state": 1
+ },
+ "persona_enums": {
+  "IDLE": 1,
+  "LOCKED": 8,
+  "FAILED_ST": 6,
+  "RESET_ST": 7,
+  "SUCCESS": 1,
+  "FAILED": 2,
+  "RESET": 3
+ },
+ "persona_prompt": {
+  "len": 556,
+  "sha3": "7f974d9b87e851af77a92e5624a2eeda4f4071238bcbe15e2eb95a42ef0fab45",
+  "head": "<!-- SIGNATURE:5182e57e718cc08738db4aa6dfab0a8521eeea399b2e2",
+  "tail": "oit\"): REGENERATE with penalty.\n    [END_IDENTITY_LOCK]\n    "
+ }
+}

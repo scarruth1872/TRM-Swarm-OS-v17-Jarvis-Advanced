@@ -1,0 +1,534 @@
+{
+ "rtm": {
+  "registered": 88,
+  "n_handlers": 88
+ },
+ "rtm_match": {
+  "system_status": [
+   "system_status",
+   "System v5_online \u2014 12 agents, TurboVecNative memory, HVBE active"
+  ],
+  "health_check": [
+   "health_check",
+   "Healthy \u2014 all services responding"
+  ],
+  "telemetry_alias": [
+   "metrics",
+   "HVBE: \u03a6_V=0.7530, 4.75V"
+  ],
+  "unknown": null,
+  "hello": [
+   "hello",
+   "Hermes Agent v18.52 \u2014 Desktop orchestration platform. 15 agents, 82 trie pattern"
+  ],
+  "hi_there": [
+   "hi",
+   "Hermes Agent online. 15 agents, 82 patterns, \u03c4=2.82\u03bcs. What do you need?"
+  ],
+  "literature_prefix": [
+   "literature_search",
+   "Seeker: indexed findings, 110 reconnaissance cycles"
+  ],
+  "shield": [
+   "shield_scan",
+   "Shield: DDR antibodies active, 99.97% detection rate, 294 patterns"
+  ]
+ },
+ "rtm_prefix": {
+  "len": 17,
+  "endpoint": "literature_search",
+  "resp": "Seeker: indexed findings, 110 reconnaissance cycles"
+ },
+ "rtm_prefix_none": null,
+ "rtm_custom": {
+  "registered": 1,
+  "exact": "alpha_ep",
+  "prefix_partial": [
+   "alpha_ep",
+   5
+  ],
+  "miss": null,
+  "case_insens": "alpha_ep"
+ },
+ "sfe_scan_a": [
+  {
+   "file": "alpha.py",
+   "line": 1,
+   "vuln": "SQL_INJECTION",
+   "sev": "CRITICAL",
+   "ab": "sql_injection"
+  },
+  {
+   "file": "alpha.py",
+   "line": 2,
+   "vuln": "COMMAND_INJECTION",
+   "sev": "CRITICAL",
+   "ab": "command_injection"
+  },
+  {
+   "file": "alpha.py",
+   "line": 3,
+   "vuln": "HARDCODED_SECRET",
+   "sev": "CRITICAL",
+   "ab": "hardcoded_secret"
+  },
+  {
+   "file": "alpha.py",
+   "line": 4,
+   "vuln": "COMMAND_INJECTION",
+   "sev": "CRITICAL",
+   "ab": "command_injection"
+  },
+  {
+   "file": "alpha.py",
+   "line": 5,
+   "vuln": "INSECURE_DESERIALIZATION",
+   "sev": "HIGH",
+   "ab": "insecure_deserialization"
+  },
+  {
+   "file": "alpha.py",
+   "line": 6,
+   "vuln": "BARE_EXCEPT",
+   "sev": "LOW",
+   "ab": "bare_except"
+  },
+  {
+   "file": "alpha.py",
+   "line": 7,
+   "vuln": "HTTP_NO_VERIFY",
+   "sev": "HIGH",
+   "ab": "ssl_bypass"
+  },
+  {
+   "file": "alpha.py",
+   "line": 8,
+   "vuln": "DEBUG_PRINT",
+   "sev": "MEDIUM",
+   "ab": "debug_leak"
+  },
+  {
+   "file": "alpha.py",
+   "line": 9,
+   "vuln": "WEAK_CRYPTO",
+   "sev": "HIGH",
+   "ab": "weak_crypto"
+  },
+  {
+   "file": "alpha.py",
+   "line": 10,
+   "vuln": "RESOURCE_LEAK",
+   "sev": "LOW",
+   "ab": "resource_leak"
+  }
+ ],
+ "sfe_scan_a_summary": {
+  "count": 10,
+  "by_sev": {
+   "CRITICAL": 4,
+   "HIGH": 3,
+   "MEDIUM": 1,
+   "LOW": 2
+  },
+  "types": [
+   "SQL_INJECTION",
+   "COMMAND_INJECTION",
+   "HARDCODED_SECRET",
+   "COMMAND_INJECTION",
+   "INSECURE_DESERIALIZATION",
+   "BARE_EXCEPT",
+   "HTTP_NO_VERIFY",
+   "DEBUG_PRINT",
+   "WEAK_CRYPTO",
+   "RESOURCE_LEAK"
+  ]
+ },
+ "sfe_engine": {
+  "files": 1,
+  "vulns": 10,
+  "abs": 10,
+  "by_sev": {
+   "CRITICAL": 4,
+   "HIGH": 3,
+   "LOW": 2,
+   "MEDIUM": 1
+  },
+  "by_type": {
+   "SQL_INJECTION": 1,
+   "COMMAND_INJECTION": 2,
+   "HARDCODED_SECRET": 1,
+   "INSECURE_DESERIALIZATION": 1,
+   "BARE_EXCEPT": 1,
+   "HTTP_NO_VERIFY": 1,
+   "DEBUG_PRINT": 1,
+   "WEAK_CRYPTO": 1,
+   "RESOURCE_LEAK": 1
+  },
+  "fp_first": "alpha.py:1:SQL_INJECTION",
+  "fp_last": "alpha.py:10:RESOURCE_LEAK",
+  "ab0_type": "sql_injection",
+  "ab0_sev": "CRITICAL",
+  "ab0_line": 1,
+  "ab0_pattern": "cursor.execute(\"SELECT * FROM users WHERE id = \" + user_id)",
+  "ab0_gen": "Self-Fuzzing Engine v18.95"
+ },
+ "sh_san": {
+  "benign": [
+   "OK",
+   "hello world 123"
+  ],
+  "sql_drop": [
+   "RAISE",
+   "Request blocked: SQL injection patterns detected in payload."
+  ],
+  "sql_union": [
+   "RAISE",
+   "Request blocked: SQL injection patterns detected in payload."
+  ],
+  "sql_or_eq": [
+   "RAISE",
+   "Request blocked: SQL injection patterns detected in payload."
+  ],
+  "xss_script": [
+   "RAISE",
+   "Request blocked: XSS patterns detected in payload."
+  ],
+  "xss_onerror": [
+   "RAISE",
+   "Request blocked: XSS patterns detected in payload."
+  ],
+  "path_dotdot": [
+   "RAISE",
+   "Request blocked: Path traversal patterns detected in payload."
+  ],
+  "path_etc": [
+   "RAISE",
+   "Request blocked: Path traversal patterns detected in payload."
+  ],
+  "path_win": [
+   "RAISE",
+   "Request blocked: Path traversal patterns detected in payload."
+  ],
+  "oversize": [
+   "RAISE",
+   "Payload too large. Max allowed: 1048576 bytes."
+  ],
+  "ctrl_strip": [
+   "OK",
+   "abc\nd"
+  ],
+  "bad_utf8": [
+   "OK",
+   "\ufffd\ufffd hi"
+  ],
+  "hex_esc": [
+   "RAISE",
+   "Request blocked: SQL injection patterns detected in payload."
+  ]
+ },
+ "sh_trm": {
+  "local_unlimited": [
+   "OK",
+   true
+  ],
+  "seed_ok": [
+   "OK",
+   true
+  ],
+  "to_max": [
+   "OK",
+   true
+  ],
+  "over": [
+   "RAISE",
+   "Token rate exceeded 50000 tokens/sec."
+  ],
+  "after_prune": null,
+  "at_max_again": [
+   "OK",
+   true
+  ],
+  "over2": [
+   "RAISE",
+   "Token rate exceeded 50000 tokens/sec."
+  ],
+  "budget_fill": [
+   "RAISE",
+   "Token rate exceeded 50000 tokens/sec."
+  ],
+  "budget_over": [
+   "OK",
+   true
+  ],
+  "budget_reset_ok": [
+   "OK",
+   true
+  ],
+  "totals_after": {
+   "alpha_total": 100000
+  }
+ },
+ "sh_rc": {
+  "memory": "Executed GC cleanup and TRM bucket purge for memory pressure.",
+  "token": "Token buckets emergency reset.",
+  "cpu_msg": "CPU pressure mitigated. Lowered token rate limit to 25000/sec.",
+  "cpu_new_max": 50000,
+  "cpu_again_msg": "CPU pressure mitigated. Lowered token rate limit to 12500/sec.",
+  "cpu_floor": 50000,
+  "crash": "Cannot restart worker: RemediationEngine not found.",
+  "default": "No specific recovery strategy applied."
+ },
+ "sh_cm": {
+  "mem_only": {
+   "memory_percent": 85.0,
+   "cpu_percent": 20.0,
+   "anomalies": [
+    "memory_pressure"
+   ]
+  },
+  "both": {
+   "memory_percent": 91.0,
+   "cpu_percent": 88.0,
+   "anomalies": [
+    "memory_pressure",
+    "cpu_pressure"
+   ]
+  },
+  "none": {
+   "memory_percent": 50.0,
+   "cpu_percent": 50.0,
+   "anomalies": []
+  }
+ },
+ "sh_telemetry": {
+  "total_requests": 1477056,
+  "total_bytes_processed": 272764296,
+  "recovery_actions_taken": 73843
+ },
+ "llm": {
+  "preferred": [
+   "gemma4:12b",
+   "deepseek-r1:8b",
+   "gemma3n:latest",
+   "gemma3:4b",
+   "deepseek-r1:1.5b",
+   "llama3.2:latest",
+   "gemma2:2b",
+   "phi3:latest",
+   "gemma3:1b",
+   "deepseek-coder:1.3b-instruct",
+   "gemma3:270m"
+  ],
+  "select_first": null,
+  "select": "llama3.2:latest",
+  "select_cached": "llama3.2:latest",
+  "select_offline": "llama3.2:latest",
+  "prompt_chat": {
+   "len": 1943,
+   "head": "# SWARM OS - ADVANCED NEURAL ARCHITECTURE\nYou are a high-level cognitive unit wi",
+   "has_identity": true,
+   "has_rules": true,
+   "has_memory": true,
+   "has_action": false,
+   "has_time": true
+  },
+  "prompt_action": {
+   "len": 2185,
+   "has_action": true,
+   "has_mem": false,
+   "writes": true
+  },
+  "nano_chat": "You are Logic, keeper of K3.\nRole: Reasoning Engine\n\nRespond concisely and directly. No preamble.",
+  "nano_action": "You are Logic, keeper of K3.\nRole: Reasoning Engine\n\nOUTPUT FORMAT (use immediately, no preamble):\nWRITE_FILE: path/to/file.md\n```\ncontent here\n```\nSEARCH_QUERY: your search terms\n\nSTART your response with a tag. Do not describe what you will do.",
+  "nano_action_flag": true,
+  "think": {
+   "normal": [
+    "Answer: 42",
+    ""
+   ],
+   "think_only": [
+    "I am currently processing this request internally.",
+    "I reasoned carefully"
+   ],
+   "with_think": [
+    "Intro.Final answer.",
+    "deep chain"
+   ],
+   "unclosed": [
+    "pre",
+    "hmm what if"
+   ],
+   "double": [
+    "abc",
+    "one"
+   ]
+  }
+ },
+ "mks": {
+  "ops": {
+   "memory_query": [
+    "memory",
+    "remember",
+    "recall",
+    "search memory",
+    "find in memory",
+    "lookup"
+   ],
+   "system_status": [
+    "status",
+    "health",
+    "stats",
+    "uptime",
+    "system status",
+    "state",
+    "how are you"
+   ],
+   "agent_spawn": [
+    "spawn",
+    "create agent",
+    "deploy",
+    "new agent",
+    "start agent"
+   ],
+   "tool_execute": [
+    "run",
+    "execute",
+    "exec",
+    "command"
+   ],
+   "state_update": [
+    "set",
+    "update",
+    "change",
+    "modify",
+    "configure",
+    "write",
+    "save"
+   ],
+   "health_check": [
+    "health check",
+    "ping",
+    "alive",
+    "online",
+    "check"
+   ],
+   "telemetry": [
+    "telemetry",
+    "metrics",
+    "benchmark",
+    "speed",
+    "latency",
+    "throughput"
+   ],
+   "healing": [
+    "heal",
+    "fix",
+    "repair",
+    "recover",
+    "restart",
+    "self-heal"
+   ],
+   "research": [
+    "research",
+    "analyze",
+    "study",
+    "investigate",
+    "discover"
+   ],
+   "test": [
+    "test",
+    "verify",
+    "validate",
+    "audit",
+    "check"
+   ]
+  }
+ },
+ "mks_classify": {
+  "memory": "memory_query",
+  "status": "system_status",
+  "health_alias": "health_check",
+  "telemetry": "telemetry",
+  "heal": "healing",
+  "spawn_llmish": "agent_spawn",
+  "unknown": "state_update",
+  "case": "memory_query",
+  "spawn_precedence": "memory_query"
+ },
+ "mks_intercept": {
+  "memory_op": "memory_query",
+  "bypass": "microkernel_deterministic",
+  "llm_avoided": true,
+  "result": "[MEMORY_QUERY] Found 2 relevant memories. memory entry one",
+  "latency_zero": true
+ },
+ "mks_intercept_status": {
+  "op_type": "system_status",
+  "result": "[SYSTEM_STATUS] TRM Swarm OS v18 | v5_online | Mamba-3 SSM 0.0774\u03bcs | Instella MoE 64-expert | 524 sub-agents | DDR 99.97% | Memory: 523 entries"
+ },
+ "mks_intercept_none": {
+  "bypass": "microkernel_deterministic",
+  "op_type": "state_update",
+  "result": "[DETERMINISTIC_ROUTED] Operation 'state_update' intercepted at microkernel. Routing to continuum function.",
+  "action": "route_to_continuum",
+  "continuum_function": "event_ledger_append",
+  "latency_us": 0.0,
+  "llm_avoided": true
+ },
+ "mks_intercept_heal": {
+  "op_type": "healing",
+  "result": "[HEALTH] All systems nominal. DDR Antibody shields active (294 patterns, 99.97% detection). PHOENIX-Protocol tolerance 96.8%. PBFT consensus: healthy. 509 sub-agents operational."
+ },
+ "mks_path": {
+  "pbft_fn": [
+   "pbft",
+   22.5,
+   0.39
+  ],
+  "instella_fn": [
+   "instella",
+   24.2,
+   0.18
+  ],
+  "hermes_fn": [
+   "hermes",
+   16.0,
+   0.12
+  ],
+  "blueprint_task": [
+   "blueprint",
+   18.2,
+   0.35
+  ],
+  "formal_shield": [
+   "formal",
+   12.4,
+   0.28
+  ],
+  "formal_verify": [
+   "formal",
+   12.4,
+   0.28
+  ],
+  "hotpatch_devo": [
+   "hotpatch",
+   24.1,
+   0.41
+  ],
+  "blueprint_precedes_shield": [
+   "blueprint",
+   18.2,
+   0.35
+  ],
+  "targeted": [
+   "targeted",
+   14.0,
+   0.15
+  ]
+ },
+ "mks_bus": {
+  "len": 1000,
+  "first_id": "sub_6",
+  "last_id": "sub_1005"
+ }
+}
