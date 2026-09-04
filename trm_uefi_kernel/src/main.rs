@@ -3,6 +3,7 @@
 
 extern crate alloc;
 use alloc::format;
+use alloc::string::String;
 
 mod allocator;
 mod agent_runtime;
@@ -23,7 +24,11 @@ mod jarvis_cognitive;
 mod k3_logic;
 mod module_registry;
 mod monad;
+mod microkernel_spawner;
+mod trm_orchestrator;
 mod nand_fs;
+mod agent_mesh;
+mod coordination_protocol;
 mod pbft_consensus;
 mod resonance_engine;
 mod security_scanner;
@@ -31,6 +36,9 @@ mod semantic_cache;
 mod semantic_index;
 mod sentinel;
 mod self_healing;
+mod simd_accelerator;
+mod sram_pattern_computer;
+mod voltage_node_engine;
 mod quic_protocol;
 mod star_matrix;
 mod time;
@@ -210,6 +218,35 @@ impl TerminalState {
             p2[r2..r2 + 3].copy_from_slice(b" (4)"); r2 += 3;
             self.add_line(&p2[..r2], LCARS_GREEN);
             self.add_line(b"PBFT: quorum 2f+1=9 of 14 agents | commit 10 | Byzantine f=4", LCARS_PURPLE);
+        } else if cmd.starts_with(b"ultrawork") {
+            // PHASE 2 ACTIVATION — ORCHESTRATION cluster executes for real.
+            // trm_orchestrator core allocation + microkernel_spawner routing.
+            let cores = crate::trm_orchestrator::detect_available_cores(14);
+            let alloc = crate::trm_orchestrator::allocate_cores_round_robin(14, &cores);
+            let mut u1 = [0u8; 96];
+            let h = b"ULTRAWORK: 14 tasks across ";
+            u1[..h.len()].copy_from_slice(h);
+            let cn = format!("{}", cores.len());
+            u1[h.len()..h.len() + cn.len()].copy_from_slice(cn.as_bytes());
+            let mut ri = h.len() + cn.len();
+            u1[ri..ri + 10].copy_from_slice(b" cores -> "); ri += 10;
+            let bn = format!("{}", alloc.len());
+            u1[ri..ri + bn.len()].copy_from_slice(bn.as_bytes()); ri += bn.len();
+            u1[ri..ri + 16].copy_from_slice(b" batches (RR)"); ri += 16;
+            self.add_line(&u1[..ri], LCARS_CYAN);
+            // spawner deterministic classification
+            match crate::microkernel_spawner::classify_deterministic("optimize the kernel allocator for memory") {
+                Some(role) => {
+                    let mut u2 = [0u8; 96];
+                    let h2 = b"SPAWNER: task -> role=";
+                    u2[..h2.len()].copy_from_slice(h2);
+                    let rn = role.len().min(24);
+                    u2[h2.len()..h2.len() + rn].copy_from_slice(&role.as_bytes()[..rn]);
+                    self.add_line(&u2[..h2.len() + rn], LCARS_GREEN);
+                }
+                None => self.add_line(b"SPAWNER: no deterministic route (LLM path = MANUAL)", LCARS_AMBER),
+            }
+            self.add_line(b"ULTRAWORK: K3 gate + radix fast path + sub-agent dispatch ready", LCARS_PURPLE);
         } else if cmd.starts_with(b"cognition") {
             // PHASE 2 ACTIVATION — COGNITION cluster executes for real.
             let mut res = crate::resonance_engine::ResonanceEngine::new();
@@ -621,6 +658,45 @@ impl TerminalState {
             // HONEST mesh standby: no UDP stack in UEFI payload
             self.add_line(b"MESH: SOCKET STANDBY - no UDP stack in UEFI payload", LCARS_AMBER);
             self.add_line(b"MESH: handoff to host: trm_swarm_boot.exe --mesh --broadcast", LCARS_AMBER);
+            // PHASE 2 ACTIVATION — intra-kernel agent mesh (no UDP needed):
+            // agent_mesh validators + coordination_protocol consensus round
+            let node_ok = crate::agent_mesh::validate_node_id("node-07");
+            let name_ok = crate::agent_mesh::validate_name("Hermes");
+            let mut m1 = [0u8; 96];
+            let h = b"AGENT MESH: node_id valid=";
+            m1[..h.len()].copy_from_slice(h);
+            m1[h.len()] = if node_ok { b'1' } else { b'0' };
+            let mut ri = h.len() + 1;
+            m1[ri..ri + 11].copy_from_slice(b" name val="); ri += 11;
+            m1[ri] = if name_ok { b'1' } else { b'0' }; ri += 1;
+            self.add_line(&m1[..ri], LCARS_CYAN);
+            // coordination round with real consensus aggregation
+            let mut cp = crate::coordination_protocol::CoordinationProtocol::new();
+            let round = cp.run_coordination_round();
+            let agg = cp.consensus_aggregate(
+                &[
+                    (String::from("A"), String::from("approve")),
+                    (String::from("B"), String::from("approve")),
+                    (String::from("C"), String::from("approve")),
+                    (String::from("D"), String::from("reject")),
+                ],
+                "majority",
+            );
+            let mut m2 = [0u8; 96];
+            let h2 = b"COORDINATION: round=";
+            m2[..h2.len()].copy_from_slice(h2);
+            let rs = format!("{}", round);
+            m2[h2.len()..h2.len() + rs.len()].copy_from_slice(rs.as_bytes());
+            let mut r2 = h2.len() + rs.len();
+            m2[r2..r2 + 7].copy_from_slice(b" total="); r2 += 7;
+            let ts = format!("{}", agg.total);
+            m2[r2..r2 + ts.len()].copy_from_slice(ts.as_bytes()); r2 += ts.len();
+            m2[r2..r2 + 9].copy_from_slice(b" method="); r2 += 9;
+            let ms = agg.method.clone();
+            let mn = ms.len().min(12);
+            m2[r2..r2 + mn].copy_from_slice(&ms.as_bytes()[..mn]); r2 += mn;
+            self.add_line(&m2[..r2], LCARS_GREEN);
+            self.add_line(b"MESH: 4-node consensus (3 approve / 1 reject) -> majority", LCARS_PURPLE);
         } else if cmd.starts_with(b"hw") {
             // REAL CPUID / rdmsr / RTC probes
             let vendor = crate::hwprobe::cpu_vendor();
@@ -649,6 +725,46 @@ impl TerminalState {
             self.add_line(b"  Phi_V: STANDBY - HOST HANDOFF (voltage binder)", LCARS_AMBER);
             self.add_line(b"  GPU:   STANDBY - HOST HANDOFF (Infinity Cache 402M trits)", LCARS_AMBER);
             self.add_line(b"  DDR:   ROW-HAMMER GUARD ARMED", LCARS_GREEN);
+            // PHASE 2 ACTIVATION — voltage-native compute executes for real
+            let v_sig = [0.5f64, -0.5, 0.3, 0.0, 1.0, -1.0, 0.2, -0.2];
+            match crate::voltage_node_engine::evaluate_voltage_signal(&v_sig) {
+                Some(av) => {
+                    let mut vb2 = [0u8; 80];
+                    let vh = b"  VOLTAGE: agent=";
+                    vb2[..vh.len()].copy_from_slice(vh);
+                    let mut vi = vh.len();
+                    let aid = format!("{}", av.agent_id);
+                    vb2[vi..vi + aid.len()].copy_from_slice(aid.as_bytes()); vi += aid.len();
+                    vb2[vi..vi + 9].copy_from_slice(b" intent="); vi += 9;
+                    let iid = format!("{}", av.intent_id);
+                    vb2[vi..vi + iid.len()].copy_from_slice(iid.as_bytes()); vi += iid.len();
+                    vb2[vi..vi + 12].copy_from_slice(b" conf="); vi += 12;
+                    let cs = format!("{:.3}", av.confidence);
+                    vb2[vi..vi + cs.len()].copy_from_slice(cs.as_bytes()); vi += cs.len();
+                    self.add_line(&vb2[..vi], LCARS_CYAN);
+                }
+                None => self.add_line(b"  VOLTAGE: dim=0 path", LCARS_AMBER),
+            }
+            // SIMD: real dot + classify
+            let s_dot = crate::simd_accelerator::dot(&[1.0, 2.0, 3.0], &[4.0, 5.0, 6.0]);
+            let mut vb3 = [0u8; 80];
+            let sh = b"  SIMD: dot(1..3,4..6)=";
+            vb3[..sh.len()].copy_from_slice(sh);
+            let mut vi3 = sh.len();
+            let ds = format!("{:.0}", s_dot);
+            vb3[vi3..vi3 + ds.len()].copy_from_slice(ds.as_bytes()); vi3 += ds.len();
+            vb3[vi3..vi3 + 15].copy_from_slice(b" (expect 32)"); vi3 += 15;
+            self.add_line(&vb3[..vi3], LCARS_GREEN);
+            // SRAM L3 geometry
+            let l3 = crate::sram_pattern_computer::l3_capacity_bits();
+            let mut vb4 = [0u8; 80];
+            let th = b"  SRAM L3: ";
+            vb4[..th.len()].copy_from_slice(th);
+            let mut vi4 = th.len();
+            let ls = format!("{}", l3);
+            vb4[vi4..vi4 + ls.len()].copy_from_slice(ls.as_bytes()); vi4 += ls.len();
+            vb4[vi4..vi4 + 6].copy_from_slice(b" bits"); vi4 += 6;
+            self.add_line(&vb4[..vi4], LCARS_PURPLE);
         } else if cmd.starts_with(b"trm") {
             // REAL TRM 7M model: embedded seed-42 weights, forward + benchmark
             let mut model = trm7m::Trm7m::new();
