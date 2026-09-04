@@ -116,6 +116,51 @@ class NativeBridgeServer:
         if op == "ping":
             return {"ok": True, "pong": time.time()}
 
+        if op == "verify_build":
+            # BOUNDED execution op (Catalyst structural fix): the platform
+            # can now VERIFY port work through the mesh. Allowlist only —
+            # kernel build check + a named host harness run. No arbitrary
+            # command execution (DDR/Shield posture maintained).
+            import subprocess
+            harness = (payload.get("harness") or "").strip()
+            root = r"F:\Development sites\TRM-Swarm-OS-v2\trm_uefi_kernel"
+            results = {}
+            # 1. kernel build gate (always)
+            try:
+                r = subprocess.run(
+                    ["cargo", "build", "--release", "--target", "x86_64-unknown-uefi"],
+                    cwd=root, capture_output=True, text=True, timeout=120,
+                )
+                errs = [l for l in (r.stdout + r.stderr).splitlines() if l.startswith("error")]
+                results["kernel_build"] = {
+                    "ok": len(errs) == 0, "errors": len(errs),
+                    "tail": "\n".join(errs[:3]) or (r.stdout.splitlines()[-1:] or [""])[0],
+                }
+            except Exception as ex:
+                results["kernel_build"] = {"ok": False, "errors": 1, "tail": str(ex)}
+            # 2. harness run (allowlisted: must be host_* under trm_uefi_kernel)
+            if harness:
+                import os as _os
+                hpath = _os.path.join(root, harness)
+                if _os.path.isdir(hpath) and harness.startswith("host_"):
+                    try:
+                        r = subprocess.run(
+                            ["cargo", "run", "--release"], cwd=hpath,
+                            capture_output=True, text=True, timeout=180,
+                        )
+                        ok = r.returncode == 0
+                        out = (r.stdout or "") + (r.stderr or "")
+                        results[harness] = {
+                            "ok": ok,
+                            "pass_lines": [l for l in out.splitlines() if "PASS" in l or "OK" in l][:10],
+                            "fail_lines": [l for l in out.splitlines() if "FAIL" in l or "error[" in l][:5],
+                        }
+                    except Exception as ex:
+                        results[harness] = {"ok": False, "fail_lines": [str(ex)]}
+                else:
+                    results[harness] = {"ok": False, "fail_lines": ["harness not allowlisted"]}
+            return {"ok": True, "results": results}
+
         if op == "jarvis_chat":
             # NATIVE Jarvis: deterministic platform intelligence, no external LLM.
             # Runs the real council deliberation + K3 ambiguity routing +
