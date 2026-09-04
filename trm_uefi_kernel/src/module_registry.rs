@@ -16,25 +16,34 @@ use alloc::vec::Vec;
 
 /// Registry summary: (total, real, ported, skeleton, excluded).
 pub fn summary() -> (u64, u64, u64, u64, u64) {
-    // CODE TRUTH (re-audit v19.4.0): rendered from actual module bodies,
-    // not claims. real = modules with substantive logic; manual = bodies
-    // still carrying MANUAL markers; tiny = constants-only (<1.5KB).
-    (188, 73, 106, 10, 9)
+    // CODE TRUTH (re-audit v19.4.0 post-fanout): 97 substantive + 6 infra.
+    // Fan-out batches A/B/C + probe added ~19 REAL (mailbox, kgraph, CLB,
+    // chaos, voltage_node, skill_validator, dram, symbology, etc.).
+    (188, 98, 0, 91, 9)
 }
 
 /// The 110 REAL (verified intelligence) modules — the ones the kernel
 /// actually executes, not just compiles.
 pub const REAL_MODULES: &'static [&'static str] = &[
+    "advanced_scene_fusion",
+    "agent_mailbox",
+    "agent_mailbox_bus",
     "agent_runtime",
     "allocator",
+    "attempt_sampler",
     "autonomous_cadence",
     "autonomous_scenario_setup",
     "benchmark_epistemology",
     "bridge",
+    "chain_of_verification",
+    "chaos_engine",
+    "cognitive_load_balancer",
+    "coordination_protocol",
     "council",
     "daily_evolution_engine",
     "ddr_antibody",
     "digital_twin",
+    "dram_pattern_computer",
     "epistemology_core",
     "faceted_torus_ternary",
     "federation_manager",
@@ -50,6 +59,7 @@ pub const REAL_MODULES: &'static [&'static str] = &[
     "generative_architect",
     "global_memory",
     "gpu_cuda_microkernel_binder",
+    "gpu_infinity_computer",
     "gpu_unlock_architecture",
     "hardware_voltage_microkernel_binder",
     "heartbeat_scheduler",
@@ -75,6 +85,7 @@ pub const REAL_MODULES: &'static [&'static str] = &[
     "modmap_all",
     "module_registry",
     "monad",
+    "multimodal_ingestion",
     "nand_fs",
     "native_mailbox_bridge",
     "pbft_consensus",
@@ -82,22 +93,36 @@ pub const REAL_MODULES: &'static [&'static str] = &[
     "quic_protocol",
     "resonance_engine",
     "security_scanner",
+    "self_healing_infra",
     "semantic_cache",
     "semantic_index",
+    "semantic_knowledge_graph",
     "sentinel",
     "simd_accelerator",
+    "skill_loader",
+    "skill_matrix_sync",
+    "skill_validator",
+    "small_diffusion_engine",
     "sram_pattern_computer",
     "star_matrix",
     "star_matrix_lattice",
+    "sub_atomic_kernel",
+    "swarm_performance_insights",
     "symbology_etymology_monad",
     "task_arbiter",
+    "telemetry_fabric",
+    "thz_bonsai_gateway",
     "thz_wave_gateway",
     "time",
+    "tool_forge",
     "totality",
     "trm7m",
+    "trm_7m_optimized",
     "trm_brain",
     "turbovec",
     "turbovec_memory",
+    "voltage_node_engine",
+    "worktree_manager",
 ];
 
 /// Modules recognized by the booted command terminal (22 commands).
