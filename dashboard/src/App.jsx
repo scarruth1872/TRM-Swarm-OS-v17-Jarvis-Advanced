@@ -753,8 +753,12 @@ export default function App() {
     setAttachedImage(null);
     setIsProcessing(true);
     try {
-      console.log('Sending message:', { role, message: fullMsg, sender: 'user' });
-      const res = await axios.post(`${API_BASE}/swarm/chat`, { role, message: fullMsg, sender: 'user' });
+      const historySlice = (messages[role] || []).slice(-10).map(m => ({
+        role: m.sender === 'user' ? 'user' : 'assistant',
+        content: m.text
+      }));
+      console.log('Sending message with history:', { role, message: fullMsg, sender: 'user', history_count: historySlice.length });
+      const res = await axios.post(`${API_BASE}/swarm/chat`, { role, message: fullMsg, sender: 'user', history: historySlice });
       console.log('Received response:', res.data);
       const replyText = res.data?.response || res.data?.reply || res.data?.message || res.data?.content || res.data?.text || (typeof res.data === 'string' ? res.data : JSON.stringify(res.data));
       const agentName = res.data?.name || res.data?.agent || role;

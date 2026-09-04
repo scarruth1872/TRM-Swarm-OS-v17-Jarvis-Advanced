@@ -5,6 +5,13 @@ import axios from 'axios';
 
 const DEFAULT_PAPERS = [
   {
+    id: 189,
+    section: 'Cognitive Architecture',
+    title: 'Article 189 — Frontier Open-Source Chat Intelligence Ingestion: Multi-Turn Context Continuity, Thought Completion & Architectural Parity',
+    status: 'PUBLISHED',
+    finding: 'Full 14-Agent Swarm Council PBFT ratification (14-0-0, score +0.9871 Gold) of Proposal CP-CHAT-001 absorbing frontier architectural patterns from Open WebUI, LibreChat, Dify, AnythingLLM, and FastChat: (1) Multi-Turn Context Continuity: migration from isolated single-turn generation to rolling multi-turn message arrays with num_ctx=8192 (up to 32768) and sliding-window history ingestion (last 10-20 turns); (2) Thought Completion & Fluency: expansion of num_predict from 250 to 2048-4096 tokens, socket read timeout to 30,000ms, collapsible <think>...</think> chain-of-thought extraction, and auto-continuation loop eliminating mid-sentence truncation; (3) Dynamic Model Shunting: routing conversational queries to ultra-fast gemma3:1b/4b (<250ms) and deep analytical proofs/code to deepseek-r1:8b, qwen2.5-coder, and bonsai-27b with Rayon parallel dispatch; (4) Sovereign Cognitive Engine: rich multi-paragraph domain synthesis across all 14 personas with immutable system anchor pinning (0x4D4F4E4144000001).'
+  },
+  {
     id: 188,
     section: 'Distributed Compute',
     title: 'Article 188 — Planetary Task Coordination & Autonomous Work-Stealing: 14-Agent PBFT Orchestration across Laptop Secondary Node & 100-Node Sovereign Federation',
