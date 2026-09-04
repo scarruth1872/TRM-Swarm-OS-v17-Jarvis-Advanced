@@ -27,6 +27,18 @@ pub struct TRMBrain {
     pub total_inferences: u64,
 }
 
+#[inline]
+fn f32_tanh(x: f32) -> f32 {
+    if x > 3.0 {
+        1.0
+    } else if x < -3.0 {
+        -1.0
+    } else {
+        let x2 = x * x;
+        x * (27.0 + x2) / (27.0 + 9.0 * x2)
+    }
+}
+
 impl TRMBrain {
     pub fn new() -> Self {
         TRMBrain {
@@ -58,7 +70,7 @@ impl TRMBrain {
             for i in 0..STATE_DIMENSION {
                 let prev = current_state[i];
                 let input_val = if i < context.len() { context[i] } else { 0.0f32 };
-                let next_val = (0.85 * prev + 0.15 * input_val).tanh();
+                let next_val = f32_tanh(0.85 * prev + 0.15 * input_val);
                 current_state[i] = next_val;
                 energy += next_val.abs();
             }

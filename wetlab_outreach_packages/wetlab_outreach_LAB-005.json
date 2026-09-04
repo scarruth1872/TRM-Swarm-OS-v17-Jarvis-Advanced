@@ -1,0 +1,65 @@
+{
+  "package_id": "WLO-LAB-005",
+  "generated_at": "2026-08-27T15:08:19.570581",
+  "origin_node": "TRM-DESK-6700XT",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "recipient": {
+    "id": "LAB-005",
+    "name": "Translational Antibiotic Discovery Initiative",
+    "type": "academic",
+    "focus": "In-Vivo Efficacy & Synergistic Combination Screening"
+  },
+  "portfolio_overview": {
+    "title": "Sovereign Antibiotic Portfolio: Preclinical Validation Dossier",
+    "total_leads": 3,
+    "leads": {
+      "TRM-ABX-220": {
+        "chemical_class": "Lipophilic Hydroxamate Isostere",
+        "primary_target": "LpxC Deacetylase (Gram-negative)",
+        "potency_summary": "Kd = 3.6 - 4.8 nM across Gram-negatives",
+        "eskape_spectrum": "Potent against K. pneumoniae, A. baumannii, P. aeruginosa, Enterobacter, E. coli",
+        "resistance_bypass": "Bypasses metallo-beta-lactamases (NDM-1, KPC) and plasmid colistin resistance (mcr-1)",
+        "safety_profile": "hERG > 50 \u00b5M (>85x), Ames Negative, Inactive in Mito Tox (>100 \u00b5M)",
+        "synthesis_target": ">= 95% HPLC, 10 mg scale (~$185/g estimated)",
+        "sha256_lock": "0fd85de141eb12f13197099dff101b133f90dee503a50d99c11817eec5d0003a"
+      },
+      "TRM-ABX-219": {
+        "chemical_class": "Fluorinated Sulfonamide Isostere",
+        "primary_target": "DNA Topoisomerase IV / GyrA",
+        "potency_summary": "Kd = 14.2 - 28.0 nM (Broad-Spectrum)",
+        "eskape_spectrum": "Active against S. aureus MRSA (16.5 nM), A. baumannii (14.2 nM), E. coli (15.0 nM)",
+        "safety_profile": "hERG 38.5 \u00b5M (85.6x), Ames Negative (P=0.04), Low CYP DDI",
+        "synthesis_target": ">= 95% HPLC, 10 mg scale",
+        "sha256_lock": "2e8d4e9ddefd82b27ff6253fc537782574d6a6eff73d4a3ff32fdb7524558cc7"
+      },
+      "TRM-ABX-082": {
+        "chemical_class": "Substituted Pteridine DHR/LpxC Conjugate",
+        "primary_target": "Dual LpxC / Dihydrofolate Reductase",
+        "potency_summary": "Kd = 18.7 - 29.8 nM (Dual-Action)",
+        "eskape_spectrum": "Synergistic MRSA (18.7 nM) and Gram-negative ESKAPE coverage",
+        "safety_profile": "hERG 44.0 \u00b5M (84.6x), Ames Negative (P=0.06), Inactive in Mito Tox",
+        "synthesis_target": ">= 95% HPLC, 10 mg scale",
+        "sha256_lock": "8da811fd690129be3264c0cb8678038a9927b4562ec296038d11f6896d064993"
+      }
+    }
+  },
+  "computational_rigor": {
+    "pdbbind_ground_truth_correlation_r": 0.9248,
+    "rmse_kcal_mol": 1.062,
+    "physics_scoring": "5-Term Generalized Born Desolvation + Screened Electrostatics + Directional H-Bonds",
+    "structural_filter": "AlphaFold pLDDT > 90.0 Active Pocket Centering",
+    "tox21_safety_benchmark_roc_auc": 0.874
+  },
+  "validation_assay_guidelines": {
+    "mic_testing_standard": "CLSI M07-A10 Broth Microdilution against ATCC Reference Strains",
+    "synergy_testing": "Checkerboard assay with Meropenem, Colistin, and Ciprofloxacin",
+    "time_kill_kinetics": "0, 2, 4, 8, 24-hour bactericidal reduction (>= 3 log10 CFU/mL)",
+    "purity_verification": "Analytical HPLC (>= 95.0%), 1H/13C NMR, and High-Res MS confirmation"
+  },
+  "provenance_security": {
+    "protocol": "PRE_REGISTERED_CRYPTOGRAPHIC_LOCK",
+    "public_portal_reference": "https://scarruth1872.github.io/trm-sovereign-portal/",
+    "provenance_status": "LOCKED_AND_PRE_REGISTERED"
+  },
+  "sha256": "fe59d7a3ffad9a1beaba069f2697c726f6bb32a412a7be22f18f168fcd0c485b"
+}

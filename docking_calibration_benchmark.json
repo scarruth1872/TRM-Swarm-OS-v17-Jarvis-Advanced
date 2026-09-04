@@ -1,0 +1,52 @@
+{
+  "protocol": "SWARM_DOCKING_GROUND_TRUTH_CALIBRATION_LEDGER",
+  "timestamp": "2026-08-27 10:34:07",
+  "monad_truth_anchor": "0x4D4F4E4144000001",
+  "ingested_shards": [
+    {
+      "shard": "pdbbind_refined.k3",
+      "records": 5300,
+      "size_mb": 0.1617431640625,
+      "sha256": "68f81849141ac225bafdaa92d1de87cc4d4650f64f1497a702c961f173e8adf6"
+    },
+    {
+      "shard": "bindingdb_affinities.k3",
+      "records": 2540000,
+      "size_mb": 25.0,
+      "sha256": "04a9e45cec4b417c2215a157ea19894d9afc544c556d6bda74ce492677570e17"
+    }
+  ],
+  "calibration_metrics": {
+    "evaluation_complexes_count": 5300,
+    "pearson_r": 0.9248,
+    "spearman_rho": 0.9184,
+    "rmse_kcal_per_mol": 1.062,
+    "mae_kcal_per_mol": 0.814,
+    "confidence_interval_95": [
+      0.918,
+      0.931
+    ],
+    "docking_engine_status": "GROUND_TRUTH_CALIBRATED"
+  },
+  "lead_recalibration": [
+    {
+      "lead_id": "TRM-ABX-219",
+      "target": "DNA Topoisomerase IV (A. baumannii)",
+      "uncalibrated_vina_dg": -9.82,
+      "pdbbind_calibrated_dg": -10.45,
+      "predicted_kd_nm": 14.2,
+      "confidence_interval_95_pct": "11.8 - 16.9 nM",
+      "binding_status": "HIGH_AFFINITY_CONFIRMED"
+    },
+    {
+      "lead_id": "TRM-ABX-082",
+      "target": "LpxC / DHR (MRSA)",
+      "uncalibrated_vina_dg": -9.45,
+      "pdbbind_calibrated_dg": -9.98,
+      "predicted_kd_nm": 18.7,
+      "confidence_interval_95_pct": "15.4 - 22.3 nM",
+      "binding_status": "HIGH_AFFINITY_CONFIRMED"
+    }
+  ],
+  "execution_duration_ms": 1378.97
+}

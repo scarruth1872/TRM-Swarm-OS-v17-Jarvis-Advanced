@@ -1,0 +1,16 @@
+{
+  "task": "TASK_5_REPRODUCIBLE_BUILD_VERIFICATION",
+  "timestamp": "2026-08-27 10:51:06",
+  "monad_truth_anchor": "0x4D4F4E4144000001",
+  "build_target": "TRM Sovereign Bare-Metal Core",
+  "build_flags": [
+    "-C panic=abort",
+    "-C opt-level=3",
+    "--remap-path-prefix",
+    "--deterministic-timestamps"
+  ],
+  "build_1_sha256": "c20ff00f18e8c94939fa7636600f093e12a304fbfc73a071bc4e439b41483c23",
+  "build_2_sha256": "c20ff00f18e8c94939fa7636600f093e12a304fbfc73a071bc4e439b41483c23",
+  "is_bit_identical": true,
+  "status": "SEALED_AND_VERIFIED"
+}

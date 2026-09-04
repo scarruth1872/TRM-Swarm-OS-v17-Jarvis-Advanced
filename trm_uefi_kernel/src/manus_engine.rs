@@ -10,6 +10,18 @@ use alloc::string::String;
 use alloc::vec;
 use alloc::vec::Vec;
 
+#[inline]
+fn f32_sqrt(x: f32) -> f32 {
+    if x <= 0.0 {
+        return 0.0;
+    }
+    let mut guess = if x > 1.0 { x * 0.5 } else { 1.0 };
+    for _ in 0..10 {
+        guess = 0.5 * (guess + x / guess);
+    }
+    guess
+}
+
 #[derive(Debug, Clone)]
 pub struct QState {
     pub num_dimensions: usize,
@@ -19,7 +31,7 @@ pub struct QState {
 impl QState {
     pub fn new(dim: usize) -> Self {
         let n = dim.max(1);
-        let init_val = 1.0f32 / (n as f32).sqrt();
+        let init_val = 1.0f32 / f32_sqrt(n as f32);
         QState {
             num_dimensions: n,
             amplitudes: vec![init_val; n],
@@ -31,7 +43,7 @@ impl QState {
         for &a in self.amplitudes.iter() {
             sum_sq += a * a;
         }
-        let norm = sum_sq.sqrt();
+        let norm = f32_sqrt(sum_sq);
         if norm > 0.00001 {
             for a in self.amplitudes.iter_mut() {
                 *a /= norm;
