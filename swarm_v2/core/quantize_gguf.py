@@ -188,6 +188,58 @@ def dequant_tensor(reader, t):
         if nb != ne * 2:
             return None, f"F16 n_bytes {nb} != n_elements*2 {ne*2}"
         return raw.view("<f2").astype(np.float32), "F16"
+    # Q8_0 (type 8): per-32 block: [2B f16 d][32B int8 qs], w = d*qs
+    if tt == 8:
+        nblk = nb // 34
+        if ne != nblk * 32:
+            return None, f"Q8_0 shape-mismatch ne={ne} blocks={nblk}"
+        b = raw.reshape(nblk, 34)
+        d = b[:, 0:2].copy().view("<f2").astype(np.float32).reshape(-1)
+        qs = b[:, 2:34].astype(np.int8).astype(np.float32)  # (nblk,32)
+        return (qs * d[:, None]).reshape(-1), "Q8_0"
+    # Q5_K (type 6): 176 B/block, 256 weights. Layout (llama.cpp block_q5_K):
+    #   [0:2] f16 d, [2:4] f16 dmin, [4:16] 12B scales, [16:48] 32B qh,
+    #   [48:176] 128B qs (4-bit nibbles). weight via get_scale_min_k4 scales.
+    if tt == 6:
+        nblk = nb // 176
+        if ne != nblk * 256:
+            return None, f"Q5_K shape-mismatch ne={ne} blocks={nblk}"
+        b = raw.reshape(nblk, 176)
+        d = b[:, 0:2].copy().view("<f2").astype(np.float32).reshape(-1)
+        dmin = b[:, 2:4].copy().view("<f2").astype(np.float32).reshape(-1)
+        scarr = b[:, 4:16]
+        qh = b[:, 16:48]   # (nblk,32)
+        qs = b[:, 48:176]  # (nblk,128)
+        out = np.empty((nblk, 256), dtype=np.float32)
+
+        def gsmk5(j, q):
+            j = int(j)
+            if j < 4:
+                sc = (q[:, j] & 63).astype(np.float32).reshape(-1)
+                m = (q[:, j + 4] & 63).astype(np.float32).reshape(-1)
+            else:
+                sc = ((q[:, j + 4] & 0x0F) | ((q[:, j - 4] >> 6) << 4)).astype(np.float32).reshape(-1)
+                m = ((q[:, j + 4] >> 4) | ((q[:, j] >> 6) << 4)).astype(np.float32).reshape(-1)
+            return sc, m
+
+        is_ = 0
+        for g in range(4):  # 4 groups of 32 ql bytes -> 64 weights
+            sc1, m1 = gsmk5(is_ + 0, scarr)
+            sc2, m2 = gsmk5(is_ + 1, scarr)
+            d1 = (d * sc1)[:, None]
+            mm1 = (dmin * m1)[:, None]
+            d2 = (d * sc2)[:, None]
+            mm2 = (dmin * m2)[:, None]
+            qg = qs[:, g * 32:(g + 1) * 32]  # 32 nibble bytes
+            # qh bit for group g: low weight uses bit (2g), high uses bit (2g+1)
+            lo_bit = ((qh >> (2 * g)) & 1).astype(np.float32)
+            hi_bit = ((qh >> (2 * g + 1)) & 1).astype(np.float32)
+            lo = (qg & 0x0F).astype(np.float32) + 16.0 * lo_bit
+            hi = (qg >> 4).astype(np.float32) + 16.0 * hi_bit
+            out[:, g * 64:g * 64 + 32] = d1 * lo - mm1
+            out[:, g * 64 + 32:g * 64 + 64] = d2 * hi - mm2
+            is_ += 2
+        return out.reshape(-1), "Q5_K"
     return None, f"unsupported-type-{tt}"
 
 

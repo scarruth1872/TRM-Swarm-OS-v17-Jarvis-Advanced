@@ -3,20 +3,16 @@
  "model_tag": "gemma3:1b",
  "blob": "C:\\Users\\shawn\\.ollama\\models\\blobs\\sha256-7cd4618c1faf8b7233c6c906dac1694b6a47684b37b8895d470ac688520b9c01",
  "tensors_total": 340,
- "tensors_quantized": 0,
- "tensors_skipped": 340,
+ "tensors_quantized": 53,
+ "tensors_skipped": 287,
  "skipped": [
   {
    "name": "output_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "token_embd.weight",
-   "reason": "unsupported-type-8"
-  },
-  {
    "name": "blk.0.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.0.attn_k_norm.weight",
@@ -27,20 +23,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.0.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.0.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.0.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.0.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.0.ffn_down.weight",
@@ -48,7 +36,7 @@
   },
   {
    "name": "blk.0.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.0.ffn_norm.weight",
@@ -56,7 +44,7 @@
   },
   {
    "name": "blk.0.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.0.post_attention_norm.weight",
@@ -68,7 +56,7 @@
   },
   {
    "name": "blk.1.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.1.attn_k_norm.weight",
@@ -79,20 +67,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.1.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.1.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.1.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.1.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.1.ffn_down.weight",
@@ -100,7 +80,7 @@
   },
   {
    "name": "blk.1.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.1.ffn_norm.weight",
@@ -108,7 +88,7 @@
   },
   {
    "name": "blk.1.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.1.post_attention_norm.weight",
@@ -120,7 +100,7 @@
   },
   {
    "name": "blk.2.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.2.attn_k_norm.weight",
@@ -131,20 +111,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.2.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.2.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.2.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.2.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.2.ffn_down.weight",
@@ -152,7 +124,7 @@
   },
   {
    "name": "blk.2.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.2.ffn_norm.weight",
@@ -160,7 +132,7 @@
   },
   {
    "name": "blk.2.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.2.post_attention_norm.weight",
@@ -172,7 +144,7 @@
   },
   {
    "name": "blk.3.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.3.attn_k_norm.weight",
@@ -183,12 +155,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.3.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.3.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.3.attn_q_norm.weight",
@@ -196,15 +164,11 @@
   },
   {
    "name": "blk.3.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.3.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.3.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.3.ffn_norm.weight",
@@ -212,7 +176,7 @@
   },
   {
    "name": "blk.3.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.3.post_attention_norm.weight",
@@ -224,7 +188,7 @@
   },
   {
    "name": "blk.4.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.4.attn_k_norm.weight",
@@ -235,12 +199,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.4.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.4.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.4.attn_q_norm.weight",
@@ -248,15 +208,11 @@
   },
   {
    "name": "blk.4.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.4.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.4.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.4.ffn_norm.weight",
@@ -264,7 +220,7 @@
   },
   {
    "name": "blk.4.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.4.post_attention_norm.weight",
@@ -276,7 +232,7 @@
   },
   {
    "name": "blk.5.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.5.attn_k_norm.weight",
@@ -287,20 +243,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.5.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.5.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.5.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.5.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.5.ffn_down.weight",
@@ -308,7 +256,7 @@
   },
   {
    "name": "blk.5.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.5.ffn_norm.weight",
@@ -316,7 +264,7 @@
   },
   {
    "name": "blk.5.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.5.post_attention_norm.weight",
@@ -328,7 +276,7 @@
   },
   {
    "name": "blk.6.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.6.attn_k_norm.weight",
@@ -339,12 +287,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.6.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.6.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.6.attn_q_norm.weight",
@@ -352,15 +296,11 @@
   },
   {
    "name": "blk.6.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.6.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.6.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.6.ffn_norm.weight",
@@ -368,7 +308,7 @@
   },
   {
    "name": "blk.6.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.6.post_attention_norm.weight",
@@ -380,7 +320,7 @@
   },
   {
    "name": "blk.7.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.7.attn_k_norm.weight",
@@ -391,12 +331,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.7.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.7.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.7.attn_q_norm.weight",
@@ -404,15 +340,11 @@
   },
   {
    "name": "blk.7.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.7.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.7.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.7.ffn_norm.weight",
@@ -420,7 +352,7 @@
   },
   {
    "name": "blk.7.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.7.post_attention_norm.weight",
@@ -432,7 +364,7 @@
   },
   {
    "name": "blk.8.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.8.attn_k_norm.weight",
@@ -443,20 +375,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.8.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.8.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.8.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.8.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.8.ffn_down.weight",
@@ -464,7 +388,7 @@
   },
   {
    "name": "blk.8.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.8.ffn_norm.weight",
@@ -472,7 +396,7 @@
   },
   {
    "name": "blk.8.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.8.post_attention_norm.weight",
@@ -484,7 +408,7 @@
   },
   {
    "name": "blk.9.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.9.attn_k_norm.weight",
@@ -495,12 +419,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.9.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.9.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.9.attn_q_norm.weight",
@@ -508,15 +428,11 @@
   },
   {
    "name": "blk.9.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.9.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.9.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.9.ffn_norm.weight",
@@ -524,7 +440,7 @@
   },
   {
    "name": "blk.9.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.9.post_attention_norm.weight",
@@ -536,7 +452,7 @@
   },
   {
    "name": "blk.10.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.10.attn_k_norm.weight",
@@ -547,12 +463,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.10.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.10.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.10.attn_q_norm.weight",
@@ -560,15 +472,11 @@
   },
   {
    "name": "blk.10.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.10.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.10.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.10.ffn_norm.weight",
@@ -576,7 +484,7 @@
   },
   {
    "name": "blk.10.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.10.post_attention_norm.weight",
@@ -588,7 +496,7 @@
   },
   {
    "name": "blk.11.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.11.attn_k_norm.weight",
@@ -599,20 +507,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.11.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.11.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.11.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.11.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.11.ffn_down.weight",
@@ -620,7 +520,7 @@
   },
   {
    "name": "blk.11.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.11.ffn_norm.weight",
@@ -628,7 +528,7 @@
   },
   {
    "name": "blk.11.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.11.post_attention_norm.weight",
@@ -640,7 +540,7 @@
   },
   {
    "name": "blk.12.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.12.attn_k_norm.weight",
@@ -651,12 +551,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.12.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.12.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.12.attn_q_norm.weight",
@@ -664,15 +560,11 @@
   },
   {
    "name": "blk.12.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.12.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.12.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.12.ffn_norm.weight",
@@ -680,7 +572,7 @@
   },
   {
    "name": "blk.12.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.12.post_attention_norm.weight",
@@ -692,7 +584,7 @@
   },
   {
    "name": "blk.13.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.13.attn_k_norm.weight",
@@ -703,12 +595,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.13.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.13.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.13.attn_q_norm.weight",
@@ -716,15 +604,11 @@
   },
   {
    "name": "blk.13.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.13.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.13.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.13.ffn_norm.weight",
@@ -732,7 +616,7 @@
   },
   {
    "name": "blk.13.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.13.post_attention_norm.weight",
@@ -744,7 +628,7 @@
   },
   {
    "name": "blk.14.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.14.attn_k_norm.weight",
@@ -755,20 +639,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.14.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.14.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.14.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.14.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.14.ffn_down.weight",
@@ -776,7 +652,7 @@
   },
   {
    "name": "blk.14.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.14.ffn_norm.weight",
@@ -784,7 +660,7 @@
   },
   {
    "name": "blk.14.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.14.post_attention_norm.weight",
@@ -796,7 +672,7 @@
   },
   {
    "name": "blk.15.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.15.attn_k_norm.weight",
@@ -807,12 +683,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.15.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.15.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.15.attn_q_norm.weight",
@@ -820,15 +692,11 @@
   },
   {
    "name": "blk.15.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.15.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.15.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.15.ffn_norm.weight",
@@ -836,7 +704,7 @@
   },
   {
    "name": "blk.15.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.15.post_attention_norm.weight",
@@ -848,7 +716,7 @@
   },
   {
    "name": "blk.16.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.16.attn_k_norm.weight",
@@ -859,12 +727,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.16.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.16.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.16.attn_q_norm.weight",
@@ -872,15 +736,11 @@
   },
   {
    "name": "blk.16.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.16.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.16.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.16.ffn_norm.weight",
@@ -888,7 +748,7 @@
   },
   {
    "name": "blk.16.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.16.post_attention_norm.weight",
@@ -900,7 +760,7 @@
   },
   {
    "name": "blk.17.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.17.attn_k_norm.weight",
@@ -911,20 +771,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.17.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.17.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.17.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.17.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.17.ffn_down.weight",
@@ -932,7 +784,7 @@
   },
   {
    "name": "blk.17.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.17.ffn_norm.weight",
@@ -940,7 +792,7 @@
   },
   {
    "name": "blk.17.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.17.post_attention_norm.weight",
@@ -952,7 +804,7 @@
   },
   {
    "name": "blk.18.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.18.attn_k_norm.weight",
@@ -963,12 +815,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.18.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.18.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.18.attn_q_norm.weight",
@@ -976,15 +824,11 @@
   },
   {
    "name": "blk.18.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.18.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.18.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.18.ffn_norm.weight",
@@ -992,7 +836,7 @@
   },
   {
    "name": "blk.18.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.18.post_attention_norm.weight",
@@ -1004,7 +848,7 @@
   },
   {
    "name": "blk.19.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.19.attn_k_norm.weight",
@@ -1015,12 +859,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.19.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.19.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.19.attn_q_norm.weight",
@@ -1028,15 +868,11 @@
   },
   {
    "name": "blk.19.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.19.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.19.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.19.ffn_norm.weight",
@@ -1044,7 +880,7 @@
   },
   {
    "name": "blk.19.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.19.post_attention_norm.weight",
@@ -1056,7 +892,7 @@
   },
   {
    "name": "blk.20.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.20.attn_k_norm.weight",
@@ -1067,20 +903,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.20.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.20.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.20.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.20.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.20.ffn_down.weight",
@@ -1088,7 +916,7 @@
   },
   {
    "name": "blk.20.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.20.ffn_norm.weight",
@@ -1096,7 +924,7 @@
   },
   {
    "name": "blk.20.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.20.post_attention_norm.weight",
@@ -1108,7 +936,7 @@
   },
   {
    "name": "blk.21.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.21.attn_k_norm.weight",
@@ -1119,12 +947,8 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.21.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.21.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.21.attn_q_norm.weight",
@@ -1132,15 +956,11 @@
   },
   {
    "name": "blk.21.attn_v.weight",
-   "reason": "unsupported-type-6"
-  },
-  {
-   "name": "blk.21.ffn_down.weight",
-   "reason": "unsupported-type-12"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.21.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.21.ffn_norm.weight",
@@ -1148,7 +968,7 @@
   },
   {
    "name": "blk.21.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.21.post_attention_norm.weight",
@@ -1160,7 +980,7 @@
   },
   {
    "name": "blk.22.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.22.attn_k_norm.weight",
@@ -1171,20 +991,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.22.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.22.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.22.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.22.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.22.ffn_down.weight",
@@ -1192,7 +1004,7 @@
   },
   {
    "name": "blk.22.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.22.ffn_norm.weight",
@@ -1200,7 +1012,7 @@
   },
   {
    "name": "blk.22.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.22.post_attention_norm.weight",
@@ -1212,7 +1024,7 @@
   },
   {
    "name": "blk.23.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.23.attn_k_norm.weight",
@@ -1223,20 +1035,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.23.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.23.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.23.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.23.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.23.ffn_down.weight",
@@ -1244,7 +1048,7 @@
   },
   {
    "name": "blk.23.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.23.ffn_norm.weight",
@@ -1252,7 +1056,7 @@
   },
   {
    "name": "blk.23.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.23.post_attention_norm.weight",
@@ -1264,7 +1068,7 @@
   },
   {
    "name": "blk.24.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.24.attn_k_norm.weight",
@@ -1275,20 +1079,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.24.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.24.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.24.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.24.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.24.ffn_down.weight",
@@ -1296,7 +1092,7 @@
   },
   {
    "name": "blk.24.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.24.ffn_norm.weight",
@@ -1304,7 +1100,7 @@
   },
   {
    "name": "blk.24.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.24.post_attention_norm.weight",
@@ -1316,7 +1112,7 @@
   },
   {
    "name": "blk.25.attn_k.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.25.attn_k_norm.weight",
@@ -1327,20 +1123,12 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   },
   {
-   "name": "blk.25.attn_output.weight",
-   "reason": "unsupported-type-12"
-  },
-  {
    "name": "blk.25.attn_q.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.25.attn_q_norm.weight",
    "reason": "1-D (norm/scale), not a weight matrix"
-  },
-  {
-   "name": "blk.25.attn_v.weight",
-   "reason": "unsupported-type-8"
   },
   {
    "name": "blk.25.ffn_down.weight",
@@ -1348,7 +1136,7 @@
   },
   {
    "name": "blk.25.ffn_gate.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.25.ffn_norm.weight",
@@ -1356,7 +1144,7 @@
   },
   {
    "name": "blk.25.ffn_up.weight",
-   "reason": "unsupported-type-6"
+   "reason": "NaN/inf in dequant (Q5_K)"
   },
   {
    "name": "blk.25.post_attention_norm.weight",
@@ -1367,19 +1155,1134 @@
    "reason": "1-D (norm/scale), not a weight matrix"
   }
  ],
- "params_quantized": 0,
- "dequant_fp32_bytes": 0,
- "source_gguf_bytes": 0,
- "trit_bytes": 0,
- "compression_vs_fp32": 0.0,
- "compression_vs_source_gguf": 1.0,
- "bits_per_weight": null,
- "cosine_mean": null,
- "cosine_min": null,
- "cosine_max": null,
+ "params_quantized": 440008704,
+ "dequant_fp32_bytes": 1760034816,
+ "source_gguf_bytes": 400416768,
+ "trit_bytes": 110002176,
+ "compression_vs_fp32": 16.0,
+ "compression_vs_source_gguf": 3.64,
+ "bits_per_weight": 2.0,
+ "cosine_mean": 0.8579,
+ "cosine_min": 0.8042,
+ "cosine_max": 0.8846,
  "artifact": "F:\\Development sites\\TRM-Swarm-OS-v2\\gguf_gemma3_1b_trits.bin",
- "artifact_bytes": 0,
- "elapsed_s": 1.7,
+ "artifact_bytes": 110002388,
+ "elapsed_s": 14.9,
  "seal": "0x901623e02cdf6656",
- "honesty_note": "GGUF source is already Q4_0/Q6_K pre-quantized; cosine is the REAL added loss of ternary vs dequantized fp32 weights; compression_vs_source_gguf is vs the original quantized bytes on disk, compression_vs_fp32 is the dequantized-fp32 baseline."
+ "honesty_note": "GGUF source is already Q4_0/Q6_K pre-quantized; cosine is the REAL added loss of ternary vs dequantized fp32 weights; compression_vs_source_gguf is vs the original quantized bytes on disk, compression_vs_fp32 is the dequantized-fp32 baseline.",
+ "tensors": [
+  {
+   "name": "token_embd.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    262144
+   ],
+   "n_elements": 301989888,
+   "src_bytes": 320864256,
+   "alpha": 0.021976,
+   "cosine": 0.883,
+   "trit_bytes": 75497472,
+   "packed_bytes": 75497472,
+   "bin_offset": 0,
+   "bin_len": 75497476,
+   "counts": {
+    "-1": 103828443,
+    "0": 94996871,
+    "+1": 103164574
+   }
+  },
+  {
+   "name": "blk.0.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.01822,
+   "cosine": 0.871,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 75497476,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 394417,
+    "0": 389020,
+    "+1": 396211
+   }
+  },
+  {
+   "name": "blk.0.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.031794,
+   "cosine": 0.8755,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 75792392,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 99429,
+    "0": 95962,
+    "+1": 99521
+   }
+  },
+  {
+   "name": "blk.1.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.01704,
+   "cosine": 0.8547,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 75866124,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 389562,
+    "0": 400728,
+    "+1": 389358
+   }
+  },
+  {
+   "name": "blk.1.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.034036,
+   "cosine": 0.8788,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 76161040,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 100635,
+    "0": 94054,
+    "+1": 100223
+   }
+  },
+  {
+   "name": "blk.2.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.017226,
+   "cosine": 0.8558,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 76234772,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 394844,
+    "0": 388994,
+    "+1": 395810
+   }
+  },
+  {
+   "name": "blk.2.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.040702,
+   "cosine": 0.8813,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 76529688,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 101069,
+    "0": 93364,
+    "+1": 100479
+   }
+  },
+  {
+   "name": "blk.3.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.016095,
+   "cosine": 0.8636,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 76603420,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 395431,
+    "0": 390179,
+    "+1": 394038
+   }
+  },
+  {
+   "name": "blk.3.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.007313,
+   "cosine": 0.8651,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 76898336,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2693280,
+    "0": 2577143,
+    "+1": 2692201
+   }
+  },
+  {
+   "name": "blk.4.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.011706,
+   "cosine": 0.8208,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 78888996,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 383822,
+    "0": 411737,
+    "+1": 384089
+   }
+  },
+  {
+   "name": "blk.4.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.00515,
+   "cosine": 0.8657,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 79183912,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2681736,
+    "0": 2598253,
+    "+1": 2682635
+   }
+  },
+  {
+   "name": "blk.5.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.020357,
+   "cosine": 0.8497,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 81174572,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 388136,
+    "0": 402822,
+    "+1": 388690
+   }
+  },
+  {
+   "name": "blk.5.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.033173,
+   "cosine": 0.8688,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 81469488,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 95588,
+    "0": 103284,
+    "+1": 96040
+   }
+  },
+  {
+   "name": "blk.6.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.018849,
+   "cosine": 0.8279,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 81543220,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 391850,
+    "0": 395134,
+    "+1": 392664
+   }
+  },
+  {
+   "name": "blk.6.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.009329,
+   "cosine": 0.8747,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 81838136,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2697228,
+    "0": 2568102,
+    "+1": 2697294
+   }
+  },
+  {
+   "name": "blk.7.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.021426,
+   "cosine": 0.8042,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 83828796,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 388663,
+    "0": 402730,
+    "+1": 388255
+   }
+  },
+  {
+   "name": "blk.7.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.007713,
+   "cosine": 0.8728,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 84123712,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2699524,
+    "0": 2568663,
+    "+1": 2694437
+   }
+  },
+  {
+   "name": "blk.8.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.021703,
+   "cosine": 0.8144,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 86114372,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 386360,
+    "0": 406297,
+    "+1": 386991
+   }
+  },
+  {
+   "name": "blk.8.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.032566,
+   "cosine": 0.8721,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 86409288,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 97536,
+    "0": 99527,
+    "+1": 97849
+   }
+  },
+  {
+   "name": "blk.9.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.013313,
+   "cosine": 0.8374,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 86483020,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 390921,
+    "0": 398616,
+    "+1": 390111
+   }
+  },
+  {
+   "name": "blk.9.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.009497,
+   "cosine": 0.8702,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 86777936,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2698771,
+    "0": 2569643,
+    "+1": 2694210
+   }
+  },
+  {
+   "name": "blk.10.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.014541,
+   "cosine": 0.8306,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 88768596,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 388792,
+    "0": 401554,
+    "+1": 389302
+   }
+  },
+  {
+   "name": "blk.10.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.009117,
+   "cosine": 0.8596,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 89063512,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2682178,
+    "0": 2597306,
+    "+1": 2683140
+   }
+  },
+  {
+   "name": "blk.11.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.015497,
+   "cosine": 0.8309,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 91054172,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 385297,
+    "0": 409262,
+    "+1": 385089
+   }
+  },
+  {
+   "name": "blk.11.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.025512,
+   "cosine": 0.8737,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 91349088,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 99536,
+    "0": 96283,
+    "+1": 99093
+   }
+  },
+  {
+   "name": "blk.12.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.016379,
+   "cosine": 0.8259,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 91422820,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 392001,
+    "0": 395741,
+    "+1": 391906
+   }
+  },
+  {
+   "name": "blk.12.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.006097,
+   "cosine": 0.8706,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 91717736,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2688948,
+    "0": 2582352,
+    "+1": 2691324
+   }
+  },
+  {
+   "name": "blk.13.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.016241,
+   "cosine": 0.8334,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 93708396,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 393796,
+    "0": 392624,
+    "+1": 393228
+   }
+  },
+  {
+   "name": "blk.13.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.005591,
+   "cosine": 0.8769,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 94003312,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2707473,
+    "0": 2546269,
+    "+1": 2708882
+   }
+  },
+  {
+   "name": "blk.14.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.018607,
+   "cosine": 0.8453,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 95993972,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 391187,
+    "0": 397807,
+    "+1": 390654
+   }
+  },
+  {
+   "name": "blk.14.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.030414,
+   "cosine": 0.8684,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 96288888,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 99360,
+    "0": 96093,
+    "+1": 99459
+   }
+  },
+  {
+   "name": "blk.15.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.017793,
+   "cosine": 0.8567,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 96362620,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 393899,
+    "0": 391211,
+    "+1": 394538
+   }
+  },
+  {
+   "name": "blk.15.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.009547,
+   "cosine": 0.8771,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 96657536,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2708816,
+    "0": 2545065,
+    "+1": 2708743
+   }
+  },
+  {
+   "name": "blk.16.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.012036,
+   "cosine": 0.8533,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 98648196,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 395067,
+    "0": 389512,
+    "+1": 395069
+   }
+  },
+  {
+   "name": "blk.16.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.008869,
+   "cosine": 0.8658,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 98943112,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2683179,
+    "0": 2596679,
+    "+1": 2682766
+   }
+  },
+  {
+   "name": "blk.17.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.012969,
+   "cosine": 0.8267,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 100933772,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 383988,
+    "0": 412307,
+    "+1": 383353
+   }
+  },
+  {
+   "name": "blk.17.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.025155,
+   "cosine": 0.8392,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 101228688,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 95908,
+    "0": 102627,
+    "+1": 96377
+   }
+  },
+  {
+   "name": "blk.18.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.011129,
+   "cosine": 0.8521,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 101302420,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 393914,
+    "0": 392247,
+    "+1": 393487
+   }
+  },
+  {
+   "name": "blk.18.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.005088,
+   "cosine": 0.8777,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 101597336,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2718508,
+    "0": 2525456,
+    "+1": 2718660
+   }
+  },
+  {
+   "name": "blk.19.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.01997,
+   "cosine": 0.8573,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 103587996,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 395808,
+    "0": 389152,
+    "+1": 394688
+   }
+  },
+  {
+   "name": "blk.19.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.006156,
+   "cosine": 0.882,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 103882912,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2732068,
+    "0": 2500804,
+    "+1": 2729752
+   }
+  },
+  {
+   "name": "blk.20.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.017863,
+   "cosine": 0.8548,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 105873572,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 395598,
+    "0": 387831,
+    "+1": 396219
+   }
+  },
+  {
+   "name": "blk.20.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.033273,
+   "cosine": 0.8779,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 106168488,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 99334,
+    "0": 96543,
+    "+1": 99035
+   }
+  },
+  {
+   "name": "blk.21.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.02128,
+   "cosine": 0.8438,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 106242220,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 397579,
+    "0": 384747,
+    "+1": 397322
+   }
+  },
+  {
+   "name": "blk.21.ffn_down.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    6912,
+    1152
+   ],
+   "n_elements": 7962624,
+   "src_bytes": 4478976,
+   "alpha": 0.006175,
+   "cosine": 0.8846,
+   "trit_bytes": 1990656,
+   "packed_bytes": 1990656,
+   "bin_offset": 106537136,
+   "bin_len": 1990660,
+   "counts": {
+    "-1": 2737638,
+    "0": 2486131,
+    "+1": 2738855
+   }
+  },
+  {
+   "name": "blk.22.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.01605,
+   "cosine": 0.8409,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 108527796,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 391954,
+    "0": 395939,
+    "+1": 391755
+   }
+  },
+  {
+   "name": "blk.22.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.038612,
+   "cosine": 0.8786,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 108822712,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 99270,
+    "0": 95984,
+    "+1": 99658
+   }
+  },
+  {
+   "name": "blk.23.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.020859,
+   "cosine": 0.8513,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 108896444,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 389957,
+    "0": 399876,
+    "+1": 389815
+   }
+  },
+  {
+   "name": "blk.23.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.041961,
+   "cosine": 0.8663,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 109191360,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 97136,
+    "0": 100444,
+    "+1": 97332
+   }
+  },
+  {
+   "name": "blk.24.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.012766,
+   "cosine": 0.8605,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 109265092,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 397184,
+    "0": 386531,
+    "+1": 395933
+   }
+  },
+  {
+   "name": "blk.24.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.032804,
+   "cosine": 0.8803,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 109560008,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 99810,
+    "0": 94961,
+    "+1": 100141
+   }
+  },
+  {
+   "name": "blk.25.attn_output.weight",
+   "gguf_type": "Q4_K",
+   "dims": [
+    1024,
+    1152
+   ],
+   "n_elements": 1179648,
+   "src_bytes": 663552,
+   "alpha": 0.017674,
+   "cosine": 0.8413,
+   "trit_bytes": 294912,
+   "packed_bytes": 294912,
+   "bin_offset": 109633740,
+   "bin_len": 294916,
+   "counts": {
+    "-1": 390836,
+    "0": 397834,
+    "+1": 390978
+   }
+  },
+  {
+   "name": "blk.25.attn_v.weight",
+   "gguf_type": "Q8_0",
+   "dims": [
+    1152,
+    256
+   ],
+   "n_elements": 294912,
+   "src_bytes": 313344,
+   "alpha": 0.024213,
+   "cosine": 0.8784,
+   "trit_bytes": 73728,
+   "packed_bytes": 73728,
+   "bin_offset": 109928656,
+   "bin_len": 73732,
+   "counts": {
+    "-1": 99791,
+    "0": 95495,
+    "+1": 99626
+   }
+  }
+ ]
 }
