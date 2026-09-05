@@ -1,0 +1,61 @@
+{
+ "protocol": "TURBOVEC_TERNARY_QUANTIZATION",
+ "model": "openai-community/gpt2",
+ "source": "hf_blob_cache_direct_resolution",
+ "weights_file": "248dfc3911869ec493c76e65bf2fcf7f615828b0254c12b473182f0f81d3a707",
+ "weights_format": "safetensors",
+ "weights_dtype": "F32",
+ "monad_anchor": "0x4d4f4e4144000001",
+ "seal": "0xeefa7938067b62bd",
+ "weights_quantized_2d": 50,
+ "params_quantized": 124318464,
+ "params_1d_kept_fp": 93696,
+ "params_causal_mask_buffers_excluded": 12610560,
+ "fp32_bytes": 497273856,
+ "fp16_bytes": 248636928,
+ "trit_bytes": 31079616,
+ "compression_ratio": 16.0,
+ "compression_ratio_fp16_basis": 8.0,
+ "ternary_sparsity_zeros": 0.3288,
+ "reconstruction_cosine_min": 0.6685,
+ "reconstruction_cosine_max": 0.8918,
+ "reconstruction_cosine_mean_param_weighted": 0.8684,
+ "per_group": {
+  "attn": {
+   "tensors": 24,
+   "params": 28311552,
+   "fp32_bytes": 113246208,
+   "fp16_bytes": 56623104,
+   "trit_bytes": 7077888,
+   "cos_sum": 20.398,
+   "cos_min": 0.6888,
+   "cos_max": 0.8813,
+   "compression_ratio": 16.0
+  },
+  "mlp": {
+   "tensors": 24,
+   "params": 56623104,
+   "fp32_bytes": 226492416,
+   "fp16_bytes": 113246208,
+   "trit_bytes": 14155776,
+   "cos_sum": 20.686,
+   "cos_min": 0.8017,
+   "cos_max": 0.8834,
+   "compression_ratio": 16.0
+  },
+  "embed": {
+   "tensors": 2,
+   "params": 39383808,
+   "fp32_bytes": 157535232,
+   "fp16_bytes": 78767616,
+   "trit_bytes": 9845952,
+   "cos_sum": 1.5603,
+   "cos_min": 0.6685,
+   "cos_max": 0.8918,
+   "compression_ratio": 16.0
+  }
+ },
+ "elapsed_s": 2.37,
+ "phi_v": 0.9115,
+ "claim": "measured on real openai-community/gpt2 F32 safetensors (blob-resolved, wte+wpe embeddings included, causal-mask buffers excluded)"
+}
