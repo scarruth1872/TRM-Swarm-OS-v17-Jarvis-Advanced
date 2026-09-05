@@ -12,6 +12,7 @@
 //! reconstructs the record — touch-the-boundary, not scan-the-volume.
 
 extern crate alloc;
+use alloc::format;
 use alloc::string::String;
 use alloc::vec::Vec;
 
@@ -148,6 +149,18 @@ impl HolographicFabric {
             return 0.0;
         }
         self.recalls_succeeded as f64 / self.recalls_attempted as f64
+    }
+
+    /// Wave C — ingest a measured model shard into the fabric volume.
+    /// Each model projects its (name,fidelity) onto the boundary as a record.
+    pub fn ingest_model(&mut self, name: &str, fidelity: f64, params_b: f64) {
+        let rec = format!("{}|fid={:.3}|params={:.2}B", name, fidelity, params_b);
+        self.project(&rec);
+    }
+
+    /// Fleet: list the ingested model shards.
+    pub fn fleet(&self) -> Vec<&str> {
+        self.records.iter().map(|(s, _)| s.as_str()).collect()
     }
 }
 

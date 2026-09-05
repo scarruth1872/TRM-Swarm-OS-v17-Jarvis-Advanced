@@ -431,6 +431,31 @@ impl TerminalState {
                 b2[ri2..ri2 + fs.len()].copy_from_slice(fs.as_bytes()); ri2 += fs.len();
                 self.add_line(&b2[..ri2], LCARS_GREEN);
                 self.add_line(b"RECALL: boundary-encoded volume, honest partial reconstruction", LCARS_PURPLE);
+            } else if rest.starts_with(b"fleet") {
+                // Wave C: ingest measured model shards + list fleet
+                let mut hf = crate::holographic_fabric::HolographicFabric::new();
+                hf.ingest_model("Qwen3-4B", 0.865, 3.63);
+                hf.ingest_model("Instella-MoE", 0.886, 16.0);
+                hf.ingest_model("CLIP", 0.934, 0.151);
+                hf.ingest_model("gemma-270m", 0.860, 0.268);
+                hf.ingest_model("llama3.2", 0.871, 2.42);
+                hf.ingest_model("qwen2.5-coder", 0.865, 6.09);
+                let fleet = hf.fleet();
+                self.add_line(b"FABRIC FLEET (boundary-projected):", LCARS_PURPLE);
+                let mut i = 0;
+                for rec in fleet.iter().take(6) {
+                    let mut fb = [0u8; 96];
+                    let rn = rec.len().min(60);
+                    fb[..rn].copy_from_slice(&rec.as_bytes()[..rn]);
+                    self.add_line(&fb[..rn], LCARS_CYAN);
+                    i += 1;
+                }
+                let _ = i;
+                let mut fb2 = [0u8; 60];
+                let m = format!("FABRIC: {} model shards on boundary", fleet.len());
+                let mn = m.len().min(60);
+                fb2[..mn].copy_from_slice(&m.as_bytes()[..mn]);
+                self.add_line(&fb2[..mn], LCARS_GREEN);
             } else {
                 // holostate
                 let cap = crate::holographic_fabric::TRITS_CAPACITY;
