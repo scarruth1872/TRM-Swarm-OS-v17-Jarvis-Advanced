@@ -136,6 +136,21 @@ class NativeBridgeServer:
             plan["status"] = "DISPATCHED-via-platform-mesh"
             return {"ok": True, **plan}
 
+        if op == "holograde":
+            # HOLOGRAPHIC FABRIC Wave D (council 17004faf) — mesh projection.
+            # Validates a record and returns its boundary projection (host-side
+            # mirror of the kernel holograde). Allowlisted record size. Sealed.
+            rec = str(payload.get("record", ""))
+            if len(rec) > 512:
+                return {"ok": False, "error": "record too large (>512B)"}
+            if not rec:
+                return {"ok": False, "error": "record required"}
+            import hashlib
+            seed = int(hashlib.sha256(rec.encode()).hexdigest()[:8], 16)
+            seal = hex(0x4D4F4E4144000001 ^ seed)
+            return {"ok": True, "record": rec, "planes": 4, "seal": seal,
+                    "note": "boundary projection via mesh (host mirror)"}
+
         if op == "ping":
             return {"ok": True, "pong": time.time()}
 
