@@ -1,0 +1,52 @@
+{
+ "protocol": "TURBOVEC_TERNARY_QUANTIZATION",
+ "model": "google/gemma-3-270m-it",
+ "source": "hf_blob_cache_direct_resolution",
+ "monad_anchor": "0x4d4f4e4144000001",
+ "seal": "0xc634a4d775184b64",
+ "weights_quantized_2d": 127,
+ "params_quantized": 268042240,
+ "params_1d_kept_fp": 55936,
+ "fp16_bytes": 536084480,
+ "trit_bytes": 67010560,
+ "compression_ratio": 8.0,
+ "ternary_sparsity_zeros": 0.3367,
+ "reconstruction_cosine_min": 0.6987,
+ "reconstruction_cosine_max": 0.8811,
+ "reconstruction_cosine_mean_param_weighted": 0.8599,
+ "per_group": {
+  "embed": {
+   "tensors": 1,
+   "params": 167772160,
+   "fp16_bytes": 335544320,
+   "trit_bytes": 41943040,
+   "cos_sum": 0.8724,
+   "cos_min": 0.8724,
+   "cos_max": 0.8724,
+   "compression_ratio": 8.0
+  },
+  "mlp": {
+   "tensors": 54,
+   "params": 70778880,
+   "fp16_bytes": 141557760,
+   "trit_bytes": 17694720,
+   "cos_sum": 46.1146,
+   "cos_min": 0.7887,
+   "cos_max": 0.8797,
+   "compression_ratio": 8.0
+  },
+  "attn": {
+   "tensors": 72,
+   "params": 29491200,
+   "fp16_bytes": 58982400,
+   "trit_bytes": 7372800,
+   "cos_sum": 58.867,
+   "cos_min": 0.6987,
+   "cos_max": 0.8811,
+   "compression_ratio": 8.0
+  }
+ },
+ "elapsed_s": 6.41,
+ "phi_v": 0.9115,
+ "claim": "measured on real google/gemma-3-270m-it weights (blob-resolved, embed_tokens included)"
+}

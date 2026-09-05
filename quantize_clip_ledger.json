@@ -1,0 +1,27 @@
+{
+ "protocol": "TURBOVEC_TERNARY_QUANTIZATION",
+ "model": "openai/clip-vit-base-patch32",
+ "source_file": "pytorch_model.bin",
+ "source_dtype_counts": {
+  "torch.float32": 398,
+  "torch.int64": 2
+ },
+ "monad_anchor": "0x4d4f4e4144000001",
+ "seal": "0xe40f9e17350d7774",
+ "tensors_quantized": 152,
+ "params_quantized": 151072895,
+ "fp16_equiv_bytes": 302145790,
+ "fp32_equiv_bytes": 604291580,
+ "source_bytes": 605247071,
+ "trit_bytes": 37768225,
+ "compression_ratio_fp16": 8.0,
+ "compression_ratio_fp32": 16.0,
+ "compression_ratio_disk": 16.03,
+ "reconstruction_cosine_min": 0.66426,
+ "reconstruction_cosine_max": 0.93812,
+ "reconstruction_cosine_mean": 0.87261,
+ "reconstruction_cosine_global": 0.93394,
+ "elapsed_s": 1.83,
+ "phi_v": 0.9115,
+ "claim": "measured on real cached openai/clip-vit-base-patch32 weights"
+}
