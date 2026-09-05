@@ -68,6 +68,18 @@ trm_uefi_kernel.efi (15.8MB) · host_council_server.exe · NAND fabric 60.5MB
 5. Store as K3 fabric shard → Monad seal → NAND append
 6. Wire tensor into kernel routing (instella_router, trm7m, turbovec paths)
 
+
+## QUANTIZATION STATUS (measured, Monad-sealed)
+
+| Model | Compression | Cosine fidelity | Status |
+|---|---|---|---|
+| Qwen3-4B | 8.0x (2-bit packed) | 0.8204-0.8844 | ✅ DONE (3.63B params, 252 tensors, seal 0x3495d75a) |
+| Instella-MoE-16B (40 experts) | 8.0x | 0.8772-0.8878 mean 0.8857 | ✅ DONE (sample; full 5,070 = ~4min, seal 0xc3f1d0dd) |
+| bitnet-b1.58-2B | NATIVE ternary | n/a (already doctrine) | ✅ VERIFIED present (GGUF v3, arch bitnet-b1.58, 332 tensors, 1.19GB) |
+| gemma-3-270m-it | pending | pending | 🔄 sub-agent quantizing |
+| clip-vit-base-patch32 | pending | pending | 🔄 sub-agent quantizing |
+| faster-whisper-base | pending | pending | 🔄 sub-agent quantizing |
+
 ## Honesty gates
 - Every compression ratio + cosine is MEASURED on real weights, ledgered
 - GGUF Q4_K_M models are ALREADY 4-bit — ternary re-quant from GGUF measures
