@@ -37,6 +37,8 @@ mod agent_mesh;
 mod attempt_sampler;
 mod coordination_protocol;
 mod heuristic_consensus;
+mod llm_brain;
+mod mamba3_turbovec_ssm;
 mod pbft_consensus;
 mod resonance_engine;
 mod security_scanner;
@@ -46,7 +48,9 @@ mod sentinel;
 mod self_healing;
 mod simd_accelerator;
 mod sram_pattern_computer;
+mod sub_atomic_kernel;
 mod task_arbiter;
+mod trm_brain;
 mod voltage_node_engine;
 mod quic_protocol;
 mod star_matrix;
@@ -227,6 +231,61 @@ impl TerminalState {
             p2[r2..r2 + 3].copy_from_slice(b" (4)"); r2 += 3;
             self.add_line(&p2[..r2], LCARS_GREEN);
             self.add_line(b"PBFT: quorum 2f+1=9 of 14 agents | commit 10 | Byzantine f=4", LCARS_PURPLE);
+        } else if cmd.starts_with(b"intel") {
+            // VOLTAGE ENERGIZATION — INTELLIGENCE cluster executes.
+            // llm_brain persona route + trm_brain collapse + mamba3 step
+            let persona = crate::llm_brain::LLMBrain::route_task("optimize the kernel allocator");
+            let pname = persona.name;
+            let mut p1 = [0u8; 96];
+            let h = b"INTEL: persona=";
+            p1[..h.len()].copy_from_slice(h);
+            let pn = pname.len().min(16);
+            p1[h.len()..h.len() + pn].copy_from_slice(&pname.as_bytes()[..pn]);
+            let mut ri = h.len() + pn;
+            p1[ri..ri + 16].copy_from_slice(b" | persona armed"); ri += 16;
+            self.add_line(&p1[..ri], LCARS_CYAN);
+            // trm_brain collapse on a real state
+            let mut tb = crate::trm_brain::TRMBrain::new();
+            let state = [0.9f64, -0.7, 0.4, 0.1, -0.3, 0.8, -0.2, 0.6];
+            let col = tb.collapse_state(&state);
+            let mut p2 = [0u8; 96];
+            let h2 = b"TRM COLLAPSE: trit=";
+            p2[..h2.len()].copy_from_slice(h2);
+            let t2 = format!("{}", col.k3_trit);
+            p2[h2.len()..h2.len() + t2.len()].copy_from_slice(t2.as_bytes());
+            let mut ri2 = h2.len() + t2.len();
+            p2[ri2..ri2 + 10].copy_from_slice(b" conf="); ri2 += 10;
+            let cs = format!("{:.2}", col.confidence);
+            p2[ri2..ri2 + cs.len()].copy_from_slice(cs.as_bytes()); ri2 += cs.len();
+            p2[ri2..ri2 + 11].copy_from_slice(b" | K3 gate"); ri2 += 11;
+            self.add_line(&p2[..ri2], LCARS_GREEN);
+            // mamba3 SSM step (real state-space scan)
+            let mut m3 = crate::mamba3_turbovec_ssm::Mamba3StateSpaceScanner::new();
+            let x = [0.5f32, -0.25, 0.125, 0.0, 0.75, -0.5, 0.3, 0.1];
+            let out = m3.step(&x, 0.01);
+            let mut p3 = [0u8; 96];
+            let h3 = b"MAMBA3 step: out[0..3]=";
+            p3[..h3.len()].copy_from_slice(h3);
+            let o1 = format!("{:.3}", out[0]);
+            p3[h3.len()..h3.len() + o1.len()].copy_from_slice(o1.as_bytes());
+            let mut ri3 = h3.len() + o1.len();
+            p3[ri3..ri3 + 8].copy_from_slice(b" | dim="); ri3 += 8;
+            let dm = format!("{}", out.len());
+            p3[ri3..ri3 + dm.len()].copy_from_slice(dm.as_bytes()); ri3 += dm.len();
+            self.add_line(&p3[..ri3], LCARS_PURPLE);
+            // sub_atomic silicon recalibration
+            let mut sm = crate::sub_atomic_kernel::SiliconMatrix::new();
+            sm.post_init();
+            let v = sm.recalibrate(Some(1.25), Some(4.2));
+            let mut p4 = [0u8; 96];
+            let h4 = b"SUBLITHIC: v-core calibrated -> Phi_V=";
+            p4[..h4.len()].copy_from_slice(h4);
+            let vs = format!("{:.4}", v);
+            p4[h4.len()..h4.len() + vs.len()].copy_from_slice(vs.as_bytes());
+            let mut ri4 = h4.len() + vs.len();
+            p4[ri4..ri4 + 10].copy_from_slice(b" (doctr"); ri4 += 10;
+            p4[ri4..ri4 + 2].copy_from_slice(b"ne)"); ri4 += 2;
+            self.add_line(&p4[..ri4], LCARS_GOLD);
         } else if cmd.starts_with(b"fed") {
             // TRM PLATFORM FEDERATION — real state from federation_manager.
             let mut fm = crate::federation_manager::FederationManager::new(30);
