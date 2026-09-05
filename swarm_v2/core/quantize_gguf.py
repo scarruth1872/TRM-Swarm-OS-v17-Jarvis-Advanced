@@ -42,22 +42,29 @@ def log(*a):
 
 
 def find_blob(tag: str) -> str:
-    """Resolve an Ollama model tag to its GGUF blob path."""
-    tag_l = tag.lower()
+    """Resolve an Ollama model tag to its GGUF blob path (EXACT tail match).
+
+    Matches the tag's path segments against the tail of the manifest path
+    (e.g. 'gemma2:2b' -> .../manifests/registry.ollama.ai/library/gemma2/2b).
+    The previous substring test was wrong: short tags like 'gemma2:2b' matched
+    unrelated manifests whose path merely CONTAINS '2b' (e.g. bitnet-b1.58-2B-4T),
+    silently quantizing the wrong model.
+    """
+    want = [s for s in tag.lower().replace(":", "/").split("/") if s]
     for m in glob.glob(os.path.join(OLL, "manifests", "**", "*"), recursive=True):
         if not os.path.isfile(m):
             continue
-        mp = m.lower().replace("\\", "/")
-        mt = tag_l.replace(":", "/")
-        if mt.split("/")[-1] in mp or (tag_l.split(":")[0] in mp and tag_l.split(":")[-1] in mp):
-            import json
-            d = json.load(open(m, encoding="utf-8"))
-            for l in d.get("layers", []):
-                if "model" in l.get("mediaType", ""):
-                    digest = l["digest"].replace("sha256:", "")
-                    bdir = os.path.join(OLL, "blobs")
-                    for f in os.listdir(bdir):
-                        if digest in f:
+        mp = [s for s in os.path.normpath(m).replace("\\", "/").split("/") if s]
+        if len(mp) < len(want) or mp[-len(want):] != want:
+            continue
+        import json
+        d = json.load(open(m, encoding="utf-8"))
+        for l in d.get("layers", []):
+            if "model" in l.get("mediaType", ""):
+                digest = l["digest"].replace("sha256:", "")
+                bdir = os.path.join(OLL, "blobs")
+                for f in os.listdir(bdir):
+                    if digest in f:
                             return os.path.join(bdir, f)
     return ""
 
@@ -127,7 +134,52 @@ def dequant_tensor(reader, t):
             w[:, 96:128] = q4.astype(np.float32) * s4 * dd
             out[:, h * 128:h * 128 + 128] = w
         return out.reshape(-1), "Q6_K"
-    # F32 (type 0) / F16 (type 1): exact-length float read (bounded by n_elements)
+    # Q4_K (type 12): 144 B/block, 256 weights. Layout per block:
+    #   [0:2]  f16 d (global scale), [2:4] f16 dmin (global min)
+    #   [4:16] 12 B scales (8 scales+8 mins, 6-bit packed, via get_scale_min_k4)
+    #   [16:144] 128 B qs (4-bit nibbles, 256 weights)
+    # dequant per llama.cpp dequantize_row_q4_K:
+    #   for j in 0..4 (4 groups of 64): sc,m = get_scale_min_k4(is,scales)
+    #     d1=d*sc, m1=min*m; y[0:32]=d1*(qs&0xF)-m1; y[32:64]=d1*(qs>>4)-m1
+    if tt == 12:
+        nblk = nb // 144
+        if ne != nblk * 256:
+            return None, f"Q4_K shape-mismatch ne={ne} blocks={nblk}"
+        b = raw.reshape(nblk, 144)
+        d = b[:, 0:2].copy().view("<f2").astype(np.float32).reshape(-1)     # (nblk,)
+        dmin = b[:, 2:4].copy().view("<f2").astype(np.float32).reshape(-1)  # (nblk,)
+        scales = b[:, 4:16]                                     # (nblk,12)
+        qs = b[:, 16:144]                                       # (nblk,128)
+        out = np.empty((nblk, 256), dtype=np.float32)
+
+        def gsmk(jj, q):
+            """get_scale_min_k4(j, scales) -> (sc, m) 1:1 with llama.cpp."""
+            jj = int(jj)
+            if jj < 4:
+                sc = (q[:, jj] & 63).astype(np.float32).reshape(-1)
+                m = (q[:, jj + 4] & 63).astype(np.float32).reshape(-1)
+            else:
+                sc = ((q[:, jj + 4] & 0x0F) | ((q[:, jj - 4] >> 6) << 4)).astype(np.float32).reshape(-1)
+                m = ((q[:, jj + 4] >> 4) | ((q[:, jj] >> 6) << 4)).astype(np.float32).reshape(-1)
+            return sc, m
+
+        is_ = 0
+        for g in range(4):  # 4 groups of 32 qs bytes = 64 weights each
+            sc1, m1 = gsmk(is_ + 0, scales)
+            sc2, m2 = gsmk(is_ + 1, scales)
+            d1 = (d * sc1)[:, None]
+            mm1 = (dmin * m1)[:, None]
+            d2 = (d * sc2)[:, None]
+            mm2 = (dmin * m2)[:, None]
+            qg = qs[:, g * 32:(g + 1) * 32]  # 32 bytes -> 64 weights
+            lo = (qg & 0x0F).astype(np.float32)
+            hi = (qg >> 4).astype(np.float32)
+            out[:, g * 64:g * 64 + 32] = d1 * lo - mm1
+            out[:, g * 64 + 32:g * 64 + 64] = d2 * hi - mm2
+            is_ += 2
+        return out.reshape(-1), "Q4_K"
+
+
     if tt == 0:
         if nb != ne * 4:
             return None, f"F32 n_bytes {nb} != n_elements*4 {ne*4}"
