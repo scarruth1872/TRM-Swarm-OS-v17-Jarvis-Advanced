@@ -68,6 +68,7 @@ mod semantic_knowledge_graph;
 mod agent_mailbox_bus;
 mod intent_buffer;
 mod global_memory;
+mod holographic_fabric;
 #[path = "modmap_all.rs"]
 mod modmap_all;
 // VOLTAGE ENERGIZATION — CREATE cluster: GAN design synthesis / generative
@@ -327,6 +328,75 @@ impl TerminalState {
             p4[ri4..ri4 + 10].copy_from_slice(b" (doctr"); ri4 += 10;
             p4[ri4..ri4 + 2].copy_from_slice(b"ne)"); ri4 += 2;
             self.add_line(&p4[..ri4], LCARS_GOLD);
+        } else if cmd.starts_with(b"holo") {
+            // HOLOGRAPHIC FABRIC (council 17004faf) — Wave A.
+            // holograde: project a record onto the boundary trit-planes
+            // holorecall: recall from boundary projection (measured fidelity)
+            // holostate: fabric geometry + honesty metric
+            let rest = cmd.get(5..).unwrap_or(b"").trim_ascii();
+            if rest.starts_with(b"grade ") {
+                let rec = core::str::from_utf8(&rest[6..]).unwrap_or("record");
+                let mut hf = crate::holographic_fabric::HolographicFabric::new();
+                let keys = hf.project(rec);
+                let mut b1 = [0u8; 96];
+                let h = b"PLANE: projected '";
+                b1[..h.len()].copy_from_slice(h);
+                let rn = rec.len().min(30);
+                b1[h.len()..h.len() + rn].copy_from_slice(&rec.as_bytes()[..rn]);
+                let mut ri = h.len() + rn;
+                b1[ri..ri + 12].copy_from_slice(b"' -> planes="); ri += 12;
+                let kn = format!("{}", keys.len());
+                b1[ri..ri + kn.len()].copy_from_slice(kn.as_bytes()); ri += kn.len();
+                self.add_line(&b1[..ri], LCARS_CYAN);
+            } else if rest.starts_with(b"recall ") {
+                let q = core::str::from_utf8(&rest[7..]).unwrap_or("query");
+                let mut hf = crate::holographic_fabric::HolographicFabric::new();
+                hf.project("council:14 agents ratified holographic fabric");
+                hf.project("monad:truth anchor 0x4D4F4E4144000001");
+                hf.project("turbovec:402M trits in 96MB infinity cache");
+                let (overlap, fidelity) = hf.recall(q);
+                let mut b2 = [0u8; 96];
+                let h2 = b"RECALL: q='";
+                b2[..h2.len()].copy_from_slice(h2);
+                let qn = q.len().min(24);
+                b2[h2.len()..h2.len() + qn].copy_from_slice(&q.as_bytes()[..qn]);
+                let mut ri2 = h2.len() + qn;
+                b2[ri2..ri2 + 12].copy_from_slice(b"' overlap="); ri2 += 12;
+                let on = format!("{}", overlap);
+                b2[ri2..ri2 + on.len()].copy_from_slice(on.as_bytes()); ri2 += on.len();
+                b2[ri2..ri2 + 12].copy_from_slice(b"/4 fid="); ri2 += 12;
+                let fs = format!("{:.2}", fidelity);
+                b2[ri2..ri2 + fs.len()].copy_from_slice(fs.as_bytes()); ri2 += fs.len();
+                self.add_line(&b2[..ri2], LCARS_GREEN);
+                self.add_line(b"RECALL: boundary-encoded volume, honest partial reconstruction", LCARS_PURPLE);
+            } else {
+                // holostate
+                let cap = crate::holographic_fabric::TRITS_CAPACITY;
+                let mut b3 = [0u8; 96];
+                let h3 = b"FABRIC: Infinity Cache ";
+                b3[..h3.len()].copy_from_slice(h3);
+                let mb = crate::holographic_fabric::INFINITY_CACHE_MB.to_string();
+                b3[h3.len()..h3.len() + mb.len()].copy_from_slice(mb.as_bytes());
+                let mut ri3 = h3.len() + mb.len();
+                b3[ri3..ri3 + 7].copy_from_slice(b"MB = "); ri3 += 7;
+                let cs = format!("{}", cap);
+                b3[ri3..ri3 + cs.len()].copy_from_slice(cs.as_bytes()); ri3 += cs.len();
+                b3[ri3..ri3 + 6].copy_from_slice(b" trits"); ri3 += 6;
+                self.add_line(&b3[..ri3], LCARS_GOLD);
+                // demo honesty: recall success rate on known records
+                let (ov, fid, _) = crate::holographic_fabric::demo();
+                let mut b4 = [0u8; 96];
+                let h4 = b"DEMO: recalled overlap=";
+                b4[..h4.len()].copy_from_slice(h4);
+                let on = format!("{}", ov);
+                b4[h4.len()..h4.len() + on.len()].copy_from_slice(on.as_bytes());
+                let mut ri4 = h4.len() + on.len();
+                b4[ri4..ri4 + 7].copy_from_slice(b" fid="); ri4 += 7;
+                let fs = format!("{:.2}", fid);
+                b4[ri4..ri4 + fs.len()].copy_from_slice(fs.as_bytes()); ri4 += fs.len();
+                b4[ri4..ri4 + 8].copy_from_slice(b" honest"); ri4 += 8;
+                self.add_line(&b4[..ri4], LCARS_GREEN);
+            }
         } else if cmd.starts_with(b"fed") {
             // TRM PLATFORM FEDERATION — real state from federation_manager.
             let mut fm = crate::federation_manager::FederationManager::new(30);
