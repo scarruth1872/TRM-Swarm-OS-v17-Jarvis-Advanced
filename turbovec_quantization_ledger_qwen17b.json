@@ -1,0 +1,44 @@
+{
+ "protocol": "TURBOVEC_TERNARY_QUANTIZATION",
+ "model": "Qwen/Qwen3-1.7B",
+ "monad_anchor": "0x4d4f4e4144000001",
+ "seal": "0x69d0cfe47b70ba10",
+ "source": "hf-cache blobs (snapshot empty; resolved via safetensors header sniff)",
+ "source_blobs": [
+  "169ad53ec313c3a34b06c0809216e4fc072cce444a5d4ff2b59690d064130ed5",
+  "912becff8d60672aa8628ef08c05898d9adf17c2ad4ae3caf99b065622fdeff9"
+ ],
+ "source_dtype": "bf16",
+ "included_tensor_families": [
+  "q_proj",
+  "k_proj",
+  "v_proj",
+  "o_proj",
+  "gate_proj",
+  "up_proj",
+  "down_proj"
+ ],
+ "excluded": "norms, embed_tokens, lm_head (2-D proj only doctrine; embed 311M not plurality)",
+ "params_quantized": 1409286144,
+ "n_tensors": 196,
+ "fp16_bytes": 2818572288,
+ "trit_bytes": 352321536,
+ "compression_ratio": 8.0,
+ "effective_bits_per_weight": 2.0,
+ "reconstruction_cosine_mean": 0.86514,
+ "reconstruction_cosine_min": 0.81065,
+ "reconstruction_cosine_max": 0.88242,
+ "worst_tensor": {
+  "name": "model.layers.19.self_attn.q_proj.weight",
+  "cos": 0.81065
+ },
+ "best_tensor": {
+  "name": "model.layers.0.mlp.up_proj.weight",
+  "cos": 0.88242
+ },
+ "trit_zero_fraction": 0.32827,
+ "trit_nonzero_fraction": 0.67173,
+ "elapsed_s": 46.0,
+ "phi_v": 0.9115,
+ "claim": "measured on real Qwen/Qwen3-1.7B safetensors blobs, on-device"
+}
