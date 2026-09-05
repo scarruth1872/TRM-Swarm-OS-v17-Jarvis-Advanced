@@ -68,6 +68,7 @@ mod semantic_knowledge_graph;
 mod agent_mailbox_bus;
 mod intent_buffer;
 mod global_memory;
+mod fractal_telemetry;
 mod holographic_fabric;
 #[path = "modmap_all.rs"]
 mod modmap_all;
@@ -328,6 +329,50 @@ impl TerminalState {
             p4[ri4..ri4 + 10].copy_from_slice(b" (doctr"); ri4 += 10;
             p4[ri4..ri4 + 2].copy_from_slice(b"ne)"); ri4 += 2;
             self.add_line(&p4[..ri4], LCARS_GOLD);
+        } else if cmd.starts_with(b"fractal") {
+            // FRACTAL TELEMETRY (council 17004faf) — Wave B.
+            // Multi-scale self-similar telemetry pulse (S1-S5 scales),
+            // composite Higuchi dimension, cross-scale anomaly hint.
+            let ft = crate::fractal_telemetry::FractalTelemetryFabric::initialize_sovereign();
+            let mut lines_out = 0;
+            for (i, s) in ft.streams.iter().enumerate() {
+                if i >= 5 { break; }  // S1..S5
+                let mut fb = [0u8; 96];
+                let h = format!("S{} {}", i + 1, s.stream_name);
+                let hn = h.len().min(28);
+                fb[..hn].copy_from_slice(&h.as_bytes()[..hn]);
+                let mut ri = hn;
+                fb[ri..ri + 2].copy_from_slice(b": "); ri += 2;
+                let dim = format!("{:.2}", s.self_similarity_index);
+                fb[ri..ri + dim.len()].copy_from_slice(dim.as_bytes()); ri += dim.len();
+                fb[ri..ri + 5].copy_from_slice(b" D, "); ri += 5;
+                let val = format!("{:.1}", s.current_value);
+                fb[ri..ri + val.len()].copy_from_slice(val.as_bytes()); ri += val.len();
+                fb[ri..ri + 2].copy_from_slice(b" "); ri += 2;
+                let un = s.unit.len().min(6);
+                fb[ri..ri + un].copy_from_slice(&s.unit.as_bytes()[..un]); ri += un;
+                self.add_line(&fb[..ri], LCARS_CYAN);
+                lines_out += 1;
+            }
+            // composite
+            let mut cb = [0u8; 96];
+            let comp = format!("FRACTAL COMPOSITE D_f: {:.4}", ft.composite_higuchi_dim);
+            let cn = comp.len().min(60);
+            cb[..cn].copy_from_slice(&comp.as_bytes()[..cn]);
+            self.add_line(&cb[..cn], LCARS_GREEN);
+            // cross-scale anomaly: scale-values diverge strongly?
+            let mut cb2 = [0u8; 60];
+            if ft.composite_higuchi_dim > 1.28 {
+                let m = b"FRACTAL: cross-scale coherence NORMAL (no divergence)";
+                cb2[..m.len()].copy_from_slice(m);
+                self.add_line(&cb2[..m.len()], LCARS_GREEN);
+            } else {
+                let m = b"FRACTAL: cross-scale divergence FLAG (investigate)";
+                cb2[..m.len()].copy_from_slice(m);
+                self.add_line(&cb2[..m.len()], LCARS_ORANGE);
+            }
+            self.add_line(b"FRACTAL: 5 scales sensed - ONE whole from few samples (not multipliers)", LCARS_PURPLE);
+            let _ = lines_out;
         } else if cmd.starts_with(b"holo") {
             // HOLOGRAPHIC FABRIC (council 17004faf) — Wave A.
             // holograde: project a record onto the boundary trit-planes
