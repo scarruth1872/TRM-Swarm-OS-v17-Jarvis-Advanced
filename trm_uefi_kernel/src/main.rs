@@ -8,6 +8,8 @@ use alloc::vec::Vec;
 
 mod allocator;
 mod agent_runtime;
+mod autonomous_cadence;
+mod daily_evolution_engine;
 mod bridge;
 mod benchmark_epistemology;
 mod council;
@@ -223,6 +225,79 @@ impl TerminalState {
             p2[r2..r2 + 3].copy_from_slice(b" (4)"); r2 += 3;
             self.add_line(&p2[..r2], LCARS_GREEN);
             self.add_line(b"PBFT: quorum 2f+1=9 of 14 agents | commit 10 | Byzantine f=4", LCARS_PURPLE);
+        } else if cmd.starts_with(b"operate") {
+            // PHASE 4 OPERATION — one autonomous cadence cycle.
+            // health -> pipeline probe -> telemetry -> evolution
+            // 1. HEALTH CHECK (14 agents)
+            let runtime = crate::agent_runtime::get_runtime();
+            let (_all_ok, total_ns, results) = runtime.boot_health_check();
+            let mut o1 = [0u8; 96];
+            let h = b"O1 HEALTH: ";
+            o1[..h.len()].copy_from_slice(h);
+            let okn = results.len(); // number of agents checked
+            let os = format!("{}", okn);
+            o1[h.len()..h.len() + os.len()].copy_from_slice(os.as_bytes());
+            let mut ri = h.len() + os.len();
+            o1[ri..ri + 13].copy_from_slice(b" agents, ok="); ri += 13;
+            let healthy = results.iter().filter(|(_, _, s, _)| *s >= 0.0).count();
+            let hs = format!("{}", healthy);
+            o1[ri..ri + hs.len()].copy_from_slice(hs.as_bytes()); ri += hs.len();
+            o1[ri..ri + 12].copy_from_slice(b" time="); ri += 12;
+            let ts = format!("{}", total_ns);
+            o1[ri..ri + ts.len()].copy_from_slice(ts.as_bytes()); ri += ts.len();
+            o1[ri..ri + 2].copy_from_slice(b"ns"); ri += 2;
+            self.add_line(&o1[..ri], if healthy >= 14 { LCARS_GREEN } else { LCARS_ORANGE });
+            // 2. CADENCE TICK (autonomous_cadence)
+            let mut ac = crate::autonomous_cadence::SovereignCadenceEngine::new();
+            let (passed, latency) = ac.execute_cadence_tick();
+            let invariants = ac.verify_invariants();
+            let mut o2 = [0u8; 96];
+            let h2 = b"O2 CADENCE: ";
+            o2[..h2.len()].copy_from_slice(h2);
+            let ps = format!("{}", passed);
+            o2[h2.len()..h2.len() + ps.len()].copy_from_slice(ps.as_bytes());
+            let mut ri2 = h2.len() + ps.len();
+            o2[ri2..ri2 + 10].copy_from_slice(b" passed, "); ri2 += 10;
+            let ls = format!("{:.1}", latency);
+            o2[ri2..ri2 + ls.len()].copy_from_slice(ls.as_bytes()); ri2 += ls.len();
+            o2[ri2..ri2 + 13].copy_from_slice(b" us invar="); ri2 += 13;
+            o2[ri2] = if invariants { b'1' } else { b'0' }; ri2 += 1;
+            self.add_line(&o2[..ri2], LCARS_CYAN);
+            // 3. PIPELINE PROBE (respond on synthetic threat)
+            let mut sc = crate::security_scanner::SecurityScanner::new();
+            let (findings, _) = sc.scan("SELECT * FROM x; os.system('y')");
+            let mut o3 = [0u8; 96];
+            let h3 = b"O3 PIPELINE: threat probe -> ";
+            o3[..h3.len()].copy_from_slice(h3);
+            let f3 = format!("{}", findings);
+            o3[h3.len()..h3.len() + f3.len()].copy_from_slice(f3.as_bytes());
+            let mut ri3 = h3.len() + f3.len();
+            o3[ri3..ri3 + 11].copy_from_slice(b" findings"); ri3 += 11;
+            self.add_line(&o3[..ri3], if findings > 0 { LCARS_RED } else { LCARS_GREEN });
+            // 4. EVOLUTION TICK
+            let step = crate::daily_evolution_engine::evolve();
+            let cur = crate::daily_evolution_engine::generate_curriculum();
+            let mut o4 = [0u8; 96];
+            let h4 = b"O4 EVOLUTION: step=";
+            o4[..h4.len()].copy_from_slice(h4);
+            let e4 = format!("{}", step);
+            o4[h4.len()..h4.len() + e4.len()].copy_from_slice(e4.as_bytes());
+            let mut ri4 = h4.len() + e4.len();
+            o4[ri4..ri4 + 12].copy_from_slice(b" curric="); ri4 += 12;
+            let c4 = format!("{}", cur);
+            o4[ri4..ri4 + c4.len()].copy_from_slice(c4.as_bytes()); ri4 += c4.len();
+            o4[ri4..ri4 + 10].copy_from_slice(b" lessons"); ri4 += 10;
+            self.add_line(&o4[..ri4], LCARS_PURPLE);
+            // 5. CYCLE SEAL
+            let seal = 0x4D4F_4E41_4400_0001u64 ^ (total_ns as u64 ^ step);
+            let mut o5 = [0u8; 96];
+            let h5 = b"O5 SEAL: 0x";
+            o5[..h5.len()].copy_from_slice(h5);
+            let s5 = format!("{:016X}", seal);
+            o5[h5.len()..h5.len() + s5.len()].copy_from_slice(s5.as_bytes());
+            let mut ri5 = h5.len() + s5.len();
+            o5[ri5..ri5 + 21].copy_from_slice(b" | CYCLE COMPLETE"); ri5 += 21;
+            self.add_line(&o5[..ri5], LCARS_GOLD);
         } else if cmd.starts_with(b"decide") {
             // PHASE 3 SYNTHESIS — Pipeline 2: CONSENSUS-DECISION end-to-end.
             // coordination round -> pbft quorum -> heuristic scoring -> seal
