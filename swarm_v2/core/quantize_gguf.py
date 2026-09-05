@@ -243,8 +243,11 @@ def dequant_tensor(reader, t):
     return None, f"unsupported-type-{tt}"
 
 
-def quantize_gguf_model(tag: str, max_tensors: int = 400):
-    blob = find_blob(tag)
+def quantize_gguf_model(tag: str, max_tensors: int = 400, direct_blob: str = ""):
+    if direct_blob:
+        blob = direct_blob
+    else:
+        blob = find_blob(tag)
     if not blob:
         return {"ok": False, "error": f"model tag '{tag}' not found in Ollama"}
     log(f"blob: {os.path.getsize(blob)/1e6:.0f}MB | tag: {tag}")
