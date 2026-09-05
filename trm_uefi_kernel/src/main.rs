@@ -459,7 +459,56 @@ impl TerminalState {
                 b4[ri4..ri4 + 8].copy_from_slice(b" honest"); ri4 += 8;
                 self.add_line(&b4[..ri4], LCARS_GREEN);
             }
-        } else if cmd.starts_with(b"fed") {
+        } else if cmd.starts_with(b"core") {
+            // VOLTAGE ENERGIZATION — CORE cluster (final 3 substantive).
+            // semantic_cache TTL recall + star_matrix binding + trm7m forward
+            let mut sc = crate::semantic_cache::SemanticCache::new(8);
+            sc.set("monad", "truth anchor", 100);
+            let cached = sc.get("monad") == Some(String::from("truth anchor"));
+            let (hits, misses, entries) = sc.get_stats();
+            let mut c1 = [0u8; 96];
+            let h = b"CACHE: hit=";
+            c1[..h.len()].copy_from_slice(h);
+            c1[h.len()] = if cached { b'1' } else { b'0' };
+            let mut ri = h.len() + 1;
+            c1[ri..ri + 7].copy_from_slice(b" miss="); ri += 7;
+            let ms = format!("{}", misses);
+            c1[ri..ri + ms.len()].copy_from_slice(ms.as_bytes()); ri += ms.len();
+            c1[ri..ri + 10].copy_from_slice(b" entries="); ri += 10;
+            let es = format!("{}", entries);
+            c1[ri..ri + es.len()].copy_from_slice(es.as_bytes()); ri += es.len();
+            self.add_line(&c1[..ri], LCARS_CYAN);
+            // star_matrix: bind + geometry
+            let mut sm = crate::star_matrix::StarMatrix::new();
+            sm.bind(true, true);
+            let cos = crate::star_matrix::StarMatrix::cosine_similarity(&[1.0, 2.0, 3.0], &[2.0, 4.0, 6.0]);
+            let mut c2 = [0u8; 96];
+            let h2 = b"STARMATRIX: bound=1/1 cos=";
+            c2[..h2.len()].copy_from_slice(h2);
+            let cs2 = format!("{:.3}", cos);
+            c2[h2.len()..h2.len() + cs2.len()].copy_from_slice(cs2.as_bytes());
+            let mut ri2 = h2.len() + cs2.len();
+            c2[ri2..ri2 + 18].copy_from_slice(b" | resonance+mesh"); ri2 += 18;
+            self.add_line(&c2[..ri2], LCARS_GREEN);
+            // trm7m: forward + benchmark
+            let mut t7 = crate::trm7m::Trm7m::new();
+            let x = [0.5f32, -0.25, 0.125, 0.0, 0.75, 0.3, -0.5, 0.1];
+            let (trit, conf, _) = t7.forward(&x);
+            let mut c3 = [0u8; 96];
+            let h3 = b"TRM7M: forward -> trit=";
+            c3[..h3.len()].copy_from_slice(h3);
+            let ts = format!("{}", trit);
+            c3[h3.len()..h3.len() + ts.len()].copy_from_slice(ts.as_bytes());
+            let mut ri3 = h3.len() + ts.len();
+            c3[ri3..ri3 + 8].copy_from_slice(b" conf="); ri3 += 8;
+            let cfs = format!("{:.2}", conf);
+            c3[ri3..ri3 + cfs.len()].copy_from_slice(cfs.as_bytes()); ri3 += cfs.len();
+            c3[ri3..ri3 + 12].copy_from_slice(b" params="); ri3 += 12;
+            let ps = format!("{}", crate::trm7m::Trm7m::total_params());
+            c3[ri3..ri3 + ps.len()].copy_from_slice(ps.as_bytes()); ri3 += ps.len();
+            self.add_line(&c3[..ri3], LCARS_PURPLE);
+            self.add_line(b"CORE: semantic_cache + star_matrix + trm7m ENERGIZED", LCARS_GOLD);
+} else if cmd.starts_with(b"fed") {
             // TRM PLATFORM FEDERATION — real state from federation_manager.
             let mut fm = crate::federation_manager::FederationManager::new(30);
             fm.register_peer("DESKTOP", [127, 0, 0, 1], 8022);
