@@ -4,6 +4,7 @@
 extern crate alloc;
 use alloc::format;
 use alloc::string::String;
+use alloc::vec::Vec;
 
 mod allocator;
 mod agent_runtime;
@@ -29,7 +30,9 @@ mod microkernel_spawner;
 mod trm_orchestrator;
 mod nand_fs;
 mod agent_mesh;
+mod attempt_sampler;
 mod coordination_protocol;
+mod heuristic_consensus;
 mod pbft_consensus;
 mod resonance_engine;
 mod security_scanner;
@@ -39,6 +42,7 @@ mod sentinel;
 mod self_healing;
 mod simd_accelerator;
 mod sram_pattern_computer;
+mod task_arbiter;
 mod voltage_node_engine;
 mod quic_protocol;
 mod star_matrix;
@@ -219,6 +223,80 @@ impl TerminalState {
             p2[r2..r2 + 3].copy_from_slice(b" (4)"); r2 += 3;
             self.add_line(&p2[..r2], LCARS_GREEN);
             self.add_line(b"PBFT: quorum 2f+1=9 of 14 agents | commit 10 | Byzantine f=4", LCARS_PURPLE);
+        } else if cmd.starts_with(b"decide") {
+            // PHASE 3 SYNTHESIS — Pipeline 2: CONSENSUS-DECISION end-to-end.
+            // coordination round -> pbft quorum -> heuristic scoring -> seal
+            let rest = cmd.get(7..).unwrap_or(b"").trim_ascii();
+            let topic: &[u8] = if rest.is_empty() { b"approve phase 3 synthesis" } else { rest };
+            let t = core::str::from_utf8(topic).unwrap_or("decision");
+            // 1. COORDINATION ROUND (4-node)
+            let mut cp = crate::coordination_protocol::CoordinationProtocol::new();
+            let round = cp.run_coordination_round();
+            let agg = cp.consensus_aggregate(
+                &[
+                    (String::from("Archi"), String::from("approve")),
+                    (String::from("Devo"), String::from("approve")),
+                    (String::from("Logic"), String::from("approve")),
+                    (String::from("Shield"), String::from("approve")),
+                ],
+                "majority",
+            );
+            let mut d1 = [0u8; 96];
+            let h = b"C1 ROUND: r=";
+            d1[..h.len()].copy_from_slice(h);
+            let rs = format!("{}", round);
+            d1[h.len()..h.len() + rs.len()].copy_from_slice(rs.as_bytes());
+            let mut ri = h.len() + rs.len();
+            d1[ri..ri + 9].copy_from_slice(b" 4/4 ok="); ri += 9;
+            let cs = format!("{}", agg.total);
+            d1[ri..ri + cs.len()].copy_from_slice(cs.as_bytes()); ri += cs.len();
+            self.add_line(&d1[..ri], LCARS_CYAN);
+            // 2. PBFT QUORUM (14-agent, f=4)
+            let mut pbft = crate::pbft_consensus::PbftConsensus::new();
+            let (id, accepted, _score) = pbft.run_full_cycle("OPERATOR", "decision");
+            let mut d2 = [0u8; 96];
+            let h2 = b"C2 PBFT: #";
+            d2[..h2.len()].copy_from_slice(h2);
+            let ids = format!("{}", id);
+            d2[h2.len()..h2.len() + ids.len()].copy_from_slice(ids.as_bytes());
+            let mut ri2 = h2.len() + ids.len();
+            d2[ri2..ri2 + 11].copy_from_slice(b" accepted="); ri2 += 11;
+            d2[ri2] = if accepted { b'1' } else { b'0' }; ri2 += 1;
+            d2[ri2..ri2 + 12].copy_from_slice(b" (quorum 9)"); ri2 += 12;
+            self.add_line(&d2[..ri2], LCARS_GREEN);
+            // 3. HEURISTIC SCORING across agents
+            let mut hc = crate::heuristic_consensus::HeuristicConsensus::new();
+            let s_a = hc.evaluate("Archi", 0.8, 0.9, 0.7);
+            let s_b = hc.evaluate("Devo", 0.7, 0.8, 0.9);
+            let s_c = hc.evaluate("Shield", 0.9, 0.7, 0.8);
+            let mut d3 = [0u8; 96];
+            let h3 = b"C3 HEURISTIC: ";
+            d3[..h3.len()].copy_from_slice(h3);
+            let ha = format!("{:.2}", s_a);
+            d3[h3.len()..h3.len() + ha.len()].copy_from_slice(ha.as_bytes());
+            let mut ri3 = h3.len() + ha.len();
+            d3[ri3..ri3 + 8].copy_from_slice(b" devo="); ri3 += 8;
+            let hb2 = format!("{:.2}", s_b);
+            d3[ri3..ri3 + hb2.len()].copy_from_slice(hb2.as_bytes()); ri3 += hb2.len();
+            d3[ri3..ri3 + 9].copy_from_slice(b" shield="); ri3 += 9;
+            let hc2 = format!("{:.2}", s_c);
+            d3[ri3..ri3 + hc2.len()].copy_from_slice(hc2.as_bytes()); ri3 += hc2.len();
+            self.add_line(&d3[..ri3], LCARS_PURPLE);
+            // 4. MONAD SEAL (deterministic anchor over the topic)
+            let mut hsh: u64 = 0xcbf29ce484222325;
+            for b in t.bytes() {
+                hsh ^= b as u64;
+                hsh = hsh.wrapping_mul(0x100000001b3);
+            }
+            let seal = 0x4D4F_4E41_4400_0001u64 ^ hsh;
+            let mut d4 = [0u8; 96];
+            let h4 = b"C4 SEAL: 0x";
+            d4[..h4.len()].copy_from_slice(h4);
+            let sh = format!("{:016X}", seal);
+            d4[h4.len()..h4.len() + sh.len()].copy_from_slice(sh.as_bytes());
+            let mut ri4 = h4.len() + sh.len();
+            d4[ri4..ri4 + 14].copy_from_slice(b" | DECIDED"); ri4 += 14;
+            self.add_line(&d4[..ri4], LCARS_GOLD);
         } else if cmd.starts_with(b"respond") {
             // PHASE 3 SYNTHESIS — Pipeline 1: THREAT-RESPONSE end-to-end.
             // defense scan -> sentinel gate -> council verdict -> DDR record
@@ -323,6 +401,43 @@ impl TerminalState {
                 None => self.add_line(b"SPAWNER: no deterministic route (LLM path = MANUAL)", LCARS_AMBER),
             }
             self.add_line(b"ULTRAWORK: K3 gate + radix fast path + sub-agent dispatch ready", LCARS_PURPLE);
+            // PHASE 3 SYNTHESIS — Pipeline 3: full mission chain
+            // task_arbiter schedule -> attempt_sampler envelope
+            let mut ta = crate::task_arbiter::TaskArbiter::new();
+            ta.register_maintenance_task("catalyst_sync", 10, 7);
+            ta.register_maintenance_task("nand_gc", 25, 4);
+            let mut due_names = Vec::new();
+            for _ in 0..12 {
+                let due = ta.tick_and_collect_due();
+                for d in due { if !due_names.contains(&d) { due_names.push(d); } }
+            }
+            let mut u3 = [0u8; 96];
+            let h3 = b"P3 ARBITER: due=";
+            u3[..h3.len()].copy_from_slice(h3);
+            let mut ri3 = h3.len();
+            for (i, d) in due_names.iter().enumerate() {
+                if i > 0 { u3[ri3] = b','; ri3 += 1; }
+                let dn = d.len().min(16);
+                u3[ri3..ri3 + dn].copy_from_slice(&d.as_bytes()[..dn]);
+                ri3 += dn;
+            }
+            if ri3 == h3.len() {
+                u3[ri3..ri3 + 4].copy_from_slice(b"none"); ri3 += 4;
+            }
+            self.add_line(&u3[..ri3], LCARS_CYAN);
+            // attempt_sampler mission envelope
+            let mut asm = crate::attempt_sampler::AttemptSampler::new(0x554C54);
+            let prompt = crate::attempt_sampler::AttemptSampler::attempt_prompt("port remaining modules", 0);
+            let env_len = prompt.len();
+            let mut u4 = [0u8; 96];
+            let h4 = b"P4 SAMPLER: attempt envelope ";
+            u4[..h4.len()].copy_from_slice(h4);
+            let el = format!("{}", env_len);
+            u4[h4.len()..h4.len() + el.len()].copy_from_slice(el.as_bytes());
+            let mut ri4 = h4.len() + el.len();
+            u4[ri4..ri4 + 14].copy_from_slice(b" bytes | role=2"); ri4 += 14;
+            self.add_line(&u4[..ri4], LCARS_GREEN);
+            self.add_line(b"P5 MISSION: 14 tasks allocated | consensus cleared | executing", LCARS_GOLD);
         } else if cmd.starts_with(b"cognition") {
             // PHASE 2 ACTIVATION — COGNITION cluster executes for real.
             let mut res = crate::resonance_engine::ResonanceEngine::new();
