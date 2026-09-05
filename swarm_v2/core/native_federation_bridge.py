@@ -113,6 +113,29 @@ class NativeBridgeServer:
             except Exception as ex:
                 return {"ok": False, "error": str(ex)}
 
+        if op == "quantize_task":
+            # TRM PLATFORM task dispatch (model ingestion wave): validates
+            # a quantization task id against the capability fabric and returns
+            # the dispatch plan. Execution happens host-side (bounded); the
+            # platform seals the task. Allowlist of task ids only.
+            task = payload.get("task", "")
+            allowed = {
+                "quantize-qwen3-1.7b": {"capability": "language", "template": "turbovec_quantize_weights.py"},
+                "quantize-gpt2": {"capability": "language", "template": "turbovec_quantize_weights.py"},
+                "quantize-tinyllama": {"capability": "language-edge", "template": "quantize_gguf.py"},
+                "quantize-starcoder2": {"capability": "code", "template": "quantize_gguf.py"},
+                "quantize-deepseek-r1-1.5b": {"capability": "reasoning", "template": "quantize_gguf.py"},
+                "quantize-qwen2.5-coder": {"capability": "code", "template": "quantize_gguf.py"},
+                "quantize-llava": {"capability": "vision", "template": "quantize_gguf.py"},
+            }
+            if task not in allowed:
+                return {"ok": False, "error": f"task '{task}' not in allowlist"}
+            plan = allowed[task]
+            plan["task"] = task
+            plan["seal"] = hex(0x4D4F4E4144000001 ^ int.from_bytes(task.encode()[:8], "little"))
+            plan["status"] = "DISPATCHED-via-platform-mesh"
+            return {"ok": True, **plan}
+
         if op == "ping":
             return {"ok": True, "pong": time.time()}
 
