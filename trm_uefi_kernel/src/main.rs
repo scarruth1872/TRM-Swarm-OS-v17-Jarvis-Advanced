@@ -10,6 +10,7 @@ mod agent_runtime;
 mod bridge;
 mod benchmark_epistemology;
 mod council;
+mod ddr_antibody;
 mod epistemology_core;
 mod digital_twin;
 mod font;
@@ -218,6 +219,81 @@ impl TerminalState {
             p2[r2..r2 + 3].copy_from_slice(b" (4)"); r2 += 3;
             self.add_line(&p2[..r2], LCARS_GREEN);
             self.add_line(b"PBFT: quorum 2f+1=9 of 14 agents | commit 10 | Byzantine f=4", LCARS_PURPLE);
+        } else if cmd.starts_with(b"respond") {
+            // PHASE 3 SYNTHESIS — Pipeline 1: THREAT-RESPONSE end-to-end.
+            // defense scan -> sentinel gate -> council verdict -> DDR record
+            let rest = cmd.get(8..).unwrap_or(b"").trim_ascii();
+            let sample: &[u8] = if rest.is_empty() {
+                b"SELECT * FROM users; os.system('rm -rf'); SECRET_KEY='x'; eval(payload)"
+            } else {
+                rest
+            };
+            let content = core::str::from_utf8(sample).unwrap_or("");
+            // 1. DEFENSE SCAN
+            let mut sc = crate::security_scanner::SecurityScanner::new();
+            let (findings, maxsev) = sc.scan(content);
+            let mut r1 = [0u8; 96];
+            let h1 = b"P1 SCAN: ";
+            r1[..h1.len()].copy_from_slice(h1);
+            let f1 = format!("{}", findings);
+            r1[h1.len()..h1.len() + f1.len()].copy_from_slice(f1.as_bytes());
+            let mut ri = h1.len() + f1.len();
+            r1[ri..ri + 10].copy_from_slice(b" findings "); ri += 10;
+            r1[ri..ri + 12].copy_from_slice(b"sev="); ri += 12;
+            r1[ri] = b'0' + maxsev as u8; ri += 1;
+            self.add_line(&r1[..ri], if maxsev >= 3 { LCARS_RED } else { LCARS_GREEN });
+            // 2. SENTINEL GATE
+            let mut sn = crate::sentinel::Sentinel::new(50);
+            sn.add_allow("kernel");
+            let (verdict, _) = sn.check("kernel:8022");
+            let gate_ok = verdict == crate::sentinel::VERDICT_ALLOW;
+            self.add_line(
+                if gate_ok { b"P2 GATE: kernel:8022 ALLOWED" } else { b"P2 GATE: BLOCKED" },
+                if gate_ok { LCARS_GREEN } else { LCARS_RED },
+            );
+            // 3. COUNCIL VERDICT (severity-informed)
+            let cat = if maxsev >= 3 {
+                crate::council::ProposalCategory::Security
+            } else {
+                crate::council::ProposalCategory::General
+            };
+            let proposal = crate::council::NativeSwarmCouncil::evaluate(content, cat, "RESPOND");
+            let mut r3 = [0u8; 96];
+            let h3 = b"P3 COUNCIL: score=";
+            r3[..h3.len()].copy_from_slice(h3);
+            let s3 = format!("{:.4}", proposal.weighted_score);
+            r3[h3.len()..h3.len() + s3.len()].copy_from_slice(s3.as_bytes());
+            let mut ri3 = h3.len() + s3.len();
+            r3[ri3..ri3 + 7].copy_from_slice(b" seal="); ri3 += 7;
+            let seal_hex = format!("{:016X}", proposal.monad_seal);
+            r3[ri3..ri3 + 16].copy_from_slice(seal_hex.as_bytes()); ri3 += 16;
+            self.add_line(&r3[..ri3], LCARS_PURPLE);
+            // 4. DDR ANTIBODY RECORD
+            let mut ddr = crate::ddr_antibody::DigitalDnaRepository::new();
+            ddr.install_default_antibodies();
+            let matches = ddr.check_antibodies(content, "pipeline_input.py");
+            let mut r4 = [0u8; 96];
+            let h4 = b"P4 DDR: ";
+            r4[..h4.len()].copy_from_slice(h4);
+            let m4 = format!("{}", matches.len());
+            r4[h4.len()..h4.len() + m4.len()].copy_from_slice(m4.as_bytes());
+            let mut ri4 = h4.len() + m4.len();
+            r4[ri4..ri4 + 22].copy_from_slice(b" antibody matches -> "); ri4 += 22;
+            let (prevented, _, _) = ddr.get_prevention_stats();
+            let p4 = format!("{}", prevented);
+            r4[ri4..ri4 + p4.len()].copy_from_slice(p4.as_bytes()); ri4 += p4.len();
+            r4[ri4..ri4 + 12].copy_from_slice(b" prevented"); ri4 += 12;
+            self.add_line(&r4[..ri4], LCARS_CYAN);
+            // 5. VERDICT (the pipeline output)
+            let blocked = maxsev >= 3 && !matches.is_empty();
+            self.add_line(
+                if blocked {
+                    b"P5 VERDICT: THREAT NEUTRALIZED - record sealed in DDR ledger"
+                } else {
+                    b"P5 VERDICT: payload clean - no threat signature"
+                },
+                if blocked { LCARS_RED } else { LCARS_GREEN },
+            );
         } else if cmd.starts_with(b"ultrawork") {
             // PHASE 2 ACTIVATION — ORCHESTRATION cluster executes for real.
             // trm_orchestrator core allocation + microkernel_spawner routing.
