@@ -4,6 +4,8 @@
 extern crate alloc;
 use alloc::format;
 use alloc::string::String;
+use alloc::string::ToString;
+use alloc::vec;
 use alloc::vec::Vec;
 
 mod allocator;
@@ -74,6 +76,31 @@ mod gan_design_synthesizer;
 mod generative_architect;
 mod small_diffusion_engine;
 mod chaos_engine;
+// VOLTAGE ENERGIZATION — CAPABILITY cluster: skill registry / cognitive
+// load balancing / symbology etymology / tool forge / manus engine /
+// instella sparse agent teams. (council fbb0f272)
+mod skill_loader;
+mod cognitive_load_balancer;
+mod symbology_etymology_monad;
+mod tool_forge;
+mod manus_engine;
+mod instella_sparse_agent_teams;
+// VOLTAGE ENERGIZATION — ORCHESTRATION cluster: 64-agent orchestrator /
+// artifact pipeline / worktree manager / heartbeat scheduler / expert
+// registry. (council fbb0f272)
+mod full_64_agent_orchestrator;
+mod artifact_pipeline;
+mod worktree_manager;
+mod heartbeat_scheduler;
+mod expert_registry;
+// VOLTAGE ENERGIZATION — FABRIC cluster: radix-trie deterministic matcher /
+// DRAM pattern computer / GPU Infinity Cache geometry / HBTF multi-scale
+// telemetry / THz-Bonsai ternary routing gateway. (council fbb0f272)
+mod radix_trie_matcher;
+mod dram_pattern_computer;
+mod gpu_infinity_computer;
+mod telemetry_fabric;
+mod thz_bonsai_gateway;
 
 use core::panic::PanicInfo;
 use r_efi::efi;
@@ -1993,6 +2020,159 @@ impl TerminalState {
             self.add_line(&e2[..i8], LCARS_GREEN);
             self.add_line(b"CREATE: synthesis pipeline complete (GAN -> ARCH -> DIFF -> CHAOS)", LCARS_GOLD);
 
+        } else if cmd.starts_with(b"orchestrate") {
+            // VOLTAGE ENERGIZATION — ORCHESTRATION cluster executes for real:
+            // 64-agent dispatch -> artifact pipeline -> worktree manager ->
+            // heartbeat scheduler -> expert registry.
+            let rest = cmd.get(11..).unwrap_or(b"").trim_ascii();
+            let comp: &[u8] = if rest.is_empty() { b"shield-deploy" } else { rest };
+            let component = core::str::from_utf8(comp).unwrap_or("shield-deploy");
+            let h_orch = crate::full_64_agent_orchestrator::get_64_agent_orchestrator();
+            let h_art = crate::artifact_pipeline::get_artifact_pipeline();
+            let h_wt = crate::worktree_manager::get_worktree_manager();
+            let h_hb = crate::heartbeat_scheduler::get_heartbeat_scheduler();
+            let h_exp = crate::expert_registry::get_expert_registry();
+            self.add_line(b"ORCHESTRATION CLUSTER: 64-agent -> artifact -> worktree -> heartbeat -> expert", LCARS_CYAN);
+            let mut ah = [0u8; 96];
+            let ha = b"  SINGLETONS armed: orch=";
+            ah[..ha.len()].copy_from_slice(ha);
+            let mut ai = ha.len();
+            let o_s = format!("{}", h_orch);
+            ah[ai..ai + o_s.len()].copy_from_slice(o_s.as_bytes()); ai += o_s.len();
+            ah[ai..ai + 5].copy_from_slice(b" art="); ai += 5;
+            let at_s = format!("{}", h_art);
+            ah[ai..ai + at_s.len()].copy_from_slice(at_s.as_bytes()); ai += at_s.len();
+            ah[ai..ai + 5].copy_from_slice(b" wt="); ai += 5;
+            let wt_s = format!("{}", h_wt);
+            ah[ai..ai + wt_s.len()].copy_from_slice(wt_s.as_bytes()); ai += wt_s.len();
+            ah[ai..ai + 5].copy_from_slice(b" hb="); ai += 5;
+            let hb_s = format!("{}", h_hb);
+            ah[ai..ai + hb_s.len()].copy_from_slice(hb_s.as_bytes()); ai += hb_s.len();
+            ah[ai..ai + 6].copy_from_slice(b" exp="); ai += 6;
+            let ex_s = format!("{}", h_exp);
+            ah[ai..ai + ex_s.len()].copy_from_slice(ex_s.as_bytes()); ai += ex_s.len();
+            self.add_line(&ah[..ai], LCARS_GOLD);
+            // 1. FULL 64-AGENT ORCHESTRATOR: dispatcher singleton + wave pipeline (REAL)
+            let h64 = crate::full_64_agent_orchestrator::get_64_agent_orchestrator();
+            let mut orch = crate::full_64_agent_orchestrator::Full64AgentOrchestrator::new();
+            let (n_disp, elapsed_us) = orch.dispatch_wave_pipeline(component.as_bytes());
+            let lead = orch.get_agent_by_id(1);
+            let mut c1 = [0u8; 96];
+            let h1 = b"  WAVE DISPATCH: agents=";
+            c1[..h1.len()].copy_from_slice(h1);
+            let mut i1 = h1.len();
+            let nd_s = format!("{}", n_disp);
+            c1[i1..i1 + nd_s.len()].copy_from_slice(nd_s.as_bytes()); i1 += nd_s.len();
+            c1[i1..i1 + 5].copy_from_slice(b" us="); i1 += 5;
+            let us_s = format!("{}", elapsed_us);
+            c1[i1..i1 + us_s.len()].copy_from_slice(us_s.as_bytes()); i1 += us_s.len();
+            c1[i1..i1 + 3].copy_from_slice(b" h="); i1 += 3;
+            let h64_s = format!("{}", h64);
+            c1[i1..i1 + h64_s.len()].copy_from_slice(h64_s.as_bytes()); i1 += h64_s.len();
+            c1[i1..i1 + 6].copy_from_slice(b" lead="); i1 += 6;
+            if let Some(l) = lead {
+                let ln = l.name.as_bytes().len().min(30);
+                c1[i1..i1 + ln].copy_from_slice(&l.name.as_bytes()[..ln]); i1 += ln;
+            } else {
+                c1[i1..i1 + 5].copy_from_slice(b"none"); i1 += 5;
+            }
+            self.add_line(&c1[..i1], LCARS_PURPLE);
+            // 2. ARTIFACT PIPELINE: registry + scan + stats (REAL)
+            let mut reg = crate::artifact_pipeline::ArtifactRegistry::new();
+            let scan_n = crate::artifact_pipeline::scan_artifacts_manual();
+            reg.upsert(crate::artifact_pipeline::ArtifactRecord::new_scan_record(
+                "deploy_manifest.md",
+                1024,
+                crate::artifact_pipeline::ST_APPROVED,
+                Some("reviewed by council".to_string()),
+                true,
+                false,
+            ));
+            let stats = reg.get_stats();
+            let mut c2 = [0u8; 96];
+            let h2 = b"  PIPELINE: scan=";
+            c2[..h2.len()].copy_from_slice(h2);
+            let mut i2 = h2.len();
+            let sc_s = format!("{}", scan_n);
+            c2[i2..i2 + sc_s.len()].copy_from_slice(sc_s.as_bytes()); i2 += sc_s.len();
+            c2[i2..i2 + 5].copy_from_slice(b" tot="); i2 += 5;
+            let t_s = format!("{}", stats[0]);
+            c2[i2..i2 + t_s.len()].copy_from_slice(t_s.as_bytes()); i2 += t_s.len();
+            c2[i2..i2 + 6].copy_from_slice(b" appr="); i2 += 6;
+            let ap_s = format!("{}", stats[2]);
+            c2[i2..i2 + ap_s.len()].copy_from_slice(ap_s.as_bytes()); i2 += ap_s.len();
+            c2[i2..i2 + 5].copy_from_slice(b" pend="); i2 += 5;
+            let pe_s = format!("{}", stats[1]);
+            c2[i2..i2 + pe_s.len()].copy_from_slice(pe_s.as_bytes()); i2 += pe_s.len();
+            self.add_line(&c2[..i2], LCARS_GREEN);
+            // 3. WORKTREE MANAGER: path/branch construction + create (REAL)
+            let wt_root = crate::worktree_manager::WORKTREES_ROOT_DEFAULT;
+            let mut wm = crate::worktree_manager::WorktreeManager::new(component);
+            let wt_path = wm.create_worktree("council_0", &crate::worktree_manager::WorktreeManager::branch_name("council_0"));
+            let mut c3 = [0u8; 96];
+            let h3 = b"  WORKTREE: root=";
+            c3[..h3.len()].copy_from_slice(h3);
+            let mut i3 = h3.len();
+            let wr = wt_root.as_bytes().len().min(20);
+            c3[i3..i3 + wr].copy_from_slice(&wt_root.as_bytes()[..wr]); i3 += wr;
+            c3[i3..i3 + 4].copy_from_slice(b" = "); i3 += 4;
+            if let Some(p) = wt_path {
+                let pn = p.as_bytes().len().min(56);
+                c3[i3..i3 + pn].copy_from_slice(&p.as_bytes()[..pn]); i3 += pn;
+            } else {
+                c3[i3..i3 + 4].copy_from_slice(b"none"); i3 += 4;
+            }
+            self.add_line(&c3[..i3], LCARS_PURPLE);
+            // 4. HEARTBEAT SCHEDULER: add task + pulse (REAL)
+            let mut hb = crate::heartbeat_scheduler::HeartbeatScheduler::new(
+                crate::heartbeat_scheduler::DEFAULT_HEARTBEAT_INTERVAL_MS,
+            );
+            hb.start();
+            let task_id = hb.add_task(component, "Shield");
+            let pulsed = hb.pulse();
+            let mut c4 = [0u8; 96];
+            let h4 = b"  HEARTBEAT: task#";
+            c4[..h4.len()].copy_from_slice(h4);
+            let mut i4 = h4.len();
+            let t_id = format!("{}", task_id);
+            c4[i4..i4 + t_id.len()].copy_from_slice(t_id.as_bytes()); i4 += t_id.len();
+            c4[i4..i4 + 5].copy_from_slice(b" run="); i4 += 5;
+            c4[i4] = if hb.is_running { b'1' } else { b'0' }; i4 += 1;
+            c4[i4..i4 + 4].copy_from_slice(b" act="); i4 += 4;
+            match pulsed {
+                Some(p) => {
+                    let p_s = format!("{}", p);
+                    c4[i4..i4 + p_s.len()].copy_from_slice(p_s.as_bytes()); i4 += p_s.len();
+                }
+                None => {
+                    c4[i4..i4 + 4].copy_from_slice(b"none"); i4 += 4;
+                }
+            }
+            self.add_line(&c4[..i4], LCARS_GREEN);
+            // 5. EXPERT REGISTRY: register team + count (REAL)
+            let mut xr = crate::expert_registry::ExpertRegistry::new();
+            let persona = crate::expert_registry::Persona::new("Shield", "eBPF Intrusion Defense");
+            xr.register_team(vec![
+                ("shield".to_string(), crate::expert_registry::ExpertAgent::new("agent_01", Some(persona))),
+            ]);
+            let xcount = xr.get_all_agents().len();
+            let lookup = xr.get_agent("shield");
+            let mut c5 = [0u8; 96];
+            let h5 = b"  EXPERTS: registered=";
+            c5[..h5.len()].copy_from_slice(h5);
+            let mut i5 = h5.len();
+            let xc_s = format!("{}", xcount);
+            c5[i5..i5 + xc_s.len()].copy_from_slice(xc_s.as_bytes()); i5 += xc_s.len();
+            c5[i5..i5 + 8].copy_from_slice(b" agent="); i5 += 8;
+            if let Some(a) = lookup {
+                let an = a.agent_id.as_bytes().len().min(20);
+                c5[i5..i5 + an].copy_from_slice(&a.agent_id.as_bytes()[..an]); i5 += an;
+            } else {
+                c5[i5..i5 + 4].copy_from_slice(b"none"); i5 += 4;
+            }
+            self.add_line(&c5[..i5], LCARS_AMBER);
+            self.add_line(b"ORCHESTRATE: 5-module cluster dispatched (ORCH -> ART -> WT -> HB -> EXP)", LCARS_GOLD);
+
         } else if cmd.starts_with(b"memory") {
             // VOLTAGE ENERGIZATION — MEMORY cluster executes for real.
             // 1) semantic_knowledge_graph: bootstrap + add 2 nodes, find via node_health
@@ -2181,6 +2361,316 @@ impl TerminalState {
             let hc = format!("{}", sec.len());
             n3[nr3..nr3 + hc.len()].copy_from_slice(hc.as_bytes()); nr3 += hc.len();
             self.add_line(&n3[..nr3], LCARS_PURPLE);
+        } else if cmd.starts_with(b"capability") {
+            // VOLTAGE ENERGIZATION — CAPABILITY cluster executes for real:
+            // skill_loader registry -> cognitive_load_balancer ->
+            // symbology_etymology_monad -> tool_forge => manus_engine
+            // quantum superposition -> instella sparse agent teams.
+            self.add_line(b"CAPABILITY CLUSTER: skill -> balance -> symbology -> forge -> manus -> instella", LCARS_CYAN);
+            // 1) skill_loader (REAL): register 2 skills + get_stats + list
+            let mut sl = crate::skill_loader::SkillLoader::new();
+            let mut sk_a = crate::skill_loader::SkillDefinition::new();
+            sk_a.name = "load_balancing".into();
+            sk_a.description = "Cognitive load redistribution".into();
+            sk_a.source_type = "skill_md".into();
+            sk_a.instructions = "Redistribute tasks to the least-loaded capable agent.".into();
+            let mut sk_b = crate::skill_loader::SkillDefinition::new();
+            sk_b.name = "symbology".into();
+            sk_b.description = "Geometric etymology resolution".into();
+            sk_b.source_type = "python_class".into();
+            sl.register_skill(sk_a);
+            sl.register_skill(sk_b);
+            let st = sl.get_stats();
+            let mut s1 = [0u8; 96];
+            let h1 = b"SKILL LOADER: skills=";
+            s1[..h1.len()].copy_from_slice(h1);
+            let mut r1 = h1.len();
+            let n1 = format!("{}", st.total_skills);
+            s1[r1..r1 + n1.len()].copy_from_slice(n1.as_bytes()); r1 += n1.len();
+            s1[r1..r1 + 5].copy_from_slice(b" md="); r1 += 5;
+            let md = format!("{}", st.skill_md_count);
+            s1[r1..r1 + md.len()].copy_from_slice(md.as_bytes()); r1 += md.len();
+            s1[r1..r1 + 5].copy_from_slice(b" py="); r1 += 5;
+            let py = format!("{}", st.python_class_count);
+            s1[r1..r1 + py.len()].copy_from_slice(py.as_bytes()); r1 += py.len();
+            s1[r1..r1 + 7].copy_from_slice(b" path="); r1 += 7;
+            let pa = format!("{}", st.search_path_count);
+            s1[r1..r1 + pa.len()].copy_from_slice(pa.as_bytes()); r1 += pa.len();
+            self.add_line(&s1[..r1], LCARS_GOLD);
+            let sk_list = sl.list_skills();
+            let mut s2 = [0u8; 96];
+            let h2 = b"SKILL LIST: ";
+            s2[..h2.len()].copy_from_slice(h2);
+            let mut r2 = h2.len();
+            for m in sk_list.iter().take(3) {
+                let nm = m.name.as_bytes();
+                let nnn = nm.len().min(16);
+                s2[r2..r2 + nnn].copy_from_slice(&nm[..nnn]); r2 += nnn;
+                s2[r2..r2 + 2].copy_from_slice(b", "); r2 += 2;
+            }
+            if r2 > h2.len() { r2 -= 2; }
+            self.add_line(&s2[..r2], LCARS_PURPLE);
+            // 2) cognitive_load_balancer (REAL): workload + swarm summary
+            let mut clb = crate::cognitive_load_balancer::CognitiveLoadBalancer::new();
+            clb.record_task_start("Devo", 1000.0);
+            clb.record_task_start("Shield", 1000.0);
+            clb.record_task_end("Devo", 5.0, 3.0, 1005.0);
+            let sm = clb.get_swarm_load_summary();
+            let cap = clb.get_capable_roles("debugging");
+            let mut c1 = [0u8; 96];
+            let hc = b"CLB: active=";
+            c1[..hc.len()].copy_from_slice(hc);
+            let mut rc = hc.len();
+            let ac = format!("{}", sm.active_agents);
+            c1[rc..rc + ac.len()].copy_from_slice(ac.as_bytes()); rc += ac.len();
+            c1[rc..rc + 7].copy_from_slice(b" util="); rc += 7;
+            let ut = format!("{:.1}", sm.utilization_pct);
+            c1[rc..rc + ut.len()].copy_from_slice(ut.as_bytes()); rc += ut.len();
+            c1[rc..rc + 3].copy_from_slice(b"% d"); rc += 3;
+            self.add_line(&c1[..rc], LCARS_GREEN);
+            let mut c2 = [0u8; 96];
+            let hp = b"CLB capable[debugging]: ";
+            c2[..hp.len()].copy_from_slice(hp);
+            let mut rp = hp.len();
+            for r in cap.iter().take(4) {
+                let rb = r.as_bytes();
+                let rn = rb.len().min(10);
+                c2[rp..rp + rn].copy_from_slice(&rb[..rn]); rp += rn;
+                c2[rp..rp + 1].copy_from_slice(b" "); rp += 1;
+            }
+            self.add_line(&c2[..rp], LCARS_CYAN);
+            // 3) symbology_etymology_monad (REAL): resolve a concept
+            let rest = cmd.get(11..).unwrap_or(b"").trim_ascii();
+            let concept: &[u8] = if rest.is_empty() { b"monad" } else { rest };
+            let cword = core::str::from_utf8(concept).unwrap_or("monad");
+            let rc = crate::symbology_etymology_monad::resolve_concept(cword);
+            let mut x1 = [0u8; 96];
+            let hx = b"SYMBOLOGY: concept=";
+            x1[..hx.len()].copy_from_slice(hx);
+            let mut rx1 = hx.len();
+            let cn = rc.concept_word.as_bytes().len().min(18);
+            x1[rx1..rx1 + cn].copy_from_slice(&rc.concept_word.as_bytes()[..cn]); rx1 += cn;
+            x1[rx1..rx1 + 11].copy_from_slice(b" geom_key="); rx1 += 11;
+            let gk = rc.geom_key.as_bytes();
+            let gkn = gk.len().min(14);
+            x1[rx1..rx1 + gkn].copy_from_slice(&gk[..gkn]); rx1 += gkn;
+            x1[rx1..rx1 + 6].copy_from_slice(b" fhz="); rx1 += 6;
+            let fh = format!("{:.0}", rc.frequency_hz);
+            x1[rx1..rx1 + fh.len()].copy_from_slice(fh.as_bytes()); rx1 += fh.len();
+            self.add_line(&x1[..rx1], LCARS_AMBER);
+            let mut x2 = [0u8; 96];
+            let hx2 = b"  energy=";
+            x2[..hx2.len()].copy_from_slice(hx2);
+            let mut rx2 = hx2.len();
+            let ea = format!("{:.1}", rc.femto_scan_energy);
+            x2[rx2..rx2 + ea.len()].copy_from_slice(ea.as_bytes()); rx2 += ea.len();
+            x2[rx2..rx2 + 8].copy_from_slice(b" etymon="); rx2 += 8;
+            let et = rc.etymology_root.as_bytes();
+            let etn = et.len().min(30);
+            x2[rx2..rx2 + etn].copy_from_slice(&et[..etn]); rx2 += etn;
+            self.add_line(&x2[..rx2], LCARS_PURPLE);
+            // 4) tool_forge (REAL): assess gaps + forge pipeline
+            let mut tf = crate::tool_forge::ToolForge::new();
+            let gaps = tf.assess_agent_needs("Lead Developer", &["GitSkill", "RefactorSkill"]);
+            let (fc, fh2) = tf.run_forge_pipeline("RefactorSkill", true);
+            let mut t1 = [0u8; 96];
+            let ht = b"TOOL FORGE: gaps[dev]=";
+            t1[..ht.len()].copy_from_slice(ht);
+            let mut rt = ht.len();
+            let gc2 = format!("{}", gaps.len());
+            t1[rt..rt + gc2.len()].copy_from_slice(gc2.as_bytes()); rt += gc2.len();
+            t1[rt..rt + 6].copy_from_slice(b" log="); rt += 6;
+            let bl = format!("{}", tf.build_log_len());
+            t1[rt..rt + bl.len()].copy_from_slice(bl.as_bytes()); rt += bl.len();
+            t1[rt..rt + 5].copy_from_slice(b" ok="); rt += 5;
+            t1[rt] = if fc { b'1' } else { b'0' }; rt += 1;
+            t1[rt..rt + 7].copy_from_slice(b" lead="); rt += 7;
+            t1[rt] = if fh2 { b'1' } else { b'0' }; rt += 1;
+            self.add_line(&t1[..rt], LCARS_GREEN);
+            // 5) manus_engine (REAL): quantum superposition across roles
+            let mut me = crate::manus_engine::ManusEngine::new();
+            let mut sup = me.create_superposition(7, "capability-fusion", &["Logic", "Devo", "Shield"]);
+            me.submit_attempt(&mut sup, 0, "coherence=0.90", 0.3);
+            me.submit_attempt(&mut sup, 1, "coherence=0.85", 0.2);
+            me.submit_attempt(&mut sup, 2, "coherence=0.88", 0.25);
+            let collapsed = me.check_and_collapse(&mut sup);
+            let mut m1 = [0u8; 96];
+            let hm = b"MANUS: tasks=";
+            m1[..hm.len()].copy_from_slice(hm);
+            let mut rm = hm.len();
+            let tp = format!("{}", me.tasks_processed);
+            m1[rm..rm + tp.len()].copy_from_slice(tp.as_bytes()); rm += tp.len();
+            m1[rm..rm + 8].copy_from_slice(b" coil="); rm += 8;
+            let k1 = format!("{:.2}", sup.coherence);
+            m1[rm..rm + k1.len()].copy_from_slice(k1.as_bytes()); rm += k1.len();
+            m1[rm..rm + 6].copy_from_slice(b" col="); rm += 6;
+            m1[rm] = if collapsed { b'1' } else { b'0' }; rm += 1;
+            m1[rm..rm + 9].copy_from_slice(b" winner="); rm += 9;
+            if let Some(w) = sup.winning_role {
+                let wb = w.as_bytes();
+                let wn = wb.len().min(10);
+                m1[rm..rm + wn].copy_from_slice(&wb[..wn]); rm += wn;
+            } else {
+                m1[rm..rm + 4].copy_from_slice(b"none"); rm += 4;
+            }
+            self.add_line(&m1[..rm], LCARS_ORANGE);
+            // 6) instella_sparse_agent_teams (REAL): 1-of-8 sparse routing
+            let mut sat = crate::instella_sparse_agent_teams::InstellaSparseAgentTeams::new();
+            let (team, dark, lat) = sat.route_task("quantum math");
+            let mut n1 = [0u8; 96];
+            let hna = b"INSTELLA SPA: team=";
+            n1[..hna.len()].copy_from_slice(hna);
+            let mut rn = hna.len();
+            let tidn = team.team_id.len().min(24);
+            n1[rn..rn + tidn].copy_from_slice(&team.team_id.as_bytes()[..tidn]); rn += tidn;
+            self.add_line(&n1[..rn], LCARS_CYAN);
+            let mut n2 = [0u8; 96];
+            let hnb = b"  lead=";
+            n2[..hnb.len()].copy_from_slice(hnb);
+            let mut rn2 = hnb.len();
+            let lbn = team.lead_agent.len().min(10);
+            n2[rn2..rn2 + lbn].copy_from_slice(&team.lead_agent.as_bytes()[..lbn]); rn2 += lbn;
+            n2[rn2..rn2 + 7].copy_from_slice(b" dark="); rn2 += 7;
+            let dk = format!("{}", dark);
+            n2[rn2..rn2 + dk.len()].copy_from_slice(dk.as_bytes()); rn2 += dk.len();
+            n2[rn2..rn2 + 6].copy_from_slice(b" exp="); rn2 += 6;
+            let ex = format!("{}", team.expert_count);
+            n2[rn2..rn2 + ex.len()].copy_from_slice(ex.as_bytes()); rn2 += ex.len();
+            n2[rn2..rn2 + 5].copy_from_slice(b" ns="); rn2 += 5;
+            let ls = format!("{}", lat);
+            n2[rn2..rn2 + ls.len()].copy_from_slice(ls.as_bytes()); rn2 += ls.len();
+            self.add_line(&n2[..rn2], LCARS_GREEN);
+        } else if cmd.starts_with(b"fabric") {
+            // VOLTAGE ENERGIZATION — FABRIC cluster executes for real:
+            // radix-trie insert/query -> DRAM pattern compute -> GPU Infinity
+            // Cache geometry -> HBTF multi-scale telemetry -> THz-Bonsai route.
+            self.add_line(b"FABRIC CLUSTER: radix-trie -> dram -> gpu-ic -> hbtf -> thz", LCARS_CYAN);
+            // 1) RADIX TRIE MATCHER: insert a deterministic pattern, then query it.
+            let mut trie = crate::radix_trie_matcher::build_default_matcher();
+            let pre = trie.registered;
+            trie.register("fabric status", crate::radix_trie_matcher::_handle_health_check, Some("fabric_status"));
+            let mut r1 = [0u8; 96];
+            let h1 = b"RADIX: builtin=";
+            r1[..h1.len()].copy_from_slice(h1);
+            let mut i1 = h1.len();
+            let ps = format!("{}", pre);
+            r1[i1..i1 + ps.len()].copy_from_slice(ps.as_bytes()); i1 += ps.len();
+            r1[i1..i1 + 12].copy_from_slice(b" registered="); i1 += 12;
+            let rs = format!("{}", trie.registered);
+            r1[i1..i1 + rs.len()].copy_from_slice(rs.as_bytes()); i1 += rs.len();
+            match trie.match_prefix("fabric status") {
+                Some((handler, _ep, mlen)) => {
+                    let hres = handler();
+                    r1[i1..i1 + 7].copy_from_slice(b" hit=>="); i1 += 7;
+                    let hb = hres.as_bytes();
+                    let hn = hb.len().min(42);
+                    r1[i1..i1 + hn].copy_from_slice(&hb[..hn]); i1 += hn;
+                    r1[i1] = b'/'; i1 += 1;
+                    let ls = format!("{}", mlen);
+                    r1[i1..i1 + ls.len()].copy_from_slice(ls.as_bytes()); i1 += ls.len();
+                }
+                None => {
+                    r1[i1..i1 + 5].copy_from_slice(b" miss"); i1 += 5;
+                }
+            }
+            self.add_line(&r1[..i1], LCARS_GREEN);
+            // 2) DRAM PATTERN COMPUTER: real pathway / architecture compute.
+            let dpr = crate::dram_pattern_computer::pathway_row_buffer(128);
+            let dbk = crate::dram_pattern_computer::pathway_bulk_k3();
+            let dfs = crate::dram_pattern_computer::full_system_summary();
+            let mut d1 = [0u8; 96];
+            let hd = b"DRAM: rowbuf(128)=";
+            d1[..hd.len()].copy_from_slice(hd);
+            let mut id = hd.len();
+            let dps = format!("{}", dpr);
+            d1[id..id + dps.len()].copy_from_slice(dps.as_bytes()); id += dps.len();
+            d1[id..id + 9].copy_from_slice(b" bulk_k3="); id += 9;
+            let dbs = format!("{}", dbk);
+            d1[id..id + dbs.len()].copy_from_slice(dbs.as_bytes()); id += dbs.len();
+            d1[id..id + 9].copy_from_slice(b" summary="); id += 9;
+            let fss = format!("{}", dfs);
+            d1[id..id + fss.len()].copy_from_slice(fss.as_bytes()); id += fss.len();
+            self.add_line(&d1[..id], LCARS_GOLD);
+            // 3) GPU INFINITY COMPUTER: real PC Infinity Cache geometry.
+            let gf = crate::gpu_infinity_computer::gpu_pattern_fpga(8);
+            let gk = crate::gpu_infinity_computer::gpu_pattern_k3_ternary();
+            let gcm = crate::gpu_infinity_computer::compare_fabrics();
+            let mut g1 = [0u8; 96];
+            let hg = b"GPU-IC: fpga(8MB)=";
+            g1[..hg.len()].copy_from_slice(hg);
+            let mut ig = hg.len();
+            let gfs = format!("{}", gf);
+            g1[ig..ig + gfs.len()].copy_from_slice(gfs.as_bytes()); ig += gfs.len();
+            g1[ig..ig + 5].copy_from_slice(b" k3="); ig += 5;
+            let gks = format!("{}", gk);
+            g1[ig..ig + gks.len()].copy_from_slice(gks.as_bytes()); ig += gks.len();
+            g1[ig..ig + 5].copy_from_slice(b" cmp="); ig += 5;
+            let gcs = format!("{}", gcm);
+            g1[ig..ig + gcs.len()].copy_from_slice(gcs.as_bytes()); ig += gcs.len();
+            self.add_line(&g1[..ig], LCARS_PURPLE);
+            // 4) TELEMETRY FABRIC (HBTF): subscribe -> publish frame -> metrics.
+            let mut tf = crate::telemetry_fabric::TelemetryFabric::new();
+            let tsub = tf.subscribe("fabric");
+            let frame = crate::telemetry_fabric::TelemetryFrame::new(
+                "f1",
+                "node0",
+                "fabric",
+                vec![(String::from("gpu_load"), 0.42)],
+                0.0,
+            );
+            let tdel = tf.publish(frame);
+            let (total, buffered, channels) = tf.get_fabric_metrics();
+            let mut t1 = [0u8; 96];
+            let ht = b"TELEMETRY: subs=";
+            t1[..ht.len()].copy_from_slice(ht);
+            let mut it = ht.len();
+            let tss = format!("{}", tsub);
+            t1[it..it + tss.len()].copy_from_slice(tss.as_bytes()); it += tss.len();
+            t1[it..it + 11].copy_from_slice(b" delivered="); it += 11;
+            let tds = format!("{}", tdel);
+            t1[it..it + tds.len()].copy_from_slice(tds.as_bytes()); it += tds.len();
+            t1[it..it + 8].copy_from_slice(b" frames="); it += 8;
+            let tts = format!("{}", total);
+            t1[it..it + tts.len()].copy_from_slice(tts.as_bytes()); it += tts.len();
+            t1[it..it + 5].copy_from_slice(b" buf="); it += 5;
+            let tbs = format!("{}", buffered);
+            t1[it..it + tbs.len()].copy_from_slice(tbs.as_bytes()); it += tbs.len();
+            t1[it..it + 7].copy_from_slice(b" chans="); it += 7;
+            let tcs = format!("{}", channels);
+            t1[it..it + tcs.len()].copy_from_slice(tcs.as_bytes()); it += tcs.len();
+            self.add_line(&t1[..it], LCARS_AMBER);
+            // 5) THZ-BONSAI GATEWAY: encode -> trits -> route decision.
+            let mut gw = crate::thz_bonsai_gateway::ThzBonsaiMicrokernelGateway::new();
+            let payload = crate::thz_bonsai_gateway::encode_payload(b"FABRIC-ARMED");
+            let trits = crate::thz_bonsai_gateway::to_trits(&payload);
+            let (dominant, conf) = crate::thz_bonsai_gateway::route_trits(&trits);
+            gw.bonsai.process(&payload);
+            let (calls, avg_lat) = gw.bonsai.get_stats();
+            let mut z1 = [0u8; 96];
+            let hz = b"THZ: route=";
+            z1[..hz.len()].copy_from_slice(hz);
+            let mut iz = hz.len();
+            let domb = dominant.as_bytes();
+            let domn = domb.len().min(10);
+            z1[iz..iz + domn].copy_from_slice(&domb[..domn]); iz += domn;
+            z1[iz..iz + 7].copy_from_slice(b" conf="); iz += 7;
+            let cfs = format!("{:.0}", conf * 100.0);
+            z1[iz..iz + cfs.len()].copy_from_slice(cfs.as_bytes()); iz += cfs.len();
+            z1[iz..iz + 7].copy_from_slice(b"% call="); iz += 7;
+            let cals = format!("{}", calls);
+            z1[iz..iz + cals.len()].copy_from_slice(cals.as_bytes()); iz += cals.len();
+            z1[iz..iz + 6].copy_from_slice(b" avg="); iz += 6;
+            let avs = format!("{:.2}", avg_lat);
+            z1[iz..iz + avs.len()].copy_from_slice(avs.as_bytes()); iz += avs.len();
+            z1[iz..iz + 3].copy_from_slice(b"us "); iz += 3;
+            z1[iz..iz + 6].copy_from_slice(b" dim="); iz += 6;
+            let dms = format!("{}", crate::thz_bonsai_gateway::BONSAI_DIM);
+            z1[iz..iz + dms.len()].copy_from_slice(dms.as_bytes()); iz += dms.len();
+            self.add_line(&z1[..iz], LCARS_GREEN);
+            let msg = gw.decode_message(dominant, conf, 2.5);
+            let mb = msg.as_bytes();
+            let mn = mb.len().min(92);
+            self.add_line(&mb[..mn], LCARS_CYAN);
         } else {
             self.add_line(b"JARVIS: 'Command acknowledged. Executing sovereign synthesis on silicon.'", LCARS_WHITE);
             self.add_line(b"LOGIC:  'Action vector evaluated by real 14-agent council (K3).'", LCARS_GREEN);
