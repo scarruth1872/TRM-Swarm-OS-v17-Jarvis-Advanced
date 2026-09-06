@@ -62,6 +62,8 @@ mod task_arbiter;
 mod trm_brain;
 mod voltage_node_engine;
 mod quantum_drug_screen;
+mod p2p_direct_route;
+mod rare_disease;
 mod quic_protocol;
 mod star_matrix;
 mod time;
@@ -410,6 +412,71 @@ impl TerminalState {
             let sn = summ.len().min(120);
             sb[..sn].copy_from_slice(&summ.as_bytes()[..sn]);
             self.add_line(&sb[..sn], LCARS_AMBER);
+        } else if cmd.starts_with(b"p2p") {
+            // P2P DIRECT ROUTE (council 83563732) — native gap closure.
+            // Zero-hop peer-to-peer router state (DESKTOP<->LAPTOP direct).
+            let mut pr = crate::p2p_direct_route::P2PDirectRouter::new();
+            pr.register_peer("DESKTOP", [127, 0, 0, 1], 8022, 1);
+            pr.register_peer("LAPTOP", [100, 123, 215, 119], 8022, 1);
+            pr.register_peer("EDGE", [10, 0, 0, 5], 9000, 1);
+            pr.connect_direct("DESKTOP", "LAPTOP", 12);
+            let r1 = pr.route_packet("DESKTOP", "LAPTOP");
+            let r2 = pr.route_packet("DESKTOP", "EDGE");
+            let ratio = pr.direct_ratio();
+            let mut a1 = [0u8; 96];
+            let h = b"P2P: peers=";
+            a1[..h.len()].copy_from_slice(h);
+            let pc = format!("{}", pr.peer_count());
+            a1[h.len()..h.len() + pc.len()].copy_from_slice(pc.as_bytes());
+            let mut ri = h.len() + pc.len();
+            a1[ri..ri + 9].copy_from_slice(b" routes="); ri += 9;
+            let rc = format!("{}", pr.route_count());
+            a1[ri..ri + rc.len()].copy_from_slice(rc.as_bytes()); ri += rc.len();
+            a1[ri..ri + 13].copy_from_slice(b" direct-ratio="); ri += 13;
+            let dr = format!("{:.2}", ratio);
+            a1[ri..ri + dr.len()].copy_from_slice(dr.as_bytes()); ri += dr.len();
+            self.add_line(&a1[..ri], LCARS_CYAN);
+            let r1n = r1.len().min(60);
+            self.add_line(&r1.as_bytes()[..r1n], LCARS_GREEN);
+            let r2n = r2.len().min(60);
+            self.add_line(&r2.as_bytes()[..r2n], LCARS_AMBER);
+            self.add_line(b"P2P: zero-hop direct vs mesh relay (UDP socket = host bridge)", LCARS_PURPLE);
+        } else if cmd.starts_with(b"rare") {
+            // RARE DISEASE PILOT (council 83563732) — native gap closure.
+            // Diagnostic pilot with honest epistemic status.
+            let genes = ["NTRK1", "SCN5A", "CFTR", "RYR1", "PMP22", "DMD"];
+            let mut rec = crate::rare_disease::run_pilot("pat-0007", "severe cardiac arrhythmia", &genes);
+            let s1 = crate::rare_disease::summary(&rec);
+            let s1n = s1.len().min(120);
+            self.add_line(&s1.as_bytes()[..s1n], LCARS_CYAN);
+            // top gene + confidence
+            let conf = format!("{:.2}", rec.confidence);
+            let mut a2 = [0u8; 96];
+            let h2 = b"TOP GENE: ";
+            a2[..h2.len()].copy_from_slice(h2);
+            let gn = rec.top_gene.len().min(20);
+            a2[h2.len()..h2.len() + gn].copy_from_slice(&rec.top_gene.as_bytes()[..gn]);
+            let mut ri2 = h2.len() + gn;
+            a2[ri2..ri2 + 10].copy_from_slice(b" conf="); ri2 += 10;
+            a2[ri2..ri2 + conf.len()].copy_from_slice(conf.as_bytes()); ri2 += conf.len();
+            self.add_line(&a2[..ri2], LCARS_GREEN);
+            // gene evals
+            let mut i2 = 0;
+            for g in rec.genes.iter().take(4) {
+                let mut a3 = [0u8; 96];
+                let line = format!("  {} vari={} score={:.2} {}", g.gene, g.variant, g.phenotype_score, if g.hit { "HIT" } else { "no" });
+                let ln = line.len().min(60);
+                a3[..ln].copy_from_slice(&line.as_bytes()[..ln]);
+                self.add_line(&a3[..ln], if g.hit { LCARS_GOLD } else { LCARS_AMBER });
+                i2 += 1;
+            }
+            let _ = i2;
+            // confirm sanger (label as external)
+            crate::rare_disease::sanger_confirm(&mut rec, "exo-lab-42", "NTRK1 c.2000A>G");
+            let s2 = crate::rare_disease::summary(&rec);
+            let s2n = s2.len().min(120);
+            self.add_line(&s2.as_bytes()[..s2n], if rec.status == crate::rare_disease::EpistemicStatus::SangerConfirmedPathogenic { LCARS_GREEN } else { LCARS_AMBER });
+            self.add_line(b"RARE: Sanger confirm = EXTERNAL lab transition, not self-claimed", LCARS_PURPLE);
         } else if cmd.starts_with(b"fractal") {
             // FRACTAL TELEMETRY (council 17004faf) — Wave B.
             // Multi-scale self-similar telemetry pulse (S1-S5 scales),
