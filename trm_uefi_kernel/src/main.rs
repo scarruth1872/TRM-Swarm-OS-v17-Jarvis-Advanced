@@ -32,9 +32,12 @@ mod jarvis_vibe;
 mod jarvis_vibethinker;
 mod jarvis_cognitive;
 mod k3_logic;
+mod k3_ternary_sram;
 mod module_registry;
 mod monad;
 mod microkernel_spawner;
+mod memory_mapped_ipc;
+mod spawn_subagent;
 mod trm_orchestrator;
 mod federation_manager;
 mod federation_task_coordinator;
@@ -58,6 +61,7 @@ mod sub_atomic_kernel;
 mod task_arbiter;
 mod trm_brain;
 mod voltage_node_engine;
+mod quantum_drug_screen;
 mod quic_protocol;
 mod star_matrix;
 mod time;
@@ -120,6 +124,10 @@ mod advanced_scene_fusion;
 mod swarm_performance_insights;
 mod gpu_unlock_architecture;
 mod hardware_voltage_microkernel_binder;
+// VOLTAGE ENERGIZATION — PLANNING module: real Monte Carlo Tree Search
+// (UCB1 selection / expansion / random-rollout simulation / backprop).
+// (council 83563732)
+mod mcts_plan;
 
 use core::panic::PanicInfo;
 use r_efi::efi;
@@ -221,6 +229,16 @@ impl TerminalState {
         self.feed_lines[last][..copy_len].copy_from_slice(&text[..copy_len]);
         self.feed_lens[last] = copy_len;
         self.feed_colors[last] = color;
+    }
+
+    /// Internal helper: index of the first whitespace byte in `b`, else `b.len()`.
+    fn find_first_ws(b: &[u8]) -> usize {
+        for (i, &c) in b.iter().enumerate() {
+            if c == b' ' || c == b'\t' {
+                return i;
+            }
+        }
+        b.len()
     }
 
     pub fn execute_command(&mut self, active_tab: &mut u8, image_handle: efi::Handle, bs: *mut efi::BootServices) {
@@ -346,6 +364,52 @@ impl TerminalState {
             p4[ri4..ri4 + 10].copy_from_slice(b" (doctr"); ri4 += 10;
             p4[ri4..ri4 + 2].copy_from_slice(b"ne)"); ri4 += 2;
             self.add_line(&p4[..ri4], LCARS_GOLD);
+        } else if cmd.starts_with(b"drugscreen") {
+            // HONEST DRUG SCREEN (council 83563732) — native gap closure.
+            let rest = cmd.get(11..).unwrap_or(b"").trim_ascii();
+            let target: &[u8] = if rest.is_empty() { b"Cruzain (Chagas)" } else { rest };
+            let t = core::str::from_utf8(target).unwrap_or("Cruzain");
+            let space = 500_000u64;
+            let (score, best, steps, ns, pps) =
+                crate::quantum_drug_screen::run_screen(t, space);
+            let mut s1 = [0u8; 96];
+            let h = b"SCREEN '";
+            s1[..h.len()].copy_from_slice(h);
+            let tn = t.len().min(24);
+            s1[h.len()..h.len() + tn].copy_from_slice(&t.as_bytes()[..tn]);
+            let mut ri = h.len() + tn;
+            s1[ri..ri + 11].copy_from_slice(b"' score="); ri += 11;
+            let sc = format!("{:.4}", score);
+            s1[ri..ri + sc.len()].copy_from_slice(sc.as_bytes()); ri += sc.len();
+            s1[ri..ri + 10].copy_from_slice(b" cand#="); ri += 10;
+            let bi = format!("{}", best);
+            s1[ri..ri + bi.len()].copy_from_slice(bi.as_bytes()); ri += bi.len();
+            self.add_line(&s1[..ri], LCARS_CYAN);
+            let mut s2 = [0u8; 96];
+            let h2 = b"GROVER steps=";
+            s2[..h2.len()].copy_from_slice(h2);
+            let st = format!("{}", steps);
+            s2[h2.len()..h2.len() + st.len()].copy_from_slice(st.as_bytes());
+            let mut ri2 = h2.len() + st.len();
+            s2[ri2..ri2 + 12].copy_from_slice(b" latency="); ri2 += 12;
+            let lt = format!("{:.2}", ns as f64 / 1e6);
+            s2[ri2..ri2 + lt.len()].copy_from_slice(lt.as_bytes()); ri2 += lt.len();
+            s2[ri2..ri2 + 4].copy_from_slice(b" ms"); ri2 += 4;
+            self.add_line(&s2[..ri2], LCARS_GREEN);
+            let mut s3 = [0u8; 96];
+            let h3 = b"THROUGHPUT ";
+            s3[..h3.len()].copy_from_slice(h3);
+            let tp = format!("{:.2e}", pps);
+            s3[h3.len()..h3.len() + tp.len()].copy_from_slice(tp.as_bytes());
+            let mut ri3 = h3.len() + tp.len();
+            s3[ri3..ri3 + 2].copy_from_slice(b"/s"); ri3 += 2;
+            self.add_line(&s3[..ri3], LCARS_PURPLE);
+            // honest summary via the module's own API (defines the disclaimer)
+            let summ = crate::quantum_drug_screen::summary(t, space);
+            let mut sb = [0u8; 128];
+            let sn = summ.len().min(120);
+            sb[..sn].copy_from_slice(&summ.as_bytes()[..sn]);
+            self.add_line(&sb[..sn], LCARS_AMBER);
         } else if cmd.starts_with(b"fractal") {
             // FRACTAL TELEMETRY (council 17004faf) — Wave B.
             // Multi-scale self-similar telemetry pulse (S1-S5 scales),
@@ -484,7 +548,43 @@ impl TerminalState {
                 b4[ri4..ri4 + 8].copy_from_slice(b" honest"); ri4 += 8;
                 self.add_line(&b4[..ri4], LCARS_GREEN);
             }
-        } else if cmd.starts_with(b"core") {
+                    } else if cmd.starts_with(b"mcts") {
+                                            // VOLTAGE ENERGIZATION — MCTS PLANNING ENGINE (council 83563732).
+                                            let mut sims: u32 = 120;
+                                            let rest = cmd.get(4..).unwrap_or(b"").trim_ascii();
+                                            if !rest.is_empty() {
+                                                if let Ok(v) = core::str::from_utf8(rest).unwrap_or("").trim().parse::<u32>() {
+                                                    sims = v.max(1).min(5000);
+                                                }
+                                            }
+                                            let rep = crate::mcts_plan::run(sims);
+                                            let mut b1 = [0u8; 96];
+                                            let h1 = format!("MCTS: {} simulations | tree built", rep.simulations);
+                                            let h1n = h1.len().min(60);
+                                            b1[..h1n].copy_from_slice(&h1.as_bytes()[..h1n]);
+                                            self.add_line(&b1[..h1n], LCARS_PURPLE);
+                                            let mut b2 = [0u8; 96];
+                                            let h2 = format!("MCTS: best action={} | visits={} | mean={:.3}",
+                                                rep.best_action, rep.best_visits, rep.best_mean);
+                                            let h2n = h2.len().min(80);
+                                            b2[..h2n].copy_from_slice(&h2.as_bytes()[..h2n]);
+                                            self.add_line(&b2[..h2n], LCARS_GOLD);
+                                            let mut b3 = [0u8; 96];
+                                            let h3 = format!("MCTS: nodes explored: {}", rep.nodes);
+                                            let h3n = h3.len().min(60);
+                                            b3[..h3n].copy_from_slice(&h3.as_bytes()[..h3n]);
+                                            self.add_line(&b3[..h3n], LCARS_GREEN);
+                                            let mut printed = 0;
+                                            for (a, v, m) in rep.child_stats.iter() {
+                                                if printed >= 6 { break; }
+                                                let mut pc = [0u8; 96];
+                                                let s = format!("MCTS:   action={} visits={} mean={:.2}", a, v, m);
+                                                let sn = s.len().min(80);
+                                                pc[..sn].copy_from_slice(&s.as_bytes()[..sn]);
+                                                self.add_line(&pc[..sn], LCARS_CYAN);
+                                                printed += 1;
+                                            }
+                                        } else if cmd.starts_with(b"core") {
             // VOLTAGE ENERGIZATION — CORE cluster (final 3 substantive).
             // semantic_cache TTL recall + star_matrix binding + trm7m forward
             let mut sc = crate::semantic_cache::SemanticCache::new(8);
@@ -533,7 +633,99 @@ impl TerminalState {
             c3[ri3..ri3 + ps.len()].copy_from_slice(ps.as_bytes()); ri3 += ps.len();
             self.add_line(&c3[..ri3], LCARS_PURPLE);
             self.add_line(b"CORE: semantic_cache + star_matrix + trm7m ENERGIZED", LCARS_GOLD);
-} else if cmd.starts_with(b"fed") {
+                    } else if cmd.starts_with(b"mmapipc") {
+                        // MEMORY-MAPPED IPC ARENA (council 83563732, VOLTAGE ENERGIZATION).
+                        // mmap-style shared-memory region: put/get/remove by key + stats.
+                        let rest = cmd.get(7..).unwrap_or(b"").trim_ascii();
+                        // Subcommands: put <key> <val...> | get <key> | remove <key> | stats | demo
+                        let mut mipc = crate::memory_mapped_ipc::MemoryMappedIpc::new("voltage_arena", 16);
+                        if rest.starts_with(b"put ") {
+                            let kv = &rest[4..];
+                            let sp = Self::find_first_ws(kv);
+                            let key = kv[..sp].trim_ascii();
+                            let val = if sp < kv.len() {
+                                &kv[sp..]
+                            } else {
+                                b"ok"
+                            };
+                            let key_s = core::str::from_utf8(key).unwrap_or("key");
+                            let val_s = core::str::from_utf8(val).unwrap_or("ok");
+                            let ok = mipc.put(key_s, val_s);
+                            let mut b1 = [0u8; 96];
+                            let h = b"MMAPIPC put '";
+                            b1[..h.len()].copy_from_slice(h);
+                            let kn = key_s.len().min(20);
+                            b1[h.len()..h.len() + kn].copy_from_slice(&key_s.as_bytes()[..kn]);
+                            let mut ri = h.len() + kn;
+                            b1[ri..ri + 8].copy_from_slice(b"' -> ok="); ri += 8;
+                            b1[ri] = if ok { b'1' } else { b'0' }; ri += 1;
+                            self.add_line(&b1[..ri], LCARS_CYAN);
+                        } else if rest.starts_with(b"get ") {
+                            let key_s = core::str::from_utf8(&rest[4..]).unwrap_or("key");
+                            let got = mipc.get(key_s);
+                            let mut b2 = [0u8; 96];
+                            let h2 = b"MMAPIPC get '";
+                            b2[..h2.len()].copy_from_slice(h2);
+                            let kn = key_s.len().min(20);
+                            b2[h2.len()..h2.len() + kn].copy_from_slice(&key_s.as_bytes()[..kn]);
+                            let mut ri2 = h2.len() + kn;
+                            b2[ri2..ri2 + 10].copy_from_slice(b"' -> '"); ri2 += 10;
+                            if let Some(v) = &got {
+                                let vn = v.len().min(30);
+                                b2[ri2..ri2 + vn].copy_from_slice(&v.as_bytes()[..vn]); ri2 += vn;
+                            } else {
+                                b2[ri2..ri2 + 7].copy_from_slice(b"MISSING"); ri2 += 7;
+                            }
+                            b2[ri2..ri2 + 1].copy_from_slice(b"'"); ri2 += 1;
+                            self.add_line(&b2[..ri2], LCARS_GREEN);
+                        } else if rest.starts_with(b"remove ") {
+                            let key_s = core::str::from_utf8(&rest[7..]).unwrap_or("key");
+                            let removed = mipc.remove(key_s).is_some();
+                            let mut b3 = [0u8; 96];
+                            let h3 = b"MMAPIPC remove '";
+                            b3[..h3.len()].copy_from_slice(h3);
+                            let kn = key_s.len().min(20);
+                            b3[h3.len()..h3.len() + kn].copy_from_slice(&key_s.as_bytes()[..kn]);
+                            let mut ri3 = h3.len() + kn;
+                            b3[ri3..ri3 + 8].copy_from_slice(b"' rem="); ri3 += 8;
+                            b3[ri3] = if removed { b'1' } else { b'0' }; ri3 += 1;
+                            self.add_line(&b3[..ri3], LCARS_CYAN);
+                        } else {
+                            // stats (default) — run the arena demo and print region stats.
+                            let dem = crate::memory_mapped_ipc::demo();
+                            let mut b4 = [0u8; 96];
+                            let dn = dem.len().min(94);
+                            b4[..dn].copy_from_slice(&dem.as_bytes()[..dn]);
+                            self.add_line(&b4[..dn], LCARS_GOLD);
+                        }
+                    } else if cmd.starts_with(b"spawnsub") {
+                        // SUBAGENT SPAWN PLANNER (council 83563732, VOLTAGE ENERGIZATION).
+                        // Reuses microkernel_spawner::classify_deterministic + id scheme.
+                        // spawnsub <parent> <task...>
+                        let rest = cmd.get(8..).unwrap_or(b"").trim_ascii();
+                        let sp = Self::find_first_ws(rest);
+                        let parent = if sp > 0 { &rest[..sp] } else { b"archi" };
+                        let task = if sp < rest.len() { &rest[sp..] } else { b"research validation" };
+                        let parent_s = core::str::from_utf8(parent).unwrap_or("archi");
+                        let task_s = core::str::from_utf8(task).unwrap_or("research validation");
+                        let mut spn = crate::spawn_subagent::SpawnPlanner::new();
+                        let plan = spn.plan_spawn(parent_s, "scout", task_s, None, 0x8356_3732);
+                        let mut s1 = [0u8; 96];
+                        let r1 = plan.render();
+                        let rn = r1.len().min(94);
+                        s1[..rn].copy_from_slice(&r1.as_bytes()[..rn]);
+                        self.add_line(&s1[..rn], LCARS_CYAN);
+                        let mut s2 = [0u8; 96];
+                        let note = plan.note();
+                        let nn = note.len().min(94);
+                        s2[..nn].copy_from_slice(&note.as_bytes()[..nn]);
+                        self.add_line(&s2[..nn], LCARS_ORANGE);
+                        let mut s3 = [0u8; 60];
+                        let m = format!("SPAWNSUB: {} spawn planned", spn.len());
+                        let mn = m.len().min(60);
+                        s3[..mn].copy_from_slice(&m.as_bytes()[..mn]);
+                        self.add_line(&s3[..mn], LCARS_GREEN);
+                    } else if cmd.starts_with(b"fed") {
             // TRM PLATFORM FEDERATION — real state from federation_manager.
             let mut fm = crate::federation_manager::FederationManager::new(30);
             fm.register_peer("DESKTOP", [127, 0, 0, 1], 8022);
@@ -1534,6 +1726,72 @@ impl TerminalState {
             cb2[ci..ci + 2].copy_from_slice(b"ns");
             ci += 2;
             self.add_line(&cb2[..ci], LCARS_AMBER);
+        } else if cmd.starts_with(b"k3sram") {
+            // SRAM K3 TERNARY BINDING (VOLTAGE ENERGIZATION, council 83563732).
+            // Unifies k3_logic (Kleene K3) with sram_pattern_computer (CAM/CA).
+            use crate::k3_logic::{TRUE, FALSE, UNKNOWN};
+            let mut bank = crate::k3_ternary_sram::K3Sram::new();
+            self.add_line(b"K3SRAM: content-addressable SRAM K3 ternary bank (k3_logic x sram_pattern_computer)", LCARS_CYAN);
+            // Store a real ternary pattern and tag it for CAM lookup.
+            let pattern = [TRUE, FALSE, UNKNOWN, TRUE, TRUE, UNKNOWN, FALSE, TRUE, FALSE, UNKNOWN];
+            let stored = bank.store_pattern(b"K3-SRAM-PATTERN", &pattern);
+            let mut s1 = [0u8; 96];
+            let mut s1i = 0;
+            let h = b"  STORED ";
+            s1[..h.len()].copy_from_slice(h); s1i += h.len();
+            let n = format!("{}", stored);
+            s1[s1i..s1i + n.len()].copy_from_slice(n.as_bytes()); s1i += n.len();
+            s1[s1i..s1i + 13].copy_from_slice(b" trits [-1,0,+1]"); s1i += 13;
+            self.add_line(&s1[..s1i], LCARS_GREEN);
+            // Content-addressable lookup for the stored pattern.
+            let hits = bank.cam_lookup(b"K3-SRAM-PATTERN");
+            let mut s2 = [0u8; 96];
+            let mut s2i = 0;
+            let h2 = b"  CAM MATCH lines=";
+            s2[..h2.len()].copy_from_slice(h2); s2i += h2.len();
+            let hn = format!("{}", hits);
+            s2[s2i..s2i + hn.len()].copy_from_slice(hn.as_bytes()); s2i += hn.len();
+            s2[s2i..s2i + 12].copy_from_slice(b" hit="); s2i += 12;
+            let hr = bank.cam_hit_ratio();
+            let hrf = format!("{:.2}", hr);
+            s2[s2i..s2i + hrf.len()].copy_from_slice(hrf.as_bytes()); s2i += hrf.len();
+            self.add_line(&s2[..s2i], LCARS_AMBER);
+            // K3 conjunction (min) over the stored window with TRUE operand.
+            let conj = bank.k3_conjunction(0, stored, TRUE);
+            let mut s3 = [0u8; 96];
+            let mut s3i = 0;
+            let h3 = b"  K3 AND window -> [+1?] = ";
+            s3[..h3.len()].copy_from_slice(h3); s3i += h3.len();
+            for t in conj.iter() {
+            s3[s3i] = match t { 1 => b'+', -1 => b'-', _ => b'0' }; s3i += 1;
+        }
+            self.add_line(&s3[..s3i], LCARS_GREEN);
+            // Bypass decision gated on stored pattern presence.
+            let st = bank.bypass_over_stored();
+            let mut s4 = [0u8; 96];
+            let mut s4i = 0;
+            let h4 = b"  BYPASS gate trit ";
+            s4[..h4.len()].copy_from_slice(h4); s4i += h4.len();
+            s4[s4i] = match st.trit { 1 => b'+', -1 => b'-', _ => b'0' }; s4i += 1;
+            s4[s4i..s4i + 14].copy_from_slice(b" conf "); s4i += 14;
+            let ci = (st.confidence * 1000.0) as u32;
+            s4[s4i] = b'0' + ((ci / 100) % 10) as u8; s4i += 1;
+            s4[s4i] = b'.'; s4i += 1;
+            s4[s4i] = b'0' + ((ci / 10) % 10) as u8; s4i += 1;
+            s4[s4i] = b'0' + (ci % 10) as u8; s4i += 1;
+            self.add_line(&s4[..s4i], LCARS_PURPLE);
+            // Utilization and cellular-automaton evolution.
+            let util = bank.utilization();
+            let mut s5 = [0u8; 96];
+            let mut s5i = 0;
+            let h5 = b"  UTIL trit plane ";
+            s5[..h5.len()].copy_from_slice(h5); s5i += h5.len();
+            let uf = format!("{:.3}", util);
+            s5[s5i..s5i + uf.len()].copy_from_slice(uf.as_bytes()); s5i += uf.len();
+            s5[s5i..s5i + 14].copy_from_slice(b" CA evolved"); s5i += 14;
+            let _ = bank.cellular_evolve();
+            s5[s5i..s5i + 4].copy_from_slice(b" OK"); s5i += 4;
+            self.add_line(&s5[..s5i], LCARS_GOLD);
         } else if cmd.starts_with(b"k3") {
             // REAL K3 ternary logic engine: truth tables + bypass decision
             use crate::k3_logic::*;
