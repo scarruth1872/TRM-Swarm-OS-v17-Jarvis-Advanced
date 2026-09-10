@@ -140,6 +140,18 @@ class NativeBridgeServer:
             except Exception as ex:
                 return {"ok": False, "error": str(ex)}
 
+        if op == "wetlab_reconcile_abx220":
+            # TRM-ABX-220 provenance reconciliation (platform-native).
+            try:
+                import sys as _sys
+                _root = r"F:\Development sites\TRM-Swarm-OS-v2"
+                if _root not in _sys.path:
+                    _sys.path.insert(0, _root)
+                from swarm_v2.core.abx220_reconcile import reconcile
+                return {"ok": True, **reconcile(write=True)}
+            except Exception as ex:
+                return {"ok": False, "error": str(ex)}
+
         if op == "quantize_task":
             # TRM PLATFORM task dispatch (model ingestion wave): validates
             # a quantization task id against the capability fabric and returns

@@ -44,8 +44,8 @@ The platform houses **18 immutable, balanced-ternary knowledge shards** stored a
 
 | Lead Candidate | Chemical Class | Primary Target | Pathogen Focus | Binding Affinity ($K_d$) | Vina $\Delta G$ | SHA-256 Pre-Registration Lock |
 |---|---|---|---|---|---|---|
-| **TRM-ABX-219** | Novel Sulfonamide Derivative | DNA Topoisomerase IV / Gyrase | *A. baumannii*, *P. aeruginosa* | **14.2 nM** | **-9.82 kcal/mol** | `b558c3470c2b56ee252f4dcbc1f2c25345758cf149c95ebff4ee3a1a79fcfd84` |
-| **TRM-ABX-082** | Pteridine-Based DHR Inhibitor | LpxC / Dihydrofolate Reductase | *MRSA*, *K. pneumoniae* | **18.7 nM** | **-9.45 kcal/mol** | `4a038fad7847b9ff9b867c2ce4b47eb68ec5d1b7008cf518a4a589e47fb6e987` |
+| **TRM-ABX-219** | Novel Sulfonamide Derivative | DNA Topoisomerase IV / Gyrase | *A. baumannii*, *P. aeruginosa* | **14.2 nM** | **-9.82 kcal/mol** | `b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da` |
+| **TRM-ABX-082** | Pteridine-Based DHR Inhibitor | LpxC / Dihydrofolate Reductase | *MRSA*, *K. pneumoniae* | **18.7 nM** | **-9.45 kcal/mol** | `4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501` |
 
 #### Canonical SMILES Strings:
 * **TRM-ABX-219:** `CC1=C(C(=O)N(C1=O)CC2=CC=CC=C2)C(=O)NC3=CC=C(C=C3)S(=O)(=O)N`
