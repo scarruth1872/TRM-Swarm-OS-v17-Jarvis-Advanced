@@ -38,7 +38,7 @@ def analyse():
     kds = [r["kd_nm"] for r in rows]
     mean, sd, lo, hi = _ci(kds)
     ci = cal["confidence_interval"]
-    verdict = ci["validation_verdict"]
+    verdict = ci.get("validation_verdict") or cal.get("validation_verdict", "UNKNOWN")
 
     spec = esk["eskape_spectrum"][CO]
     lpxc = [v["best_kd_nm"] for v in spec.values()
@@ -95,8 +95,19 @@ def analyse():
 
 
 def reconcile(write=True):
+    # Guard BEFORE analyse(): a revised ledger has a different schema (the verdict
+    # moved to the top level and the interval was replaced), so analyse() would
+    # raise before any later check could run.
+    _existing = _j("trm_abx_220_recalibration.json")
+    if _existing.get("revision", 1) >= 2:
+        return {"ok": False, "refused": True, "revision": _existing.get("revision"),
+                "error": ("already reconciled; refusing to re-run (would overwrite the "
+                          "preserved declared interval). To redo: "
+                          "git checkout -- trm_abx_220_recalibration.json")}
+
     (cal, esk, bench, rows, kds, mean, sd, lo, hi, ci, verdict,
      lpxc, esk_mean, ratio, el, mws, b219, b082, has220, F) = analyse()
+
     now = datetime.now(timezone.utc).isoformat()
     sup = cal.get("sha256")
 

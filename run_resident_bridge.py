@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Resident native federation bridge launcher (UDP 8022, HMAC trust).
 
-Replaces the ad-hoc `python -c` one-liner. Ops served:
-  drive_list, file_list, file_read, council, jarvis_chat,
-  quantize_task, holograde, ping, verify_build, wetlab_dispatch
+The served op list comes from `native_federation_bridge.OP_LIST` — the single
+source of truth — so this banner cannot advertise a stale dispatch surface.
+
+NOTE: the bridge binds the port with a plain bind() (no SO_REUSEADDR). Only ONE
+instance can hold UDP 8022; a second launch dies with WinError 10048 while the
+old instance keeps serving. Kill every run_resident_bridge python process and
+confirm the port is free BEFORE launching. Run `bridge_status.py` to check.
 """
 import os
 import sys
@@ -15,11 +19,10 @@ os.chdir(ROOT)
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from swarm_v2.core.native_federation_bridge import NativeBridgeServer  # noqa: E402
+from swarm_v2.core.native_federation_bridge import NativeBridgeServer, OP_LIST  # noqa: E402
 
 s = NativeBridgeServer()
 threading.Thread(target=s.serve_loop, daemon=True).start()
-print("BRIDGE RUNNING on UDP :8022 (ops: drives/ls/cat/council/jarvis/"
-      "quantize/holograde/ping/verify_build/wetlab_dispatch)", flush=True)
+print(f"BRIDGE RUNNING on UDP :8022 (ops: {'/'.join(OP_LIST)})", flush=True)
 while True:
     time.sleep(10)

@@ -30,6 +30,15 @@ from swarm_v2.core.comm_protocol import generate_trust_token, verify_trust_token
 
 BRIDGE_PORT = 8022  # same sovereign mesh port (UDP)
 
+# Canonical op registry — the SINGLE source of truth for the dispatch surface.
+# The resident launcher prints this, so its startup banner can never claim a
+# stale op list. If you add an `if op == "<name>":` branch below, add it here.
+OP_LIST = (
+    "drive_list", "file_list", "file_read", "council", "wetlab_dispatch",
+    "wetlab_reconcile_abx220", "quantize_task", "holograde", "ping",
+    "verify_build", "jarvis_chat",
+)
+
 
 class NativeBridgeServer:
     """Resident-side bridge: listens on UDP 8022, serves file/fs/council ops."""
