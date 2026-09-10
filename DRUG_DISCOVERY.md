@@ -11,7 +11,7 @@ Genomic Target Selection (A. baumannii, MRSA, P. aeruginosa)
     ↓
 GNN Structural Parsing & Molecular Cavity Mapping
     ↓
-AutoDock Vina In-Silico Docking Simulation (r = 0.9097 vs PDB-Bind)
+AutoDock Vina In-Silico Docking Simulation (r = 0.9248 vs PDB-Bind, N = 5300 complexes)
     ↓
 Energy Minimization & ADMET Property Filtering
     ↓

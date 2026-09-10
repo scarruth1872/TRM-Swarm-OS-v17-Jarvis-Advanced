@@ -21,7 +21,7 @@ These capabilities represent state-of-the-art computational breakthroughs that o
 │                                    ↓                                                                   │
 │  Target Selection & Binding Cavity Detection (ESKAPE Pathogens: A. baumannii, P. aeruginosa, MRSA)     │
 │                                    ↓                                                                   │
-│  GNN Spatial Molecular Modeling & AutoDock Vina Energy Minimization (Calibrated r = 0.9097 on PDBbind)  │
+│  GNN Spatial Molecular Modeling & AutoDock Vina Energy Minimization (Calibrated r = 0.9248 on PDBbind)  │
 │                                    ↓                                                                   │
 │  In-Silico ADMET Profiling, Tox21 Toxicity Screening & FAERS Adverse Reaction Filtering                │
 │                                    ↓                                                                   │
@@ -118,7 +118,7 @@ The platform houses **18 immutable, balanced-ternary knowledge shards** stored a
 ├─────────────────────────────────────────┬────────────────────────────────────────┬─────────────────────┤
 │ Domain / Technology Sector              │ Breakthrough Scope & Deliverables      │ Asset Value (USD)   │
 ├─────────────────────────────────────────┼────────────────────────────────────────┼─────────────────────┤
-│ 1. Computational Drug Discovery Engine  │ AutoDock Vina GNN, PDBbind r=0.9097    │ $35,000,000.00      │
+│ 1. Computational Drug Discovery Engine  │ AutoDock Vina GNN, PDBbind r=0.9248    │ $35,000,000.00      │
 │ 2. Pre-Registered Antibiotic Leads      │ TRM-ABX-219 & TRM-ABX-082 Molecules    │ $25,000,000.00      │
 │ 3. 18 Biomedical Knowledge Shards       │ 4.4T Trits (CARD, NCBI, PubChem, PDB)  │ $20,000,000.00      │
 │ 4. Post-Quantum Cryptography (Kyber-1024│ Native C KEM Engine & QKD Gateway      │ $30,000,000.00      │

@@ -1,0 +1,319 @@
+{
+ "protocol": "WETLAB_PRE_DISPATCH_PROVENANCE_AUDIT",
+ "canonical_structure_locks": {
+  "TRM-ABX-219": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+  "TRM-ABX-082": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501"
+ },
+ "calibration_of_record": {
+  "pearson_r": 0.9248,
+  "spearman_rho": 0.9184,
+  "rmse_kcal_per_mol": 1.062,
+  "mae_kcal_per_mol": 0.814
+ },
+ "generator_hardcoded_locks": {
+  "TRM-ABX-220": "0fd85de141eb12f13197099dff101b133f90dee503a50d99c11817eec5d0003a",
+  "TRM-ABX-219": "2e8d4e9ddefd82b27ff6253fc537782574d6a6eff73d4a3ff32fdb7524558cc7",
+  "TRM-ABX-082": "8da811fd690129be3264c0cb8678038a9927b4562ec296038d11f6896d064993"
+ },
+ "findings": [
+  {
+   "check": "bridge_lock_is_sha256_of_smiles",
+   "compound": "TRM-ABX-219",
+   "stated": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+   "recomputed": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+   "verdict": "MATCH"
+  },
+  {
+   "check": "bridge_lock_is_sha256_of_smiles",
+   "compound": "TRM-ABX-082",
+   "stated": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501",
+   "recomputed": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501",
+   "verdict": "MATCH"
+  },
+  {
+   "check": "generator_lock_vs_canonical",
+   "compound": "TRM-ABX-082",
+   "generator_lock": "8da811fd690129be3264c0cb8678038a9927b4562ec296038d11f6896d064993",
+   "canonical_lock": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501",
+   "origin_of_generator_lock": [
+    "DECLARED-sha256 eskape_spectrum_full.json"
+   ],
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "generator_lock_vs_canonical",
+   "compound": "TRM-ABX-219",
+   "generator_lock": "2e8d4e9ddefd82b27ff6253fc537782574d6a6eff73d4a3ff32fdb7524558cc7",
+   "canonical_lock": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+   "origin_of_generator_lock": [
+    "CANON-SELF preclinical_safety_screening_leads.json",
+    "DECLARED-sha256 preclinical_safety_screening_leads.json"
+   ],
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "generator_lock_origin",
+   "compound": "TRM-ABX-220",
+   "generator_lock": "0fd85de141eb12f13197099dff101b133f90dee503a50d99c11817eec5d0003a",
+   "canonical_lock": "NONE - no SMILES on record",
+   "origin_of_generator_lock": [
+    "CANON-SELF trm_abx_220_recalibration.json",
+    "DECLARED-sha256 trm_abx_220_recalibration.json"
+   ],
+   "verdict": "UNVERIFIABLE_NO_STRUCTURE"
+  },
+  {
+   "check": "markdown_lock_vs_canonical",
+   "source": "TRM_ABX_Lead_Summary.md",
+   "compound": "TRM-ABX-219",
+   "cited": "b558c3470c2b56ee892d19760bfdc0972e90f2fa5a73e6d1e4e5e408d66ef32a",
+   "canonical_lock": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+   "origin_of_cited_lock": [
+    "UNTRACEABLE"
+   ],
+   "shared_prefix_bytes": 16,
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "markdown_lock_vs_canonical",
+   "source": "TRM_ABX_Lead_Summary.md",
+   "compound": "TRM-ABX-082",
+   "cited": "4a038fad7847b9ff9b2f6ef53d9e8df9911e3b5e40ad0882e3f5b2e3f65e2361",
+   "canonical_lock": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501",
+   "origin_of_cited_lock": [
+    "UNTRACEABLE"
+   ],
+   "shared_prefix_bytes": 16,
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "pdbbind_r_claim",
+   "source": "TRM_ABX_Lead_Summary.md",
+   "cited": 0.9097,
+   "calibration_of_record": 0.9248,
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "pdbbind_r_claim",
+   "source": "WET_LAB_OUTREACH_PACKAGE.md",
+   "cited": 0.9097,
+   "calibration_of_record": 0.9248,
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "abx220_ci_contains_mean",
+   "mean_kd_nm": 0.08,
+   "ci": [
+    0.1,
+    0.12
+   ],
+   "per_structure_kd_nm": [
+    0.05,
+    0.08,
+    0.12
+   ],
+   "arithmetic_mean": 0.0833,
+   "verdict": "IMPOSSIBLE (mean outside its own CI)"
+  },
+  {
+   "check": "abx220_verdict_vs_numbers",
+   "verdict_string": "VALIDATED_POTENT_LPXC_INHIBITOR (Ki ~ 4.2 nM Confirmed)",
+   "implied_ki_nm": 4.2,
+   "ledger_mean_kd_nm": 0.08,
+   "eskape_range_nm": [
+    3.6,
+    4.8
+   ],
+   "verdict": "INCONSISTENT (~50x apart) + 'Confirmed' contradicts pre-registration doctrine"
+  },
+  {
+   "check": "potency_window_vs_eskape",
+   "compound": "TRM-ABX-219",
+   "claimed": [
+    14.2,
+    28.0
+   ],
+   "actual_min": 14.2,
+   "actual_max": 65.0,
+   "verdict": "UNDERSTATED/INCONSISTENT"
+  },
+  {
+   "check": "potency_window_vs_eskape",
+   "compound": "TRM-ABX-082",
+   "claimed": [
+    18.7,
+    29.8
+   ],
+   "actual_min": 18.7,
+   "actual_max": 85.0,
+   "verdict": "UNDERSTATED/INCONSISTENT"
+  },
+  {
+   "check": "potency_window_vs_eskape",
+   "compound": "TRM-ABX-220",
+   "claimed": [
+    3.6,
+    4.8
+   ],
+   "actual_min": 3.6,
+   "actual_max": 310.0,
+   "verdict": "UNDERSTATED/INCONSISTENT"
+  },
+  {
+   "check": "has_molecular_structure",
+   "compound": "TRM-ABX-219",
+   "smiles_present": true,
+   "verdict": "OK"
+  },
+  {
+   "check": "has_molecular_structure",
+   "compound": "TRM-ABX-082",
+   "smiles_present": true,
+   "verdict": "OK"
+  },
+  {
+   "check": "has_molecular_structure",
+   "compound": "TRM-ABX-220",
+   "smiles_present": false,
+   "verdict": "MISSING - no SMILES anywhere in repo"
+  }
+ ],
+ "defects": [
+  {
+   "check": "generator_lock_vs_canonical",
+   "compound": "TRM-ABX-082",
+   "generator_lock": "8da811fd690129be3264c0cb8678038a9927b4562ec296038d11f6896d064993",
+   "canonical_lock": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501",
+   "origin_of_generator_lock": [
+    "DECLARED-sha256 eskape_spectrum_full.json"
+   ],
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "generator_lock_vs_canonical",
+   "compound": "TRM-ABX-219",
+   "generator_lock": "2e8d4e9ddefd82b27ff6253fc537782574d6a6eff73d4a3ff32fdb7524558cc7",
+   "canonical_lock": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+   "origin_of_generator_lock": [
+    "CANON-SELF preclinical_safety_screening_leads.json",
+    "DECLARED-sha256 preclinical_safety_screening_leads.json"
+   ],
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "generator_lock_origin",
+   "compound": "TRM-ABX-220",
+   "generator_lock": "0fd85de141eb12f13197099dff101b133f90dee503a50d99c11817eec5d0003a",
+   "canonical_lock": "NONE - no SMILES on record",
+   "origin_of_generator_lock": [
+    "CANON-SELF trm_abx_220_recalibration.json",
+    "DECLARED-sha256 trm_abx_220_recalibration.json"
+   ],
+   "verdict": "UNVERIFIABLE_NO_STRUCTURE"
+  },
+  {
+   "check": "markdown_lock_vs_canonical",
+   "source": "TRM_ABX_Lead_Summary.md",
+   "compound": "TRM-ABX-219",
+   "cited": "b558c3470c2b56ee892d19760bfdc0972e90f2fa5a73e6d1e4e5e408d66ef32a",
+   "canonical_lock": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+   "origin_of_cited_lock": [
+    "UNTRACEABLE"
+   ],
+   "shared_prefix_bytes": 16,
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "markdown_lock_vs_canonical",
+   "source": "TRM_ABX_Lead_Summary.md",
+   "compound": "TRM-ABX-082",
+   "cited": "4a038fad7847b9ff9b2f6ef53d9e8df9911e3b5e40ad0882e3f5b2e3f65e2361",
+   "canonical_lock": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501",
+   "origin_of_cited_lock": [
+    "UNTRACEABLE"
+   ],
+   "shared_prefix_bytes": 16,
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "pdbbind_r_claim",
+   "source": "TRM_ABX_Lead_Summary.md",
+   "cited": 0.9097,
+   "calibration_of_record": 0.9248,
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "pdbbind_r_claim",
+   "source": "WET_LAB_OUTREACH_PACKAGE.md",
+   "cited": 0.9097,
+   "calibration_of_record": 0.9248,
+   "verdict": "MISMATCH"
+  },
+  {
+   "check": "abx220_ci_contains_mean",
+   "mean_kd_nm": 0.08,
+   "ci": [
+    0.1,
+    0.12
+   ],
+   "per_structure_kd_nm": [
+    0.05,
+    0.08,
+    0.12
+   ],
+   "arithmetic_mean": 0.0833,
+   "verdict": "IMPOSSIBLE (mean outside its own CI)"
+  },
+  {
+   "check": "abx220_verdict_vs_numbers",
+   "verdict_string": "VALIDATED_POTENT_LPXC_INHIBITOR (Ki ~ 4.2 nM Confirmed)",
+   "implied_ki_nm": 4.2,
+   "ledger_mean_kd_nm": 0.08,
+   "eskape_range_nm": [
+    3.6,
+    4.8
+   ],
+   "verdict": "INCONSISTENT (~50x apart) + 'Confirmed' contradicts pre-registration doctrine"
+  },
+  {
+   "check": "potency_window_vs_eskape",
+   "compound": "TRM-ABX-219",
+   "claimed": [
+    14.2,
+    28.0
+   ],
+   "actual_min": 14.2,
+   "actual_max": 65.0,
+   "verdict": "UNDERSTATED/INCONSISTENT"
+  },
+  {
+   "check": "potency_window_vs_eskape",
+   "compound": "TRM-ABX-082",
+   "claimed": [
+    18.7,
+    29.8
+   ],
+   "actual_min": 18.7,
+   "actual_max": 85.0,
+   "verdict": "UNDERSTATED/INCONSISTENT"
+  },
+  {
+   "check": "potency_window_vs_eskape",
+   "compound": "TRM-ABX-220",
+   "claimed": [
+    3.6,
+    4.8
+   ],
+   "actual_min": 3.6,
+   "actual_max": 310.0,
+   "verdict": "UNDERSTATED/INCONSISTENT"
+  },
+  {
+   "check": "has_molecular_structure",
+   "compound": "TRM-ABX-220",
+   "smiles_present": false,
+   "verdict": "MISSING - no SMILES anywhere in repo"
+  }
+ ],
+ "defect_count": 13
+}

@@ -39,36 +39,59 @@ class WetLabOutreachGenerator:
             {"id": "CRO-003", "name": "Charles River Safety & In-Vivo Pharmacokinetics", "type": "cro", "focus": "Murine Thigh/Lung Infection Models & PK/PD Profiling"}
         ]
         
-        self.leads = {
-            "TRM-ABX-220": {
-                "chemical_class": "Lipophilic Hydroxamate Isostere",
-                "primary_target": "LpxC Deacetylase (Gram-negative)",
-                "potency_summary": "Kd = 3.6 - 4.8 nM across Gram-negatives",
-                "eskape_spectrum": "Potent against K. pneumoniae, A. baumannii, P. aeruginosa, Enterobacter, E. coli",
-                "resistance_bypass": "Bypasses metallo-beta-lactamases (NDM-1, KPC) and plasmid colistin resistance (mcr-1)",
-                "safety_profile": "hERG > 50 µM (>85x), Ames Negative, Inactive in Mito Tox (>100 µM)",
-                "synthesis_target": ">= 95% HPLC, 10 mg scale (~$185/g estimated)",
-                "sha256_lock": "0fd85de141eb12f13197099dff101b133f90dee503a50d99c11817eec5d0003a"
-            },
-            "TRM-ABX-219": {
-                "chemical_class": "Fluorinated Sulfonamide Isostere",
-                "primary_target": "DNA Topoisomerase IV / GyrA",
-                "potency_summary": "Kd = 14.2 - 28.0 nM (Broad-Spectrum)",
-                "eskape_spectrum": "Active against S. aureus MRSA (16.5 nM), A. baumannii (14.2 nM), E. coli (15.0 nM)",
-                "safety_profile": "hERG 38.5 µM (85.6x), Ames Negative (P=0.04), Low CYP DDI",
+        # ---------------------------------------------------------------------
+        # CANONICAL LEAD DATA — derived from the source ledgers through the
+        # platform module. Structure locks are sha256(canonical SMILES) and are
+        # NEVER hand-typed; compounds with no structure on record are withheld.
+        #
+        # This repairs the pre-D1 defect in which *document self-hashes* were
+        # mislabelled as molecular structure locks (a category error), and in
+        # which TRM-ABX-220 was dispatched despite having no structure, no
+        # pre-registration and no safety screening anywhere in the corpus.
+        # ---------------------------------------------------------------------
+        if WORKSPACE_DIR not in sys.path:
+            sys.path.insert(0, WORKSPACE_DIR)
+        from swarm_v2.core.wetlab_dispatch import build_canonical_leads
+
+        _canon, self.withheld, _r_cal = build_canonical_leads()
+        self.leads = {}
+        for _l in _canon:
+            _w = _l["active_kd_window_nm"]
+            _s = _l["safety"] or {}
+            _h = _s.get("herg_liability", {})
+            _a = _s.get("ames_mutagenicity", {})
+            _m = _s.get("mitochondrial_toxicity", {})
+            self.leads[_l["compound_id"]] = {
+                "chemical_class": _l["chemical_class"],
+                "primary_target": " / ".join(
+                    sorted({o["target"] for o in _l["active_organisms"]})),
+                "potency_summary": (
+                    f"Kd = {_w[0]:.1f} - {_w[1]:.1f} nM (susceptible range; "
+                    f"{len(_l['active_organisms'])} organisms)"),
+                "eskape_spectrum": "; ".join(
+                    f"{o['organism'].replace('_', ' ')} ({o['kd_nm']:.1f} nM)"
+                    for o in _l["active_organisms"]),
+                "non_susceptible_disclosed": "; ".join(
+                    f"{o['organism'].replace('_', ' ')} ({o['kd_nm']:.1f} nM, "
+                    f"{o['classification']})"
+                    for o in _l["non_susceptible_disclosed"]) or "none",
+                "safety_profile": (
+                    f"hERG {_h.get('predicted_herg_ic50_um')} uM "
+                    f"({_h.get('safety_margin_ratio')}x margin), Ames "
+                    f"{_a.get('consensus_classification')}, mito "
+                    f"{_m.get('classification')}"),
                 "synthesis_target": ">= 95% HPLC, 10 mg scale",
-                "sha256_lock": "2e8d4e9ddefd82b27ff6253fc537782574d6a6eff73d4a3ff32fdb7524558cc7"
-            },
-            "TRM-ABX-082": {
-                "chemical_class": "Substituted Pteridine DHR/LpxC Conjugate",
-                "primary_target": "Dual LpxC / Dihydrofolate Reductase",
-                "potency_summary": "Kd = 18.7 - 29.8 nM (Dual-Action)",
-                "eskape_spectrum": "Synergistic MRSA (18.7 nM) and Gram-negative ESKAPE coverage",
-                "safety_profile": "hERG 44.0 µM (84.6x), Ames Negative (P=0.06), Inactive in Mito Tox",
-                "synthesis_target": ">= 95% HPLC, 10 mg scale",
-                "sha256_lock": "8da811fd690129be3264c0cb8678038a9927b4562ec296038d11f6896d064993"
+                "smiles": _l["smiles"],
+                "sha256_lock": _l["structure_lock_sha256"],
+                "structure_lock_basis": _l["structure_lock_basis"],
+                "structure_status": _l["structure_status"],
             }
-        }
+
+        # Fail loudly rather than emit an unverifiable lock.
+        for _cid, _v in self.leads.items():
+            _expect = hashlib.sha256(_v["smiles"].encode()).hexdigest()
+            if _v["sha256_lock"] != _expect:
+                raise SystemExit(f"provenance error: {_cid} lock != sha256(SMILES)")
 
     def generate_package(self, recipient: Dict[str, Any]) -> Dict[str, Any]:
         pkg = {
@@ -80,7 +103,12 @@ class WetLabOutreachGenerator:
             "portfolio_overview": {
                 "title": "Sovereign Antibiotic Portfolio: Preclinical Validation Dossier",
                 "total_leads": len(self.leads),
-                "leads": self.leads
+                "leads": self.leads,
+                "withheld_compounds": self.withheld,
+                "withheld_count": len(self.withheld),
+                "disclosure": ("Compounds are withheld when no molecular structure is on "
+                               "record, because without a structure they cannot be "
+                               "synthesised, assayed, or pre-registered.")
             },
             "computational_rigor": {
                 "pdbbind_ground_truth_correlation_r": 0.9248,
@@ -97,8 +125,13 @@ class WetLabOutreachGenerator:
             },
             "provenance_security": {
                 "protocol": "PRE_REGISTERED_CRYPTOGRAPHIC_LOCK",
+                "structure_lock_basis": "sha256(canonical SMILES), derived at generation time",
+                "independently_verifiable": True,
                 "public_portal_reference": "https://scarruth1872.github.io/trm-sovereign-portal/",
-                "provenance_status": "LOCKED_AND_PRE_REGISTERED"
+                "provenance_status": "LOCKED_AND_PRE_REGISTERED",
+                "limitation": ("Locks bind the molecular structure only. Potency, safety and "
+                               "target assignments are in-silico predictions and are NOT "
+                               "wet-lab confirmed.")
             }
         }
 
@@ -144,7 +177,11 @@ class WetLabOutreachGenerator:
                 }
                 for p in packages
             ],
-            "status": "SEALED_AND_DISPATCH_READY"
+            "status": "SEALED_DISPATCH_READY_PROVENANCE_VERIFIED",
+            "provenance_note": ("Locks are sha256(canonical SMILES) and reproduce "
+                                "independently. TRM-ABX-220 is withheld (no structure on "
+                                "record). Dispatch still requires operator-supplied sender "
+                                "identity and a routable reply address.")
         }
 
         reg_json = json.dumps(master_registry, sort_keys=True)

@@ -26,7 +26,7 @@
 ---
 
 ## 3. Computational Evidence & Docking Calibration
-* **Docking Engine:** AutoDock Vina in-silico simulation calibrated against the PDBbind refined benchmark dataset ($r = 0.9097$, $p < 0.0001$).
+* **Docking Engine:** AutoDock Vina in-silico simulation calibrated against the PDBbind refined benchmark dataset ($r = 0.9248$, $\rho = 0.9184$, RMSE $= 1.062$ kcal/mol, $N = 5300$ complexes, $p < 0.0001$).
 * **Structural Geometry:** Energy-minimized 3D binding poses confirming critical hydrogen bonding with active-site catalytic residues (e.g., `Arg136`, `Asp73` in Topo IV; `Zn2+` coordination in LpxC).
 
 ---
@@ -34,8 +34,16 @@
 ## 4. Immutable Cryptographic Pre-Registration
 
 Both candidate molecular structures have been sealed with SHA-256 canonical structure locks:
-* **TRM-ABX-219 Canonical Lock:** `b558c3470c2b56ee892d19760bfdc0972e90f2fa5a73e6d1e4e5e408d66ef32a`
-* **TRM-ABX-082 Canonical Lock:** `4a038fad7847b9ff9b2f6ef53d9e8df9911e3b5e40ad0882e3f5b2e3f65e2361`
+* **TRM-ABX-219 Canonical Lock:** `b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da`
+* **TRM-ABX-082 Canonical Lock:** `4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501`
+
+Lock basis: SHA-256 of the canonical SMILES. Both locks are independently reproducible:
+`sha256("CC1=C(C(=O)N(C1=O)CC2=CC=CC=C2)C(=O)NC3=CC=C(C=C3)S(=O)(=O)N")` and
+`sha256("CN1C2=C(C(=O)N(C1=O)C)N(C(=N2)N)CC3=CC=C(C=C3)C(=O)O")`.
+
+> TRM-ABX-220 appears in earlier drafts of this summary but is **withheld**: it has no
+> molecular structure on record, so no structure lock can be derived and it cannot be
+> synthesised or assayed.
 
 > [!IMPORTANT]
 > **Pre-Registration Doctrine:** These cryptographic hashes eliminate hindsight bias. The structural formulas were committed before physical synthesis and assay benchmarking.

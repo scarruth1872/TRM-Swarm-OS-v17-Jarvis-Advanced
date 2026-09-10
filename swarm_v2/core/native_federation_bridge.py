@@ -113,6 +113,33 @@ class NativeBridgeServer:
             except Exception as ex:
                 return {"ok": False, "error": str(ex)}
 
+        if op == "wetlab_dispatch":
+            # D1 PLATFORM TASK (council seal 02d92f02d289edc1): generate the
+            # provenance-corrected wet-lab dispatch — 8 per-institution briefs +
+            # 3 CRO assay RFPs — from the canonical ledgers. Structure locks are
+            # DERIVED as sha256(canonical SMILES); untraceable compounds are
+            # withheld. Writes only into wetlab_dispatch/.
+            try:
+                import sys as _sys
+                _root = r"F:\Development sites\TRM-Swarm-OS-v2"
+                if _root not in _sys.path:
+                    _sys.path.insert(0, _root)
+                from swarm_v2.core.wetlab_dispatch import build_dispatch
+                m = build_dispatch(write=True)
+                return {
+                    "ok": True,
+                    "status": "DISPATCH_MATERIALS_GENERATED_BY_PLATFORM",
+                    "protocol": m["protocol"],
+                    "briefs": m["briefs"],
+                    "rfps": m["rfps"],
+                    "leads_dispatched": m["leads_dispatched"],
+                    "withheld": m["withheld"],
+                    "monad_anchor": m["monad_anchor"],
+                    "sha256": m["sha256"],
+                }
+            except Exception as ex:
+                return {"ok": False, "error": str(ex)}
+
         if op == "quantize_task":
             # TRM PLATFORM task dispatch (model ingestion wave): validates
             # a quantization task id against the capability fabric and returns

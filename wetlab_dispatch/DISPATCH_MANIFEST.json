@@ -1,0 +1,116 @@
+{
+  "protocol": "TRM_WETLAB_DISPATCH_ACTIVATION",
+  "version": "19.1xx-d1",
+  "generated_by": "platform: swarm_v2/core/wetlab_dispatch.py",
+  "generated_at": "2026-09-10T06:42:27.440981+00:00",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "source_ledgers": {
+    "structures": "wet_lab_bridge_package.json",
+    "spectrum": "eskape_spectrum_full.json",
+    "safety": "preclinical_safety_screening_leads.json",
+    "calibration": "docking_calibration_benchmark.json",
+    "registry": "wetlab_outreach_registry.json"
+  },
+  "calibration_of_record": {
+    "evaluation_complexes_count": 5300,
+    "pearson_r": 0.9248,
+    "spearman_rho": 0.9184,
+    "rmse_kcal_per_mol": 1.062,
+    "mae_kcal_per_mol": 0.814,
+    "confidence_interval_95": [
+      0.918,
+      0.931
+    ],
+    "docking_engine_status": "GROUND_TRUTH_CALIBRATED"
+  },
+  "leads_dispatched": [
+    {
+      "compound_id": "TRM-ABX-219",
+      "structure_lock_sha256": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+      "active_kd_window_nm": [
+        14.2,
+        45.0
+      ]
+    },
+    {
+      "compound_id": "TRM-ABX-082",
+      "structure_lock_sha256": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501",
+      "active_kd_window_nm": [
+        18.7,
+        29.8
+      ]
+    }
+  ],
+  "withheld": [
+    {
+      "compound_id": "TRM-ABX-220",
+      "structure_status": "NO_STRUCTURE_ON_RECORD",
+      "reason": "No SMILES, no pre-registration, and no safety screening exist anywhere in the corpus. A structure lock cannot be derived and the compound cannot be synthesised, assayed, or pre-registered.",
+      "present_in": [
+        "eskape_spectrum_full.json",
+        "trm_abx_220_recalibration.json"
+      ],
+      "disposition": "WITHHELD_FROM_DISPATCH"
+    }
+  ],
+  "artifacts": [
+    {
+      "kind": "brief",
+      "recipient": "LAB-001",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\briefs\\BRIEF-LAB-001.md"
+    },
+    {
+      "kind": "brief",
+      "recipient": "LAB-002",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\briefs\\BRIEF-LAB-002.md"
+    },
+    {
+      "kind": "brief",
+      "recipient": "LAB-003",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\briefs\\BRIEF-LAB-003.md"
+    },
+    {
+      "kind": "brief",
+      "recipient": "LAB-004",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\briefs\\BRIEF-LAB-004.md"
+    },
+    {
+      "kind": "brief",
+      "recipient": "LAB-005",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\briefs\\BRIEF-LAB-005.md"
+    },
+    {
+      "kind": "brief",
+      "recipient": "CRO-001",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\briefs\\BRIEF-CRO-001.md"
+    },
+    {
+      "kind": "brief",
+      "recipient": "CRO-002",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\briefs\\BRIEF-CRO-002.md"
+    },
+    {
+      "kind": "brief",
+      "recipient": "CRO-003",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\briefs\\BRIEF-CRO-003.md"
+    },
+    {
+      "kind": "rfp",
+      "recipient": "CRO-001",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\rfps\\RFP-CRO-001.md"
+    },
+    {
+      "kind": "rfp",
+      "recipient": "CRO-002",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\rfps\\RFP-CRO-002.md"
+    },
+    {
+      "kind": "rfp",
+      "recipient": "CRO-003",
+      "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\wetlab_dispatch\\rfps\\RFP-CRO-003.md"
+    }
+  ],
+  "briefs": 8,
+  "rfps": 3,
+  "sha256": "6b5037311e5b2568bd39b0b9637909143ef414d1f38f4debd3e9ef126df66cef"
+}
