@@ -237,7 +237,8 @@ def run_monad_interdimensional_protocol():
                 "polarity": density_meta["polarity"],
                 "k3_logic": k3_val,
                 "latency_us": round(t_task_us, 2),
-                "status": "PROVED_AND_SEALED"
+                "status": "PROVED_AND_SEALED",
+                "phoenix_status": "SPEC"
             })
 
             print(f"    ✓ [Task {t_idx:02d}/20] {task_desc[:60]:<60} | {freq:>5.1f} Hz | {k3_val:<9} ({t_task_us:.2f} µs)")

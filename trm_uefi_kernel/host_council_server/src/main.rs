@@ -33,6 +33,7 @@ const AGENTS: &[AgentInfo] = &[
     AgentInfo { name: "Archi", role: "Bare-Metal Microkernel Architecture", weight: 1.0, domain: "Architecture" },
 ];
 
+#[derive(Clone)]
 struct Proposal {
     id: u64,
     topic: String,
@@ -1173,7 +1174,13 @@ fn evaluate_cadence_proposal(state: &mut CouncilState) -> u64 {
     id
 }
 
-fn evaluate_proposal(state: &mut CouncilState, topic: String, category: String, proposer: String) -> u64 {
+fn evaluate_proposal(
+    state: &mut CouncilState,
+    topic: String,
+    category: String,
+    proposer: String,
+    evidence: Vec<String>,
+) -> u64 {
     let id = state.next_id;
     state.next_id += 1;
 
@@ -1220,12 +1227,19 @@ fn evaluate_proposal(state: &mut CouncilState, topic: String, category: String, 
     let weighted_score = (total_weighted / 14.0).clamp(-1.0, 1.0);
     let consensus_reached = approve_count >= 10;
 
+    let has_evidence = !evidence.is_empty();
+    let (phoenix_status, phase) = if has_evidence {
+        ("CONFIRMED".to_string(), "ENACTED".to_string())
+    } else {
+        ("SPEC".to_string(), "CONSENSUS".to_string())
+    };
+
     let proposal = Proposal {
         id,
         topic,
         category,
         proposer,
-        phase: "CONSENSUS".to_string(),
+        phase,
         weighted_score,
         approve_count,
         abstain_count,
@@ -1234,8 +1248,8 @@ fn evaluate_proposal(state: &mut CouncilState, topic: String, category: String, 
         deliberations,
         votes,
         timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
-        phoenix_status: "SPEC".to_string(),
-        phoenix_evidence: vec![],
+        phoenix_status,
+        phoenix_evidence: evidence,
     };
 
     state.proposals.push(proposal);
@@ -1442,9 +1456,23 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         let topic = parsed.get("topic").and_then(|t| t.as_str()).unwrap_or("Operator Sovereign Directive").to_string();
         let category = parsed.get("category").and_then(|c| c.as_str()).unwrap_or("Architecture").to_string();
         let proposer = parsed.get("proposer").and_then(|p| p.as_str()).unwrap_or("OPERATOR").to_string();
+        let evidence: Vec<String> = parsed.get("evidence")
+            .or_else(|| parsed.get("phoenix_evidence"))
+            .and_then(|e| e.as_array())
+            .map(|arr| arr.iter().filter_map(|v| v.as_str().map(|s| s.to_string())).collect())
+            .unwrap_or_default();
         let mut st = state.lock().unwrap();
-        let id = evaluate_proposal(&mut st, topic, category, proposer);
-        response_json = json!({"status": "PROPOSED", "id": id});
+        let id = evaluate_proposal(&mut st, topic, category, proposer, evidence);
+        let prop = st.proposals.iter().find(|p| p.id == id);
+        let status = prop.map(|p| p.phase.as_str()).unwrap_or("PROPOSED");
+        let p_status = prop.map(|p| p.phoenix_status.as_str()).unwrap_or("SPEC");
+        let p_ev = prop.map(|p| p.phoenix_evidence.clone()).unwrap_or_default();
+        response_json = json!({
+            "status": status,
+            "id": id,
+            "phoenix_status": p_status,
+            "phoenix_evidence": p_ev
+        });
     } else if method == Method::Post && url.starts_with("/council/enact/") {
         let parts: Vec<&str> = url.split('/').collect();
         let id_opt = parts.last().and_then(|s| s.parse::<u64>().ok());
@@ -2550,22 +2578,37 @@ fn main() {
     // Seed initial proposals
     {
         let mut st = state.lock().unwrap();
-        let p1 = evaluate_proposal(&mut st, "Zero-Python Pure Rust Server Deployment".to_string(), "Architecture".to_string(), "Archi".to_string());
-        if let Some(prop) = st.proposals.iter_mut().find(|p| p.id == p1) {
-            prop.phoenix_status = "CONFIRMED".to_string();
-            prop.phoenix_evidence = vec!["trm_uefi_kernel/host_council_server/target/release/host_council_server.exe".to_string()];
-        }
-        let p2 = evaluate_proposal(&mut st, "CP-COMPANION-001: TRM Sovereign Companion App (Mobile/Desktop Interface)".to_string(), "Interface".to_string(), "Archi".to_string());
-        if let Some(prop) = st.proposals.iter_mut().find(|p| p.id == p2) {
-            prop.phoenix_status = "CONFIRMED".to_string();
-            prop.phoenix_evidence = vec![
+        let _p1 = evaluate_proposal(
+            &mut st,
+            "Zero-Python Pure Rust Server Deployment".to_string(),
+            "Architecture".to_string(),
+            "Archi".to_string(),
+            vec!["trm_uefi_kernel/host_council_server/target/release/host_council_server.exe".to_string()]
+        );
+        let _p2 = evaluate_proposal(
+            &mut st,
+            "CP-COMPANION-001: TRM Sovereign Companion App (Mobile/Desktop Interface)".to_string(),
+            "Interface".to_string(),
+            "Archi".to_string(),
+            vec![
                 "trm-sovereign-companion-v19.001.apk".to_string(),
                 "trm_uefi_kernel/trm_companion_bridge/target/release/trm_companion_bridge.exe".to_string()
-            ];
-        }
+            ]
+        );
         evaluate_cadence_proposal(&mut st);
         evaluate_coordination_proposal(&mut st);
         evaluate_chat_proposal(&mut st);
+        let _p6 = evaluate_proposal(
+            &mut st,
+            "CP-BENCH-001: TRM 7M Mamba-3 SSM AVX2/FMA Native Vectorization & Python NumPy Parity".to_string(),
+            "Cognitive Architecture".to_string(),
+            "Devo".to_string(),
+            vec![
+                "trm_uefi_kernel/host_test/src/trm7m.rs".to_string(),
+                "trm_uefi_kernel/src/trm7m.rs".to_string(),
+                "swarm_v2/core/bench_trm7m_python.py".to_string(),
+            ]
+        );
     }
 
     let server = Arc::new(Server::http(format!("0.0.0.0:{}", port)).unwrap());

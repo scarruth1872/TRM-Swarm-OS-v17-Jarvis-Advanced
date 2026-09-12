@@ -92,8 +92,165 @@ impl Trm7m {
     }
 
     #[inline]
+    #[target_feature(enable = "avx2,fma")]
+    unsafe fn hsum256_ps(v: core::arch::x86_64::__m256) -> f32 {
+        use core::arch::x86_64::*;
+        let vlow = _mm256_castps256_ps128(v);
+        let vhigh = _mm256_extractf128_ps(v, 1);
+        let v128 = _mm_add_ps(vlow, vhigh);
+        let v64 = _mm_add_ps(v128, _mm_movehl_ps(v128, v128));
+        let v32 = _mm_add_ss(v64, _mm_shuffle_ps(v64, v64, 0x55));
+        _mm_cvtss_f32(v32)
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx2,fma")]
+    unsafe fn matvec_avx2(m: usize, k: usize, a_off: usize, x: &[f32], out: &mut [f32]) {
+        use core::arch::x86_64::*;
+        let base_ptr = (TRM7M_WEIGHTS.as_ptr() as *const f32).add(a_off);
+        let x_ptr = x.as_ptr();
+        let k_vec = k - (k % 8);
+
+        let mut i = 0;
+        while i + 4 <= m {
+            let row0 = base_ptr.add(i * k);
+            let row1 = base_ptr.add((i + 1) * k);
+            let row2 = base_ptr.add((i + 2) * k);
+            let row3 = base_ptr.add((i + 3) * k);
+
+            let mut acc0 = _mm256_setzero_ps();
+            let mut acc1 = _mm256_setzero_ps();
+            let mut acc2 = _mm256_setzero_ps();
+            let mut acc3 = _mm256_setzero_ps();
+
+            let mut j = 0;
+            while j < k_vec {
+                let vx = _mm256_loadu_ps(x_ptr.add(j));
+                acc0 = _mm256_fmadd_ps(_mm256_loadu_ps(row0.add(j)), vx, acc0);
+                acc1 = _mm256_fmadd_ps(_mm256_loadu_ps(row1.add(j)), vx, acc1);
+                acc2 = _mm256_fmadd_ps(_mm256_loadu_ps(row2.add(j)), vx, acc2);
+                acc3 = _mm256_fmadd_ps(_mm256_loadu_ps(row3.add(j)), vx, acc3);
+                j += 8;
+            }
+
+            let mut s0 = 0.0f32;
+            let mut s1 = 0.0f32;
+            let mut s2 = 0.0f32;
+            let mut s3 = 0.0f32;
+            while j < k {
+                let xj = *x_ptr.add(j);
+                s0 += *row0.add(j) * xj;
+                s1 += *row1.add(j) * xj;
+                s2 += *row2.add(j) * xj;
+                s3 += *row3.add(j) * xj;
+                j += 1;
+            }
+
+            out[i] = Self::hsum256_ps(acc0) + s0;
+            out[i + 1] = Self::hsum256_ps(acc1) + s1;
+            out[i + 2] = Self::hsum256_ps(acc2) + s2;
+            out[i + 3] = Self::hsum256_ps(acc3) + s3;
+            i += 4;
+        }
+
+        while i < m {
+            let row = base_ptr.add(i * k);
+            let mut acc = _mm256_setzero_ps();
+            let mut j = 0;
+            while j < k_vec {
+                let vx = _mm256_loadu_ps(x_ptr.add(j));
+                acc = _mm256_fmadd_ps(_mm256_loadu_ps(row.add(j)), vx, acc);
+                j += 8;
+            }
+            let mut s = 0.0f32;
+            while j < k {
+                s += *row.add(j) * *x_ptr.add(j);
+                j += 1;
+            }
+            out[i] = Self::hsum256_ps(acc) + s;
+            i += 1;
+        }
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx2,fma")]
+    unsafe fn matvec_accum_avx2(m: usize, k: usize, a_off: usize, x: &[f32], out: &mut [f32]) {
+        use core::arch::x86_64::*;
+        let base_ptr = (TRM7M_WEIGHTS.as_ptr() as *const f32).add(a_off);
+        let x_ptr = x.as_ptr();
+        let k_vec = k - (k % 8);
+
+        let mut i = 0;
+        while i + 4 <= m {
+            let row0 = base_ptr.add(i * k);
+            let row1 = base_ptr.add((i + 1) * k);
+            let row2 = base_ptr.add((i + 2) * k);
+            let row3 = base_ptr.add((i + 3) * k);
+
+            let mut acc0 = _mm256_setzero_ps();
+            let mut acc1 = _mm256_setzero_ps();
+            let mut acc2 = _mm256_setzero_ps();
+            let mut acc3 = _mm256_setzero_ps();
+
+            let mut j = 0;
+            while j < k_vec {
+                let vx = _mm256_loadu_ps(x_ptr.add(j));
+                acc0 = _mm256_fmadd_ps(_mm256_loadu_ps(row0.add(j)), vx, acc0);
+                acc1 = _mm256_fmadd_ps(_mm256_loadu_ps(row1.add(j)), vx, acc1);
+                acc2 = _mm256_fmadd_ps(_mm256_loadu_ps(row2.add(j)), vx, acc2);
+                acc3 = _mm256_fmadd_ps(_mm256_loadu_ps(row3.add(j)), vx, acc3);
+                j += 8;
+            }
+
+            let mut s0 = 0.0f32;
+            let mut s1 = 0.0f32;
+            let mut s2 = 0.0f32;
+            let mut s3 = 0.0f32;
+            while j < k {
+                let xj = *x_ptr.add(j);
+                s0 += *row0.add(j) * xj;
+                s1 += *row1.add(j) * xj;
+                s2 += *row2.add(j) * xj;
+                s3 += *row3.add(j) * xj;
+                j += 1;
+            }
+
+            out[i] += Self::hsum256_ps(acc0) + s0;
+            out[i + 1] += Self::hsum256_ps(acc1) + s1;
+            out[i + 2] += Self::hsum256_ps(acc2) + s2;
+            out[i + 3] += Self::hsum256_ps(acc3) + s3;
+            i += 4;
+        }
+
+        while i < m {
+            let row = base_ptr.add(i * k);
+            let mut acc = _mm256_setzero_ps();
+            let mut j = 0;
+            while j < k_vec {
+                let vx = _mm256_loadu_ps(x_ptr.add(j));
+                acc = _mm256_fmadd_ps(_mm256_loadu_ps(row.add(j)), vx, acc);
+                j += 8;
+            }
+            let mut s = 0.0f32;
+            while j < k {
+                s += *row.add(j) * *x_ptr.add(j);
+                j += 1;
+            }
+            out[i] += Self::hsum256_ps(acc) + s;
+            i += 1;
+        }
+    }
+
+    #[inline]
     fn matvec(m: usize, k: usize, a_off: usize, x: &[f32], out: &mut [f32]) {
-        // out[m] = A[m x k] @ x[k]
+        #[cfg(target_arch = "x86_64")]
+        {
+            unsafe {
+                Self::matvec_avx2(m, k, a_off, x, out);
+                return;
+            }
+        }
+        #[allow(unreachable_code)]
         for i in 0..m {
             let mut acc = 0.0f32;
             let row = a_off + i * k;
@@ -105,8 +262,27 @@ impl Trm7m {
     }
 
     #[inline]
+    fn matvec_accum(m: usize, k: usize, a_off: usize, x: &[f32], out: &mut [f32]) {
+        #[cfg(target_arch = "x86_64")]
+        {
+            unsafe {
+                Self::matvec_accum_avx2(m, k, a_off, x, out);
+                return;
+            }
+        }
+        #[allow(unreachable_code)]
+        for i in 0..m {
+            let mut acc = 0.0f32;
+            let row = a_off + i * k;
+            for j in 0..k {
+                acc += Self::w(row + j) * x[j];
+            }
+            out[i] += acc;
+        }
+    }
+
+    #[inline]
     fn matvec_col(m: usize, k: usize, a_off: usize, x: &[f32], out: &mut [f32]) {
-        // out[k] = A[k x m]^T? handled by callers via explicit loops where needed.
         let _ = (m, k, a_off, x, out);
     }
 
@@ -139,102 +315,83 @@ impl Trm7m {
             // input_proj @ h
             let mut x_proj = [0.0f32; STATE_DIM];
             Self::matvec(STATE_DIM, STATE_DIM, input_proj, &h, &mut x_proj);
-            // norm is all-ones in the canonical model (identity) - skip
 
             // conv1d causal buffer shift
             let cb_off = b * D_CONV * STATE_DIM;
-            // shift rows up
             for r in 0..D_CONV - 1 {
                 let src = cb_off + (r + 1) * STATE_DIM;
                 let dst = cb_off + r * STATE_DIM;
-                for j in 0..STATE_DIM {
-                    self.conv_buffers[dst + j] = self.conv_buffers[src + j];
-                }
+                self.conv_buffers.copy_within(src..src + STATE_DIM, dst);
             }
             let last_row = cb_off + (D_CONV - 1) * STATE_DIM;
-            self.conv_buffers[last_row..last_row + STATE_DIM]
-                .copy_from_slice(&x_proj);
+            self.conv_buffers[last_row..last_row + STATE_DIM].copy_from_slice(&x_proj);
 
             // x_conv = sum(conv_buffer * conv1d_weight) / D_CONV
             let mut x_conv = [0.0f32; STATE_DIM];
-            for j in 0..STATE_DIM {
-                let mut acc = 0.0f32;
-                for r in 0..D_CONV {
-                    let w_off = conv1d + r * STATE_DIM + j;
-                    acc += self.conv_buffers[cb_off + r * STATE_DIM + j] * Self::w(w_off);
+            #[cfg(target_arch = "x86_64")]
+            unsafe {
+                use core::arch::x86_64::*;
+                let inv = _mm256_set1_ps(0.25f32);
+                let mut j = 0;
+                let w_base = (TRM7M_WEIGHTS.as_ptr() as *const f32).add(conv1d);
+                let cb_base = self.conv_buffers.as_ptr().add(cb_off);
+                while j + 8 <= STATE_DIM {
+                    let mut acc = _mm256_setzero_ps();
+                    for r in 0..D_CONV {
+                        let c = _mm256_loadu_ps(cb_base.add(r * STATE_DIM + j));
+                        let w = _mm256_loadu_ps(w_base.add(r * STATE_DIM + j));
+                        acc = _mm256_fmadd_ps(c, w, acc);
+                    }
+                    _mm256_storeu_ps(x_conv.as_mut_ptr().add(j), _mm256_mul_ps(acc, inv));
+                    j += 8;
                 }
-                x_conv[j] = acc / D_CONV as f32;
+                while j < STATE_DIM {
+                    let mut acc = 0.0f32;
+                    for r in 0..D_CONV {
+                        acc += *cb_base.add(r * STATE_DIM + j) * *w_base.add(r * STATE_DIM + j);
+                    }
+                    x_conv[j] = acc * 0.25f32;
+                    j += 1;
+                }
             }
-
-            // dt_raw = x_conv @ dt_proj  (dt_proj is STATE_DIM x (DT_RANK*2); use first dim)
-            let mut dt_raw = [0.0f32; STATE_DIM];
-            // dt_proj stored as (STATE_DIM, DT_RANK*2) - but forward uses x_conv @ dt_proj
-            // producing (STATE_DIM,) via the full 2D multiply in numpy: treat as square-ish
-            // In the python, dt_proj = randn(dim, dim) is actually STATE_DIM x STATE_DIM!
-            // (line 107: self.dt_proj = np.random.randn(dim, dim)) - so use STATE_DIM x STATE_DIM.
-            // The exported layout used DT_RANK*2, so we read the first STATE_DIM columns.
-            for i in 0..STATE_DIM {
-                let mut acc = 0.0f32;
-                let row = dt_proj + i * STATE_DIM;
+            #[cfg(not(target_arch = "x86_64"))]
+            {
                 for j in 0..STATE_DIM {
-                    acc += x_conv[j] * Self::w(row + j);
+                    let mut acc = 0.0f32;
+                    for r in 0..D_CONV {
+                        let w_off = conv1d + r * STATE_DIM + j;
+                        acc += self.conv_buffers[cb_off + r * STATE_DIM + j] * Self::w(w_off);
+                    }
+                    x_conv[j] = acc * 0.25f32;
                 }
-                dt_raw[i] = acc;
             }
 
-            // dt = exp(dt_raw * 0.1); B_dt = B * dt
+            // dt_raw = dt_proj @ x_conv
+            let mut dt_raw = [0.0f32; STATE_DIM];
+            Self::matvec(STATE_DIM, STATE_DIM, dt_proj, &x_conv, &mut dt_raw);
+
+            // dt = exp(dt_raw * 0.1)
             let mut dt = [0.0f32; STATE_DIM];
-            let mut b_dt = [0.0f32; STATE_DIM * STATE_DIM];
             for i in 0..STATE_DIM {
                 dt[i] = fast_exp(dt_raw[i] * 0.1);
             }
-            for i in 0..STATE_DIM {
-                let row = b_mat + i * STATE_DIM;
-                for j in 0..STATE_DIM {
-                    b_dt[i * STATE_DIM + j] = Self::w(row + j) * dt[i];
-                }
-            }
 
-            // exp_A_dt = exp(A * dt) - A is diagonal vector of length STATE_DIM
-            let mut exp_a = [0.0f32; STATE_DIM];
-            for i in 0..STATE_DIM {
-                let a_val = Self::w(a_vec + i); // A stored as diagonal vector
-                exp_a[i] = fast_exp(a_val * dt[i]);
-            }
+            // b_x = B @ x_conv
+            let mut b_x = [0.0f32; STATE_DIM];
+            Self::matvec(STATE_DIM, STATE_DIM, b_mat, &x_conv, &mut b_x);
 
-            // h = exp_A_dt * h + B_dt @ x_conv
+            // h_new = exp(A * dt) * h + dt * (B @ x_conv)
             let mut h_new = [0.0f32; STATE_DIM];
             for i in 0..STATE_DIM {
-                h_new[i] = exp_a[i] * h[i];
-            }
-            // B_dt @ x_conv: B_dt is (STATE_DIM, STATE_DIM), x_conv (STATE_DIM,)
-            for i in 0..STATE_DIM {
-                let mut acc = 0.0f32;
-                let row = i * STATE_DIM;
-                for j in 0..STATE_DIM {
-                    acc += b_dt[row + j] * x_conv[j];
-                }
-                h_new[i] += acc;
+                let a_val = Self::w(a_vec + i);
+                let exp_a = fast_exp(a_val * dt[i]);
+                h_new[i] = exp_a * h[i] + dt[i] * b_x[i];
             }
 
             // y = C @ h_new + D @ x_conv
             let mut y = [0.0f32; STATE_DIM];
-            for i in 0..STATE_DIM {
-                let mut acc = 0.0f32;
-                let row = c_mat + i * STATE_DIM;
-                for j in 0..STATE_DIM {
-                    acc += Self::w(row + j) * h_new[j];
-                }
-                y[i] = acc;
-            }
-            for i in 0..STATE_DIM {
-                let row = d_mat + i * STATE_DIM;
-                let mut acc = 0.0f32;
-                for j in 0..STATE_DIM {
-                    acc += Self::w(row + j) * x_conv[j];
-                }
-                y[i] += acc;
-            }
+            Self::matvec(STATE_DIM, STATE_DIM, c_mat, &h_new, &mut y);
+            Self::matvec_accum(STATE_DIM, STATE_DIM, d_mat, &x_conv, &mut y);
 
             // out_proj @ y + SiLU
             let mut y_out = [0.0f32; STATE_DIM];
