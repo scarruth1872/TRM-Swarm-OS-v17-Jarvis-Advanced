@@ -740,6 +740,14 @@ fn sovereign_cognitive_engine(role: &str, user_msg: &str) -> String {
 }
 
 fn get_sovereign_journal_articles() -> Vec<serde_json::Value> {
+    if let Ok(file_content) = std::fs::read_to_string("phoenix_journal_audit_manifest.json") {
+        if let Ok(manifest) = serde_json::from_str::<serde_json::Value>(&file_content) {
+            if let Some(articles) = manifest.get("articles").and_then(|a| a.as_array()) {
+                return articles.clone();
+            }
+        }
+    }
+
     vec![
         json!({ "id": 189, "section": "Cognitive Architecture", "title": "Article 189 — Frontier Open-Source Chat Intelligence Ingestion: Multi-Turn Context Continuity, Thought Completion & Architectural Parity", "status": "PUBLISHED", "journal": "Monad Journal", "finding": "Full 14-Agent Swarm Council PBFT ratification (14-0-0, score +0.9871 Gold) of Proposal CP-CHAT-001 absorbing frontier architectural patterns from Open WebUI, LibreChat, Dify, AnythingLLM, and FastChat: (1) Multi-Turn Context Continuity: migration from isolated single-turn generation to rolling multi-turn message arrays with num_ctx=8192 (up to 32768) and sliding-window history ingestion (last 10-20 turns); (2) Thought Completion & Fluency: expansion of num_predict from 250 to 2048-4096 tokens, socket read timeout to 30,000ms, collapsible <think>...</think> chain-of-thought extraction, and auto-continuation loop eliminating mid-sentence truncation; (3) Dynamic Model Shunting: routing conversational queries to ultra-fast gemma3:1b/4b (<250ms) and deep analytical proofs/code to deepseek-r1:8b, qwen2.5-coder, and bonsai-27b with Rayon parallel dispatch; (4) Sovereign Cognitive Engine: rich multi-paragraph domain synthesis across all 14 personas with immutable system anchor pinning (0x4D4F4E4144000001)." }),
         json!({ "id": 188, "section": "Distributed Compute", "title": "Article 188 — Planetary Task Coordination & Autonomous Work-Stealing: 14-Agent PBFT Orchestration across Laptop Secondary Node & 100-Node Sovereign Federation", "status": "PUBLISHED", "journal": "Monad Journal", "finding": "Full 14-Agent Swarm Council PBFT ratification (14-0-0, score +0.9851 Gold) of Proposal CP-COORD-001 for real-time distributed task coordination: (1) Laptop Node (100.123.215.119:8022) integrated via Tailscale WireGuard QUIC (14.5 ms latency) absorbing 25k Cruzain/KRAS docking shards on CUDA Tensor Cores, regional EUCAST breakpoint ingestion, and secondary Phoenix WAL state mirroring; (2) 100-Node Federation Mesh dynamically balanced via work-stealing across 6 functional tiers with Byzantine fault tolerance (f=33 tolerance, 67-node PBFT quorum); (3) NIST FIPS 203 ML-KEM-1024 post-quantum token encryption and FIPS 204 ML-DSA-87 signatures securing all inter-node execution frames under Monad Anchor 0x4D4F4E4144000001." }),
@@ -1448,6 +1456,9 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         let papers = get_sovereign_journal_articles();
         let pub_count = papers.iter().filter(|p| p.get("status").and_then(|s| s.as_str()) == Some("PUBLISHED")).count();
         let prereg_count = papers.iter().filter(|p| p.get("status").and_then(|s| s.as_str()) == Some("PRE-REGISTERED")).count();
+        let confirmed_count = papers.iter().filter(|p| p.get("phoenix_status").and_then(|s| s.as_str()) == Some("CONFIRMED")).count();
+        let spec_count = papers.iter().filter(|p| p.get("phoenix_status").and_then(|s| s.as_str()) == Some("SPEC")).count();
+        let aspirational_count = papers.iter().filter(|p| p.get("phoenix_status").and_then(|s| s.as_str()) == Some("ASPIRATIONAL")).count();
         response_json = json!({
             "status": "ONLINE",
             "name": "The Monad Journal of Autonomous Discovery",
@@ -1455,8 +1466,13 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "total_papers": papers.len(),
             "published": pub_count,
             "pre_registered": prereg_count,
+            "phoenix_audit": {
+                "confirmed": confirmed_count,
+                "spec": spec_count,
+                "aspirational": aspirational_count
+            },
             "anchor": "0x4D4F4E4144000001",
-            "latest_article": "Article 184 — Beyond 15 Patterns: Fractal Telemetry & Infinite Geometric Computation: Recursive Nesting to Depth 5 (11.4M Architectures) via Multi-Dimensional Telemetry Streams"
+            "latest_article": "Article 189 — Frontier Open-Source Chat Intelligence Ingestion: Multi-Turn Context Continuity, Thought Completion & Architectural Parity"
         });
     } else if method == Method::Post && url.starts_with("/journal/submit") {
         let mut body_str_in = String::new();
@@ -2494,8 +2510,19 @@ fn main() {
     // Seed initial proposals
     {
         let mut st = state.lock().unwrap();
-        evaluate_proposal(&mut st, "Zero-Python Pure Rust Server Deployment".to_string(), "Architecture".to_string(), "Archi".to_string());
-        evaluate_proposal(&mut st, "CP-COMPANION-001: TRM Sovereign Companion App (Mobile/Desktop Interface)".to_string(), "Interface".to_string(), "Archi".to_string());
+        let p1 = evaluate_proposal(&mut st, "Zero-Python Pure Rust Server Deployment".to_string(), "Architecture".to_string(), "Archi".to_string());
+        if let Some(prop) = st.proposals.iter_mut().find(|p| p.id == p1) {
+            prop.phoenix_status = "CONFIRMED".to_string();
+            prop.phoenix_evidence = vec!["trm_uefi_kernel/host_council_server/target/release/host_council_server.exe".to_string()];
+        }
+        let p2 = evaluate_proposal(&mut st, "CP-COMPANION-001: TRM Sovereign Companion App (Mobile/Desktop Interface)".to_string(), "Interface".to_string(), "Archi".to_string());
+        if let Some(prop) = st.proposals.iter_mut().find(|p| p.id == p2) {
+            prop.phoenix_status = "CONFIRMED".to_string();
+            prop.phoenix_evidence = vec![
+                "trm-sovereign-companion-v19.001.apk".to_string(),
+                "trm_uefi_kernel/trm_companion_bridge/target/release/trm_companion_bridge.exe".to_string()
+            ];
+        }
         evaluate_cadence_proposal(&mut st);
         evaluate_coordination_proposal(&mut st);
         evaluate_chat_proposal(&mut st);
