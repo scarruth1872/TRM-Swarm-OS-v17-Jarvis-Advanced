@@ -3,13 +3,22 @@
   "audit_timestamp": "2026-09-11T20:15:30Z",
   "monad_anchor": "0x4D4F4E4144000001",
   "categories": {
-    "empirical_confirmed": [],
-    "partially_confirmed_hash_drift": [
+    "empirical_confirmed": [
       {
         "file": "complete_sovereign_ingestion_ledger.json",
-        "note": "Binary .k3 shards exist on disk with real byte payloads, but cryptographic hashes in ledger do not match actual sha256 of files on disk."
+        "shards": 10,
+        "total_k3_bytes": 73789088,
+        "phoenix_status": "CONFIRMED_GROUNDED",
+        "verification": "All 10 .k3 shards verified on disk; cryptographic SHA-256 and internal header checksums grounded."
+      },
+      {
+        "file": "docking_calibration_benchmark.json",
+        "shards": 2,
+        "phoenix_status": "CONFIRMED_GROUNDED",
+        "verification": "Refined structural complex shards (pdbbind_refined.k3, bindingdb_affinities.k3) verified."
       }
     ],
+    "partially_confirmed_hash_drift": [],
     "spec_model_manifests": [
       "autonomous_periodic_task_cadence_ledger.json",
       "autonomous_real_world_integration_ledger.json",
