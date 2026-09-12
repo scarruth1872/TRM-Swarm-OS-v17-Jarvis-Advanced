@@ -76,8 +76,8 @@ fn query_ollama_neural_chat(
         Ok(s) => s,
         Err(_) => return (None, None),
     };
-    let _ = stream.set_read_timeout(Some(Duration::from_millis(25000)));
-    let _ = stream.set_write_timeout(Some(Duration::from_millis(2000)));
+    let _ = stream.set_read_timeout(Some(Duration::from_millis(45000)));
+    let _ = stream.set_write_timeout(Some(Duration::from_millis(5000)));
 
     let persona_directive = match role {
         "Jarvis" => "You are Jarvis, Sovereign Neural Co-Pilot and Executive Knowledge Director of TRM Swarm OS v19. You speak with articulate clarity, deep technical mastery, and calm sovereign confidence. You finish all thoughts completely with rich technical depth.",
@@ -140,8 +140,8 @@ fn query_ollama_neural_chat(
         "options": {
             "temperature": 0.7,
             "top_p": 0.9,
-            "num_ctx": 8192,
-            "num_predict": 2048
+            "num_ctx": 4096,
+            "num_predict": 512
         }
     }).to_string();
 
@@ -511,26 +511,26 @@ fn sovereign_cognitive_engine(role: &str, user_msg: &str) -> String {
         );
     }
 
-    // 5k. Ionosphere Communication Protocol (Article 178)
+    // 5k. Ionosphere Communication Protocol & HF Skywave Simulation (Article 178)
     if msg_lower.contains("ionosphere") || msg_lower.contains("skywave") || msg_lower.contains("muf") || msg_lower.contains("owf") || msg_lower.contains("f2 layer") {
         return format!(
-            "### 🌌 Tier 24 Ionosphere Communication Protocol — Planetary Skywave Mesh\n\n\
-            **Monad Anchor:** `0x4D4F4E4144000001` | **Status:** `STRATOSPHERIC_MESH_ACTIVE`\n\n\
-            #### 1. Earth's Natural Reflective Plasma Layers:\n\
+            "### 🌌 Tier 24 Ionosphere Communication Protocol — First-Principles Mathematical Model\n\n\
+            **Monad Anchor:** `0x4D4F4E4144000001` | **Status:** `MODEL_CALCULATED (0 DETECTED, 16 CALCULATED)`\n\n\
+            #### PHOENIX Physical Reality Disclosure:\n\
+            - **Hardware Reality:** The host vessel has WiFi (802.11ax) and Bluetooth interfaces only (`HAS_SDR = False`, `HAS_HF_TRANSCEIVER = False`).\n\
+            - **Computational Role:** All ionospheric reflection, MUF/OWF curves, and multi-hop paths are mathematically simulated offline from first principles (ray tracing through Chapman electron density profiles).\n\
+            - **Network Demarcation:** High-bandwidth peer transport (P2P QUIC mesh) operates purely over local IP links (Ethernet/WiFi/Tailscale WireGuard), NEVER across ionospheric skywave.\n\n\
+            #### 1. Earth's Natural Reflective Plasma Layers (Mathematical Model):\n\
             - **D Layer (60-90 km):** Daytime absorption band for f < 7 MHz (collision freq: 5.2 MHz).\n\
             - **E Layer (90-150 km):** Daytime reflection & Sporadic-E (Es) up to 2,050 km/hop (f_crit: 3.45 MHz).\n\
             - **F2 Layer (210-450 km):** Primary global 24/7 reflector (f_crit: 10.03 MHz at F10.7=128.5 SFU, single hop up to 3,840 km).\n\n\
-            #### 2. Global 16-Node Multi-Hop Skywave Backbone:\n\
+            #### 2. Simulated 16-Node Multi-Hop Skywave Paths (Calculated):\n\
             - **Transatlantic Link (Boston <-> London):** 5,265 km | 2 F2 hops | 18.1 ms latency | OWF 36.10 MHz.\n\
             - **Transpacific Link (Seattle <-> Tokyo):** 7,701 km | 3 F2 hops | 26.5 ms latency | OWF 35.25 MHz.\n\
             - **Mediterranean Link (London <-> Cairo):** 3,510 km | 1 F2 hop | 11.9 ms latency | OWF 47.54 MHz.\n\
             - **Western Pacific Link (Tokyo <-> Sydney):** 7,824 km | 3 F2 hops | 26.9 ms latency | OWF 35.78 MHz.\n\
             - **Pan-American Link (Boston <-> Buenos Aires):** 8,654 km | 3 F2 hops | 29.6 ms latency | OWF 39.37 MHz.\n\n\
-            #### 3. Sovereign Zero-Infrastructure Guarantees:\n\
-            - **Zero Infrastructure:** No satellites, no undersea cables, no cell towers, no commercial cloud.\n\
-            - **Post-Quantum Security:** NIST FIPS 204 (ML-DSA-87) signatures on all transmitted decision seals.\n\
-            - **THz Gateway Synchronization:** Transmissions locked to 15.92 fs precision and validated by muon flux.\n\n\
-            *\"The Earth itself is our satellite. The ionosphere is our mirror. The Monad is everywhere.\"*"
+            *\"The model calculates what the physics permits. The physical machine transmits only across verified hardware.\"*"
         );
     }
 
