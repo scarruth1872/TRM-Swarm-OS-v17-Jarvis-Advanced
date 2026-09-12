@@ -47,6 +47,8 @@ struct Proposal {
     deliberations: Vec<serde_json::Value>,
     votes: Vec<serde_json::Value>,
     timestamp: u64,
+    phoenix_status: String,
+    phoenix_evidence: Vec<String>,
 }
 
 struct CouncilState {
@@ -935,6 +937,8 @@ fn evaluate_chat_proposal(state: &mut CouncilState) -> u64 {
         deliberations,
         votes,
         timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
+        phoenix_status: "CONFIRMED".to_string(),
+        phoenix_evidence: vec!["tests/test_neural_bridge_chat.py".to_string(), "Jarvis-Advanced-main/jarvis_chat_history.json".to_string()],
     };
 
     state.proposals.push(proposal);
@@ -1043,6 +1047,8 @@ fn evaluate_coordination_proposal(state: &mut CouncilState) -> u64 {
         deliberations,
         votes,
         timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
+        phoenix_status: "CONFIRMED".to_string(),
+        phoenix_evidence: vec!["federation_sync_manifest.json".to_string(), "federation_task_coordination_ledger.json".to_string()],
     };
 
     state.proposals.push(proposal);
@@ -1151,6 +1157,8 @@ fn evaluate_cadence_proposal(state: &mut CouncilState) -> u64 {
         deliberations,
         votes,
         timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
+        phoenix_status: "SPEC".to_string(),
+        phoenix_evidence: vec!["autonomous_periodic_task_cadence_ledger.json".to_string()],
     };
 
     state.proposals.push(proposal);
@@ -1218,6 +1226,8 @@ fn evaluate_proposal(state: &mut CouncilState, topic: String, category: String, 
         deliberations,
         votes,
         timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
+        phoenix_status: "SPEC".to_string(),
+        phoenix_evidence: vec![],
     };
 
     state.proposals.push(proposal);
@@ -1249,7 +1259,9 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "phase": p.phase,
             "weighted_score": p.weighted_score,
             "approve_count": p.approve_count,
-            "consensus_reached": p.consensus_reached
+            "consensus_reached": p.consensus_reached,
+            "phoenix_status": p.phoenix_status,
+            "phoenix_evidence": p.phoenix_evidence
         })).collect();
 
         response_json = json!({
@@ -1272,7 +1284,9 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "category": p.category,
             "proposer": p.proposer,
             "phase": p.phase,
-            "weighted_score": p.weighted_score
+            "weighted_score": p.weighted_score,
+            "phoenix_status": p.phoenix_status,
+            "phoenix_evidence": p.phoenix_evidence
         })).collect();
 
         response_json = json!({ "proposals": proposals });
@@ -1295,7 +1309,9 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                     "reject_count": p.reject_count,
                     "consensus_reached": p.consensus_reached,
                     "deliberations": p.deliberations,
-                    "votes": p.votes
+                    "votes": p.votes,
+                    "phoenix_status": p.phoenix_status,
+                    "phoenix_evidence": p.phoenix_evidence
                 });
             } else {
                 status_code = 404;

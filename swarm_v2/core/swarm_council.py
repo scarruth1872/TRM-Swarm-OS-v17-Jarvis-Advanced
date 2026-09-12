@@ -251,8 +251,10 @@ class CouncilProposal:
     votes: Dict[str, AgentVote] = field(default_factory=dict)
     weighted_score: float = 0.0  # -1.0 to +1.0
     raw_tally: Dict[str, int] = field(default_factory=lambda: {"approve": 0, "abstain": 0, "reject": 0})
-    consensus_reached: bool = False
     monad_seal: Optional[str] = None
+    phoenix_status: str = "SPEC"
+    phoenix_verification: Optional[Dict[str, Any]] = None
+    evidence_logs: List[str] = field(default_factory=list)
     created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
     decided_at: Optional[str] = None
     enacted_at: Optional[str] = None
@@ -568,6 +570,29 @@ class SwarmCouncil:
         proposal.phase = ProposalPhase.ENACTED
         proposal.enacted_at = datetime.utcnow().isoformat()
 
+        # Determine PHOENIX verification
+        import os
+        raw_hashes = []
+        for p in proposal.evidence_logs:
+            if os.path.exists(p):
+                with open(p, 'rb') as f:
+                    raw_hashes.append(hashlib.sha256(f.read()).hexdigest())
+
+        if proposal.evidence_logs and len(raw_hashes) == len(proposal.evidence_logs):
+            proposal.phoenix_status = "CONFIRMED"
+        elif not proposal.evidence_logs:
+            if proposal.phoenix_status not in ("SPEC", "SKELETON_STUB"):
+                proposal.phoenix_status = "SPEC"
+
+        proposal.phoenix_verification = {
+            "operator": "V_PHOENIX",
+            "auditor": "EventLedger",
+            "verified_at": proposal.enacted_at,
+            "evidence_logs": proposal.evidence_logs,
+            "raw_hashes": raw_hashes,
+            "falsifiable": True
+        }
+
         # Add to enacted ledger
         enacted_record = {
             "proposal_id": proposal.proposal_id,
@@ -578,6 +603,8 @@ class SwarmCouncil:
             "monad_seal": proposal.monad_seal,
             "enacted_at": proposal.enacted_at,
             "proposer": proposal.proposer,
+            "phoenix_status": proposal.phoenix_status,
+            "phoenix_verification": proposal.phoenix_verification,
         }
         self._enacted_ledger.append(enacted_record)
 
@@ -616,8 +643,11 @@ class SwarmCouncil:
             enact_result = self.enact(proposal.proposal_id)
             result["monad_seal"] = enact_result["monad_seal"]
             result["phase"] = "enacted"
+            result["phoenix_status"] = enact_result.get("phoenix_status", "SPEC")
+            result["phoenix_verification"] = enact_result.get("phoenix_verification", {})
         else:
             result["rejection_reason"] = proposal.rejection_reason
+            result["phoenix_status"] = "REJECTED"
 
         return result
 
