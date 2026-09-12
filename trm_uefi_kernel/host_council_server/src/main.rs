@@ -1436,9 +1436,49 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         });
 
     } else if method == Method::Post && url.starts_with("/council/propose") {
+        let mut body_str = String::new();
+        let _ = request.as_reader().read_to_string(&mut body_str);
+        let parsed: serde_json::Value = serde_json::from_str(&body_str).unwrap_or(json!({}));
+        let topic = parsed.get("topic").and_then(|t| t.as_str()).unwrap_or("Operator Sovereign Directive").to_string();
+        let category = parsed.get("category").and_then(|c| c.as_str()).unwrap_or("Architecture").to_string();
+        let proposer = parsed.get("proposer").and_then(|p| p.as_str()).unwrap_or("OPERATOR").to_string();
         let mut st = state.lock().unwrap();
-        let id = evaluate_proposal(&mut st, "Operator Sovereign Directive".to_string(), "Architecture".to_string(), "OPERATOR".to_string());
+        let id = evaluate_proposal(&mut st, topic, category, proposer);
         response_json = json!({"status": "PROPOSED", "id": id});
+    } else if method == Method::Post && url.starts_with("/council/enact/") {
+        let parts: Vec<&str> = url.split('/').collect();
+        let id_opt = parts.last().and_then(|s| s.parse::<u64>().ok());
+        let mut body_str = String::new();
+        let _ = request.as_reader().read_to_string(&mut body_str);
+        let parsed: serde_json::Value = serde_json::from_str(&body_str).unwrap_or(json!({}));
+        let p_status = parsed.get("phoenix_status").and_then(|s| s.as_str()).unwrap_or("CONFIRMED").to_string();
+        let p_evidence: Vec<String> = parsed.get("phoenix_evidence")
+            .and_then(|e| e.as_array())
+            .map(|arr| arr.iter().filter_map(|v| v.as_str().map(|s| s.to_string())).collect())
+            .unwrap_or_default();
+
+        let mut st = state.lock().unwrap();
+        if let Some(id) = id_opt {
+            if let Some(prop) = st.proposals.iter_mut().find(|p| p.id == id) {
+                prop.phase = "ENACTED".to_string();
+                prop.phoenix_status = p_status.clone();
+                if !p_evidence.is_empty() {
+                    prop.phoenix_evidence = p_evidence.clone();
+                }
+                response_json = json!({
+                    "status": "ENACTED",
+                    "id": id,
+                    "phoenix_status": p_status,
+                    "phoenix_evidence": prop.phoenix_evidence
+                });
+            } else {
+                status_code = 404;
+                response_json = json!({"error": "Proposal not found"});
+            }
+        } else {
+            status_code = 400;
+            response_json = json!({"error": "Invalid proposal ID"});
+        }
     } else if method == Method::Get && (url.starts_with("/journal/articles") || url.starts_with("/monad/journal") || url == "/journal" || url == "/journal/") {
         let papers = get_sovereign_journal_articles();
         response_json = json!({
