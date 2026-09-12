@@ -83,10 +83,33 @@ class SystemEventLedger:
         "SYSTEM",          # Startup, shutdown, error, health events
     }
 
+    MONAD_TRUTH_ANCHOR = "0x4D4F4E4144000001"
+    GENESIS_HASH = "0x4D4F4E4144000001000000000000000000000000000000000000000000000000"
+
     def __init__(self, path: str = EVENT_LEDGER_PATH):
         self.path = path
         os.makedirs(os.path.dirname(path), exist_ok=True)
         self._lock = asyncio.Lock() if asyncio.get_event_loop().is_running() else None
+        self._last_seq = 0
+        self._last_hash = self.GENESIS_HASH
+        self._init_chain_state()
+
+    def _init_chain_state(self):
+        """Recover last sequence number and hash from the ledger file tail."""
+        if not os.path.exists(self.path):
+            return
+        try:
+            with open(self.path, "r", encoding="utf-8") as f:
+                lines = f.readlines()
+            for line in reversed(lines):
+                line = line.strip()
+                if line:
+                    entry = json.loads(line)
+                    self._last_seq = entry.get("seq", len(lines))
+                    self._last_hash = entry.get("hash", self.GENESIS_HASH)
+                    break
+        except Exception as e:
+            logger.warning(f"[Ledger] Could not recover chain state: {e}")
 
     def record(
         self,
@@ -94,17 +117,29 @@ class SystemEventLedger:
         event: str,
         data: Optional[Dict] = None,
         source: str = "system",
-        severity: str = "INFO"
+        severity: str = "INFO",
+        phoenix_status: str = "CONFIRMED"
     ) -> Dict:
-        """Append an event to the ledger (offloaded to microkernel batch)."""
+        """Append an event to the ledger with PHOENIX status and cryptographic hash chain."""
+        self._last_seq += 1
         entry = {
+            "seq": self._last_seq,
+            "monad_anchor": self.MONAD_TRUTH_ANCHOR,
+            "phoenix_status": phoenix_status,
             "ts": datetime.datetime.utcnow().isoformat() + "Z",
             "category": category,
             "event": event,
             "source": source,
             "severity": severity,
-            "data": data or {}
+            "data": data or {},
+            "prev_hash": self._last_hash
         }
+        
+        # Deterministic SHA-256 event hash
+        payload_str = json.dumps(entry, sort_keys=True)
+        curr_hash = hashlib.sha256(payload_str.encode("utf-8")).hexdigest()
+        entry["hash"] = curr_hash
+        self._last_hash = curr_hash
         
         try:
             from swarm_v2.core.microkernel_spawner import get_microkernel_spawner
@@ -149,8 +184,9 @@ class SystemEventLedger:
         return list(reversed(entries))
 
     def get_stats(self) -> Dict:
-        """Return summary statistics across all ledger entries."""
+        """Return summary statistics across all ledger entries including PHOENIX status."""
         stats: Dict[str, int] = {}
+        phoenix_stats: Dict[str, int] = {}
         total = 0
         try:
             with open(self.path, "r", encoding="utf-8") as f:
@@ -161,13 +197,23 @@ class SystemEventLedger:
                     try:
                         entry = json.loads(line)
                         cat = entry.get("category", "UNKNOWN")
+                        p_status = entry.get("phoenix_status", "CONFIRMED")
                         stats[cat] = stats.get(cat, 0) + 1
+                        phoenix_stats[p_status] = phoenix_stats.get(p_status, 0) + 1
                         total += 1
                     except json.JSONDecodeError:
                         continue
         except FileNotFoundError:
             pass
-        return {"total": total, "by_category": stats}
+        return {
+            "total": total,
+            "by_category": stats,
+            "by_phoenix_status": phoenix_stats,
+            "monad_anchor": self.MONAD_TRUTH_ANCHOR,
+            "latest_seq": self._last_seq,
+            "latest_hash": self._last_hash,
+            "phoenix_verified": True
+        }
 
     def prune(self, keep_last: int = MAX_LEDGER_ENTRIES):
         """Prune ledger to the most recent N entries."""

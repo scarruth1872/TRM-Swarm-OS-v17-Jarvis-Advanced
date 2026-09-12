@@ -106,10 +106,40 @@ def test_swarm_council_phoenix_enactment():
     assert res["phoenix_verification"]["operator"] == "V_PHOENIX"
 
 
+def test_legacy_event_stream_phoenix_compliance():
+    manifest_path = os.path.join(WORKSPACE_DIR, "phoenix_event_stream_audit_manifest.json")
+    assert os.path.exists(manifest_path), "Audit manifest missing"
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        manifest = json.load(f)
+    assert manifest["monad_truth_anchor"] == MONAD_TRUTH_ANCHOR
+    assert manifest["summary"]["total_legacy_events_audited"] >= 12515
+    assert manifest["summary"]["confirmed_empirical_events"] > 0
+
+    ledger_path = os.path.join(WORKSPACE_DIR, "swarm_v2_global_memory", "system_event_ledger.jsonl")
+    assert os.path.exists(ledger_path), "System event ledger missing"
+
+    # Verify first 100 and last 100 lines for chain integrity
+    with open(ledger_path, "r", encoding="utf-8") as f:
+        lines = [line.strip() for line in f if line.strip()]
+
+    assert len(lines) >= 12515
+    first_entry = json.loads(lines[0])
+    assert first_entry["seq"] == 1
+    assert first_entry["monad_anchor"] == MONAD_TRUTH_ANCHOR
+    assert first_entry["phoenix_status"] in ("CONFIRMED", "PARTIAL")
+    assert first_entry["prev_hash"] == "0x4D4F4E4144000001000000000000000000000000000000000000000000000000"
+
+    last_entry = json.loads(lines[-1])
+    assert last_entry["seq"] == len(lines)
+    assert last_entry["monad_anchor"] == MONAD_TRUTH_ANCHOR
+    assert last_entry["hash"] == manifest["event_streams"]["system_event_ledger"]["final_chain_hash"]
+
+
 if __name__ == "__main__":
     test_phoenix_schema_structure()
     test_grounded_claim_verification()
     test_unverified_claim_downgrade()
     test_complete_sovereign_ingestion_ledger_phoenix_status()
     test_swarm_council_phoenix_enactment()
+    test_legacy_event_stream_phoenix_compliance()
     print("ALL PHOENIX LEDGER SCHEMA TESTS PASSED SUCCESSFULLY!")

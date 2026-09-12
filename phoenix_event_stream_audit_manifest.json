@@ -1,0 +1,52 @@
+{
+  "title": "TRM Swarm OS PHOENIX Legacy Event Stream Audit Manifest",
+  "audit_timestamp": "2026-09-12T02:09:59Z",
+  "monad_truth_anchor": "0x4D4F4E4144000001",
+  "verification_operator": "V_PHOENIX(Event) = CONFIRMED if Exists(Log_raw) AND Hash_Monad == True else RETIRED/ASPIRATIONAL",
+  "auditor": "EventLedger",
+  "event_streams": {
+    "system_event_ledger": {
+      "file": "swarm_v2_global_memory/system_event_ledger.jsonl",
+      "backup_file": "swarm_v2_global_memory/system_event_ledger.unverified_backup.jsonl",
+      "total_events": 12515,
+      "phoenix_status_distribution": {
+        "CONFIRMED": 6894,
+        "PARTIAL": 5621,
+        "SPEC": 0,
+        "ASPIRATIONAL": 0
+      },
+      "category_distribution": {
+        "SYSTEM": 353,
+        "INGESTION": 12162
+      },
+      "severity_distribution": {
+        "INFO": 6894,
+        "WARNING": 5621
+      },
+      "genesis_hash": "0x4D4F4E4144000001000000000000000000000000000000000000000000000000",
+      "final_chain_hash": "fa85cda040e2a864ded925f1393e168f73b759d710f8010bdb5c7bc1da4d4525",
+      "cryptographic_integrity": "100.0% SHA-256 chained, zero breaks",
+      "falsifiable": true
+    },
+    "turbo_events": {
+      "file": "swarm_v2_global_memory/turbo_events.jsonl",
+      "backup_file": "swarm_v2_global_memory/turbo_events.unverified_backup.jsonl",
+      "total_events": 2,
+      "phoenix_status_distribution": {
+        "CONFIRMED": 2
+      },
+      "genesis_hash": "0x4D4F4E4144000001000000000000000000000000000000000000000000000000",
+      "final_chain_hash": "fc5064da826bdd9bb0bc2fadf180f039c3b4e73113b782fd56de75a3d2d0a859",
+      "cryptographic_integrity": "100.0% SHA-256 chained, zero breaks",
+      "falsifiable": true
+    }
+  },
+  "summary": {
+    "total_legacy_events_audited": 12517,
+    "confirmed_empirical_events": 6896,
+    "partial_diagnostic_warnings": 5621,
+    "spec_model_events": 0,
+    "aspirational_events": 0,
+    "compliance_status": "CONFIRMED_GROUNDED"
+  }
+}
