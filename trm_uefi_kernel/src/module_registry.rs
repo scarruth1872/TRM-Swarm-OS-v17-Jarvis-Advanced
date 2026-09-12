@@ -248,9 +248,11 @@ pub fn render_registry() -> Vec<String> {
 /// Query: does the platform recognize a module by name?
 pub fn recognize(name: &str) -> Option<&'static str> {
     if REAL_MODULES.contains(&name) {
-        Some("REAL")
+        Some("REAL (Verified)")
+    } else if DATA_MODULES.contains(&name) {
+        Some("SKELETON_STUB (Constants/Placeholder)")
     } else if COMMANDS.contains(&name) {
-        Some("COMMAND")
+        Some("COMMAND (Terminal Directive)")
     } else {
         None
     }
@@ -260,3 +262,4 @@ pub fn recognize(name: &str) -> Option<&'static str> {
 pub fn real_count() -> u64 {
     REAL_MODULES.len() as u64
 }
+
