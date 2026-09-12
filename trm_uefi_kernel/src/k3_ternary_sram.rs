@@ -17,10 +17,34 @@ use crate::sram_pattern_computer::{
 
 /// SRAM-backed K3 trit plane size (one trit per cell, in {-1,0,+1}).
 pub const SRAM_TRITS: usize = 1024;
-/// Associative (CAM) line count over the plane.
-pub const CAM_LINES: usize = 64;
+/// Associative (CAM) line count over the plane (scaled from 64 to 256 lines).
+pub const CAM_LINES: usize = 256;
 /// Byte width of a CAM line tag.
 pub const CAM_TAG_LEN: usize = 16;
+
+/// Individual Content-Addressable Memory entry with LRU replacement metadata.
+#[derive(Clone, Copy)]
+pub struct CamEntry {
+    pub tag: [u8; CAM_TAG_LEN],
+    pub valid: bool,
+    pub decision: i8,
+    pub confidence: f32,
+    pub access_tick: u64,
+    pub hit_count: u64,
+}
+
+impl CamEntry {
+    pub const fn empty() -> Self {
+        Self {
+            tag: [0u8; CAM_TAG_LEN],
+            valid: false,
+            decision: UNKNOWN,
+            confidence: 0.0,
+            access_tick: 0,
+            hit_count: 0,
+        }
+    }
+}
 
 /// An SRAM K3 ternary bank: real Kleene trits + content-addressable tags.
 pub struct K3Sram {
@@ -28,6 +52,8 @@ pub struct K3Sram {
     pub trits: [i8; SRAM_TRITS],
     /// CAM tag table: one tag per line, used for content-addressable lookup.
     pub tags: [[u8; CAM_TAG_LEN]; CAM_LINES],
+    /// Fast associative table with LRU tracking and per-line decisions.
+    pub entries: [CamEntry; CAM_LINES],
     /// Real Kleene engine shared for K3 operator evaluation.
     pub engine: KleeneTernaryEngine,
     /// Number of trits currently written in the plane.
@@ -35,8 +61,10 @@ pub struct K3Sram {
     /// Whether a logical pattern has been stored (for "if there" gating).
     pattern_stored: bool,
     /// CAM lookup statistics.
-    cam_lookups: u64,
-    cam_hits: u64,
+    pub cam_lookups: u64,
+    pub cam_hits: u64,
+    pub evictions: u64,
+    tick_counter: u64,
 }
 
 impl K3Sram {
@@ -45,12 +73,86 @@ impl K3Sram {
         K3Sram {
             trits: [UNKNOWN; SRAM_TRITS],
             tags: [[0u8; CAM_TAG_LEN]; CAM_LINES],
+            entries: [CamEntry::empty(); CAM_LINES],
             engine: KleeneTernaryEngine::new(),
             stored: 0,
             pattern_stored: false,
             cam_lookups: 0,
             cam_hits: 0,
+            evictions: 0,
+            tick_counter: 0,
         }
+    }
+
+    /// Store an entry into the CAM associative table with LRU replacement.
+    pub fn store_entry(&mut self, key: &[u8], decision: i8, confidence: f32) -> usize {
+        self.tick_counter = self.tick_counter.wrapping_add(1);
+        let mut padded = [0u8; CAM_TAG_LEN];
+        let n = key.len().min(CAM_TAG_LEN);
+        padded[..n].copy_from_slice(&key[..n]);
+
+        // 1. If key already exists, update entry in place
+        for i in 0..CAM_LINES {
+            if self.entries[i].valid && self.entries[i].tag == padded {
+                self.entries[i].decision = decision;
+                self.entries[i].confidence = confidence;
+                self.entries[i].access_tick = self.tick_counter;
+                return i;
+            }
+        }
+
+        // 2. Locate an empty line
+        for i in 0..CAM_LINES {
+            if !self.entries[i].valid {
+                self.entries[i].tag = padded;
+                self.entries[i].valid = true;
+                self.entries[i].decision = decision;
+                self.entries[i].confidence = confidence;
+                self.entries[i].access_tick = self.tick_counter;
+                self.entries[i].hit_count = 0;
+                self.tags[i] = padded;
+                return i;
+            }
+        }
+
+        // 3. Table full -> LRU eviction
+        let mut oldest_idx = 0;
+        let mut oldest_tick = self.entries[0].access_tick;
+        for i in 1..CAM_LINES {
+            if self.entries[i].access_tick < oldest_tick {
+                oldest_tick = self.entries[i].access_tick;
+                oldest_idx = i;
+            }
+        }
+
+        self.evictions += 1;
+        self.entries[oldest_idx].tag = padded;
+        self.entries[oldest_idx].valid = true;
+        self.entries[oldest_idx].decision = decision;
+        self.entries[oldest_idx].confidence = confidence;
+        self.entries[oldest_idx].access_tick = self.tick_counter;
+        self.entries[oldest_idx].hit_count = 0;
+        self.tags[oldest_idx] = padded;
+        oldest_idx
+    }
+
+    /// Look up an entry by key; on hit, updates LRU access tick and returns decision + confidence.
+    pub fn lookup_entry(&mut self, key: &[u8]) -> Option<(i8, f32)> {
+        self.cam_lookups += 1;
+        self.tick_counter = self.tick_counter.wrapping_add(1);
+        let mut padded = [0u8; CAM_TAG_LEN];
+        let n = key.len().min(CAM_TAG_LEN);
+        padded[..n].copy_from_slice(&key[..n]);
+
+        for i in 0..CAM_LINES {
+            if self.entries[i].valid && self.entries[i].tag == padded {
+                self.cam_hits += 1;
+                self.entries[i].hit_count += 1;
+                self.entries[i].access_tick = self.tick_counter;
+                return Some((self.entries[i].decision, self.entries[i].confidence));
+            }
+        }
+        None
     }
 
     /// Store a ternary pattern into the plane and tag line 0 with `key` so the
@@ -64,6 +166,10 @@ impl K3Sram {
         // Tag line 0 with the key (padded/truncated to tag width).
         let klen = key.len().min(CAM_TAG_LEN);
         self.tags[0][..klen].copy_from_slice(&key[..klen]);
+        self.entries[0].tag[..klen].copy_from_slice(&key[..klen]);
+        self.entries[0].valid = true;
+        self.entries[0].decision = pattern.iter().copied().min().unwrap_or(UNKNOWN);
+        self.entries[0].confidence = 1.0;
         self.pattern_stored = true;
         self.stored
     }
