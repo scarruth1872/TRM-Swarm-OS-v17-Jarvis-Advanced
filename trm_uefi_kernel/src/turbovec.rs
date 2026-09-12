@@ -141,3 +141,101 @@ impl FloorCeilHack for f32 {
         if self <= 0.0 || self == i as f32 { i as f32 } else { (i + 1) as f32 }
     }
 }
+
+/// TurboVec 1.58-Bit Balanced Ternary Quantizer (BitNet b1.58 doctrine).
+/// Encodes trits {-1, 0, +1} packed 4 trits per byte (2 bits/trit: 00->0, 01->+1, 10->-1).
+pub struct TurboVec158Quantizer;
+
+impl TurboVec158Quantizer {
+    #[inline]
+    pub fn trit_to_code(t: i8) -> u8 {
+        match t {
+            1 => 1,
+            -1 => 2,
+            _ => 0,
+        }
+    }
+
+    #[inline]
+    pub fn code_to_trit(c: u8) -> i8 {
+        match c & 3 {
+            1 => 1,
+            2 => -1,
+            _ => 0,
+        }
+    }
+
+    #[inline]
+    pub fn pack_4_trits(t0: i8, t1: i8, t2: i8, t3: i8) -> u8 {
+        Self::trit_to_code(t0)
+            | (Self::trit_to_code(t1) << 2)
+            | (Self::trit_to_code(t2) << 4)
+            | (Self::trit_to_code(t3) << 6)
+    }
+
+    #[inline]
+    pub fn unpack_4_trits(b: u8) -> [i8; 4] {
+        [
+            Self::code_to_trit(b),
+            Self::code_to_trit(b >> 2),
+            Self::code_to_trit(b >> 4),
+            Self::code_to_trit(b >> 6),
+        ]
+    }
+
+    /// Quantize float32 slice to 1.58-bit packed ternary codes + scale (BitNet b1.58 doctrine).
+    /// scale = mean(|v|). Trit threshold at 0.5 * scale.
+    pub fn quantize_158(v: &[f32]) -> (Vec<u8>, f32) {
+        if v.is_empty() {
+            return (Vec::new(), 0.0);
+        }
+        let mut sum_abs = 0.0f32;
+        for &x in v {
+            sum_abs += if x < 0.0 { -x } else { x };
+        }
+        let scale = sum_abs / v.len() as f32;
+        if scale <= 1e-9 {
+            let num_bytes = (v.len() + 3) / 4;
+            return (alloc::vec![0u8; num_bytes], 0.0);
+        }
+
+        let num_bytes = (v.len() + 3) / 4;
+        let mut packed = alloc::vec![0u8; num_bytes];
+        for i in 0..num_bytes {
+            let idx0 = i * 4;
+            let t0 = if idx0 < v.len() { quantize_single(v[idx0], scale) } else { 0 };
+            let t1 = if idx0 + 1 < v.len() { quantize_single(v[idx0 + 1], scale) } else { 0 };
+            let t2 = if idx0 + 2 < v.len() { quantize_single(v[idx0 + 2], scale) } else { 0 };
+            let t3 = if idx0 + 3 < v.len() { quantize_single(v[idx0 + 3], scale) } else { 0 };
+            packed[i] = Self::pack_4_trits(t0, t1, t2, t3);
+        }
+        (packed, scale)
+    }
+
+    /// Dequantize 1.58-bit packed trits to float32 vector.
+    pub fn dequantize_158(packed: &[u8], len: usize, scale: f32) -> Vec<f32> {
+        let mut out = Vec::with_capacity(len);
+        for &b in packed {
+            let trits = Self::unpack_4_trits(b);
+            for &t in &trits {
+                if out.len() < len {
+                    out.push(t as f32 * scale);
+                }
+            }
+        }
+        out
+    }
+}
+
+#[inline]
+fn quantize_single(val: f32, scale: f32) -> i8 {
+    let normalized = val / scale;
+    if normalized > 0.5 {
+        1
+    } else if normalized < -0.5 {
+        -1
+    } else {
+        0
+    }
+}
+
