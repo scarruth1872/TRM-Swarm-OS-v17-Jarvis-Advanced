@@ -36,6 +36,20 @@ const BIAS_OFF: usize = HEAD_OFF + OUTPUT_TRITS * STATE_DIM;  // +1,386
 /// Embedded canonical seed-42 weights (15,637,788 bytes  14.9 MiB).
 static TRM7M_WEIGHTS: &[u8] = include_bytes!("../assets/trm7m_weights.bin");
 
+/// Runtime probe for AVX-512 foundation (F) + byte/word (BW) support.
+/// Works in bare-metal no_std and host environments via raw CPUID leaf 7.
+#[inline]
+pub fn has_avx512() -> bool {
+    #[cfg(target_arch = "x86_64")]
+    unsafe {
+        let cpuid = core::arch::x86_64::__cpuid_count(7, 0);
+        // EBX bit 16: AVX512F, bit 30: AVX512BW
+        (cpuid.ebx & (1 << 16) != 0) && (cpuid.ebx & (1 << 30) != 0)
+    }
+    #[cfg(not(target_arch = "x86_64"))]
+    false
+}
+
 /// The persistent Mamba-3 hidden state (O(1) memory - 8.1 KB).
 pub struct Trm7m {
     pub state_dim: usize,
@@ -101,6 +115,154 @@ impl Trm7m {
         let v64 = _mm_add_ps(v128, _mm_movehl_ps(v128, v128));
         let v32 = _mm_add_ss(v64, _mm_shuffle_ps(v64, v64, 0x55));
         _mm_cvtss_f32(v32)
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx512f")]
+    unsafe fn hsum512_ps(v: core::arch::x86_64::__m512) -> f32 {
+        use core::arch::x86_64::*;
+        let mut arr = [0.0f32; 16];
+        _mm512_storeu_ps(arr.as_mut_ptr(), v);
+        arr[0] + arr[1] + arr[2] + arr[3] + arr[4] + arr[5] + arr[6] + arr[7]
+            + arr[8] + arr[9] + arr[10] + arr[11] + arr[12] + arr[13] + arr[14] + arr[15]
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx512f,fma")]
+    unsafe fn matvec_avx512(m: usize, k: usize, a_off: usize, x: &[f32], out: &mut [f32]) {
+        use core::arch::x86_64::*;
+        let base_ptr = (TRM7M_WEIGHTS.as_ptr() as *const f32).add(a_off);
+        let x_ptr = x.as_ptr();
+        let k_vec = k - (k % 16);
+
+        let mut i = 0;
+        while i + 4 <= m {
+            let row0 = base_ptr.add(i * k);
+            let row1 = base_ptr.add((i + 1) * k);
+            let row2 = base_ptr.add((i + 2) * k);
+            let row3 = base_ptr.add((i + 3) * k);
+
+            let mut acc0 = _mm512_setzero_ps();
+            let mut acc1 = _mm512_setzero_ps();
+            let mut acc2 = _mm512_setzero_ps();
+            let mut acc3 = _mm512_setzero_ps();
+
+            let mut j = 0;
+            while j < k_vec {
+                let vx = _mm512_loadu_ps(x_ptr.add(j));
+                acc0 = _mm512_fmadd_ps(_mm512_loadu_ps(row0.add(j)), vx, acc0);
+                acc1 = _mm512_fmadd_ps(_mm512_loadu_ps(row1.add(j)), vx, acc1);
+                acc2 = _mm512_fmadd_ps(_mm512_loadu_ps(row2.add(j)), vx, acc2);
+                acc3 = _mm512_fmadd_ps(_mm512_loadu_ps(row3.add(j)), vx, acc3);
+                j += 16;
+            }
+
+            let mut s0 = 0.0f32;
+            let mut s1 = 0.0f32;
+            let mut s2 = 0.0f32;
+            let mut s3 = 0.0f32;
+            while j < k {
+                let xj = *x_ptr.add(j);
+                s0 += *row0.add(j) * xj;
+                s1 += *row1.add(j) * xj;
+                s2 += *row2.add(j) * xj;
+                s3 += *row3.add(j) * xj;
+                j += 1;
+            }
+
+            out[i] = Self::hsum512_ps(acc0) + s0;
+            out[i + 1] = Self::hsum512_ps(acc1) + s1;
+            out[i + 2] = Self::hsum512_ps(acc2) + s2;
+            out[i + 3] = Self::hsum512_ps(acc3) + s3;
+            i += 4;
+        }
+
+        while i < m {
+            let row = base_ptr.add(i * k);
+            let mut acc = _mm512_setzero_ps();
+            let mut j = 0;
+            while j < k_vec {
+                let vx = _mm512_loadu_ps(x_ptr.add(j));
+                acc = _mm512_fmadd_ps(_mm512_loadu_ps(row.add(j)), vx, acc);
+                j += 16;
+            }
+            let mut s = 0.0f32;
+            while j < k {
+                s += *row.add(j) * *x_ptr.add(j);
+                j += 1;
+            }
+            out[i] = Self::hsum512_ps(acc) + s;
+            i += 1;
+        }
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx512f,fma")]
+    unsafe fn matvec_accum_avx512(m: usize, k: usize, a_off: usize, x: &[f32], out: &mut [f32]) {
+        use core::arch::x86_64::*;
+        let base_ptr = (TRM7M_WEIGHTS.as_ptr() as *const f32).add(a_off);
+        let x_ptr = x.as_ptr();
+        let k_vec = k - (k % 16);
+
+        let mut i = 0;
+        while i + 4 <= m {
+            let row0 = base_ptr.add(i * k);
+            let row1 = base_ptr.add((i + 1) * k);
+            let row2 = base_ptr.add((i + 2) * k);
+            let row3 = base_ptr.add((i + 3) * k);
+
+            let mut acc0 = _mm512_setzero_ps();
+            let mut acc1 = _mm512_setzero_ps();
+            let mut acc2 = _mm512_setzero_ps();
+            let mut acc3 = _mm512_setzero_ps();
+
+            let mut j = 0;
+            while j < k_vec {
+                let vx = _mm512_loadu_ps(x_ptr.add(j));
+                acc0 = _mm512_fmadd_ps(_mm512_loadu_ps(row0.add(j)), vx, acc0);
+                acc1 = _mm512_fmadd_ps(_mm512_loadu_ps(row1.add(j)), vx, acc1);
+                acc2 = _mm512_fmadd_ps(_mm512_loadu_ps(row2.add(j)), vx, acc2);
+                acc3 = _mm512_fmadd_ps(_mm512_loadu_ps(row3.add(j)), vx, acc3);
+                j += 16;
+            }
+
+            let mut s0 = 0.0f32;
+            let mut s1 = 0.0f32;
+            let mut s2 = 0.0f32;
+            let mut s3 = 0.0f32;
+            while j < k {
+                let xj = *x_ptr.add(j);
+                s0 += *row0.add(j) * xj;
+                s1 += *row1.add(j) * xj;
+                s2 += *row2.add(j) * xj;
+                s3 += *row3.add(j) * xj;
+                j += 1;
+            }
+
+            out[i] += Self::hsum512_ps(acc0) + s0;
+            out[i + 1] += Self::hsum512_ps(acc1) + s1;
+            out[i + 2] += Self::hsum512_ps(acc2) + s2;
+            out[i + 3] += Self::hsum512_ps(acc3) + s3;
+            i += 4;
+        }
+
+        while i < m {
+            let row = base_ptr.add(i * k);
+            let mut acc = _mm512_setzero_ps();
+            let mut j = 0;
+            while j < k_vec {
+                let vx = _mm512_loadu_ps(x_ptr.add(j));
+                acc = _mm512_fmadd_ps(_mm512_loadu_ps(row.add(j)), vx, acc);
+                j += 16;
+            }
+            let mut s = 0.0f32;
+            while j < k {
+                s += *row.add(j) * *x_ptr.add(j);
+                j += 1;
+            }
+            out[i] += Self::hsum512_ps(acc) + s;
+            i += 1;
+        }
     }
 
     #[inline]
@@ -245,6 +407,12 @@ impl Trm7m {
     fn matvec(m: usize, k: usize, a_off: usize, x: &[f32], out: &mut [f32]) {
         #[cfg(target_arch = "x86_64")]
         {
+            if has_avx512() {
+                unsafe {
+                    Self::matvec_avx512(m, k, a_off, x, out);
+                    return;
+                }
+            }
             unsafe {
                 Self::matvec_avx2(m, k, a_off, x, out);
                 return;
@@ -265,6 +433,12 @@ impl Trm7m {
     fn matvec_accum(m: usize, k: usize, a_off: usize, x: &[f32], out: &mut [f32]) {
         #[cfg(target_arch = "x86_64")]
         {
+            if has_avx512() {
+                unsafe {
+                    Self::matvec_accum_avx512(m, k, a_off, x, out);
+                    return;
+                }
+            }
             unsafe {
                 Self::matvec_accum_avx2(m, k, a_off, x, out);
                 return;
@@ -578,6 +752,191 @@ impl Trm7mTurboVec158 {
     }
 
     #[inline]
+    #[target_feature(enable = "avx512f,avx512bw,fma")]
+    unsafe fn matvec_tv_unpacked_avx512(
+        mat_idx: usize,
+        weights_i8: &[i8],
+        scales: &[f32],
+        x: &[f32],
+        out: &mut [f32],
+    ) {
+        use core::arch::x86_64::*;
+        let mat_stride = STATE_DIM * TV_PAD_DIM;
+        let mat_base = weights_i8.as_ptr().add(mat_idx * mat_stride);
+        let scale_base = scales.as_ptr().add(mat_idx * STATE_DIM);
+        let x_ptr = x.as_ptr();
+
+        let mut i = 0;
+        // 8-row unrolling: reuses vx across 8 rows
+        while i + 8 <= STATE_DIM {
+            let r0 = mat_base.add(i * TV_PAD_DIM);
+            let r1 = mat_base.add((i + 1) * TV_PAD_DIM);
+            let r2 = mat_base.add((i + 2) * TV_PAD_DIM);
+            let r3 = mat_base.add((i + 3) * TV_PAD_DIM);
+            let r4 = mat_base.add((i + 4) * TV_PAD_DIM);
+            let r5 = mat_base.add((i + 5) * TV_PAD_DIM);
+            let r6 = mat_base.add((i + 6) * TV_PAD_DIM);
+            let r7 = mat_base.add((i + 7) * TV_PAD_DIM);
+
+            let mut acc0 = _mm512_setzero_ps();
+            let mut acc1 = _mm512_setzero_ps();
+            let mut acc2 = _mm512_setzero_ps();
+            let mut acc3 = _mm512_setzero_ps();
+            let mut acc4 = _mm512_setzero_ps();
+            let mut acc5 = _mm512_setzero_ps();
+            let mut acc6 = _mm512_setzero_ps();
+            let mut acc7 = _mm512_setzero_ps();
+
+            let mut j = 0;
+            while j < TV_PAD_DIM {
+                let vx = _mm512_loadu_ps(x_ptr.add(j));
+
+                let b0 = _mm_loadu_si128(r0.add(j) as *const __m128i);
+                acc0 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b0)), vx, acc0);
+
+                let b1 = _mm_loadu_si128(r1.add(j) as *const __m128i);
+                acc1 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b1)), vx, acc1);
+
+                let b2 = _mm_loadu_si128(r2.add(j) as *const __m128i);
+                acc2 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b2)), vx, acc2);
+
+                let b3 = _mm_loadu_si128(r3.add(j) as *const __m128i);
+                acc3 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b3)), vx, acc3);
+
+                let b4 = _mm_loadu_si128(r4.add(j) as *const __m128i);
+                acc4 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b4)), vx, acc4);
+
+                let b5 = _mm_loadu_si128(r5.add(j) as *const __m128i);
+                acc5 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b5)), vx, acc5);
+
+                let b6 = _mm_loadu_si128(r6.add(j) as *const __m128i);
+                acc6 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b6)), vx, acc6);
+
+                let b7 = _mm_loadu_si128(r7.add(j) as *const __m128i);
+                acc7 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b7)), vx, acc7);
+
+                j += 16;
+            }
+
+            out[i] = Trm7m::hsum512_ps(acc0) * *scale_base.add(i);
+            out[i + 1] = Trm7m::hsum512_ps(acc1) * *scale_base.add(i + 1);
+            out[i + 2] = Trm7m::hsum512_ps(acc2) * *scale_base.add(i + 2);
+            out[i + 3] = Trm7m::hsum512_ps(acc3) * *scale_base.add(i + 3);
+            out[i + 4] = Trm7m::hsum512_ps(acc4) * *scale_base.add(i + 4);
+            out[i + 5] = Trm7m::hsum512_ps(acc5) * *scale_base.add(i + 5);
+            out[i + 6] = Trm7m::hsum512_ps(acc6) * *scale_base.add(i + 6);
+            out[i + 7] = Trm7m::hsum512_ps(acc7) * *scale_base.add(i + 7);
+            i += 8;
+        }
+
+        while i < STATE_DIM {
+            let r = mat_base.add(i * TV_PAD_DIM);
+            let mut acc = _mm512_setzero_ps();
+            let mut j = 0;
+            while j < TV_PAD_DIM {
+                let vx = _mm512_loadu_ps(x_ptr.add(j));
+                let b = _mm_loadu_si128(r.add(j) as *const __m128i);
+                acc = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b)), vx, acc);
+                j += 16;
+            }
+            out[i] = Trm7m::hsum512_ps(acc) * *scale_base.add(i);
+            i += 1;
+        }
+    }
+
+    #[inline]
+    #[target_feature(enable = "avx512f,avx512bw,fma")]
+    unsafe fn matvec_accum_tv_unpacked_avx512(
+        mat_idx: usize,
+        weights_i8: &[i8],
+        scales: &[f32],
+        x: &[f32],
+        out: &mut [f32],
+    ) {
+        use core::arch::x86_64::*;
+        let mat_stride = STATE_DIM * TV_PAD_DIM;
+        let mat_base = weights_i8.as_ptr().add(mat_idx * mat_stride);
+        let scale_base = scales.as_ptr().add(mat_idx * STATE_DIM);
+        let x_ptr = x.as_ptr();
+
+        let mut i = 0;
+        while i + 8 <= STATE_DIM {
+            let r0 = mat_base.add(i * TV_PAD_DIM);
+            let r1 = mat_base.add((i + 1) * TV_PAD_DIM);
+            let r2 = mat_base.add((i + 2) * TV_PAD_DIM);
+            let r3 = mat_base.add((i + 3) * TV_PAD_DIM);
+            let r4 = mat_base.add((i + 4) * TV_PAD_DIM);
+            let r5 = mat_base.add((i + 5) * TV_PAD_DIM);
+            let r6 = mat_base.add((i + 6) * TV_PAD_DIM);
+            let r7 = mat_base.add((i + 7) * TV_PAD_DIM);
+
+            let mut acc0 = _mm512_setzero_ps();
+            let mut acc1 = _mm512_setzero_ps();
+            let mut acc2 = _mm512_setzero_ps();
+            let mut acc3 = _mm512_setzero_ps();
+            let mut acc4 = _mm512_setzero_ps();
+            let mut acc5 = _mm512_setzero_ps();
+            let mut acc6 = _mm512_setzero_ps();
+            let mut acc7 = _mm512_setzero_ps();
+
+            let mut j = 0;
+            while j < TV_PAD_DIM {
+                let vx = _mm512_loadu_ps(x_ptr.add(j));
+
+                let b0 = _mm_loadu_si128(r0.add(j) as *const __m128i);
+                acc0 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b0)), vx, acc0);
+
+                let b1 = _mm_loadu_si128(r1.add(j) as *const __m128i);
+                acc1 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b1)), vx, acc1);
+
+                let b2 = _mm_loadu_si128(r2.add(j) as *const __m128i);
+                acc2 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b2)), vx, acc2);
+
+                let b3 = _mm_loadu_si128(r3.add(j) as *const __m128i);
+                acc3 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b3)), vx, acc3);
+
+                let b4 = _mm_loadu_si128(r4.add(j) as *const __m128i);
+                acc4 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b4)), vx, acc4);
+
+                let b5 = _mm_loadu_si128(r5.add(j) as *const __m128i);
+                acc5 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b5)), vx, acc5);
+
+                let b6 = _mm_loadu_si128(r6.add(j) as *const __m128i);
+                acc6 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b6)), vx, acc6);
+
+                let b7 = _mm_loadu_si128(r7.add(j) as *const __m128i);
+                acc7 = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b7)), vx, acc7);
+
+                j += 16;
+            }
+
+            out[i] += Trm7m::hsum512_ps(acc0) * *scale_base.add(i);
+            out[i + 1] += Trm7m::hsum512_ps(acc1) * *scale_base.add(i + 1);
+            out[i + 2] += Trm7m::hsum512_ps(acc2) * *scale_base.add(i + 2);
+            out[i + 3] += Trm7m::hsum512_ps(acc3) * *scale_base.add(i + 3);
+            out[i + 4] += Trm7m::hsum512_ps(acc4) * *scale_base.add(i + 4);
+            out[i + 5] += Trm7m::hsum512_ps(acc5) * *scale_base.add(i + 5);
+            out[i + 6] += Trm7m::hsum512_ps(acc6) * *scale_base.add(i + 6);
+            out[i + 7] += Trm7m::hsum512_ps(acc7) * *scale_base.add(i + 7);
+            i += 8;
+        }
+
+        while i < STATE_DIM {
+            let r = mat_base.add(i * TV_PAD_DIM);
+            let mut acc = _mm512_setzero_ps();
+            let mut j = 0;
+            while j < TV_PAD_DIM {
+                let vx = _mm512_loadu_ps(x_ptr.add(j));
+                let b = _mm_loadu_si128(r.add(j) as *const __m128i);
+                acc = _mm512_fmadd_ps(_mm512_cvtepi32_ps(_mm512_cvtepi8_epi32(b)), vx, acc);
+                j += 16;
+            }
+            out[i] += Trm7m::hsum512_ps(acc) * *scale_base.add(i);
+            i += 1;
+        }
+    }
+
+    #[inline]
     #[target_feature(enable = "avx2,fma")]
     unsafe fn matvec_tv_unpacked_avx2(
         mat_idx: usize,
@@ -839,6 +1198,12 @@ impl Trm7mTurboVec158 {
     fn matvec_tv(&self, mat_idx: usize, x: &[f32], out: &mut [f32]) {
         #[cfg(target_arch = "x86_64")]
         {
+            if has_avx512() {
+                unsafe {
+                    Self::matvec_tv_unpacked_avx512(mat_idx, &self.weights_i8, &self.scales, x, out);
+                    return;
+                }
+            }
             unsafe {
                 Self::matvec_tv_unpacked_avx2(mat_idx, &self.weights_i8, &self.scales, x, out);
                 return;
@@ -864,6 +1229,12 @@ impl Trm7mTurboVec158 {
     fn matvec_accum_tv(&self, mat_idx: usize, x: &[f32], out: &mut [f32]) {
         #[cfg(target_arch = "x86_64")]
         {
+            if has_avx512() {
+                unsafe {
+                    Self::matvec_accum_tv_unpacked_avx512(mat_idx, &self.weights_i8, &self.scales, x, out);
+                    return;
+                }
+            }
             unsafe {
                 Self::matvec_accum_tv_unpacked_avx2(mat_idx, &self.weights_i8, &self.scales, x, out);
                 return;
@@ -954,6 +1325,103 @@ impl Trm7mTurboVec158 {
         }
     }
 
+    #[inline]
+    #[target_feature(enable = "avx512f,fma")]
+    unsafe fn matvec_fp32_avx512(m: usize, k: usize, byte_off: usize, x: &[f32], out: &mut [f32]) {
+        use core::arch::x86_64::*;
+        let base_ptr = TRM7M_WEIGHTS_TV158.as_ptr().add(byte_off) as *const f32;
+        let x_ptr = x.as_ptr();
+        let k_vec = k - (k % 16);
+
+        let mut i = 0;
+        while i + 4 <= m {
+            let row0 = base_ptr.add(i * k);
+            let row1 = base_ptr.add((i + 1) * k);
+            let row2 = base_ptr.add((i + 2) * k);
+            let row3 = base_ptr.add((i + 3) * k);
+
+            let mut acc0 = _mm512_setzero_ps();
+            let mut acc1 = _mm512_setzero_ps();
+            let mut acc2 = _mm512_setzero_ps();
+            let mut acc3 = _mm512_setzero_ps();
+
+            let mut j = 0;
+            while j < k_vec {
+                let vx = _mm512_loadu_ps(x_ptr.add(j));
+                acc0 = _mm512_fmadd_ps(_mm512_loadu_ps(row0.add(j)), vx, acc0);
+                acc1 = _mm512_fmadd_ps(_mm512_loadu_ps(row1.add(j)), vx, acc1);
+                acc2 = _mm512_fmadd_ps(_mm512_loadu_ps(row2.add(j)), vx, acc2);
+                acc3 = _mm512_fmadd_ps(_mm512_loadu_ps(row3.add(j)), vx, acc3);
+                j += 16;
+            }
+
+            let mut s0 = 0.0f32;
+            let mut s1 = 0.0f32;
+            let mut s2 = 0.0f32;
+            let mut s3 = 0.0f32;
+            while j < k {
+                let xj = *x_ptr.add(j);
+                s0 += *row0.add(j) * xj;
+                s1 += *row1.add(j) * xj;
+                s2 += *row2.add(j) * xj;
+                s3 += *row3.add(j) * xj;
+                j += 1;
+            }
+
+            out[i] = Trm7m::hsum512_ps(acc0) + s0;
+            out[i + 1] = Trm7m::hsum512_ps(acc1) + s1;
+            out[i + 2] = Trm7m::hsum512_ps(acc2) + s2;
+            out[i + 3] = Trm7m::hsum512_ps(acc3) + s3;
+            i += 4;
+        }
+
+        while i < m {
+            let row = base_ptr.add(i * k);
+            let mut acc = _mm512_setzero_ps();
+            let mut j = 0;
+            while j < k_vec {
+                let vx = _mm512_loadu_ps(x_ptr.add(j));
+                acc = _mm512_fmadd_ps(_mm512_loadu_ps(row.add(j)), vx, acc);
+                j += 16;
+            }
+            let mut s = 0.0f32;
+            while j < k {
+                s += *row.add(j) * *x_ptr.add(j);
+                j += 1;
+            }
+            out[i] = Trm7m::hsum512_ps(acc) + s;
+            i += 1;
+        }
+    }
+
+    #[inline]
+    fn matvec_fp32(m: usize, k: usize, byte_off: usize, x: &[f32], out: &mut [f32]) {
+        #[cfg(target_arch = "x86_64")]
+        {
+            if has_avx512() {
+                unsafe {
+                    Self::matvec_fp32_avx512(m, k, byte_off, x, out);
+                    return;
+                }
+            }
+            unsafe {
+                Self::matvec_fp32_avx2(m, k, byte_off, x, out);
+                return;
+            }
+        }
+        #[allow(unreachable_code)]
+        {
+            let base_ptr = unsafe { TRM7M_WEIGHTS_TV158.as_ptr().add(byte_off) as *const f32 };
+            for i in 0..m {
+                let mut acc = 0.0f32;
+                for j in 0..k {
+                    acc += unsafe { *base_ptr.add(i * k + j) } * x[j];
+                }
+                out[i] = acc;
+            }
+        }
+    }
+
     /// Forward pass using TurboVec 1.58-bit quantized weights.
     pub fn forward(&mut self, x_in: &[f32]) -> (i8, f32, u64) {
         let t0 = rdtsc_ns();
@@ -965,9 +1433,7 @@ impl Trm7mTurboVec158 {
 
         // 2. input_embed @ x -> h0 (STATE_DIM)
         let mut h = [0.0f32; TV_PAD_DIM];
-        unsafe {
-            Self::matvec_fp32_avx2(STATE_DIM, INPUT_DIM, 0, &x, &mut h[..STATE_DIM]);
-        }
+        Self::matvec_fp32(STATE_DIM, INPUT_DIM, 0, &x, &mut h[..STATE_DIM]);
 
         // 3. Mamba-3 blocks
         for b in 0..NUM_BLOCKS {
@@ -1079,9 +1545,7 @@ impl Trm7mTurboVec158 {
 
         // 4. output_head @ h + bias -> 3 logits
         let mut logits = [0.0f32; OUTPUT_TRITS];
-        unsafe {
-            Self::matvec_fp32_avx2(OUTPUT_TRITS, STATE_DIM, TV_HEAD_OFF, &h[..STATE_DIM], &mut logits);
-        }
+        Self::matvec_fp32(OUTPUT_TRITS, STATE_DIM, TV_HEAD_OFF, &h[..STATE_DIM], &mut logits);
         for i in 0..OUTPUT_TRITS {
             logits[i] += Self::f32_from_tv(TV_BIAS_OFF + i * 4);
         }

@@ -96,9 +96,9 @@ fn main() {
     println!("TURBOVEC SPEEDUP: {:.2}x faster | COMPRESSION: {:.2}x smaller ({:.1}% reduction)", 
              speedup, compression, (1.0 - 1.0 / compression) * 100.0);
 
-    // Parity Verification: 10,000 random forward passes comparing decisions
+    // Parity Verification: 100,000 random forward passes comparing decisions
     println!("\n========================================================");
-    println!("RUNNING 10,000-SAMPLE EMPIRICAL PARITY VERIFICATION");
+    println!("RUNNING 100,000-SAMPLE EMPIRICAL PARITY VERIFICATION");
     println!("========================================================");
     let mut agreements = 0;
     let mut max_conf_diff = 0.0f32;
@@ -108,7 +108,7 @@ fn main() {
     let mut trit_counts_tv = [0usize; 3];
     let mut parity_model_fp32 = trm7m::Trm7m::new();
     let mut parity_model_tv = trm7m::Trm7mTurboVec158::new();
-    let parity_n = 10000;
+    let parity_n = 100000;
     let t_parity_start = std::time::Instant::now();
 
     for i in 0..parity_n {
@@ -149,8 +149,8 @@ fn main() {
             max_conf_diff = diff;
         }
 
-        if (i + 1) % 2500 == 0 {
-            println!("  [Sample {:5}/{}] Current agreement: {}/{} ({:.2}%) | max delta: {:.6}", 
+        if (i + 1) % 10000 == 0 {
+            println!("  [Sample {:6}/{}] Current agreement: {}/{} ({:.4}%) | max delta: {:.6}", 
                      i + 1, parity_n, agreements, i + 1, (agreements as f64 / (i + 1) as f64) * 100.0, max_conf_diff);
         }
     }
@@ -159,9 +159,9 @@ fn main() {
     let rmse_conf_diff = (sum_sq_conf_diff / parity_n as f64).sqrt();
 
     println!("--------------------------------------------------------");
-    println!("10,000-SAMPLE DECISION PARITY RESULTS:");
+    println!("100,000-SAMPLE DECISION PARITY RESULTS:");
     println!("  Total Samples Evaluated: {}", parity_n);
-    println!("  Exact Decision Match:    {}/{} ({:.4}%)", agreements, parity_n, (agreements as f64 / parity_n as f64) * 100.0);
+    println!("  Exact Decision Match:    {}/{} ({:.6}%)", agreements, parity_n, (agreements as f64 / parity_n as f64) * 100.0);
     println!("  Max Confidence Delta:    {:.6}", max_conf_diff);
     println!("  Mean Confidence Delta:   {:.6}", mean_conf_diff);
     println!("  RMSE Confidence Delta:   {:.6}", rmse_conf_diff);
@@ -172,4 +172,15 @@ fn main() {
     println!("  Total Evaluation Time:   {:.2?} ({:.1} µs/sample combined)", 
              parity_elapsed, parity_elapsed.as_micros() as f64 / parity_n as f64);
     println!("========================================================\n");
+
+    // Emit parity verification JSON manifest
+    let manifest_json = format!(
+        "{{\n  \"benchmark\": \"100k_parity_verification\",\n  \"samples\": {},\n  \"agreements\": {},\n  \"exact_parity_percent\": {:.6},\n  \"max_confidence_delta\": {:.6},\n  \"mean_confidence_delta\": {:.6},\n  \"rmse_confidence_delta\": {:.6},\n  \"trit_distribution_fp32\": {{\n    \"pass\": {},\n    \"amb\": {},\n    \"fault\": {}\n  }},\n  \"trit_distribution_tv158\": {{\n    \"pass\": {},\n    \"amb\": {},\n    \"fault\": {}\n  }},\n  \"evaluation_time_secs\": {:.3},\n  \"us_per_sample\": {:.2}\n}}\n",
+        parity_n, agreements, (agreements as f64 / parity_n as f64) * 100.0,
+        max_conf_diff, mean_conf_diff, rmse_conf_diff,
+        trit_counts_fp32[0], trit_counts_fp32[1], trit_counts_fp32[2],
+        trit_counts_tv[0], trit_counts_tv[1], trit_counts_tv[2],
+        parity_elapsed.as_secs_f64(), parity_elapsed.as_micros() as f64 / parity_n as f64
+    );
+    let _ = std::fs::write("../../trm7m_100k_parity_manifest.json", manifest_json);
 }
