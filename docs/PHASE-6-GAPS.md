@@ -6847,3 +6847,42 @@ mismatch rather than an authentication error, which is the more confusing failur
 while the packets take the LAN path closes the door you just walked through - and the thing left open
 (SMB/445) is the thing nobody checked.
 
+### G170. The laptop's block rule overrides its allow rule - Windows evaluates Block first  [MEASURED]
+
+After the laptop reported guarded mode live, this host could not reach it. Timing separates the two
+possible causes, and only one of them is true:
+
+| target | result | reading |
+|---|---|---|
+| `100.123.215.119:8022` | **TIMEOUT after 6.0 s** | packets dropped, not refused |
+| `192.168.1.148:8022` (LAN address) | **TIMEOUT after 6.0 s** | same drop on the direct path |
+| `100.123.215.119:445` | OPEN in **10 ms** | network path and host are fine |
+| `192.168.1.148:445` | OPEN in **10 ms** | same |
+| this host `127.0.0.1 / 192.168.1.83 / 100.93.191.43 :8022` | OPEN, 0-1 ms | our side is reachable on all three |
+
+A refused connection returns in milliseconds; a drop hangs until timeout. 8022 hangs on both addresses,
+so the port is filtered - the kernel is listening, the firewall is eating the SYN.
+
+**Cause: Windows Firewall evaluates Block rules before Allow rules, regardless of creation order.** The
+mitigation installed two rules - an Allow scoped to `RemoteAddress 100.93.191.43` and a blanket
+`-Action Block -Profile Any` for "the rest". The block matches every address including the allowed one,
+so the allow can never take effect. The explicit block rule is also redundant: Windows' default inbound
+policy already blocks unmatched traffic.
+
+**Second finding, unchanged from G169:** 445 answers in 10 ms from both addresses while the kernel is
+locked. The SMB share is the open surface now.
+
+Correct shape:
+
+```
+Remove-NetFirewallRule -DisplayName "TRM Kernel 8022*" -ErrorAction SilentlyContinue
+New-NetFirewallRule -DisplayName "TRM Kernel 8022" -Direction Inbound -Protocol TCP `
+  -LocalPort 8022 -Action Allow -RemoteAddress 100.93.191.43,192.168.1.0/24 -Profile Any
+```
+
+No Block rule. Unmatched inbound is blocked by policy, and the kernel's own token gate covers writes
+from any address that does get through.
+
+**Lesson:** a security rule that makes the service unreachable is indistinguishable from an outage until
+you measure the failure mode. Timeout vs refused is the measurement.
+
