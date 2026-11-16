@@ -7625,3 +7625,41 @@ the forbidden 0.9115 - different quantity, neighbouring number).
 **Open:** 47 merges remaining; behaviour tests are still owed for `radix_trie_matcher` before either
 implementation can be declared the winner - API parity is not behavioural equivalence.
 
+### G188. Checkpoint pushed; merge 2 landed; 12 grafts refused by dependency closure  [MEASURED]
+
+**Checkpoint.** `checkpoint-20261116-g187` - branch `snapshot` and tag both verified on the remote at
+**`f5f7486`** (`git ls-remote`). Manifest at `data/checkpoints/checkpoint-20261116-g187.json` records HEAD
+tree, the 351-module contract, triage, both invariant scans, kernel version `v19.1.0-sovereign` /
+`build_commit 9aabc88`, and `v_core 1.44 V`. Restore point is exact, not approximate.
+
+Two corrections made while capturing it, both kept in the record:
+
+- the manifest first reported `undecided: 137` because it added the two open classes instead of asking
+  the gate; the gate says **46**, and the manifest now cites its source.
+- at capture `phi_v` computed **0.9116** - it has crossed the forbidden `0.9115` by coincidence. The
+  forbidden figure was a *fabricated* value; a measured `0.9116` with `v_core 1.44` behind it is a
+  different object. Quoting `0.9115` remains forbidden; the metric landing near it is not.
+
+**Merge 2: `agent_mesh`** (+33/-6). Its six base-only functions take primitives and slices and touch no
+struct, so they grafted verbatim: `best_node`, `heartbeat_timestamp_valid`, `host_format_valid`,
+`mesh_distance_scores`, `node_consistency_ok`, `sqrt_f32`. Verified `Finished in 49.80s`.
+
+**Then a bulk attempt that failed, and the failure is the finding.** 13 modules looked graftable by
+signature alone (free functions, no foreign structs). Eleven were grafted in one pass and the build refused
+them - but not because of signatures: `kernel_instructions` needed statics (`SINGLETON_INSTRUCTIONS`,
+`MONAD_ANCHOR`, `INSTRUCTION_COUNT`, `SILICON_CALLS`) and atomic `Ordering`; `ddr_scan` needed types
+(`Request`, `Resp`, `Value`), a const, `UNIX_EPOCH`, two `crate::` modules and `json!`/`serde`/`std::`.
+A second pass added body-level validation (reject on `std::`, `json!`, `serde`, unknown `crate::`, missing
+module items) and 12 modules were **reverted** rather than left uncompilable.
+
+**So: 3 modules merged of 48** - `turbovec_memory`, `radix_trie_matcher`, `agent_mesh`. **45 remain**, and
+they are not copy work: each needs its dependency closure ported with it.
+
+**Gate honesty fix:** a recorded decision of `merge_required` documents owed work; it must not satisfy the
+gate. With that corrected, `undecided` reads **46**, not 34 - the lower number was my own bookkeeping
+flattering the result.
+
+**Kernel after the reverts:** `v19.1.0-sovereign`, `build_commit 9aabc88`, `v_core 1.44 V measured`,
+`phi_v 0.9095`. `/k3/search` returns 404 - that route does not exist in this tree (same class as the
+missing `/k3/stores`), so it is a pre-existing gap, not a merge regression.
+

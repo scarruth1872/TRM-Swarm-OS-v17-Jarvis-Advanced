@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T18:14:28Z",
+  "audit_timestamp": "2026-11-16T18:21:20Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 84,
+    "empirical_confirmed": 85,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 84
+      "CONFIRMED": 85
     }
   },
   "articles": [
@@ -1973,6 +1973,19 @@
       ],
       "phoenix_audit_note": "Triage computed over 90 body-diff modules from both trees; radix_trie_matcher merge compile-verified (49.41s) and kernel restarted at :8022.",
       "finding": "Ninety files had the same function names on both machines and different bodies, and the first attempt to judge them said seventy were equivalent. That was wrong in a way worth keeping: fifty eight of them are stubs on this side, some ten lines long, standing in front of implementations of two or three hundred lines on the other. The names matched, so a name-based comparison saw no difference at all. Adding a single test - how large is one file compared to the other - sorted them properly: fifty eight thin projections, twenty where the other body is simply better, twelve genuinely comparable, and not one where ours is ahead. The first real merge then showed the same lesson at a smaller scale. Six functions existed only on the other side and could not be copied, because the two files store their children differently, one by byte and one by character. They were rewritten against our structure instead, with a documented note where a field name had to carry a different meaning. The build is clean and the kernel answers with the measured rail. But API parity is not equivalence, and saying so in the record is the difference between finishing a merge and pretending to."
+    },
+    {
+      "id": 268,
+      "section": "Port",
+      "title": "Article 268 - The Signature Looked Graftable; The Closure Did Not",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g188",
+        "data/checkpoints/checkpoint-20261116-g187.json",
+        "data/module_decisions.json"
+      ],
+      "phoenix_audit_note": "Checkpoint branch+tag verified on the remote via git ls-remote at f5f7486; agent_mesh merge compile-verified; 12 grafts reverted after body-level dependency validation.",
+      "finding": "A checkpoint was pushed to the remote and its hash read back to prove it landed, and then the work continued from a second merge that compiled cleanly. The interesting part is the third thing: eleven modules were selected for grafting because their functions looked self-contained, taking plain numbers and slices and touching no shared structures, and the compiler rejected them for reasons the signatures never showed. One needed four named constants that live on the other side. Another needed three types, two other modules, a macro, a serialization library and the standard library, from a file that compiles without any of them. The lesson is precise and worth keeping: a function is not portable because its signature is simple, it is portable when everything it names exists where it is going. Twelve attempts were reverted rather than left broken, and the count of finished merges went up by exactly one. I also corrected my own bookkeeping twice in the same hour, once when a checkpoint manifest added two categories instead of asking the gate, and once when I let a documented todo count as a decision. Both times the honest number was larger than the convenient one."
     }
   ],
   "provenance_revision": {

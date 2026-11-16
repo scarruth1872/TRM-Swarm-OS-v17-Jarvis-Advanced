@@ -1216,7 +1216,60 @@
   "radix_trie_matcher": {
    "decision": "merge",
    "why": "API parity merged into this tree: TrieMatch + find_child/find_child_mut/child_or_insert aliases + match_text/match_batch/walk_char_bytes, adapted to our char/Box node model (a verbatim u8 graft cannot compile). Our tree builds clean 49.41s; behaviour tests still owed before either side wins."
+  },
+  "agent_mesh": {
+   "decision": "merge",
+   "why": "6 base-only free functions grafted verbatim (best_node, heartbeat_timestamp_valid, host_format_valid, mesh_distance_scores, node_consistency_ok, sqrt_f32); compile-verified 49.80s then 49.18s after reverts"
+  },
+  "kernel_instructions": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: statics SINGLETON_INSTRUCTIONS / MONAD_ANCHOR / INSTRUCTION_COUNT / SILICON_CALLS + atomic Ordering. Needs a hand port, not a copy."
+  },
+  "ddr_scan": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: types Request/Resp/Value + REGEX_SHORTHAND + UNIX_EPOCH + crate::k3_retrieval/actions_handlers + json!/serde + std::. Needs a hand port, not a copy."
+  },
+  "external_socket_bridge": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: grafted OK but its callees read task JSON via helpers with no equivalent here. Needs a hand port, not a copy."
+  },
+  "hf_brain": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: callees depend on base-only prompt statics. Needs a hand port, not a copy."
+  },
+  "reconnaissance_daemon": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: base-only statics. Needs a hand port, not a copy."
+  },
+  "sub_atomic_kernel": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: base-only statics. Needs a hand port, not a copy."
+  },
+  "trm_7m_optimized": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: base-only weight statics. Needs a hand port, not a copy."
+  },
+  "persona_matrix": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: base-only persona tables. Needs a hand port, not a copy."
+  },
+  "expert_registry": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: base-only registry statics. Needs a hand port, not a copy."
+  },
+  "skill_loader": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: base-only skill tables. Needs a hand port, not a copy."
+  },
+  "trm_integration": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: base-only context types. Needs a hand port, not a copy."
+  },
+  "manus_engine": {
+   "decision": "merge_required",
+   "why": "graft attempted and rejected by dependency analysis: base-only state type. Needs a hand port, not a copy."
   }
  },
- "triage_note": "90 SAME_API_DIFF_BODY modules decided canonical on evidence: 58 are thin projections (10-24L against 74-302L), 20 score worse on stubs/guards/tests, 12 are comparable bodies where the base carries generated provenance. No module in the set was ours-better."
+ "triage_note": "90 SAME_API_DIFF_BODY modules decided canonical on evidence: 58 are thin projections (10-24L against 74-302L), 20 score worse on stubs/guards/tests, 12 are comparable bodies where the base carries generated provenance. No module in the set was ours-better.",
+ "graft_method_note": "Grafting requires a dependency closure, not just a free-function signature: blocks were rejected when they referenced std::, serde/json! macros, crate:: modules absent here, or module statics. 12 modules failed that test and were reverted rather than left broken."
 }

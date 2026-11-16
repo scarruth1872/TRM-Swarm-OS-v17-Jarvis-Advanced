@@ -156,8 +156,14 @@ def cmd_contract(args):
 
 def cmd_check(args):
     contract = build_contract(args.canonical, args.secondary, load_decisions(args.decisions))
+    # A recorded decision of "merge_required" documents that work is still owed - it is not a resolution,
+    # so it must NOT satisfy the gate. Only canonical/port_secondary/merge count as settled.
+    OPEN = {"merge_required"}
+    def settled(r):
+        d = r.get("decision")
+        return isinstance(d, dict) and d.get("decision") not in OPEN
     bad = [(m, r) for m, r in contract["modules"].items()
-           if r["status"] in ("MERGE_REQUIRED", "SAME_API_DIFF_BODY") and "decision" not in r]
+           if r["status"] in ("MERGE_REQUIRED", "SAME_API_DIFF_BODY") and not settled(r)]
     print(json.dumps({"counts": contract["counts"], "undecided": len(bad)}))
     for m, r in bad:
         print(f"  UNDECIDED {m}: +{len(r['functions_added_by_secondary'])} "

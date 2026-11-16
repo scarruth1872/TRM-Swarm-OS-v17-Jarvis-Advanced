@@ -717,3 +717,89 @@ impl AgentMesh {
 pub fn get_agent_mesh() -> AgentMesh {
     AgentMesh::new()
 }
+
+// ── grafted from the v20 base tree (G188) ────────────────────────────────────────────────────────
+// Six free functions that exist only on the base side. Unlike radix_trie_matcher's methods, these take
+// primitives and slices and touch no struct, so they graft verbatim with no adaptation and no risk of
+// carrying a foreign data model into this file.
+
+pub fn best_node(coords: &[f32], latencies: &[f32], target: &[f32; 3]) -> Option<(usize, f32)> {
+    let scores = mesh_distance_scores(coords, latencies, target);
+    if scores.is_empty() {
+        return None;
+    }
+    let mut bi = 0usize;
+    let mut bs = scores[0];
+    for (i, s) in scores.iter().enumerate() {
+        if *s < bs {
+            bs = *s;
+            bi = i;
+        }
+    }
+    Some((bi, bs))
+}
+
+pub fn heartbeat_timestamp_valid(v: f64, now: f64) -> bool {
+    !(v > now + 300.0) && !(v < 946684800.0)
+}
+
+pub fn host_format_valid(v: &str) -> bool {
+    if v == "localhost" {
+        return true;
+    }
+    let parts: Vec<&str> = v.split('.').collect();
+    if parts.len() != 4 {
+        return false;
+    }
+    for part in parts {
+        match part.trim().parse::<i64>() {
+            Ok(n) if (0..=255).contains(&n) => {}
+            _ => return false,
+        }
+    }
+    true
+}
+
+pub fn mesh_distance_scores(coords: &[f32], latencies: &[f32], target: &[f32; 3]) -> Vec<f32> {
+    let nodes = latencies.len();
+    let mut out: Vec<f32> = Vec::with_capacity(nodes);
+    for i in 0..nodes {
+        let b = i * 3;
+        if b + 3 > coords.len() {
+            break;
+        }
+        let dx = coords[b] - target[0];
+        let dy = coords[b + 1] - target[1];
+        let dz = coords[b + 2] - target[2];
+        let dist = sqrt_f32(dx * dx + dy * dy + dz * dz);
+        out.push(dist * 0.4 + latencies[i] * 0.6);
+    }
+    out
+}
+
+pub fn node_consistency_ok(node_id: &str, name: &str) -> bool {
+    if node_id.is_empty() || name.is_empty() {
+        return true;
+    }
+    let expected: String = name
+        .to_lowercase()
+        .replace(' ', "_")
+        .chars()
+        .take(64)
+        .collect();
+    let prefix_len = expected.chars().count().min(32);
+    let prefix: String = expected.chars().take(prefix_len).collect();
+    node_id == expected || node_id.starts_with(&prefix)
+}
+
+pub fn sqrt_f32(val: f32) -> f32 {
+    if val <= 0.0 {
+        return 0.0;
+    }
+    let v = val as f64;
+    let mut x = v;
+    for _ in 0..10 {
+        x = 0.5 * (x + v / x);
+    }
+    x as f32
+}
