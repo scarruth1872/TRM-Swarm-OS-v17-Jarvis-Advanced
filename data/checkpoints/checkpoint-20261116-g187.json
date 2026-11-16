@@ -1,0 +1,82 @@
+{
+ "checkpoint": "checkpoint-20261116-g187",
+ "created_utc": "2026-11-16T18:16:12Z",
+ "git": {
+  "branch": "snapshot",
+  "head": "1650d9ad9004351ec86907aa7c2661e9ce2242db",
+  "short": "1650d9a G187: 90 body diffs triaged (58 stubs) -> canonical; undecided 138->48; radix_trie_matcher merged",
+  "tree": "edba051e24e5b73f53d66963774250326183d010",
+  "origin_main": "04f74f4"
+ },
+ "kernel": {
+  "version": "Native Rust Sovereign Kernel v19.1.0-sovereign",
+  "build_commit": "9aabc88",
+  "phi_v": 0.9116,
+  "v_core": 1.44,
+  "rails_measured": true
+ },
+ "coherence": {
+  "module_count": 351,
+  "counts": {
+   "CANONICAL_ONLY": 126,
+   "IDENTICAL": 64,
+   "MERGE_REQUIRED": 47,
+   "SAME_API_DIFF_BODY": 90,
+   "SUPERSET(secondary)": 9,
+   "SECONDARY_ONLY": 15
+  },
+  "decisions_recorded": 304,
+  "undecided": 47,
+  "undecided_source": "tools/platform_coherence.py check (the 90 body diffs ARE decided)"
+ },
+ "invariants": {
+  "canonical_base": {
+   "nominal_divisor": 0,
+   "wmic_call": 2,
+   "hardcoded_version": 1,
+   "dead_ollama_port": 2,
+   "foreign_gpu": 2,
+   "forbidden_figure": 5,
+   "stub_marker": 8
+  },
+  "this_tree": {
+   "nominal_divisor": 0,
+   "wmic_call": 2,
+   "hardcoded_version": 1,
+   "dead_ollama_port": 1,
+   "foreign_gpu": 0,
+   "forbidden_figure": 4,
+   "stub_marker": 22
+  },
+  "violations": {
+   "base": 20,
+   "ours": 30
+  }
+ },
+ "files_of_record": {
+  "tools/platform_coherence.py": {
+   "bytes": 9678,
+   "sha256": "8fa56e1c980adeef"
+  },
+  "data/module_contract.json": {
+   "bytes": 205523,
+   "sha256": "cb79027b46559e01"
+  },
+  "data/module_decisions.json": {
+   "bytes": 39976,
+   "sha256": "c8e536a98c258488"
+  },
+  "data/body_diff_triage.json": {
+   "bytes": 33826,
+   "sha256": "1e6ece8a64561201"
+  },
+  "data/port_audit.json": {
+   "bytes": 5377,
+   "sha256": "8d8ea5b6fab4d931"
+  },
+  "data/checkpoints/checkpoint-20261116-g187.json": {
+   "note": "this file (self)"
+  }
+ },
+ "note_forbidden_figure": "phi_v now computes 0.9116 at this instant - the measured metric can land on 0.9115 by coincidence. The forbidden 0.9115 was a FABRICATED value; a measured 0.9116 with v_core 1.44 behind it is a different object. Never quote 0.9115 itself."
+}

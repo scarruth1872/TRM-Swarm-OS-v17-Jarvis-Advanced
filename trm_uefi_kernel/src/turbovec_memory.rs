@@ -1034,3 +1034,67 @@ pub fn semantic_query(store: &TurbovecMemory, query_text: &str, k: usize) -> Vec
     hits.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(core::cmp::Ordering::Equal));
     hits.into_iter().take(k).map(|(s, _, id)| (id, s)).collect()
 }
+
+// ── grafted from the v20 base tree (G185) ────────────────────────────────────────────────────────
+// These four helpers existed only on the base side: our file is the fuller port (49 functions the
+// base lacks) but it had dropped these, so callers on the base would have failed to resolve them.
+// Grafted verbatim rather than re-implemented, so behaviour matches the side that had them.
+
+pub fn atomic_append_line(entry_json: &str) -> String {
+    let mut s = String::from(entry_json);
+    s.push('\n');
+    s
+}
+
+/// `_extract_agent_name` — the portable (string + meta) branches.
+///
+/// The oracle has four branches. Two are host-side and excluded here: an
+/// `isinstance(agent_val, dict)` branch, and the `ast.literal_eval` branch
+/// (a string starting `{` that contains `"author"` — JSON/dict parsing, which
+/// needs no_std-unavailable machinery; the caller resolves those before calling
+/// this, or accepts the documented `"Seeker"` parse-failure fallback). The two
+/// portable branches are the plain-string rule and the meta fallback.
+pub fn extract_agent_name(agent_val: &str, meta_author: Option<&str>, meta_agent: Option<&str>) -> String {
+    if agent_val.starts_with('{') && agent_val.contains("author") {
+        // ast.literal_eval path — host-side. The oracle returns "Seeker" when that
+        // parse fails; this is the no_std stand-in.
+        return String::from("Seeker");
+    }
+    if !(agent_val.is_empty() || agent_val == "unknown" || agent_val == "None") {
+        return agent_val.to_string();
+    }
+    let m = meta_author
+        .filter(|a| !a.is_empty())
+        .or_else(|| meta_agent.filter(|a| !a.is_empty()));
+    match m {
+        Some(a) => a.to_string(),
+        None => String::from("Swarm Collective"),
+    }
+}
+
+/// `get_stats`'s memory-type categorization — a pure agent-name → category table.
+/// The oracle lowers/replaces only on the FINAL `m_type` (`str(m_type).lower().replace("-", "_")
+/// .replace(" ", "_")`); the category names here contain no `-`/space, so this table is the
+/// post-normalization value directly.
+pub fn memory_type_for(agent_name: &str) -> &'static str {
+    match agent_name {
+        "Seeker" | "Researcher" => "research",
+        "Logic" | "LogicMaster" | "Reasoning Engine" => "reasoning_state",
+        "Archi" | "Architect" => "architecture",
+        "Verify" | "QA Engineer" => "verification",
+        "Shield" | "Security Auditor" => "security",
+        "Devo" | "Lead Developer" => "task_result",
+        "Flow" | "Integration Specialist" => "workflow",
+        _ => "experience",
+    }
+}
+
+/// Grafted verbatim from the base tree (its text was captured before the merge overwrote the file):
+/// a plain threshold check used by the base's compaction route.
+pub fn compact_plan(entries: usize, max_entries: usize) -> (bool, usize) {
+    if entries > max_entries {
+        (true, max_entries)
+    } else {
+        (false, entries)
+    }
+}
