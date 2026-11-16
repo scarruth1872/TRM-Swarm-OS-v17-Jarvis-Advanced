@@ -6886,3 +6886,44 @@ from any address that does get through.
 **Lesson:** a security rule that makes the service unreachable is indistinguishable from an outage until
 you measure the failure mode. Timeout vs refused is the measurement.
 
+### G171. Authenticated federation is live across three nodes; files still cannot move  [MEASURED]
+
+After the laptop replaced both firewall rules with a single scoped Allow, the link came up and the gate
+held. Measured from this host, first-attempt, no retries:
+
+| probe | result |
+|---|---|
+| TCP `100.123.215.119:8022` | **OPEN 7 ms** (was TIMEOUT 6.0 s) |
+| TCP `:445` | OPEN 8 ms (now scoped to `{192.168.1.0/24, 100.93.191.43}`) |
+| TCP `:22` | **TIMEOUT** - no SSH server yet |
+| `GET /system/health_matrix` | 200, `active_threads 35`, `fabricated_modules_count 0` |
+| `POST /council/propose` **no token** | **401** `unauthorized`, hint names `X-Council-Token` |
+| `POST /council/propose` **wrong token** (`0`*64) | **401** |
+| `POST /council/propose` **empty token** | **401** |
+| `POST /council/propose` **shared token** | **400** `topic_required` - auth passed, body invalid |
+| `POST /federation/sync` **no token** | **401** - the write gate covers the federation routes too |
+| `POST /federation/sync` **shared token** | **200**, `anchor_verified: true` |
+
+The four-way token matrix is the part that matters: the same secret is now in force on both hosts (a
+wrong token and an absent token are both rejected, the shared one is not). `federation_sync.py --pull`
+records **3 of 4 reachable peers authenticated** - NODE-001 6.6 ms `ok`, NODE-002 104 ms `ok`,
+NODE-004 laptop **18.0 ms `ok`** returning corpus 183,879 / dim 768 / kanban 3,907. NODE-003 still answers
+on :8022 with 404s and no sync, i.e. reachable but not this kernel.
+
+**Two honest residuals:**
+
+1. **The laptop's own sync handler still calls itself unauthenticated.** Its body reads
+   `"auth": {"mode": "anchor_only", "note": "no shared secret configured ... this is NOT
+   authentication"}, "status": "recorded_unauthenticated"`. That note is now *more* wrong than before in
+   one direction and right in another: the anchor is still not a secret, but the request did carry a
+   verified `X-Council-Token` at the gate, and nothing in the response records that. The handler should
+   report the transport auth separately from the anchor check instead of collapsing both into
+   "unauthenticated".
+2. **Files: 0 synced, because :22 is closed.** `:8022` has no upload route, so the shards still cannot
+   move. SSH on the laptop is the remaining step, and it is the one that needs the admin-ACL trap handled
+   (`C:\ProgramData\ssh\administrators_authorized_keys`, not `~/.ssh`).
+
+**Lesson:** the four-way token matrix (absent / wrong / empty / shared) is the cheapest honest proof that
+a secret is shared. "It works with our token" alone proves nothing - a handler that accepts everything
+looks identical from one sample.
+
