@@ -1,0 +1,857 @@
+{
+ "note": "Mechanical decisions only. MERGE_REQUIRED and SAME_API_DIFF_BODY are deliberately left open: a body diff can carry the honesty fixes this campaign added, so 'canonical by default' would silently discard them.",
+ "decisions": {
+  "actions_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "advanced_scene_fusion": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "agent_models_generated": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "agent_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "agent_runtime": {
+   "decision": "port_secondary",
+   "why": "pure superset: canonical loses no function"
+  },
+  "agentq_bridge": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "agents64_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "ambient": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "antibody_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "apic_core_binding": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "arbiter_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "arc_routes": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "architect_actions": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "arena_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "artifact_actions": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "artifact_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "aura_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "aura_metaconcepts": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "aura_spectrum": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "aura_transform": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "autonomous_cadence": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "autonomous_scenario_setup": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "autonomy": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "baremetal_transition": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "bench": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "benchmark_epistemology": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "benchmark_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "binder_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "boot_payload": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "brain_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "bridge": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "build_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "cache_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "cadence": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "chaos_engine": {
+   "decision": "port_secondary",
+   "why": "pure superset: canonical loses no function"
+  },
+  "chat_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "coldstart_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "continuum_refract": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "continuum_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "coord_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "core_pinning": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "cosmos3_edge_bridge": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "council": {
+   "decision": "port_secondary",
+   "why": "pure superset: canonical loses no function"
+  },
+  "council_outcomes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "council_personas": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "council_ssm_pipeline": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "crate_ops_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "digital_twin": {
+   "decision": "port_secondary",
+   "why": "pure superset: canonical loses no function"
+  },
+  "disk_explorer": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "docking_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "dram_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "drug_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "engine_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "epistemology_core": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "evidence_index": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "evolution_actions": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "fabric_corpus": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "faceted_torus_ternary": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "fb_console": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "federation_probe": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "federation_sync_upgrade": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "federation_task_coordinator": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "feedback_loops": {
+   "decision": "port_secondary",
+   "why": "pure superset: canonical loses no function"
+  },
+  "file_cache": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "fit_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "float_math": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "font": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "formal_verification_engine": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "fractal_pattern_engine": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "fractal_telemetry": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "frame": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "full_64_agent_orchestrator": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "gan_design_synthesizer": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "generative_architect": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "goal_runner": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "gpu_compute": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "gpu_cuda_microkernel_binder": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "gpu_dispatch": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "gpu_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "hardware_binder": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "heal_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "heartbeat_scheduler": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "higher_mind": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "hmac_sha256": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "holographic_fabric": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "host_probe": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "host_sensors": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "human_swarm_interaction": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "humanistic_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "humanistic_teach": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "hw_rails": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "hw_truth": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "hwprobe": {
+   "decision": "port_secondary",
+   "why": "pure superset: canonical loses no function"
+  },
+  "infra_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "infra_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "ingest_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "instella_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "instella_router": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "instella_sparse_agent_teams": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "intel_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "intel_reservoir": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "intelligence_router": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "interrupt_stubs": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "ipc": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "jarvis_answers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "jarvis_cognitive": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "jarvis_quantum": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "jarvis_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "jarvis_substrate": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "jarvis_symbiosis": {
+   "decision": "port_secondary",
+   "why": "pure superset: canonical loses no function"
+  },
+  "jarvis_vibe": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "jarvis_vibethinker": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "k3_head": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "k3_logic": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "k3_retrieval": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "k3_ternary": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "k3_ternary_sram": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "kanban_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "kern_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "kernel_skills_tools": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "knowledge_stores": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "knowledge_surface": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "lexical_gate": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "lib": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "load_fuzz_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "local_inference": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "local_lora_trainer": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "logic_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "mailbox_ring": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "mailbox_write": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "mamba_forward": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "mamba_tier": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "mcts_plan": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "mem_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "memory_mapped_ipc": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "mesh_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "mesh_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "meta_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "microkernel_chat_bridge": {
+   "decision": "port_secondary",
+   "why": "pure superset: canonical loses no function"
+  },
+  "model_registry": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "model_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "module_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "module_registry_generated": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "multimodal_ingestion": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "multimodal_predictive_analytics": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "nand_append": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "native_encoder": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "native_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "native_parsers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "native_ternary": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "optimize_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "p2p_direct_route": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "packed_ternary": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "paper_production": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "parity_tests": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "phonic": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "platonic_wavelengths": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "ports_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "quantum_debugger": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "quantum_drug_screen": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "query": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "quic_protocol": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "rare_disease": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "recall_router": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "redis_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "remediate_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "research_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "resonance": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "runtime_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "sched_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "screen_library": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "sec_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "self_modification_api": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "selfheal_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "semantic_index": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "semantic_recall": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "serial": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "services_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "shadow_bios": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "smiles_canon": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "smp_trampoline": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "spawn_subagent": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "sram_fourier": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "sram_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "sram_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "state_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "studio_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "subatomic_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "symbology_etymology_monad": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "task_executor": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "telemetry_fabric": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "telemetry_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "telemetry_probe": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "ternary_engine": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "test_support": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "testgen_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "tests_surface": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "text_extract": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "topic_norm": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "totality": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "trm7m": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "trm_datagram": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "turbovec": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "turbovec_memory": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "ui_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "ui_render": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "unified_transistor_fabric": {
+   "decision": "canonical",
+   "why": "nothing to merge: identical"
+  },
+  "university_client": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "variant_annotation": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "vault_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "verification_handlers": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  },
+  "voltage": {
+   "decision": "port_secondary",
+   "why": "exists only on this tree - port candidate"
+  },
+  "worktree_routes": {
+   "decision": "canonical",
+   "why": "nothing to merge: canonical only"
+  }
+ }
+}

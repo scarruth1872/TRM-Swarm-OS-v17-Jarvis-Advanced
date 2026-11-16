@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T18:03:32Z",
+  "audit_timestamp": "2026-11-16T18:10:13Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 82,
+    "empirical_confirmed": 83,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 82
+      "CONFIRMED": 83
     }
   },
   "articles": [
@@ -1946,6 +1946,20 @@
       ],
       "phoenix_audit_note": "turbovec_memory merge compile-verified in target-i; global_memory graft failed with E0425/E0422 and was reverted after comparing type models.",
       "finding": "A merge was attempted across a boundary that does not exist. Two files with the same name and the same stated purpose turned out to be two different programs: one stores memories as vectors with numeric identifiers and a five hundred and twelve element embedding, the other stores them as text with string identifiers and an access counter, and each has statistics and health functions written for its own shape. Copying nine functions from one into the other produced eight compile errors in a single pass, naming three types that do not exist on the receiving side. That is the compiler doing the job that a merge script cannot: it said no. One file did merge, because its four missing functions were small helpers that took strings in and returned strings out, and the build after that merge is clean. The rest of the divergence is not a merge at all, it is a choice between two designs, and a script should not make that choice quietly on the architect's behalf. I also overwrote one original before copying it aside, which is a mistake in method rather than in conclusion, and the note stays in the record."
+    },
+    {
+      "id": 266,
+      "section": "Council",
+      "title": "Article 266 - Two Councils, Opposite Answers",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g186",
+        "data/module_contract.json",
+        "data/module_decisions.json",
+        "tools/platform_coherence.py"
+      ],
+      "phoenix_audit_note": "Four propositions submitted to both nodes over the tailnet with the shared token; verdicts and vote records captured; module contract and invariant scans computed from both trees.",
+      "finding": "The same four questions were put to the council on both machines within minutes of each other, and the two councils gave opposite answers. One machine rejected the proposal to unify the codebase by ten votes to four and found no consensus on the other three; the other machine approved all four, one by thirteen votes to two. The vote records explain both: the first machine's agents were not deliberating at all, they were transcribing the polarity of a small state-space model that already leans negative most of the time it decides, and the second machine's agents each produced the identical sentence, differing only in the name in front of it. Neither was reasoning, and the disagreement between them is the strongest possible evidence of that. This is worth stating plainly because it is the answer to the question asked: the platform does not need a better vote, it needs an arbiter that cannot be talked into either answer. So the definition of coherence was moved out of the council and into arithmetic. A tool now hashes every module on both trees, counts the functions each side would add or destroy, records one decision per module, and scans both trees for the specific classes of dishonesty this campaign has been removing. It reports that two hundred and thirteen modules are mechanically decidable, that one hundred and thirty eight need a person to choose, and that the base still carries twenty invariant violations while this tree carries thirty. Two councils cannot agree, but two hash tables can."
     }
   ],
   "provenance_revision": {

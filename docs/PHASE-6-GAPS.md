@@ -7522,3 +7522,72 @@ implementations (`agent_mesh` 33 added/6 missing, `artifact_pipeline` 34/13, `se
 `tool_forge` 5/5, `trm_integration` 11/2, `trm_orchestrator` 12/9, `voltage_node_engine` 7/3). Picking a
 winner per module is a decision for the architect, not something a script should decide silently.
 
+### G186. Council convened on both nodes; coherence made machine-checkable  [MEASURED]
+
+Asked to make the two platforms "as coherent as one", the council was convened on **both** hosts with four
+propositions that define coherence, and the question was then answered the only way it can be: by
+measurement.
+
+**The council returned no usable consensus, and the reason is measurable.** Identical proposition text,
+submitted minutes apart:
+
+| proposition | desktop (:8022) | laptop (:8022) |
+|---|---|---|
+| canonical tree = v20 base | **reject 10 / abstain 4** -> REJECTED | **approve 13 / abstain 2** -> approved |
+| module provenance record | approve 1 / abstain 13 -> NO_CONSENSUS | approve 12 / abstain 3 -> consensus |
+| definition of complete | approve 2 / abstain 10 / reject 2 | approve 13 / abstain 2 |
+| resolve by behaviour tests | approve 6 / abstain 8 | approve 13 / abstain 2 |
+
+The desktop's own vote records state the mechanism: `decision_path: "ssm only (no model)"`, `ssm_trit: -1`
+for ten agents, i.e. the SSM read-out - already recorded as agreeing with the model only 34 % of the time
+and leaning FALSE 45/46 when it decides. The laptop's records state theirs: every agent's comment is the
+same template, `"no domain objection; non-contradiction check passed | fabric: (QIAE) Implementation.md"`.
+One node echoes an SSM polarity, the other echoes a template. **Opposite verdicts on identical text is the
+proof that neither deliberated** - and it is the deepest coherence defect of all: two councils that
+disagree on the same question are not one platform's council.
+
+**So coherence was defined as something checkable instead.** New `tools/platform_coherence.py`:
+
+- `contract` - scans both trees and emits `data/module_contract.json`: per module, both SHA-256s, line
+  counts, functions added by the secondary, functions **lost if the secondary is copied**, and a status.
+- `check` - exits non-zero while any divergent module lacks a recorded decision.
+- `invariants` - scans a tree for the defect classes this campaign has been removing (nominal-divided-by-
+  nominal, `wmic`, hand-typed version strings, dead `:11434`, foreign NVIDIA constants, `0.9115`, stubs).
+
+**Measured state of the two trees (351 modules):**
+
+| status | count | meaning |
+|---|---|---|
+| IDENTICAL | 64 | nothing to do |
+| CANONICAL_ONLY | 126 | only on the base |
+| SECONDARY_ONLY | 15 | only here - port candidates |
+| SUPERSET(secondary) | 8 | ours adds functions, loses none - safe to port |
+| SAME_API_DIFF_BODY | 90 | same signatures, different bodies - diff review |
+| MERGE_REQUIRED | 48 | each side holds functions the other lacks |
+| **decided mechanically** | **213** | recorded in `data/module_decisions.json` |
+| **needing a human decision** | **138** | 48 merges + 90 body diffs |
+
+**The 48 merge-required, ranked by work:** `radix_trie_matcher` +55/-6, `global_memory` +37/-9,
+`artifact_pipeline` +34/-13, `agent_mesh` +33/-6, `self_fuzzing_engine` +28/-28,
+`zero_human_test_gen` +28/-28, `self_healing` +20/-12, `microkernel_spawner` +15/-10, then 40 smaller.
+
+**The 90 body diffs are not auto-decidable, and that matters:** deciding "canonical by default" would
+silently discard the honesty fixes this campaign added. `data/module_decisions.json` therefore records only
+the 213 mechanical decisions and leaves all 138 open, so `check` fails today - by design, with a number.
+
+**Invariants measured now:**
+
+| tree | files | violations | breakdown |
+|---|---|---|---|
+| canonical base | 349 | **20** | wmic 2, hardcoded version 1, `:11434` 2, foreign GPU 2, `0.9115` 5, stubs 8 |
+| this tree | 430 | **30** | wmic 2, hardcoded version 1, `:11434` 1, `0.9115` 4, stubs 22 |
+
+Some hits are legitimate (the `:11434` literal is now probed before use; `0.9115` appears in comments that
+mark it forbidden), which is why the tool reports candidates and a human classifies them - but the counts
+are real and repeatable, and the base's remaining `wmic` calls in `host_probe.rs` / `shadow_bios.rs` are
+the same defect already fixed once on this side.
+
+**Answer to "what do we actually need to be complete":** one canonical tree (the v20 base), 138 recorded
+module decisions, one binary hash on both hosts, and zero invariant violations - each of which is now a
+number this tool prints rather than a judgement anyone has to trust.
+
