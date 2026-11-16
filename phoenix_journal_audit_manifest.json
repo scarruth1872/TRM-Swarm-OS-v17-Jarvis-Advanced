@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T17:54:43Z",
+  "audit_timestamp": "2026-11-16T18:03:32Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 81,
+    "empirical_confirmed": 82,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 81
+      "CONFIRMED": 82
     }
   },
   "articles": [
@@ -1933,6 +1933,19 @@
       ],
       "phoenix_audit_note": "Phi_V rewired to the measured SVI2 rail and verified live at :8029/:8030; saturation exposed as phi_v_raw + saturated; clock/memory cross-checked against independent PowerShell reads.",
       "finding": "Two more numbers were pretending to be measurements. The first was a rail term that divided its own nominal by itself, which can only ever produce one, so a fourth of the formula was decoration. The second was the clock and memory terms: the code tried a command that no longer exists on modern Windows, fell back to a query it had written with a syntax error, and when that failed used a reference clock and zero memory, both of which then appeared on the status route as though they had been read from the machine. Both are now real, and both agree with an independent query run by hand. But the more interesting result is what appeared once the numbers were honest: the composite metric saturates. A measured rail of one point four four volts against a nominal divisor of one point two five squares to one point three three on its own, so any ordinary operating point pushes the whole figure past one and it clips at its ceiling. The metric was not reporting health; it was reporting that the machine was switched on. Publishing the unclamped value alongside the clamped one is the difference between a number that saturates and a number that lies."
+    },
+    {
+      "id": 265,
+      "section": "Port",
+      "title": "Article 265 - Two Programs With The Same Name",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g185",
+        "docs/port/laptop-base/turbovec_memory.merged.rs",
+        "docs/port/laptop-base/originals/"
+      ],
+      "phoenix_audit_note": "turbovec_memory merge compile-verified in target-i; global_memory graft failed with E0425/E0422 and was reverted after comparing type models.",
+      "finding": "A merge was attempted across a boundary that does not exist. Two files with the same name and the same stated purpose turned out to be two different programs: one stores memories as vectors with numeric identifiers and a five hundred and twelve element embedding, the other stores them as text with string identifiers and an access counter, and each has statistics and health functions written for its own shape. Copying nine functions from one into the other produced eight compile errors in a single pass, naming three types that do not exist on the receiving side. That is the compiler doing the job that a merge script cannot: it said no. One file did merge, because its four missing functions were small helpers that took strings in and returned strings out, and the build after that merge is clean. The rest of the divergence is not a merge at all, it is a choice between two designs, and a script should not make that choice quietly on the architect's behalf. I also overwrote one original before copying it aside, which is a mistake in method rather than in conclusion, and the note stays in the record."
     }
   ],
   "provenance_revision": {

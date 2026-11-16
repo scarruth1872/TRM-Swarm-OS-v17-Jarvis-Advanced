@@ -7482,3 +7482,43 @@ Independent cross-check, same machine: `CurrentClockSpeed` **3800**; OS memory
 kernel's 37.52 % (a sampling gap of two PowerShell round-trips). Before the fix the same route reported
 `4000.0` and `0.0` - the reference fallback, wearing the appearance of a measurement.
 
+### G185. Per-function merge, attempted and adjudicated by the compiler  [MEASURED]
+
+Phase B's remaining 13 files were "interleaved" - each side holds functions the other lacks - so each one
+was attacked the only honest way: merge, compile, and let the compiler rule.
+
+**Merged and verified: `turbovec_memory`.** Our file is the fuller port (1090 lines vs the base's 147; 49
+functions the base lacks), but it had dropped four helpers the base's callers use:
+`atomic_append_line`, `compact_plan`, `extract_agent_name`, `memory_type_for`. Grafted verbatim from the
+base's text. **`target-i` builds clean with the merged file** (`Finished in 1m 13s`).
+
+**Attempted, refused by the compiler: `global_memory`.** Our 1186 lines vs the base's 463; nine functions
+exist only on the base side (`keyword_query`, `compute_stats`, `memory_health`, `memory_token_overlap`,
+`parse_relationship`, plus four helpers). Grafted verbatim, the build failed immediately with `E0425` /
+`E0422`: `MemoryEntry`, `Stats` and `Relationship` do not exist in our module. Comparing the definitions
+showed why - these are not two versions of one file:
+
+| | this tree | the v20 base |
+|---|---|---|
+| entry type | `GlobalMemoryEntry { id: u64, agent: &'static str, category, content, embedding: [f32; 512], timestamp_ns }` | `MemoryEntry { id: String, author, memory_type, content, access_count }` |
+| stats | `MemoryStats { by_type: Vec<(String,u64)>, sync_events, ... }` | `Stats { type_counts: Vec<(String,usize)>, ... }` |
+| health | `MemoryHealth` with `&'static str` backend | `MemoryHealth` with `String` backend |
+| relationships | none | `Relationship { source, label, target }` + two parsers |
+
+They are **two complete implementations of the same feature** with different data models - an
+embedding-centric store and a text-centric one. Grafting nine functions across that boundary does not
+merge two versions of a file, it welds two designs together. The graft was reverted: our file is back to
+1186 lines, the base's restored from backup to 463, and `target-i` builds clean.
+
+**Process error, recorded.** Before backing up, I overwrote the base's `turbovec_memory.rs` with the
+merged file, so its original text no longer exists on this machine (only `compact_plan`, captured verbatim
+beforehand, and the three helpers). The base's other 15 originals were copied to
+`docs/port/laptop-base/originals/` before any further edit. Rule to carry: **copy the original aside in the
+same operation that overwrites it**, not afterwards.
+
+**What the remaining 13 need.** They are not merge tasks; they are architectural choices between parallel
+implementations (`agent_mesh` 33 added/6 missing, `artifact_pipeline` 34/13, `self_healing` 20/12,
+`kernel_instructions` 10/11, `main` 2/6, `memory` 7/5, `radix_trie_matcher` 55/6, `skill_loader` 13/2,
+`tool_forge` 5/5, `trm_integration` 11/2, `trm_orchestrator` 12/9, `voltage_node_engine` 7/3). Picking a
+winner per module is a decision for the architect, not something a script should decide silently.
+
