@@ -275,3 +275,72 @@ Two divergent kernels federating is a trap: every future fix has to be written t
 will drift. The right end state is the same tree on both hosts - clone the v20 repo on the laptop,
 build `host_council_server`, and compare `/system/health_matrix` `kernel_version` across the two.
 
+---
+
+# Prompt 3-REV - SSH file transport (key line included)
+
+Desktop public key (public only; the private key stays on `C:\Users\shawn\.ssh\id_ed25519` and is
+never printed or transmitted):
+
+```
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOCCPWltHQmlZmWimTmXLRFfWorCFaEmAqh0uSm3IZJw trm-federation-desktop
+```
+
+```
+Enable Windows OpenSSH server on the laptop so shards can move, then prove it.
+
+1. What is the local SAM account (NOT the tailnet identity)?
+   $env:USERNAME
+   whoami
+
+2. Install/start sshd:
+   Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+   Set-Service sshd -StartupType Automatic
+   Start-Service sshd -Force
+   netstat -ano | findstr ":22 " | findstr LISTENING
+
+3. This account is almost certainly in Administrators. sshd_config ends with a
+   "Match Group administrators" block that overrides AuthorizedKeysFile, so ~/.ssh/authorized_keys is
+   IGNORED for admins. Check it, then append the desktop's key to the right file (append, never overwrite):
+   Select-String -Path C:\ProgramData\ssh\sshd_config -Pattern "^AuthorizedKeysFile|^Match"
+   ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+   Add-Content -Path C:\ProgramData\ssh\administrators_authorized_keys -Value "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOCCPWltHQmlZmWimTmXLRFfWorCFaEmAqh0uSm3IZJw trm-federation-desktop"
+   icacls.exe "C:\ProgramData\ssh\administrators_authorized_keys" /inheritance:r /grant "Administrators:F" /grant "SYSTEM:F"
+
+4. Validate the blob before blaming auth - a truncated paste fails exactly like a bad ACL:
+   $line = (Get-Content C:\ProgramData\ssh\administrators_authorized_keys | Where-Object { $_ -like "ssh-ed25519*" } | Select-Object -Last 1)
+   $blob = [Convert]::FromBase64String(($line -split " ")[1])
+   "type=0 len=1" -f ([Text.Encoding]::ASCII.GetString($blob[0..10])), $blob.Length
+   Expected: type=ssh-ed25519, len=51
+
+5. Scope :22 to the same two addresses as the kernel (do not leave it open to everything):
+   Get-NetFirewallRule -DisplayName "OpenSSH-Server-In-TCP" | Get-NetFirewallAddressFilter
+   Set-NetFirewallRule -DisplayName "OpenSSH-Server-In-TCP" -RemoteAddress 100.93.191.43,192.168.1.0/24
+
+6. Prove inbound SSH with a timeout so a hang cannot look like success:
+   ssh -o BatchMode=yes -o ConnectTimeout=10 $env:USERNAME@127.0.0.1 "echo OK"
+   (keys only - no password prompt should appear; if it asks for a password, the ACL or the key file is wrong)
+
+7. Report: $env:USERNAME, sshd status, listen address, which authorized_keys file is in force, the ACL
+   line, the blob check output, the firewall scope, and the exact ssh "OK" output.
+```
+
+## Transfer test the desktop will run after that
+
+```
+# 1. reachability + auth
+ssh -o BatchMode=yes -o ConnectTimeout=10 <user>@100.123.215.119 "echo OK"
+
+# 2. move a real shard and its provenance sidecar
+scp -o BatchMode=yes build/chembl_lpxc_real.k3 build/chembl_lpxc_real.k3.json <user>@100.123.215.119:C:/Users/<user>/trm_incoming/
+
+# 3. verify on the far side by hash, not by exit code
+ssh <user>@100.123.215.119 "certutil -hashfile C:\Users\<user>\trm_incoming\chembl_lpxc_real.k3 SHA256"
+sha256sum build/chembl_lpxc_real.k3
+
+# 4. the far side must accept it as a shard, not just as bytes
+ssh <user>@100.123.215.119 "python tools/audit_ingest_ledger.py C:\Users\<user>\trm_incoming\chembl_lpxc_real.k3.json"
+```
+
+Only when steps 3 and 4 agree does `files_synced` become a number instead of 0.
+
