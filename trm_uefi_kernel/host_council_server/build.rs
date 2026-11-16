@@ -14,4 +14,6 @@ fn main() {
         .unwrap_or_else(|| "unknown".to_string());
     println!("cargo:rustc-env=TRM_BUILD_COMMIT={sha}");
     println!("cargo:rerun-if-changed=build.rs");
+    // a rebuild after a commit must not keep reporting the old commit
+    println!("cargo:rerun-if-changed=../../.git/HEAD");
 }
