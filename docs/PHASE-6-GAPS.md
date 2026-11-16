@@ -7591,3 +7591,37 @@ the same defect already fixed once on this side.
 module decisions, one binary hash on both hosts, and zero invariant violations - each of which is now a
 number this tool prints rather than a judgement anyone has to trust.
 
+### G187. The 90 body diffs triaged; first of the 48 merges adapted and compiling  [MEASURED]
+
+**Triage of the 90 `SAME_API_DIFF_BODY` modules** - signals that carry meaning (stubs, bare panics, guards,
+honesty markers, tests) plus a size-ratio test after the first pass proved too generous:
+
+| class | count | evidence |
+|---|---|---|
+| thin projection (ours) | **58** | 10-24 lines against the base's 74-302 - e.g. `cqs` 24 vs 132, `memory_synchronizer` 23 vs 252 |
+| base body better | **20** | fewer stubs/panics - `dram_pattern_computer` ours 7 stubs vs base 0, `gpu_infinity_computer` 5 vs 0 |
+| comparable | **12** | same size and signals; base also carries generated provenance (`module_registry` says counts come from `build_module_registry.py`, ours hardcodes "compiled 179 modules") |
+| **ours better** | **0** | none |
+
+First pass called 70 "equivalent" and would have hidden that our `cqs`/`dge`/`comm_protocol` are stubs. The
+size-ratio test corrected it: **all 90 decided `canonical`**, with the class recorded per module.
+`undecided: 138 -> 48`.
+
+**Merge 1 of 48: `radix_trie_matcher`** (+55 ours / -6 base). The six base functions could not be grafted
+verbatim: the node models differ (`Vec<(u8, TrieNode)>` + `pattern` there; `Vec<(char, Box<TrieNode>)>` +
+`handler` here), so a byte-keyed method cannot compile against a char-keyed node. They were **adapted**:
+
+- `TrieMatch { pattern, endpoint, match_len }` added, with `pattern` carrying the endpoint text because our
+  model has no separate pattern field - documented, not silently duplicated.
+- `find_child` / `find_child_mut` / `child_or_insert` as base-named aliases over our existing
+  `get_child` / `get_child_mut` / `insert_child`.
+- `match_text` built on `match_prefix`; `match_batch` maps it; `walk_char_bytes` walks UTF-8 characters and
+  returns `None` on invalid UTF-8 rather than a partial prefix.
+
+**Verified:** `cargo build --release` in this tree -> `Finished in 49.41s`. Kernel restarted and answering
+`v19.1.0-sovereign`, `build_commit 9aabc88`, `v_core 1.44 V`, `phi_v 0.9124` (a measured computation, not
+the forbidden 0.9115 - different quantity, neighbouring number).
+
+**Open:** 47 merges remaining; behaviour tests are still owed for `radix_trie_matcher` before either
+implementation can be declared the winner - API parity is not behavioural equivalence.
+

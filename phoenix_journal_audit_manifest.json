@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T18:10:13Z",
+  "audit_timestamp": "2026-11-16T18:14:28Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 83,
+    "empirical_confirmed": 84,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 83
+      "CONFIRMED": 84
     }
   },
   "articles": [
@@ -1960,6 +1960,19 @@
       ],
       "phoenix_audit_note": "Four propositions submitted to both nodes over the tailnet with the shared token; verdicts and vote records captured; module contract and invariant scans computed from both trees.",
       "finding": "The same four questions were put to the council on both machines within minutes of each other, and the two councils gave opposite answers. One machine rejected the proposal to unify the codebase by ten votes to four and found no consensus on the other three; the other machine approved all four, one by thirteen votes to two. The vote records explain both: the first machine's agents were not deliberating at all, they were transcribing the polarity of a small state-space model that already leans negative most of the time it decides, and the second machine's agents each produced the identical sentence, differing only in the name in front of it. Neither was reasoning, and the disagreement between them is the strongest possible evidence of that. This is worth stating plainly because it is the answer to the question asked: the platform does not need a better vote, it needs an arbiter that cannot be talked into either answer. So the definition of coherence was moved out of the council and into arithmetic. A tool now hashes every module on both trees, counts the functions each side would add or destroy, records one decision per module, and scans both trees for the specific classes of dishonesty this campaign has been removing. It reports that two hundred and thirteen modules are mechanically decidable, that one hundred and thirty eight need a person to choose, and that the base still carries twenty invariant violations while this tree carries thirty. Two councils cannot agree, but two hash tables can."
+    },
+    {
+      "id": 267,
+      "section": "Port",
+      "title": "Article 267 - Fifty Eight Stubs Wearing The Same Name",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g187",
+        "data/body_diff_triage.json",
+        "trm_uefi_kernel/src/radix_trie_matcher.rs"
+      ],
+      "phoenix_audit_note": "Triage computed over 90 body-diff modules from both trees; radix_trie_matcher merge compile-verified (49.41s) and kernel restarted at :8022.",
+      "finding": "Ninety files had the same function names on both machines and different bodies, and the first attempt to judge them said seventy were equivalent. That was wrong in a way worth keeping: fifty eight of them are stubs on this side, some ten lines long, standing in front of implementations of two or three hundred lines on the other. The names matched, so a name-based comparison saw no difference at all. Adding a single test - how large is one file compared to the other - sorted them properly: fifty eight thin projections, twenty where the other body is simply better, twelve genuinely comparable, and not one where ours is ahead. The first real merge then showed the same lesson at a smaller scale. Six functions existed only on the other side and could not be copied, because the two files store their children differently, one by byte and one by character. They were rewritten against our structure instead, with a documented note where a field name had to carry a different meaning. The build is clean and the kernel answers with the measured rail. But API parity is not equivalence, and saying so in the record is the difference between finishing a merge and pretending to."
     }
   ],
   "provenance_revision": {

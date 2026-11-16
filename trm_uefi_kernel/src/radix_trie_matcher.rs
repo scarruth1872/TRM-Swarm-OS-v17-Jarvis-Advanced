@@ -328,6 +328,36 @@ impl TrieNode {
         }
         self.get_child_mut(c).expect("child present after insert")
     }
+
+    // ── base-compatible aliases (the v20 tree names these differently and walks bytes) ───────────
+    // Adapted to our children: Vec<(char, Box<TrieNode>)> model rather than grafted verbatim, because a
+    // byte-based method cannot compile against a char-keyed node.
+    pub fn find_child(&self, c: char) -> Option<&TrieNode> {
+        self.get_child(c)
+    }
+
+    pub fn find_child_mut(&mut self, c: char) -> Option<&mut TrieNode> {
+        self.get_child_mut(c)
+    }
+
+    pub fn child_or_insert(&mut self, c: char) -> &mut TrieNode {
+        self.insert_child(c)
+    }
+}
+
+/// Base-compatible view of a match (the v20 tree returns this from `match_text`).
+///
+/// Our node model keys on a dispatch `Handler` plus an endpoint string and has no separate `pattern`
+/// field, so `pattern` here carries the endpoint text - the same value the base derives from its matched
+/// pattern. The field is documented rather than silently duplicated.
+#[derive(Debug, Clone)]
+pub struct TrieMatch {
+    /// Endpoint text of the deepest registered match.
+    pub pattern: String,
+    /// Registered endpoint (identical to `pattern` in this implementation).
+    pub endpoint: String,
+    /// Number of input CHARACTERS consumed by the longest match.
+    pub match_len: usize,
 }
 
 /// RadixTrieMatcher (1:1 python class).
@@ -376,6 +406,33 @@ impl RadixTrieMatcher {
             }
         }
         last_match
+    }
+
+    /// Deepest match as a `TrieMatch` (base-compatible shape).
+    pub fn match_text(&self, text: &str) -> Option<TrieMatch> {
+        self.match_prefix(text).map(|(_handler, endpoint, match_len)| {
+            let ep = endpoint.unwrap_or_default();
+            TrieMatch { pattern: ep.clone(), endpoint: ep, match_len }
+        })
+    }
+
+    /// Batch form: one endpoint per query, `None` where nothing matched.
+    pub fn match_batch(&self, queries: &[&str]) -> Vec<Option<String>> {
+        queries
+            .iter()
+            .map(|q| self.match_text(q).map(|m| m.endpoint))
+            .collect()
+    }
+
+    /// Walk a UTF-8 byte slice as characters. The base walks raw bytes (u8 children); our nodes are
+    /// char-keyed, so invalid UTF-8 yields `None` rather than a partially walked prefix.
+    pub fn walk_char_bytes<'a>(&'a self, bytes: &'a [u8]) -> Option<&'a TrieNode> {
+        let text = core::str::from_utf8(bytes).ok()?;
+        let mut node = &self.root;
+        for ch in text.to_lowercase().chars() {
+            node = node.get_child(ch)?;
+        }
+        Some(node)
     }
 
     /// O(len) match — prefix first, exact fallback (1:1 python match).
