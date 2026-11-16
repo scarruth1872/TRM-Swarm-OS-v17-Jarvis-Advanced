@@ -7774,3 +7774,37 @@ Other values spot-check against their definitions: token overlap `1.0` (2 of 2),
 **Not yet covered:** `manus_engine` (0 public fns), `skill_loader` (2 fns, both private), and the remaining
 superset modules whose functions are methods on types with different shapes in each tree.
 
+### G192. Orphan-module audit: we have none, the canonical tree has 30  [MEASURED]
+
+G191 found that `global_memory.rs` was compiled nowhere. Rather than assume it was unique, every `.rs` in
+both `src/` trees was checked for reachability - declared in `lib.rs`, included by `#[path]`, or declared by
+a `mod x;` anywhere - and the rest listed.
+
+| tree | src files | reachable | **orphans** |
+|---|---|---|---|
+| ours | 210 | 210 | **0** |
+| laptop base (canonical) | 217 | 187 | **30** |
+
+(The first pass said 98 for the base; that was wrong because it only counted `#[path]` inclusions. Adding
+`mod x;` declarations found 67 more reachable files. The corrected number is 30, and the correction is
+recorded rather than quietly replaced.)
+
+**The base's 30 orphans:** `apic_core_binding`, `aura_spectrum`, `autonomous_cadence`,
+`autonomous_scenario_setup`, `baremetal_transition`, `faceted_torus_ternary`, `fb_console`,
+`federation_sync_upgrade`, `federation_task_coordinator`, `float_math`, `fractal_pattern_engine`,
+`fractal_telemetry`, `hmac_sha256`, `holographic_fabric`, `hw_truth`, `interrupt_stubs`, `k3_head`,
+`k3_ternary_sram`, `mcts_plan`, `memory_mapped_ipc`, `module_registry_generated`, `p2p_direct_route`,
+`platform`, `quantum_drug_screen`, `rare_disease`, `serial`, `smp_trampoline`, `spawn_subagent`,
+`text_extract`, `unified_transistor_fabric`.
+
+Four of them are **referenced from live code** (`float_math`, `hmac_sha256`, `apic_core_binding`,
+`interrupt_stubs`) - which is exactly why the base cannot run `cargo test`: its test profile pulls in
+`crate::hmac_sha256` and `crate::float_math`, and neither is included in any build. That failure was
+observed in G190 and its cause is now identified.
+
+**Why this matters more than a count:** the canonical tree is the one a second machine is expected to run,
+and 30 of its features - federation sync upgrades, quantum drug screening, MCTS planning, K3 SRAM, the
+transistor fabric - are files that no build includes. They cannot be tested, cannot regress visibly, and
+cannot be claimed. Ours reaching zero is not a boast: it is the result of the same audit being applied after
+G191 closed our last two.
+
