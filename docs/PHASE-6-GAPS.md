@@ -7911,3 +7911,50 @@ functions to fix an import. Instead the base received exactly what it lacked:
 **Base tree with all 30 orphans declared: build 0 errors** (146 `#[path]` modules). That is the tree that
 gets pushed.
 
+### G195. The push, in five passes; and the laptop could not run cargo at all  [MEASURED]
+
+A checkpoint was taken **before** any transfer: branch `snapshot` and tag `checkpoint-20261116-g194` both at
+`1447a72`, remote-verified with `git ls-remote` (same sha as local HEAD). Only then did anything move.
+
+**Pass 1 - the function-level patch.** Hash-verified 7 files far-side before copying, backed up each target in
+the same operation. Result: installed, but my own validator caught that `k3_ternary_sram` and `spawn_subagent`
+were **not declared** in the installed `main.rs` - I had removed them during the G193 triage and only restored
+`hw_truth`. The nightly-claimed "0 errors" build had never covered the two modules I was writing about.
+
+**Pass 2 - re-declared, and a second dependency wall.** With both declared the base failed: their
+`sram_pattern_computer::pattern_content_addressable` is `(i64) -> ArchDesc` and `pattern_cellular_automaton` is
+`(i64) -> ArchDesc` - **same names, different programs** than ours (`(&[&[u8]], &[u8]) -> u64`,
+`(&[u8]) -> Vec<u8>`). That is the parallel-implementation stop condition, so the behaviour arrived under new
+names (`cam_match_count`, `cellular_evolve_bytes`) and `k3_ternary_sram` was adapted to call them. Base:
+0 errors, 148 `#[path]` modules.
+
+**Pass 3 - the laptop had 26 of our files missing entirely.** The far-side build named `hw_rails.rs` and
+`apic_core_binding.rs`; a full file-list diff found **25 `src/` modules + 1 hcs module absent** - the orphan
+set that exists here but was never on that node. Installed 26, hashes verified, counts converged:
+**src 217 = 217, hcs 124 = 124**.
+
+**Pass 4 - three gaps opened by my own earlier ports.** `trmboot/trm_smp_trampoline.bin` (218 B) missing;
+`host_probe::phi_v_report` and `intelligence_router::backend_status` absent from their copies. Both files
+checked for function-set containment first - `host_probe` ours-only 1, theirs-only 0; `intelligence_router`
+ours-only 8, theirs-only 0 - clean supersets, so copying was safe. Asset and both modules installed.
+
+**Pass 5 - one symbol, then green.** `core_pinning::gpu_identity` missing (ours-only 9, theirs-only 0, so ours
+was pushed), then `core_pinning::LOGICAL_THREADS` demanded by **their** `infra_handlers.rs:203` - a hand-typed
+constant our tree had deliberately replaced with the measured `logical_threads()`. Their caller was patched to
+the measurement (1 replacement, 0 `LOGICAL_THREADS` left).
+
+**Far-side result: `Finished release profile in 49.07s`, 0 errors, binary 32,684,032 bytes.** Not the `scp`
+exit code - the compiler on that node.
+
+**The blocker underneath all of it:** the laptop's `C:\Users\shawn\.cargo\bin\` holds **0-byte symlinks** to
+`rustup.exe`, and Windows refuses to execute them (`The system cannot execute the specified program`). `rustup`
+itself works (1.29.0, toolchain `rustc 1.98.0`), but `cargo.exe`/`rustc.exe` cannot launch from a shell there.
+Every build was run through the real toolchain binaries resolved with `rustup which cargo` ->
+`...\toolchains\stable-x86_64-pc-windows-msvc\bin\cargo.exe`. **That node cannot compile its own platform from
+a terminal** until those shims are recreated; this is a defect on the machine, not in the code, and it should be
+fixed with `rustup self update` / re-running the rustup installer rather than worked around forever.
+
+**Still owed:** `assets/parity_vectors.f32` remains absent everywhere - the base's test profile references it,
+which is why `cargo test` cannot compile there (the G190 finding, now with a known fix: either ship the asset or
+drop the reference).
+

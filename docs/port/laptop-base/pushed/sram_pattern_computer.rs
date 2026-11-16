@@ -915,3 +915,34 @@ pub fn pattern_tcam_match(stored_trits: &[i8], query_trits: &[i8], mask: &[u8]) 
     }
     true
 }
+
+// ── behaviour the newer tree has under names this file did not use (G194) ─────────────────────────
+/// Count rows equal to `key` (content-addressable match).
+/// `pattern_content_addressable` in this file takes an `i64` and returns an `ArchDesc` - an architecture
+/// spec, not a matcher - so the matching behaviour arrives under its own name instead of colliding with it.
+pub fn cam_match_count(rows: &[&[u8]], key: &[u8]) -> u64 {
+    rows.iter()
+        .filter(|r| r.len() == key.len() && r.iter().zip(key.iter()).all(|(a, b)| a == b))
+        .count() as u64
+}
+
+/// One Rule-30 step over a byte ring, returning the evolved bytes.
+/// Likewise named apart from this file's `pattern_cellular_automaton(i64) -> ArchDesc`.
+pub fn cellular_evolve_bytes(input: &[u8]) -> Vec<u8> {
+    let n = input.len();
+    if n == 0 {
+        return Vec::new();
+    }
+    let mut out = vec![0u8; n];
+    for i in 0..n {
+        let left = input[(i + n - 1) % n];
+        let center = input[i];
+        let right = input[(i + 1) % n];
+        let a = (left >> 7) & 1;
+        let b = (center >> 7) & 1;
+        let c = (right >> 7) & 1;
+        let rule30 = (a ^ (b | c)) as u8;
+        out[i] = (center << 1) | rule30;
+    }
+    out
+}

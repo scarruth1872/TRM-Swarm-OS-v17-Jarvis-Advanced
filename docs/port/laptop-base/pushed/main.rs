@@ -474,6 +474,10 @@ mod unified_transistor_fabric;
 #[path = "../../src/font.rs"]
 mod font;
 mod orphan_probe;
+#[path = "../../src/k3_ternary_sram.rs"]
+mod k3_ternary_sram;
+#[path = "../../src/spawn_subagent.rs"]
+mod spawn_subagent;
 #[path = "../../src/hw_truth.rs"]
 mod hw_truth;
 #[path = "../../src/task_arbiter.rs"]

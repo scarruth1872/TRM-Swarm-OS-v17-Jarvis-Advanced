@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T19:24:50Z",
+  "audit_timestamp": "2026-11-16T19:35:06Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 91,
+    "empirical_confirmed": 92,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 91
+      "CONFIRMED": 92
     }
   },
   "articles": [
@@ -2064,6 +2064,19 @@
       ],
       "phoenix_audit_note": "Three modules tested here: Kleene truth table 9/9, CAM hit/miss/ratio hand-checked, spawn plan determinism and ids; hw_truth compile-only. Base rebuilt with all 30 declared, 0 errors. Function-set comparison before copying: 52/10/3 theirs-only functions protected from deletion.",
       "finding": "Three files had been set aside as broken, and the reason they were broken was not in them. They called functions that existed nowhere in the tree that rejected them - and existed in this one. The dependency had moved on one side and not the other, so the file looked rotten while it was only early. Testing them took four attempts because the tests kept fooling themselves: a conjunction that writes in place was measured on a buffer a previous case had already overwritten, and the third row of a truth table came out wrong until each case was given its own memory. With that fixed the nine ternary cells all matched their definition, the content-addressable memory hit and missed where it should, the hit ratio checked out by hand against five lookups, and a spawn planner produced the same identifier twice and a different one for a different role while stating plainly that it only plans and never executes. The push that followed could not be a copy: the three dependency files were interleaved, one of them holding fifty two functions the other side did not have, so the fix was to carry across the three missing symbols and nothing else, and to add a wrapper rather than change a signature that two callers depended on in different shapes."
+    },
+    {
+      "id": 275,
+      "section": "Federation",
+      "title": "Article 275 - The Node That Could Not Compile",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g195",
+        "data/push_missing.json",
+        "docs/port/laptop-base/pushed/"
+      ],
+      "phoenix_audit_note": "Checkpoint tag 1447a72 pushed and remote-verified before any transfer. Five push passes, each hash-verified far-side and each with backups taken in the same operation. Final far-side result is a compiler run: Finished 49.07s, 0 errors, 32,684,032-byte binary.",
+      "finding": "A checkpoint was written and verified on the remote before a single byte moved, and then the transfer took five passes, which is what a transfer honestly costs when the destination has been drifting. The first pass installed everything and my own validator found that two of the three modules I had just spent a day proving were not even declared in the file I shipped. The second pass hit a wall made of names: two functions existed on both sides with identical names and incompatible signatures, one describing an architecture and one matching bytes, so the behaviour travelled under new names instead. The third pass discovered the destination was missing twenty six whole files. The fourth found three symbols my earlier ports had used but never carried. The fifth found a hand-typed constant that this side had deliberately replaced with a measurement, and patched the caller rather than resurrect the constant. At the end the compiler on that machine finished in forty nine seconds with no errors and left a thirty two megabyte binary. Underneath all of it lay the real reason none of this had been noticed: that machine's cargo and rustc are zero byte symlinks that Windows will not execute, so no one there could have compiled anything, and the platform has been shipping as a folder of source files rather than as a program that builds."
     }
   ],
   "provenance_revision": {
