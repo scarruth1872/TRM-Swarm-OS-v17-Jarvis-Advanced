@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T15:07:45Z",
+  "audit_timestamp": "2026-11-16T15:43:42Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 76,
+    "empirical_confirmed": 77,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 76
+      "CONFIRMED": 77
     }
   },
   "articles": [
@@ -1869,6 +1869,19 @@
       ],
       "phoenix_audit_note": "scp over keyed SSH with the file hashes computed on both machines, and the receiving host ran the shard auditor itself and returned PASS.",
       "finding": "The federation moved real files today, which is the first time that sentence has been true. Three artifacts crossed to the laptop over keyed SSH: a shard of four hundred and six measured actives, its provenance record, and the auditor that checks such records. Nothing was accepted on the strength of a successful command. Each file's hash was computed on the sending machine and again on the receiving one, and all three matched byte for byte. Then the receiving machine ran the auditor against the shard and returned pass, meaning the far side re-derived the shard's own arithmetic rather than trusting the sender's. Two things were learned in the crossing. The laptop's plain python is an old interpreter that cannot parse modern type annotations, so a tool that ran perfectly here failed there with a syntax error until invoked through its version launcher, which is the kind of failure that gets misdiagnosed as a broken script. And the file sharing port is still open to the same two addresses even though the keyed shell now does the job, which means the convenient door is still unlocked next to the one with the lock on it."
+    },
+    {
+      "id": 260,
+      "section": "Ingestion",
+      "title": "Article 260 - A Hundred and Forty Eight Thousand Records, Five Hundred Proteins",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g174",
+        "build/smpdb_real.k3.json",
+        "tools/audit_ingest_ledger.py"
+      ],
+      "phoenix_audit_note": "Shard built from 21,121 real pathway files; header arithmetic, payload length and seal re-derived by the auditor; distinct-identifier counts computed directly from the source CSVs.",
+      "finding": "The pathway database is now inside the platform honestly, and the honest version of the headline is smaller than it first looks. A hundred and forty eight thousand records were written, none of them padding, each one a real pair of a pathway and a protein with identifiers from the source files, and the shard's own header arithmetic was re-derived by a second tool that passed it. But when the identifiers are counted rather than the rows, those records draw on five hundred and forty two distinct proteins and five hundred and twenty six genes, repeated about two hundred and seventy times each across twenty one thousand pathways. The record count measures how many pathway slots were filled, not how much is known about proteins, and both numbers are now recorded next to each other so that neither can be quoted by itself. This is the same lesson the archive taught when a hundred and sixty eight thousand memories turned out to hold a hundred and six thousand distinct ones. Three corpora are now under the same contract, each with a measured quantization cost and a seal over the bytes actually written."
     }
   ],
   "provenance_revision": {

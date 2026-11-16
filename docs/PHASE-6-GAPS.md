@@ -6993,3 +6993,34 @@ Data-path risk named in advance: v20 anchors the kanban store on `data/turbo_mem
 own layout, so `/kanban` and `/memory` may return unmeasured - which is the correct answer to expect, and
 must not be papered over with a stub.
 
+### G174. SMPDB ingested for real: 147,932 records, 0 padding - and a record count that flatters itself [MEASURED]
+
+`--source smpdb` walked `F:\Development sites\datasets\smpdb_proteins.csv` (21,121 per-pathway CSVs) and
+built `build/smpdb_real.k3` under the G163 contract:
+
+| measure | value |
+|---|---|
+| records | **147,932** |
+| dim / trits | 768 / **113,611,776** |
+| payload / file | 28,402,944 / 28,403,072 B (header **128 B**, derived not assumed) |
+| padding | **0** |
+| seal | `a500dfa1...ed3b2e`, matches on re-read |
+| quantization fidelity | **cos 0.8323** (2-bit) |
+| chunk-pooled records | 0 |
+| build time | 8,082.9 s (18.3 rec/s) |
+
+Independent audit: `audit_ingest_ledger.py build/smpdb_real.k3.json` -> **[PASS] shard verified**.
+
+**What the record count does not say, measured separately:** those 147,932 records are
+(pathway, protein) *pairs* from **21,121 pathways**, but only **542 distinct UniProt IDs** and
+**526 distinct gene names** occur across them. 147,895 of the 147,932 are unique pairs (0.0% pair-level
+duplication), while the protein vocabulary repeats ~273x on average. So the shard measures pathway
+coverage, not breadth of protein knowledge - the same distinction G162 had to make when 168,429 archive
+records resolved to 106,615 distinct prefixes. Both numbers are now in the sidecar
+(`distinct_uniprot`, `distinct_genes`, `distinct_pathways`, `distinct_pairs`, `content_note`) so neither
+can be quoted alone.
+
+**Real corpora now under the honest contract:** ChEMBL 44,401 molecules (fidelity 0.8416), ChEMBL LpxC
+406 measured actives (0.8144), SMPDB 147,932 pathway-protein pairs (0.8323). Every one: 0 padding,
+arithmetic-exact payload, seal over what was written, fidelity measured rather than assumed.
+
