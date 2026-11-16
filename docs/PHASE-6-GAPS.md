@@ -7024,3 +7024,48 @@ can be quoted alone.
 406 measured actives (0.8144), SMPDB 147,932 pathway-protein pairs (0.8323). Every one: 0 padding,
 arithmetic-exact payload, seal over what was written, fidelity measured rather than assumed.
 
+### G175. The version labels are crossed, the tree is not a superset, and my archive could not build  [MEASURED]
+
+The laptop's dual-run comparison produced three findings; two are theirs, one is mine.
+
+**1. Version strings are crossed, in both directions.** The laptop's packaged `TRM-Swarm-OS-v19-...`
+kernel advertises `kernel_version: v20.0.0-sovereign`. The binary shipped from this tree - whose directory
+is named v20 - reports `v19.001-sovereign`. Neither container matches its label. Cause, measured:
+
+| location | string | check |
+|---|---|---|
+| `trm_uefi_kernel/Cargo.toml` | `version = "19.1.0"` | the only version the compiler checks |
+| `trm_uefi_kernel/host_council_server/src/main.rs:4352` | `"v19.001-sovereign"` (hardcoded) | agrees with 19.1.0 |
+| `scratch/wt_*/...main.rs`, `staging/v20/...main.rs` | `"v20.0.0-sovereign"` (hardcoded) | 4 sibling copies |
+| laptop's packaged v19 tree | `v20.0.0-sovereign` | derived from a staging copy, not the working tree |
+
+Fixed: `kernel_version` is now `KERNEL_VERSION = "v19.1.0-sovereign"` (tied to the package version) and
+reported **together with a compile-time commit** - `build.rs` captures `git rev-parse --short HEAD` into
+`TRM_BUILD_COMMIT`, exposed as a `build_commit` field. A hand-typed version cannot be trusted when four
+copies of the same tree disagree; a commit hash can be checked.
+
+**2. This tree is NOT a superset of the laptop's.** `/k3/stores` answers **200 with 10 stores** on the
+laptop's packaged kernel and **404** here. So "upgrade the laptop to v20" is not a migration, it is a
+trade: converging on this tree would *remove* an endpoint the other one serves. Convergence has to be
+decided by endpoint-by-endpoint comparison (which the dual-run produced), not by the version label.
+Recorded as open: either port `/k3/stores` here or keep both trees' features.
+
+**3. My archive could not build - two independent reasons.**
+* It omitted `trm_uefi_kernel/Cargo.toml`, which `host_council_server/Cargo.toml` needs as
+  `trm_uefi_kernel = { path = ".." }`. The laptop's `cargo build` died with
+  *"failed to read ...\trm_uefi_kernel\Cargo.toml (os error 2)"* - correct diagnosis on their side.
+* After adding it, the parent crate still failed: **three `include_bytes!` assets are untracked by git** -
+  `trm_uefi_kernel/assets/trm7m_weights.bin` (14.91 MB), `..._turbovec_158.bin` (1.21 MB),
+  `trmboot/trm_smp_trampoline.bin` (218 B). A clean checkout of this repo therefore **cannot build**,
+  which is a defect independent of the migration.
+
+Fixed: `data/build_assets_manifest.json` records the three paths with byte counts and SHA-256 and states
+why they are required (`trm7m.rs:37,658`, `smp_trampoline.rs:30`); the shipped archive is now
+`git archive` **plus** those files appended, 506 entries / 18 MB, and it was build-tested in a clean
+directory before sending rather than after.
+
+**4. A fresh node shows "13 cards" and that is labelled, not hidden.** The laptop's v20 instance reported
+`total_cards: 13` with no store present - those are `kanban_seed()` literals. Every seeded card already
+carries `seeded: true`; `/kanban/stats` now also publishes `seeded_count` and `seed_origin`, so an empty
+install cannot be read as a busy board.
+

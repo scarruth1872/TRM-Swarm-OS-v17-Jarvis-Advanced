@@ -3046,6 +3046,12 @@ fn record_memory(agent: &str, kind: &str, content: &str, source: &str) -> bool {
 // construction and "stale" was unmeasurable. The board now lives in data/kanban_board.json, seeded
 // once from those literals stamped with the era they belong to, and every mutation persists.
 
+/// The package version is the only version number in this tree that is checked by the compiler.
+/// The old literal said `v19.001-sovereign` while a sibling copy in staging said `v20.0.0-sovereign`,
+/// and the laptop's packaged tree advertises v20 for the same 19.1 code - labels typed by hand drift.
+/// This one is tied to `trm_uefi_kernel/Cargo.toml` (version = "19.1.0") and paired with the commit.
+const KERNEL_VERSION: &str = "v19.1.0-sovereign";
+
 const KANBAN_STALE_DAYS: f64 = 7.0;
 const KANBAN_SEED_ORIGIN: &str = "2026-08-27T00:00:00Z";
 
@@ -4349,7 +4355,8 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         });
     } else if method == Method::Get && (url == "/system" || url == "/system/" || url == "/system/status") {
         response_json = json!({
-            "kernel_version": "v19.001-sovereign",
+            "kernel_version": KERNEL_VERSION,
+            "build_commit": env!("TRM_BUILD_COMMIT"),
             "runtime_type": "Native Rust no_std + host socket",
             "voltage_phi_v": voltage::phi_v(),
             "voltage_measured": voltage::snapshot().measured,
@@ -5900,6 +5907,13 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "oldest_updated_at": if oldest.is_empty() { serde_json::Value::Null } else { json!(oldest) },
             "store": "data/kanban_board.json",
             "status": "PERSISTED",
+            // a fresh node seeds the board from literals; how many of the cards are seed rather than
+            // work is a number the caller needs, not a footnote. 13 cards on an empty install is not
+            // a busy board.
+            "seeded_count": todo_cards.iter().chain(in_progress_cards.iter())
+                .chain(review_cards.iter()).chain(done_cards.iter())
+                .filter(|c| c.get("seeded").and_then(|v| v.as_bool()).unwrap_or(false)).count(),
+            "seed_origin": KANBAN_SEED_ORIGIN,
         });
         let board_obj = json!({
             "TODO": todo_cards, "IN_PROGRESS": in_progress_cards,

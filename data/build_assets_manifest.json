@@ -1,0 +1,21 @@
+{
+ "note": "These files are NOT tracked by git, but the kernel cannot compile without them: trm_uefi_kernel/src/trm7m.rs:37,658 and smp_trampoline.rs:30 use include_bytes! on them. A clean checkout therefore cannot build. Ship them alongside any source archive and verify these hashes on arrival.",
+ "tracked": false,
+ "assets": [
+  {
+   "path": "trm_uefi_kernel/assets/trm7m_weights.bin",
+   "bytes": 15637788,
+   "sha256": "39dd18faae3ddc38354c7fce84562b2118734a666e19b27eb917b83418126902"
+  },
+  {
+   "path": "trm_uefi_kernel/assets/trm7m_weights_turbovec_158.bin",
+   "bytes": 1267740,
+   "sha256": "cab0f4f6bc801c2fa91f25b08a9d87b1812a1b73726095173c954aa62245e492"
+  },
+  {
+   "path": "trmboot/trm_smp_trampoline.bin",
+   "bytes": 218,
+   "sha256": "00ddb74aaecf8adec24787642ef42e8c69868d0bca20f58dbecb639f07e53feb"
+  }
+ ]
+}
