@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T17:30:05Z",
+  "audit_timestamp": "2026-11-16T17:42:12Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 78,
+    "empirical_confirmed": 79,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 78
+      "CONFIRMED": 79
     }
   },
   "articles": [
@@ -1895,6 +1895,19 @@
       ],
       "phoenix_audit_note": "Rails read from HWiNFO SM2 by two independent readers (Rust kernel and Python tool) agreeing to four decimals; phi_v recomputed live on :8022.",
       "finding": "The voltage metric had a sensor available for three days and was not using it. A monitoring program was running on this machine the whole time, reading the actual rail off the processor, while the platform's own metric used a value the operating system reports in whole tenths of a volt and called it measured. Enabling the monitoring program's shared memory took one toggle, and the number underneath changed by nearly two thirds: the reported rail is one point four zero eight volts while the coarse system value said one point one. The metric went from zero point four three nine four to zero point eight five eight six, not because the machine got faster or hotter but because it stopped describing a rail the hardware never had. Two independent readers now agree on the value to four decimal places, and the one rail the monitoring program cannot see, the memory rail, is labelled as a configured figure rather than dressed up as a live measurement. The lesson is not that sensors are better than system calls; it is that a value can be perfectly measured and still be the wrong quantity."
+    },
+    {
+      "id": 262,
+      "section": "Port",
+      "title": "Article 262 - Fifteen Ports That Do Not Answer",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g182",
+        "data/port_audit.json",
+        "docs/port/laptop-base/intelligence_router.rs"
+      ],
+      "phoenix_audit_note": "Every port probed with a live connect; backend availability decided by runtime DLL plus toolchain directory plus env var, verified on a fresh build at :8027.",
+      "finding": "Three classes of machine mismatch were cleared today, and each one was decided by a probe rather than a comment. The first was an embedding runtime the code assumed and the machine did not have: nine references pointed at a port that refuses connections, while a different port on the same machine happily serves the same embeddings, so the platform was quietly returning nothing where it could have been searching. The second was a subtler error of my own making: a probe reported that the AMD compute stack was available because a library was sitting in the system directory, and a second measurement showed that library ships with the display driver and there is no compiler or SDK behind it, which is exactly the shape of the nominal voltage rail this platform spent a year learning to stop trusting. The third was the largest: thirty nine hardcoded ports across seventeen distinct services, of which two answer on this machine, and one of them turns out to be a truncated number rather than a port at all. All of it now reports itself at runtime, so a missing service looks like a closed port instead of an empty answer."
     }
   ],
   "provenance_revision": {

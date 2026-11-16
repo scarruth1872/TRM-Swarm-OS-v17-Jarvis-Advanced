@@ -1,0 +1,240 @@
+{
+ "measured_at": "2026-11-16T17:38:23Z",
+ "host": "desktop Rx 6700 XT / 3900X (Vulkan-only, no Ollama runtime)",
+ "source": "laptop base tree (121 modules) reconstructed locally",
+ "distinct_ports": 17,
+ "literals": 39,
+ "listening_here": [
+  8022,
+  8593
+ ],
+ "closed_here": [
+  1,
+  8000,
+  8021,
+  8080,
+  8091,
+  8587,
+  8588,
+  8589,
+  8590,
+  8591,
+  8598,
+  8599,
+  8791,
+  8899,
+  11434
+ ],
+ "ports": {
+  "1": {
+   "listening": false,
+   "ref_count": 1,
+   "files": [
+    "mamba_tier.rs"
+   ],
+   "sample": {
+    "file": "mamba_tier.rs",
+    "line": 101,
+    "text": "std::env::set_var(\"TRM_MAMBA_ADDR\", \"127.0.0.1:1\");"
+   }
+  },
+  "8000": {
+   "listening": false,
+   "ref_count": 5,
+   "files": [
+    "agentq_bridge.rs",
+    "ui_render.rs",
+    "university_client.rs"
+   ],
+   "sample": {
+    "file": "agentq_bridge.rs",
+    "line": 131,
+    "text": "\"endpoint\": \"http://127.0.0.1:8000\","
+   }
+  },
+  "8021": {
+   "listening": false,
+   "ref_count": 3,
+   "files": [
+    "federation_manager.rs",
+    "trm_datagram.rs"
+   ],
+   "sample": {
+    "file": "trm_datagram.rs",
+    "line": 20,
+    "text": "let sock = match UdpSocket::bind(\"127.0.0.1:8021\") {"
+   }
+  },
+  "8022": {
+   "listening": true,
+   "ref_count": 3,
+   "files": [
+    "federation_manager.rs",
+    "main.rs"
+   ],
+   "sample": {
+    "file": "main.rs",
+    "line": 805,
+    "text": "let addr: std::net::SocketAddr = \"127.0.0.1:8022\".parse().ok()?;"
+   }
+  },
+  "8080": {
+   "listening": false,
+   "ref_count": 1,
+   "files": [
+    "federation_manager.rs"
+   ],
+   "sample": {
+    "file": "federation_manager.rs",
+    "line": 121,
+    "text": "out.push(String::from(\"  * NODE 03: HERMES_GATEWAY | 127.0.0.1:8080 | Lat: 42.1us | ONLINE (Runtime)\"));"
+   }
+  },
+  "8091": {
+   "listening": false,
+   "ref_count": 1,
+   "files": [
+    "agentq_bridge.rs"
+   ],
+   "sample": {
+    "file": "agentq_bridge.rs",
+    "line": 366,
+    "text": "\"basis\": \"GET http://127.0.0.1:8091/health at request time\""
+   }
+  },
+  "8587": {
+   "listening": false,
+   "ref_count": 1,
+   "files": [
+    "intelligence_router.rs"
+   ],
+   "sample": {
+    "file": "intelligence_router.rs",
+    "line": 316,
+    "text": "pub const BONSAI_VULKAN_ADDR: &str = \"127.0.0.1:8587\";"
+   }
+  },
+  "8588": {
+   "listening": false,
+   "ref_count": 1,
+   "files": [
+    "k3_retrieval.rs"
+   ],
+   "sample": {
+    "file": "k3_retrieval.rs",
+    "line": 1617,
+    "text": "\"realmodel\" => Some((\"swarm_v2_nand_fabric.realmodel.turbovec\", \"llama\", \"127.0.0.1:8588\", \"phi4\", \"Phi-4 (vanilj/Phi-4)"
+   }
+  },
+  "8589": {
+   "listening": false,
+   "ref_count": 1,
+   "files": [
+    "k3_retrieval.rs"
+   ],
+   "sample": {
+    "file": "k3_retrieval.rs",
+    "line": 1624,
+    "text": "\"bonsai4b\" => Some((\"swarm_v2_nand_fabric.bonsai4b.turbovec\", \"llama\", \"127.0.0.1:8589\", \"bonsai4b\", \"Ternary-Bonsai-4B "
+   }
+  },
+  "8590": {
+   "listening": false,
+   "ref_count": 4,
+   "files": [
+    "semantic_recall.rs",
+    "task_executor.rs"
+   ],
+   "sample": {
+    "file": "semantic_recall.rs",
+    "line": 11,
+    "text": "const EMB_ADDR: &str = \"127.0.0.1:8590\";"
+   }
+  },
+  "8591": {
+   "listening": false,
+   "ref_count": 1,
+   "files": [
+    "k3_retrieval.rs"
+   ],
+   "sample": {
+    "file": "k3_retrieval.rs",
+    "line": 1625,
+    "text": "\"bonsai17b\" => Some((\"swarm_v2_nand_fabric.bonsai17b.turbovec\", \"llama\", \"127.0.0.1:8591\", \"bonsai17b\", \"Ternary-Bonsai-"
+   }
+  },
+  "8593": {
+   "listening": true,
+   "ref_count": 2,
+   "files": [
+    "intelligence_router.rs"
+   ],
+   "sample": {
+    "file": "intelligence_router.rs",
+    "line": 827,
+    "text": "// 127.0.0.1:8593 answers /v1/models and serves 768-dim embeddings over /v1/embeddings from a llama.cpp"
+   }
+  },
+  "8598": {
+   "listening": false,
+   "ref_count": 2,
+   "files": [
+    "k3_retrieval.rs"
+   ],
+   "sample": {
+    "file": "k3_retrieval.rs",
+    "line": 1606,
+    "text": "\"nomiclocal\" => Some((\"swarm_v2_nand_fabric.nomic.turbovec\", \"llama\", \"127.0.0.1:8598\", \"nomic-embed-text\", \"nomic-embed"
+   }
+  },
+  "8599": {
+   "listening": false,
+   "ref_count": 2,
+   "files": [
+    "k3_retrieval.rs"
+   ],
+   "sample": {
+    "file": "k3_retrieval.rs",
+    "line": 1611,
+    "text": "\"qwen8b\" => Some((\"swarm_v2_nand_fabric.qwen8b.turbovec\", \"llama\", \"127.0.0.1:8599\", \"qwen3-embedding\", \"Qwen3-Embedding"
+   }
+  },
+  "8791": {
+   "listening": false,
+   "ref_count": 1,
+   "files": [
+    "agentq_bridge.rs"
+   ],
+   "sample": {
+    "file": "agentq_bridge.rs",
+    "line": 429,
+    "text": "\"basis\": \"GET http://127.0.0.1:8791/stats at request time\""
+   }
+  },
+  "8899": {
+   "listening": false,
+   "ref_count": 1,
+   "files": [
+    "mamba_tier.rs"
+   ],
+   "sample": {
+    "file": "mamba_tier.rs",
+    "line": 20,
+    "text": "pub const DEFAULT_ADDR: &str = \"127.0.0.1:8899\";"
+   }
+  },
+  "11434": {
+   "listening": false,
+   "ref_count": 9,
+   "files": [
+    "intelligence_router.rs",
+    "k3_retrieval.rs"
+   ],
+   "sample": {
+    "file": "intelligence_router.rs",
+    "line": 318,
+    "text": "pub const OLLAMA_ADDR: &str = \"127.0.0.1:11434\";"
+   }
+  }
+ }
+}

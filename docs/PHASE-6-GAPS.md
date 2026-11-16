@@ -7314,3 +7314,45 @@ substituting 1.1 V for a 1.408 V rail. `v_ddr` remains the SPD-configured 1.20 V
 HWiNFO's mainboard sensor set on this board exposes no DIMM rail, so it is a configured value and must not
 be read as a live one.
 
+### G182. Queue cleared: Ollama resolved by probe, CUDA/ROCm by two layers, 17 ports audited  [MEASURED]
+
+Ported the three machine-mismatch classes found in the base tree, each decided by measurement.
+
+**1. Ollama (27 refs, incl. 9 `:11434`).** Measured: `127.0.0.1:11434` **refuses connections** - there is no
+Ollama runtime on this host at all - while `127.0.0.1:8593` answers `/v1/models` and serves 768-dim
+embeddings. The tree's store table labels every embedder `"ollama"`, so every non-fabric vector query
+resolved to a server that does not exist and returned `None` silently.
+
+`intelligence_router.rs` now resolves instead of assuming: `ollama_reachable()` probes `/api/tags` with a
+30 s cache (a closed port costs one probe, not one per query), `embed_unified()` prefers Ollama when it
+answers and otherwise uses `TRM_EMBED_ADDR` (default `127.0.0.1:8593`) over `/v1/embeddings`, and
+`k3_retrieval.rs`'s `proto == "ollama"` branch calls it - "ollama" names an embedder family, not a required
+runtime. Live: `embedding.selected = "llamacpp"`, `ollama.reachable = false`, `llamacpp.reachable = true`.
+
+**2. CUDA / ROCm (7 + 1 refs).** First probe was *too weak and said the wrong thing*: it reported
+`rocm: true` from the presence of `amdhip64.dll`. Measured follow-up - the DLL **is** there (21,753,280 B,
+plus `amdhip64_6.dll` 17.9 MB) because the **Adrenalin driver ships a HIP runtime**, but there is no
+`C:/Program Files/AMD/ROCm`, no `HIP_PATH`, and no `hipcc`/`rocminfo` on PATH, so no kernel can be compiled
+or run. Presence answered a different question than availability - the same failure mode as a nominal
+voltage rail. Both layers are now reported separately:
+
+| backend | runtime | toolchain | usable |
+|---|---|---|---|
+| vulkan | `vulkan-1.dll` present (1,729,464 B) | Khronos ICD key **absent** | **true** |
+| cuda | `nvcuda.dll` absent | no toolkit, no `CUDA_PATH` | false |
+| rocm | `amdhip64.dll` present | **no SDK, no `HIP_PATH`, no hipcc** | **false** |
+
+Vulkan is reported usable because ggml-vulkan has actually run here; the absent Khronos ICD key is
+published rather than hidden so the two statements are visible side by side.
+
+**3. Loopback port literals (39 literals / 17 distinct ports).** Probed live (`data/port_audit.json`):
+only **8022** (this kernel) and **8593** (embeddings) answer. Closed: **1, 8000, 8021, 8080, 8091, 8587,
+8588, 8589, 8590, 8591, 8598, 8599, 8791, 8899, 11434**. Note `127.0.0.1:1` in `mamba_tier.rs` - a
+truncated literal rather than a port. A new `/inference/backends` endpoint publishes these as a live
+`port_contract` (400 ms connect per port), so a route whose service is missing reports a **closed port**
+instead of quietly returning a cached or empty answer.
+
+**Verified on `:8027` (fresh build, `target-c`):**
+`embedding.selected = llamacpp`; `vulkan usable true (loader true, icd false)`; `cuda usable false`;
+`rocm runtime_dll true, sdk_dir false, usable false`; `port_contract 2/16 reachable (8022, 8593)`.
+
