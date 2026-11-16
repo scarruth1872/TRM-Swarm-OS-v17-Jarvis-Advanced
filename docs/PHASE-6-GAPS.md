@@ -6927,3 +6927,41 @@ on :8022 with 404s and no sync, i.e. reachable but not this kernel.
 a secret is shared. "It works with our token" alone proves nothing - a handler that accepts everything
 looks identical from one sample.
 
+### G172. First real file transfer across the federation: 3 files, verified by hash on both sides  [MEASURED]
+
+`:22` came up keyed on the laptop (SAM account `shawn`; the tailnet identity `carruth@` is not a local
+account), so the last gap - `files synced: 0` - could finally be tested against real bytes.
+
+**Auth:** `ssh -i id_ed25519 -o BatchMode=yes shawn@100.123.215.119 "echo OK"` -> `OK`. Keys only, no
+password prompt, so the admin-ACL path (`C:\ProgramData\ssh\administrators_authorized_keys`, not
+`~/.ssh`) was correct - the trap named in the prompt was the one that would have bitten.
+
+**Transferred and re-verified, not asserted:**
+
+| file | bytes | sha256 | far side |
+|---|---|---|---|
+| `build/chembl_lpxc_real.k3` | 78,080 | `bc2f1d58...ee97bf` | identical |
+| `build/chembl_lpxc_real.k3.json` | 615 | `9dcf2eaa...a6b342` | identical |
+| `tools/audit_ingest_ledger.py` | 7,306 | `7dd1a1ac...627d7f` | identical |
+
+**The receiving host checked the shard's arithmetic itself**, which is the difference between moving
+bytes and moving a shard:
+
+```
+py -3 audit_ingest_ledger.py chembl_lpxc_real.k3.json
+=== chembl_lpxc_real.k3.json  (1 entries)
+  [PASS] chembl_lpxc
+         - shard verified: chembl_lpxc_real.k3
+RESULT: PASS
+```
+
+`files_synced` is now **3**, recorded in `swarm_v2_federation/transfers.json` with per-file hashes and
+the remote verification result.
+
+**Two findings from the far side:**
+1. The laptop's bare `python` is **Python 2** - `audit_ingest_ledger.py` died with `SyntaxError: invalid
+   syntax` on the function annotation before `py -3` ran it correctly. Any tool shipped to a peer must be
+   invoked with the launcher, not the bare name, or it fails in a way that looks like a broken script.
+2. Port 445 remains open to the same two addresses. With `:22` keyed and verified, SMB is now redundant
+   attack surface and should be shut rather than scoped.
+

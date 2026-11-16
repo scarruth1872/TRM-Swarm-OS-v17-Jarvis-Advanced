@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T14:04:50Z",
+  "audit_timestamp": "2026-11-16T15:07:45Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 75,
+    "empirical_confirmed": 76,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 75
+      "CONFIRMED": 76
     }
   },
   "articles": [
@@ -1857,6 +1857,18 @@
       ],
       "phoenix_audit_note": "Live probes to five configured peers with per-endpoint HTTP codes, byte counts and body hashes recorded in the sync ledger; the outbound bind was attempted and its refusal captured verbatim.",
       "finding": "The field laptop was reported offline for twenty hours, and it answered a ping in six milliseconds over the local network, which is the difference between what a coordination server believes and what the wire does. Access to it now works in one direction: its kernel reports its version, its module trees, a corpus of a hundred and eighty three thousand documents and a board of three thousand nine hundred finished cards, and each of those reads is logged with its HTTP code, its size and a hash of the bytes that came back. The other direction is closed on purpose. The laptop accepts a sync call but states plainly that it only checked a constant which is printed in every response, so nothing was authenticated, and this host refuses to listen beyond loopback without a token because an unauthenticated proposal endpoint would otherwise be open to any reachable machine. Both refusals are correct and neither can be worked around from one side. One peer completed a connection and answered nothing, which is the lesson worth keeping: a host that accepts a socket is not a host that has joined anything. File transfer remains at zero, with the reason written into the ledger, because a real share answered on the network and demanded credentials this agent does not hold."
+    },
+    {
+      "id": 259,
+      "section": "Federation",
+      "title": "Article 259 - Three Files That Actually Arrived",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g172",
+        "swarm_v2_federation/transfers.json"
+      ],
+      "phoenix_audit_note": "scp over keyed SSH with the file hashes computed on both machines, and the receiving host ran the shard auditor itself and returned PASS.",
+      "finding": "The federation moved real files today, which is the first time that sentence has been true. Three artifacts crossed to the laptop over keyed SSH: a shard of four hundred and six measured actives, its provenance record, and the auditor that checks such records. Nothing was accepted on the strength of a successful command. Each file's hash was computed on the sending machine and again on the receiving one, and all three matched byte for byte. Then the receiving machine ran the auditor against the shard and returned pass, meaning the far side re-derived the shard's own arithmetic rather than trusting the sender's. Two things were learned in the crossing. The laptop's plain python is an old interpreter that cannot parse modern type annotations, so a tool that ran perfectly here failed there with a syntax error until invoked through its version launcher, which is the kind of failure that gets misdiagnosed as a broken script. And the file sharing port is still open to the same two addresses even though the keyed shell now does the job, which means the convenient door is still unlocked next to the one with the lock on it."
     }
   ],
   "provenance_revision": {

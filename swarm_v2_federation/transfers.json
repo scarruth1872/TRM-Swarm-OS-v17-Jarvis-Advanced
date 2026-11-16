@@ -1,0 +1,49 @@
+{
+ "ledger": "federation_transfers",
+ "note": "Every entry is a file that physically left this host and was re-verified on the far side by SHA-256 and by the receiving host's own shard arithmetic. No entry exists without both.",
+ "transports": {
+  "ssh": {
+   "peer": "NODE-004 nspiredfitness",
+   "address": "100.123.215.119",
+   "port": 22,
+   "auth": "publickey (ed25519 trm-federation-desktop)",
+   "sam_account": "shawn"
+  },
+  "smb": {
+   "state": "open but unused for this transfer",
+   "recommendation": "shut it: :22 is now keyed"
+  }
+ },
+ "transfers": [
+  {
+   "at": "2026-11-16T15:07:45Z",
+   "direction": "desktop-mep4vqn -> nspiredfitness",
+   "files": [
+    {
+     "path": "build/chembl_lpxc_real.k3",
+     "bytes": 78080,
+     "sha256": "bc2f1d582a73522ea0414efa6e2d1a2e0506762def05380042ede7bfdfee97bf",
+     "remote_match": true
+    },
+    {
+     "path": "build/chembl_lpxc_real.k3.json",
+     "bytes": 615,
+     "sha256": "9dcf2eaa6a7fabbaa94789251906eb5ed0db22654a8dda65a9b7e48eaca6b342",
+     "remote_match": true
+    },
+    {
+     "path": "tools/audit_ingest_ledger.py",
+     "bytes": 7306,
+     "sha256": "7dd1a1acc812fdeb81bad7d7d4c90ff6573619343b9d6448419223f17b627d7f",
+     "remote_match": true
+    }
+   ],
+   "remote_verification": {
+    "tool": "certutil -hashfile SHA256 (all three matched byte-for-byte)",
+    "shard_audit": "py -3 audit_ingest_ledger.py chembl_lpxc_real.k3.json -> [PASS] shard verified",
+    "interpreter_note": "the laptop's bare `python` is Python 2 and fails on annotations; `py -3` works"
+   },
+   "files_synced": 3
+  }
+ ]
+}
