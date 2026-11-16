@@ -1,0 +1,21 @@
+{
+ "tag": "checkpoint-20261116-g202",
+ "head": "affe752",
+ "when": "2026-11-16T23:24:20Z",
+ "tests": {
+  "desktop": "107 passed / 0 failed / 0 ignored / 157.68s",
+  "laptop": "107 passed / 0 failed / 0 ignored / 173.30s"
+ },
+ "root_cause_448": "rustup 0-byte shim in the compile path + channel drift (1.98.0 vs 1.100.0); os error 10054 on the laptop, 448 where the guard is enforced",
+ "corpus": {
+  "transferred": "swarm_v2_chembl_fabric.ternary 625,286,709 B + .turbovec 648,469,181 B in 1m56s",
+  "audit": "both PASS (digest 4aad1a69... recomputed, size arithmetic exact)",
+  "native_encoder": "4,135 rec/s vs HTTP 16-17 rec/s"
+ },
+ "external_drives": {
+  "D": "WSL .vhdx 174.60 GB, trm-models 43.93 GB/34 GGUF, chembl_37.sdf 7,628.2 MB",
+  "E": "boot USB: EFI, nand fabric 73.2 MB, chembl fabric 1.99 GB, oracle dll 765,952 B",
+  "both_dirty": true,
+  "repair_owed": "chkdsk /f needs elevation + dismount"
+ }
+}
