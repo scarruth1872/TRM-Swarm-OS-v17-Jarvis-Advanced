@@ -6741,3 +6741,47 @@ Three bugs in the auditor itself were found by using it on our own artifacts: a 
 because `path` is also a source alias; the meta sidecar does not repeat its own path; and a hardcoded
 512-byte header wrongly failed our 128-byte-header shards (now derived, not assumed).
 
+### G167. Federation access to the 3070 laptop: reachable, and one-way for a reason  [MEASURED]
+
+Task: "sync federation nodes to access laptop". `federation_peers.json` carries
+`NODE-004 nspiredfitness (field laptop, RTX 3070) 100.123.215.119`, and its own `_transport_note`
+warned that no peer exposes a file-transfer path. Both halves of that warning held up, with one
+correction to the reachability claim.
+
+**Reachability.** `tailscale status` reports the laptop *idle; offline, last seen 20 h ago*. That is the
+control plane, not the wire: `tailscale ping` returns **pong from nspiredfitness via 192.168.1.148:41641
+in 6 ms**, i.e. it is on the same LAN and answers directly. TCP probe to :8022 = **8.7-11.2 ms**. The
+registry's `status: offline` for NODE-004 is stale relative to the actual path, and so is
+NODE-001 (this host's own tailnet address, unreachable from itself because the kernel binds loopback).
+
+**Access proven (read-only, state not files):**
+
+| peer | latency | what answered |
+|---|---|---|
+| NODE-004 laptop | 8.7 ms | `/system/health_matrix` -> `v20.0.0-sovereign`, `fabricated_modules_count 0`, 188 uefi / 41 trm-rust module trees; `/memory/stats` -> corpus **183,879 docs, dim 768**, `native-turbovec-hdc` built 2026-10-11; `/kanban/stats` -> **3,907 cards, all DONE** |
+| NODE-002 macpro | 58.6 ms | `/kanban/stats` 13 cards, `POST /federation/sync` -> `ok` |
+| NODE-003 station | 18.9 ms | :8022 open but **every known route 404** - something listens there, it is not this kernel. Reachable is not the same as federated |
+
+**Why it is one-way, and it is not a bug to paper over:** the laptop's `POST /federation/sync` answers
+`{"synced": false, "status": "recorded_unauthenticated"}`, with its own note:
+*"only the Monad anchor was checked, and that constant is published in every response, so this is NOT
+authentication"*. The reverse direction is blocked by a deliberate guard on our side: starting the
+kernel with `TRM_BIND_HOST=0.0.0.0` exits with
+`FATAL: refusing to bind 0.0.0.0 without COUNCIL_AUTH_TOKEN` - because unauthenticated
+`POST /council/propose` would otherwise be reachable from any host. Making the link bidirectional needs
+a shared secret set on **both** machines; we cannot set the laptop's environment from here, and inventing
+one locally would still leave the pair unauthenticated.
+
+**File sync: still zero, with the road named.** :8022 exposes no upload route; SMB
+`\\100.123.215.119` answers on 445 but `net view` fails (error 1702, no credential context) - a real
+transport that needs real credentials, which this agent does not hold and must not guess.
+
+**Deliverable: `tools/federation_sync.py`** - probes every configured peer, POSTs the sync endpoint,
+pulls `/system/health_matrix`, `/federation/status`, `/memory/stats`, `/kanban/stats` from whoever
+answers, and writes `swarm_v2_federation/sync_ledger.json` with per-endpoint HTTP code, byte count and
+SHA-256 of the response body. It reports `authenticated: 0` and `files_synced: 0` with the blocker text
+rather than a green light.
+
+Two findings kept, not smoothed: the control-plane "offline" label contradicts a measured 6 ms pong, and
+a peer that completes a TCP handshake while 404-ing every route is reachable without being federated.
+

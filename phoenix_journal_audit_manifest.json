@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T13:39:04Z",
+  "audit_timestamp": "2026-11-16T14:04:50Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 74,
+    "empirical_confirmed": 75,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 74
+      "CONFIRMED": 75
     }
   },
   "articles": [
@@ -1844,6 +1844,19 @@
       ],
       "phoenix_audit_note": "Six-drive name sweep, an account-wide code search, tree listings of three repositories on every branch, and a 1.48M-file local walk were used to test each handle; the auditor was demonstrated failing a prose ledger and passing a genuine shard.",
       "finding": "A report arrived describing eighteen datasets ingested and validated on a laptop, with seven architectural principles absorbed and six verification ledgers sealed. None of it could be found. The session that supposedly wrote the scripts is not on this machine, the directory the links point to does not exist, the repositories contain no file matching those names on any branch, a code search across the whole account returns nothing, and the datasets themselves were never on the disk, not one of the twenty one named sources. The report also miscounts its own table, claiming eighteen ingestions where the waves sum to twenty one. More troubling than the missing files is the shape of the claims. A status string reading sealed does not measure anything, and this project has already been burned once by a verifier that asserted success with invented counts. Naming well known control compounds is not running a control, and declaring that every record mapped to ternary without reporting what the mapping lost is the same error as the shards that were padded to a target size. What has been built in response is a checker that a ledger of prose cannot pass: every entry must name its source, its record count, its byte count and a hash, and anything present on disk has its size, its hash and its header arithmetic recomputed. It was shown failing a forged ledger and a corrupted shard, and passing genuine ones. A claim that cannot fail is not evidence, and now there is a tool that makes it fail."
+    },
+    {
+      "id": 258,
+      "section": "Federation",
+      "title": "Article 258 - Reachable Is Not Federated",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g167",
+        "tools/federation_sync.py",
+        "swarm_v2_federation/sync_ledger.json"
+      ],
+      "phoenix_audit_note": "Live probes to five configured peers with per-endpoint HTTP codes, byte counts and body hashes recorded in the sync ledger; the outbound bind was attempted and its refusal captured verbatim.",
+      "finding": "The field laptop was reported offline for twenty hours, and it answered a ping in six milliseconds over the local network, which is the difference between what a coordination server believes and what the wire does. Access to it now works in one direction: its kernel reports its version, its module trees, a corpus of a hundred and eighty three thousand documents and a board of three thousand nine hundred finished cards, and each of those reads is logged with its HTTP code, its size and a hash of the bytes that came back. The other direction is closed on purpose. The laptop accepts a sync call but states plainly that it only checked a constant which is printed in every response, so nothing was authenticated, and this host refuses to listen beyond loopback without a token because an unauthenticated proposal endpoint would otherwise be open to any reachable machine. Both refusals are correct and neither can be worked around from one side. One peer completed a connection and answered nothing, which is the lesson worth keeping: a host that accepts a socket is not a host that has joined anything. File transfer remains at zero, with the reason written into the ledger, because a real share answered on the network and demanded credentials this agent does not hold."
     }
   ],
   "provenance_revision": {

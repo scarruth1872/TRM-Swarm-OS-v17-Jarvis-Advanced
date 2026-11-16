@@ -1,0 +1,478 @@
+{
+ "ledger": "federation_sync",
+ "anchor": "0x4D4F4E4144000001",
+ "runs": [
+  {
+   "at": "2026-11-16T14:03:18Z",
+   "reachable": 3,
+   "configured": 5,
+   "authenticated": 0,
+   "files_synced": 0,
+   "files_sync_blocker": "no file transport to these peers: :8022 exposes no upload route, and SMB/445 on the laptop requires credentials this tool does not hold. Probing and state reads work; file sync must not be claimed.",
+   "auth_note": "peers verify the Monad anchor, which is a constant published in every response - that is not authentication, and each peer says so itself ('recorded_unauthenticated')",
+   "peers": [
+    {
+     "id": "NODE-001",
+     "name": "desktop-mep4vqn (this host, RX 6700 XT)",
+     "ip": "100.93.191.43",
+     "role": "master",
+     "reachable": false,
+     "latency_ms": null,
+     "error": "ConnectionRefusedError",
+     "pulls": []
+    },
+    {
+     "id": "NODE-002",
+     "name": "carruth-macpro5-1",
+     "ip": "100.76.102.6",
+     "role": "compute",
+     "reachable": true,
+     "latency_ms": 111.3,
+     "pulls": [
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 691,
+       "sha256": "27524f904ce7cd991b3b72bf20517fb5a0aa9660f84a1860abac11a91b55790c",
+       "endpoint": "/system/health_matrix",
+       "kernel_version": null,
+       "cpu_percent": null,
+       "fabricated_modules_count": null,
+       "module_trees": {}
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 32874,
+       "sha256": "e4193b959cdb3d246e93cd19f3816bba31ea7dce5eb6c1282964e0bca5c30f40",
+       "endpoint": "/federation/status",
+       "connected_nodes": null,
+       "monad_anchor": null
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 319,
+       "sha256": "75a9760d94a7c21a5e77d37bdc86ad4e61ced48490e10ca5634905a92d951aab",
+       "endpoint": "/memory/stats",
+       "total_memories": 5420,
+       "distinct_memories": null,
+       "corpus_documents": null,
+       "corpus_dim": null,
+       "corpus_model": null,
+       "corpus_built_at": null
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 120,
+       "sha256": "32614ce8c895a8e3a7b4b4c0405e2c155ceb6937e0405e781f92ed7d9e152c30",
+       "endpoint": "/kanban/stats",
+       "total_cards": 13,
+       "in_progress_count": 4,
+       "stale_count": null,
+       "status": "ACTIVE_CADENCE_ENGINE"
+      }
+     ],
+     "sync_post": {
+      "http": 200,
+      "error": null,
+      "body": {
+       "status": "ok"
+      }
+     }
+    },
+    {
+     "id": "NODE-003",
+     "name": "desktop-vb1t79v (station)",
+     "ip": "100.82.16.43",
+     "role": "station",
+     "reachable": true,
+     "latency_ms": 54.8,
+     "pulls": [
+      {
+       "http": 404,
+       "error": "HTTP 404",
+       "bytes": 146,
+       "sha256": "412de11b9c49d3c5b74574c261f89f23ec5263136c6e654c63ff39cd007d8c1e",
+       "endpoint": "/system/health_matrix",
+       "kernel_version": null,
+       "cpu_percent": null,
+       "fabricated_modules_count": null,
+       "module_trees": {}
+      },
+      {
+       "http": 404,
+       "error": "HTTP 404",
+       "bytes": 143,
+       "sha256": "00fad700d2db3ff6854849bd66af0e14619a436c11e7f413b29d1e347ac4e063",
+       "endpoint": "/federation/status",
+       "connected_nodes": null,
+       "monad_anchor": null
+      },
+      {
+       "http": 404,
+       "error": "HTTP 404",
+       "bytes": 138,
+       "sha256": "cef215c2f90a2f6505bf56b8a528280414e47e94eed0f535d19589e835fa5f16",
+       "endpoint": "/memory/stats",
+       "total_memories": null,
+       "distinct_memories": null,
+       "corpus_documents": null,
+       "corpus_dim": null,
+       "corpus_model": null,
+       "corpus_built_at": null
+      },
+      {
+       "http": 404,
+       "error": "HTTP 404",
+       "bytes": 138,
+       "sha256": "59fe9027d164202774f6208fbda56578bec53dd1571945d0e436e748ea8df90f",
+       "endpoint": "/kanban/stats",
+       "total_cards": null,
+       "in_progress_count": null,
+       "stale_count": null,
+       "status": null
+      }
+     ],
+     "sync_post": {
+      "http": 404,
+      "error": "HTTP 404",
+      "body": {
+       "error": "not_found",
+       "path": "/federation/sync",
+       "serves": [
+        "GET /health",
+        "GET /federation/stats",
+        "POST /sync"
+       ],
+       "surface": "v20-compat on :8022"
+      }
+     }
+    },
+    {
+     "id": "NODE-004",
+     "name": "nspiredfitness (field laptop, RTX 3070)",
+     "ip": "100.123.215.119",
+     "role": "field",
+     "reachable": true,
+     "latency_ms": 11.2,
+     "pulls": [
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 1250,
+       "sha256": "268c6dfcc6089815f771876b4aabed64ed236ab1ca6274e85f63e7de2be9a51f",
+       "endpoint": "/system/health_matrix",
+       "kernel_version": "v20.0.0-sovereign",
+       "cpu_percent": 46.09,
+       "fabricated_modules_count": 0,
+       "module_trees": {
+        "dll": 93,
+        "trm-rust": 41,
+        "uefi": 188
+       }
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 2562,
+       "sha256": "5a2555e8d6965c4c55ee067b841b4a7a3b26c6ae43ff6b0d431c962ea5f7981e",
+       "endpoint": "/federation/status",
+       "connected_nodes": 4,
+       "monad_anchor": "0x4D4F4E4144000001"
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 1126,
+       "sha256": "f47efdbef758dd698d8ebc1b91729b829c0bcafd14afb88fa1d1ef81e1596717",
+       "endpoint": "/memory/stats",
+       "total_memories": 199218,
+       "distinct_memories": null,
+       "corpus_documents": 183879,
+       "corpus_dim": 768,
+       "corpus_model": "native-turbovec-hdc",
+       "corpus_built_at": "2026-10-11T16:37:39Z"
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 200,
+       "sha256": "7870dd0d087f7403d8410b8adf4607538110ba08c0af5298d5d027206ffd604f",
+       "endpoint": "/kanban/stats",
+       "total_cards": 3907,
+       "in_progress_count": 0,
+       "stale_count": null,
+       "status": null
+      }
+     ],
+     "sync_post": {
+      "http": 200,
+      "error": null,
+      "body": {
+       "anchor_verified": true,
+       "auth": {
+        "mode": "anchor_only",
+        "note": "no shared secret configured: only the Monad anchor was checked, and that constant is published in every response, so this is NOT authentication",
+        "verified": false
+       },
+       "caller_node_id": "unknown",
+       "connected_nodes": 4,
+       "monad_anchor": "0x4D4F4E4144000001",
+       "status": "recorded_unauthenticated",
+       "synced": false,
+       "total_nodes": 6
+      }
+     }
+    },
+    {
+     "id": "NODE-005",
+     "name": "shawns-s25-ultra",
+     "ip": "100.114.251.33",
+     "role": "tactical",
+     "reachable": false,
+     "latency_ms": null,
+     "error": "ConnectionRefusedError",
+     "pulls": []
+    }
+   ]
+  },
+  {
+   "at": "2026-11-16T14:04:24Z",
+   "reachable": 3,
+   "configured": 5,
+   "authenticated": 0,
+   "files_synced": 0,
+   "files_sync_blocker": "no file transport to these peers: :8022 exposes no upload route, and SMB/445 on the laptop requires credentials this tool does not hold. Probing and state reads work; file sync must not be claimed.",
+   "auth_note": "peers verify the Monad anchor, which is a constant published in every response - that is not authentication, and each peer says so itself ('recorded_unauthenticated')",
+   "peers": [
+    {
+     "id": "NODE-001",
+     "name": "desktop-mep4vqn (this host, RX 6700 XT)",
+     "ip": "100.93.191.43",
+     "role": "master",
+     "reachable": false,
+     "latency_ms": null,
+     "error": "ConnectionRefusedError",
+     "pulls": []
+    },
+    {
+     "id": "NODE-002",
+     "name": "carruth-macpro5-1",
+     "ip": "100.76.102.6",
+     "role": "compute",
+     "reachable": true,
+     "latency_ms": 58.6,
+     "pulls": [
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 702,
+       "sha256": "c4407f78b9fa0b128ff811e9a668c5f6e459c37cf72beddbc3ffcb8fe154447c",
+       "endpoint": "/system/health_matrix",
+       "kernel_version": null,
+       "cpu_percent": null,
+       "fabricated_modules_count": null,
+       "module_trees": {}
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 32874,
+       "sha256": "e4193b959cdb3d246e93cd19f3816bba31ea7dce5eb6c1282964e0bca5c30f40",
+       "endpoint": "/federation/status",
+       "connected_nodes": null,
+       "monad_anchor": null
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 319,
+       "sha256": "75a9760d94a7c21a5e77d37bdc86ad4e61ced48490e10ca5634905a92d951aab",
+       "endpoint": "/memory/stats",
+       "total_memories": 5420,
+       "distinct_memories": null,
+       "corpus_documents": null,
+       "corpus_dim": null,
+       "corpus_model": null,
+       "corpus_built_at": null
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 120,
+       "sha256": "32614ce8c895a8e3a7b4b4c0405e2c155ceb6937e0405e781f92ed7d9e152c30",
+       "endpoint": "/kanban/stats",
+       "total_cards": 13,
+       "in_progress_count": 4,
+       "stale_count": null,
+       "status": "ACTIVE_CADENCE_ENGINE"
+      }
+     ],
+     "sync_post": {
+      "http": 200,
+      "error": null,
+      "body": {
+       "status": "ok"
+      }
+     }
+    },
+    {
+     "id": "NODE-003",
+     "name": "desktop-vb1t79v (station)",
+     "ip": "100.82.16.43",
+     "role": "station",
+     "reachable": true,
+     "latency_ms": 18.9,
+     "pulls": [
+      {
+       "http": 404,
+       "error": "HTTP 404",
+       "bytes": 146,
+       "sha256": "412de11b9c49d3c5b74574c261f89f23ec5263136c6e654c63ff39cd007d8c1e",
+       "endpoint": "/system/health_matrix",
+       "kernel_version": null,
+       "cpu_percent": null,
+       "fabricated_modules_count": null,
+       "module_trees": {}
+      },
+      {
+       "http": 404,
+       "error": "HTTP 404",
+       "bytes": 143,
+       "sha256": "00fad700d2db3ff6854849bd66af0e14619a436c11e7f413b29d1e347ac4e063",
+       "endpoint": "/federation/status",
+       "connected_nodes": null,
+       "monad_anchor": null
+      },
+      {
+       "http": 404,
+       "error": "HTTP 404",
+       "bytes": 138,
+       "sha256": "cef215c2f90a2f6505bf56b8a528280414e47e94eed0f535d19589e835fa5f16",
+       "endpoint": "/memory/stats",
+       "total_memories": null,
+       "distinct_memories": null,
+       "corpus_documents": null,
+       "corpus_dim": null,
+       "corpus_model": null,
+       "corpus_built_at": null
+      },
+      {
+       "http": 404,
+       "error": "HTTP 404",
+       "bytes": 138,
+       "sha256": "59fe9027d164202774f6208fbda56578bec53dd1571945d0e436e748ea8df90f",
+       "endpoint": "/kanban/stats",
+       "total_cards": null,
+       "in_progress_count": null,
+       "stale_count": null,
+       "status": null
+      }
+     ],
+     "sync_post": {
+      "http": 404,
+      "error": "HTTP 404",
+      "body": {
+       "error": "not_found",
+       "path": "/federation/sync",
+       "serves": [
+        "GET /health",
+        "GET /federation/stats",
+        "POST /sync"
+       ],
+       "surface": "v20-compat on :8022"
+      }
+     }
+    },
+    {
+     "id": "NODE-004",
+     "name": "nspiredfitness (field laptop, RTX 3070)",
+     "ip": "100.123.215.119",
+     "role": "field",
+     "reachable": true,
+     "latency_ms": 8.7,
+     "pulls": [
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 1250,
+       "sha256": "7ec37b12158a3bc660d8dcd003fb2d40706cb8e806e61cac793aaf54110ca4b2",
+       "endpoint": "/system/health_matrix",
+       "kernel_version": "v20.0.0-sovereign",
+       "cpu_percent": 47.31,
+       "fabricated_modules_count": 0,
+       "module_trees": {
+        "dll": 93,
+        "trm-rust": 41,
+        "uefi": 188
+       }
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 2562,
+       "sha256": "698b818eeb9f3cb0a7e701bc16852b4663decadb1ff0d7b8bacd7cdc4aeda44b",
+       "endpoint": "/federation/status",
+       "connected_nodes": 4,
+       "monad_anchor": "0x4D4F4E4144000001"
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 1126,
+       "sha256": "f47efdbef758dd698d8ebc1b91729b829c0bcafd14afb88fa1d1ef81e1596717",
+       "endpoint": "/memory/stats",
+       "total_memories": 199218,
+       "distinct_memories": null,
+       "corpus_documents": 183879,
+       "corpus_dim": 768,
+       "corpus_model": "native-turbovec-hdc",
+       "corpus_built_at": "2026-10-11T16:37:39Z"
+      },
+      {
+       "http": 200,
+       "error": null,
+       "bytes": 200,
+       "sha256": "7870dd0d087f7403d8410b8adf4607538110ba08c0af5298d5d027206ffd604f",
+       "endpoint": "/kanban/stats",
+       "total_cards": 3907,
+       "in_progress_count": 0,
+       "stale_count": null,
+       "status": null
+      }
+     ],
+     "sync_post": {
+      "http": 200,
+      "error": null,
+      "body": {
+       "anchor_verified": true,
+       "auth": {
+        "mode": "anchor_only",
+        "note": "no shared secret configured: only the Monad anchor was checked, and that constant is published in every response, so this is NOT authentication",
+        "verified": false
+       },
+       "caller_node_id": "unknown",
+       "connected_nodes": 4,
+       "monad_anchor": "0x4D4F4E4144000001",
+       "status": "recorded_unauthenticated",
+       "synced": false,
+       "total_nodes": 6
+      }
+     }
+    },
+    {
+     "id": "NODE-005",
+     "name": "shawns-s25-ultra",
+     "ip": "100.114.251.33",
+     "role": "tactical",
+     "reachable": false,
+     "latency_ms": null,
+     "error": "ConnectionRefusedError",
+     "pulls": []
+    }
+   ]
+  }
+ ]
+}
