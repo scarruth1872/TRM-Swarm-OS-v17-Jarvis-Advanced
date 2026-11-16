@@ -54,3 +54,34 @@ of ingested data until a real ingest exists; `docs/NOBEL-PAPER-2026-01-REV.md` c
 2. Replace the sine seed with a real per-record embedding loop.
 3. Publish per-shard record counts that equal the number of records actually embedded, never a padding
    target.
+
+## Real shards (G164)
+
+`tools/k3_ingest_real.py` builds shards from records that exist on this machine, with none of the
+padding behaviour above:
+
+* header trit count = `records x dim` actually written; `padding_bytes` is a hard 0
+* payload length = exactly `records x dim / 4` bytes
+* seal = SHA-256 over the payload that was written (not over padding)
+* quantization fidelity is **measured** (decode -> cosine vs the original unit vector) and reported,
+  because 2-bit codes are lossy
+
+Sources that genuinely exist here:
+
+| corpus | file | records | status |
+|---|---|---|---|
+| ChEMBL molecules | `scratch/wt_memory/swarm_v2_artifacts/chembl_smiles.json` | 44,401 | ingested -> `build/chembl_real.k3` |
+| ChEMBL LpxC actives (measured Ki) | `evidence/chembl_lpxc_actives.json` | 406 | ingested -> `build/chembl_lpxc_real.k3` |
+| ChEMBL name index | `chembl_name_index.json` | 130,053 | available, not yet indexed |
+
+PDBbind, BindingDB, ChEMBL-37 full bioactivity, FAERS, Tox21, ESKAPE: searched all six fixed drives
+(6,432,474 files, 1,161 s, name + >20 MB data sweep) and found no source corpus. WSL is not a location
+on this box (`wsl.exe`: "virtualization is not enabled"); the only WSL artifact is a 393 GB backup VHDX
+in `D:\WindowsImageBackup`. Until those corpora are fetched, any shard claiming them is a placeholder.
+
+Build:
+```
+python tools/k3_ingest_real.py --source chembl_lpxc
+python tools/k3_ingest_real.py --source chembl
+python tools/k3_ingest_real.py --verify build/chembl_real.k3
+```

@@ -6603,3 +6603,44 @@ these are placeholders and must not be counted as knowledge.
 `swarm_v2_global_memory/fabric/` is real text embeddings of real archive records (G160/G162). The `.k3`
 shards are unrelated synthetic bit patterns. Only the former supports retrieval.
 
+### G164. Erratum to G163: the data was on the machine, and real shards now exist  [MEASURED]
+
+G163 said "none of those datasets exist on this machine (checked F:/downloads and the repo)". Two
+directories is not a search. The user pushed back; this is the correction, with the search that should
+have come first.
+
+**Search performed:** all six fixed drives (C, D, E, F, G, J), **6,432,474 files, 1,161 s**, name
+matching on the corpus keywords plus a size sweep for any data file above 20 MB. Then a second,
+content-based sweep of `F:\Development sites` (matching file contents for `smiles`/`ic50`/`uniprot`/
+`chembl`/`drugbank`/`hmdb`...), because the first sweep proved that names alone miss things.
+
+**What exists and was missed:**
+* `F:\Development sites\datasets\smpdb_proteins.csv\` - **21,121 per-pathway CSVs**. It is a *directory*
+  whose name looks like a file, and every file in it is 966 bytes, so both name matching and any
+  ">20 MB" filter step straight over it.
+* `chembl_smiles.json` - **44,401 molecules** (5 duplicate copies under `scratch/wt_*` and `staging/v20`)
+* `chembl_name_index.json` - **130,053** named compounds
+* `evidence/chembl_lpxc_actives.json` - **406** actives with measured Ki
+* `CHIR-090_3D.sdf`, `TRM-ABX-219_3D.sdf`, `TRM-ABX-082_3D.sdf` - real 3D structures
+
+**What is genuinely absent after the full sweep:** PDBbind, BindingDB, ChEMBL-37 full bioactivity, FAERS,
+Tox21, ESKAPE source corpora. WSL is not a location on this box (`wsl.exe`: "virtualization is not
+enabled"); the only WSL artifact is a 393 GB backup VHDX. The antigravity brain (41 dirs) holds no
+dataset files.
+
+**The fix - `tools/k3_ingest_real.py`:** builds shards from real records, fail-closed if the source is
+missing, header trit count = `records x dim` actually written, `padding_bytes` hard 0, payload length
+exactly `records x dim / 4`, SHA-256 seal over the written payload, and quantization fidelity measured
+because 2-bit codes are lossy.
+
+| shard | records | dim | trits | padding | seal | fidelity (cos) |
+|---|---|---|---|---|---|---|
+| `build/chembl_real.k3` | 44,401 | 768 | 34,099,968 | 0 | matches | 0.8416 |
+| `build/chembl_lpxc_real.k3` | 406 | 768 | 311,808 | 0 | matches | 0.8144 |
+
+102 long SMILES exceeded the server's 512-token physical batch and were chunk-pooled (split, embedded,
+mean-pooled, renormalised) - counted in `chunk_pooled_records`, never dropped.
+
+**Lesson (the same one as G159):** a null result from a search that did not look is not evidence of
+absence. Enumerate every drive and match on content, not on the filename you expect.
+

@@ -1,0 +1,304 @@
+"""k3_ingest_real.py - build K3 shards from records that actually exist.
+
+Replaces the sine-wave + padding generator (G163) for any corpus that is genuinely on this machine.
+
+Contract:
+  * every record written comes from a real source file, one embedding per record;
+  * the header's trit count equals records * dim of data actually written - never a padding target;
+  * the file is not padded: payload length = ceil(records * dim / 4) bytes exactly;
+  * the seal is SHA-256 over the payload that was written;
+  * quantization fidelity is measured (decode -> cosine vs original unit vector) and reported,
+    because 2-bit codes are lossy and claiming otherwise would be the same lie in a new shape.
+
+Usage:
+  python tools/k3_ingest_real.py --source chembl --limit 5000
+  python tools/k3_ingest_real.py --source chembl            # all records
+  python tools/k3_ingest_real.py --verify build/chembl_real.k3
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import json
+import math
+import os
+import struct
+import sys
+import time
+import urllib.error
+import urllib.request
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+EMBED_URL = "http://127.0.0.1:8593/v1/embeddings"
+MODELS_URL = "http://127.0.0.1:8593/v1/models"
+MONAD_ANCHOR = 0x4D4F4E4144000001
+CODES_PER_BYTE = 4
+
+SOURCES = {
+    "chembl": {
+        "shard_id": 101,
+        "files": ["scratch/wt_memory/swarm_v2_artifacts/chembl_smiles.json",
+                  "scratch/wt_models/swarm_v2_artifacts/chembl_smiles.json"],
+        "kind": "smiles_map",
+    },
+    "chembl_lpxc": {
+        "shard_id": 102,
+        "files": ["evidence/chembl_lpxc_actives.json"],
+        "kind": "actives_list",
+    },
+    # F:\Development sites\datasets\smpdb_proteins.csv is a DIRECTORY whose 21,121 per-pathway
+    # CSVs all carry the same 966-byte shape - name-based sweeps never look inside it (G165).
+    "smpdb": {
+        "shard_id": 103,
+        "files": ["F:/Development sites/datasets/smpdb_proteins.csv"],
+        "kind": "smpdb_dir",
+    },
+}
+
+
+def _post(url: str, payload: dict, timeout: int = 180) -> dict:
+    req = urllib.request.Request(url, data=json.dumps(payload).encode(),
+                                 headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.loads(r.read())
+
+
+def model_id() -> str:
+    with urllib.request.urlopen(MODELS_URL, timeout=15) as r:
+        m = json.loads(r.read())["models"][0]
+    # this server reports name/model, not id (checked 2026-11-16) - fall back rather than return None
+    return m.get("id") or m.get("model") or m.get("name")
+
+
+def embed(texts: list[str], model: str, dim: int) -> list[list[float]]:
+    resp = _post(EMBED_URL, {"model": model, "input": texts})
+    rows = [d["embedding"] for d in resp["data"]]
+    for r in rows:
+        if len(r) != dim:
+            raise RuntimeError(f"dimension mismatch: got {len(r)}, expected {dim}")
+    return rows
+
+
+def load_records(name: str, limit: int | None) -> list[tuple[str, str]]:
+    spec = SOURCES[name]
+    path = next((f if os.path.isabs(f) else os.path.join(ROOT, f)
+                 for f in spec["files"] if os.path.exists(f if os.path.isabs(f) else os.path.join(ROOT, f))), None)
+    if not path:
+        raise SystemExit(f"FAIL-CLOSED: none of {spec['files']} exist - refusing to synthesise records")
+    if spec["kind"] == "smpdb_dir":
+        out: list[tuple[str, str]] = []
+        for dp, _dn, fn in os.walk(path):
+            for f in sorted(fn):
+                if not f.lower().endswith(".csv"):
+                    continue
+                with open(os.path.join(dp, f), encoding="utf-8", errors="ignore") as fh:
+                    rows = list(csv.DictReader(fh))
+                for r in rows:
+                    prot = (r.get("Protein Name") or "").strip()
+                    acc = (r.get("Uniprot ID") or "").strip()
+                    if not prot and not acc:
+                        continue
+                    out.append((f"{r.get('SMPDB ID','?')}:{acc}",
+                                f"SMPDB pathway {r.get('Pathway Name','?')} ({r.get('Pathway Subject','?')}) "
+                                f"protein {prot} uniprot {acc} gene {r.get('Gene Name','?')} "
+                                f"hmdb {r.get('HMDBP ID','?')} drugbank {r.get('DrugBank ID','?')}"))
+                    if limit and len(out) >= limit:
+                        return out
+        if not out:
+            raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 protein rows")
+        return out
+    data = json.load(open(path, encoding="utf-8"))
+    out: list[tuple[str, str]] = []
+    if spec["kind"] == "smiles_map":
+        for cid, smi in data.items():
+            if not smi:
+                continue
+            out.append((cid, f"ChEMBL molecule {cid} SMILES {smi}"))
+    elif spec["kind"] == "actives_list":
+        for r in data:
+            smi = r.get("smiles") or ""
+            val = r.get("value_nM")
+            if not smi:
+                continue
+            out.append((r.get("chembl_id", "?"),
+                        f"ChEMBL {r.get('chembl_id','?')} measured {r.get('type','Ki')} "
+                        f"{val} nM against {r.get('assay','?')[:90]} SMILES {smi}"))
+    else:
+        raise SystemExit(f"unknown source kind {spec['kind']}")
+    if not out:
+        raise SystemExit(f"FAIL-CLOSED: {path} produced 0 usable records")
+    if limit:
+        out = out[:limit]
+    return out
+
+
+def quantize(vec: list[float]) -> tuple[bytearray, float, float]:
+    """Per-vector symmetric 2-bit quantization. Returns (packed, scale, min) - same on-disk layout
+    as the legacy shards so existing readers still work, but the codes come from a real vector."""
+    n = math.sqrt(sum(x * x for x in vec)) or 1.0
+    v = [x / n for x in vec]
+    lo, hi = min(v), max(v)
+    span = (hi - lo) if (hi - lo) > 1e-8 else 1.0
+    codes = [int(round(((x - lo) / span) * 3.0)) & 0x03 for x in v]
+    packed = bytearray(len(codes) // CODES_PER_BYTE)
+    for i in range(0, len(codes) - 3, CODES_PER_BYTE):
+        packed[i // CODES_PER_BYTE] = (codes[i] | (codes[i + 1] << 2) |
+                                       (codes[i + 2] << 4) | (codes[i + 3] << 6))
+    return packed, span, lo
+
+
+def dequantize(packed: bytes, dim: int, span: float, lo: float) -> list[float]:
+    codes = []
+    for b in packed[: dim // CODES_PER_BYTE]:
+        codes += [b & 3, (b >> 2) & 3, (b >> 4) & 3, (b >> 6) & 3]
+    v = [lo + (c / 3.0) * span for c in codes[:dim]]
+    n = math.sqrt(sum(x * x for x in v)) or 1.0
+    return [x / n for x in v]
+
+
+def build(source: str, limit: int | None, out_path: str, batch: int = 16) -> dict:
+    records = load_records(source, limit)
+    model = model_id()
+    print(f"model={model[:48]}…  records={len(records)}", flush=True)
+    dim = None
+    payload = bytearray()
+    scales = []
+    fidelity = []
+    started = time.time()
+    counters = {"pooled": 0, "skipped": 0}
+
+    def is_too_large(err: urllib.error.HTTPError) -> bool:
+        detail = err.read().decode("utf-8", "ignore")
+        return err.code == 500 and ("too large" in detail or "batch size" in detail)
+
+    def embed_one(text: str) -> list[float]:
+        """Embed one record. The server's physical batch is 512 tokens, so anything longer is split
+        into pieces that are shrunk until they fit, then mean-pooled and renormalised. Never dropped."""
+        try:
+            return embed([text], model, dim or 768)[0]
+        except urllib.error.HTTPError as e:
+            if not is_too_large(e):
+                raise
+        for size in (600, 400, 250, 120):
+            pieces = [text[j:j + size] for j in range(0, len(text), size)]
+            try:
+                pv = embed(pieces, model, dim or 768)
+            except urllib.error.HTTPError as e:
+                if is_too_large(e):
+                    continue
+                raise
+            counters["pooled"] += 1
+            n = len(pv)
+            mean = [sum(col) / n for col in zip(*pv)]
+            norm = math.sqrt(sum(x * x for x in mean)) or 1.0
+            return [x / norm for x in mean]
+        raise RuntimeError("record could not be embedded even at 120 chars - refusing to skip silently")
+
+    for i in range(0, len(records), batch):
+        chunk = records[i:i + batch]
+        try:
+            vecs = embed([t for _, t in chunk], model, dim or 768)
+        except urllib.error.HTTPError as e:
+            if not is_too_large(e):
+                raise
+            vecs = [embed_one(t) for _, t in chunk]
+        if dim is None:
+            dim = len(vecs[0])
+        for vec in vecs:
+            packed, span, lo = quantize(vec)
+            payload.extend(packed)
+            scales.append((round(span, 6), round(lo, 6)))
+            if len(fidelity) < 24:  # measure on a sample - decoding all 44k is wasted work
+                dec = dequantize(packed, dim, span, lo)
+                nv = math.sqrt(sum(x * x for x in vec)) or 1.0
+                orig = [x / nv for x in vec]
+                fidelity.append(sum(a * b for a, b in zip(orig, dec)))
+        done = min(i + batch, len(records))
+        if done % (batch * 20) == 0:
+            rate = done / max(time.time() - started, 1e-9)
+            print(f"  {done}/{len(records)}  {rate:.1f}/s", flush=True)
+
+    if not payload or dim is None:
+        raise SystemExit("FAIL-CLOSED: no payload produced")
+    n_records = len(payload) // (dim // CODES_PER_BYTE)
+
+    header = bytearray(128)
+    header[0:8] = b"TURBOVEC"
+    struct.pack_into("<Q", header, 8, MONAD_ANCHOR)
+    struct.pack_into("<Q", header, 16, n_records * dim)      # trits actually written
+    struct.pack_into("<I", header, 24, SOURCES[source]["shard_id"])
+    struct.pack_into("<I", header, 28, dim)
+    struct.pack_into("<I", header, 32, 16)                    # 32-bit float -> 2-bit code
+    struct.pack_into("<Q", header, 36, 128)                   # payload offset
+    struct.pack_into("<I", header, 44, n_records)             # record count, real
+    struct.pack_into("<I", header, 48, 0)                     # padding bytes: always 0 (G164)
+
+    seal = hashlib.sha256(payload).digest()
+    header[96:128] = seal
+
+    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+    with open(out_path, "wb") as f:
+        f.write(header)
+        f.write(payload)
+
+    meta = {
+        "source": source,
+        "source_files": SOURCES[source]["files"],
+        "model": model,
+        "dim": dim,
+        "records": n_records,
+        "trits": n_records * dim,
+        "payload_bytes": len(payload),
+        "file_bytes": os.path.getsize(out_path),
+        "padding_bytes": 0,
+        "seal_sha256": seal.hex(),
+        "quantization": "2-bit symmetric per vector, 4 codes/byte",
+        "fidelity_cosine_sample": round(sum(fidelity) / len(fidelity), 4) if fidelity else None,
+        "fidelity_n": len(fidelity),
+        "chunk_pooled_records": counters["pooled"],
+        "seconds": round(time.time() - started, 1),
+        "built_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    }
+    with open(out_path + ".json", "w", encoding="utf-8") as fh:
+        json.dump(meta, fh, indent=2)
+    return meta
+
+
+def verify(path: str) -> dict:
+    raw = open(path, "rb").read()
+    if raw[:8] != b"TURBOVEC":
+        raise SystemExit("not a TURBOVEC shard")
+    trits = struct.unpack_from("<Q", raw, 16)[0]
+    dim = struct.unpack_from("<I", raw, 28)[0]
+    records = struct.unpack_from("<I", raw, 44)[0]
+    pad = struct.unpack_from("<I", raw, 48)[0]
+    seal = raw[96:128]
+    payload = raw[128:]
+    ok = hashlib.sha256(payload).digest() == seal
+    return {"path": path, "dim": dim, "records": records, "trits": trits,
+            "payload_bytes": len(payload), "expected_payload": records * dim // CODES_PER_BYTE,
+            "padding_bytes": pad, "seal_matches": ok,
+            "exact": len(payload) == records * dim // CODES_PER_BYTE}
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--source", choices=sorted(SOURCES), help="corpus to ingest")
+    ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--out", default=None)
+    ap.add_argument("--verify", default=None, help="verify an existing shard instead of building")
+    a = ap.parse_args()
+    if a.verify:
+        print(json.dumps(verify(a.verify), indent=2))
+        return 0
+    if not a.source:
+        ap.error("--source or --verify is required")
+    out = a.out or os.path.join(ROOT, "build", f"{a.source}_real.k3")
+    print(json.dumps(build(a.source, a.limit, out), indent=2))
+    print(json.dumps(verify(out), indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

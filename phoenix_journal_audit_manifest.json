@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T12:41:32Z",
+  "audit_timestamp": "2026-11-16T13:25:19Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 71,
+    "empirical_confirmed": 72,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 71
+      "CONFIRMED": 72
     }
   },
   "articles": [
@@ -1804,6 +1804,20 @@
       ],
       "phoenix_audit_note": "Byte-level scan of all shards (non-zero fraction, distinct block counts), generator source read in full, path references searched repo-wide before deletion.",
       "finding": "The file that GitHub objected to, seventy three megabytes of a knowledge fabric, held eighteen non zero bytes. It was deleted, and nothing in the tree had ever referenced it. Looking at how the other shards were made explained the rest: the ingestion script says in its own comment that it generates a sample pseudo vector for each shard from a sine function, quantizes it, and then repeats that payload until the file reaches whatever size was asked for, writing the checksum of the padding into the header as a seal. The catalogue beside it lists real corpora with millions of records, and none of that content is ever read, because none of it is on this machine. A clinical trials shard repeats its payload two and a half times. So the answer to what to do with these files is not to compress them or move them to a release; it is to stop calling them knowledge. They are untracked, their sizes and hashes are recorded so a copy can still be verified, and the document says plainly that the shards are placeholders. The search fabric is a different thing and is real: a hundred and sixty nine thousand vectors of actual archive text. Only that one answers questions."
+    },
+    {
+      "id": 255,
+      "section": "Memory",
+      "title": "Article 255 - Two Directories Are Not a Search",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g164",
+        "docs/K3-ASSETS.md",
+        "tools/k3_ingest_real.py",
+        "build/chembl_real.k3.json"
+      ],
+      "phoenix_audit_note": "Six-drive sweep (6,432,474 files, 1,161 s) plus a content-based rescan; shard headers and seals verified with --verify after building.",
+      "finding": "The previous article said the datasets were not on this machine. They were. The claim came from looking in two directories, and the search that should have preceded it found the real corpora within a minute of being run properly: twenty one thousand pathway files from SMPDB, forty four thousand molecules from ChEMBL with their SMILES, a hundred and thirty thousand compound names, and four hundred actives with measured inhibition constants. The SMPDB set had been invisible twice over, because its folder is named as though it were a file and every file inside it is nine hundred and sixty six bytes, so neither a name match nor a size filter could see it. What the full sweep did confirm is that the binding affinity corpora the shards advertised are genuinely absent, which is a different and much narrower statement than the one previously published. The synthetic shards have been replaced for the corpora that exist: the new builder refuses to run when its source is missing, writes a header whose trit count equals the data actually written, pads nothing, seals the payload it wrote, and reports how much the two bit quantization cost, which for the ChEMBL molecules is a cosine of zero point eight four against the original vectors. The lesson is the same one this project keeps relearning: a search that did not look is not evidence of absence."
     }
   ],
   "provenance_revision": {
