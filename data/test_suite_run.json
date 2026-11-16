@@ -1,0 +1,16 @@
+{
+ "when": "2026-11-16T20:08:51Z",
+ "total": 107,
+ "passed": 105,
+ "failed": 0,
+ "ignored": {
+  "native_ternary::parity::port_reproduces_the_dll_exports": "oracle absent: no swarm_rust_kernel.dll on this machine exports rust_ternary_quantize",
+  "native_encoder::encoder_parity::port_reproduces_the_dll_export": "oracle absent: no embedding engine export available on this machine"
+ },
+ "fixed": [
+  "assets/parity_vectors.f32 (synthetic, labelled, 49152 B)",
+  "crate::turbovec declared at crate root",
+  "gpu_scan_parity skips on absent packed store instead of unwrapping"
+ ],
+ "duration_s": 157.51
+}

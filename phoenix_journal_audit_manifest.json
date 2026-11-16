@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T19:35:06Z",
+  "audit_timestamp": "2026-11-16T20:10:09Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 92,
+    "empirical_confirmed": 94,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 92
+      "CONFIRMED": 94
     }
   },
   "articles": [
@@ -2077,6 +2077,32 @@
       ],
       "phoenix_audit_note": "Checkpoint tag 1447a72 pushed and remote-verified before any transfer. Five push passes, each hash-verified far-side and each with backups taken in the same operation. Final far-side result is a compiler run: Finished 49.07s, 0 errors, 32,684,032-byte binary.",
       "finding": "A checkpoint was written and verified on the remote before a single byte moved, and then the transfer took five passes, which is what a transfer honestly costs when the destination has been drifting. The first pass installed everything and my own validator found that two of the three modules I had just spent a day proving were not even declared in the file I shipped. The second pass hit a wall made of names: two functions existed on both sides with identical names and incompatible signatures, one describing an architecture and one matching bytes, so the behaviour travelled under new names instead. The third pass discovered the destination was missing twenty six whole files. The fourth found three symbols my earlier ports had used but never carried. The fifth found a hand-typed constant that this side had deliberately replaced with a measurement, and patched the caller rather than resurrect the constant. At the end the compiler on that machine finished in forty nine seconds with no errors and left a thirty two megabyte binary. Underneath all of it lay the real reason none of this had been noticed: that machine's cargo and rustc are zero byte symlinks that Windows will not execute, so no one there could have compiled anything, and the platform has been shipping as a folder of source files rather than as a program that builds."
+    },
+    {
+      "id": 276,
+      "section": "Verification",
+      "title": "Article 276 - The Fixture That Could Not Be Recovered",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g196",
+        "scratch/gen_parity_vectors.py",
+        "docs/port/laptop-base/pushed/parity_vectors.f32"
+      ],
+      "phoenix_audit_note": "Searched both machines and the repo for kernel_knowledge_index.json and the original generator: neither exists. Fixture regenerated as explicitly labelled synthetic; test suite run: 105 passed, 0 failed, 2 ignored with named missing oracles.",
+      "finding": "For months one tree had been unable to compile its own tests, and the last obstacle was a file of sixteen vectors. The file was real once, cut from an index of a hundred and eighty three thousand documents, by a script that no longer exists anywhere, from data that is now on neither machine. The choice was to synthesise it quietly under the old name, or to synthesise it and say so in the source. Saying so costs nothing except the illusion that the corpus is still there, so the generator was rewritten with a fixed seed, the comment was rewritten to call the numbers synthetic, and the test kept the only thing it ever really checked: that the port reproduces the library's own answers. Running the suite then showed three failures, and not one was the code's fault. Two needed oracle libraries that this machine has never held - one symbol searched for in all three builds of the library and in its source, present nowhere - and one unwrapped a storage file that simply is not on this disk. The honest repair was not to make them pass but to make them say why they had not run. The suite now reports a hundred and five passing, none failing, and two skipped with the reason in the skip itself."
+    },
+    {
+      "id": 277,
+      "section": "Federation",
+      "title": "Article 277 - What the Second Machine Can Do",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g197",
+        "data/test_suite_run.json",
+        "data/orphan_capability.json"
+      ],
+      "phoenix_audit_note": "Far-side: release build 0 errors 49.07s; test profile blocked by os error 448 (untrusted mount point) in a fresh target dir and at link in the existing one. Local suite: 105 passed, 0 failed, 2 ignored. No administrator settings changed; every overwrite backed up.",
+      "finding": "After a day of transfers the honest question was no longer whether the code was right but what each machine could actually do. One machine ran the whole suite, a hundred and five tests passing and two skipped with their reasons named. The other built the release binary in forty nine seconds and then could not produce a test binary at all, because Windows refused to let the compiler run when its command line passed through a path it did not trust. That refusal is not a defect in the platform and no amount of code will move it; it is a setting on a machine, and settings on machines belong to whoever owns them. So the report lists what is proven where - build here, tests there, runtime behaviour nowhere for a module that needs firmware to run - and leaves the one decision that requires an administrator where it belongs. The instruction to send a message if approval were needed could not be followed either, because no messaging channel exists on this session; the correct response to that was not to guess at an approval but to attempt nothing that would have required one."
     }
   ],
   "provenance_revision": {

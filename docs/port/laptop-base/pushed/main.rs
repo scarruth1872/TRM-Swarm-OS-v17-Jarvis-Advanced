@@ -471,6 +471,8 @@ mod smp_trampoline;
 mod text_extract;
 #[path = "../../src/unified_transistor_fabric.rs"]
 mod unified_transistor_fabric;
+#[path = "../../src/turbovec.rs"]
+mod turbovec;
 #[path = "../../src/font.rs"]
 mod font;
 mod orphan_probe;
