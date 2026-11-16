@@ -141,9 +141,178 @@ pub fn read_l3_cache_kb() -> Option<u64> {
     None
 }
 
-/// Actual V_core, read from the host. Win32_Processor.CurrentVoltage is in TENTHS
-/// of a volt (0 means the platform cannot determine it).
+
+// ---------------------------------------------------------------------------------------------
+// HWiNFO64 shared memory (SM2).
+//
+// The rails used to come only from WMI, where `Win32_Processor.CurrentVoltage` is 11 - tenths of a
+// volt, i.e. 1.1 V - which is so coarse that the v_core term of Phi_V could not move and a nominal
+// rail was indistinguishable from a measured one. HWiNFO reads the actual SVI2 telemetry: on this
+// host `Vcore` = 1.4080 V while the CPU reports `CPU Core Voltage (SVI2 TFN)` = 1.4062 V.
+//
+// Layout MEASURED against HWiNFO 8.60-6120 (element stride 460, not the documented 312): label at
+// 12, unit at 268, value at 300. A missing mapping is reported, never worked around.
+#[cfg(target_os = "windows")]
+mod hwinfo_sm2 {
+    use std::ffi::c_void;
+
+    extern "system" {
+        fn OpenFileMappingW(access: u32, inherit: i32, name: *const u16) -> *mut c_void;
+        fn MapViewOfFile(h: *mut c_void, access: u32, hi: u32, lo: u32, len: usize) -> *mut c_void;
+        fn UnmapViewOfFile(p: *const c_void) -> i32;
+        fn CloseHandle(h: *mut c_void) -> i32;
+    }
+
+    const SIGNATURE: u32 = 0x5369_5748; // 'HWiS'
+
+    fn wide(s: &str) -> Vec<u16> {
+        s.encode_utf16().chain(std::iter::once(0)).collect()
+    }
+
+    fn rd_u32(b: &[u8], off: usize) -> u32 {
+        let mut a = [0u8; 4];
+        a.copy_from_slice(&b[off..off + 4]);
+        u32::from_le_bytes(a)
+    }
+
+    fn rd_f64(b: &[u8], off: usize) -> f64 {
+        let mut a = [0u8; 8];
+        a.copy_from_slice(&b[off..off + 8]);
+        f64::from_le_bytes(a)
+    }
+
+    fn cstr(b: &[u8], off: usize, len: usize) -> String {
+        let end = (off + len).min(b.len());
+        if off >= end {
+            return String::new();
+        }
+        let sl = &b[off..end];
+        let nul = sl.iter().position(|&x| x == 0).unwrap_or(sl.len());
+        String::from_utf8_lossy(&sl[..nul]).trim().to_string()
+    }
+
+    /// (v_core, v_soc, v_gpu, readings_seen, error)
+    pub fn rails() -> (Option<f64>, Option<f64>, Option<f64>, usize, Option<String>) {
+        let name = wide("Global\\HWiNFO_SENS_SM2");
+        unsafe {
+            let h = OpenFileMappingW(0x0004, 0, name.as_ptr());
+            if h.is_null() {
+                return (
+                    None,
+                    None,
+                    None,
+                    0,
+                    Some("HWiNFO shared memory not enabled (Settings -> Shared Memory Support)".to_string()),
+                );
+            }
+            let view = MapViewOfFile(h, 0x0004, 0, 0, 0);
+            if view.is_null() {
+                CloseHandle(h);
+                return (None, None, None, 0, Some("MapViewOfFile failed".to_string()));
+            }
+            let hdr = std::slice::from_raw_parts(view as *const u8, 44);
+            let sig = rd_u32(hdr, 0);
+            let off_r = rd_u32(hdr, 32) as usize;
+            let size_r = rd_u32(hdr, 36) as usize;
+            let num_r = rd_u32(hdr, 40) as usize;
+            if sig != SIGNATURE || size_r < 320 || num_r == 0 {
+                UnmapViewOfFile(view);
+                CloseHandle(h);
+                return (
+                    None,
+                    None,
+                    None,
+                    0,
+                    Some(format!("unexpected HWiNFO layout (sig 0x{sig:08x}, stride {size_r})")),
+                );
+            }
+            let need = off_r + size_r * num_r;
+            let buf = std::slice::from_raw_parts(view as *const u8, need);
+            let mut vcore = None;
+            let mut vsoc = None;
+            let mut vgpu = None;
+            for i in 0..num_r {
+                let b = &buf[off_r + i * size_r..off_r + (i + 1) * size_r];
+                let unit = cstr(b, 268, 16);
+                if unit != "V" {
+                    continue;
+                }
+                let label = cstr(b, 12, 128);
+                let val = rd_f64(b, 300);
+                match label.as_str() {
+                    "Vcore" => vcore = Some(val),
+                    "SoC Voltage (SVI2 TFN)" => vsoc = Some(val),
+                    "GPU Core Voltage (VDDCR_GFX)" => vgpu = Some(val),
+                    _ => {}
+                }
+            }
+            UnmapViewOfFile(view);
+            CloseHandle(h);
+            (vcore, vsoc, vgpu, num_r, None)
+        }
+    }
+}
+
 fn read_v_core() -> Option<f64> {
+    read_v_core_src().map(|(v, _)| v)
+}
+
+/// The rails as the host actually reports them, with their provenance. `measured` is false, and
+/// `v_core` null, whenever HWiNFO is not publishing - no nominal value is substituted.
+pub fn rails_snapshot() -> serde_json::Value {
+    #[cfg(target_os = "windows")]
+    {
+        let (vc, vs, vg, n, err) = hwinfo_sm2::rails();
+        if vc.is_some() {
+            serde_json::json!({
+                "source": "HWiNFO64 shared memory (SM2)",
+                "measured": true,
+                "v_core": vc,
+                "v_soc": vs,
+                "v_gpu": vg,
+                // HWiNFO's mainboard sensor set on this board exposes no DIMM rail, so v_ddr comes
+                // from the SPD configuration (a configured value, not a live measurement) and is
+                // labelled as such rather than being passed off as one more live rail.
+                "v_ddr": read_v_ddr(),
+                "v_ddr_source": "WMI Win32_PhysicalMemory.ConfiguredVoltage (SPD configured, not a live rail)",
+                "v_core_source": read_v_core_src().map(|(_, s)| s),
+                "readings": n,
+                "labels": {
+                    "v_core": "Vcore",
+                    "v_soc": "SoC Voltage (SVI2 TFN)",
+                    "v_gpu": "GPU Core Voltage (VDDCR_GFX)"
+                },
+            })
+        } else {
+            serde_json::json!({
+                "source": "HWiNFO64 shared memory (SM2)",
+                "measured": false,
+                "v_core": serde_json::Value::Null,
+                "error": err,
+            })
+        }
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        serde_json::json!({"source": "unavailable", "measured": false, "v_core": serde_json::Value::Null})
+    }
+}
+
+/// Actual V_core. HWiNFO's SVI2 rail first (fine-grained, live), then WMI as a coarse fallback -
+/// `Win32_Processor.CurrentVoltage` is tenths of a volt and reported 11 here (=1.1 V) while the real
+/// rail was 1.408 V, so WMI alone understates the v_core term of Phi_V by 28% squared.
+/// (value, source) - the source travels with the number so a coarse WMI read can never be reported
+/// as if it were HWiNFO's SVI2 rail.
+fn read_v_core_src() -> Option<(f64, &'static str)> {
+    #[cfg(target_os = "windows")]
+    {
+        let (vc, _, _, _, _) = hwinfo_sm2::rails();
+        if let Some(v) = vc {
+            if v > 0.0 {
+                return Some((v, "HWiNFO64 SM2: Vcore (SVI2)"));
+            }
+        }
+    }
     let text = run(
         "powershell",
         &["-NoProfile", "-Command",
@@ -154,7 +323,9 @@ fn read_v_core() -> Option<f64> {
         if !t.is_empty() && t.chars().all(|c| c.is_ascii_digit()) {
             if let Ok(raw) = t.parse::<f64>() {
                 if raw > 0.0 {
-                    return Some(raw / 10.0); // tenths of a volt -> volts
+                    // tenths of a volt -> volts. Coarse: reported 11 (=1.1 V) while the live SVI2
+                    // rail was 1.408 V, so this branch is labelled wherever it surfaces.
+                    return Some((raw / 10.0, "WMI Win32_Processor.CurrentVoltage (tenths of a volt)"));
                 }
             }
         }

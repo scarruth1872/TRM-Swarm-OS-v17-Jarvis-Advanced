@@ -7264,3 +7264,53 @@ INI key names can be recovered from it). Once that toggle is on, the mapping app
 (Vcore / VSOC / VDDR) become measurable; `voltage.rs` then takes its rails from those readings and Phi_V
 stops being a frequency-and-memory-load proxy.
 
+### G181. Voltage is now measured silicon: HWiNFO SVI2 rails replace the nominal divisors  [MEASURED]
+
+The prerequisite the user set before the next task is satisfied, and it changed the number by a factor of
+two.
+
+**HWiNFO64 was already installed and running** (8.60-6120, PID 27560) but publishing nothing - `VSB` absent,
+`Global\HWiNFO_SENS_SM2` not created, `HWiNFO64.INI` at defaults. With `Shared Memory Support` enabled the
+mapping appears: **22 sensors, 411 readings**. The real layout was measured rather than assumed - element
+stride **460** bytes (not the documented 312), label at 12, unit at 268, value at 300:
+
+| rail (HWiNFO label) | value |
+|---|---|
+| `Vcore` | **1.4080 V** |
+| `CPU Core Voltage (SVI2 TFN)` | 1.4062 V |
+| `SoC Voltage (SVI2 TFN)` | 1.0187 V |
+| `GPU Core Voltage (VDDCR_GFX)` | 0.8910 V |
+| `+12V` / `+5V` / `VBAT` | 12.0758 / 5.0602 / 3.3280 V |
+| `CPU Core Power (SVI2 TFN)` | 60.5 W |
+
+**Why this mattered:** WMI `Win32_Processor.CurrentVoltage` reports **11** = tenths of a volt = **1.1 V**.
+That coarse read sat inside the formula as `(1.1/1.25)^2 = 0.7744`, while the real rail gives
+`(1.408/1.25)^2 = 1.2687` - a 64% difference in that term from a sensor that was reading the wrong thing.
+
+**Wired in three places, each verified:**
+1. `tools/hwinfo_sensors.py` - Python reader (header-parsed strides, labels and units kept,
+   `found:false` + rc 2 when the mapping is absent).
+2. `voltage.rs` - a Rust SM2 reader via `OpenFileMappingW`/`MapViewOfFile`; `read_v_core_src()` returns the
+   value **with its source**, so a coarse WMI read can never be reported as if it were SVI2.
+3. `/health` and `/system/status` - a `voltage_rails` object carrying `measured`, per-rail values, the
+   HWiNFO label for each, and the provenance of the one rail HWiNFO does not expose.
+
+**Measured on the live kernel (`:8022`):**
+
+```
+voltage_rails: measured true | source HWiNFO64 shared memory (SM2)
+  v_core 1.408   <- HWiNFO64 SM2: Vcore (SVI2)
+  v_soc  1.0187
+  v_gpu  0.8967
+  v_ddr  1.20    <- WMI ConfiguredVoltage (SPD configured, NOT a live rail)
+voltage_phi_v 0.8586   clock 3800 MHz   mem 39.7%
+```
+
+Two independent readers agree: the Rust kernel reports `v_core 1.408`, the Python tool reads
+`Vcore 1.408 / CPU Core Voltage (SVI2 TFN) 1.4062`.
+
+**Phi_V moved 0.4394 -> 0.8586** - not because the machine changed, but because the metric stopped
+substituting 1.1 V for a 1.408 V rail. `v_ddr` remains the SPD-configured 1.20 V and is labelled as such:
+HWiNFO's mainboard sensor set on this board exposes no DIMM rail, so it is a configured value and must not
+be read as a live one.
+

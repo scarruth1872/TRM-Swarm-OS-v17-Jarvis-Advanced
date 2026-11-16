@@ -75,14 +75,14 @@ def _open_mapping():
     h = k32.OpenFileMappingW(FILE_MAP_READ, False, SHARED_MEM_NAME)
     if not h:
         err = ctypes.get_last_error()
-        return None, (f"shared memory mapping {SHARED_MEM_NAME} not found "
+        return None, None, (f"shared memory mapping {SHARED_MEM_NAME} not found "
                       f"(OpenFileMapping err={err}). HWiNFO64 >= 8.x must be running with "
                       f"'Shared Memory Support' enabled in its Settings dialog.")
     view = k32.MapViewOfFile(h, FILE_MAP_READ, 0, 0, 0)
     if not view:
         err = ctypes.get_last_error()
         k32.CloseHandle(h)
-        return None, f"MapViewOfFile failed (err={err})"
+        return None, None, f"MapViewOfFile failed (err={err})"
 
     # Header first, to learn the true size of the mapping's contents.
     hdr = ctypes.string_at(view, 44)
@@ -93,8 +93,8 @@ def _open_mapping():
     k32.UnmapViewOfFile(view)
     k32.CloseHandle(h)
     if sig != SIGNATURE:
-        return None, f"signature mismatch: 0x{sig:08x} (expected 0x{SIGNATURE:08x} 'HWiS')"
-    return (data, (ver, rev, off_s, size_s, num_s, off_r, size_r, num_r)), None
+        return None, None, f"signature mismatch: 0x{sig:08x} (expected 0x{SIGNATURE:08x} 'HWiS')"
+    return data, (ver, rev, off_s, size_s, num_s, off_r, size_r, num_r), None
 
 
 def _cstr(raw: bytes) -> str:
@@ -103,32 +103,32 @@ def _cstr(raw: bytes) -> str:
 
 def read_all():
     """Return (rows, meta, error). rows are dicts; nothing is invented when the mapping is absent."""
-    buf, info = _open_mapping()
+    buf, info, err = _open_mapping()
     if buf is None:
-        return [], {}, info
+        return [], {}, err
     ver, rev, off_s, size_s, num_s, off_r, size_r, num_r = info
 
-    sensors = {}
+    sensor_names = []
     for i in range(num_s):
         base = off_s + i * size_s
-        sid, inst = struct.unpack_from("<II", buf, base)
-        name = _cstr(buf[base + 8: base + 8 + 128])
-        sensors[(sid, inst)] = name
+        orig = _cstr(buf[base + 8: base + 8 + 128])
+        user = _cstr(buf[base + 136: base + 136 + 128])
+        sensor_names.append(user or orig)
 
     rows = []
     for i in range(num_r):
         base = off_r + i * size_r
-        rid, rtype = struct.unpack_from("<II", buf, base)
-        label = _cstr(buf[base + 8: base + 8 + 128])
-        unit = _cstr(buf[base + 264: base + 264 + 16])
-        # value is the first of the four doubles; derive its offset from the element stride so a
-        # larger element in a newer build cannot shift the read into value_min.
-        v_off = size_r - 32
-        (value,) = struct.unpack_from("<d", buf, base + v_off)
+        rid, rtype, sensor_index = struct.unpack_from("<III", buf, base)
+        # Measured layout on HWiNFO 8.60-6120 (element stride 460): label at 12, user label at 140,
+        # unit at 268, value at 300. The earlier guess (8/264, size-32) came from the documented
+        # 312-byte element and silently produced zero readings, so these are the verified offsets.
+        label = _cstr(buf[base + 12: base + 12 + 128])
+        unit = _cstr(buf[base + 268: base + 268 + 16])
+        (value,) = struct.unpack_from("<d", buf, base + 300)
         rows.append({
             "reading_id": rid,
             "type": rtype,
-            "sensor": sensors.get((rid >> 16, 0), ""),  # best-effort; label is authoritative
+            "sensor": sensor_names[sensor_index] if 0 <= sensor_index < len(sensor_names) else "",
             "label": label,
             "unit": unit,
             "value": value,

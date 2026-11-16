@@ -4344,6 +4344,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         response_json = json!({
             "status": "HEALTHY",
             "kernel": format!("Native Rust Sovereign Kernel {}", KERNEL_VERSION),
+            "voltage_rails": voltage::rails_snapshot(),
             "build_commit": env!("TRM_BUILD_COMMIT"),
             "python_active": false,
             "monad_anchor": "0x4D4F4E4144000001",
@@ -4358,6 +4359,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         response_json = json!({
             "kernel_version": KERNEL_VERSION,
             "build_commit": env!("TRM_BUILD_COMMIT"),
+            "voltage_rails": voltage::rails_snapshot(),
             "runtime_type": "Native Rust no_std + host socket",
             "voltage_phi_v": voltage::phi_v(),
             "voltage_measured": voltage::snapshot().measured,
