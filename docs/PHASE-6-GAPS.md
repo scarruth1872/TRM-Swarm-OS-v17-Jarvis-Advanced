@@ -7224,3 +7224,43 @@ runtime on this host; embeddings come from the `:8593` blob server), 7 CUDA and 
 is Vulkan-only), and 36 loopback port literals (`8022`, `8021`, `8080`, `8000`) that must be checked against
 what actually listens here before any route is trusted.
 
+### G180. Voltage had no sensor behind it - HWiNFO found running, but exporting nothing  [MEASURED]
+
+The prerequisite stated before the next task is correct and the gap is real. What this kernel calls a
+voltage metric today, measured:
+
+| term | source | variable? |
+|---|---|---|
+| `V_CORE_NOMINAL = 1.25`, `V_DDR_NOMINAL = 1.35` | **constants in `voltage.rs`** | no - and they are also the divisors |
+| clock | WMIC `CurrentClockSpeed` | yes |
+| memory load | OS | yes |
+
+Two of the four Phi_V terms are nominal divisors, so `phi_core` and `phi_mem` are structurally 1.0 and the
+metric carries frequency and memory pressure, not voltage. The docstring is honest about this; the number
+is still not silicon.
+
+**HWiNFO64 IS installed and running on this host** - `C:\Program Files\HWiNFO64\HWiNFO64.EXE`, version
+**8.60-6120**, PID **27560** (up since 2026-11-13) - so the sensor data exists. It is simply not exposed:
+`HKCU\Software\HWiNFO64\VSB` **absent**, `Global\HWiNFO_SENS_SM2` **not created**, and its `HWiNFO64.INI`
+is 21 bytes (`[Settings] Theme=1`), i.e. defaults.
+
+`tools/hwinfo_sensors.py` now reads the SM2 shared-memory block properly (header parsed for strides, value
+offset derived as `size-32` so a newer build cannot shift the read into `value_min`, units and labels
+preserved). Its failure path is the important half and is verified:
+
+```
+python tools/hwinfo_sensors.py --voltage
+{"found": false, "source": "HWiNFO64 shared memory",
+ "error": "shared memory mapping Global\\HWiNFO_SENS_SM2 not found (OpenFileMapping err=2) ...",
+ "measured": false}   rc=2
+```
+
+It refuses to substitute a nominal rail when the sensor is absent - which is exactly the behaviour the
+voltage metric has been missing.
+
+**Blocking step, GUI-only:** HWiNFO exposes sensors only when *Settings -> "Shared Memory Support"* is
+enabled, and this host has no GUI automation backend (`cua-driver` unavailable; the binary is packed so no
+INI key names can be recovered from it). Once that toggle is on, the mapping appears and the rails
+(Vcore / VSOC / VDDR) become measurable; `voltage.rs` then takes its rails from those readings and Phi_V
+stops being a frequency-and-memory-load proxy.
+
