@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T23:24:07Z",
+  "audit_timestamp": "2026-11-16T23:53:02Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 96,
+    "empirical_confirmed": 97,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 96
+      "CONFIRMED": 97
     }
   },
   "articles": [
@@ -2132,6 +2132,19 @@
       ],
       "phoenix_audit_note": "Desktop 107 passed/0 failed/0 ignored (157.68s); laptop 107/0/0 (173.30s) with its own 816,128-byte DLL. 448 was rustup's shim (channel 1.98.0 vs 1.100.0, os error 10054), not a mount-point policy. ChEMBL fabric 1.27 GB transferred in 1m56s; native encoder 4,135 rec/s vs HTTP 16/s.",
       "finding": "For weeks the same suite reported different numbers on two machines, and the gap was filed as a security policy. It was a symlink: a zero-byte rustc pointing at rustup, and a toolchain channel that had drifted ahead of what was installed, so every compile spawned a process that tried to reach the network first. Pinned to the real binaries, the second node ran the whole suite and returned the same totals as the first, to the test. The corpus told the same story from the other direction. The data had been sitting on a thumb drive in the same building, already encoded into a two-terabyte-times-one-point-five fabric whose own header named the source file. Transferring it took two minutes. Recomputing it through the model server would have taken two days, because the server could only manage sixteen vectors a second and batching made it worse, not better. The kernel's own encoder, called in process, is two hundred and forty-eight times faster than the thing that was standing in for it, and it is the very encoder that made the fabric in the first place."
+    },
+    {
+      "id": 280,
+      "section": "Verification",
+      "title": "Article 280 - The Last Third Of A Percent",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g203",
+        "data/fabric_parity.json",
+        "build/chembl37_full.k3.json"
+      ],
+      "phoenix_audit_note": "2,897,805 records rebuilt in 1,841.9s (48h by HTTP); fabric codes reproduced at 0.996215 over 300 spread samples, 279/300 byte-identical, control 0.603966, residual 0.378% of codes at +-1 step from f32-vs-f64 rounding of stored scale/v_min.",
+      "finding": "Rebuilding two point nine million record vectors took half an hour, and the machine then did something more useful than finishing: it checked itself against a copy built elsewhere. The comparison was exact on two hundred and seventy nine of three hundred records and within a hair on the rest, and the difference was traced to the only place it could come from, which was the order in which two honest pieces of arithmetic rounded. A third of one percent of the codes sat on a boundary and fell to the other side. The value of that number is not its size but its provenance: it came with a control, the control scored far lower, and the residual has a mechanism rather than an excuse."
     }
   ],
   "provenance_revision": {

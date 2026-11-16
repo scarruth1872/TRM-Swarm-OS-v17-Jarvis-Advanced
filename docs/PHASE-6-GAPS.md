@@ -8215,3 +8215,41 @@ the sweep prints paths rather than a count: a name match is not a dataset.
 FAT32, so repair needs `chkdsk D: /f` / `chkdsk E: /f` with elevation and a dismount. Not attempted. The
 174.60 GB `.vhdx` is the one place left where the missing corpora could still be hiding - not yet mounted.
 
+### G203. The full corpus rebuilt here in 30m41s, and the fabric's own codes reproduced to 99.62%  [MEASURED]
+
+`build/chembl37_full.k3` - the whole ChEMBL-37 SMILES dump, encoded with the kernel's own encoder:
+
+```
+records 2,897,805 | trits 2,225,514,240 | payload 556,378,560 B | expected 556,378,560
+padding 0 | seal bc7fcc59e82c5c85... | seal_matches true | exact true | 1,841.9 s (30m41s)
+```
+
+Re-verified by a second process after the build, not by the build's own report. At the HTTP path's measured
+~16-17 vec/s the same job was **48 h**; this is ~94x faster, and the payload size matches the fabric's payload
+to the byte.
+
+**Not byte-identical to the fabric, and the reason is text, not code.** Comparing my payload against
+`swarm_v2_chembl_fabric.ternary` gives 1.53% identical bytes, with a binomial bit-difference histogram peaked
+at 4 bits/byte - two independent encodings. Mine feeds `"ChEMBL molecule CHEMBLx SMILES ..."`; the fabric feeds
+`"chembl_id: ... smi... hba= hbd= heavy_atoms= logp= mw="`. Same molecules, different sentences.
+
+**So the real test used the fabric's own text.** `tools/fabric_parity.py` pulls each sampled record's text from
+the shipped `text.jsonl`, encodes it with `rust_native_encode_text_f32`, re-quantises with the per-record
+`(scale, v_min)` stored in `.turbovec`, and compares against the stored codes:
+
+```
+samples 300 (indices spread across all 2,897,805, not a head-only window)
+code_agreement            0.996215        byte_identical_records 279 / 300
+control_agreement         0.603966        (my codes vs the NEXT record's codes - the test discriminates)
+differing codes           872 of 230,400 = 0.378%; histogram {-2: 3, -1: 455, +1: 412, +2: 2}
+```
+
+99.4% of the residual is a single code step at a quantiser boundary. The cause is in the arithmetic I control:
+I divide by the `scale` and subtract the `v_min` that were **stored as f32**, in f64; the builder divided by
+values that were still f64. Half-a-ULP at a boundary flips a code, and occasionally flips two. So the encoder
+and the quantiser agree; the last 0.38% is float rounding between two honest implementations, and it is
+described rather than hidden behind a "match".
+
+**What this buys:** the fabric is reproducible on this machine from text alone, so its 1.27 GB is provenance,
+not a dependency on another node.
+
