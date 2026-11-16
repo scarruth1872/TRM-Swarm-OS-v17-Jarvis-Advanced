@@ -7176,3 +7176,51 @@ port is: apply the bounds fix to their file, then add the quantizer.
 **149 differ** and **30 exist only here**. Porting 15 modules is the tractable slice; reconciling 149
 divergent kernel files is a separate campaign and must not be glossed as "done" once the modules land.
 
+### G179. Port started: their base builds here, and its hardware constants now measure this machine  [MEASURED]
+
+Their kernel was reconstructed locally (parent crate 189 files, host_council_server 121 modules, 32 sibling
+crates + `trm_wifi` + `trm7m_weights.bin`) and now **builds**: `cargo build --release` -> `Finished in 37.92s`.
+
+**Build closure discovered by iterating, not by assuming** (each of these was a separate failure):
+`swarm-proto` -> `trm_wifi/src/{crypto,syscall,eapol,netlink}.rs` -> `assets/trm7m_weights.bin`. Their
+`main.rs` uses 119 `#[path = "../../src/…"]` links plus 4 into `trm_wifi`, so the kernel genuinely compiles
+parts of the parent crate and the wifi crate directly - a module count alone understates the closure.
+
+**Machine adaptation, defect by defect.** `core_pinning.rs` asserted another computer as constants:
+
+| field | their constant | this machine |
+|---|---|---|
+| `PHYSICAL_CORES` | `8` | **12** (measured) |
+| `LOGICAL_THREADS` | `16` | **24** (measured) |
+| cpu | `"AMD Ryzen 9 5900HX (Zen 3 Cezanne)"` | `AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD` (3900X) |
+| GPU | `"NVIDIA GeForce RTX 3070 Laptop GPU"`, `8192 MiB` | **null / measured:false**, backend `vulkan` |
+
+Rewritten so the topology is measured at runtime: `GetLogicalProcessorInformation` (records with
+Relationship == RelationProcessorCore) for physical cores, `GetActiveProcessorCount(ALL_PROCESSOR_GROUPS)`
+for logical, `PROCESSOR_IDENTIFIER` for the cpu string, and env-declared GPU identity that reports null
+rather than a plausible number. `pin_current_thread_to_core` now **clamps** to the measured core count -
+the old formula `core*2` produced masks with bits past the end on any smaller host, which Windows ignores
+silently, so the pin would have looked successful while doing nothing.
+
+**Verified on the running base instance (`:8025`, loopback, this host):**
+
+```
+GET /hardware/pinning
+  physical_cores : 12          logical_threads: 24        measured: True
+  cpu            : AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD
+  gpu            : name null | vram null | measured False | backend vulkan
+  core_map       : cores_5_spare  (12 - 5 = 7 spare, not the hardcoded 3)
+```
+
+The adapted file is preserved at `docs/port/laptop-base/core_pinning.rs` for review.
+
+**Assets: one verified, two are ours.** `assets/trm7m_weights.bin` is byte-identical between the laptop and
+this repo (sha `39dd18faae3ddc38…`, 15,637,788 B) - so the copy used for the local build is legitimate, not
+a lookalike. `trm7m_weights_turbovec_158.bin` and `trmboot/trm_smp_trampoline.bin` **do not exist on the
+laptop at all**; they are this repo's own additions and are not part of their build.
+
+**Still machine-specific and NOT yet fixed:** 27 Ollama references (incl. `:11434` - there is no Ollama
+runtime on this host; embeddings come from the `:8593` blob server), 7 CUDA and 1 ROCm references (this GPU
+is Vulkan-only), and 36 loopback port literals (`8022`, `8021`, `8080`, `8000`) that must be checked against
+what actually listens here before any route is trusted.
+
