@@ -1,0 +1,38 @@
+{
+  "autonomy_note": "council votes on soundness; after the seal the platform executes and checkpoints.",
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T22:05:24.594285+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "abd784e754ded4a7d02f7c6165a4ca64cd112f807f8f2a945fd36e3f304fca90",
+      "motion": "MOTION-A1",
+      "phase": "consensus",
+      "proposal_id": "CP-97488DE4",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "Wire the SAbDab structural scorer into the kanban task executor as a new TaskMode::Antibody: a card naming a SAbDab2 complex and its antibody chains routes to the scorer, the result (paratope contacts/residues/mean distance) is measured + journaled on DONE, and an antibody-only complex is a boundary. REJECT AS PREMATURE: fabricating a score when the complex has no antigen (the boundary must hold); echoing the retired sequence-only Kd heuristic. MEASURED: /native/antibody/score returns 81 paratope contacts / 14 residues / 3.815 A mean on pdb_00006wwc_D_H (antibody D+H vs antigen F) and a 'no antigen chain' boundary on pdb_00002a6j_H_L. The SAbDab2 dataset (16,415 mmCIF complexes) is on disk at swarm_v2_artifacts/datasets/splits_final/. The scorer is a native route but NOT yet a task mode and NOT yet run as a batch benchmark."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "f78f221e5d618ac07cb5b1dbc341fbc7e03304aeaf210b33a13cd9bf65bf7ae5",
+      "motion": "MOTION-A2",
+      "phase": "consensus",
+      "proposal_id": "CP-2EAF5C13",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "Run a real batch benchmark: score a sample (e.g. 500) of the 16,415 SAbDab2 complexes and record the paratope-contact distribution (contact count + residue count + mean distance) as a measured artifact. This is the scorer's first real benchmark \u2014 it proves the scorer is a measurement tool, not a one-off. REJECT AS PREMATURE: reporting a distribution without actually scoring the complexes; skipping complexes with no antigen instead of counting them as boundaries. MEASURED: /native/antibody/score returns 81 paratope contacts / 14 residues / 3.815 A mean on pdb_00006wwc_D_H (antibody D+H vs antigen F) and a 'no antigen chain' boundary on pdb_00002a6j_H_L. The SAbDab2 dataset (16,415 mmCIF complexes) is on disk at swarm_v2_artifacts/datasets/splits_final/. The scorer is a native route but NOT yet a task mode and NOT yet run as a batch benchmark."
+    }
+  ],
+  "prior_state": "MOTION-S1 scorer done; audio + Mamba-3B fp16 named boundaries.",
+  "quorum": 9,
+  "record": "ANTIBODY CONSOLIDATION (task-executor wiring + batch benchmark) -- council-voted",
+  "sha256": "f45c9d7846a6426db71d9679582b35dd9fda1c184d11c7bece9512bc37cab707"
+}

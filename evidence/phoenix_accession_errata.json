@@ -1,0 +1,38 @@
+{
+  "what": "Two UniProt accessions in the PHOENIX target table were wrong and had been asserted as correct.",
+  "found": "2026-09-25T14:40:39Z",
+  "method": "Resolved every claimed accession against the UniProt REST API and checked the returned gene name.",
+  "errors": [
+    {
+      "gene": "STAT4",
+      "claimed": "P42226",
+      "resolves_to": "STAT6",
+      "correct": "Q14765",
+      "note": "The first attempted fix (P42225) was also a guess and was also wrong. Only the API check resolved it."
+    },
+    {
+      "gene": "TLR7",
+      "claimed": "Q9NYB2",
+      "resolves_to": "CASK (O14936)",
+      "correct": "Q9NYK1"
+    }
+  ],
+  "verified_correct": [
+    "TYK2 P29597",
+    "TNFAIP3 P21580",
+    "IFIH1 Q9BYX4",
+    "IRF5 Q13568",
+    "PTPN22 Q9Y2R2",
+    "ITGAM P11215",
+    "BLK P51451",
+    "C1QA P02745"
+  ],
+  "propagated_to_and_corrected": [
+    "swarm_v2/core/phoenix_protocol_engine.py",
+    "trm_uefi_kernel/src/phoenix_protocol_engine.rs",
+    "docs/FINDING-phoenix-protocol-efficacy-claims-are-asserted.md",
+    "phoenix_journal_audit_manifest.json (Article 197 errata)",
+    "swarm_v2_integrated/docs/trm_swarm_os_v18_phoenix_protocol_universal_lupus_cure_paper.md"
+  ],
+  "pattern": "Third occurrence in one session of a correctness claim made without a check (council verdict, parity metric, identifier table). The lesson is that anything asserted in the same sentence as a measurement inherits that sentence's credibility without earning it."
+}

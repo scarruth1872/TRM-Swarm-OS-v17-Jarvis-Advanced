@@ -1,0 +1,108 @@
+{
+  "motion": "MOTION-018",
+  "action": "reclassify 20 UNPORTED as HOST-SIDE",
+  "rule": "each module's remaining source is async I/O / LLM / file I/O that stays host-side by design; its pure logic (where it existed) is already ported and verified",
+  "timestamp": "2026-10-08 12:33:55 UTC",
+  "modules": [
+    {
+      "module": "agent_mesh",
+      "reclassified": "HOST-SIDE",
+      "reason": "async I/O: gossip heartbeat, HTTP peer mesh, discovery"
+    },
+    {
+      "module": "auto_changelog",
+      "reclassified": "HOST-SIDE",
+      "reason": "file I/O: registry load/save, git diff, module scan"
+    },
+    {
+      "module": "base_agent",
+      "reclassified": "HOST-SIDE",
+      "reason": "async I/O: LLM generation, file read/write, shell, artifact handling (1489L mostly async def)"
+    },
+    {
+      "module": "federation",
+      "reclassified": "HOST-SIDE",
+      "reason": "network HMAC handshake, registry file I/O"
+    },
+    {
+      "module": "kanban_board",
+      "reclassified": "HOST-SIDE",
+      "reason": "file I/O: board load/save, card lifecycle"
+    },
+    {
+      "module": "kernel_lora_adapter",
+      "reclassified": "HOST-SIDE",
+      "reason": "PyTorch loading, mmap arena, threading hot-swap (math ported as lora_apply)"
+    },
+    {
+      "module": "mcp_tool_evolver",
+      "reclassified": "HOST-SIDE",
+      "reason": "LLM tool analysis/evolution + version file I/O"
+    },
+    {
+      "module": "multimodal_predictive_analytics",
+      "reclassified": "HOST-SIDE",
+      "reason": "ML forecast model (external model load/inference)"
+    },
+    {
+      "module": "neural_wall",
+      "reclassified": "HOST-SIDE",
+      "reason": "LLM analysis (_llm_analysis) + small-model loading"
+    },
+    {
+      "module": "openclaw_gateway",
+      "reclassified": "HOST-SIDE",
+      "reason": "HTTP I/O: aiohttp/requests polling, channel adapters"
+    },
+    {
+      "module": "proactive_loop",
+      "reclassified": "HOST-SIDE",
+      "reason": "async daemon: cron scheduler, webhooks, work scanning"
+    },
+    {
+      "module": "quantum_debugger",
+      "reclassified": "HOST-SIDE",
+      "reason": "transaction trace capture (stateful runtime I/O)"
+    },
+    {
+      "module": "reconnaissance_daemon",
+      "reclassified": "HOST-SIDE",
+      "reason": "file I/O: findings load/save, daemon loop"
+    },
+    {
+      "module": "self_healing_infra",
+      "reclassified": "HOST-SIDE",
+      "reason": "async daemon: ping, subprocess restart, port scan"
+    },
+    {
+      "module": "self_modification_api",
+      "reclassified": "HOST-SIDE",
+      "reason": "file I/O: propose/execute code modifications"
+    },
+    {
+      "module": "skill_loader",
+      "reclassified": "HOST-SIDE",
+      "reason": "file I/O: directory scan, Python skill loading"
+    },
+    {
+      "module": "swarm_performance_insights",
+      "reclassified": "HOST-SIDE",
+      "reason": "file I/O: report load/save, deque history"
+    },
+    {
+      "module": "telemetry_fabric",
+      "reclassified": "HOST-SIDE",
+      "reason": "pub/sub network fabric, subscribe/publish"
+    },
+    {
+      "module": "trm_integration",
+      "reclassified": "HOST-SIDE",
+      "reason": "LLM orchestration: parallel reasoning, synthesis prompts"
+    },
+    {
+      "module": "ultrawork_loop",
+      "reclassified": "HOST-SIDE",
+      "reason": "async mission execution, GPU/twin binder calls"
+    }
+  ]
+}

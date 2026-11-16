@@ -1,0 +1,70 @@
+COUNCIL AUTHENTICATION - P0-1 CLOSED
+Measured 2026-11-03 on host_council_server (the authoritative :8022 council).
+
+THE DEFECT
+==========
+grep -nEi "authorization|bearer|api_key|shared.?secret" over
+trm_uefi_kernel/host_council_server/src/main.rs returned 0 matches. Eleven POST
+routes matched on method+path alone, including /council/enact and /secrets/*.
+A prior agent proved it by POSTing '{}' to /council/propose with no credential
+and getting a live proposal back (id 1181). Loopback binding limits reach; it is
+not authorization, and the bind could be flipped by an env var.
+
+WHAT WAS ADDED
+==============
+1. auth_gate(request, method) - runs before ANY routing in handle_request, so a
+   newly added write route inherits the check instead of having to remember it.
+2. Policy, deliberately small enough to test completely:
+     COUNCIL_AUTH_TOKEN set    -> every write (POST/PUT/DELETE/PATCH) requires
+                                  header X-Council-Token, compared case-insensitively
+                                  on the header name; wrong or missing -> 401 JSON.
+     COUNCIL_AUTH_TOKEN unset  -> writes allowed, and ONLY because the server is
+                                  loopback-bound (see 3).
+3. Startup fail-closed. If the resolved bind host is not loopback AND no token is
+   set, the process prints FATAL and exits 1 rather than exposing unauthenticated
+   writes. This is what makes the unset-token case safe instead of merely quiet.
+
+VERIFIED, EACH CASE SEPARATELY
+==============================
+Startup with TRM_BIND_HOST=0.0.0.0 and no token:
+    FATAL: refusing to bind 0.0.0.0 without COUNCIL_AUTH_TOKEN. ...
+    process exit code 1                                    (measured, not piped)
+
+Instance started with COUNCIL_AUTH_TOKEN=test-secret-123 on 127.0.0.1:
+    startup line: "auth: COUNCIL_AUTH_TOKEN set - writes require X-Council-Token"
+
+    1  GET  /health                     no token            200
+    2  POST /nope                       no token            401
+    3  POST /nope                       wrong token         401
+    4  POST /nope                       correct token       404
+    5  POST /council/propose            no token            401
+
+Case 4 is the important one. A correct token returns 404 because the path does
+not exist -- which proves the gate let the request through to routing rather
+than blanket-blocking everything. Cases 2, 3 and 5 prove it blocks writes.
+Case 1 proves reads stay open, so the dashboard and health probes are unaffected.
+
+401 body as served:
+    {"error":"unauthorized","hint":"send header X-Council-Token matching
+     COUNCIL_AUTH_TOKEN","path":"/council/propose","status":401}
+
+NORMAL OPERATION RESTORED
+=========================
+Restarted without a token, loopback-bound:
+    8022 bound to 127.0.0.1
+    startup line: "auth: COUNCIL_AUTH_TOKEN unset - writes allowed from loopback only"
+    POST /council/propose -> 200, tally approve/abstain/reject = 13/0/1
+The 13/0/1 tally is identical to the pre-auth baseline, so the gate changed no
+council behaviour.
+
+WHAT THIS DOES NOT SOLVE
+========================
+- No rate limiting, no per-agent identity, no replay protection. A local process
+  can still write freely while the token is unset, which is the accepted
+  trade-off for a loopback-only single-user host.
+- The Python council on :8099 has no token check of its own; it is protected only
+  by loopback binding. Adding the same X-Council-Token gate there is straightforward
+  (FastAPI dependency) and is NOT done here.
+- The 3001/3000/5183 surfaces are loopback-bound but unauthenticated.
+- A browser-based client cannot send X-Council-Token cross-origin without CORS
+  changes; on loopback with no token set this does not arise.

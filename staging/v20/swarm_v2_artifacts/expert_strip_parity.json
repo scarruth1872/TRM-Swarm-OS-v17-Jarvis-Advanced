@@ -1,0 +1,39 @@
+{
+ "checks": [
+  {
+   "check": "resolution matches the oracle on 18 identifiers",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "check": "first-match order is preserved (two rows share the persona name 'Logic')",
+   "ok": true,
+   "detail": "row 0 wins, not row 4"
+  },
+  {
+   "check": "identifier that is only whitespace resolves to nothing",
+   "ok": true,
+   "detail": "python ' ' is truthy but cleans to '' -> None"
+  },
+  {
+   "check": "sanitize matches re.sub(r'[*`_]', '') + strip on 6 inputs",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "check": "the WIRED module answers identically to the pure rule on 18 identifiers",
+   "ok": true,
+   "detail": "[] (reason=PE CDYLIB loaded)"
+  },
+  {
+   "check": "a REPLACED team is answered from the new table, not a stale mirror",
+   "ok": true,
+   "detail": "after register_team({'Gadget': ...}): Gadget->the new agent, Logic->None"
+  }
+ ],
+ "passed": 6,
+ "failed": 0,
+ "rows": 6,
+ "identifiers": 18,
+ "dll_bytes": 141312
+}

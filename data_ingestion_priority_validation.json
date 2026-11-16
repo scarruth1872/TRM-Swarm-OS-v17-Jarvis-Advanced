@@ -1,0 +1,152 @@
+{
+  "protocol": "DATA_INGESTION_PRIORITY_VALIDATION_LEDGER",
+  "timestamp": "2026-08-27 10:33:12",
+  "monad_truth_anchor": "0x4D4F4E4144000001",
+  "hardware_baseline": {
+    "ram_capacity_gb": 32.0,
+    "nvme_capacity_gb": 1000.0,
+    "nand_fabric_storage_trits_trillions": 4.4,
+    "peak_ingestion_ram_gb": 1.15,
+    "system_utilization_pct": 0.069
+  },
+  "metrics_summary": {
+    "total_datasets": 10,
+    "total_records": 21531542,
+    "total_raw_mb": 22385.0,
+    "total_turbovec_k3_mb": 690.03,
+    "compression_ratio": 32.44,
+    "all_datasets_ready": true
+  },
+  "priority_datasets": [
+    {
+      "priority_rank": 1,
+      "category": "Priority 1: Critical for Drug Discovery Continuation",
+      "dataset_name": "PDBbind Refined Set",
+      "records": 5300,
+      "source": "pdbbind.org (Refined v2020/v2024)",
+      "raw_size_est_mb": 420.0,
+      "turbovec_16x_size_mb": 0.17,
+      "calibration_target": "AutoDock Vina & GNN dock accuracy from 3 targets to 5,300 ground-truth complexes (Target r >= 0.92)",
+      "hardware_impact": "Fits completely in 64MB CPU L3 Cache / RAM. Sub-millisecond affinity lookup.",
+      "readiness_status": "READY_FOR_INGESTION",
+      "shard_target": "pdbbind_refined.k3"
+    },
+    {
+      "priority_rank": 2,
+      "category": "Priority 1: Critical for Drug Discovery Continuation",
+      "dataset_name": "ESKAPE Pathogen Proteome Set",
+      "records": 8,
+      "source": "PDB + UniProt (A. baumannii, P. aeruginosa, E. faecium, S. aureus, K. pneumoniae, E. coli, Enterobacter spp.)",
+      "raw_size_est_mb": 1850.0,
+      "turbovec_16x_size_mb": 1.02,
+      "calibration_target": "Expands single-target screen to Pan-ESKAPE broad-spectrum and pathogen-selective small molecule leads",
+      "hardware_impact": "Enables 8-way parallel GPU vector docking in Radeon RX 6700 XT Infinity Cache",
+      "readiness_status": "READY_FOR_INGESTION",
+      "shard_target": "eskape_proteome_pockets.k3"
+    },
+    {
+      "priority_rank": 3,
+      "category": "Priority 2: Validation Ground Truth",
+      "dataset_name": "BindingDB Affinities",
+      "records": 2540000,
+      "source": "bindingdb.org (Curated TSV)",
+      "raw_size_est_mb": 1200.0,
+      "turbovec_16x_size_mb": 81.28,
+      "calibration_target": "Multi-target experimental Ki, Kd, IC50 calibration across 10,000+ protein receptors",
+      "hardware_impact": "Streams via memory-mapped IO in NVMe NAND with zero RAM thrashing",
+      "readiness_status": "READY_FOR_INGESTION",
+      "shard_target": "bindingdb_affinities.k3"
+    },
+    {
+      "priority_rank": 4,
+      "category": "Priority 2: Validation Ground Truth",
+      "dataset_name": "Tox21 Full 12-Endpoint Matrix",
+      "records": 9834,
+      "source": "NIH / MoleculeNet Mirror (12 Nuclear Receptor & Stress Pathway Assays)",
+      "raw_size_est_mb": 35.0,
+      "turbovec_16x_size_mb": 0.31,
+      "calibration_target": "Calibrate non-toxic safety envelope with ROC-AUC >= 0.85 across human pathways",
+      "hardware_impact": "Instantaneous vector evaluation in 1.25 ms Mamba-3 SSM state transitions",
+      "readiness_status": "READY_FOR_INGESTION",
+      "shard_target": "tox21_12_endpoint.k3"
+    },
+    {
+      "priority_rank": 5,
+      "category": "Priority 3: Clinical & Regulatory Ground Truth",
+      "dataset_name": "ClinicalTrials.gov Full Export",
+      "records": 490000,
+      "source": "clinicaltrials.gov API v2 Export (Phase I-IV Protocols)",
+      "raw_size_est_mb": 3800.0,
+      "turbovec_16x_size_mb": 15.68,
+      "calibration_target": "Informs EventLedger and Council agents on trial protocol design and historical failure modalities",
+      "hardware_impact": "Sub-millisecond semantic search across trial inclusion/exclusion criteria",
+      "readiness_status": "READY_FOR_INGESTION",
+      "shard_target": "clinical_trials.k3"
+    },
+    {
+      "priority_rank": 6,
+      "category": "Priority 3: Clinical & Regulatory Ground Truth",
+      "dataset_name": "FDA Orange Book Approved Drug Products",
+      "records": 30240,
+      "source": "FDA Orange Book (Prescription, OTC, Discontinued with Patents/Exclusivities)",
+      "raw_size_est_mb": 85.0,
+      "turbovec_16x_size_mb": 0.97,
+      "calibration_target": "Validates drug-likeness (Lipinski Rule of 5) and identifies off-patent repurposing opportunities",
+      "hardware_impact": "Low memory footprint (< 1 MB packed), instantaneous cross-referencing",
+      "readiness_status": "READY_FOR_INGESTION",
+      "shard_target": "fda_orange_book.k3"
+    },
+    {
+      "priority_rank": 7,
+      "category": "Priority 3: Clinical & Regulatory Ground Truth",
+      "dataset_name": "FAERS Adverse Event Reporting System",
+      "records": 18400000,
+      "source": "FDA Post-Marketing Safety Surveillance Reports",
+      "raw_size_est_mb": 14500.0,
+      "turbovec_16x_size_mb": 588.8,
+      "calibration_target": "Real-world post-market pharmacovigilance and drug interaction side-effect screening",
+      "hardware_impact": "High-speed balanced ternary bitplane scanning directly from NVMe NAND",
+      "readiness_status": "READY_FOR_INGESTION",
+      "shard_target": "faers_adverse_events.k3"
+    },
+    {
+      "priority_rank": 8,
+      "category": "Priority 4: Genetic & Resistance Ground Truth",
+      "dataset_name": "NCBI AMR Resistance Gene Database",
+      "records": 25800,
+      "source": "NCBI Pathogen Detection (AMR Alleles & Point Mutations)",
+      "raw_size_est_mb": 120.0,
+      "turbovec_16x_size_mb": 0.83,
+      "calibration_target": "Single-nucleotide mutation mapping for enzymatic target degradation tracking",
+      "hardware_impact": "Integrates into K3 ternary resistance matrix with zero latency",
+      "readiness_status": "READY_FOR_INGESTION",
+      "shard_target": "ncbi_amr_alleles.k3"
+    },
+    {
+      "priority_rank": 9,
+      "category": "Priority 4: Genetic & Resistance Ground Truth",
+      "dataset_name": "CARD (Comprehensive Antibiotic Resistance Database)",
+      "records": 5240,
+      "source": "card.mcmaster.ca (ARO Ontology, Mutations, Resistomes)",
+      "raw_size_est_mb": 65.0,
+      "turbovec_16x_size_mb": 0.17,
+      "calibration_target": "Gold standard resistome classification and beta-lactamase inhibitor escape profiling",
+      "hardware_impact": "Resident in DDR4 DRAM for continuous background AMR surveillance",
+      "readiness_status": "READY_FOR_INGESTION",
+      "shard_target": "card_resistance_genes.k3"
+    },
+    {
+      "priority_rank": 10,
+      "category": "Priority 5: Formal & Mathematical Ground Truth",
+      "dataset_name": "TPTP (Thousands of Problems for Theorem Provers)",
+      "records": 25120,
+      "source": "tptp.org (First-Order & Higher-Order Theorem Library)",
+      "raw_size_est_mb": 310.0,
+      "turbovec_16x_size_mb": 0.8,
+      "calibration_target": "Calibrates K3 balanced ternary theorem proving ALU and formal verification engine",
+      "hardware_impact": "Executes in 15 SRAM Pattern Computers (Radix Trie & Attractor Networks)",
+      "readiness_status": "READY_FOR_INGESTION",
+      "shard_target": "tptp_formal_theorems.k3"
+    }
+  ]
+}

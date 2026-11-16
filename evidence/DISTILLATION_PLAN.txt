@@ -1,0 +1,38 @@
+DISTILLATION RETHINK - 2026-10-24
+
+=== WHY "FINISH TRAINING" WAS THE WRONG FRAME ===
+Config wants 200,000 epochs x batch 4608 = 6.94M steps. Measured 2.571 TFLOPS
+(6700 XT fp16) => ~67 s/step => ~14.7...[truncated]
+WHY 'FINISH TRAINING' WAS THE WRONG FRAME
+  config: 200000 epochs x batch 4608 = 6,940,000 steps
+  measured 2.571 TFLOPS fp16 on RX 6700 XT => ~67 s/step
+  => 14.7 years. Not a hardware complaint, an arithmetic one.
+
+=== THE RESEARCH SAYS: DISTILL, DON'T KEEP TRAINING ===
+  1-Bit TRM (2026): QAT from scratch on a recursive model FAILS.
+  Distillation from an FP teacher RESCUES it.
+
+=== WHAT THE PLATFORM ALREADY HAS ===
+  teacher   : step_155718 FP checkpoint (455M total, ~7M trunk) LOADS, verified
+  dataset   : data/arc1concept-aug-1000 (1.49 GB, 145,890 puzzle ids) BUILT
+  encoder   : build_arc_dataset.py format (PAD=0 EOS=1 colours 2..11) VERIFIED
+  ternary   : 8+ gguf_*_trits.bin, Ternary-Bonsai GGUFs, quantization ledgers
+  GPU       : torch_directml 0.2.5, RX 6700 XT, 2.571 TFLOPS fp16 MEASURED
+  MISSING   : ternary TRM student + distillation loop. Nothing else.
+
+=== FEASIBILITY (arithmetic from measured TFLOPS) ===
+  student = same 7M params, ternary (1.58 bit) => 7e6*1.58/8 = 1.38 MB
+  batch 32, seq 900:
+  teacher fwd 2 x 7e6 x 28800 = 4.0e11
+  student fwd+bwd 6 x 7e6 x 28800 = 1.2e12
+  total ~1.6e12 FLOPs/step / 2.571e12 = ~0.62 s/step
+  10,000 steps => ~1.7 hours   <== FEASIBLE
+  50,000 steps => ~8.6 hours   <== still FEASIBLE overnight
+
+  vs 6.94M steps for 'finish training' = 14.7 years
+
+=== THE PLAN (4 steps, in dependency order) ===
+  1. freeze teacher, load step_155718 (done - verified loads)
+  2. student: same TRM arch, ternary linear weights (STE), ~1.38 MB
+  3. distill: KL(student || teacher) on ARC concept batches from data/
+  4. eval via /arc/predict, compare cell accuracy vs teacher 65-92%

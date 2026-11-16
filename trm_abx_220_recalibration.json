@@ -1,0 +1,139 @@
+{
+  "protocol": "TRM_ABX_220_ENHANCED_RECALIBRATION_LEDGER",
+  "timestamp": "2026-08-27T15:02:19.075414",
+  "node": "TRM-DESK-6700XT",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "lead_id": "TRM-ABX-220",
+  "target": "LpxC deacetylase (Gram-negative)",
+  "pipeline_version": "v4.0 (PDBbind Calibrated + pLDDT Structural + Physics Corrections)",
+  "structures_evaluated": [
+    {
+      "pdb_id": "3P3G",
+      "source": "PDB-REDO / Aquifex aeolicus LpxC",
+      "resolution_angstroms": 1.9,
+      "mean_plddt": 91.83,
+      "vina_base_dg": -10.85,
+      "desolvation_dg": -0.61,
+      "electrostatic_dg": -4.0,
+      "hbond_dg": 0.0,
+      "torsional_dg": 1.4,
+      "delta_g_calibrated": -14.06,
+      "kd_nm": 0.05
+    },
+    {
+      "pdb_id": "2XCT",
+      "source": "PDB-REDO / Pseudomonas aeruginosa LpxC",
+      "resolution_angstroms": 2.1,
+      "mean_plddt": 91.64,
+      "vina_base_dg": -10.62,
+      "desolvation_dg": -0.564,
+      "electrostatic_dg": -4.0,
+      "hbond_dg": 0.0,
+      "torsional_dg": 1.4,
+      "delta_g_calibrated": -13.784,
+      "kd_nm": 0.08
+    },
+    {
+      "pdb_id": "1S16",
+      "source": "PDB-REDO / Escherichia coli LpxC",
+      "resolution_angstroms": 2.4,
+      "mean_plddt": 90.22,
+      "vina_base_dg": -10.4,
+      "desolvation_dg": -0.532,
+      "electrostatic_dg": -4.0,
+      "hbond_dg": 0.0,
+      "torsional_dg": 1.4,
+      "delta_g_calibrated": -13.532,
+      "kd_nm": 0.12
+    }
+  ],
+  "confidence_interval": {
+    "mean_kd_nm": 0.0833,
+    "std_kd_nm": 0.0351,
+    "ci_95_lower": -0.0039,
+    "ci_95_upper": 0.1706,
+    "note": "Recomputed from the ledger's own three values; the declared interval was invalid."
+  },
+  "status": "REVISED_UNRESOLVED_PENDING_STRUCTURE_AND_EXPERIMENT",
+  "sha256": "71ce0557185f61f1713a81237469b175bc5c71dfa7ad0fe7c32dc859da6ebc82",
+  "revision": 2,
+  "revision_timestamp": "2026-09-20T19:08:33.621254+00:00",
+  "revision_reason": "PROVENANCE CORRECTION: invalid confidence interval, unsourced 'Confirmed' verdict, electrostatic double-count, potency scale irreconcilable with the calibration of record.",
+  "superseded_sha256": "0fd85de141eb12f13197099dff101b133f90dee503a50d99c11817eec5d0003a",
+  "structure_provenance": {
+    "structures": [
+      {
+        "pdb_id": "3P3G",
+        "present_locally": false,
+        "matched_files": [],
+        "verified": "ABSENT \u2014 cited source structure is not in the repository"
+      },
+      {
+        "pdb_id": "2XCT",
+        "present_locally": false,
+        "matched_files": [],
+        "verified": "ABSENT \u2014 cited source structure is not in the repository"
+      },
+      {
+        "pdb_id": "1S16",
+        "present_locally": false,
+        "matched_files": [],
+        "verified": "ABSENT \u2014 cited source structure is not in the repository"
+      }
+    ],
+    "absent_count": 3,
+    "total_cited": 3,
+    "note": "None of the structures this ledger cites are present in the repository, so its values cannot be re-examined or reproduced."
+  },
+  "corrections_applied": [
+    {
+      "id": "INVALID_CONFIDENCE_INTERVAL",
+      "severity": "HIGH",
+      "finding": "Declared ci_95 [0.1, 0.12] excludes its own mean (0.0833 nM). A 95% CI must contain the mean. Recomputing from the same values (n=3, sd=0.0351, t=4.303) gives [-0.0039, 0.1706] nM; the lower bound is <= 0, so the sub-nanomolar claim is not statistically resolvable from these three points at all."
+    },
+    {
+      "id": "UNSOURCED_VERDICT_NUMBER",
+      "severity": "HIGH",
+      "finding": "Verdict 'VALIDATED_POTENT_LPXC_INHIBITOR (Ki ~ 4.2 nM Confirmed)' cites 4.2 nM, which appears nowhere in this ledger's data ([0.05, 0.08, 0.12] nM). 4.2 nM is the ESKAPE-ledger mean of the LpxC organisms [3.6, 3.8, 4.1, 4.5, 4.8] (mean 4.16 nM) - a figure spliced in from a different ledger and labelled 'Confirmed'."
+    },
+    {
+      "id": "ELECTROSTATIC_TERM_DOUBLE_COUNTED",
+      "severity": "HIGH",
+      "finding": "delta_g_calibrated adds electrostatic_dg = -4.0 kcal/mol on top of AutoDock Vina's base score, but Vina's own scoring function already includes an electrostatic term. The constant is byte-identical across all 3 structures, indicating a hardcoded correction rather than a per-structure computed value. A -4.0 kcal/mol spurious bonus alone equals a factor of ~856 in affinity."
+    },
+    {
+      "id": "PIPELINE_SCALE_MISMATCH",
+      "severity": "HIGH",
+      "finding": "This ledger places TRM-ABX-220 at 0.083 nM (mean); the ESKAPE ledger places the same compound on the same target at ~4.16 nM - a ~50x discrepancy. The ground-truth-calibrated pipeline is the tie-breaker: its validated leads match ESKAPE exactly (TRM-ABX-219 -> 14.2 nM, TRM-ABX-082 -> 18.7 nM) and TRM-ABX-220 is ABSENT from it. The sub-nanomolar scale is the outlier, not the ESKAPE scale."
+    }
+  ],
+  "retracted_claims": [
+    "Sub-nanomolar Kd (0.05-0.12 nM) vs LpxC",
+    "Verdict 'VALIDATED_POTENT_LPXC_INHIBITOR (Ki ~ 4.2 nM Confirmed)'"
+  ],
+  "confidence_interval_declared_superseded": {
+    "mean_kd_nm": 0.08,
+    "std_kd_nm": 0.04,
+    "ci_95_lower": 0.1,
+    "ci_95_upper": 0.12,
+    "validation_verdict": "VALIDATED_POTENT_LPXC_INHIBITOR (Ki ~ 4.2 nM Confirmed)",
+    "note": "Declared interval retained for audit; invalid (excludes its own mean)."
+  },
+  "pipeline_consistent_estimate": {
+    "source_ledger": "eskape_spectrum_full.json",
+    "target": "LpxC",
+    "organisms": [
+      "Klebsiella_pneumoniae",
+      "Acinetobacter_baumannii",
+      "Pseudomonas_aeruginosa",
+      "Enterobacter_spp",
+      "Escherichia_coli"
+    ],
+    "kd_range_nm": "3.6 - 4.8",
+    "mean_kd_nm": 4.16,
+    "scale_consistency": "Same calibrated scale as the validated leads TRM-ABX-219 (14.2 nM) and TRM-ABX-082 (18.7 nM)."
+  },
+  "structure_status": "NO_STRUCTURE_ON_RECORD (no SMILES/InChI in any ledger)",
+  "validation_verdict": "UNRESOLVED_IN_SILICO_HYPOTHESIS - no experimental confirmation, no structure, potency scale contested",
+  "sha256_scheme": "sha256 of the UTF-8 JSON with sort_keys=True, separators=(',',':'), excluding the 'sha256' field itself"
+}

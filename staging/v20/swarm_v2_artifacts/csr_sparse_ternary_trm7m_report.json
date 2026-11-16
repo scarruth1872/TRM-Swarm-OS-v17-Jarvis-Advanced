@@ -1,0 +1,25 @@
+{
+  "monad_anchor": "0x4D4F4E4144000001",
+  "campaign": "CSR_SPARSE_TERNARY_TRM7M",
+  "timestamp": "2026-09-07T17:25:12Z",
+  "dim": 462,
+  "batch": 1024,
+  "cpu_flags": {
+    "avx2": false,
+    "avx512": false,
+    "vnni": false,
+    "model": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD"
+  },
+  "sparsity": 0.574,
+  "nnz": 90917,
+  "csr_speedup_x": 0.035,
+  "csr_steps_per_sec": 16090.6,
+  "openblas_steps_per_sec": 465931.1,
+  "k3_cosine_similarity": 1.0,
+  "quant_error_ternary_vs_fp32": 0.889362,
+  "k3_verdict": "+1 TRUE",
+  "csr_compression_x": 2.3,
+  "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_csr_ternary.dll",
+  "verdict": "REVISIT",
+  "note": "Branch-free CSR. Zen4+ VNNI (Path B) out of scope on 5900HX."
+}

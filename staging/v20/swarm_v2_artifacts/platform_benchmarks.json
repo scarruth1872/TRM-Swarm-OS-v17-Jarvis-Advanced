@@ -1,0 +1,62 @@
+{
+  "council": {
+    "deliberate_ms": 0.0,
+    "enact_ms": 3.5,
+    "label": "measured_on_host",
+    "method": "full propose->deliberate->vote->enact cycle, 15 agents, timed with time.time()",
+    "propose_ms": 0.0,
+    "total_ms": 5.5,
+    "vote_ms": 2.0,
+    "voters": 15
+  },
+  "date_utc": "2026-10-23T15:07:53.667798+00:00",
+  "deterministic": {
+    "capabilities_ns": 311000,
+    "caps_hit": true,
+    "label": "measured_on_host",
+    "math_2plus2_ns": 5200,
+    "math_5x7_ns": 900,
+    "math_answer": "2 + 2 = 4."
+  },
+  "gpu_scan": {
+    "cpu_scan_us": 144491.1,
+    "gpu_available": true,
+    "gpu_scan_cached_us": 2860.2,
+    "label": "measured_on_host",
+    "speedup_cpu_over_gpu": 50.517830920914626,
+    "store_dim": 768
+  },
+  "host": "windows-x86_64 (this host)",
+  "method": "std::time::Instant + std::hint::black_box (Rust) and time.time() (Python); every figure labeled",
+  "recall": {
+    "chembl_cold_load_ns": 364510700,
+    "engine": "packed-domain-turbovec",
+    "label": "measured_on_host",
+    "method": "stores warmed, then timed; chembl_cold_load_ns is the first-call store load",
+    "route_chembl_steady_ns": 219510100,
+    "route_turbovec_ns": 11871600
+  },
+  "recall_p1": {
+    "ci_95": [
+      0.9125159227037555,
+      0.9704246562361777
+    ],
+    "hit_rate": 0.9487179487179487,
+    "hits": 222,
+    "label": "measured_on_host",
+    "labeled_queries": 234,
+    "noise_basis": "binomial SE + Wilson 95% interval; noise is the measurement's own precision",
+    "source": "swarm_v2_artifacts/fused_fusion_test.json",
+    "standard_error": 0.014419271663025193
+  },
+  "record": "native platform benchmark (council MOTION-B1)",
+  "sha256": "13570d6de21cad2df24c10adbfdfc260e96684778685122411b0daeaa3c1c142",
+  "trm7m": {
+    "confidence": 0.3333333432674408,
+    "decision_trit": 0,
+    "label": "measured_on_host",
+    "model": "TRM-7M (462-dim Mamba-3 SSM, 3 blocks, seed-42 blob)",
+    "think_1turn_ns": 3138800,
+    "think_7turn_ns": 20975200
+  }
+}

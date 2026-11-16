@@ -1,0 +1,100 @@
+{
+  "report_title": "10,000 Compounds x 2,840 FDA Drugs Kernel Cross-Screen",
+  "timestamp": "2026-08-16T19:46:03",
+  "engine": "Native Microkernel (K3 Ternary + TurboVec Cosine SIMD)",
+  "metrics": {
+    "candidates_count": 10000,
+    "fda_drugs_count": 2840,
+    "total_pair_evaluations": 28400000,
+    "wall_time_seconds": 0.033,
+    "throughput_pair_sims_per_sec": 866495605.0
+  },
+  "distribution_tiers": {
+    "gt_0_95": 0,
+    "gt_0_90": 12,
+    "gt_0_85": 221,
+    "gt_0_80_hit_tier": 1531,
+    "gt_0_70": 9217,
+    "min_sim": 0.631,
+    "median_sim": 0.753,
+    "max_sim": 0.937
+  },
+  "honest_findings": [
+    "0% truly-novel candidates (best-sim < 0.55): FDA space densely fills 16-dim feature projection.",
+    "The screen is a triage signal for chemical-space proximity, not binding prediction.",
+    "Associative mapping places candidates relative to known pharmacopeia.",
+    "NAND audit @ 242090 \u2014 top-5 association trits permanent."
+  ],
+  "top_associations": [
+    {
+      "candidate": "cand#9840",
+      "scaffold": "benzothiazole",
+      "sim": 0.937,
+      "nearest_drug": "Levothyroxine",
+      "mechanism": "thyroid hormone"
+    },
+    {
+      "candidate": "cand#1844",
+      "scaffold": "pyrazolo",
+      "sim": 0.915,
+      "nearest_drug": "Copanlisib",
+      "mechanism": "PI3K p110\u03b1"
+    },
+    {
+      "candidate": "cand#10635",
+      "scaffold": "benzothiazole",
+      "sim": 0.914,
+      "nearest_drug": "Copanlisib",
+      "mechanism": "PI3K p110\u03b1"
+    },
+    {
+      "candidate": "cand#1251",
+      "scaffold": "d_peptide",
+      "sim": 0.912,
+      "nearest_drug": "Zavegepant",
+      "mechanism": "CGRP receptor"
+    },
+    {
+      "candidate": "cand#8785",
+      "scaffold": "benzothiazole",
+      "sim": 0.911,
+      "nearest_drug": "Copanlisib",
+      "mechanism": "PI3K p110\u03b1"
+    },
+    {
+      "candidate": "cand#2681",
+      "scaffold": "d_peptide",
+      "sim": 0.911,
+      "nearest_drug": "Levothyroxine",
+      "mechanism": "thyroid hormone"
+    },
+    {
+      "candidate": "cand#5308",
+      "scaffold": "allosteric",
+      "sim": 0.911,
+      "nearest_drug": "Zavegepant",
+      "mechanism": "CGRP receptor"
+    },
+    {
+      "candidate": "cand#5563",
+      "scaffold": "allosteric",
+      "sim": 0.908,
+      "nearest_drug": "Levothyroxine",
+      "mechanism": "thyroid hormone"
+    },
+    {
+      "candidate": "cand#9639",
+      "scaffold": "pyrazolo",
+      "sim": 0.904,
+      "nearest_drug": "Prazosin",
+      "mechanism": "\u03b11-blocker"
+    },
+    {
+      "candidate": "cand#3021",
+      "scaffold": "d_peptide",
+      "sim": 0.901,
+      "nearest_drug": "Sapropterin",
+      "mechanism": "PAH activator"
+    }
+  ]
+}

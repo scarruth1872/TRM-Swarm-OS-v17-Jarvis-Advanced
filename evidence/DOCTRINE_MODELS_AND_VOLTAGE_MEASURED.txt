@@ -1,0 +1,148 @@
+DOCTRINE MODELS + UNIFIED FABRIC + VOLTAGE DOCTRINE - MEASURED 2026-11-05
+=========================================================================
+
+WHAT THE REFERENCE DOCS SAY SHOULD BE USED
+  docs/LOCAL_MODEL_REGISTRY.md (inventory 2026-09-05, "on-device only, no API")
+    Doctrine models, in priority order:
+      1. bitnet-b1.58-2B      "NATIVE 1.58-bit ternary - the doctrine model"
+      2. bonsai-27b           "Platform's own ternary network"
+      3. Instella-MoE-16B-A3B "the platform's native router ... currently the
+                               kernel routes to a name without the weights"
+      4. Qwen3-4B             DONE 8.0x, cos 0.8204-0.8844, seal 0x3495d75a
+    Path: safetensors/GGUF -> TurboVec 1.58-bit ternary -> K3 fabric shard.
+
+  docs/HOLOGRAPHIC_FABRIC_PLAN.md
+    Live trit fabric 402M trits in 96MB Infinity Cache.
+    Knowledge fabric 80.64M trits in RAM, expandable to ~1e11 at 32GB.
+    Kernel commands holograde / holorecall.
+
+  docs/NAND_K3_FABRIC_SPEC.md
+    4,398,046,511,104 trits on 1TB NVMe; "current utilization 26.1B trits (0.59%)".
+    Layer 1 knowledge base 24.4B trits: PubMed 36M abstracts, PubChem 115M
+    compounds, STRING 25M, CVE 200k, PDB/AlphaFold 200k, drug labels 50k.
+
+  evidence/DISTILLED_MODELS_INVENTORY.txt (2026-10-25)
+    17 ternary artifacts ~14GB; "only 4 ARE USABLE". 13 _trits.bin ~12GB orphaned.
+    qwen3-8B-Gemini-Distill ledger: 6,586,630,144 params -> 16.0x, 2.0 bits/weight
+    (NOT 1.58), 399 tensors = 217 quantized + 182 skipped.
+
+MEASURED NOW - WHAT ACTUALLY LOADS
+  16 gguf_*_trits.bin blobs present (2 are zero bytes: llama3.2, olmo-3).
+  Reader check: grep "_trits.bin" across .py/.rs hits ONE file,
+  swarm_v2/core/quantize_gguf.py:268 - the WRITER. There is still no reader.
+  So ~12GB of distilled ternary weights have no inference path.
+
+  Load tests with the same llama-server binary the platform uses
+  (F:/Development sites/ub3/llama-vulkan-win/llama-server.exe):
+
+    BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf   1.19 GB   FAIL
+      "tensor 'blk.0.ffn_down.weight' of type 36 (TYPE_IQ4_NL_4_4 REMOVED, use
+       IQ4_NL with runtime repacking) has 6912 elements per row, not a multiple
+       of block size (0)"
+      The doctrine's flagship NATIVE TERNARY model cannot load on this build.
+
+    Ternary-Bonsai-1.7B-Q2_0.gguf            463 MB   FAIL
+      "tensor 'blk.0.attn_k.weight' has offset 82516128, expected 87369536"
+    Ternary-Bonsai-4B-Q2_0.gguf              1.07 GB  FAIL
+      "tensor 'blk.0.attn_k.weight' has offset 103145184, expected 109211936"
+    Ternary-Bonsai-8B-Q2_0.gguf              2.18 GB  FAIL
+      "tensor 'output_norm.weight' has offset 165015872, expected 174722688"
+
+    Bonsai-27B-Q1_0.gguf                     3.80 GB  LOADS
+      "model loaded" / "listening on http://127.0.0.1:8595" in 5.28 s
+
+  So DISTILLED_MODELS_INVENTORY's "4 ARE USABLE" is wrong for 3 of the 4.
+  Offset mismatches mean the tensor table does not match the data layout -
+  truncated or repacked with a different ggml version. Only Bonsai-27B-Q1_0
+  is genuinely loadable, and it is not wired (no launch line, no port).
+
+  What IS serving: :8587 qwen2.5-1.5b-instruct-q4_k_m.gguf (an ordinary LLM).
+  :8591 Bonsai "deep tier" is dead (000). :8588 serves the 455M TRM.
+
+  Note the registry itself contradicts "we don't need an LLM": Qwen3-4B,
+  gemma-4-12B-coder, qwen3-8B-Gemini-Distill and Bonsai-27B are all language
+  models. "Distilled" in these docs means distilled LLM weights quantized to
+  ternary, not a non-LLM intelligence. The non-LLM part is the K3 decision
+  layer, which outputs trits, not prose.
+
+THE "UNIFIED FABRIC OF KNOWLEDGE" - LIVE STATE
+  Python backend (real, in use by chat):
+    swarm_v2/core/turbovec_memory.py, JSONL+gzip at
+    swarm_v2_global_memory/turbo_memory.jsonl.gz
+    total_memories = 107,249
+    BUT query() is documented and implemented as "keyword matching + recency
+    scoring" (turbovec_memory.py:160-170: query_lower, substring in content and
+    metadata). The name says vector; the code does substring. Probed three
+    queries - "quorum consensus", "sepsis lactate", "CVE vulnerability" - each
+    returned unrelated subagent task specs. Plumbing works, semantics do not.
+
+  Rust surface (council :8022):
+    /memory/stats returns total_memories 5,420, total_trits 241,800,000,
+    shards 18, retrieval_latency_us 0.85, utilization_pct 0.59.
+    These are LITERALS in host_council_server/src/main.rs:2746-2751, not reads.
+    The 5,420 contradicts the 107,249 in the live backend by 20x, and 241.8M
+    trits contradicts the spec's "26.1B trits" by 108x. Three different fabric
+    sizes are published at once and none is measured.
+
+  Real ternary primitive that does work:
+    GET /k3/sram/bench -> 20,000 entries, 20,000 hits, 218.855 ns per
+    store+lookup, elapsed 4,377,100 ns. Source k3_ternary_sram.rs. This is a
+    genuine measured ternary CAM - it just holds 20k synthetic entries, not
+    24.4B knowledge trits.
+
+  The fabric is also GATED SHUT on this hardware:
+    GET /k3/sram/patterns -> {"status":"REFUSED_VOLTAGE_GATE", ...}
+    Three heavy-compute endpoints (/k3/bench, /k3/sram/patterns, /k3/stress118)
+    consult voltage::gate() and refuse when the substrate is unmeasured.
+
+VOLTAGE DOCTRINE - AS IMPLEMENTED AND AS MEASURED
+  Doctrine (trm_uefi_kernel/host_council_server/src/voltage.rs):
+    phi_v = (V_core/1.25)^2 * (f_actual/4000) * (V_ddr/1.35) * max(0.5, 1 - mem%/200)
+    V_CORE_NOMINAL = 1.25 and V_DDR_NOMINAL = 1.35 are the DIVISORS (max boost /
+    XMP). Rails in the numerator are 1.10 V core and 1.20 V DDR4 JEDEC.
+    POLICY: "deny-by-default: a gate whose substrate is unmeasured does not open"
+    The 0.9115 constant is FORBIDDEN - it was a hardcoded value while docstrings
+    claimed hardware telemetry. evidence/PHI_V_ERRATA.txt supersedes it with
+    0.4394 (min 0.4392, max 0.4395 over 8 samples at mem 72.3%, f 4000).
+
+  Live readings now:
+    GET /system/voltage ->
+      phi_v 0.6884, measured false, status FALLBACK_UNMEASURED,
+      source "FALLBACK: one or more telemetry reads failed; values are nominal,
+      NOT measured", rails v_core 1.1 / v_ddr 1.2, gate open FALSE.
+    GET /health -> voltage_measured false, voltage_phi_v 0.6884.
+    GET /system/resources -> voltage_measured false, phi_v 0.6884,
+      memory_percent 28.6, l3_sram_kb 32768.
+
+  Three defects in that surface, measured:
+    1. phi_v is inconsistent with its own memory reading. Solving the formula:
+         mem 0.0%  -> 0.6884   (this is what is emitted)
+         mem 28.6% -> 0.5899   (this is what /system/resources reports)
+         mem 72.3% -> 0.4395   (this is the errata's measured value)
+       The endpoint emits the mem=0 result while simultaneously reporting
+       memory_percent 28.6 and memory_percent 0.0 in /health. A failed memory
+       read is silently defaulting to 0.0, which makes phi_v optimistic by 17%.
+    2. l3_sram_kb = 32768 (32 MB) while the actual 3900X L3 is 65,536 KB (64 MB),
+       confirmed via Get-CimInstance Win32_Processor. The reported cache is half
+       the real one.
+    3. optical_phonon_thz 15.53 is emitted in the same object with no source,
+       instrument or formula attached. Unfalsifiable as served.
+
+  Doctrine is being obeyed in the one place that matters: measured=false is
+  flagged, the gate stays closed, and the reason string refuses to substitute a
+  nominal constant. That is correct. The arithmetic behind the number it does
+  print is where the inconsistency sits.
+
+CONSEQUENCE FOR "WE DON'T NEED AN LLM"
+  The intended substitute is distilled ternary models + the K3 knowledge fabric.
+  Measured today:
+    - the native ternary doctrine model does not load (type 36 removed);
+    - 3 of 4 Bonsai GGUFs are corrupt; 1 loads and is unwired;
+    - 12GB of distilled _trits.bin has no reader;
+    - the knowledge fabric's Python search is substring, not semantic;
+    - the Rust fabric stats are literals, and the heavy fabric endpoints refuse
+      to open because the voltage substrate is unmeasured.
+  Chat therefore runs on an LLM because it is the only path that works. Removing
+  the LLM requires, in order: (1) a ternary loader/engine, (2) a trained ternary
+  model that loads, (3) semantic retrieval over the fabric, (4) a voltage sensor
+  or an accepted measured-by-proxy policy so the gate can open.

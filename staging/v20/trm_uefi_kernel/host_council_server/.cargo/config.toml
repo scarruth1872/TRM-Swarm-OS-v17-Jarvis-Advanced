@@ -1,0 +1,6 @@
+# Voltage-strip lever: compile the host kernel + its swarm-* path deps for this host's CPU.
+# The default x86-64 rustc target enables only SSE/SSE2/SSE3; target-cpu=native exposes AVX2/FMA
+# so the strip math (Gaussian elimination, alignment DP, projection) vectorizes instead of running
+# scalar. Host-only config — the UEFI target builds from its own crate and is untouched.
+[build]
+rustflags = ["-C", "target-cpu=native"]

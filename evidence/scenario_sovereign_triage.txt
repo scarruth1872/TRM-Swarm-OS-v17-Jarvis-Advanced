@@ -1,0 +1,39 @@
+SCENARIO: SOVEREIGN TRIAGE - function over fashion
+host d66ba5a2028f9d42 | 14/14 PASS | exit 0
+
+ONE end-to-end pipeline. Every stage proves it WORKS by also proving it FAILS
+correctly. A stage that only produces data is fashion.
+
+STAGE 0 VOLTAGE    3/3
+  0a gate is MEASURED not constant: phi_v 3 distinct over 6 reads (25s window)
+  0b all 3 heavy endpoints advertise the gate
+  0c policy enforced in code, threshold=0.3
+STAGE 1 RETRIEVAL  2/2
+  1a two-stage K=20 rerank -> 99.1% = fp32 parity (1.58-bit alone 18.7%)
+  1b memory live: 5420 memories, 241.8M trits, NVMe NAND K3 Fabric
+STAGE 2 DOCKING    2/2
+  2a rule preregistered BEFORE labels revealed (sha256 61af1a40...)
+  2b blind holdout rho=-0.5766 -> DISCRIMINATES, not merely producing numbers
+STAGE 3 DECISION   2/2
+  3a code-execution pattern flagged, status=VULNERABILITIES_DETECTED
+  3b K3 engine answers under an open gate
+STAGE 4 DDR AUDIT  3/3
+  4a catches 4/4 real attack patterns
+  4b clears 3/3 benign lookalikes (comments, re.compile, model.eval)
+  4c counter live: scans_performed moves with work
+STAGE 5 REPORT     2/2
+  5a /testing/stats is a REAL run (51 passed, 0 failed), not a fixture
+  5b DDR declares what it does NOT do (rowhammer NOT_IMPLEMENTED)
+
+=== THE SCENARIO EARNED ITS KEEP ===
+First run: 13/14. The failure was REAL, not a scenario bug:
+  MISSED  getattr(__builtins__, 'e'+'v'+'a'+'l')('1')
+CAUSE: has_adjacent_literals matched only r#""+"# and "' + '" - the two
+shapes with NO content between the quotes. A 4-term run 'e'+'v'+'a'+'l' has a
+letter between each pair, and ' + ' required spaces, so neither matched.
+FIX: match the RUN in every quote/spacing shape: '+' "+" ' + ' " + " '+'" "'+
+VERIFIED: 4/4 after the fix, live.
+
+Also caught: 5 of my own wrong guesses in the scenario itself (field names,
+route names, evidence path, a variance window too short for a memory-driven
+signal). Fixed by reading the real API instead of assuming it.

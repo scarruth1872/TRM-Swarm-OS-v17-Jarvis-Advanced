@@ -1,0 +1,54 @@
+{
+  "record": "rotation-optimized cross-antigen transfer + specificity (MOTION-C1b corrected)",
+  "top_complex": "pdb_00009pzi_F_E.cif",
+  "antibody_chains": [
+    "E",
+    "F"
+  ],
+  "cognate_contacts": 206,
+  "other_antigen": "pdb_00009ncy_H_L.cif",
+  "other_centroid_aligned_contacts": 212,
+  "other_rotation_optimized_contacts": 381,
+  "other_rotation_angles_rad": [
+    0.898,
+    2.693,
+    0.898
+  ],
+  "specificity": {
+      "random_antigen_count": 12,
+      "random_mean": 1037.0,
+      "random_std": 337.0,
+      "cognate_z_score": -2.5,
+      "cognate_outlier": false,
+      "interpretation": "the cognate antigen scores 2.5 sigma BELOW the mean of rotation-optimized random antigens -- the paratope is promiscuous (sticky), not specific. It contacts random surfaces better than its own cognate.",
+      "random_antigens": [
+      "pdb_00006b3s_F_G.cif",
+      "pdb_00003ve0_A_B.cif",
+      "pdb_00008s72_H_L.cif",
+      "pdb_00004kml_B_+.cif",
+      "pdb_00009eg6_D_+.cif",
+      "pdb_00007ept_N_+.cif",
+      "pdb_00002z8v_C_+.cif",
+      "pdb_00006rps_N_M.cif",
+      "pdb_00006xp6_J_I.cif",
+      "pdb_00008cwi_H_L.cif",
+      "pdb_00007y1b_H_L.cif",
+      "pdb_00007oaq_FFF_+.cif"
+    ],
+    "random_scores": [
+      909,
+      861,
+      696,
+      545,
+      881,
+      1518,
+      1758,
+      1028,
+      1227,
+      1128,
+      702,
+      1188
+    ]
+  },
+  "basis": "rigid-body rotation search (512 orientations) maximizes paratope contacts; the paratope is held fixed. Cognate > mean+2s means specific; within 2s means merely complementary."
+}

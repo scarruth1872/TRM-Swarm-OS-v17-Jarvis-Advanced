@@ -1,0 +1,71 @@
+{
+  "results": [
+    {
+      "corpus": "k3_danger",
+      "rows": 3342,
+      "groups": 12,
+      "positive_rate": 0.2322,
+      "majority_baseline": 0.7678,
+      "mean_auc": 0.5773,
+      "sd": 0.1055,
+      "fold_aucs": [
+        0.4718,
+        0.6828
+      ],
+      "verdict": "WEAK SIGNAL"
+    },
+    {
+      "corpus": "council_4b",
+      "rows": 784,
+      "groups": 68,
+      "positive_rate": 0.6964,
+      "majority_baseline": 0.6964,
+      "mean_auc": 0.6701,
+      "sd": 0.0357,
+      "fold_aucs": [
+        0.6452,
+        0.634,
+        0.7109,
+        0.6443,
+        0.7161
+      ],
+      "verdict": "SIGNAL"
+    },
+    {
+      "corpus": "CONTROL_shape",
+      "rows": 600,
+      "groups": 432,
+      "positive_rate": 0.2,
+      "majority_baseline": 0.8,
+      "mean_auc": 0.9568,
+      "sd": 0.0229,
+      "fold_aucs": [
+        0.9786,
+        0.9358,
+        0.9669,
+        0.9236,
+        0.9792
+      ],
+      "verdict": "SIGNAL"
+    },
+    {
+      "corpus": "CONTROL_shuffled",
+      "rows": 3342,
+      "groups": 12,
+      "positive_rate": 0.2322,
+      "majority_baseline": 0.7678,
+      "mean_auc": 0.5003,
+      "sd": 0.0172,
+      "fold_aucs": [
+        0.4888,
+        0.5268,
+        0.5035,
+        0.4819
+      ],
+      "verdict": "NO SIGNAL"
+    }
+  ],
+  "rule": "signal requires mean AUC >= 0.65; controls must show CONTROL_shape high and CONTROL_shuffled ~0.50",
+  "partial": false,
+  "fold_mode": "group"
+}

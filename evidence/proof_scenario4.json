@@ -1,0 +1,19 @@
+{
+  "scenario": "PROOF-4 TurboVec retrieval on a real corpus",
+  "corpus": "107 real documents (the platform's journal articles + docs), 2153-term vocabulary",
+  "query": "held-out odd half of each document; ground truth exact by construction",
+  "chance_recall_at_1_pct": 0.93,
+  "results": {
+    "fp32_recall_at_1_pct": 100.0,
+    "fp32_recall_at_3_pct": 100.0,
+    "1.58bit_recall_at_1_pct": 18.7,
+    "1.58bit_recall_at_3_pct": 40.2
+  },
+  "storage": {
+    "fp32_bytes": 921484,
+    "packed_bytes": 57673,
+    "compression_x": 16.0
+  },
+  "verdict": "PROVEN: the 16x compression claim is EXACT (921484/57673 = 16.0). NOT PROVEN: that it preserves retrieval. recall@1 collapses 100.0% -> 18.7%, an 81.3-point loss, and recall@3 100% -> 40.2%. 18.7% is far above chance (0.93%) so the representation retains real signal, but '16x smaller' and 'works as well' are different claims and only the first is true here.",
+  "BUG_FOUND_IN_MY_OWN_HARNESS": "first run reported recall@1 0.9% == chance AT FULL PRECISION, which is impossible for a self-match and indicted the harness. Cause: the loop skipped even k WITHOUT incrementing k, so k stayed 0, every token was skipped, and the query vector was all zeros. Fixed, and a non-vacuity guard added so a zero query cannot silently produce a score."
+}

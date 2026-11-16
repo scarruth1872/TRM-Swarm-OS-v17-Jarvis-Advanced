@@ -1,0 +1,281 @@
+--- trm_uefi_kernel/src/k3_head.rs	2026-11-05 23:17:54.194144200 -0500
++++ scratch/wt_feat/src/k3_head.rs	2026-11-07 13:41:21.757588700 -0500
+@@ -103,6 +103,19 @@
+ /// bucket 0; both sides MUST agree or the EmbeddingBag mean is scaled wrong.
+ pub const EMB_CAP: usize = 192;
+ 
++/// Featuriser v2 (2026-11-07). Char-gram channel + order channel, see
++/// `char_ngram_ids_v2`. 192 + 32 = 224 slots, of which only the first `n_real`
++/// ever enter the mean, so padding cannot dilute the vector.
++pub const CHAR_CAP: usize = 192;
++pub const PAIR_CAP: usize = 32;
++pub const EMB_CAP_V2: usize = CHAR_CAP + PAIR_CAP;
++
++/// Blob feat_version values. A head trained on one featuriser must never be
++/// scored with another - the weights are tied to the feature geometry.
++pub const FEAT_BOW: u32 = 0;
++pub const FEAT_V1: u32 = 1;
++pub const FEAT_V2: u32 = 2;
++
+ /// Hashed character 3-5 gram ids, fixed length, word boundaries marked with < >.
+ ///
+ /// Mirrors Python char_ngram_ids() exactly: lowercase, non-alnum to space, words
+@@ -157,6 +170,154 @@
+     ids
+ }
+ 
++// ───────────────────────────── featuriser v2 ─────────────────────────────
++// Fixes the two measured v1 defects (evidence/K3_GATE_DIAGNOSIS_MEASURED.json):
++//   D1 all trigrams were emitted before any 4/5-gram, so past ~190 characters
++//      the 4/5-grams never existed and the tail was dropped;
++//   D2 the EmbeddingBag mean divided by the padded width 192.
++// v2 gives each n-gram length a fair quota, keeps head AND tail of each length,
++// adds a directed word-pair channel so a negation can sit next to its verb, and
++// reports the real gram count so the pooling divisor is the real count.
++//
++// Every function here mirrors scratch/k3_feat_v2.py exactly. Bucket 0 is
++// reserved for padding: real ids are crc32 % (buckets - 1) + 1.
++
++/// Lowercase alphanumeric word split, same rule as v1's `char_ngram_ids`.
++fn words_of(text: &str) -> Vec<String> {
++    let lower = text.to_lowercase();
++    let mut words: Vec<String> = Vec::new();
++    let mut cur = String::new();
++    for ch in lower.chars() {
++        if ch.is_alphanumeric() {
++            cur.push(ch);
++        } else if !cur.is_empty() {
++            words.push(core::mem::take(&mut cur));
++        }
++    }
++    if !cur.is_empty() {
++        words.push(cur);
++    }
++    words
++}
++
++fn padded_string(words: &[String]) -> String {
++    if words.is_empty() {
++        return String::from("<>");
++    }
++    let mut s = String::from("<");
++    for (i, w) in words.iter().enumerate() {
++        if i > 0 {
++            s.push_str("><");
++        }
++        s.push_str(w);
++    }
++    s.push('>');
++    s
++}
++
++/// Real bucket for a gram: 1..=buckets-1, never 0 (0 is the padding id).
++#[inline]
++fn crc_id(s: &str, buckets: usize) -> usize {
++    (crc32(s.as_bytes()) as usize) % (buckets - 1) + 1
++}
++
++/// All length-n grams in order, skipping boundary-only grams.
++fn grams_for_len(padded: &[char], n: usize, buckets: usize, out: &mut Vec<usize>) {
++    if padded.len() < n {
++        return;
++    }
++    let mut buf = String::with_capacity(n);
++    for i in 0..=(padded.len() - n) {
++        let g = &padded[i..i + n];
++        if g.iter().all(|c| *c == '<' || *c == '>') {
++            continue;
++        }
++        buf.clear();
++        for c in g {
++            buf.push(*c);
++        }
++        out.push(crc_id(&buf, buckets));
++    }
++}
++
++/// Equal base quota per length (192/3 = 64), leftover slots redistributed
++/// round-robin to 5-, then 4-, then 3-grams. Deterministic: no RNG, so the
++/// kernel reproduces the trainer bit-for-bit.
++fn quotas(avail: [usize; 3], cap: usize) -> [usize; 3] {
++    let base = cap / 3;
++    let mut q = [avail[0].min(base), avail[1].min(base), avail[2].min(base)];
++    let mut left = cap - (q[0] + q[1] + q[2]);
++    let order = [2usize, 1, 0]; // index 0..2 == length 3..5
++    while left > 0 {
++        let mut progressed = false;
++        for &n in order.iter() {
++            if left > 0 && q[n] < avail[n] {
++                q[n] += 1;
++                left -= 1;
++                progressed = true;
++            }
++        }
++        if !progressed {
++            break;
++        }
++    }
++    q
++}
++
++/// k items: ceil(k/2) from the head, the rest from the tail. k <= seq.len() is
++/// guaranteed by the quota, so the two halves never overlap.
++fn take_head_tail(seq: &[usize], k: usize) -> Vec<usize> {
++    if k == 0 {
++        return Vec::new();
++    }
++    let h = (k + 1) / 2;
++    let t = k - h;
++    let mut out: Vec<usize> = seq[..h].to_vec();
++    if t > 0 {
++        out.extend_from_slice(&seq[seq.len() - t..]);
++    }
++    out
++}
++
++/// v2 ids. Returns (fixed-length ids padded with 0, number of REAL ids).
++/// `count` is a prefix length: ids[0..count] are real, the rest are padding.
++pub fn char_ngram_ids_v2(text: &str, buckets: usize) -> (Vec<usize>, usize) {
++    let words = words_of(text);
++    let padded_s = padded_string(&words);
++    let padded: Vec<char> = padded_s.chars().collect();
++
++    let mut per_len: [Vec<usize>; 3] = [Vec::new(), Vec::new(), Vec::new()];
++    for (k, n) in (3..=5usize).enumerate() {
++        grams_for_len(&padded, n, buckets, &mut per_len[k]);
++    }
++    let avail = [per_len[0].len(), per_len[1].len(), per_len[2].len()];
++    let q = quotas(avail, CHAR_CAP);
++
++    let mut ids: Vec<usize> = Vec::with_capacity(EMB_CAP_V2);
++    for k in 0..3 {
++        ids.extend(take_head_tail(&per_len[k], q[k]));
++    }
++
++    // Order channel: directed word pairs at distance 1 and 2.
++    let per_d = PAIR_CAP / 2;
++    for d in 1..=2usize {
++        let mut pairs: Vec<usize> = Vec::new();
++        if words.len() > d {
++            for i in 0..(words.len() - d) {
++                let key = alloc::format!("{}|{}|{}", words[i], d, words[i + d]);
++                pairs.push(crc_id(&key, buckets));
++            }
++        }
++        let k = per_d.min(pairs.len());
++        ids.extend(take_head_tail(&pairs, k));
++    }
++
++    ids.truncate(EMB_CAP_V2);
++    let count = ids.len();
++    ids.resize(EMB_CAP_V2, 0);
++    (ids, count)
++}
++
+ pub struct Expert {
+     pub w1: Vec<f32>, // [HIDDEN*dim]
+     pub b1: Vec<f32>, // [HIDDEN]
+@@ -168,6 +329,11 @@
+     pub name: String,
+     /// 0 = fixed hashed bag-of-words input; >0 = learned char-n-gram table.
+     pub buckets: usize,
++    /// 0 = hashed BoW, 1 = v1 char n-grams (mean over padded width),
++    /// 2 = v2 char n-grams + word pairs (mean over REAL grams, L2).
++    /// Stored in the blob header so weights can never be scored with the
++    /// featuriser they were not trained on.
++    pub feat_version: u32,
+     /// Embedding table [buckets, dim], row-major, empty when buckets == 0.
+     pub emb: Vec<f32>,
+     pub dim: usize,
+@@ -258,9 +424,10 @@
+     let mut r = Reader::new(blob);
+     r.pos = 4;
+     let version = r.u32()?;
+-    // v1: no buckets field, fixed BoW only. v2: adds the embedding table. Both are
+-    // accepted so an older blob still loads with buckets = 0.
+-    if version != 1 && version != 2 {
++    // v1: no buckets field, fixed BoW only. v2: adds the embedding table. v3 adds
++    // the explicit feat_version field. All three are accepted so an older blob
++    // still loads, with the featuriser implied by what it actually carries.
++    if version != 1 && version != 2 && version != 3 {
+         return None;
+     }
+     let n_agents = r.u32()? as usize;
+@@ -275,6 +442,23 @@
+         if buckets > 65536 {
+             return None;
+         }
++        // feat_version is explicit from blob v3. Older blobs imply it: a BoW head
++        // is feat 0 and an embedding head is feat 1 (the only one that existed).
++        let feat_version = if version >= 3 {
++            r.u32()?
++        } else if buckets > 0 {
++            FEAT_V1
++        } else {
++            FEAT_BOW
++        };
++        // Refuse combinations that cannot be scored: an unknown featuriser, or a
++        // v2 head without the embedding table its weights were trained against.
++        if feat_version > FEAT_V2 {
++            return None;
++        }
++        if feat_version == FEAT_V2 && buckets == 0 {
++            return None;
++        }
+         if dim == 0 || dim > 4096 || state == 0 || state > 4096 || n_experts == 0 || n_experts > 256 {
+             return None;
+         }
+@@ -303,7 +487,7 @@
+         let norm_w = r.f32s(dim)?;
+         let norm_b = r.f32s(dim)?;
+         heads.push(K3Head {
+-            name, buckets, emb, dim, state, n_experts, a, b, c, d, experts,
++            name, buckets, feat_version, emb, dim, state, n_experts, a, b, c, d, experts,
+             gate_w, gate_b, cls_w1, cls_b1, cls_w2, cls_b2,
+             out_w, out_b, norm_w, norm_b,
+         });
+@@ -357,12 +541,41 @@
+ 
+     /// Input vector for this head: learned embedding mean, or fixed hashed BoW.
+     ///
+-    /// EmbeddingBag(mode='mean') averages the rows of every index in the bag, so the
+-    /// divisor is the full padded length (EMB_CAP), not the number of distinct grams.
++    /// feat_version 1 keeps the v1 behaviour EXACTLY: EmbeddingBag(mode='mean')
++    /// divides by the full padded width (EMB_CAP), padding row included. That is
++    /// the defect v2 fixes, so it must stay byte-identical for v1 heads.
++    /// feat_version 2 sums only the real grams, divides by their count, then
++    /// L2-normalises - padding never enters the mean.
+     pub fn input(&self, text: &str) -> Vec<f32> {
+-        if self.buckets == 0 {
++        if self.buckets == 0 || self.feat_version == FEAT_BOW {
+             return featurize(text, self.dim);
+         }
++        if self.feat_version == FEAT_V2 {
++            let (ids, count) = char_ngram_ids_v2(text, self.buckets);
++            let mut x = vec![0.0f32; self.dim];
++            for &id in ids.iter().take(count) {
++                let row = &self.emb[id * self.dim..(id + 1) * self.dim];
++                for j in 0..self.dim {
++                    x[j] += row[j];
++                }
++            }
++            // Length-correct mean: the divisor is the number of REAL grams.
++            let n = if count == 0 { 1.0 } else { count as f32 };
++            for v in x.iter_mut() {
++                *v /= n;
++            }
++            let mut sq = 0.0f32;
++            for v in &x {
++                sq += *v * *v;
++            }
++            let norm = sqrt_f64(sq as f64) as f32;
++            if norm > 1e-8 {
++                for v in x.iter_mut() {
++                    *v /= norm;
++                }
++            }
++            return x;
++        }
+         let ids = char_ngram_ids(text, self.buckets);
+         let mut x = vec![0.0f32; self.dim];
+         for &id in &ids {

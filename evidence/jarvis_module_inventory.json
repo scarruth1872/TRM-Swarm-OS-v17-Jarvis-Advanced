@@ -1,0 +1,637 @@
+{
+  "note": "wired = direct kernel call OR a call to a Jarvis route that forwards to the kernel (two hops); declared = names TRM without any call site",
+  "kernel_proxy_routes": {
+    "/api/trm/prism-fqm/telemetry": "127.0.0.1:8022",
+    "/api/trm/status": "127.0.0.1:8022",
+    "/api/swarm/intent/predict": "localhost:8022",
+    "/api/swarm/intent/record": "localhost:8022",
+    "/api/swarm/spatial/feed": "localhost:8022",
+    "/api/swarm/spatial/ambient": "localhost:8022",
+    "/api/skills/matrix": "localhost:8022",
+    "/api/skills/matrix/topology": "localhost:8022",
+    "/api/swarm/healing/status": "localhost:8022",
+    "/api/swarm/healing/force-reassign": "localhost:8022"
+  },
+  "counts": {
+    "modules": 63,
+    "by_state": {
+      "wired": 9,
+      "standalone": 35,
+      "declared": 19
+    },
+    "code_bytes": 1575764,
+    "data_files": 85
+  },
+  "wired_modules": [
+    {
+      "file": "server.ts",
+      "bytes": 271158,
+      "state": "wired",
+      "wired": [
+        "councilGate helper",
+        "fetch to kernel",
+        "loopback kernel port",
+        "via /api/skills/matrix -> localhost:8022",
+        "via /api/skills/matrix/topology -> localhost:8022",
+        "via /api/swarm/healing/force-reassign -> localhost:8022",
+        "via /api/swarm/healing/status -> localhost:8022",
+        "via /api/swarm/intent/predict -> localhost:8022",
+        "via /api/swarm/intent/record -> localhost:8022",
+        "via /api/swarm/spatial/ambient -> localhost:8022",
+        "via /api/swarm/spatial/feed -> localhost:8022",
+        "via /api/trm/prism-fqm/telemetry -> 127.0.0.1:8022",
+        "via /api/trm/status -> 127.0.0.1:8022"
+      ],
+      "declared": [
+        "mentions TRM",
+        "mentions council",
+        "mentions gate artifacts"
+      ],
+      "lines": 7284
+    },
+    {
+      "file": "src/components/TernarySynapseEngine.tsx",
+      "bytes": 79600,
+      "state": "wired",
+      "wired": [
+        "via /api/skills/matrix -> localhost:8022",
+        "via /api/swarm/healing/status -> localhost:8022",
+        "via /api/swarm/intent/predict -> localhost:8022",
+        "via /api/trm/status -> 127.0.0.1:8022"
+      ],
+      "declared": [
+        "mentions TRM",
+        "mentions council"
+      ],
+      "lines": 1555
+    },
+    {
+      "file": "src/components/WiFiVisionIntelligence.tsx",
+      "bytes": 56521,
+      "state": "wired",
+      "wired": [
+        "via /api/swarm/spatial/ambient -> localhost:8022",
+        "via /api/swarm/spatial/feed -> localhost:8022"
+      ],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 1206
+    },
+    {
+      "file": "src/components/ResonanceResearchHub.tsx",
+      "bytes": 55771,
+      "state": "wired",
+      "wired": [
+        "via /api/trm/prism-fqm/telemetry -> 127.0.0.1:8022"
+      ],
+      "declared": [
+        "mentions TRM",
+        "mentions council"
+      ],
+      "lines": 1093
+    },
+    {
+      "file": "jarvis_harness.ts",
+      "bytes": 26140,
+      "state": "wired",
+      "wired": [
+        "loopback kernel port"
+      ],
+      "declared": [
+        "mentions TRM",
+        "mentions council"
+      ],
+      "lines": 579
+    },
+    {
+      "file": "build_jarvis_modules.py",
+      "bytes": 25581,
+      "state": "wired",
+      "wired": [
+        "via /api/skills/matrix -> localhost:8022",
+        "via /api/skills/matrix/topology -> localhost:8022",
+        "via /api/swarm/healing/force-reassign -> localhost:8022",
+        "via /api/swarm/healing/status -> localhost:8022",
+        "via /api/swarm/intent/predict -> localhost:8022",
+        "via /api/swarm/intent/record -> localhost:8022",
+        "via /api/swarm/spatial/ambient -> localhost:8022",
+        "via /api/swarm/spatial/feed -> localhost:8022"
+      ],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 413
+    },
+    {
+      "file": "fix_proxy_routes.py",
+      "bytes": 2851,
+      "state": "wired",
+      "wired": [
+        "fetch to kernel"
+      ],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 79
+    },
+    {
+      "file": "wire_prism.py",
+      "bytes": 3410,
+      "state": "wired",
+      "wired": [
+        "via /api/trm/prism-fqm/telemetry -> 127.0.0.1:8022"
+      ],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 75
+    },
+    {
+      "file": "add_proxy_routes.py",
+      "bytes": 1609,
+      "state": "wired",
+      "wired": [
+        "fetch to kernel"
+      ],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 44
+    }
+  ],
+  "declared_only": [
+    {
+      "file": "finetune_gemma.py",
+      "bytes": 7989,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 253
+    },
+    {
+      "file": "build_jarvis_dataset.py",
+      "bytes": 16478,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 239
+    },
+    {
+      "file": "expand_qwen_dataset.py",
+      "bytes": 16625,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 236
+    },
+    {
+      "file": "build_reasoning_dataset.py",
+      "bytes": 16175,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 182
+    },
+    {
+      "file": "build_expanded_dataset.py",
+      "bytes": 10642,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 149
+    },
+    {
+      "file": "build_gap_dataset.py",
+      "bytes": 9929,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 124
+    },
+    {
+      "file": "test_jarvis_model.py",
+      "bytes": 4370,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 124
+    },
+    {
+      "file": "build_final_gaps.py",
+      "bytes": 5484,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 119
+    },
+    {
+      "file": "train_smol_jarvis.py",
+      "bytes": 4268,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 109
+    },
+    {
+      "file": "train_qwen3_jarvis.py",
+      "bytes": 3816,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 106
+    },
+    {
+      "file": "scripts/bonsai_router.py",
+      "bytes": 3760,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 105
+    },
+    {
+      "file": "test_smol_jarvis.py",
+      "bytes": 2991,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 73
+    },
+    {
+      "file": "test_qwen_jarvis.py",
+      "bytes": 2928,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 72
+    },
+    {
+      "file": "merge_all_datasets.py",
+      "bytes": 2214,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 59
+    },
+    {
+      "file": "fix_final_gaps.py",
+      "bytes": 2276,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 56
+    },
+    {
+      "file": "fix_identity.py",
+      "bytes": 2026,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 56
+    },
+    {
+      "file": "audit_wiring.py",
+      "bytes": 2278,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 50
+    },
+    {
+      "file": "mesh_daemon.py",
+      "bytes": 1336,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 42
+    },
+    {
+      "file": "train_jarvis_gemma.py",
+      "bytes": 529,
+      "state": "declared",
+      "wired": [],
+      "declared": [
+        "mentions TRM"
+      ],
+      "lines": 12
+    }
+  ],
+  "standalone": [
+    {
+      "file": "src/App.tsx",
+      "bytes": 232527,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 4872
+    },
+    {
+      "file": "src/components/WorkspaceNexus.tsx",
+      "bytes": 161303,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 3495
+    },
+    {
+      "file": "src/components/BiomimeticLab.tsx",
+      "bytes": 85869,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 1779
+    },
+    {
+      "file": "src/components/RoboticsLab.tsx",
+      "bytes": 66662,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 1545
+    },
+    {
+      "file": "src/components/LocalModelSync.tsx",
+      "bytes": 70670,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 1326
+    },
+    {
+      "file": "src/components/JobTracker.tsx",
+      "bytes": 34294,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 897
+    },
+    {
+      "file": "src/components/GlobalOfferLanding.tsx",
+      "bytes": 49285,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 852
+    },
+    {
+      "file": "src/components/NoosphericRecalibration.tsx",
+      "bytes": 40503,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 784
+    },
+    {
+      "file": "src/components/CognitiveMemoryGraph.tsx",
+      "bytes": 26813,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 657
+    },
+    {
+      "file": "src/components/OkfHub.tsx",
+      "bytes": 21000,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 495
+    },
+    {
+      "file": "src/components/AscilineEngine.tsx",
+      "bytes": 20559,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 431
+    },
+    {
+      "file": "src/components/JarvisAvatar.tsx",
+      "bytes": 15999,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 396
+    },
+    {
+      "file": "vibe_consensus.py",
+      "bytes": 14550,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 367
+    },
+    {
+      "file": "substrate_agent_platform.py",
+      "bytes": 14316,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 343
+    },
+    {
+      "file": "train_thunder.py",
+      "bytes": 14089,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 336
+    },
+    {
+      "file": "VibeThinker/eval/math/main_evaluation.py",
+      "bytes": 12266,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 297
+    },
+    {
+      "file": "src/components/ComputerControlTerminal.tsx",
+      "bytes": 10865,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 253
+    },
+    {
+      "file": "train_qwen_jarvis.py",
+      "bytes": 7033,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 201
+    },
+    {
+      "file": "src/components/SystemTelemetry.tsx",
+      "bytes": 6979,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 161
+    },
+    {
+      "file": "src/types.ts",
+      "bytes": 1985,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 105
+    },
+    {
+      "file": "fix_fallback.py",
+      "bytes": 3596,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 85
+    },
+    {
+      "file": "train_thunder_remote.py",
+      "bytes": 3365,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 85
+    },
+    {
+      "file": "turbovec_search.py",
+      "bytes": 2915,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 79
+    },
+    {
+      "file": "jarvis_inference_server.py",
+      "bytes": 2458,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 71
+    },
+    {
+      "file": "computer_control.py",
+      "bytes": 2294,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 67
+    },
+    {
+      "file": "audit_components.py",
+      "bytes": 1725,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 60
+    },
+    {
+      "file": "src/lib/firebase.ts",
+      "bytes": 1640,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 58
+    },
+    {
+      "file": "patch_setup_env.py",
+      "bytes": 1984,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 52
+    },
+    {
+      "file": "scripts/personality_quantum_model.py",
+      "bytes": 1733,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 48
+    },
+    {
+      "file": "scripts/scan_codebase.py",
+      "bytes": 2096,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 48
+    },
+    {
+      "file": "scripts/local_codebase_indexer.py",
+      "bytes": 1735,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 46
+    },
+    {
+      "file": "vite.config.ts",
+      "bytes": 1396,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 39
+    },
+    {
+      "file": "combine_datasets.py",
+      "bytes": 1129,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 35
+    },
+    {
+      "file": "audit_prism.py",
+      "bytes": 767,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 25
+    },
+    {
+      "file": "src/main.tsx",
+      "bytes": 609,
+      "state": "standalone",
+      "wired": [],
+      "declared": [],
+      "lines": 23
+    }
+  ]
+}

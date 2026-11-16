@@ -1,0 +1,65 @@
+{
+ "llm_fnv": {
+  "chat_len": 1943,
+  "chat_fnv": 11555280290695712982,
+  "action_len": 2185,
+  "action_fnv": 10659858241551774442,
+  "chat_tail": "Advanced'\u2014no simple examples or half-measures.\n\n## \ud83e\udde0 NEURAL MEMORY & CONTEXT:\nM1",
+  "chat_head": "# SWARM OS - ADVANCED NEURAL ARCHITECTURE\nYou are a high-lev",
+  "ctx_len": 1399,
+  "ctx_head": "\n# SWARM OS - ADVANCED NEURAL ARCHITECTURE\nYou are"
+ },
+ "cpbft_fresh_audit": {
+  "isolated": 3,
+  "remediated": [
+   "SAGE",
+   "MUSE",
+   "SENTINEL"
+  ],
+  "muse_status": "healthy",
+  "lens": [
+   1,
+   1,
+   1,
+   1
+  ],
+  "majority": "06fc568d00ce19d1...",
+  "sage_ledger_eq_orch": true
+ },
+ "cpbft_post_audit": {
+  "status": "COMMITTED",
+  "votes": 4,
+  "lens": [
+   3,
+   2,
+   2,
+   2
+  ],
+  "all_equal_hash": false
+ },
+ "sh_budget": {
+  "fill_600": [
+   "OK",
+   true
+  ],
+  "over_500": [
+   "RAISE",
+   "Session budget of 1000 tokens exceeded."
+  ],
+  "reset_hour": [
+   "RAISE",
+   "Session budget of 1000 tokens exceeded."
+  ],
+  "totals_now": 600,
+  "after_hour": [
+   "OK",
+   true
+  ],
+  "totals_reset": 500
+ },
+ "sh_recov": {
+  "mem": "Executed GC cleanup and TRM bucket purge for memory pressure.",
+  "tok": "Token buckets emergency reset.",
+  "unk": "No specific recovery strategy applied."
+ }
+}

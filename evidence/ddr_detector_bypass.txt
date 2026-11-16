@@ -1,0 +1,33 @@
+DDR ANTIBODY DETECTOR - attack bypass and false-positive test
+endpoint: POST http://127.0.0.1:8022/ddr/scan
+implementation: substring matching (code.contains("eval(") etc.), main.rs
+
+ATTACKS: caught 7/15
+  CAUGHT  eval("1+1") | exec("import os") | subprocess.run([...]) | shell=True
+          SQL concat | SQL fstring | string-concat eval
+  MISSED  eval ("1+1")            <- ONE SPACE defeats it
+          getattr(__builtins__,"ev"+"al")("1+1")
+          __import__("os").system("id")
+          os.popen("id")
+          importlib.import_module("os").system("id")
+          compile(...) + exec
+          pickle.loads(payload)
+          yaml.load(data)
+
+BENIGN: false positives 4/5
+  FLAGGED  '# never use eval() in production'
+  FLAGGED  a docstring reading: Safety - avoid exec() calls
+  FLAGGED  'msg = "the eval( method is dangerous"'
+  FLAGGED  '# subprocess is banned; use the AST parser'
+  clean    'msg = "SELECT the best option"'
+
+THE COUNTER IS A LITERAL:
+  prevented_corruptions 279 -> main.rs:1974
+  total_prevented       279 -> main.rs:1973/1987/1996
+  rowhammer_mitigations 128 -> main.rs:1975
+  increment statements for any corruption counter in the source: 0
+  identical input -> byte-identical output (the scanner reads no state)
+
+CLAIM   : "IMMUNE_ARMED", 1,801 antibodies, 279 prevented corruptions
+TRUTH   : the detector misses 8 of 15 standard attack patterns and flags safe
+          prose, and the 279 has never counted anything.

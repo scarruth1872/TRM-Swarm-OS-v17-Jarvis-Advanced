@@ -1,0 +1,25 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T23:38:54.800363+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "9a36b7729e6377abf6e5010626de1a89683207d88acdc6e9e895403f25e926a2",
+      "motion": "MOTION-HBDIR",
+      "phase": "consensus",
+      "proposal_id": "CP-A61099A2",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "MEASURE H-BOND DIRECTIONALITY: from the existing hydrogens, identify donor-H...acceptor H-bonds (D-H < 1.2A, D...A < 3.5A) for the cognate interface vs the fixed-frame rotation-optimized random antigen, compute the D-H...A angle for each, and test whether the cognate's H-bond angles are MORE linear (closer to 180 deg) than the random's. PREDICTION: cognate H-bonds more directional, IF the specificity is in the H-bond geometry. FAILURE MODE: equal angular distribution = H-bond count AND geometry are both non-specific, and the next candidate is water/entropy (unmeasurable in-corpus). MEASURED: the frame bug retraction closed the contact-geometry space \u2014 the paratope is STICKY at every level (raw count, distance, clash-filtered count, H-bond count; ratio 0.66x). The corpus has HYDROGENS (9617 H in 40 sampled files) but NO water (0 HOH). So the first measurable candidate is H-bond DIRECTIONALITY: the donor-H...acceptor angle. A specific H-bond is linear (~180 deg); an incidental contact is bent. PREDICTION: the cognate's H-bonds are MORE linear than the random's, IF the specificity is in the H-bond geometry (not the count)."
+    }
+  ],
+  "prediction_recorded": "cognate H-bonds more linear (directional) than random",
+  "prior_state": "contact geometry closed (sticky at all levels); H-bond directionality is the first measurable candidate (hydrogens present, water absent)",
+  "quorum": 9,
+  "record": "H-BOND DIRECTIONALITY MEASUREMENT -- council-voted; platform self-directs",
+  "sha256": "84ffa03226af807399623be0e26f0c4e1033eff78b457792e80604367311ea5d"
+}

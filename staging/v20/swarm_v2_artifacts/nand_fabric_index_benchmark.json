@@ -1,0 +1,40 @@
+{
+ "benchmark": "nand_fabric_packed_index_ranking",
+ "bits": 2,
+ "candidate_generator": {
+  "design": "packed store shortlists, exact ternary search confirms",
+  "live_verification": {
+   "corpus_scored": {
+    "exact": 180,
+    "generator": 16
+   },
+   "exact_median_us": 102,
+   "generator_median_us": 191,
+   "identical_top1": "12/12",
+   "labels": [
+    "exact-full-corpus",
+    "packed-generator-16x"
+   ]
+  },
+  "measured_at_utc": "2026-09-20T14:51:16Z",
+  "shortlist_fidelity": {
+   "N": {
+    "1": "7/12",
+    "4": "9/12",
+    "8": "11/12",
+    "16": "12/12",
+    "32": "12/12"
+   },
+   "note": "exact top-1 inside the packed top-N; 12 questions, so a small sample"
+  },
+  "verdict": "answers preserved, but NOT a speed win at this corpus size: the shortlist pass dequantizes and scores all 180 packed rows in f32, so it is O(n) with f32 math and measured 1.9x slower than the exact ternary search. It becomes a win only with a packed-domain distance that avoids f32 dequantization (code-table/SIMD), or at corpus sizes where the packed store's smaller traffic dominates. Kept opt-in (`gen=N`), default path unchanged."
+ },
+ "compression_vs_f32": 16.0,
+ "cosine_min_from_store": 0.8116,
+ "dim": 768,
+ "measured_at": "2026-09-20T13:42:56Z",
+ "questions": 12,
+ "store": "swarm_v2_nand_fabric.turbovec",
+ "top1_agreement_vs_exact": "7/12",
+ "vectors": 180
+}

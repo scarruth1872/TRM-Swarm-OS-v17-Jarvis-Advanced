@@ -1,0 +1,22 @@
+{
+  "record": "fp16 ESMFold control fold + RMSD (no quantization)",
+  "model": "facebook/esmfold_v1",
+  "device": "cuda",
+  "results": [
+    {
+      "chain": "E",
+      "nan_count": 0,
+      "coord_spread_std": 7.997,
+      "predicted_residues": 109,
+      "rmsd_angstrom": 6.876
+    },
+    {
+      "chain": "F",
+      "nan_count": 0,
+      "coord_spread_std": 8.848,
+      "predicted_residues": 126,
+      "rmsd_angstrom": 16.828
+    }
+  ],
+  "basis": "control for CAP-209/212 attribution: if this folds (RMSD <5 A), the ternary compute_tm crash is from the 2-bit weights, not fp16."
+}

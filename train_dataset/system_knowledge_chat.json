@@ -1,0 +1,230 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Describe the TRM Swarm OS architecture."
+      },
+      {
+        "role": "assistant",
+        "content": "TRM Swarm OS is a distributed agent system running on port 8021. It consists of 12 core agents (Architect, Lead Developer, Researcher, Reasoning Engine, Security Auditor, DevOps Engineer, UI/UX Designer, QA Engineer, Swarm Manager, Technical Writer, Integration Specialist, Data Analyst) plus 2 gateway nodes (Jarvis OS, Antigravity PM). Agents communicate through a P2P mesh (agent_mesh.py) with heartbeats every 10 seconds via discovery daemons. The system includes a Self-Healing Orchestrator, Ultrawork mission loop, Kanban task board, DDR code scanner, and Spatial Mesh projection. Each agent uses a Gemma3-270M executive layer with TRM-7M reasoning core."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What ports does the TRM system use?"
+      },
+      {
+        "role": "assistant",
+        "content": "TRM API: 8021. Jarvis gateway: 3000. Bitnet service: 8580. Ollama: 11434. Claw3D Studio: 3010. Claw3D Dashboard: 3011. Bonsai: 8581-8583."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the GPU configuration?"
+      },
+      {
+        "role": "assistant",
+        "content": "AMD Radeon RX 6700 XT with 12GB VRAM. GPU backend: directml_vulkan. PyTorch backend: directml. Ollama backend: vulkan. Environment: OLLAMA_VULKAN=1, HSA_OVERRIDE_GFX_VERSION=10.3.0."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does an agent register on the TRM mesh?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST to /mesh/announce with JSON body containing node_id (optional), role, status, and hardware dict. The mesh validates against MeshNodeSchema (node_id pattern: ^[a-zA-Z0-9_-]+$) and persists to mesh_state.json. Discovery daemons auto-announce every 10s. Alternatively, agent.mesh_node_id can be set at module-load time in app_v2.py for deterministic registration."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How many nodes are in the live mesh and how do I check?"
+      },
+      {
+        "role": "assistant",
+        "content": "Full mesh has 14 nodes: 12 core agents + 2 gateways. Check with: curl http://127.0.0.1:8021/mesh/topology. The self-healing panel at /swarm/healing/status shows health scores."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Self-Healing system work?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Self-Healing Orchestrator (self_healing_orchestrator.py) tracks agent task latency via track_task(). It computes health scores (0.0-1.0) based on latency windows, detects degraded agents, and can auto-reassign their specialties. The dashboard panel calls GET /swarm/healing/status. Health scores populate only after agents process tasks."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I check the self-healing status?"
+      },
+      {
+        "role": "assistant",
+        "content": "curl http://127.0.0.1:8021/swarm/healing/status returns {agent_health_scores, degraded_agents, recent_reassignments, healing_active, total_tasks_tracked}."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do agents communicate with each other?"
+      },
+      {
+        "role": "assistant",
+        "content": "Agents use a mailbox system (AgentMailbox class). POST to /mailbox/send with {from_agent, to_agent, body, subject}. GET /mailbox/agents lists agents with mailboxes. GET /mailbox/{agent_id}/inbox peeks at messages. GET /mailbox/{agent_id}/receive consumes messages. The dashboard also has an Ultrawork Missions panel that calls GET /ultrawork/missions."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What skills are available in the TRM swarm?"
+      },
+      {
+        "role": "assistant",
+        "content": "17 skills: CoCreatorSkill (creative synthesis), CodebaseIndexer (code scanning), CognitiveOrchestrator (auto-learning), DocIngestionSkill (doc reading), EmbeddingSkill (vector embeddings), FileSkill (file I/O), FilesystemWatcher (dir monitoring), HardenedShellSkill (secure shell), LearningEngine (dynamic skill acquisition), MCPToolSkill (microservice calls), RelationshipReasoningSkill (agent harmony), RLMSkill (context compression), SkillSynthesisPipeline (new skill creation), TRMSkill (7M TRM reasoning), ValidationGate (pre/post checks), WebSearchSkill (web search)."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Jarvis can't communicate with TRM. What's the fix?"
+      },
+      {
+        "role": "assistant",
+        "content": "Node.js resolves 'localhost' to IPv6 ::1 first, but TRM uvicorn only binds IPv4 0.0.0.0. The fix: replace 'localhost:8021' with '127.0.0.1:8021' in all Jarvis server.ts fetch URLs. Then kill the orphaned node process holding port 3000 using 'powershell -Command \"Stop-Process -Id $(netstat -ano | grep :3000 | grep LISTEN | awk '{print $5}')\" -Force' before restarting npm run dev."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Self-Healing panel shows no data or 500 error. What's wrong?"
+      },
+      {
+        "role": "assistant",
+        "content": "Two causes: (1) The route /swarm/healing/status may import 'health_monitor' (a HealthDashboardMonitor) which has no get_status() method. Fix: use SelfHealingOrchestrator.get_status() instead. (2) Agents may not be in the live mesh because agent.mesh_node_id is unset. Fix: derive node_id at module load: safe = re.sub(r'[^a-zA-Z0-9_-]+', '_', role.lower()).strip('_'); node_id = f'agente_{safe}'."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "MeshNodeSchema validation error when registering a node."
+      },
+      {
+        "role": "assistant",
+        "content": "MeshNodeSchema.node_id requires pattern ^[a-zA-Z0-9_-]+$. Special characters like '/' or spaces cause validation errors. For 'UI/UX Designer', the derived node_id must be 'agent_ui_ux_designer' (underscore for slash removed). Use regex re.sub(r'[^a-zA-Z0-9_-]+', '_', role.lower()).strip('_') when generating node_ids."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I restart the TRM server?"
+      },
+      {
+        "role": "assistant",
+        "content": "Kill the uvicorn process (process kill with session_id), clear __pycache__ with 'find swarm_v2 -type d -name __pycache__ -prune -exec rm -rf {} +', then restart: 'python -m uvicorn swarm_v2.app_v2:app --host 0.0.0.0 --port 8021 --log-level warning'. Always clear .pyc cache before restart after edits."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I send a message from one agent to another?"
+      },
+      {
+        "role": "assistant",
+        "content": "curl -X POST http://127.0.0.1:8021/mailbox/send -H 'Content-Type: application/json' -d '{\"from_agent\":\"Architect\",\"to_agent\":\"Lead Developer\",\"body\":\"Please review the code.\",\"subject\":\"Code Review\"}' The endpoint returns {\"status\":\"sent\",\"from\":...}. The recipient's mailbox is created on first message."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I create an Ultrawork mission?"
+      },
+      {
+        "role": "assistant",
+        "content": "curl -X POST http://127.0.0.1:8021/ultrawork/missions -H 'Content-Type: application/json' -d '{\"objective\":\"Investigate system health\"}' Returns a mission_id. List missions with GET /ultrawork/missions."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the TRM 7M model and how does it work?"
+      },
+      {
+        "role": "assistant",
+        "content": "The TRM 7M is a TinyRecursiveReasoningModel_ACTV1 with 6,829,058 parameters (6.8M). It uses Adaptive Computation Time with vocab_size=12 (digits 0-9 + pad + EOS), seq_len=1024 (flattened 30x30 grids), hidden_size=512, 8 attention heads, 2 reasoning L-layers, 3 H-cycles, 4 L-cycles, and RoPE position encoding. It expects grid-like input tokens and outputs predictions. Training data is ARC-AGI puzzles encoded as 30x30 grids with values 0-9."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the TRM 7M brain for inference?"
+      },
+      {
+        "role": "assistant",
+        "content": "cd /f/Development sites/TRM-Swarm-OS-v2 && python -c 'from swarm_v2.core.trm_brain import get_trm_brain; brain = get_trm_brain(); result = brain.reason([1,2,3,4,5,0,0,0,11])' Note: no pretrained checkpoint exists at tiny-recursive-weights/step_155718, so weights are random until trained."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the TRM codebase structure?"
+      },
+      {
+        "role": "assistant",
+        "content": "Root: /f/Development sites/TRM-Swarm-OS-v2. Key dirs: swarm_v2/core/ (main logic), swarm_v2/routes/ (FastAPI endpoints), swarm_v2/skills/ (17 agent skills), swarm_v2/experts/ (agent registry), models/recursive_reasoning/ (TRM 7M model), config/ (training configs), dashboard/ (React frontend), kaggle/combined/ (ARC-AGI training data). Port 8021."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I fine-tune the Gemma 3 270M model on system knowledge?"
+      },
+      {
+        "role": "assistant",
+        "content": "Use LoRA fine-tuning with the train_venv (Python 3.11, torch 2.4.1, torch-directml). Run with PYTHONPATH='' to isolate from the Hermes system venv. The DirectML device is detected as privateuseone:0. Install peft + datasets + accelerate. Train on system Q&A pairs with Gemma 3 chat template format. The model is google/gemma-3-270m-it on HuggingFace. Use LoRA rank=16, target modules q_proj,k_proj,v_proj,o_proj."
+      }
+    ]
+  }
+]

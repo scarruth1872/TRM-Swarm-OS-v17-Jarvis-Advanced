@@ -1,0 +1,13 @@
+SPEARMAN CORRELATION - docking score vs MEASURED potency, P. aeruginosa LpxC (n=32)
+
+  rho = -0.395     (correct sign - more negative kcal/mol should mean higher pChEMBL -
+                    but weak: it explains little of the variance)
+
+  measured-inactive ranks among 32: 2, 7, 14, 25, 27, 28, 29, 30, 31, 32
+  -> 4 of 10 inactives land in the TOP HALF; 2 in the top 7
+
+  rank 2  MEASURED_WEAK  CHEMBL3356191  -10.360  pChEMBL 4.48  (IC50 33,113 nM)
+  rank 3  ACTIVE         CHEMBL260091  -10.160  pChEMBL 9.32  (IC50     0.5 nM)
+
+  A 33 uM compound outranks a 0.5 nM compound by 0.20 kcal/mol.
+  Docking cannot resolve that gap. The measurement can.

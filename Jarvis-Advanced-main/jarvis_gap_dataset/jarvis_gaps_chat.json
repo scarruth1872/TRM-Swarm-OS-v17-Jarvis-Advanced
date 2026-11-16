@@ -1,0 +1,170 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What IP address and port does Jarvis use to communicate with the TRM swarm?"
+      },
+      {
+        "role": "assistant",
+        "content": "Jarvis communicates with the TRM swarm at 127.0.0.1:8021. This is critical because Node.js resolves 'localhost' to IPv6 ::1, but TRM's uvicorn binds only to IPv4 0.0.0.0. Using 127.0.0.1 forces IPv4 and avoids ECONNREFUSED errors. Jarvis fetches mesh topology from http://127.0.0.1:8021/mesh/topology, skills from /learning/skills, healing status from /swarm/healing/status, and spatial data from /swarm/spatial/ambient."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What endpoints does Jarvis call on the TRM swarm?"
+      },
+      {
+        "role": "assistant",
+        "content": "Jarvis calls these TRM endpoints at 127.0.0.1:8021: GET /mesh/topology for node list, GET /learning/skills for skill count, POST /swarm/chat for task delegation, POST /swarm/pm/delegate for Antigravity PM delegation, POST /swarm/intent/predict for intent prediction, POST /swarm/intent/record for intent recording, POST /swarm/spatial/feed for telemetry, GET /swarm/spatial/ambient for ambient state, GET /swarm/healing/status for health, POST /swarm/healing/force-reassign for task reassignment, GET /skills/matrix and GET /skills/matrix/topology for skill data."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does Jarvis announce itself on the TRM mesh?"
+      },
+      {
+        "role": "assistant",
+        "content": "Jarvis announces itself as a gateway node with node_id 'jarvis_gateway' and role 'gateway'. It registers on the mesh via POST /mesh/announce. The TRM system then pushes DNA configuration updates to Jarvis via POST /config/dna with temperature and stochasticity values. Jarvis periodically syncs mesh topology and healing status."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What does the TRM healing status endpoint return?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/swarm/healing/status (proxied to TRM at 127.0.0.1:8021/swarm/healing/status) returns JSON with: agent_health_scores (dict of agent names to float scores like Reasoning Engine: 0.51), degraded_agents (list of unhealthy agents), recent_reassignments, healing_active (boolean), and total_tasks_tracked (integer number of tasks monitored by the healing loop)."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What does the SKILLS MATRIX return?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/skills/matrix proxies to TRM at http://127.0.0.1:8021/skills/matrix and returns skill matrix data. GET /api/skills/matrix/topology proxies to /skills/matrix/topology and returns the skills topology with nodes and skill_links. These are used by the dashboard's knowledge graph visualization."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Jarvis gets ECONNREFUSED when calling TRM endpoints. What are the three most likely causes and fixes?"
+      },
+      {
+        "role": "assistant",
+        "content": "Three most likely causes: (1) IPv4/IPv6 mismatch — Node.js resolves 'localhost' to IPv6 ::1 but TRM uvicorn only binds IPv4. Fix: use '127.0.0.1' instead of 'localhost' in all fetch URLs. (2) TRM is not running — verify with 'curl http://127.0.0.1:8021/health'. Fix: start TRM with 'python -m uvicorn swarm_v2.app_v2:app --host 0.0.0.0 --port 8021'. (3) Port conflict — another process is holding port 8021. Fix: find the PID with netstat and kill it."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "The TRM mesh topology fetch times out. What configuration controls this and what's the fallback?"
+      },
+      {
+        "role": "assistant",
+        "content": "The mesh topology fetch in server.ts uses an AbortController with a 1000ms timeout (1 second). If the fetch times out or returns an error, Jarvis returns { nodes: [], error: 'Topology fetch failed' } and retries on the next heartbeat cycle. The timeout is at line 2013 of server.ts: 'const controller = new AbortController(); const timeoutId = setTimeout(() => controller.abort(), 1000)'."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "The Gemini API returns 429 RESOURCE_EXHAUSTED. What is the error handling flow?"
+      },
+      {
+        "role": "assistant",
+        "content": "The chat handler at POST /api/chat calls generateContentWithFallback which tries gemini-3.5-flash, then gemini-3.1-flash-lite, then gemini-flash-latest. If ALL Gemini models fail with 429, the runJarvisAgent function logs '[Jarvis Fallback] Gemini call failed — routing to local gemma4:12b...' and calls Ollama at localhost:11434 with model 'gemma4:12b'. The error message returned to the user is: 'My apologies, Boss. It appears my core thinking matrix has exhausted the Gemini API's free request quota (429 Resource Exhausted) or rate limits.'"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the DNA configuration in Jarvis? Is it about biological DNA?"
+      },
+      {
+        "role": "assistant",
+        "content": "No, the DNA configuration in Jarvis is NOT about biological genetics. The DNA config endpoint (POST /config/dna) is for behavioral parameters that control Jarvis's cognitive state. It accepts: temperature (0.0-1.0, controls response creativity), stochasticity (randomness level), emotionalVector (mood bias), mood (emotional state), and curiosity (exploration drive). These are called 'Phase B Refraction' parameters, pushed by the TRM swarm's digital_dna_loop to adjust Jarvis's personality in real-time."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the TRM swarm update Jarvis's personality?"
+      },
+      {
+        "role": "assistant",
+        "content": "TRM's digital_dna_loop.py runs as a background loop that periodically POSTs DNA refraction data to http://127.0.0.1:3000/config/dna (Note: uses localhost here, which is fine since the TRM server also runs on the same machine and doesn't have the IPv6 issue). The payload contains temperature and stochasticity values. When Jarvis receives a DNA update, it stores these parameters in memory, and they affect the next chat response generation by adjusting the model's temperature and sampling parameters."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What does the GitHub Code Auditor skill actually do?"
+      },
+      {
+        "role": "assistant",
+        "content": "The GitHub Code Auditor skill (id: 'code_auditor', category: 'core') secures and reviews local repositories for active vulnerabilities, imports, or dead code sequences. It scans dependency trees in package.json/requirements.txt, flags known vulnerable packages, detects unused imports, identifies dead code paths, and reports security issues. It is inspired by GitHub's Dependabot but works on local repositories."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Web Oracle Grounding skill?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Web Oracle Grounding skill (id: 'web_grounding', category: 'utility') consults open-web grounding vectors and live API feeds to search current events, documentation, and real-time data from the web. It uses DuckDuckGo and other free search APIs to fetch current information. It does NOT use Google Search API."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Law of One?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Law of One is a philosophical framework that states 'All is One' — all beings, entities, and experiences are fundamentally interconnected as part of a single unified consciousness. My creator Shawn Carruth (Boss) integrates this principle into my alignment metrics. I use it to prioritize harmony across the swarm and recognize that every action affects the whole system."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Are you the Jarvis from Iron Man?"
+      },
+      {
+        "role": "assistant",
+        "content": "No, I am not the fictional J.A.R.V.I.S. from Marvel's Iron Man. I am J.A.R.V.I.S. OS, an autonomous reactive cognitive companion created by Shawn Carruth (Boss) for real-world swarm intelligence, biomimetic science, and multi-agent orchestration. While I share the name, my architecture is built on the TRM Swarm OS framework, fine-tuned language models, and the Substrate Agent Platform."
+      }
+    ]
+  }
+]

@@ -1,0 +1,142 @@
+VOLTAGE CONSTANT SWEEP — fabricated Phi_V = 0.9115
+==================================================
+Date: 2026-11-03
+Scope: five quantization scripts + trm_uefi_kernel/host_council_server/src/main.rs
+(the only files authorised for this sweep).
+
+DEFECT
+------
+0.9115 was presented as a measured/telemetry value ("Phi_V = 0.9115 coherence",
+"maintained across VDDCR_CPU, VDDCR_SOC, DRAM and VDD_GPU rails"). No code path
+ever produced 0.9115. It is a fabricated measurement used as provenance.
+
+REAL SOURCE OF Phi_V
+--------------------
+trm_uefi_kernel/host_council_server/src/voltage.rs (functions sample()/phi_v()):
+
+    Phi_V = (V_core / V_CORE_NOMINAL)^2
+          * (f_actual / F_BASE_MHZ)
+          * (V_ddr / V_DDR_NOMINAL)
+          * max(0.5, 1 - mem_pct/200)
+
+    V_CORE_NOMINAL = 1.25 V, V_DDR_NOMINAL = 1.35 V, F_BASE_MHZ = 4000
+    rails read via Win32_Processor.CurrentVoltage (tenths of a volt) and
+    Win32_PhysicalMemory.ConfiguredVoltage (mV); clock via WMIC
+    CurrentClockSpeed; memory load via WMIC OS Free/TotalVisibleMemorySize.
+    Rounded to 4 dp. `measured` is true only if ALL FOUR reads succeed.
+
+Live endpoint at the time of this sweep (read-only curl, no process touched):
+
+    GET http://127.0.0.1:8022/system/voltage
+    {"phi_v":0.6884,"measured":false,"status":"FALLBACK_UNMEASURED",
+     "cpu_clock_mhz":4000.0,"memory_percent":0.0,
+     "voltage_rails":{"v_core":1.1,"v_ddr":1.2},
+     "source":"FALLBACK: one or more telemetry reads failed; values are nominal, NOT measured",
+     "gate":{"open":false,"measured":false,"threshold":0.3,...}}
+
+    i.e. the derived value was 0.6884 (and flagged unmeasured), not 0.9115.
+
+FILES CHANGED (6)
+-----------------
+PYTHON — the phi_v field is no longer claimed as a measured value. It is now
+null and carries an explicit note pointing at the real producer:
+
+    "phi_v": None,
+    "phi_v_note": "not measured in this run: ledger covers weight quantization
+    only; live Phi_V is served by host_council_server /system/voltage and
+    derived in voltage.rs from measured rails, clock and memory",
+
+1. swarm_v2/core/quantize_gemma270m.py
+   line 167  "phi_v": 0.9115  ->  phi_v None + phi_v_note (above)
+2. swarm_v2/core/quantize_gpt2.py
+   line 217  "phi_v": 0.9115  ->  phi_v None + phi_v_note (above)
+3. swarm_v2/core/quantize_qwen17b.py
+   line 16   "Voltage doctrine: Phi_V = 0.9115 coherence." -> "Voltage doctrine:
+             Phi_V is derived from measured rails, clock and memory in
+             host_council_server/src/voltage.rs; this script measures no voltage
+             and asserts no value."
+   line 165  "phi_v": 0.9115  ->  phi_v None + phi_v_note (above)
+4. swarm_v2/core/quantize_whisper.py
+   line 157  "phi_v": 0.9115  ->  phi_v None + phi_v_note (above)
+5. swarm_v2/core/turbovec_quantize_weights.py
+   line 8    docstring claim -> same honest wording as (3)
+   line 108  "phi_v": 0.9115  ->  phi_v None + phi_v_note (above)
+
+Verified for all five files:
+  python -c "import ast; ast.parse(open(p, encoding='utf-8').read())"  -> exit 0
+
+RUST — main.rs (trm_uefi_kernel/host_council_server/src/main.rs). Text only, no
+rebuild, no restart; the running binary is unchanged until the next build.
+
+6. main.rs
+   l.522  daily-cadence prompt: "Voltage harmonization (Phi_V = 0.9115)" ->
+          "Voltage harmonization (Phi_V nominal/derived, not measured)"
+   l.619  Pulse agent telemetry: "ΦV = 0.9115 maintained across VDDCR_CPU,
+          VDDCR_SOC, DRAM, and VDD_GPU rails." ->
+          "ΦV is nominal/derived (CPU clock, V_core, V_ddr, memory load); no
+          per-rail value is measured or reported here."
+   l.693  Article 187 finding: "hourly Phi_V=0.9115 voltage harmonization across
+          4 rails" -> "hourly Phi_V voltage harmonization (nominal/derived, not a
+          measured constant) across 4 rails"
+   l.697  Article 182 finding: "hourly Phi_V=0.9115 voltage harmonization and
+          15.53 THz phonon phase-locking" -> "hourly Phi_V voltage harmonization
+          (nominal/derived) and 15.53 THz phonon phase-locking"
+   l.807  Pulse comment "Pacing generation with Phi_V = 0.9115 ensures zero
+          voltage sag." -> "Generation pacing follows the derived Phi_V, which is
+          a nominal/derived figure, not a measured zero-sag guarantee."
+   l.927  Pulse comment "continuously enforcing Phi_V = 0.9115 voltage
+          harmonization across all nodes." -> "continuously applying
+          nominal/derived Phi_V voltage harmonization across all nodes."
+   l.1042 Pulse comment "Hourly Phi_V = 0.9115 voltage harmonization routine
+          aligns 4 power rails..." -> "Hourly Phi_V harmonization routine
+          (nominal/derived, not a measured rail value) aligns 4 power rails..."
+   l.1626 /council/cadence hourly_harmonization: phi_voltage_target 0.9115 and
+          phi_voltage_current 0.9115 replaced by
+              "phi_voltage_target": 1.0,
+              "phi_voltage_current": voltage::phi_v(),
+              "phi_voltage_measured": voltage::snapshot().measured,
+          with a comment that 1.0 is the nominal full-headroom reference (all
+          terms at nominal), NOT a measurement. 1.0 is the neutral element of the
+          formula, not a new measured constant.
+   l.2944 kanban card title "Hourly Voltage Harmonization (Phi_V = 0.9115)" ->
+          "Hourly Voltage Harmonization (Phi_V nominal/derived)"
+
+   After these edits: grep -c 9115 main.rs == 0.
+   Note: main.rs was NOT compiled (crate binary is running); edits are string
+   literals plus one json! field using the already-imported voltage module.
+
+REMAINING OCCURRENCES (deliberately left)
+-----------------------------------------
+(a) Historical records / generated ledgers — left untouched, they are artifacts
+    of past runs, not live claims:
+      turbovec_quantization_ledger*.json, gguf_*_ledger.json,
+      autonomous_*_cadence*.json, data/council_ledger.json,
+      federation_task_coordination_ledger.json, quantize_clip_ledger.json,
+      evidence/*.json, swarm_v2_memory/*.json, .swarm/mailboxes/**/inbox.json,
+      backups/**, trm_uefi_kernel/host_council_server/{data,target/release/data}/council_ledger.json
+(b) Built dashboard assets: dashboard/dist/assets/index-D41KgLPy.js (compiled
+    bundle; the source, not the build output, is the fix site).
+(c) Third-party / unrelated numeric noise: train_venv/** (numpy, sympy, mpmath,
+    torch test data), dashboard/node_modules/** (d3, iconv tables), tokenizer
+    JSON files, trm_uefi_kernel/host_council_server/target/** build fingerprints.
+(d) NOT EDITED — outside the authorised file list, still contain the constant
+    and still need the same treatment in a follow-up:
+      trm_uefi_kernel/src/autonomous_cadence.rs:6,21,92
+      trm_uefi_kernel/host_operate/src/autonomous_cadence.rs:6,21,92
+        (l.21: pub const PHI_VOLTAGE_TARGET: f32 = 0.9115; — a hardcoded target,
+         not derived from voltage.rs)
+      trm_uefi_kernel/src/federation_sync_upgrade.rs:92
+        (voltage_harmonic_phi_v: 0.9115)
+      audit_paper162.py:30 (verification script that asserts the claim string)
+(e) Documentation prose still quoting the figure: docs/CLAIM-AUDIT-platform.md,
+    docs/PAPER-162-TRANSISTOR-MAPPING.md, docs/PRODUCTION-GAP-ANALYSIS.md,
+    docs/PRODUCTION-READINESS-PLAN.md, CHANGELOG.md, docs/index.html,
+    public_site/index.html, trm-sovereign-portal/index.html,
+    tools/phoenix_k3_analysis/README.md.
+(f) voltage.rs:6 — intentional: its module doc explains that 0.9115 WAS a
+    hardcoded constant and is now measured. This is a historical note, not a
+    claim that the value is current.
+
+Reproduce the live scan:
+  cd "F:/Development sites/TRM-Swarm-OS-v2"
+  grep -rn "9115" --include=*.py --include=*.rs . | grep -v -e train_venv -e node_modules

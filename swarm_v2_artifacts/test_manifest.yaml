@@ -1,0 +1,220 @@
+# Swarm OS v12 - Test Manifest
+# Generated: 2026-08-01T04:06:20Z
+# Owner: Archi (Architect) / Verify (QA)
+# Critical Path Gate Order: C4 → C1 → C3 → C2 → C5 → C6
+
+manifest_version: "1.0"
+execution_policy:
+  fail_fast: true
+  max_parallel_tiers: [T1, T2]   # T3/T4 run serially to avoid resource contention
+  quarantine_on_failure: true    # Failed component is quarantined; dependent tests skipped
+
+tiers:
+  T1_unit:
+    scope: "Single function/method; no I/O; mocked dependencies"
+    cadence: "pre-merge"
+    failure_policy: "block_merge"
+    coverage_target: 85%  # line coverage for P0 components
+
+  T2_integration:
+    scope: "Module-to-module within a node; loopback network; in-memory stores"
+    cadence: "per-PR + nightly"
+    failure_policy: "block_release"
+
+  T3_contract:
+    scope: "Cross-node API compatibility; protocol conformance (PBFT, EDSMA); schema validation"
+    cadence: "nightly + release-candidate"
+    failure_policy: "block_release"
+
+  T4_e2e:
+    scope: "Full swarm (≥5 nodes); fault injection; partition tolerance; rollback verification"
+    cadence: "nightly + pre-release"
+    failure_policy: "block_release; requires incident report"
+
+components:
+  - id: pbft_consensus
+    name: "PBFT Consensus Engine"
+    critical_path_rank: 1
+    priority: P0
+    tiers: [T1, T2, T3, T4]
+    test_files:
+      T1: "tests/unit/pbft_consensus/*.test.ts"
+      T2: "tests/integration/pbft_consensus/*.test.ts"
+      T3: "tests/contract/pbft_consensus/*.test.ts"
+      T4: "tests/e2e/pbft_consensus/*.test.ts"
+    dependencies: [identity_auth]   # Must run after C4 passes
+    fault_injection:
+      - "byzantine_node_behavior"
+      - "message_reordering"
+      - "leader_crash"
+
+  - id: p2p_mesh_router
+    name: "P2P Mesh Router"
+    critical_path_rank: 4
+    priority: P0
+    tiers: [T1, T2, T3, T4]
+    test_files:
+      T1: "tests/unit/p2p_mesh/*.test.ts"
+      T2: "tests/integration/p2p_mesh/*.test.ts"
+      T3: "tests/contract/p2p_mesh/*.test.ts"
+      T4: "tests/e2e/p2p_mesh/*.test.ts"
+    dependencies: [identity_auth, state_replication]
+    fault_injection:
+      - "packet_loss"
+      - "partition"
+      - "message_duplication"
+
+  - id: state_replication
+    name: "State Replication Layer"
+    critical_path_rank: 3
+    priority: P0
+    tiers: [T1, T2, T3, T4]
+    test_files:
+      T1: "tests/unit/state_replication/*.test.ts"
+      T2: "tests/integration/state_replication/*.test.ts"
+      T3: "tests/contract/state_replication/*.test.ts"
+      T4: "tests/e2e/state_replication/*.test.ts"
+    dependencies: [pbft_consensus]
+    fault_injection:
+      - "partial_write"
+      - "replica_desync"
+      - "snapshot_corruption"
+
+  - id: identity_auth
+    name: "Identity & Auth (Node Certificates)"
+    critical_path_rank: 0   # FIRST in gate order
+    priority: P0
+    tiers: [T1, T2, T3, T4]
+    test_files:
+      T1: "tests/unit/identity_auth/*.test.ts"
+      T2: "tests/integration/identity_auth/*.test.ts"
+      T3: "tests/contract/identity_auth/*.test.ts"
+      T4: "tests/e2e/identity_auth/*.test.ts"
+    dependencies: []
+    fault_injection:
+      - "certificate_expiry"
+      - "spoofed_identity"
+      - "revoked_certificate"
+
+  - id: edsma
+    name: "EDSMA (Self-Modification API)"
+    critical_path_rank: 5
+    priority: P0
+    tiers: [T1, T2, T3, T4]
+    test_files:
+      T1: "tests/unit/edsma/*.test.ts"
+      T2: "tests/integration/edsma/*.test.ts"
+      T3: "tests/contract/edsma/*.test.ts"
+      T4: "tests/e2e/edsma/*.test.ts"
+    dependencies: [pbft_consensus, identity_auth]
+    fault_injection:
+      - "bad_patch_application"
+      - "rollback_failure"
+      - "unauthorized_modification"
+
+  - id: hbtf
+    name: "HBTF (Telemetry Fabric)"
+    critical_path_rank: 6
+    priority: P0
+    tiers: [T1, T2, T3, T4]
+    test_files:
+      T1: "tests/unit/hbtf/*.test.ts"
+      T2: "tests/integration/hbtf/*.test.ts"
+      T3: "tests/contract/hbtf/*.test.ts"
+      T4: "tests/e2e/hbtf/*.test.ts"
+    dependencies: [p2p_mesh_router]
+    fault_injection:
+      - "silent_drop"
+      - "telemetry_corruption"
+      - "backpressure_stall"
+
+  - id: skg
+    name: "Semantic Knowledge Graph"
+    critical_path_rank: null
+    priority: P1
+    tiers: [T1, T2, T3]
+    test_files:
+      T1: "tests/unit/skg/*.test.ts"
+      T2: "tests/integration/skg/*.test.ts"
+      T3: "tests/contract/skg/*.test.ts"
+    dependencies: [state_replication]
+
+  - id: fve
+    name: "Formal Verification Engine"
+    critical_path_rank: null
+    priority: P1
+    tiers: [T1, T2]
+    test_files:
+      T1: "tests/unit/fve/*.test.ts"
+      T2: "tests/integration/fve/*.test.ts"
+    dependencies: [skg]
+
+  - id: config_manager
+    name: "Config Manager"
+    critical_path_rank: null
+    priority: P2
+    tiers: [T1, T2]
+    test_files:
+      T1: "tests/unit/config_manager/*.test.ts"
+      T2: "tests/integration/config_manager/*.test.ts"
+    dependencies: []
+
+  - id: log_aggregator
+    name: "Log Aggregator"
+    critical_path_rank: null
+    priority: P2
+    tiers: [T1, T2]
+    test_files:
+      T1: "tests/unit/log_aggregator/*.test.ts"
+      T2: "tests/integration/log_aggregator/*.test.ts"
+    dependencies: [hbtf]
+
+  - id: cli_control_plane
+    name: "CLI / Control Plane"
+    critical_path_rank: null
+    priority: P2
+    tiers: [T1, T2, T4]
+    test_files:
+      T1: "tests/unit/cli/*.test.ts"
+      T2: "tests/integration/cli/*.test.ts"
+      T4: "tests/e2e/cli/*.test.ts"
+    dependencies: [edsma]
+
+  - id: metrics_exporter
+    name: "Metrics Exporter"
+    critical_path_rank: null
+    priority: P3
+    tiers: [T1, T2]
+    test_files:
+      T1: "tests/unit/metrics_exporter/*.test.ts"
+      T2: "tests/integration/metrics_exporter/*.test.ts"
+    dependencies: [hbtf]
+
+execution_gates:
+  - gate: "C4_identity"
+    component: identity_auth
+    blocks: [pbft_consensus, edsma]
+  - gate: "C1_consensus"
+    component: pbft_consensus
+    blocks: [state_replication]
+  - gate: "C3_replication"
+    component: state_replication
+    blocks: [p2p_mesh_router, skg]
+  - gate: "C2_mesh"
+    component: p2p_mesh_router
+    blocks: [hbtf]
+  - gate: "C5_edsma"
+    component: edsma
+    blocks: [cli_control_plane]
+  - gate: "C6_hbtf"
+    component: hbtf
+    blocks: [log_aggregator, metrics_exporter]
+
+reporting:
+  format: "junit-xml + html"
+  artifacts:
+    - "reports/T1_unit/"
+    - "reports/T2_integration/"
+    - "reports/T3_contract/"
+    - "reports/T4_e2e/"
+  telemetry_export: true  # Push results to HBTF for swarm-wide visibility

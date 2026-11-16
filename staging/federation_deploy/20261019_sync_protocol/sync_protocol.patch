@@ -1,0 +1,158 @@
+diff --git a/Downloads/TRM-Swarm-OS-v19-Sovereign-Private-main/TRM-Swarm-OS-v19-Sovereign-Private-main/trm_uefi_kernel/host_council_server/src/main.rs b/Downloads/TRM-Swarm-OS-v19-Sovereign-Private-main/TRM-Swarm-OS-v19-Sovereign-Private-main/trm_uefi_kernel/host_council_server/src/main.rs
+index 7118dc8..228a7ab 100644
+--- a/Downloads/TRM-Swarm-OS-v19-Sovereign-Private-main/TRM-Swarm-OS-v19-Sovereign-Private-main/trm_uefi_kernel/host_council_server/src/main.rs
++++ b/Downloads/TRM-Swarm-OS-v19-Sovereign-Private-main/TRM-Swarm-OS-v19-Sovereign-Private-main/trm_uefi_kernel/host_council_server/src/main.rs
+@@ -1136,7 +1136,15 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
+     } else if method == Method::Get && url.starts_with("/federation") {
+         response_json = state_handlers::federation_payload(&url);
+     } else if method == Method::Post && url.starts_with("/federation/sync") {
+-        response_json = state_handlers::federation_sync_payload();
++        let mut body = String::new();
++        let _ = request.as_reader().take(65_536).read_to_string(&mut body);
++        response_json = state_handlers::federation_sync_payload(&body);
++    } else if method == Method::Post && url == "/sync" {
++        // Standardized sync-write endpoint (parity with the MacPro5-1 /sync route): read the
++        // handshake, verify the Monad anchor, return the registry's actual state.
++        let mut body = String::new();
++        let _ = request.as_reader().take(65_536).read_to_string(&mut body);
++        response_json = state_handlers::federation_sync_payload(&body);
+     } else if method == Method::Get && url.starts_with("/security/threats/query") {
+         // Native threat-index query over the voltage-stripped MITRE+CWE corpus.
+         let (payload, code) = k3_retrieval::threat_query_handle(&url);
+diff --git a/Downloads/TRM-Swarm-OS-v19-Sovereign-Private-main/TRM-Swarm-OS-v19-Sovereign-Private-main/trm_uefi_kernel/host_council_server/src/state_handlers.rs b/Downloads/TRM-Swarm-OS-v19-Sovereign-Private-main/TRM-Swarm-OS-v19-Sovereign-Private-main/trm_uefi_kernel/host_council_server/src/state_handlers.rs
+index b515c12..813cc23 100644
+--- a/Downloads/TRM-Swarm-OS-v19-Sovereign-Private-main/TRM-Swarm-OS-v19-Sovereign-Private-main/trm_uefi_kernel/host_council_server/src/state_handlers.rs
++++ b/Downloads/TRM-Swarm-OS-v19-Sovereign-Private-main/TRM-Swarm-OS-v19-Sovereign-Private-main/trm_uefi_kernel/host_council_server/src/state_handlers.rs
+@@ -1764,75 +1764,79 @@ pub fn handle_batch3(
+     None
+ }
+ 
+-/// Rollout 5 — Live Federation Substrate Telemetry (mirrors Python /federation/stats and registry.json)
+-pub fn federation_payload(url: &str) -> Value {
++/// Read the federation registry (swarm_v2_federation/registry.json) as a JSON value; empty object
++/// when absent or malformed — never an invented registry.
++fn read_registry() -> Value {
+     let reg_path = repo_root().join("swarm_v2_federation").join("registry.json");
+-    let mut peers: Vec<Value> = Vec::new();
+-
+-    if let Ok(content) = fs::read_to_string(&reg_path) {
+-        if let Ok(parsed) = serde_json::from_str::<Value>(&content) {
+-            if let Some(arr) = parsed.get("connected_nodes").and_then(|c| c.as_array()) {
+-                for node in arr {
+-                    peers.push(node.clone());
+-                }
+-            }
+-        }
+-    }
+-
+-    // Peer status is NOT asserted here. A previous block appended four 'canonical edge swarm'
+-    // peers hardcoded to status "online" (including DESKTOP-VB1T79V's Rust microkernel on
+-    // 100.82.16.43:8022, which does not answer - measured 2026-09-24) and a hardcoded agent
+-    // count. The mesh therefore reported an offline node as connected. Peers now come solely
+-    // from swarm_v2_federation/registry.json, which is written from direct probes of each
+-    // node's /health. A node appears here only if it answered.
++    fs::read_to_string(&reg_path)
++        .ok()
++        .and_then(|c| serde_json::from_str::<Value>(&c).ok())
++        .unwrap_or(json!({}))
++}
+ 
+-    let connected_count = peers.iter().filter(|p| {
++/// Federation telemetry — the STANDARDIZED /federation/stats schema. Returns the registry's own v4
++/// shape so every node exposes the SAME fields: {status, monad_anchor, registry_version, tailnet,
++/// connected_nodes, total_nodes, nodes}. The old payload carried hardcoded mesh_agents=20 /
++/// pbft_sync="100%" / voltage_harmony=0.8986 / backend v19.002 — declared constants with no
++/// measurement, removed so a peer can trust the numbers it reads.
++pub fn federation_payload(url: &str) -> Value {
++    let reg = read_registry();
++    let nodes: Vec<Value> = reg
++        .get("connected_nodes")
++        .and_then(|c| c.as_array())
++        .cloned()
++        .unwrap_or_default();
++
++    let connected_count = nodes.iter().filter(|p| {
+         p.get("status").and_then(|s| s.as_str()).map(|s| s == "online" || s == "SYNCED").unwrap_or(false)
+     }).count();
+-    let total_count = peers.len();
++    let total_count = nodes.len();
+ 
+     if url.ends_with("/peers") {
+-        return json!({ "peers": peers });
++        return json!({ "peers": nodes });
+     }
+ 
+     json!({
+-        "stats": {
+-            "connected_nodes": connected_count,
+-            "total_nodes": total_count,
+-            "mesh_agents": 20,
+-            "pbft_sync": "100%",
+-            "beacon_port": 8022,
+-            "monad_anchor": "0x4D4F4E4144000001",
+-            "voltage_harmony": 0.8986,
+-            "local_node": {
+-                "node_id": "peer_127_0_0_1_8022",
+-                "name": "Host Native Rust Sovereign Microkernel",
+-                "host": "127.0.0.1",
+-                "port": 8022,
+-                "status": "online",
+-                "backend": "Native Rust Sovereign Kernel v19.002",
+-                "phase": 5
+-            },
+-            "discovered_peers": peers.clone(),
+-            "node_list": peers.clone()
+-        },
++        "status": "ok",
++        "monad_anchor": "0x4D4F4E4144000001",
++        "registry_version": reg.get("registry_version").cloned().unwrap_or(Value::Null),
++        "tailnet": reg.get("mesh").and_then(|m| m.get("tailnet")).cloned().unwrap_or(Value::Null),
+         "connected_nodes": connected_count,
+         "total_nodes": total_count,
+-        "mesh_agents": 20,
+-        "discovered_peers": peers.clone(),
+-        "node_list": peers.clone(),
+-        "peers": peers
++        "nodes": nodes,
+     })
+ }
+ 
+-pub fn federation_sync_payload() -> Value {
++/// /sync + /federation/sync — the standardized sync-write endpoint. Verifies the caller's Monad
++/// anchor and returns the registry's ACTUAL counts (derived), replacing the old hardcoded
++/// nodes_synced=4 / active_nodes=4 / AGREED_14_0_0 / voltage_harmony=0.8986 constants.
++pub fn federation_sync_payload(body: &str) -> Value {
++    let parsed: Value = serde_json::from_str(body).unwrap_or(json!({}));
++    let anchor_ok = parsed
++        .get("monad_anchor")
++        .and_then(Value::as_str)
++        .map(|a| a == "0x4D4F4E4144000001")
++        .unwrap_or(false);
++    let caller = parsed.get("node_id").and_then(Value::as_str).unwrap_or("unknown");
++
++    let reg = read_registry();
++    let nodes: Vec<Value> = reg
++        .get("connected_nodes")
++        .and_then(|c| c.as_array())
++        .cloned()
++        .unwrap_or_default();
++    let connected = nodes.iter().filter(|p| {
++        p.get("status").and_then(|s| s.as_str()).map(|s| s == "online" || s == "SYNCED").unwrap_or(false)
++    }).count();
++
+     json!({
+-        "status": "synchronized",
++        "status": if anchor_ok { "ok" } else { "anchor_mismatch" },
+         "monad_anchor": "0x4D4F4E4144000001",
+-        "voltage_harmony": 0.8986,
+-        "pbft_quorum": "AGREED_14_0_0",
+-        "nodes_synced": 4,
+-        "active_nodes": 4
++        "anchor_verified": anchor_ok,
++        "caller_node_id": caller,
++        "synced": anchor_ok,
++        "connected_nodes": connected,
++        "total_nodes": nodes.len(),
+     })
+ }
+ 

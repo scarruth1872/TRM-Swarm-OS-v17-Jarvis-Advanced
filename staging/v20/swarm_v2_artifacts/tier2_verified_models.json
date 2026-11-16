@@ -1,0 +1,32 @@
+{
+  "what": "Models proven to load and generate on THIS host, with the evidence. The tier-2 supervisor prefers a verified model over an unverified one of the same class -- an unverified GGUF is a claim.",
+  "host": "Ryzen 9 5900HX / RTX 3070 Laptop 8 GB VRAM / 15.4 GB RAM",
+  "verified": [
+    {
+      "file": "Ternary-Bonsai-1.7B-Q2_0_g64.gguf",
+      "arch": "qwen3",
+      "params_b": 1.7,
+      "bytes": 493000000,
+      "evidence": "llama-bench pp32 2924.64+-1445.85 t/s, tg32 313.67+-30.32 t/s; one-shot prompt 608.1 / gen 205.9 t/s",
+      "verified_utc": "2026-09-20"
+    },
+    {
+      "file": "Ternary-Bonsai-8B-Q2_0_g64.gguf",
+      "arch": "qwen3",
+      "params_b": 8.19,
+      "bytes": 2308000000,
+      "evidence": "llama-bench pp32 1230.22+-272.52 t/s, tg16 115.38+-1.17 t/s; one-shot prompt 577.7 / gen 113.3 t/s",
+      "verified_utc": "2026-09-20"
+    }
+  ],
+  "tier2_model_roots": {
+    "primary": "D:/trm-models (external storage)",
+    "fallback": "<tree>/swarm_v2_artifacts/tier2_models, derived from swarm_supervisor.py's own location",
+    "why": "the discovery globbed external media only, so an unplugged D: dropped the tier instead of degrading; the fallback carries a byte-identical copy of the VERIFIED 8B below (sha256 e17b298d84ee7879..., 2,310,125,920 B) rather than the 4B, because this manifest calls an unverified GGUF a claim",
+    "proven": "scratch/prove_tier2_roots.py -- the real filesystem picks D:, D: hidden picks the local copy, both hidden returns empty (the tier declines rather than picking something wrong)"
+  },
+  "not_yet_verified": [
+    "Ternary-Bonsai-4B-Q2_0_g64.gguf",
+    "Ternary-Bonsai-27B-Q2_g64.gguf (7.06 GB > 6.5 GB VRAM cap; also mid-download)"
+  ]
+}

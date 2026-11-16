@@ -1,0 +1,117 @@
+{
+ "phase": "P4",
+ "documents_added": 1994,
+ "skipped_existing": 0,
+ "failed": [],
+ "index_documents_total": 2180,
+ "index_sha256_16": "7f84449f133702b5",
+ "index_sha256_16_before": {
+  "kernel_knowledge_index.json": "c81499e1e86240fc",
+  "semantic_index.json": "7fc57e70663274be"
+ },
+ "index_bytes": 53166343,
+ "docs_per_s": 1126.83,
+ "sample": {
+  "records": 1994,
+  "fraction_of_available": 0.010855,
+  "by_source": {
+   "ethics_commonsense.csv": {
+    "available": 13910,
+    "sampled": 200,
+    "sha256": "286cb4098a66b718"
+   },
+   "ethics_deontology.csv": {
+    "available": 18164,
+    "sampled": 200,
+    "sha256": "d31e25825c43c16f"
+   },
+   "ethics_justice.csv": {
+    "available": 21791,
+    "sampled": 200,
+    "sha256": "175c8255f5ee3d99"
+   },
+   "ethics_utilitarianism.csv": {
+    "available": 13737,
+    "sampled": 200,
+    "sha256": "a057f29e667b1953"
+   },
+   "ethics_virtue.csv": {
+    "available": 28245,
+    "sampled": 200,
+    "sha256": "f1a4b619920adb7d"
+   },
+   "gutenberg_shakespeare.txt": {
+    "available": 5145,
+    "sampled": 42,
+    "sha256": "3cf4b3d44ee14cff"
+   },
+   "lawofone_unified.txt": {
+    "available": 81,
+    "sampled": 42,
+    "sha256": "707eac53036d9ab3"
+   },
+   "wisdom_14209.txt": {
+    "available": 216,
+    "sampled": 42,
+    "sha256": "260462075d03da0d"
+   },
+   "wisdom_2017.txt": {
+    "available": 82,
+    "sampled": 42,
+    "sha256": "f2d09ebf28af0bf8"
+   },
+   "wisdom_2680.txt": {
+    "available": 368,
+    "sampled": 42,
+    "sha256": "6977474f82a39dd8"
+   },
+   "wisdom_33186.txt": {
+    "available": 137,
+    "sampled": 42,
+    "sha256": "c4e2c4896bb30e22"
+   },
+   "wisdom_45159.txt": {
+    "available": 122,
+    "sampled": 42,
+    "sha256": "7a33d4139bea523c"
+   },
+   "enwikiquote.xml.bz2": {
+    "available": 81695,
+    "sampled": 700,
+    "sha256": "4f6351f96799d531"
+   },
+   "ed_train.csv": {
+    "available": 0,
+    "sampled": 0,
+    "sha256": "d5558cd419c8d46b"
+   }
+  }
+ },
+ "retrieval_probe": {
+  "query": "Charles De Gaulle",
+  "top5": [
+   [
+    0.3342,
+    "relational/enwikiquote.xml.bz2#100"
+   ],
+   [
+    0.2145,
+    "relational/enwikiquote.xml.bz2#28500"
+   ],
+   [
+    0.2047,
+    "relational/enwikiquote.xml.bz2#40200"
+   ],
+   [
+    0.1477,
+    "relational/enwikiquote.xml.bz2#400"
+   ],
+   [
+    0.1359,
+    "relational/enwikiquote.xml.bz2#1200"
+   ]
+  ],
+  "top1_is_the_record": true
+ },
+ "backup": "backups\\p4_index_pre"
+}

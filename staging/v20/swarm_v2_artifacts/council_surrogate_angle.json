@@ -1,0 +1,25 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T23:51:06.397535+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "4be132cee4db7db89ae030915dce5b854332732e11029bad0e4f8c80f27d3188",
+      "motion": "MOTION-SURROG1",
+      "phase": "consensus",
+      "proposal_id": "CP-F7927BC1",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "MEASURE THE HEAVY-ATOM SURROGATE: for each interface donor N/O within 3.5A of an acceptor N/O (cross-chain), compute the angle (previous bonded atom -> donor -> acceptor) as a surrogate for D-H...A directionality. Compare the cognate's angular distribution (tightness near linear) to the fixed-frame rotation-optimized random. PREDICTION: cognate more tightly clustered (specific). FAILURE MODE: equal distribution = the heavy-atom surrogate does not carry the signal, and the hydrogen placement is genuinely required. MEASURED: H-bond directionality is BLOCKED (corpus heavy-atom-only, no hydrogens). The meta-cognitive pivot: if the direct measurement is blocked, invent a measurable SURROGATE. SURROGATE: the heavy-atom donor-acceptor angle (previous-atom -> donor N/O -> acceptor N/O), which constrains the H-bond directionality without needing the hydrogen. PREDICTION: the cognate interface's donor-acceptor angles are more tightly clustered (nearer the linear geometry) than the random's best orientation, IF the heavy-atom geometry carries the specificity signal."
+    }
+  ],
+  "prediction_recorded": "cognate angular distribution more tightly clustered near linear than random",
+  "prior_state": "H-bond directionality blocked (no hydrogens); surrogate = heavy-atom donor-acceptor angle",
+  "quorum": 9,
+  "record": "HEAVY-ATOM SURROGATE (donor-acceptor angle) -- council-voted; platform self-directs",
+  "sha256": "914437ffbafa2a983ebd0baa3f41b74b80e1dfe3275c0b18184193618fa19fa0"
+}

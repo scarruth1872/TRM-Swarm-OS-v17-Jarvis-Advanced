@@ -1,0 +1,63 @@
+{
+  "phase": 13,
+  "monad_anchor": "0x4D4F4E4144000001",
+  "candidate_modules": [
+    {
+      "rank": 56,
+      "module": "swarm_v2/core/openclaw_gateway.py",
+      "feature": "Intent Keyword Gating & Scoring",
+      "dll": "strip_openclaw_gateway.dll",
+      "py_time_us": 3595.37,
+      "native_time_us": 1956.55,
+      "speedup": 1.8,
+      "k3_invariant": true,
+      "max_diff": 0.0
+    },
+    {
+      "rank": 57,
+      "module": "swarm_v2/core/porting_engine.py",
+      "feature": "AST Type Translation & Table Mapping",
+      "dll": "strip_porting_engine.dll",
+      "py_time_us": 60.4,
+      "native_time_us": 15.63,
+      "speedup": 3.9,
+      "k3_invariant": true,
+      "max_diff": 0.0
+    },
+    {
+      "rank": 58,
+      "module": "swarm_v2/core/llm_router.py",
+      "feature": "Token Estimation & Quota Slicing",
+      "dll": "strip_llm_router.dll",
+      "py_time_us": 3691.18,
+      "native_time_us": 11.48,
+      "speedup": 321.5,
+      "k3_invariant": true,
+      "max_diff": 5.8518767218629364e-05
+    },
+    {
+      "rank": 59,
+      "module": "swarm_v2/core/trm_council_models.py",
+      "feature": "14-Agent Mamba-3 Continuous SSM Recurrence",
+      "dll": "strip_trm_council_models.dll",
+      "py_time_us": 9.61,
+      "native_time_us": 33.57,
+      "speedup": 0.3,
+      "k3_invariant": true,
+      "max_diff": 5.960464477539063e-08
+    },
+    {
+      "rank": 60,
+      "module": "swarm_v2/core/thz_wave_gateway.py",
+      "feature": "Fourier Optical Phase Encoding & Ponderomotive Quantizer",
+      "dll": "strip_thz_wave_gateway.dll",
+      "py_time_us": 25.95,
+      "native_time_us": 11.12,
+      "speedup": 2.3,
+      "k3_invariant": true,
+      "max_diff": 4.3317744558013516e-08
+    }
+  ],
+  "average_speedup": 66.0,
+  "timestamp": 1788809967.0952404
+}

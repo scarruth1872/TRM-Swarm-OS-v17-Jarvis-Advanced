@@ -1,0 +1,26 @@
+[
+  {
+    "claim": "voltage_phi_v is one measured number",
+    "asserted": "all endpoints report the measured phi_v",
+    "verdict": "CONTRADICTION",
+    "evidence": "endpoints disagree: {'health': 0.6778, 'system/status': 0.6778, 'system/resources': 0.9115, 'system/voltage': 0.6778}"
+  },
+  {
+    "claim": "journal latest_article matches the served set",
+    "asserted": "latest_article = Article 189 \u2014 Frontier Open-Source...",
+    "verdict": "STALE",
+    "evidence": "served ids run to 197; status text names 189"
+  },
+  {
+    "claim": "100 active federation nodes",
+    "asserted": "active_nodes=100, total=100, integrity=100.0000%",
+    "verdict": "UNSUPPORTED?",
+    "evidence": "/swarm/telemetry reports active_nodes=2 - a 50x disagreement on the same platform"
+  },
+  {
+    "claim": "cpu_temp_c 44.5 / fan_rpm 1200 are real sensor reads",
+    "asserted": "cpu_temp_c=44.5, fan_rpm=1200",
+    "verdict": "checking...",
+    "evidence": "verifying against WMI next"
+  }
+]

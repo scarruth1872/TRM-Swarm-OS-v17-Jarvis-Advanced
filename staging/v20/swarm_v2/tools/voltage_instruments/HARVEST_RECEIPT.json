@@ -1,0 +1,111 @@
+{
+ "also_preserved_in": "backups/wsl_freeze_20260923_180202/trm-rust_source.tar.gz -- verified by listing the archive: all of these (and font8x8.bin, which swarm-boot/src/main.rs:30 include_bytes!s) are inside it; only target/ build output is excluded, and that is reproducible from the archived source.",
+ "build_requirement": {
+  "this_host": "no g++ and no cl (measured); the Hermes runtime ships llama.dll at AppData/Local/hermes/runtimes/llamacpp/b10964/cuda/ but no llama.h",
+  "to_rebuild": "these are llama.cpp examples (they #include \"llama.h\"): build them against a llama.cpp checkout, which the WSL side has (g++ 15 present there, no cargo needed). Harvested as SOURCE with a stated build path, not claimed as built."
+ },
+ "harvested": "2026-09-26",
+ "identity_finding": "ref_hidden.bin, hidden_state.bin and field_qwen.bin are ONE file (identical sha256) under three names -- the qwen 1024-dim hidden state. field_bonsai.bin is a distinct 5120-dim vector.",
+ "instruments": {
+  "capture_hidden.cpp": {
+   "bytes": 2884,
+   "lines": 91,
+   "sha256": "f61271193888b9944ba7efd4691f4717b3ca6fa6a52e12831932c03fe094702a",
+   "what": "reads the final-layer hidden state (the voltage representation) before the output softmax via llama_get_embeddings_ith and prints it as f32."
+  },
+  "capture_layers.cpp": {
+   "bytes": 2212,
+   "lines": 51,
+   "sha256": "c05908703646cb1378208f807419e74edd0a4a970c426ade03acfd838c98544d",
+   "what": "captures the hidden states after EACH block, so the Rust forward is verified per-layer rather than in one giant run: binary [n_layers+1][1024] f32."
+  },
+  "voltage_node.cpp": {
+   "bytes": 2453,
+   "lines": 60,
+   "sha256": "221914fb5e22991108640844340e307f3e4046f9eb4a6650e75af814018f224a",
+   "what": "the GPU fast-path voltage node: llama.cpp CUDA runs the real forward, reads the hidden state, and the verified K3 collapse produces the action vector (no CPU matmul re-derivation). Writes hidden_state.bin (1024 f32) and prints the K3 action vector."
+  },
+  "voltage_node_offload.cpp": {
+   "bytes": 2270,
+   "lines": 56,
+   "sha256": "1e16bc75dad243a1a556dfc37e8b1fda5521460587545047e26e3645978f946e",
+   "what": "the same node for models that do not fully fit (a 3.8 GB Bonsai against an 8 GB card with backend load): takes <model> <n_gpu_layers> <n_tokens> <tok>..."
+  }
+ },
+ "measured": {
+  "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU, compute capability 8.6, VMM: yes, VRAM: 8191 MiB",
+  "kv_pairs": 55,
+  "loaded_model": "/home/shawn/models/qwen-moe-2.4b-q4_k_m.gguf",
+  "note": "parsed from ref_hidden.log, i.e. a run log rather than a declaration: the model the captures came from, how many tensors it loaded, and on which device",
+  "tensor_count": 339
+ },
+ "references": {
+  "agent_output.txt": {
+   "bytes": 62,
+   "f32_dim": null,
+   "sha256": "9598b8d5dd497bc4a99783be529c9a1cb6e262d3dd26451d14b6d7b99648a654",
+   "what": "62 B text output"
+  },
+  "display_payload.bin": {
+   "bytes": 29,
+   "f32_dim": null,
+   "sha256": "a80d9dcc3419233311363c964ef2ce677beede02ee3ebc5c56c51bcba2b6366b",
+   "what": "29 B payload"
+  },
+  "display_payload_ensemble.bin": {
+   "bytes": 24,
+   "f32_dim": null,
+   "sha256": "b5f6025a5a7aac751f6887f73efb655781f56bee06d60aa6f8ac1ae968d9b692",
+   "what": "24 B payload"
+  },
+  "fabric_report.txt": {
+   "bytes": 312,
+   "f32_dim": null,
+   "sha256": "3ee94382eb0a5a58e43fbc65df1bb48d79716d2924303dabaaae77c55f9ed93c",
+   "what": "v18-era DECLARED fabric state (trit count 170757175, codec 2) -- historical, not the live 153,523,394"
+  },
+  "fabric_report_ensemble.txt": {
+   "bytes": 312,
+   "f32_dim": null,
+   "sha256": "3ee94382eb0a5a58e43fbc65df1bb48d79716d2924303dabaaae77c55f9ed93c",
+   "what": "the ensemble variant of the same v18 report"
+  },
+  "field_bonsai.bin": {
+   "bytes": 20484,
+   "f32_dim": 5120,
+   "sha256": "d1d14604fe5f7ac5732e2a61f8925f870016dd7cc5c8b2b748de56b59449a122",
+   "what": "a distinct 5120-dim Bonsai vector"
+  },
+  "field_qwen.bin": {
+   "bytes": 4100,
+   "f32_dim": 1024,
+   "sha256": "9c658dc8cebfdeaca9eaec76f6fd6ca0718b41610c6775fbd2af67d20f5cf83a",
+   "what": "identical to both: the qwen field"
+  },
+  "hidden_state.bin": {
+   "bytes": 4100,
+   "f32_dim": 1024,
+   "sha256": "9c658dc8cebfdeaca9eaec76f6fd6ca0718b41610c6775fbd2af67d20f5cf83a",
+   "what": "identical to ref_hidden.bin: what voltage_node.cpp writes"
+  },
+  "ref_hidden.bin": {
+   "bytes": 4100,
+   "f32_dim": 1024,
+   "sha256": "9c658dc8cebfdeaca9eaec76f6fd6ca0718b41610c6775fbd2af67d20f5cf83a",
+   "what": "the reference hidden state (1024 f32, all nonzero, min -28.319275 / max 12.265035)"
+  },
+  "ref_hidden.log": {
+   "bytes": 35513,
+   "f32_dim": null,
+   "sha256": "5a3417e219b35c68ada3cc915b04f4d910dc00105b746c4818086265838c3061",
+   "what": "the full run log (CUDA init, device, model load, capture)"
+  }
+ },
+ "source": {
+  "ignored_in_source": true,
+  "untracked_in_source": true,
+  "wsl_captures": "/home/shawn/trm-rust",
+  "wsl_instruments": "/home/shawn/prism-ml-llama.cpp/examples"
+ },
+ "why": "these four instruments were UNTRACKED in a WSL llama.cpp fork (git ls-files --others showed them, and v19 named them only in docs, never in code), so they had no other copy; their captures were git-IGNORED in ~/trm-rust, which the reconciliation manifest classified as the instrument's other half -- the reference the Rust forward is verified against"
+}

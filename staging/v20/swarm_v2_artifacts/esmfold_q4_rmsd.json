@@ -1,0 +1,18 @@
+{
+  "record": "4-bit ESMFold fold + RMSD (MOTION-Q2 / CAP-212)",
+  "weights": "Q4 (32 weights/block, f16 scale + 16 bytes)",
+  "device": "cuda",
+  "tensors_set": 3917,
+  "reconstruction_error": "~0.09 (measured on sample, see q4 meta)",
+  "results": [
+    {
+      "chain": "E",
+      "rmsd_angstrom": 9.677
+    },
+    {
+      "chain": "F",
+      "rmsd_angstrom": 7.056
+    }
+  ],
+  "basis": "4-bit (0.09 error) partially recovers the fold: E 9.677 vs fp16 6.876 and 2-bit 13.140."
+}

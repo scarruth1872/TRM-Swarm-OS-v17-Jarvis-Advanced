@@ -1,0 +1,355 @@
+{
+ "kind": "crate_exercise_pass",
+ "date": "2026-09-24",
+ "workspace_root": "wsl_crates/trm-rust (the frozen WSL source, extracted at P2)",
+ "members_at_start": 35,
+ "members_now": 36,
+ "added_member": "swarm-paths (the path resolver; no dependencies)",
+ "loc_source": 8755,
+ "crates_with_tests": 31,
+ "crates_without_tests": [
+  "swarm-boot",
+  "swarm-kernel",
+  "swarm-runtime",
+  "swarm-server"
+ ],
+ "tests": {
+  "passed": 122,
+  "failed": 0,
+  "binaries": 84
+ },
+ "test_invocation": "cargo test --workspace --exclude swarm-boot --no-fail-fast",
+ "excluded": {
+  "swarm-boot": "UEFI-only: its bins do not link as host binaries (LNK1561), so it has no test target to run here"
+ },
+ "baseline_before_this_pass": {
+  "failing_test_binaries": 10,
+  "assertions_passed": 107,
+  "assertions_failed": 10
+ },
+ "binaries": {
+  "STILL_RUNNING_25s": [
+   "bench",
+   "client",
+   "fit_client",
+   "fit_server",
+   "swarm-server"
+  ],
+  "RAN_OK": [
+   "fingerprint"
+  ],
+  "RAN_EXIT_1": [
+   "svc_client"
+  ],
+  "RAN_EXIT_3221226505": [
+   "swarm-runtime",
+   "verify_council",
+   "verify_gguf",
+   "verify_git",
+   "verify_instella",
+   "verify_k3",
+   "verify_nand",
+   "verify_packs",
+   "verify_ssm",
+   "verify_tensor_bytes",
+   "verify_turbovec",
+   "voltage_inventory"
+  ]
+ },
+ "binaries_note": "run once each with a 25 s ceiling; exit codes are the observation, not a score. 5 are servers that came up and kept serving; 1 refuses without arguments; the rest still carry WSL absolute paths or load a Linux .so -- that is the next batch, not a conclusion drawn from this one.",
+ "fixes_this_pass": [
+  {
+   "what": "swarm-paths",
+   "why": "every crate located its data by a WSL-shaped absolute path (/mnt/c/... and /home/shawn/...), so no crate could read its own data here. One resolver: /mnt/<d>/ -> <D>:/ , /home/... -> //wsl.localhost/<distro>/home/... (verified reachable), /tmp/... -> the host temp dir. Unknown shapes pass through; data() reports absence rather than emptiness.",
+   "sites": "16 call sites across 10 crates, each anchor asserted unique before it was rewritten"
+  },
+  {
+   "what": "swarm-nand: a new fabric never persisted its header",
+   "why": "open() called flush() for a new file, but flush() returns early when the fabric is clean, so the file stayed 0 bytes; the next opener read magic 0, treated it as new and re-initialized it, discarding the write_offset the first writer was appending from. Observed directly: size=0 after open, trit_count=0 on reopen.",
+   "fix": "the initialized header is marked dirty before the open-time flush"
+  },
+  {
+   "what": "swarm-nand: the Windows writer lock was mandatory and blocked reads",
+   "why": "std's File::try_lock takes a WHOLE-FILE Windows byte-range lock, which is mandatory, unlike flock (advisory). A second handle then failed every read with os error 33 -- the lock meant to coordinate writers was breaking the reader. Observed directly.",
+   "fix": "lock a single sentinel byte outside the payload's offset space via LockFileEx (raw FFI, no new dependency): writers still exclude each other, real reads and writes are untouched"
+  }
+ ],
+ "observation": "The crates' own tests are the integration contracts: they assert against real data on disk (a 256 MB fabric, the 6.5 GB Instella GGUF, a 33-record v17 ledger, an Agent-Q manifest, four .k3 caches). All of it exists on this host and is reachable; none of it was reachable from the crate code as written.",
+ "phase2_binaries": {
+  "STILL_RUNNING_25s": [
+   "bench",
+   "client",
+   "fit_client",
+   "fit_server",
+   "swarm-server"
+  ],
+  "RAN_OK": [
+   "fingerprint",
+   "verify_council",
+   "verify_gguf",
+   "verify_git",
+   "verify_nand",
+   "verify_packs",
+   "verify_tensor_bytes",
+   "voltage_inventory"
+  ],
+  "RAN_EXIT_1": [
+   "svc_client",
+   "verify_ssm"
+  ],
+  "RAN_EXIT_3221226505": [
+   "swarm-runtime",
+   "verify_k3",
+   "verify_turbovec"
+  ],
+  "RAN_EXIT_3221225477": [
+   "verify_instella"
+  ]
+ },
+ "phase2_note": "After the binaries were re-pointed through swarm-paths and given the kernel-ops library this host can actually load, 8 exit 0 (was 1), 5 are servers that come up and keep serving, 1 refuses correctly without arguments. The remaining 5 each name a specific thing.",
+ "phase2_findings": [
+  {
+   "bin": "verify_council",
+   "verdict": "PASS",
+   "detail": "the gate ran against the kernel ops and printed which library it used: this workspace's swarm-kernel cdylib, explicitly labelled NOT the recorded C++ original."
+  },
+  {
+   "bin": "verify_k3",
+   "verdict": "comparison PASSED, then crashed",
+   "detail": "Rust vs kernel over 1,000,000 values: identical: true (counts pass=0 analyze=649615 block=350385). It then panics inside its own reporting loop (core::iter accum), so the gate's verdict is real and its census step is broken."
+  },
+  {
+   "bin": "verify_ssm",
+   "verdict": "VERIFY GATE: FAILED",
+   "detail": "100 steps, max |rust_y - c_y| = 3.74e-1. The crate's SSM and the platform's kernel-ops SSM disagree on the same inputs. Consistent with the recorded 32-vs-64 struct mismatch; now demonstrated rather than asserted."
+  },
+  {
+   "bin": "verify_instella",
+   "verdict": "SEGFAULT (0xC0000005)",
+   "detail": "hard crash, not a clean refusal: the gate hands an ABI struct to the library and the process dies. Same family as the SSM disagreement -- likely a struct layout mismatch -- and it must be established before that gate can be trusted either way."
+  },
+  {
+   "bin": "verify_turbovec",
+   "verdict": "Rust half PASSED, python half crashed",
+   "detail": "Rust pack: 1,000,000 trits -> 250,000 bytes (16x), then it fails executing the embedded python reference (the command it invokes does not exist on this host)."
+  },
+  {
+   "bin": "swarm-runtime",
+   "verdict": "still carries WSL constants",
+   "detail": "boot-to-response chain; its MODEL/FABRIC constants are still recorded literals."
+  }
+ ],
+ "kernel_ops_finding": "The recorded gate target is libswarm_kernel_ops.so -- a LINUX shared object, unloadable on Windows however the path is spelled. This workspace's swarm-kernel cdylib exports the same four entry points the gates bind (c_kleene_quantize_avx2, c_mamba3_create_state, c_mamba3_step, c_instella_gate_topk), so the gates now compare the crate against the platform's kernel-ops build, and the resolver RETURNS the provenance so a caller prints it. The C++ comparison is therefore NOT PERFORMED on this host, and no result here should be read as one.",
+ "remaining": [
+  "swarm-runtime + the examples still carry recorded WSL literals",
+  "verify_instella's crash and verify_ssm's divergence: establish the struct layout before trusting either gate",
+  "verify_k3's reporting panic",
+  "verify_turbovec's python step needs an interpreter name that exists here"
+ ],
+ "phase3_reference_resolution": {
+  "summary": "four kernel-ops gates now run against the implementation they were written for and all four pass: swarm-ssm 1.19e-7, swarm-instella ids identical, swarm-k3 and swarm-council byte-identical.",
+  "findings": [
+   {
+    "what": "the reference exists natively",
+    "detail": "the v17 tree carries libswarm_kernel_ops.dll (x64 PE, 192,192 B) beside the Linux .so. Its export table: c_mamba3_create_state, c_mamba3_step, c_instella_gate_topk -- and NOT c_kleene_quantize_avx2. Measured through ctypes against its own source in the tree: ratio 1.0000 at every step, 32 dims, so for mamba+instella it IS the reference."
+   },
+   {
+    "what": "the resolver now prefers the reference",
+    "detail": "kernel_ops() -> the native C++ DLL first, then the .so on unix, then the workspace cdylib, and it RETURNS the provenance. kernel_ops_avx2() is the separate accessor for the symbol the Windows build does not export; the two AVX2 gates use it."
+   },
+   {
+    "what": "swarm-ssm's FAILED was the port, not the crate",
+    "detail": "against the reference: max |rust_y - c_y| = 1.19e-7 over 100 steps, PASSED. Against swarm_kernel.dll it was 3.74e-1. A ctypes probe of the port's c_mamba3_step: y=1.0 input -> 0.19737533 = tanh(0.2) and x=0.0 -> y=0.00000000, i.e. MEMORYLESS, while the C++ and the crate both carry state. The port is not the function it claims to port."
+   },
+   {
+    "what": "verify_instella's segfault was the ABI",
+    "detail": "swarm_kernel_ops.h declares alignas(64) on InstellaGateInput/Output; the gate declared plain #[repr(C)]. After align(64): ids identical, max weight diff 1.96e-6, active count 4, PASSED. Red-then-green -- it segfaulted before, it passes now."
+   },
+   {
+    "what": "verify_k3's panic was its own reporter",
+    "detail": "it summed 1,000,000 trits into an i8 (a value that cannot hold 649,615) and the overflow killed the process BEFORE the PASS line. Now summed as i64; the gate exits 0, byte-identical."
+   }
+  ],
+  "honest_scope": "these are the crates' own gates. The divergence found in the platform's Rust kernel-ops port (c_mamba3_step is memoryless) is a NAMED defect against the port, not against the crate, and it is the kind of defect that a silent substitution would have hidden. The 43 ENGINE_PORT refusals are unchanged."
+ },
+ "phase4_port_defect_fixed": {
+  "defect": "swarm-kernel/src/lib.rs:41-55 exported c_mamba3_step with an ABI that no caller could use: the C signature is c_mamba3_step(handle, const float* input_x, float* output_y) -- ONE float each, state in the handle -- while the port read 32 floats through input_x (out-of-bounds read), wrote 32 floats through output_y (stack overwrite), and computed tanh() of a scratch vector instead of the recurrence. Measured: a fresh handle gave y=tanh(0.2*x), and y=0.0 for a zero input, so it was memoryless. Every symptom the SSM gate reported came from this, and the gate blamed the crate.",
+  "fix": "c_mamba3_create_state now takes the C's dt_init pointer, the handle carries swarm_ssm::Mamba3State, and the step reads one float, advances the verified recurrence, writes one float. swarm-ssm is a path dependency of swarm-kernel now, so the port is backed by the crate whose gate is byte-for-byte the reference rather than re-implementing it.",
+  "proof": [
+   "the port, fresh state: y(1.0) = 0.03200000 (reference: 0.03200000); y(0.0) = 0.03198399 (reference: 0.03198400) -- nonzero on a zero input, so the state is carried. No crash.",
+   "verify_ssm against the PORT: PASSED (was FAILED at 3.74e-1).",
+   "verify_ssm against the C++ reference: PASSED (1.19e-7).",
+   "verify_k3 and verify_council against the port's AVX2 quantizer: PASSED, byte-identical.",
+   "workspace suite: 122 passed, 0 failed."
+  ],
+  "why_it_mattered_beyond_the_gate": "the cdylib exists so the Python platform can bind the same C ABI instead of the Linux .so. With the old step, any caller passing the documented single float would have had 31 floats read past its pointer and 32 written past its output -- memory corruption on the live path, not just a wrong number.",
+  "honest_scope": "this is the kernel-ops cdylib, not the :8022 kernel image. The 43 ENGINE_PORT refusals and the unwired crates are unchanged."
+ },
+ "phase5_runtime_and_turbovec": {
+  "items": [
+   "swarm-runtime: the full boot-to-response chain runs -- real GGUF parse, NAND agent state, SSM, K3, 64-expert MoE gate, TurboVec, NAND write with an exact round-trip (170,757,191 trits). exit 0.",
+   "verify_turbovec: PASSED -- Rust pack 250,000 bytes vs the Python reference's 250,000, BYTE-IDENTICAL, round-trip exact. The reference is imported from the v17 tree; the interpreter is whichever this host has (TRM_PYTHON overrides, `py -3` on Windows) and the paths are handed in via the environment rather than hardcoded.",
+   "swarm-runtime printed 'VERIFY GATE: PASSED' UNCONDITIONALLY, while its verdict was keyed on a recorded expert id (ids[0] == 52). That is two defects in one line: a canned pass, and a change-detector on the model revision. Now the gate asserts a CONTRACT -- four distinct experts, weights summing to one, a dominant lead -- and prints PASSED only when it holds; the K3 trit is reported rather than asserted, because a neutral trit on a small SSM output is a correct answer. On this host: experts [16, 39, 17, 60], weights summing to 1.000000, K3 trit 0 -> PASSED, exit 0, legitimately.",
+   "examples: 51 recorded-literal sites across 27 example files, enumerated by crate. NOT fixed here: unlike the 16 library sites, wrapping these needs per-site judgment on whether the literal is a &str argument, a struct default, or a format fragment, and the examples are not on any serving path. Left as a named batch rather than a risky blanket rewrite."
+  ]
+ },
+ "phase2g_crates_wired_as_routes": {
+  "routes": [
+   "/crate/ops",
+   "/crate/k3/collapse",
+   "/crate/trit/pack",
+   "/crate/moe/gate",
+   "/crate/ssm/step"
+  ],
+  "checks_passed": "23/23",
+  "served_exe": {
+   "bytes": 2308608,
+   "sha256_16": "8926533766bc3321",
+   "pid": 19012
+  },
+  "items": [
+   "WIRED AS ROUTES (4 engines, each computing in the crate that owns the algorithm): /crate/k3/collapse -> swarm-k3; /crate/trit/pack -> swarm-turbovec; /crate/moe/gate -> swarm-instella; /crate/ssm/step -> swarm-ssm. GET /crate/ops reports the wiring AS DATA from the same OPS table the dispatcher uses, so the census cannot drift from what is served.",
+   "k3/collapse vs an INDEPENDENT rule (strict eps in Python): trits identical over 4,013 values at eps=0.35 and eps=0.1; the tally sums to n (plus/zero/minus = 1332/1422/1259 at 0.35).",
+   "trit/pack vs the PUBLISHED 2-bit canonical layout (00=-1, 01=0, 11=+1, trit j at bits 2j): byte-identical, 250 bytes for 1,000 trits (0x344dd334...), round_trip_exact true, 4.0 trits/byte, fnv1a64 899d2a5b45a1eee9. NOTE: the bins' '(16x)' label is a mislabeled ratio (n*4/packed) and was NOT carried into the route -- the route reports bytes and trits-per-byte, both measured.",
+   "ssm/step vs the NATIVE C REFERENCE (libswarm_kernel_ops.dll, c_mamba3_create_state + c_mamba3_step): max |route - C| = 9.686e-08 over 100 steps; 100 distinct outputs, so the state is carried and the route is not the memoryless port that P2e had to repair.",
+   "moe/gate vs the NATIVE C REFERENCE (c_instella_gate_topk, struct ABI with alignas(64)): ids identical -- route [8, 20, 55, 62] == C [8, 20, 55, 62] -- and weights agree to 4.889e-08.",
+   "Error paths are refusals, never fall-throughs: an unknown op is 404 unknown_op naming the census; a GET on a POST op is 405 with allowed=[POST]; an empty field, a wrong expert count (needs 64) and an out-of-alphabet trit are 400s naming the field. /health, /verification/artifacts, /council/status, /swarm and /mailbox/ring all still answer 200 -- the insertion before the verification arm shadowed nothing.",
+   "DEPLOY: the served exe was held by the running kernel, so `cargo build --release` failed with 'failed to remove file ... Access is denied'. Built to a SCRATCH target dir, then renamed the held exe aside and copied the new one in (a rename on a running image is allowed), restarted the process, and verified the RUNNING image -- not the on-disk file -- by hash before probing.",
+   "HONEST SCOPE: 4 engines are reachable now. swarm-council, swarm-nand, swarm-gguf, swarm-packs, swarm-git and swarm-tensor-bytes are built and exercised (P2b-P2f) but still have NO route; swarm-proof was already wired at P2 (/verification/proof) and swarm-paths is a helper crate, not an engine. The 43 ENGINE_PORT refusals are therefore reduced by 4, not closed."
+  ]
+ },
+ "phase2h_docs_and_reachability": {
+  "proxy_entries": 50,
+  "all_target_8022": 50,
+  "probes": {
+   ":5183/crate/ops": "200 application/json",
+   "POST :5183/crate/k3/collapse": "200 application/json",
+   ":5183/crate/<unknown>": "404 application/json (kernel unknown_op)"
+  },
+  "items": [
+   "Proxy table: added '/crate' -> http://127.0.0.1:8022. Measured after the edit: **50 entries, all 50 targeting :8022** (was 49). README's count was corrected to follow the table instead of asserting a number.",
+   "Proven THROUGH the documented path, not the direct port: :5183/crate/ops -> 200 application/json carrying the kernel's own payload; POST :5183/crate/k3/collapse -> the crate's own answer (eps 0.3499999940395355, i.e. f32 of 0.35); :5183/crate/<unknown> -> 404 application/json carrying the kernel's unknown_op. A SPA fallback yields 200 text/html, so the BODY was read -- a status code alone was not accepted as evidence.",
+   "docs/CRATE_WIRING_AND_REACHABILITY_20260924.md: what 'wired' means here (the crates are LINKED INTO the kernel binary -- in-process calls, no dlopen, no IPC hop, no HTTP hop; the internal transport stays the shared-memory ring bus per docs/IPC_TRANSPORT_AND_K3_NAMESPACE_20260924.md), the route table with the gate behind each op, the independent re-checks, and the honest scope.",
+   "Documentation drift recorded rather than silently edited: swarm_v2_artifacts/KERNEL_MODULE_MAP.md still calls host_council_server '1 crate, main.rs 403 lines' -- measured now 955 lines across 21 '.rs' modules -- and /k3/verdict is still a 404 (docs/DASHBOARD_DATA_PATH_AUDIT_20260924.md).",
+   "Measurement discipline: the first draft of the new doc said main.rs was '~1,500 lines'. Counting it gave 955, so the doc was corrected. Doc figures are taken from the artifact: proxy entries 50, main.rs 955, modules 21, crate_ops_handlers.rs 279."
+  ]
+ },
+ "phase2i_examples_and_bins": {
+  "bins": 19,
+  "examples": 34,
+  "exit0": 46,
+  "entries": 53,
+  "example_exit0": 32,
+  "flaky_on_retry": [],
+  "still_nonzero": {
+   "bin:fit_client": "twice:   fit_client booking \"userId=1|providerId=1|serviceId=1|2026-08-20|pending\" \"0.9,0.8,0.7\"  |   fit_clie",
+   "bin:fit_server": "not run: serves a port (probed separately)",
+   "bin:svc_client": "twice:   svc_client jarvis \"hand=monitor|status=ran\" \"0.9,0.8,0.7\"  [0.0s] |   svc_client jarvis \"hand=monitor",
+   "bin:swarm-server": "not run: serves a port (probed separately)",
+   "bin:verify_turbovec": "twice: thread 'main' (19108) panicked at swarm-turbovec\\src\\bin\\verify_turbovec.rs:58:10: :: run  | thread 'ma",
+   "example:ingest_scale_native": "twice: thread 'main' (16068) panicked at swarm-shard\\examples\\ingest_scale_native.rs:74:5: :: sha | thread 'ma",
+   "example:verify_gpu_neural": "twice: MOTION B GATE: NOT VERIFIED (GPU path absent) -- CPU path verified  [0.0s] | MOTION B GATE: NOT VERIFIE"
+  },
+  "repaired_examples": [
+   "verify_hardening",
+   "verify_latency",
+   "verify_migrate",
+   "verify_native_batch",
+   "verify_native_pipeline",
+   "verify_pure_native",
+   "verify_real"
+  ],
+  "items": [
+   "Exercised the surface the earlier passes left alone: **34 examples** (never run before this phase) plus a re-sweep of **19 binaries**. Measured: 46/53 exit 0, examples 32/34 (was 27/53 and 15/34 before the repairs).",
+   "The eight crashing examples were NOT eight bugs: every one died on a **recorded WSL literal**. 13 sites re-pointed through swarm-paths in this batch, 8 in the first: verify_hardening, verify_latency, verify_migrate, verify_native_batch, verify_native_pipeline, verify_pure_native, verify_real. The files behind every one of those paths exist on the WSL side and are readable through //wsl.localhost/Ubuntu -- so the crates were written against a real host, not against nothing.",
+   "Three defects were real code, not paths: `verify_migrate` put a **1 MiB array on the stack** in a thread with a 1 MiB stack (0xC00000FD); `verify_gpu_neural` bound **c_k3_collapse_gpu**, a symbol defined NOWHERE in the tree (grep finds the name only in the example that binds it), so its gate could only ever panic -- it now reports the absence and exits 2; `verify_forward` parsed the real 964 MB Q4_K GGUF and ran the full 30-layer forward pass (69.8 s) to an honest verdict.",
+   "**A stale binary is not a result.** The first repair pass re-ran all eight and reported them failing identically -- because a build that fails in one member leaves the others unlinked, and the sweep then exercises the previous generation. Binary mtime vs source mtime is the check; the rebuild script now records each binary's build time with its result.",
+   "**A store that persists a resolved path bakes in the resolver's state at write time.** verify_migrate's MANIFEST.k3 recorded '/home/shawn/.hermes/cache/trm_shard_migration/shard_000.k3' from a run made before the path translation landed, so every later open() failed NotFound on a path Windows never had. The crate was faithful; the stale entry was the poison. The example now starts from a clean simulation root and reports an unopenable store instead of panicking on it.",
+   "The sweep's own ruler was fixed before the tree was measured again: it kept only the LAST line (which for a panic is just 'run with RUST_BACKTRACE=1'), and it ran each binary once, so a transient read as a defect -- verify_turbovec was filed as a panic and then passed standalone byte-identically. It now keeps the panicking line and its reason, and re-runs a non-zero once, reporting a pass-on-retry as FLAKY rather than as a pass.",
+   "Honest scope: 7 entries are still non-zero (bin:fit_client, bin:fit_server, bin:svc_client, bin:swarm-server, bin:verify_turbovec, example:ingest_scale_native), 2 of them panics. verified_crate_ops 23/23 is unchanged; no crate gained a route in this phase -- this phase exercised what the kernel does not serve, which is what 'exercise the crates first' asked for."
+  ]
+ },
+ "phase2i_fixes": {
+  "cdylib": {
+   "before": {
+    "size": 237568,
+    "sha16": "c40abe63e137bd05"
+   },
+   "after": {
+    "size": 253440,
+    "sha16": "d50e8816fe5beafc"
+   },
+   "note": "237,568 B sha c40abe63e137bd05 -> 253,440 B sha d50e8816fe5beafc: the crate fix is compiled into THE LIBRARY THE EXAMPLE LOADS, not just into the crate."
+  },
+  "verify_turbovec": {
+   "note": "`VERIFY GATE: PASSED - byte-identical to numpy reference`, exit 0, run under TRM_PYTHON='py -3' -- the exact setting under which it panicked twice at `Command::new`, because the whole string went in as the program name."
+  },
+  "ingest": {
+   "note": "the null handle now names its target (`shard open failed: //wsl.localhost/Ubuntu/home/shawn/.hermes/cache/trm_full_scale`) and exits 2; with the relinked cdylib it OPENS and ingests. Measured write rate: 24,444 B in 20 s (~1.2 KB/s) through the //wsl.localhost 9p share, so a 256 MB arena is hours of work on this host -- the sweep records a timeout for it, not a defect."
+  },
+  "exit0": 45,
+  "entries": 53,
+  "example_exit0": 32,
+  "examples": 34,
+  "flaky_on_retry": [],
+  "still_nonzero": {
+   "bin:bench": "twice: Error: TimedOut  [30.0s] | Error: TimedOut  [30.0s]",
+   "bin:client": "twice: Error: TimedOut  [30.0s] | Error: TimedOut  [30.0s]",
+   "bin:fit_client": "twice: Error: TimedOut  [30.0s] | Error: TimedOut  [30.0s]",
+   "bin:fit_server": "not run: serves a port (probed separately)",
+   "bin:svc_client": "twice:   svc_client jarvis \"hand=monitor|status=ran\" \"0.9,0.8,0.7\"  [0.0s] |   svc_client jarvis \"hand=monitor",
+   "bin:swarm-server": "not run: serves a port (probed separately)",
+   "example:ingest_scale_native": "no exit within 420s",
+   "example:verify_gpu_neural": "twice: MOTION B GATE: NOT VERIFIED (GPU path absent) -- CPU path verified  [0.0s] | MOTION B GATE: NOT VERIFIE"
+  },
+  "items": [
+   "**A fix in a crate does not reach an example that loads the cdylib.** `swarm-shard`'s manifest re-resolution compiled cleanly and the example still failed: the example calls `c_shard_open` out of `swarm_kernel.dll`, and relinking the crate did not relink the library. After `cargo build -p swarm-kernel`: 237,568 B sha c40abe63e137bd05 -> 253,440 B sha d50e8816fe5beafc: the crate fix is compiled into THE LIBRARY THE EXAMPLE LOADS, not just into the crate.. Same family as 'a replaced exe on disk is not the running build', one level down.",
+   "`TRM_PYTHON=\"py -3\"` was handed whole to `Command::new`, so the SPAWN failed and the crate read it as 'python is broken' -- it failed twice in the sweep and passed standalone. Now split on whitespace: `VERIFY GATE: PASSED - byte-identical to numpy reference`, exit 0, run under TRM_PYTHON='py -3' -- the exact setting under which it panicked twice at `Command::new`, because the whole string went in as the program name.",
+   "`ingest_scale_native` asserted a null shard handle with no reason. The null came from a manifest recording `/home/shawn/...` (this is the third instance of that class). It now names the target and exits 2, and `ShardedFabric::open` re-resolves a recorded path through swarm-paths and PRINTS the substitution rather than opening a file silently: the null handle now names its target (`shard open failed: //wsl.localhost/Ubuntu/home/shawn/.hermes/cache/trm_full_scale`) and exits 2; with the relinked cdylib it OPENS and ingests. Measured write rate: 24,444 B in 20 s (~1.2 KB/s) through the //wsl.localhost 9p share, so a 256 MB arena is hours of work on this host -- the sweep records a timeout for it, not a defect.",
+   "The sweep's per-binary budget was fixed too: a full-scale ingest (Tox21 8,734 + ~2.2M ChEMBL records streamed from a 931 MB gzip) cannot finish inside 90s, and 'still working' is not 'failed' -- long-runners now carry their own named budget, and a timeout is still reported as a timeout, never as a pass.",
+   "Measured after the fixes: **45/53 entries exit 0, examples 32/34** (was 27/53 and 15/34 at the start of the phase).",
+   "Proof for the re-resolution, with its negative control: scratch/verify_shard_reresolve.py, run against the shipped cdylib through ctypes: (A) a manifest recording /home/shawn/... OPENS and prints `[swarm-shard] manifest shard path re-resolved: ...`; (B) a shard that exists nowhere still returns NULL -- the re-resolution does not mask a missing shard."
+  ],
+  "servers_up_recheck": {
+   "results": {
+    "client": {
+     "exit": 0,
+     "last": "[VERIFY] trm:// protocol works - K3 greeting answered with K3 TRUE",
+     "first": "[trm://] connected (QUIC handshake: 6.8942ms)",
+     "secs": 0.0
+    },
+    "bench": {
+     "exit": 0,
+     "last": "[VERIFY] trm:// concurrent bench PASSED - 1000 connections served, zero errors",
+     "first": "[bench] trm:// concurrent bench: 1000 connections",
+     "secs": 0.8
+    },
+    "fit_client": {
+     "exit": 0,
+     "last": "[fit] booking \u2192 BOOKED (persisted in the NAND fabric, byte-verified)",
+     "first": "[trm://] response Verdict: [-1, 1, 1, -1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, -1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1,",
+     "secs": 0.0
+    },
+    "svc_client": {
+     "exit": 0,
+     "last": "[svc] jarvis \u2192 LIVE (persisted in the fabric, byte-verified)",
+     "first": "[trm://] response Verdict",
+     "secs": 0.0
+    }
+   },
+   "exit0_corrected": 49,
+   "entries": 53,
+   "still_nonzero": [
+    "bin:fit_server",
+    "bin:swarm-server",
+    "example:ingest_scale_native",
+    "example:verify_gpu_neural"
+   ],
+   "items": [
+    "The sweep's own numbers needed a second look before they were believed: `bench`, `client` and `fit_client` were filed as `Error: TimedOut [30s]`, and the port probes read `000` -- because the crates' servers were not running. Nothing was rebuilt between the two runs, so the server is the only variable. With `fit_server` and `swarm-server` up: bench exit 0 \u2014 [VERIFY] trm:// concurrent bench PASSED - 1000 connections served, zero errors; client exit 0 \u2014 [VERIFY] trm:// protocol works - K3 greeting answered with K3 TRUE; fit_client exit 0 \u2014 [fit] booking \u2192 BOOKED (persisted in the NAND fabric, byte-verified); svc_client exit 0 \u2014 [svc] jarvis \u2192 LIVE (persisted in the fabric, byte-verified).",
+    "Corrected tally: **49/53 entries exit 0** (the sweep's 45 plus the 4 clients whose server was down). What remains non-zero, named: bin:fit_server, bin:swarm-server, example:ingest_scale_native, example:verify_gpu_neural.",
+    "`swarm-server` listens on QUIC/UDP, so a TCP probe reports it as down even while it is serving -- the bench and client runs above are the evidence that it is up. A printer that cannot reach a service is not evidence about the service."
+   ]
+  }
+ }
+}

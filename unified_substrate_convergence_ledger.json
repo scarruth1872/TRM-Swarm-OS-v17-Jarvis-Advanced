@@ -1,0 +1,116 @@
+{
+  "manifest_type": "UNIFIED_SUBSTRATE_CONVERGENCE_LEDGER",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-09-01T02:21:35Z",
+  "status": "UNIFIED_CONVERGENCE_ACTIVE_AND_SEALED",
+  "option_b_gpu_substrate": {
+    "gpu_specs": {
+      "device_name": "AMD Radeon RX 6700 XT (Navi 22 RDNA2)",
+      "fabrication_node": "TSMC 7nm FinFET (N7)",
+      "die_area_cm2": 3.35,
+      "die_area_mm2": 335.0,
+      "transistor_count_billions": 17.2,
+      "compute_units": 40,
+      "stream_processors": 2560,
+      "infinity_cache_mb": 96.0,
+      "infinity_cache_bits": 805306368.0,
+      "vector_register_file_mb": 6.4,
+      "vram_gb": 12.0,
+      "vram_type": "GDDR6 (192-bit @ 16 Gbps, 384 GB/s)",
+      "clock_nominal_mhz": 2424.0,
+      "clock_boost_mhz": 2581.0,
+      "tdp_watts": 230.0
+    },
+    "metrics": {
+      "muon_flux_per_min": 3.35,
+      "muon_flux_per_day": 4824.0,
+      "infinity_cache_seu_per_day": 0.0133,
+      "vector_regs_seu_per_day": 0.00089,
+      "wave32_fault_tolerance": "Lockstep Instruction Replay on SEU Trigger",
+      "infinity_cache_protection": "SEC-DED Hardware Scrubbing + Parity",
+      "clock_to_phonon_ratio": 6017.0,
+      "substrate_status": "RDNA2_FUSED_AND_MONITORED"
+    }
+  },
+  "option_c_phonon_dispersion_spectrum": {
+    "lattice": "Diamond Cubic Fd-3m (#227)",
+    "brillouin_symmetry_points": {
+      "Gamma_point": {
+        "coordinates": "(0, 0, 0)",
+        "TA_acoustic_thz": 0.0,
+        "LA_acoustic_thz": 0.0,
+        "TO_optical_thz": 15.53,
+        "LO_optical_thz": 15.53,
+        "degeneracy": "3-fold optical degeneracy (LO=TO) at 15.53 THz (64.2 meV, 518 cm^-1)"
+      },
+      "X_point": {
+        "coordinates": "(0, 1, 0) * 2pi/a",
+        "TA_acoustic_thz": 4.52,
+        "LA_acoustic_thz": 12.32,
+        "TO_optical_thz": 13.9,
+        "LO_optical_thz": 12.32,
+        "degeneracy": "LA and LO degenerate at X-zone boundary (12.32 THz)"
+      },
+      "L_point": {
+        "coordinates": "(1/2, 1/2, 1/2) * 2pi/a",
+        "TA_acoustic_thz": 3.43,
+        "LA_acoustic_thz": 11.37,
+        "TO_optical_thz": 14.71,
+        "LO_optical_thz": 12.54,
+        "degeneracy": "TA transverse acoustic minimum at 3.43 THz"
+      },
+      "K_point": {
+        "coordinates": "(3/4, 3/4, 0) * 2pi/a",
+        "TA_acoustic_thz": 4.15,
+        "LA_acoustic_thz": 11.85,
+        "TO_optical_thz": 14.2,
+        "LO_optical_thz": 12.1,
+        "degeneracy": "Phonon saddle point between X and Gamma"
+      }
+    },
+    "compute_load_softening_dT_50K": {
+      "Gamma_point": {
+        "TA_acoustic_thz": 0.0,
+        "LA_acoustic_thz": 0.0,
+        "TO_optical_thz": 15.5242,
+        "LO_optical_thz": 15.5242,
+        "frequency_shift_ghz": -5.84
+      },
+      "X_point": {
+        "TA_acoustic_thz": 4.5183,
+        "LA_acoustic_thz": 12.3154,
+        "TO_optical_thz": 13.8948,
+        "LO_optical_thz": 12.3154,
+        "frequency_shift_ghz": -5.23
+      },
+      "L_point": {
+        "TA_acoustic_thz": 3.4287,
+        "LA_acoustic_thz": 11.3657,
+        "TO_optical_thz": 14.7045,
+        "LO_optical_thz": 12.5353,
+        "frequency_shift_ghz": -5.54
+      },
+      "K_point": {
+        "TA_acoustic_thz": 4.1484,
+        "LA_acoustic_thz": 11.8455,
+        "TO_optical_thz": 14.1947,
+        "LO_optical_thz": 12.0954,
+        "frequency_shift_ghz": -5.34
+      }
+    }
+  },
+  "option_a_100_node_radiation_shield": {
+    "total_nodes_shielded": 100,
+    "shielded_merkle_root": "abca933ff573a773128bd209bd3da363e84a9ecfa13ed861d0fba35d7a7b456f",
+    "tiers": [
+      "Tier 1: Core Host",
+      "Tier 2: PQC Skywave",
+      "Tier 3: CRO Labs",
+      "Tier 4: Sentinels",
+      "Tier 5: Compute",
+      "Tier 6: Gateways"
+    ],
+    "byzantine_fault_tolerance": "f = 33 / 100 nodes"
+  },
+  "sha256_seal": "f3592da1bb80211f2ddeb5d809273570f3d9c7f611069aafbdf06e3edaa844f8"
+}

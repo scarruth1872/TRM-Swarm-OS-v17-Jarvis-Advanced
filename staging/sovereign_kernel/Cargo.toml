@@ -1,0 +1,27 @@
+[package]
+name = "swarm_v2_rust_kernel"
+version = "19.4.0"
+edition = "2021"
+authors = ["TRM Swarm OS Platform <monad@trm-swarm-os.org>"]
+description = "Bare-metal zero-GC K3 Ternary Logic, QUIC Protocol & Standalone Boot Executable for TRM Swarm OS v19.4.0"
+
+[[bin]]
+name = "trm_swarm_boot"
+path = "src/main.rs"
+
+[lib]
+name = "swarm_rust_kernel"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+rayon = "1.10"
+libc = "0.2"
+memmap2 = "0.9"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+quick-xml = "0.37"
+base64 = "0.22"
+flate2 = "1.0"
+# The Vina scorer decides the screening dG; this kernel adds no rule on top of it.
+swarm-docking = { path = "../wsl_crates/trm-rust/swarm-docking" }
+

@@ -1,0 +1,80 @@
+     1                                  ; SMP trampoline: real mode -> protected -> long mode, then into Rust.
+     2                                  ;
+     3                                  ; Assembled with nasm (NOT LLVM: its integrated assembler cannot switch
+     4                                  ; .code16 -> .code32). Build:
+     5                                  ;   nasm -f bin -o trm_smp_trampoline.bin trm_smp_trampoline.asm
+     6                                  ;
+     7                                  ; org 0x8000 means every absolute reference below resolves for the address this
+     8                                  ; blob is actually copied to, which is why no runtime relocation is needed for
+     9                                  ; the addresses inside it. The three .quad slots at the end are the ONLY values
+    10                                  ; the BSP patches (CR3, AP stack top, Rust entry point, cpu index).
+    11                                  
+    12                                  BITS 16
+    13                                  org 0x8000
+    14                                  
+    15                                  tramp_start:
+    16 00000000 FA                          cli
+    17 00000001 31C0                        xor ax, ax
+    18 00000003 8ED8                        mov ds, ax
+    19 00000005 8EC0                        mov es, ax
+    20 00000007 8ED0                        mov ss, ax
+    21 00000009 BC0070                      mov sp, 0x7000              ; scratch stack below the trampoline
+    22 0000000C 0F0116[D000]                lgdt [tramp_gdt_desc]
+    23 00000011 0F20C0                      mov eax, cr0
+    24 00000014 6683C801                    or eax, 1                   ; CR0.PE
+    25 00000018 0F22C0                      mov cr0, eax
+    26 0000001B EA[2000]0800                jmp 0x08:(tramp_pm)         ; far jump to 32-bit
+    27                                  
+    28                                  BITS 32
+    29                                  tramp_pm:
+    30 00000020 66B81000                    mov ax, 0x10
+    31 00000024 8ED8                        mov ds, ax
+    32 00000026 8EC0                        mov es, ax
+    33 00000028 8ED0                        mov ss, ax
+    34 0000002A 8EE0                        mov fs, ax
+    35 0000002C 8EE8                        mov gs, ax
+    36 0000002E 0F20E0                      mov eax, cr4
+    37 00000031 83C820                      or eax, 0x20                ; CR4.PAE
+    38 00000034 0F22E0                      mov cr4, eax
+    39 00000037 B9800000C0                  mov ecx, 0xC0000080         ; IA32_EFER
+    40 0000003C 0F32                        rdmsr
+    41 0000003E 0D00010000                  or eax, 0x100               ; EFER.LME
+    42 00000043 0F30                        wrmsr
+    43 00000045 A1[88000000]                mov eax, [tramp_cr3]        ; inherit the BSP page tables
+    44 0000004A 0F22D8                      mov cr3, eax
+    45 0000004D 0F20C0                      mov eax, cr0
+    46 00000050 0D00000080                  or eax, 0x80000000          ; CR0.PG
+    47 00000055 0F22C0                      mov cr0, eax
+    48 00000058 EA[5F000000]1800            jmp 0x18:(tramp_lm)         ; far jump to 64-bit
+    49                                  
+    50                                  BITS 64
+    51                                  tramp_lm:
+    52 0000005F 66B81000                    mov ax, 0x10
+    53 00000063 8ED8                        mov ds, ax
+    54 00000065 8EC0                        mov es, ax
+    55 00000067 8ED0                        mov ss, ax
+    56 00000069 488B2425[90000000]          mov rsp, [tramp_stack]
+    56          ******************       warning: implicit DEFAULT ABS is deprecated [-w+implicit-abs-deprecated]
+    57 00000071 488B0425[A0000000]          mov rax, [tramp_entry]
+    58 00000079 488B3C25[98000000]          mov rdi, [tramp_index]
+    59 00000081 FFD0                        call rax
+    60                                  .halt:
+    61 00000083 F4                          hlt
+    62 00000084 EBFD                        jmp .halt
+    63                                  
+    64 00000086 90<rep 2h>              align 8
+    65 00000088 0000000000000000        tramp_cr3:      dq 0
+    66 00000090 0000000000000000        tramp_stack:    dq 0
+    67 00000098 0000000000000000        tramp_index:    dq 0
+    68 000000A0 0000000000000000        tramp_entry:    dq 0
+    69                                  
+    70 000000A8 90<rep 8h>              align 16
+    71                                  tramp_gdt_flat:
+    72 000000B0 0000000000000000            dq 0x0000000000000000
+    73 000000B8 FFFF0000009AAF00            dq 0x00AF9A000000FFFF       ; 0x08 kernel code
+    74 000000C0 FFFF00000092AF00            dq 0x00AF92000000FFFF       ; 0x10 data
+    75 000000C8 FFFF0000009AAF00            dq 0x00AF9A000000FFFF       ; 0x18 64-bit code
+    76                                  tramp_gdt_end:
+    77                                  tramp_gdt_desc:
+    78 000000D0 1F00                        dw tramp_gdt_end - tramp_gdt_flat - 1
+    79 000000D2 [B000000000000000]          dq tramp_gdt_flat

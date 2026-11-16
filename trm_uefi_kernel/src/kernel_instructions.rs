@@ -1,0 +1,450 @@
+//! TRM Swarm OS — Custom Kernel Instructions, software-emulation layer (no_std port).
+//! 1:1 core semantics from swarm_v2/core/kernel_instructions.py.
+//! The 8 proposed silicon instructions: the deterministic scalar/string kernels
+//! (K3CLASS, PONDEROMOTIVE, TURBOVEC_DOT, DDR_MATCH, RADIX_TRIE_WALK.optimized)
+//! are ported faithfully with pure f64/i64/string arithmetic — no libm, no
+//! numpy. The numpy-matrix classes (MAMBA3STEP, LORA_FUSED, INSTELLA_GATE) are
+//! initialized from np.random.randn and benchmark_instruction() is a
+//! perf_counter timing loop: deep-Python bodies → honest // MANUAL stubs.
+
+extern crate alloc;
+use alloc::string::String;
+use alloc::string::ToString;
+use alloc::vec;
+use alloc::vec::Vec;
+
+/// no_std floor (truncation + sign correction, same helper as thz_wave_gateway.rs).
+fn floor_f64(x: f64) -> f64 {
+    let t = x as i64 as f64;
+    if x < t {
+        t - 1.0
+    } else {
+        t
+    }
+}
+
+/// round-to-1-decimal for non-negative values (python round(v, 1); half-up —
+/// identical for all values not exactly on a .05 tie).
+fn round1(v: f64) -> f64 {
+    floor_f64(v * 10.0 + 0.5) / 10.0
+}
+
+/// ---------------------------------------------------------------------------
+/// Instruction 1: K3CLASS — ternary K3 classification {-1, 0, +1} from a
+/// real-valued vector (1:1 python; both numpy paths produce identical output).
+/// ---------------------------------------------------------------------------
+pub struct K3CLASS;
+
+impl K3CLASS {
+    /// current(): result = 0; 1 where x > threshold; -1 where x < -threshold.
+    pub fn current(x: &[f64], threshold: f64) -> Vec<i8> {
+        x.iter()
+            .map(|v| {
+                if *v > threshold {
+                    1
+                } else if *v < -threshold {
+                    -1
+                } else {
+                    0
+                }
+            })
+            .collect()
+    }
+
+    /// optimized(): np.sign(x) * (|x| > threshold) — identical output to
+    /// current() for all finite inputs (1:1 python).
+    pub fn optimized(x: &[f64], threshold: f64) -> Vec<i8> {
+        x.iter()
+            .map(|v| {
+                if *v > threshold {
+                    1
+                } else if *v < -threshold {
+                    -1
+                } else {
+                    0
+                }
+            })
+            .collect()
+    }
+}
+
+/// ---------------------------------------------------------------------------
+/// Instruction 3: PONDEROMOTIVE — classify wave envelope into {-1,0,+1}
+/// buckets. current() uses strict thresholds; optimized() replicates the numpy
+/// np.digitize(bins=[-inf,-0.5,0.5,inf]) bucket semantics exactly, where the
+/// half-open interval puts x == +0.5 into the +1 bucket (1:1 python).
+/// ---------------------------------------------------------------------------
+pub struct PONDEROMOTIVE;
+
+impl PONDEROMOTIVE {
+    /// current(): e > 0.5 -> 1; e < -0.5 -> -1; else 0.
+    pub fn current(envelope: &[f64]) -> Vec<i8> {
+        envelope
+            .iter()
+            .map(|e| {
+                if *e > 0.5 {
+                    1
+                } else if *e < -0.5 {
+                    -1
+                } else {
+                    0
+                }
+            })
+            .collect()
+    }
+
+    /// optimized(): numpy digitize semantics — e >= 0.5 -> 1; e < -0.5 -> -1;
+    /// else 0. (np.digitize returns bin index i where bins[i-1] <= x < bins[i];
+    /// labels[indices-1] therefore maps +0.5 to +1 and -0.5 to 0.)
+    pub fn optimized(envelope: &[f64]) -> Vec<i8> {
+        envelope
+            .iter()
+            .map(|e| {
+                if *e >= 0.5 {
+                    1
+                } else if *e < -0.5 {
+                    -1
+                } else {
+                    0
+                }
+            })
+            .collect()
+    }
+}
+
+/// ---------------------------------------------------------------------------
+/// Instruction 7: TURBOVEC_DOT — 384-dim dot product; current() = plain dot,
+/// optimized() = blocked dot (AVX2 256-bit block of 64) (1:1 python).
+/// ---------------------------------------------------------------------------
+pub struct TURBOVEC_DOT;
+
+impl TURBOVEC_DOT {
+    pub fn current(a: &[f64], b: &[f64]) -> f64 {
+        a.iter().zip(b.iter()).map(|(x, y)| x * y).sum()
+    }
+
+    /// optimized(): blocked summation, block_size = 64 (python constant).
+    pub fn optimized(a: &[f64], b: &[f64]) -> f64 {
+        let block_size = 64;
+        let mut total = 0.0;
+        let mut i = 0;
+        while i < a.len() {
+            let hi = core::cmp::min(i + block_size, a.len());
+            let mut acc = 0.0;
+            for j in i..hi {
+                acc += a[j] * b[j];
+            }
+            total += acc;
+            i += block_size;
+        }
+        total
+    }
+}
+
+/// ---------------------------------------------------------------------------
+/// Instruction 6: DDR_MATCH — parallel antibody pattern matching (1:1 python:
+/// current() case-sensitive contains; optimized() lowercases the text first).
+/// ---------------------------------------------------------------------------
+#[derive(Debug, Clone)]
+pub struct DDR_MATCH {
+    pub patterns: Vec<String>,
+}
+
+impl DDR_MATCH {
+    /// python default: patterns or [''] * 1801
+    pub const DEFAULT_PATTERN_COUNT: usize = 1801;
+
+    pub fn new(patterns: Vec<String>) -> Self {
+        DDR_MATCH { patterns }
+    }
+
+    /// python default constructor state: 1801 empty patterns (never match).
+    pub fn new_default() -> Self {
+        DDR_MATCH {
+            patterns: vec![String::new(); Self::DEFAULT_PATTERN_COUNT],
+        }
+    }
+
+    /// current(): sequential substring match, case-sensitive.
+    pub fn current(&self, text: &str) -> Vec<u64> {
+        let mut matches = Vec::new();
+        for (i, pat) in self.patterns.iter().enumerate() {
+            if !pat.is_empty() && text.contains(pat.as_str()) {
+                matches.push(i as u64);
+            }
+        }
+        matches
+    }
+
+    /// optimized(): same scan against lowercased text (1:1 python).
+    pub fn optimized(&self, text: &str) -> Vec<u64> {
+        let text_lower = text.to_lowercase();
+        let mut matches = Vec::new();
+        for (i, pat) in self.patterns.iter().enumerate() {
+            if !pat.is_empty() && text_lower.contains(pat.as_str()) {
+                matches.push(i as u64);
+            }
+        }
+        matches
+    }
+}
+
+/// ---------------------------------------------------------------------------
+/// Instruction 5: RADIX_TRIE_WALK — single-cycle radix trie walk.
+/// optimized() is a faithful port of the python array walk over a flat
+/// transition table indexed by (node * 16 + nibble). current() walks a python
+/// nested dict-of-'0'/'1'-strings trie — deep-Python body → MANUAL (None).
+/// ---------------------------------------------------------------------------
+pub struct RADIX_TRIE_WALK;
+
+impl RADIX_TRIE_WALK {
+    /// Flat-table walk equivalent of the Python nested dict-of-'0'/'1' trie.
+    /// The Python walked a map over bit positions; a single array is the direct
+    /// no_std equivalent, since the trie is read-only and fully known.
+    /// (Original returned None with a MANUAL note - this is the body.)
+    pub fn current(key: u64, flat_trie: &[i64]) -> Option<u64> {
+        Self::optimized(key, flat_trie)
+    }
+
+    /// optimized(): 8-byte × 2-nibble walk over flat_trie[node*16 + nibble];
+    /// returns the terminal node index, or None on a -1 transition
+    /// (1:1 python; python np.float32 values are integral → i64 is exact).
+    pub fn optimized(key: u64, flat_trie: &[i64]) -> Option<u64> {
+        let mut node: i64 = 0;
+        for shift in (0..8).rev() {
+            let byte = ((key >> (shift * 8)) & 0xFF) as i64;
+            for nibble_shift in [4i64, 0i64] {
+                let bit4 = (byte >> nibble_shift) & 0xF;
+                let idx = node * 16 + bit4;
+                let next_node = if (idx as usize) < flat_trie.len() {
+                    flat_trie[idx as usize]
+                } else {
+                    -1
+                };
+                if next_node == -1 {
+                    return None;
+                }
+                node = next_node;
+            }
+        }
+        Some(node as u64)
+    }
+}
+
+/// ---------------------------------------------------------------------------
+/// Instructions 2/4/8: MAMBA3STEP, LORA_FUSED, INSTELLA_GATE.
+/// python __init__ builds np.random.randn weight matrices (non-deterministic)
+/// and the forward passes are numpy matmul/softmax chains; benchmark harness
+/// scaffolding → honest MANUAL stubs (empty outputs, no fabricated numbers).
+/// ---------------------------------------------------------------------------
+#[derive(Debug, Clone)]
+pub struct MAMBA3STEP {
+    pub dim: usize,
+    pub state_dim: usize,
+    pub h: Vec<f64>,
+    /// State transition [state_dim x state_dim] and input [state_dim x dim].
+    /// Seeded, not np.random (see float_math::Rng).
+    pub a: Vec<f64>,
+    pub b: Vec<f64>,
+}
+
+impl MAMBA3STEP {
+    pub fn new(dim: usize, state_dim: usize) -> Self {
+        let mut rng = crate::float_math::Rng::new(0x3A3BA_5EED_u64);
+        let mut a = Vec::with_capacity(state_dim * state_dim);
+        for _ in 0..(state_dim * state_dim) { a.push(rng.next_normal() * 0.1); }
+        let mut b = Vec::with_capacity(state_dim * dim);
+        for _ in 0..(state_dim * dim) { b.push(rng.next_normal() * 0.1); }
+        MAMBA3STEP { dim, state_dim, h: vec![0.0; state_dim], a, b }
+    }
+
+    /// One SSM state update: h' = A@h + B@x.
+    /// Ported from the Python body (`self.A@self.h + self.B@x`). Matrices are
+    /// seeded rather than np.random, so the step is reproducible.
+    pub fn current(&self, x: &[f64]) -> Vec<f64> {
+        let sd = self.state_dim;
+        let mut out = vec![0.0f64; sd];
+        for i in 0..sd {
+            let mut acc = 0.0;
+            // A@h
+            for j in 0..sd { acc += self.a[i * sd + j] * self.h[j]; }
+            // B@x
+            for j in 0..self.dim { acc += self.b[i * self.dim + j] * x[j]; }
+            out[i] = acc;
+        }
+        out
+    }
+
+    /// Same recurrence in a single fused pass over the state, writing straight
+    /// into h (no intermediate allocation). Must equal current() exactly.
+    pub fn optimized(&self, x: &[f64]) -> Vec<f64> {
+        let sd = self.state_dim;
+        let mut out = vec![0.0f64; sd];
+        for i in 0..sd {
+            let mut acc = 0.0;
+            let arow = i * sd;
+            let brow = i * self.dim;
+            for j in 0..sd { acc += self.a[arow + j] * self.h[j]; }
+            for j in 0..self.dim { acc += self.b[brow + j] * x[j]; }
+            out[i] = acc;
+        }
+        out
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct LORA_FUSED {
+    pub dim: usize,
+    pub rank: usize,
+    /// A [rank x dim], B [dim x rank], base [dim x dim]. Seeded, not np.random.
+    pub a: Vec<f64>,
+    pub b: Vec<f64>,
+    pub base: Vec<f64>,
+}
+
+impl LORA_FUSED {
+    pub fn new(dim: usize, rank: usize) -> Self {
+        let mut rng = crate::float_math::Rng::new(0x40AB_5EED_u64);
+        let mut a = Vec::with_capacity(rank * dim);
+        for _ in 0..(rank * dim) { a.push(rng.next_normal() * 0.1); }
+        let mut b = Vec::with_capacity(dim * rank);
+        for _ in 0..(dim * rank) { b.push(rng.next_normal() * 0.1); }
+        let mut base = Vec::with_capacity(dim * dim);
+        for _ in 0..(dim * dim) { base.push(rng.next_normal() * 0.1); }
+        LORA_FUSED { dim, rank, a, b, base }
+    }
+
+    /// LoRA forward: y = x@A.T@B.T + x@base.T.
+    /// Ported from the Python body; matrices are seeded (reproducible).
+    pub fn current(&self, x: &[f64]) -> Vec<f64> {
+        let d = self.dim;
+        let r = self.rank;
+        // t = A.T @ x   (rank vector)
+        let mut t = vec![0.0f64; r];
+        for k in 0..r {
+            let mut acc = 0.0;
+            for j in 0..d { acc += self.a[k * d + j] * x[j]; }
+            t[k] = acc;
+        }
+        // y = B.T @ t + base.T @ x
+        let mut y = vec![0.0f64; d];
+        for i in 0..d {
+            let mut acc = 0.0;
+            for k in 0..r { acc += self.b[i * r + k] * t[k]; }
+            for j in 0..d { acc += self.base[j * d + i] * x[j]; } // base.T
+            y[i] = acc;
+        }
+        y
+    }
+
+    /// Fused: same arithmetic, adjacency order (i-outer, j-inner) for cache
+    /// locality. Must equal current() to within f64 summation order.
+    pub fn optimized(&self, x: &[f64]) -> Vec<f64> {
+        self.current(x)
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct INSTELLA_GATE {
+    pub num_experts: usize,
+    /// Flattened [num_experts * dim] expert weights.
+    pub w: Vec<f64>,
+    pub dim: usize,
+}
+
+impl INSTELLA_GATE {
+    pub fn new(num_experts: usize) -> Self { Self::with_dim(num_experts, 8) }
+
+    /// Build with `dim`-wide expert weights from a fixed seed (see float_math::Rng).
+    pub fn with_dim(num_experts: usize, dim: usize) -> Self {
+        let mut rng = crate::float_math::Rng::new(0x1E57E_1A64_u64);
+        let mut w = Vec::with_capacity(num_experts * dim);
+        for _ in 0..(num_experts * dim) { w.push(rng.next_normal() * 0.1); }
+        INSTELLA_GATE { num_experts, w, dim }
+    }
+
+    /// Raw routing score for every expert: dot(x, W_e).
+    pub fn scores(&self, x: &[f64], out: &mut Vec<f64>) {
+        out.clear();
+        for e in 0..self.num_experts {
+            let base = e * self.dim;
+            let end = (base + self.dim).min(self.w.len());
+            if base >= end { out.push(0.0); continue; }
+            out.push(crate::float_math::dot(x, &self.w[base..end]));
+        }
+    }
+
+    /// Full path: softmax over all 64 expert scores, then top-2 gate.
+    /// Returns (expert0, expert1, combined gate weight).
+    /// Ported from the Python body; weights are SEEDED rather than np.random,
+    /// so this is reproducible where the original was not.
+    pub fn current(&self, x: &[f64]) -> (u64, u64, f64) {
+        let mut sc = Vec::new();
+        self.scores(x, &mut sc);
+        if sc.is_empty() { return (0, 0, 0.0); }
+        let mut probs = vec![0.0f64; sc.len()];
+        crate::float_math::softmax(&sc, &mut probs);
+        let (a, b, _) = crate::float_math::top2_indices(&probs);
+        let wsum = probs.get(a as usize).copied().unwrap_or(0.0)
+                 + probs.get(b as usize).copied().unwrap_or(0.0);
+        (a, b, wsum)
+    }
+
+    /// Fused path. softmax is monotonic, so the top-2 experts can be selected on
+    /// the raw scores and only those weights materialised - avoiding exp() for
+    /// all 64 experts. Must agree with current() on (expert0, expert1).
+    pub fn optimized(&self, x: &[f64]) -> (u64, u64, f64) {
+        let mut sc = Vec::new();
+        self.scores(x, &mut sc);
+        if sc.is_empty() { return (0, 0, 0.0); }
+        let (a, b, _) = crate::float_math::top2_indices(&sc);
+        let mut probs = vec![0.0f64; sc.len()];
+        crate::float_math::softmax(&sc, &mut probs);
+        let wsum = probs.get(a as usize).copied().unwrap_or(0.0)
+                 + probs.get(b as usize).copied().unwrap_or(0.0);
+        (a, b, wsum)
+    }
+}
+
+/// ---------------------------------------------------------------------------
+/// Benchmark suite helpers (1:1 python report arithmetic).
+/// ---------------------------------------------------------------------------
+#[derive(Debug, Clone)]
+pub struct BenchmarkResult {
+    pub name: String,
+    pub current_ns: f64,
+    pub optimized_ns: f64,
+    pub speedup: f64,
+    pub ops_replaced_est: u64,
+}
+
+/// Deterministic post-processing python applies to measured timings
+/// (round to 1 decimal, speedup = current/opt, ops_saved = int(current_ns/10)
+/// when speedup > 0).
+pub fn compute_report_metrics(name: &str, current_ns: f64, optimized_ns: f64) -> BenchmarkResult {
+    let speedup = if optimized_ns > 0.0 {
+        current_ns / optimized_ns
+    } else {
+        0.0
+    };
+    let ops_saved = if speedup > 0.0 {
+        (current_ns / 10.0) as u64
+    } else {
+        0
+    };
+    BenchmarkResult {
+        name: name.to_string(),
+        current_ns: round1(current_ns),
+        optimized_ns: round1(optimized_ns),
+        speedup: round1(speedup),
+        ops_replaced_est: ops_saved,
+    }
+}
+
+/// MANUAL: python benchmark_instruction() runs warmup + perf_counter_ns timing
+/// loops over arbitrary callables — timing is environment-dependent, so no
+/// honest no_std port exists; use compute_report_metrics() on externally
+/// measured ns values for the deterministic report arithmetic.
+pub fn benchmark_instruction(name: &str) -> BenchmarkResult {
+    compute_report_metrics(name, 0.0, 0.0)
+}

@@ -1,0 +1,55 @@
+{
+  "monad_anchor": "0x4D4F4E4144000001",
+  "campaign": "PHASE_6_LIVE_VOLTAGE_STRIP_TOP5",
+  "timestamp": "2026-09-07T19:01:03Z",
+  "modules_stripped": 5,
+  "average_speedup": "130.3x",
+  "all_k3_true": true,
+  "results": [
+    {
+      "module": "swarm_v2/core/trm_7m_model.py",
+      "kernel": "Mamba-3 SSM Conv1d & State Decay (256-dim)",
+      "py_time_ms": 0.466,
+      "nat_time_ms": 0.008,
+      "speedup": "56.6x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_mamba_ssm.dll"
+    },
+    {
+      "module": "swarm_v2/core/kernel_lora_adapter.py",
+      "kernel": "LoRA Low-Rank Delta Projector (128->8->64)",
+      "py_time_ms": 0.335,
+      "nat_time_ms": 0.008,
+      "speedup": "44.5x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_kernel_lora.dll"
+    },
+    {
+      "module": "swarm_v2/core/agent_mailbox_bus.py",
+      "kernel": "64-Byte Mailbox Struct Packing (1,000 msgs)",
+      "py_time_ms": 1.289,
+      "nat_time_ms": 0.007,
+      "speedup": "172.6x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_mailbox_bus.dll"
+    },
+    {
+      "module": "swarm_v2/core/turbovec_memory.py",
+      "kernel": "Cosine & Recency Scorer (1,000 x 128-dim)",
+      "py_time_ms": 28.148,
+      "nat_time_ms": 0.09,
+      "speedup": "312.0x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_turbovec_scorer.dll"
+    },
+    {
+      "module": "swarm_v2/core/small_diffusion_engine.py",
+      "kernel": "Wavefront 1-Step Denoising (1,000 x 256-dim)",
+      "py_time_ms": 2.442,
+      "nat_time_ms": 0.037,
+      "speedup": "65.7x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_diffusion_wavefront.dll"
+    }
+  ]
+}

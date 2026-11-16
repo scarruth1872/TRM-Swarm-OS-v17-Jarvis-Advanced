@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 2. Reusable Helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // 3. Match user database tree
+    function isValidUser(data) {
+      return data.name is string && data.name.size() <= 128
+        && data.job is string && data.job.size() <= 128
+        && data.location is string && data.location.size() <= 128
+        && data.mission is string && data.mission.size() <= 1000
+        && data.interests is list
+        && data.preferences is map
+        && data.setupCompleted is bool;
+    }
+
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      // Match child documents and memory structures
+      match /memory/{docId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Match custom Keep notes collection
+      match /keep_notes/{docId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}

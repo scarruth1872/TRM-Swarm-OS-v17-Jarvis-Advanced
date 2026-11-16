@@ -1,0 +1,12 @@
+{
+ "checks": 17,
+ "failed": 0,
+ "failures": [],
+ "basis": "oracle transcribed from the crate's source; the K3 collapse itself is swarm-k3's and is not re-implemented -- verdicts are checked against the crate's own rule applied to the trits the routes returned",
+ "modules_count": 9,
+ "findings": [
+  "council_vote's verdict is a CONSTANT: its signals are [domain-fit, 0.9, 0.7] at tau 0.35 and swarm-k3's collapse maps a positive constant to 1, so the trits are [0,1,1] or [1,1,1] -- pros >= 2 with blocks == 0 in every case. BLOCK and ANALYZE are unreachable, so the council cannot currently vote against a task.",
+  "ensemble_vote cannot reach -1 either: only the field signal may be negative, so blocks <= 1 while pros >= 2 (domain-fit and 0.7 are both positive constants).",
+  "on this host EnsembleField::load() reads absolute WSL paths (/home/shawn/trm-rust/field_*.bin) that do not exist, so the field is the crate's deterministic fallback (32 dims, from_gpu false) and its signal is +0.9 -- reported by the route rather than presented as a GPU capture."
+ ]
+}

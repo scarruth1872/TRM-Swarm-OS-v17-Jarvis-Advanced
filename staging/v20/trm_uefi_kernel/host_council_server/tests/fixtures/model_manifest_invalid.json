@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-07T00:00:00Z",
+  "models": [
+    {
+      "name": "no id at all",
+      "kind": "llm",
+      "verified_by": "GET :1/health 200"
+    },
+    {
+      "id": "missing-kind",
+      "name": "no kind",
+      "verified_by": "GET :2/health 200"
+    },
+    {
+      "id": "missing-verified-by",
+      "name": "no verified_by",
+      "kind": "embedding"
+    },
+    {
+      "id": "kind-not-in-enum",
+      "name": "unknown kind",
+      "kind": "diffusion",
+      "verified_by": "GET :3/health 200"
+    },
+    {
+      "id": "unknown-params",
+      "name": "declared-unknown parameter count",
+      "kind": "llm",
+      "path": "somewhere/else.gguf",
+      "parameter_count": 999999,
+      "parameter_count_known": false,
+      "quantisation": null,
+      "verified_at": "2026-11-07T00:00:00Z",
+      "verified_by": "GET :4/health 200",
+      "basis": "size unparsable; count deliberately left unknown"
+    }
+  ]
+}

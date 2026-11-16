@@ -1,0 +1,111 @@
+{
+  "campaign_id": "DISC-CAMPAIGN-1792499585",
+  "campaign_name": "PHEIC_AMR_Oncology_Master_Discovery",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-10-20 12:33:20 UTC",
+  "total_runtime_seconds": 15.51,
+  "stages_executed": 9,
+  "pipeline_status": "COMPLETED_IN_SILICO (not ratified)",
+  "k3_consensus_status": "COMPUTED_IN_SILICO (not a truth-assertion)",
+  "summary_metrics": {
+    "pathogen_epitopes_indexed": 1023,
+    "amp_candidates_discovered": 345321,
+    "amp_top_candidates_retained": 100,
+    "in_silico_maturation_generations": 20,
+    "repurposed_drug_pairs": 75,
+    "synthetic_circuits_compiled": 5,
+    "cancer_neoantigens_screened": 456,
+    "toxicity_profiles_evaluated": 9,
+    "adc_architectures_engineered": 66
+  },
+  "stage_breakdowns": {
+    "stage_1_pathogen_signatures": {
+      "signatures_indexed": 1023,
+      "pathogens": [
+        "SARS-CoV-2",
+        "Pseudomonas_aeruginosa",
+        "Acinetobacter_baumannii",
+        "Staphylococcus_aureus",
+        "Klebsiella_pneumoniae"
+      ],
+      "k3_consensus": {
+        "POTENT_NEUTRALIZING (+1)": 224,
+        "BINDING_CANDIDATE (0)": 467,
+        "LOW_AFFINITY (-1)": 332
+      }
+    },
+    "stage_2_amp_discovery": {
+      "total_antibodies_scanned": 403803,
+      "total_viable_leads": 345321,
+      "top_candidates_count": 100,
+      "apex_candidate": "TRM-AMP-8943",
+      "apex_kd_nm": 2.01,
+      "target": "FtsZ (Bacterial Cell Division GTPase FtsZ)"
+    },
+    "stage_3_binding_prediction": {
+      "pearson_r_log10_kd": -0.1971,
+      "post_fit_pearson_r_log10_kd": 0.1971,
+      "rmse_log10_kd": 1.0712,
+      "benchmarks_tested": 6,
+      "numeric_kd_retired": true,
+      "k3_status": "-1 RETIRED (post-fit Pearson r = 0.1971 < 0.5; numeric Kd not published)",
+      "kind": "measured_on_host"
+    },
+    "stage_4_antibody_evolution": {
+      "generations": 20,
+      "best_variant_fitness": 1.0,
+      "best_variant_kd_pm": 80.0
+    },
+    "stage_5_drug_repurposing": {
+      "total_pairs": 75,
+      "positive_leads": 24,
+      "apex_lead": "Niclosamide",
+      "apex_target": "A_baumannii_OXA-23"
+    },
+    "stage_6_synthetic_circuits": {
+      "circuits_compiled": 5,
+      "mean_dynamic_range": 127.6,
+      "k3_circuits": 5
+    },
+    "stage_7_cancer_neoantigens": {
+      "total_candidates": 456,
+      "top_candidates_count": 25,
+      "min_ic50_nm": 1019.92
+    },
+    "stage_8_toxicity_safety": {
+      "total_screened": 9,
+      "safe_leads": 0,
+      "mean_therapeutic_window": 101.8
+    },
+    "stage_9_adc_designs": {
+      "total_designs": 66,
+      "optimal_constructs": 14,
+      "max_therapeutic_index": 28.7
+    }
+  },
+  "value_kinds": {
+    "pathogen_epitopes_indexed": "read_from_scan_artifact",
+    "amp_candidates_discovered": "computed",
+    "amp_apex_kd_nm": "predicted_in_silico (numeric retired)",
+    "pearson_r_log10_kd": "measured_on_host",
+    "rmse_log10_kd": "measured_on_host",
+    "best_variant_fitness": "computed",
+    "best_variant_kd_pm": "predicted_in_silico (numeric retired)",
+    "apex_lead": "declared_constant",
+    "apex_target": "declared_constant",
+    "circuits_compiled": "computed",
+    "min_ic50_nm": "predicted_in_silico (numeric retired)",
+    "mean_therapeutic_window": "predicted_in_silico (numeric retired)",
+    "max_therapeutic_index": "predicted_in_silico (numeric retired)"
+  },
+  "activity_cross_reference": {
+    "in_tree_real_activity": [
+      "LIT-PCBA_bioactivities.xlsx (15 human targets, real pEC50 from ChEMBL)",
+      "6 benchmark antibody experimental Kd values"
+    ],
+    "overlap": "none",
+    "numeric_kd_retired": true,
+    "retirement_reason": "post-fit Pearson r = 0.1971 < 0.5 over the 6 benchmark Kd; numeric Kd/TI/IC50 are not published, only qualitative tiers",
+    "note": "None of the pipeline's drug-repurposing targets (SARS-CoV-2 Mpro, P.aeruginosa MexAB-OprM, A.baumannii OXA-23, KRAS-G12D, NLRP3) appear in LIT-PCBA, and the AMP leads are synthetic (SHA256-derived). No (drug,target) lead matches a real in-tree activity record, so every lead is labeled predicted_in_silico; the only measured_on_host values are the binding benchmark Pearson r + RMSE."
+  }
+}

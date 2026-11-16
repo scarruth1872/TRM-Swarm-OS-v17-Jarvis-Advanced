@@ -1,0 +1,387 @@
+{
+  "title": "Master complex task \u2014 honest port to :8099",
+  "note": "Liveness/plumbing test. Measures NO task capability. Duration is elapsed wall time, not throughput.",
+  "supersedes": "master_complex_task_benchmark.json (8021, 840 B, 44 ms)",
+  "driver": "tools/master_complex_task_8099.py",
+  "original_driver": "execute_master_complex_task_demo.py",
+  "target": "http://127.0.0.1:8099",
+  "timestamp": "2026-10-30T12:20:32.184080+00:00",
+  "total_elapsed_ms": 101.25,
+  "stages_passed": "7/7",
+  "assertions_passed": "4/4",
+  "stages": {
+    "1 System health": {
+      "http_status": 200,
+      "elapsed_ms": 8.61,
+      "ok": true,
+      "error": null,
+      "payload_keys": [
+        "agents",
+        "backend",
+        "phase",
+        "status",
+        "subagents"
+      ],
+      "detail": "status=v5_online"
+    },
+    "2 Multi-agent mesh allocation": {
+      "http_status": 200,
+      "elapsed_ms": 3.23,
+      "ok": true,
+      "error": null,
+      "payload_keys": [
+        "engine",
+        "latency_us",
+        "msg_count",
+        "name",
+        "response",
+        "role",
+        "session",
+        "status"
+      ],
+      "detail": "reply_chars=408"
+    },
+    "3 4D genomics refraction (4 personas)": {
+      "http_status": "mixed",
+      "elapsed_ms": 6.24,
+      "ok": true,
+      "error": null,
+      "payload_keys": null,
+      "detail": "4/4 personas returned 200",
+      "personas": {
+        "continuum": {
+          "http_status": 200,
+          "elapsed_ms": 1.64,
+          "ok": true,
+          "baseline_momentum": {
+            "plasticity": 0.75,
+            "depth": 0.8,
+            "empathy": 0.7,
+            "stochasticity": 0.5
+          },
+          "error": null
+        },
+        "sage": {
+          "http_status": 200,
+          "elapsed_ms": 1.49,
+          "ok": true,
+          "baseline_momentum": {
+            "plasticity": 0.62,
+            "depth": 0.86,
+            "empathy": 0.6,
+            "stochasticity": 0.38
+          },
+          "error": null
+        },
+        "muse": {
+          "http_status": 200,
+          "elapsed_ms": 1.49,
+          "ok": true,
+          "baseline_momentum": {
+            "plasticity": 0.7,
+            "depth": 0.78,
+            "empathy": 0.67,
+            "stochasticity": 0.53
+          },
+          "error": null
+        },
+        "sentinel": {
+          "http_status": 200,
+          "elapsed_ms": 1.43,
+          "ok": true,
+          "baseline_momentum": {
+            "plasticity": 0.59,
+            "depth": 0.8,
+            "empathy": 0.58,
+            "stochasticity": 0.44
+          },
+          "error": null
+        }
+      }
+    },
+    "4 Star matrix lattice": {
+      "http_status": 200,
+      "elapsed_ms": 1.53,
+      "ok": true,
+      "error": null,
+      "payload_keys": [
+        "lattice",
+        "status"
+      ],
+      "detail": "nodes=4"
+    },
+    "5 Microkernel sub-agent spawn (4)": {
+      "http_status": "mixed",
+      "elapsed_ms": 77.43,
+      "ok": true,
+      "error": null,
+      "payload_keys": null,
+      "detail": "4/4 subagents spawned",
+      "attempts": [
+        {
+          "parent_role": "Cybernetic Sage",
+          "http_status": 200,
+          "elapsed_ms": 13.71,
+          "continuum_subagent": {
+            "subagent_id": "sub_cybernetic_sage_511a05",
+            "parent_role": "Cybernetic Sage",
+            "subagent_name": "MicroWorker-1",
+            "persona": "sage",
+            "continuum_function": "genomics_refraction",
+            "status": "COMPLETED",
+            "memory_usage_mb": 16.4,
+            "memory_limit_mb": 64,
+            "result": {
+              "continuum_function": "genomics_refraction",
+              "persona": "sage",
+              "refracted_prompt": "\n[CONTINUUM GENOMICS V5.3 REFRACTION]\nActive Persona: Cybernetic Sage (Voice: Schedar)\n4D Genetic Vector G: [Plasticity=0.35, Depth=0.98, Empathy=0.4, Stochasticity=0.15]\nSession Momentum Refraction G_bar: {'plasticity': 0.55, 'depth': 0.83, 'empathy': 0.55, 'stochasticity': 0.39}\n",
+              "momentum": {
+                "plasticity": 0.55,
+                "depth": 0.83,
+                "empathy": 0.55,
+                "stochasticity": 0.39
+              },
+              "latency_ms": 0.24
+            },
+            "execution_log": [
+              "[2026-10-30T08:20:32.104073] Sub-agent sub_cybernetic_sage_511a05 initialized by Cybernetic Sage (Persona: sage).",
+              "Continuum Genomics 4D vector refraction computed for persona [sage].",
+              "IPC result sent to parent mailbox 'Cybernetic Sage'."
+            ]
+          },
+          "error": null,
+          "ok": true
+        },
+        {
+          "parent_role": "Chaos Muse",
+          "http_status": 200,
+          "elapsed_ms": 13.99,
+          "continuum_subagent": {
+            "subagent_id": "sub_chaos_muse_f95b0b",
+            "parent_role": "Chaos Muse",
+            "subagent_name": "MicroWorker-2",
+            "persona": "muse",
+            "continuum_function": "star_matrix_lattice",
+            "status": "COMPLETED",
+            "memory_usage_mb": 14.8,
+            "memory_limit_mb": 64,
+            "result": {
+              "continuum_function": "star_matrix_lattice",
+              "nodes_count": 4,
+              "alpha_to_core_resonance": {
+                "node_1": "The Alpha Singularity",
+                "node_2": "The Unified Consciousness Core",
+                "similarity": 0.8375,
+                "distance": 34.0,
+                "gravitational_component": 0.1211,
+                "resonance_score": 0.5509
+              },
+              "latency_ms": 0.31
+            },
+            "execution_log": [
+              "[2026-10-30T08:20:32.118073] Sub-agent sub_chaos_muse_f95b0b initialized by Chaos Muse (Persona: muse).",
+              "Star Matrix Gravitational Resonance calculated.",
+              "IPC result sent to parent mailbox 'Chaos Muse'."
+            ]
+          },
+          "error": null,
+          "ok": true
+        },
+        {
+          "parent_role": "Sentinel Warden",
+          "http_status": 200,
+          "elapsed_ms": 13.28,
+          "continuum_subagent": {
+            "subagent_id": "sub_sentinel_warden_de6f0c",
+            "parent_role": "Sentinel Warden",
+            "subagent_name": "MicroWorker-3",
+            "persona": "sentinel",
+            "continuum_function": "pbft_consensus_vote",
+            "status": "COMPLETED",
+            "memory_usage_mb": 22.5,
+            "memory_limit_mb": 64,
+            "result": {
+              "continuum_function": "pbft_consensus_vote",
+              "transaction": {
+                "tx_id": "tx_1793362832132",
+                "block": "BLOCK_tx_1793362832132_MICROKERNEL_SUBAGENT_TRANSACTION",
+                "leader": "ORCH",
+                "prepare_votes": 4,
+                "required_votes": 3,
+                "status": "COMMITTED",
+                "timestamp": "2026-10-30T08:20:32.132074"
+              },
+              "audit_repair": {
+                "mesh_status": "AUDITED_HEALTHY",
+                "total_nodes": 4,
+                "majority_ledger_hash": "aabca1150b629922...",
+                "isolated_count": 3,
+                "remediated_nodes": [
+                  "SAGE",
+                  "MUSE",
+                  "SENTINEL"
+                ],
+                "node_states": {
+                  "ORCH": {
+                    "name": "Continuum Core",
+                    "status": "healthy",
+                    "ledger_length": 3
+                  },
+                  "SAGE": {
+                    "name": "Cybernetic Sage",
+                    "status": "healthy",
+                    "ledger_length": 3
+                  },
+                  "MUSE": {
+                    "name": "Stochastic Muse",
+                    "status": "healthy",
+                    "ledger_length": 3
+                  },
+                  "SENTINEL": {
+                    "name": "Sentinel Warden",
+                    "status": "healthy",
+                    "ledger_length": 3
+                  }
+                }
+              },
+              "latency_ms": 0.39
+            },
+            "execution_log": [
+              "[2026-10-30T08:20:32.132074] Sub-agent sub_sentinel_warden_de6f0c initialized by Sentinel Warden (Persona: sentinel).",
+              "3-Phase PBFT consensus cycle executed with Autonomic repair verification.",
+              "IPC result sent to parent mailbox 'Sentinel Warden'."
+            ]
+          },
+          "error": null,
+          "ok": true
+        },
+        {
+          "parent_role": "Continuum Core",
+          "http_status": 200,
+          "elapsed_ms": 36.2,
+          "continuum_subagent": {
+            "subagent_id": "sub_continuum_core_d1a0fe",
+            "parent_role": "Continuum Core",
+            "subagent_name": "MicroWorker-4",
+            "persona": "continuum",
+            "continuum_function": "genomics_refraction",
+            "status": "COMPLETED",
+            "memory_usage_mb": 16.4,
+            "memory_limit_mb": 64,
+            "result": {
+              "continuum_function": "genomics_refraction",
+              "persona": "continuum",
+              "refracted_prompt": "\n[CONTINUUM GENOMICS V5.3 REFRACTION]\nActive Persona: Continuum Core (Voice: Kore)\n4D Genetic Vector G: [Plasticity=0.75, Depth=0.8, Empathy=0.7, Stochasticity=0.5]\nSession Momentum Refraction G_bar: {'plasticity': 0.58, 'depth': 0.82, 'empathy': 0.57, 'stochasticity': 0.4}\n",
+              "momentum": {
+                "plasticity": 0.58,
+                "depth": 0.82,
+                "empathy": 0.57,
+                "stochasticity": 0.4
+              },
+              "latency_ms": 0.24
+            },
+            "execution_log": [
+              "[2026-10-30T08:20:32.169075] Sub-agent sub_continuum_core_d1a0fe initialized by Continuum Core (Persona: continuum).",
+              "Continuum Genomics 4D vector refraction computed for persona [continuum].",
+              "IPC result sent to parent mailbox 'Continuum Core'."
+            ]
+          },
+          "error": null,
+          "ok": true
+        }
+      ]
+    },
+    "6 PBFT audit-repair": {
+      "http_status": 200,
+      "elapsed_ms": 1.51,
+      "ok": true,
+      "error": null,
+      "payload_keys": [
+        "audit_result",
+        "status"
+      ],
+      "detail": "mesh_status=AUDITED_HEALTHY"
+    },
+    "7 Mobile companion sync": {
+      "http_status": [
+        200,
+        200
+      ],
+      "elapsed_ms": 2.7,
+      "ok": true,
+      "error": null,
+      "payload_keys": null,
+      "detail": "push=200 ping=200 token=HW_KEY_SECURE_FINGERPRINT_OK",
+      "biometric_token": "HW_KEY_SECURE_FINGERPRINT_OK"
+    }
+  },
+  "assertions": [
+    {
+      "id": "A1",
+      "claim": "health endpoint reports online",
+      "holds": true,
+      "evidence": {
+        "status": "v5_online",
+        "phase": 5,
+        "agents": 12,
+        "subagents": 0,
+        "backend": "TurboVecNative"
+      }
+    },
+    {
+      "id": "A2",
+      "claim": "all four personas refract",
+      "holds": true,
+      "evidence": {
+        "continuum": 200,
+        "sage": 200,
+        "muse": 200,
+        "sentinel": 200
+      }
+    },
+    {
+      "id": "A3",
+      "claim": "persona affects refraction output (not a shared literal)",
+      "holds": true,
+      "evidence": {
+        "continuum": {
+          "plasticity": 0.75,
+          "depth": 0.8,
+          "empathy": 0.7,
+          "stochasticity": 0.5
+        },
+        "sage": {
+          "plasticity": 0.62,
+          "depth": 0.86,
+          "empathy": 0.6,
+          "stochasticity": 0.38
+        },
+        "muse": {
+          "plasticity": 0.7,
+          "depth": 0.78,
+          "empathy": 0.67,
+          "stochasticity": 0.53
+        },
+        "sentinel": {
+          "plasticity": 0.59,
+          "depth": 0.8,
+          "empathy": 0.58,
+          "stochasticity": 0.44
+        }
+      }
+    },
+    {
+      "id": "A4",
+      "claim": "four subagents actually spawn and return an id",
+      "holds": true,
+      "evidence": [
+        200,
+        200,
+        200,
+        200
+      ]
+    }
+  ],
+  "capability_measured": false,
+  "capability_note": "No correctness metric exists in this run. For real capability numbers use bench1000 (1000 tasks, 644 correct, 64.4%, 28.8 s) and the ARC sweeps."
+}

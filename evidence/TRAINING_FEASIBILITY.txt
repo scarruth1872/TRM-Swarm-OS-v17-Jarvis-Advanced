@@ -1,0 +1,41 @@
+TRAINING FEASIBILITY - MEASURED 2026-10-24
+
+=== WHAT EXISTS (all prerequisites now verified) ===
+config      tiny-recursive-weights/all_config.yaml   (EXACT training config)
+            project  Arc1concept-aug-1000-ACT-torch
+            data     [data/arc1concept-aug-1000]
+            epochs 200000 | batch 4608 | lr 1e-4 | warmup 2000
+            arch H=3 L_cycles=4 L_layers=2 hidden=512 heads=8
+            loss stablemax_cross_entropy  |  ema 0.999
+dataset     data/arc1concept-aug-1000   1.49 GB  BUILT THIS SESSION
+            train inputs/labels 346 MB each, test 394 MB each
+            145,890 identifier entries
+checkpoint  tiny-recursive-weights/step_155718   1.8 GB   (ONLY ONE)
+script      pretrain.py  (hydra + pydantic)
+deps        hydra-core omegaconf wandb coolname adam-atan2  INSTALLED
+
+=== MEASURED BLOCKERS ===
+compute     torch 2.5.1+cpu   cuda=False   directml NOT INSTALLED   12 threads
+params      455,549,954  (455.5M)  <- NOT 7M. checkpoint has 455M params
+total steps 200000 epochs x ~35 steps/epoch  ~= 7,000,000 steps
+done        155,718 steps  ~= 2.2% of the schedule
+
+=== VERDICT ===
+Training CANNOT be finished on this hardware.
+ - CPU-only torch, 455M params, ~7M steps remaining
+ - optimistic 10 steps/s -> 700,000 s = 8.1 days CONTINUOUS
+ - realistic CPU bf16 -> weeks to months
+The pipeline is now COMPLETE and correct; the compute is the only gap.
+
+=== OPTIONS (in order of honesty) ===
+1. Cloud GPU (thunder-compute): the only realistic path to convergence
+2. torch-directml: measure first; likely 5-10x CPU, still weeks
+3. Bounded fine-tune: e.g. 2,000 steps to demonstrate the pipeline moves loss
+   -- this is PROGRESS, not completion; must never be reported as finished
+
+=== DATASET BUILD - BUGS FIXED (all real) ===
+1 missing pip dep        argdantic
+2 dataset/ no __init__.py    -> created
+3 script mode sets sys.path[0]=dataset/  -> run as  python -m dataset.build_arc_dataset
+4 args use DASHES not underscores
+5 prefix must NOT have trailing _  (builder appends _{subset}_challenges.json)

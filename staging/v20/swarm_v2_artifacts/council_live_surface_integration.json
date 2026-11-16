@@ -1,0 +1,69 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T14:37:46.240661+00:00",
+  "finding": "The dashboard has 31 viewports but the measured benchmark suite has no viewport. Add /ui/benchmarks (pure-Rust LCARS, figures read from the measured payload) and verify the benchmark, humanistic, discovery and chat viewports end-to-end.",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Surface",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Integrate the live surface: add a /ui/benchmarks viewport that renders the measured benchmark lanes (GET /benchmarks) as a pure-Rust LCARS pa"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Integrate the live surface: add a /ui/benchmarks viewport that renders the measured benchmark lanes (GET /benchmarks) as a pure-Rust"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Integrate the live surface: add a /ui/benchmarks viewport that renders the measured benchmark lanes (GET /benchmarks) as a pure-Rust LCARS page \u2014 z"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Integrate the live surface: add a /ui/benchmarks viewport that renders the measured benchmark lanes (GET /benchmarks) as a pure-Rust LCARS page \u2014 zero"
+        }
+      ],
+      "monad_seal": "737807f48c86705944f955fcf0fc2d0c08bed6676f575e88ddc9f846011ce46c",
+      "motion": "MOTION-C2",
+      "phase": "consensus",
+      "proposal_id": "CP-A8912E91",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "Integrate the live surface: add a /ui/benchmarks viewport that renders the measured benchmark lanes (GET /benchmarks) as a pure-Rust LCARS page \u2014 zero <script> tags, the figures read from the same measured payload, every number labeled measured_on_host \u2014 and register it as viewport 32 in the compositor index, then verify end-to-end that the benchmark, humanistic, discovery and Neural Bridge viewports all render (HTTP 200 + the LCARS shell) and their actions respond. The TEST is pre-registered: (1) GET /ui/benchmarks returns the LCARS page whose figures match GET /benchmarks (same measured numbers, no fabricated copy), and (2) GET /ui/humanistic, /ui/discovery, /ui/chat each return 200 with their rendered content, and POST /ui/chat/send persists a turn (thread_persisted). The existing 31 viewports are UNTOUCHED \u2014 this ADDS a 32nd, never renames or removes one. READ FROM SOURCE (this host): ui_render.rs index_html declares 31 viewports (01 System Status .. 31 Native Surface) and already carries the humanistic (27 Humanistic), discovery (28 DDR Discovery) and Neural Bridge (02) viewports. The benchmark suite is GET /benchmarks \u2014 a live JSON route whose figures are measured_on_host (deterministic 2+2=7500ns/5x7=800ns, GPU scan 3138us vs CPU 119120us = 37.96x, recall turbovec 11.3ms, TRM-7M 7-turn 21.2ms) \u2014 but it has NO /ui/benchmarks viewport, so the measured lanes are not reachable from the dashboard. REJECT AS PREMATURE if the benchmark viewport would hardcode figures instead of reading the measured payload, or if adding it would disturb the existing viewports (an integration that breaks a working tab is a regression, not an integration).",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 9,
+  "record": "LIVE SURFACE INTEGRATION -- add the benchmark viewport, verify the tabs",
+  "sha256": "f95a8331eda7a3b80f1a22a955007fb0c02e6277f3d00dcb8880a55b2adb2cf9"
+}

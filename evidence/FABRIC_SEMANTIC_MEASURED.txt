@@ -1,0 +1,90 @@
+SEMANTIC FABRIC RETRIEVAL — MEASURED, INCLUDING THE ATTEMPTS THAT FAILED
+=======================================================================
+Date: 2026-11-06. Host: Ryzen 9 3900X / RX 6700 XT 12GB, no cloud, no Docker.
+
+WHAT WAS BUILT
+  swarm_v2/core/semantic_fabric.py       cosine retrieval over the deduplicated fabric,
+                                         768-d nomic-embed-text on llama.cpp :8593
+  tools/build_fabric_index.py            dedupe -> embed -> frozen index
+  fabric/fabric_vecs.npy                 42,805 x 768 float16, L2-normalised, sha256
+                                         7f6d2deb39bf7dcc..., 1,584.8 s, 0 embedding failures
+  fabric/fabric_distinct.jsonl.gz        one row per distinct content, keeps newest,
+                                         records dup_count and class
+  global_memory.query()                  semantic path first; keyword fallback now searches
+                                         the LIVE store and excludes stopwords
+
+  Wired, not just present: GlobalMemorySync.query() tries the semantic index first and
+  falls back only when it is absent. When absent it returns None plus a reason, never a
+  silent substring search wearing the word "semantic".
+
+THE CORPUS IS THE FINDING
+  122,955 rows -> 42,805 distinct (65.2% collapsed)
+  835 distinct texts are model refusals; one ("my neural core (Gemma) is currently
+  over-taxed") accounts for 5,905 rows
+
+  Composition of the 42,805 distinct rows:
+    35,402  (82.7%)  raw JSON spec blobs (nested dicts stored as text)
+     6,912  (16.1%)  agent task/result chatter
+       388   (0.9%)  web research snippets
+        58   (0.1%)  swarm problem statements
+        38   (0.1%)  other
+         7   (0.0%)  jarvis template state
+    586 rows (1.4%) contain any measurement or decision word (measured, parity, latency,
+    %, commit, blocked, passed, failed).
+
+  So the "unified fabric of knowledge" is 98.8% machine chatter and serialised specs. A
+  vector index cannot retrieve knowledge that was never written down.
+
+RETRIEVAL MEASUREMENT — THREE INSTRUMENTS, ALL RECORDED
+  All three measured the SAME two paths on the SAME probes: the platform's own query
+  path (global_memory, chroma unbound, keyword fallback over 123,054 live rows) versus the
+  semantic index. Hit = the source memory is returned in the top k.
+
+  1. 1.5B paraphraser, no template filter (tools/measure_fabric_retrieval.py, first run)
+     30 probes -> 25 rejected as near-copies, 5 kept
+     substring 0.2 / 0.2 / 0.2   semantic 0.2 / 0.2 / 0.2
+     Instrument failure: the sampled rows were templates and the small model echoed them
+     back as the query.
+
+  2. 27B deep tier (:8591) paraphraser
+     62.7 s per call measured, so 80 probes would take over an hour, and Jaccard stayed at
+     0.46 - a fair query legitimately shares its entity nouns, so penalising them was the
+     wrong filter. Reverted to the fast model; 60 probes -> 3 kept, both paths 0.0/0.33/0.33
+     on the 3 survivors. Not a result, a sample size.
+
+  3. Synonym-shifted probes, no model involved (tools/measure_fabric_synonyms.py)
+     Memories that carry a measurement are rewritten through a synonym table
+     (council->governing body, ternary->three-valued, watchdog->supervisor, ...), so the
+     meaning is preserved by construction and the exact words a keyword matcher needs are
+     gone. 199 such rows exist; 20 probes drawn.
+       mean word overlap with the source  0.551
+       substring recall@1/5/10            0.0 / 0.1 / 0.2
+       semantic  recall@1/5/10            0.0 / 0.1 / 0.2
+       median latency                     124 ms vs 125 ms
+
+  CONCLUSION, stated plainly: on this corpus the two paths are indistinguishable, and the
+  reason is upstream of both. Every "knowledge" probe is itself a task log
+  ("Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus
+  solution: ..."), the store holds thousands of near-identical variants, and the exact-row
+  criterion almost never lands in the top 10 for either method. Reporting a semantic win
+  here would have required cherry-picking probes.
+
+WHAT THE SEMANTIC PATH DOES DEMONSTRABLY DO
+  It answers at all, over the deduplicated 42,805-row view, in ~100-125 ms, with scores in
+  the 0.55-0.61 band, and it returns different rows than keyword search. What it cannot do
+  is return knowledge that the platform never stored.
+
+WHAT WAS FIXED SO IT STOPS GETTING WORSE (write side, all measured)
+  TurboVecMemory.add() is content-addressed and idempotent -> no new duplicates.
+  contribute() now passes keywords, so records store the author as agent and a real
+  metadata dict instead of the metadata dict AS the agent (this is why 122k rows had
+  {'author': ...} in their agent field).
+  contribute() rejects model refusals: a GPU-busy message is not knowledge.
+  query()'s fallback reads the live store: contributions write to TurboVec and return
+  before entries_metadata is touched, so the mirror froze at 8,658 rows while the store
+  reached 123,018 - 114,360 memories were unreachable by any query.
+
+WHAT REMAINS, AND IT IS A POLICY DECISION NOT A BUG
+  Nothing prevents the platform from writing chatter. A knowledge policy (store
+  measurements, decisions and cited facts; log chatter elsewhere) would do more for
+  retrieval quality than any further index work, because it changes the denominator.

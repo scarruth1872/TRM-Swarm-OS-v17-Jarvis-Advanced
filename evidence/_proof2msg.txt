@@ -1,0 +1,45 @@
+feat(proof2): BLIND RESULT - the pipeline DOES predict, and my earlier conclusion was wrong
+
+The preregistration (sha256 61af1a405418783462917e82a200bf0aa745eb9d61841b3d71d8f5cbab741205,
+committed BEFORE any holdout molecule was docked) is what makes the following
+result trustworthy, and it is what caught my own error.
+
+SETUP: 38 ChEMBL LpxC molecules NEVER before docked, stratified across potency
+bands from the 477-molecule pool. Labels written to disk and not read until the
+docks finished. Same receptor (5U39), same box, same settings as the training run.
+
+RESULT
+  Spearman rho(vina, pChEMBL) = -0.5766        (n=38)
+  cut at -9.0, detecting pChEMBL >= 7:
+    TP=16 FP=3 FN=7 TN=12  ->  sensitivity 69.6%  specificity 80.0%
+  scores <= -9.0 (n=19): pChEMBL median 8.47
+  scores >  -7.5 (n=6) : pChEMBL median 3.91
+
+THE PREREGISTRATION SAID, IN ADVANCE:
+    H1: rho negative and |rho| >= 0.3  -> supported (-0.577)
+    'I PREDICT this cut will show POOR specificity - if it does not, that
+     contradicts the training evidence.'
+  IT DID NOT. Specificity was 80.0%. MY PREDICTION WAS WRONG and I am flagging
+  that explicitly rather than quietly reporting the good number.
+
+WHY THE EARLIER CONCLUSION WAS TOO PESSIMISTIC
+  The training set was 32 molecules and contained TWO measured inactives that
+  docked at -10.36 and -9.99. On a set that small those two dominated the
+  analysis, and I concluded 'no threshold works, BIND=0'. On a stratified blind
+  sample 5x the effective resolution, the correlation is clear: -0.58, with the
+  bottom of the ranking dominated by 2.56-3.96 pChEMBL inactives.
+  REVISED CONCLUSION: the docking score carries REAL signal on this target. It is
+  a prioritisation signal, not a classifier - at -9.0 a fifth of non-binders are
+  still false-positived - but 'no threshold works' was wrong.
+
+WHAT THIS DOES NOT OVERTURN
+  The 16.8-microsecond PHOENIX 'execute' that computed nothing still computed
+  nothing. The asserted 0.97-0.99 affinities are still invented. What changed is
+  the claim about the DOCKING PIPELINE, which now has a preregistered blind
+  measurement behind it instead of a small-sample inference.
+
+THE METHOD LESSON, which is the real output of this scenario:
+  A 32-molecule set produced a confident negative conclusion. A preregistered
+  38-molecule blind set produced the opposite. The difference was not more data
+  so much as FIXING THE RULE BEFORE SEEING THE ANSWER - which is what made it
+  possible to notice that my prediction and the result disagreed.

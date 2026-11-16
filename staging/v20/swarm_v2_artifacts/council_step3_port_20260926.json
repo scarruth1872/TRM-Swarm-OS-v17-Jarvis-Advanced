@@ -1,0 +1,1958 @@
+{
+  "protocol": "SWARM_COUNCIL_DELIBERATION_SESSION",
+  "session_name": "STEP_3_PORT_OF_V18_CRATES",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-09-26 16:40:50 UTC",
+  "total_agents": 15,
+  "byzantine_tolerance": 4,
+  "pbft_threshold": 11,
+  "rust_kernel_bound": true,
+  "vote_codes": {
+    "1": "APPROVE",
+    "0": "ABSTAIN",
+    "-1": "REJECT"
+  },
+  "how_to_read_this_record": "Tallies, weighted scores and PBFT outcomes are the engine's own output (swarm_v2/core/swarm_council.py, 15 members, f=4, K3 votes). Each motion carries the per-agent deliberation text, which IS domain-specific (each member reasons from its own domain), and the per-agent vote record, which carries vote/confidence/weight with an empty reasoning field. Abstentions are where the council records binding conditions rather than neutrality; this session returned none, so read unanimity as the engine agreeing with motions written to encode rules the campaign had already established -- not as independent scrutiny of an open question. The one genuinely open choice (MOTION-016, the 1,994 un-rebuildable retrieval paths) was approved as 'decide and record the cost', which leaves the decision itself with the operator.",
+  "council_verdict": {
+    "consensus_summary": "Council deliberated 7 motions; 7 reached PBFT quorum (>= 11/15). Ranked by weighted score.",
+    "motions_deliberated": 7,
+    "motions_enacted": 7,
+    "recommended_primary_direction": "MOTION-014: The port must state what it does NOT carry: a line count is not a capability (Score: +0.985)",
+    "secondary_direction": "MOTION-013: Retire v18.233 only when every crate's fate is recorded and no live file names its path (Score: +0.984)",
+    "tertiary_direction": "MOTION-011: Step 3 triage: classify each of the six v18 crates BEFORE porting any of them (Score: +0.984)"
+  },
+  "motions": [
+    {
+      "motion_id": "MOTION-011",
+      "title": "Step 3 triage: classify each of the six v18 crates BEFORE porting any of them",
+      "category": "code",
+      "description": "The six crates are swarm-brain 338 L, swarm-intel 263, swarm-docking 226, swarm-drug 176, swarm-fit 136, swarm-proof 134. The campaign's own rule decides each one: a LIVE cargo path-dependency is the module of record -- wire it, never port a copy -- so a crate whose capability v19 already links is SUPERSEDED, not ported. Measure the counterpart first; port only what has none.",
+      "engine_proposal_id": "CP-0B25A5F5",
+      "phase": "enacted",
+      "weighted_score": 0.9841,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "55a7293cf78cec1898dfb8917024282e48b730800be56e55e0aa7722b6f0fbac",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340691"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340753"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340774"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340785"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340794"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340803"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340811"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340819"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340826"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340834"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340841"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340848"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340856"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340864"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.340871"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.340615"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.340625"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.340631"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Code security review for Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: input validation, buffer boundaries, privilege escalation paths, and memory safety.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.340635"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.340639"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "PRIORITY: Direct engineering concern. Assessing build system, AVX-512 SIMD optimizations, test coverage, and deployment risk.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-09-26T16:40:50.340643"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.340646"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.340650"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.340655"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.340658"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.340662"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.340665"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.340670"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Step 3 triage: classify each of the six v18 crates BEFORE porting any of them: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.340674"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Step 3 triage: classify each of the six v18 crates BEFORE porting any of them from my reasoning perspective.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.340677"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-012",
+      "title": "Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test",
+      "category": "code",
+      "description": "Every ported crate must arrive with (a) the v19 call path that consumes it, (b) a per-file sha256 receipt plus a call proof -- an actual invocation returning a value, not an import that succeeds, and (c) a test that is RED on the pre-port tree. A port with no consumer is dead code wired in, which the campaign has already refused once.",
+      "engine_proposal_id": "CP-0D35F5F5",
+      "phase": "enacted",
+      "weighted_score": 0.9841,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "c71aefe5cc1d317ef103a5629685508269032ba572213e9c6307dffeb04d7a38",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341222"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341239"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341249"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341257"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341264"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341272"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341279"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341287"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341294"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341301"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341318"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341329"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341337"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341344"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341352"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.341166"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341170"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.341176"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Code security review for Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: input validation, buffer boundaries, privilege escalation paths, and memory safety.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.341179"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.341182"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "PRIORITY: Direct engineering concern. Assessing build system, AVX-512 SIMD optimizations, test coverage, and deployment risk.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-09-26T16:40:50.341186"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.341189"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.341192"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.341195"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.341198"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.341201"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.341205"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341208"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.341211"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Port by capability, not by file: no port lands without a wired consumer, a receipt, and a red test from my reasoning perspective.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.341214"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-013",
+      "title": "Retire v18.233 only when every crate's fate is recorded and no live file names its path",
+      "category": "audit",
+      "description": "The archive exists (trm-rust_source.tar.gz 446,867,446 B, sha256 a2b3f9a737affc90..., 3,134 entries), so the gate is classification, not preservation: all 35 crates carry a verdict with evidence, and a grep of the live tree finds no path reference. Move, never delete.",
+      "engine_proposal_id": "CP-0410B2EF",
+      "phase": "enacted",
+      "weighted_score": 0.9844,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "e62c7f098b756d07d1c647370d06149d776d0abbeafa54b7825425cf249edda9",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341617"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341631"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341640"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341648"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341656"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341664"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341671"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341679"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341686"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341694"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341701"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341708"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341715"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341723"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341730"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Retire v18.233 only when every crate's fate is recorded and no live file names its path: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.341560"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Retire v18.233 only when every crate's fate is recorded and no live file names its path: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341565"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Retire v18.233 only when every crate's fate is recorded and no live file names its path: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341568"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Retire v18.233 only when every crate's fate is recorded and no live file names its path: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.341574"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Retire v18.233 only when every crate's fate is recorded and no live file names its path: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.341577"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Retire v18.233 only when every crate's fate is recorded and no live file names its path: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341581"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Retire v18.233 only when every crate's fate is recorded and no live file names its path: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341584"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Retire v18.233 only when every crate's fate is recorded and no live file names its path: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341587"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "PRIORITY: Regulatory audit guardian. Enforcing 21 CFR Part 11 traceability, immutable event logs, and Monad state provenance.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-09-26T16:40:50.341590"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Retire v18.233 only when every crate's fate is recorded and no live file names its path: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341594"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Retire v18.233 only when every crate's fate is recorded and no live file names its path: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.341597"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Retire v18.233 only when every crate's fate is recorded and no live file names its path: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.341601"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Retire v18.233 only when every crate's fate is recorded and no live file names its path: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341605"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Retire v18.233 only when every crate's fate is recorded and no live file names its path: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.341608"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Retire v18.233 only when every crate's fate is recorded and no live file names its path from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341611"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-014",
+      "title": "The port must state what it does NOT carry: a line count is not a capability",
+      "category": "truth",
+      "description": "Each receipt names the behaviours left behind -- a KVM/FFI edge, a different allocator, a narrower type -- rather than implying 1:1 parity with v18. The doctrine already burned this campaign once: a value declared where a value should be measured is THE defect class.",
+      "engine_proposal_id": "CP-28C6846E",
+      "phase": "enacted",
+      "weighted_score": 0.9847,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "f2d9bbcfc29fceeaaa30f912b30dce46dc0882f7eacdf2908090038ccac2884e",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341961"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341973"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341982"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341989"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.341997"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342005"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342012"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342020"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342027"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342034"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342041"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342048"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342056"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342064"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342074"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of The port must state what it does NOT carry: a line count is not a capability: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341905"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of The port must state what it does NOT carry: a line count is not a capability: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.341910"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for The port must state what it does NOT carry: a line count is not a capability: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.341914"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of The port must state what it does NOT carry: a line count is not a capability: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.341917"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Truth verification: validating formal axioms under Monad Truth Anchor 0x4D4F4E4144000001.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-09-26T16:40:50.341920"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of The port must state what it does NOT carry: a line count is not a capability: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.341924"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of The port must state what it does NOT carry: a line count is not a capability: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.341927"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for The port must state what it does NOT carry: a line count is not a capability: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.341932"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of The port must state what it does NOT carry: a line count is not a capability: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.341935"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for The port must state what it does NOT carry: a line count is not a capability: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.341938"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of The port must state what it does NOT carry: a line count is not a capability: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.341941"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "PRIORITY: Truth verification. Proving zero hallucination, empirical validation, and Kleene K3 consensus truth.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-09-26T16:40:50.341944"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on The port must state what it does NOT carry: a line count is not a capability: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.341948"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of The port must state what it does NOT carry: a line count is not a capability: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.341951"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate The port must state what it does NOT carry: a line count is not a capability from my reasoning perspective.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.341954"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-015",
+      "title": "Close the last three harvest groups by the same machine-checked rule as the other 55",
+      "category": "data",
+      "description": "models, prism-ml-llama.cpp and trm-rust remain 'harvest'. Each verdict must be checkable by the builder: harvested = the store's provenance names it, harvested-prose = the knowledge index names it, superseded = a counterpart path exists. No verdict by assertion.",
+      "engine_proposal_id": "CP-5A933761",
+      "phase": "enacted",
+      "weighted_score": 0.9838,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "b4287cd439d25e90982d20ee6105378804ad212678c651a4f6c4db3752a1a550",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342300"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342313"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342322"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342330"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342340"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342347"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342354"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342362"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342369"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342376"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342383"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342391"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342399"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342407"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342414"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Close the last three harvest groups by the same machine-checked rule as the other 55: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342247"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Close the last three harvest groups by the same machine-checked rule as the other 55: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.342251"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Data fabric priority: ensuring schema integrity, molecular structure streaming, and zero-cloud data sovereignty.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-09-26T16:40:50.342254"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Close the last three harvest groups by the same machine-checked rule as the other 55: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.342260"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Close the last three harvest groups by the same machine-checked rule as the other 55: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342263"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Close the last three harvest groups by the same machine-checked rule as the other 55: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342266"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Close the last three harvest groups by the same machine-checked rule as the other 55: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342269"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "High-throughput data streaming audit: optimizing NVMe NAND block transfers and zero-overhead pipeline buffers.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.342273"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Close the last three harvest groups by the same machine-checked rule as the other 55: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.342276"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Close the last three harvest groups by the same machine-checked rule as the other 55: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.342279"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Close the last three harvest groups by the same machine-checked rule as the other 55: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342282"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Close the last three harvest groups by the same machine-checked rule as the other 55: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.342285"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Data research review: evaluating literature databases, PubMed/ChEMBL sources, statistical validity, and ontology alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.342288"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Close the last three harvest groups by the same machine-checked rule as the other 55: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342291"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Close the last three harvest groups by the same machine-checked rule as the other 55 from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.342294"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-016",
+      "title": "Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice",
+      "category": "data",
+      "description": "The live index's 2,180 docs are 91% chunks of relational/ethics_commonsense.csv, whose source is not in the tree, so its key list cannot be rebuilt. Options: re-chunk from the store (the store is the owner), copy the 14.5 MB source, or accept the drop. Whichever is chosen gets recorded with its cost.",
+      "engine_proposal_id": "CP-76A93540",
+      "phase": "enacted",
+      "weighted_score": 0.9838,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "57701ab4f2ed9309545f1eac0e73c30abaf802f8b82bdc270f6f3f24c426ce2d",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342640"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342652"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342661"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342669"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342676"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342683"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342690"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342697"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342705"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342712"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342719"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342726"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342735"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342743"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.342750"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342589"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.342593"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Data fabric priority: ensuring schema integrity, molecular structure streaming, and zero-cloud data sovereignty.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-09-26T16:40:50.342596"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.342599"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342602"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342606"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342610"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "High-throughput data streaming audit: optimizing NVMe NAND block transfers and zero-overhead pipeline buffers.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.342613"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.342616"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.342620"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342623"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.342626"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Data research review: evaluating literature databases, PubMed/ChEMBL sources, statistical validity, and ontology alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.342628"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.342631"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Decide the 1,994 un-rebuildable retrieval paths and record the cost of the choice from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.342634"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-017",
+      "title": "Serve the port with the runtime untouched: no restart, no live swap, no roster change",
+      "category": "workflow",
+      "description": "tier 2 (:8587) keeps running from D:\\trm-models, the live store (sha256 521ff968a5cb2d8c..., 169 ledger blocks) and the live index stay as they are, and the council roster stays 15 agents while the port is in flight. The live surface must remain measurable throughout.",
+      "engine_proposal_id": "CP-9DA97644",
+      "phase": "enacted",
+      "weighted_score": 0.9835,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "45286fbc54140b3ad6b23451651cf758a50e7df0250a1929c4231c0c6d5a06a1",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343142"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343174"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343184"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343192"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343202"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343209"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343217"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343224"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343240"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343253"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343272"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343282"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343290"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343297"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-09-26T16:40:50.343304"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Serve the port with the runtime untouched: no restart, no live swap, no roster change: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.343089"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Serve the port with the runtime untouched: no restart, no live swap, no roster change: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.343093"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Serve the port with the runtime untouched: no restart, no live swap, no roster change: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.343096"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Serve the port with the runtime untouched: no restart, no live swap, no roster change: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.343099"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Serve the port with the runtime untouched: no restart, no live swap, no roster change: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.343103"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Serve the port with the runtime untouched: no restart, no live swap, no roster change: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-09-26T16:40:50.343106"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Serve the port with the runtime untouched: no restart, no live swap, no roster change: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.343109"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "PRIORITY: Workflow orchestrator. Scheduling high-throughput task DAGs, streaming queues, and metabolic pathway simulations.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-09-26T16:40:50.343112"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Serve the port with the runtime untouched: no restart, no live swap, no roster change: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.343115"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Serve the port with the runtime untouched: no restart, no live swap, no roster change: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-09-26T16:40:50.343119"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Serve the port with the runtime untouched: no restart, no live swap, no roster change: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-09-26T16:40:50.343122"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Serve the port with the runtime untouched: no restart, no live swap, no roster change: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.343125"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Serve the port with the runtime untouched: no restart, no live swap, no roster change: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.343128"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Serve the port with the runtime untouched: no restart, no live swap, no roster change: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-09-26T16:40:50.343133"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Serve the port with the runtime untouched: no restart, no live swap, no roster change from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-09-26T16:40:50.343136"
+        }
+      ]
+    }
+  ]
+}

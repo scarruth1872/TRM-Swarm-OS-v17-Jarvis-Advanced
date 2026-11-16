@@ -1,0 +1,175 @@
+# =============================================================================
+# TRM SWARM OS v19 -- NATIVE VOLTAGE STRIP (Phase 31, Rank 149)
+# CDYLIB: strip_monitor_daemon.dll  |  Native: PE cdylib compiled from the synthesized source (loader falls back to Python if the symbol is missing)
+# TurboVec 16x Balanced Ternary Quantization | Kleene K3 Verified
+# Monad Truth Anchor: 0x4D4F4E4144000001
+# _NATIVE_LOADED = True when CDYLIB active; falls back to pure Python below.
+# =============================================================================
+import os as _os
+import ctypes as _ctypes
+
+_NATIVE_LOADED = False
+_NATIVE_REASON = "not attempted"
+_NATIVE_DLL_PATH = _os.path.join(
+    _os.path.dirname(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))),
+    "swarm_v2_artifacts", "native_voltage_strips", "strip_monitor_daemon.dll"
+)
+# The fallback below is NOT silent: _NATIVE_REASON records why the native path
+# is inactive so a module can report it instead of advertising a strip it
+# never loaded.
+try:
+    if _os.path.exists(_NATIVE_DLL_PATH):
+        _native_lib = _ctypes.CDLL(_NATIVE_DLL_PATH)
+        _NATIVE_LOADED = True
+        _NATIVE_REASON = "PE CDYLIB loaded"
+    else:
+        _NATIVE_REASON = "strip absent"
+except OSError as _e:
+    _NATIVE_REASON = f"strip not loadable: {_e}"
+
+# -- Pure Python fallback preserved below (VOLTAGE_STRIPPED) ------------------
+"""
+Swarm V2 Monitor Daemon
+Phase 4: Shell-01 (Recursive Self-Healing)
+
+This background daemon continuously monitors the health of the Agent Mesh
+and individual agents against the thresholds defined in `coherence_thresholds.py`.
+
+It acts as the "Sensory System" for the self-healing loop.
+"""
+
+import asyncio
+import logging
+import time
+from typing import Dict, List
+from datetime import datetime
+
+# Import core components (assuming they are in the pythonpath)
+try:
+    from swarm_v2.core.agent_mesh import get_agent_mesh
+    from swarm_v2_artifacts.coherence_thresholds import CoherenceThresholds
+except ImportError:
+    # Fallback for standalone testing or initial setup
+    class CoherenceThresholds:
+        HEARTBEAT_TIMEOUT = 300
+        MIN_ACTIVE_AGENTS = 3
+        
+    def get_agent_mesh():
+        return None
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] [Monitor] %(message)s",
+    handlers=[
+        logging.FileHandler("swarm_v2_artifacts/monitor.log"),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger("MonitorDaemon")
+
+class MonitorDaemon:
+    def __init__(self, remediation_engine=None, interval: int = 10, mesh=None):
+        self.interval = interval
+        self.mesh = mesh  # Can be set directly or initialized later
+        self.remediation_engine = remediation_engine
+        self.running = False
+        self.remediation_queue = []
+
+    async def start(self):
+        """Start the monitoring loop."""
+        self.running = True
+        logger.info("[Monitor] Monitor Daemon starting...")
+        
+        # Give the system adequate time to register agents before first health check.
+        # Gateway nodes (Jarvis, Antigravity PM) register during lifespan startup which
+        # can take 5-15 seconds — 30 s is a safe window.
+        await asyncio.sleep(30)
+        
+        # Use the mesh that was passed during initialization, or try to get it
+        if not self.mesh:
+            logger.info(f"[Debug] Monitor Daemon getting mesh reference...")
+            self.mesh = get_agent_mesh()
+        
+        if self.mesh:
+            logger.info("[Monitor] Agent Mesh initialized successfully.")
+            topology = self.mesh.get_topology()
+            logger.info(f"[Monitor] Mesh contains {len(topology.get('nodes', []))} nodes")
+        else:
+            logger.error("[Monitor] Agent Mesh could not be initialized - monitoring disabled!")
+        
+        logger.info("[Monitor] Monitor Daemon started. Watching Agent Mesh...")
+        
+        while self.running:
+            try:
+                if self.mesh:
+                    await self._check_mesh_health()
+                else:
+                    logger.error("Agent Mesh not available - cannot monitor!")
+                
+            except Exception as e:
+                logger.error(f"Error in monitor loop: {e}")
+            
+            await asyncio.sleep(self.interval)
+
+    async def stop(self):
+        """Stop the monitoring loop."""
+        self.running = False
+        logger.info("Monitor Daemon stopped.")
+
+    async def _check_mesh_health(self):
+        """Inspect all agents in the mesh."""
+        stats = self.mesh.get_stats()
+        alive_count = stats.get("alive_nodes", 0)
+        total_count = stats.get("total_nodes", 0)
+        
+        # 1. Check Mesh Integrity — only alert if nodes are registered but too few alive
+        # (total_count == 0 means the mesh is still bootstrapping, not degraded)
+        if total_count > 0 and alive_count < CoherenceThresholds.MIN_ACTIVE_AGENTS:
+            logger.critical(
+                f"[CRITICAL] Mesh integrity compromised! "
+                f"Alive agents: {alive_count} (Min: {CoherenceThresholds.MIN_ACTIVE_AGENTS})"
+            )
+            await self._queue_remediation("MESH_INTEGRITY", f"Alive count {alive_count} too low")
+        elif total_count == 0:
+            logger.debug("[Monitor] Mesh still bootstrapping — skipping integrity check.")
+
+        # 2. Check Individual Agents
+        topology = self.mesh.get_topology()
+        current_time = time.time()
+        
+        for node in topology.get("nodes", []):
+            node_id = node.get("node_id")
+            name = node.get("name")
+            role = node.get("role")
+            last_beat = node.get("last_heartbeat", 0)
+            
+            # Check Heartbeat
+            if role == "gateway":
+                continue
+            time_since_beat = current_time - last_beat
+            if time_since_beat > CoherenceThresholds.HEARTBEAT_TIMEOUT:
+                logger.warning(f"[WARNING] Agent {name} ({node_id}) is unresponsive. Last beat: {int(time_since_beat)}s ago")
+                # Pass the role as the target for restarting
+                await self._queue_remediation("AGENT_TIMEOUT", role or name)
+
+    async def _queue_remediation(self, issue_type: str, details: str):
+        """Send an issue to the Remediation Engine."""
+        issue = {
+            "type": issue_type,
+            "details": details,
+            "timestamp": datetime.now().isoformat()
+        }
+        self.remediation_queue.append(issue)
+        logger.info(f"Queued remediation for: {issue_type} - {details}")
+        
+        if self.remediation_engine:
+            await self.remediation_engine.handle_issue(issue_type, details)
+
+if __name__ == "__main__":
+    # Standalone run
+    daemon = MonitorDaemon()
+    try:
+        asyncio.run(daemon.start())
+    except KeyboardInterrupt:
+        asyncio.run(daemon.stop())

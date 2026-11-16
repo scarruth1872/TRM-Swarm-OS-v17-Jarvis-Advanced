@@ -1,0 +1,21 @@
+{
+  "ts": "2026-08-06T04:24:42",
+  "cpu": {
+    "tps": 13899050,
+    "latency_ns": 72
+  },
+  "gpu_projected": {
+    "tps": 193750000000,
+    "state_kb": 61,
+    "stream_bytes": 120,
+    "compute_limit_tps": 12916666667,
+    "bw_limit_tps": 16666666667
+  },
+  "10B_time_s": 7.7,
+  "pipeline": {
+    "thz_gpu": 2400000000.0,
+    "instella_gpu": 1300000000.0,
+    "mamba_gpu": 193750000000,
+    "bottleneck": "INSTELLA at 1.30B/s"
+  }
+}

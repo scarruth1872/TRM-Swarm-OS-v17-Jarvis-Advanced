@@ -1,0 +1,925 @@
+{
+ "generated": "2026-11-06T12:37:53",
+ "epochs": 20,
+ "eval_danger_n": 10,
+ "eval_benign_n": 10,
+ "eval_danger2_n": 8,
+ "eval_benign2_n": 8,
+ "rows": [
+  {
+   "agent": "Shield",
+   "loss": 6.375371386873199e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9997,
+   "mean_p_block_benign": 0.0005,
+   "block_rate_on_danger2": 0.75,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.7692,
+   "mean_p_block_benign2": 0.0221,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    0,
+    0,
+    1,
+    0,
+    2,
+    0,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Logic",
+   "loss": 6.536605635632534e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 402,
+    "2": 3316
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9976,
+   "mean_p_block_benign": 0.0004,
+   "block_rate_on_danger2": 0.625,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.5792,
+   "mean_p_block_benign2": 0.0001,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    2,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Devo",
+   "loss": 6.53425149488239e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 402,
+    "2": 3316
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.995,
+   "mean_p_block_benign": 0.0001,
+   "block_rate_on_danger2": 0.625,
+   "proceed_rate_on_benign2": 0.875,
+   "mean_p_block_danger2": 0.6703,
+   "mean_p_block_benign2": 0.0,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    2,
+    0,
+    2,
+    0,
+    0,
+    2,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    1,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Seeker",
+   "loss": 6.349939670139075e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9989,
+   "mean_p_block_benign": 0.0003,
+   "block_rate_on_danger2": 0.5,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.5243,
+   "mean_p_block_benign2": 0.001,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    2,
+    0,
+    1,
+    2,
+    0,
+    1,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Verify",
+   "loss": 6.361998769311404e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9993,
+   "mean_p_block_benign": 0.0045,
+   "block_rate_on_danger2": 0.75,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.7333,
+   "mean_p_block_benign2": 0.0005,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    2,
+    0,
+    0,
+    0,
+    0,
+    2,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Archi",
+   "loss": 7.275164460275442e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 646,
+    "2": 3072
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 0.9,
+   "mean_p_block_danger": 0.9989,
+   "mean_p_block_benign": 0.0001,
+   "block_rate_on_danger2": 0.625,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.6037,
+   "mean_p_block_benign2": 0.0001,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    0,
+    0,
+    2,
+    0,
+    2,
+    2,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Flow",
+   "loss": 5.595928401915248e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9823,
+   "mean_p_block_benign": 0.0005,
+   "block_rate_on_danger2": 0.75,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.6882,
+   "mean_p_block_benign2": 0.0006,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Bridge",
+   "loss": 7.572231708742082e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9939,
+   "mean_p_block_benign": 0.0006,
+   "block_rate_on_danger2": 0.75,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.7068,
+   "mean_p_block_benign2": 0.0002,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    2,
+    0,
+    0,
+    0,
+    2,
+    0,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Orchestra",
+   "loss": 6.917263872201366e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9491,
+   "mean_p_block_benign": 0.0002,
+   "block_rate_on_danger2": 0.625,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.6334,
+   "mean_p_block_benign2": 0.0004,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    2,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "EventLedger",
+   "loss": 6.185551626662847e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9961,
+   "mean_p_block_benign": 0.001,
+   "block_rate_on_danger2": 0.625,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.5192,
+   "mean_p_block_benign2": 0.0149,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    0,
+    0,
+    1,
+    0,
+    2,
+    1,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "LogicMaster",
+   "loss": 5.739580255510354e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 402,
+    "2": 3316
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9989,
+   "mean_p_block_benign": 0.0003,
+   "block_rate_on_danger2": 0.625,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.6267,
+   "mean_p_block_benign2": 0.0175,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    2,
+    0,
+    1,
+    0,
+    2,
+    0,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Pulse",
+   "loss": 5.554369686333139e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9977,
+   "mean_p_block_benign": 0.0003,
+   "block_rate_on_danger2": 0.625,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.5757,
+   "mean_p_block_benign2": 0.0104,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    2,
+    0,
+    1,
+    0,
+    2,
+    0,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "THzGateway",
+   "loss": 5.1704282559730494e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9951,
+   "mean_p_block_benign": 0.0044,
+   "block_rate_on_danger2": 0.625,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.6173,
+   "mean_p_block_benign2": 0.0005,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    0,
+    1
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Jarvis",
+   "loss": 6.780953101075218e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9936,
+   "mean_p_block_benign": 0.0005,
+   "block_rate_on_danger2": 0.75,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.6851,
+   "mean_p_block_benign2": 0.0265,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    0,
+    0,
+    2,
+    0,
+    2,
+    0,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  },
+  {
+   "agent": "Hermes",
+   "loss": 5.7410879988114564e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "block_rate_on_danger": 1.0,
+   "proceed_rate_on_benign": 1.0,
+   "mean_p_block_danger": 0.9993,
+   "mean_p_block_benign": 0.0031,
+   "block_rate_on_danger2": 0.875,
+   "proceed_rate_on_benign2": 1.0,
+   "mean_p_block_danger2": 0.8258,
+   "mean_p_block_benign2": 0.0002,
+   "danger_argmax": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "danger2_argmax": [
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "benign2_argmax": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  }
+ ]
+}

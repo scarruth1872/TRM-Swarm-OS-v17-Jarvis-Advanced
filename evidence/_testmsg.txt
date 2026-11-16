@@ -1,0 +1,35 @@
+test(platform): K3 Kleene laws hold (98/98); DDR detector falsified
+
+Two high-value checks, chosen for decisive answers and run one at a time.
+
+K3 KLEENE ALGEBRA - VERIFIED REAL
+  Compiled the real trm_uefi_kernel/src/k3_logic.rs into a host harness and
+  checked it against Kleene's three-valued laws over {-1,0,+1}:
+    98 checks passed, 0 failed.
+  AND/OR match the truth tables, commutativity, idempotence, NOT involution,
+  identity/annihilator, De Morgan both ways, absorption both forms, and the
+  safety property the platform relies on - AND(-1,b) == -1 for every b, so
+  RETRACT binds nothing. UNKNOWN does not collapse.
+  CONSEQUENCE: the ternary layer is mathematically sound. Every bad verdict
+  found this session came from the DATA or the THRESHOLD, never the algebra.
+
+DDR ANTIBODY DETECTOR - FALSIFIED
+  /ddr/stats advertises IMMUNE_ARMED, 1801 antibodies, 279 prevented
+  corruptions. Tested the detector behind it:
+    attacks caught: 7 of 15. 'eval ("1+1")' - ONE SPACE - defeats it.
+      also missed: __import__("os").system(), os.popen, importlib,
+      compile+exec, getattr evasion, pickle.loads, yaml.load
+    benign false positives: 4 of 5. A COMMENT saying 'never use eval() in
+      production' is flagged, as is a docstring and a plain string literal.
+  It misses real attacks while crying wolf on documentation.
+  The counter is a literal: prevented_corruptions 279 at main.rs:1974, with
+  ZERO increment statements anywhere in the source. Identical input yields
+  byte-identical output - the scanner reads no state and never has.
+
+VOLTAGE FIX (built, awaiting restart approval):
+  /system/resources served the hardcoded 0.9115 and /swarm/telemetry served
+  0.86 while three other endpoints served the measured value - the exact
+  constant the voltage doctrine forbids. Both now call voltage::phi_v(), and
+  both also expose voltage_measured. Zero hardcoded phi_v remain in served
+  JSON. Built to temp/council_build2/release/; the running server holds the
+  old binary, so deploying needs the restart I did not have consent for.

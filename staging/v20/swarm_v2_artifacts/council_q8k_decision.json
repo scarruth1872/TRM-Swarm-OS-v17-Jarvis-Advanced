@@ -1,0 +1,26 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-28T00:44:54.542571+00:00",
+  "failure_mode": "if A still diverges, the bug is in the Q8_K threading, not a model difference",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "4467ab6d60c9c18e64e92469109fbda790e026b65fd5548fe814debbab284da8",
+      "motion": "MOTION-Q8K-DECISION",
+      "phase": "consensus",
+      "proposal_id": "CP-2BF4946A",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "DECISION: Q8_K threading. Path A: quantize every matmul input to Q8_K -> token-for-token parity with llama.cpp, inheriting its ~8-bit approximation. Path B: keep exact f32 -> mathematically faithful (matches the model's training-time math), more accurate than llama.cpp, divergent by design and not parity-testable against it. Path C (BOTH): add the Q8_K threading as a gated flag, run Path A to PROVE token-parity (the parity test), then deploy Path B as the runtime default. PREDICTION: Path A yields token-for-token parity on a fixed prompt; Path B yields a small (~3%-per-matmul, sampler-smoothed) token divergence that may be below the top-k noise floor. MEASURED: the full 27-layer Instella forward runs natively and matches llama.cpp's top-5 next-token predictions exactly (128804,3,14,2596,16) for 'Hello'. The dequants (Q4_K/Q5_0/Q6_K/Q8_0) are bit-exact; the MLA attention is parity-verified to 6e-6 under Q8_K input. The remaining ~30% logit-magnitude divergence is PROVEN to be llama.cpp's Q8_K matmul-input quantization (quantizing h to Q8_K collapses the gate diff 0.439 -> 6e-6). The exact-f32 path is MORE accurate than llama.cpp, hence divergent by design."
+    }
+  ],
+  "prediction_recorded": "A -> token parity; B -> small sampler-smoothed divergence",
+  "prior_state": "full forward runs; top-5 token parity; remaining divergence is Q8_K input quant",
+  "quorum": 9,
+  "record": "Q8_K decision: A (token parity) vs B (exact f32) vs C (both)",
+  "sha256": "3d3ffef8cc331f34c911b64015740dfc59b0f35f22706a6306421740ab001779"
+}

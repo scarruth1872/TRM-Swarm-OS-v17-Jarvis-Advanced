@@ -1,0 +1,78 @@
+{
+ "protocol": "DRUG_WIRING_RULER",
+ "passed": 11,
+ "failed": 0,
+ "total": 11,
+ "grid_cases": 144,
+ "verdict_coverage": {
+  "0": 60,
+  "-1": 48,
+  "1": 36
+ },
+ "taus_checked": [
+  0.0,
+  0.35,
+  0.99,
+  1.0
+ ],
+ "crate": "wsl_crates/trm-rust/swarm-drug",
+ "oracle": "re-derived from the crate's own triage(); this ruler gates it, nothing trusts it",
+ "checks": [
+  {
+   "check": "the route answers 200 and every case comes back",
+   "passed": true,
+   "detail": "http 200 count 144"
+  },
+  {
+   "check": "every case equals the from-source oracle (verdict AND the crate's detail string)",
+   "passed": true,
+   "detail": "0 mismatches"
+  },
+  {
+   "check": "the grid exercises all three verdicts (a one-verdict grid would prove nothing)",
+   "passed": true,
+   "detail": "verdict coverage {0: 60, -1: 48, 1: 36}"
+  },
+  {
+   "check": "tau is unread by the crate: four taus answer identically over the same cases",
+   "passed": true,
+   "detail": "0.0 / 0.35 / 0.99 / 1.0"
+  },
+  {
+   "check": "an empty molecule list is refused, not answered with a default",
+   "passed": true,
+   "detail": "http 400"
+  },
+  {
+   "check": "a molecule missing `mw` is refused and names the field",
+   "passed": true,
+   "detail": "http 400 body {\"message\": \"molecules[0].mw (number) is required\", \"status\": \"invalid_request\"}"
+  },
+  {
+   "check": "a molecule missing `heavy_atoms` names that field instead (the field is named, not guessed)",
+   "passed": true,
+   "detail": "http 400"
+  },
+  {
+   "check": "a missing SDF is refused with a reason (this route invents no molecule)",
+   "passed": true,
+   "detail": "http 400"
+  },
+  {
+   "check": "/native/modules reports the crate with its source MEASURED now",
+   "passed": true,
+   "detail": "reported 5986, on disk 5986"
+  },
+  {
+   "check": "the crate's own tests still pass (the wiring changed no crate code)",
+   "passed": true,
+   "detail": "   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default"
+  },
+  {
+   "check": "the crate's source is unchanged where the route is concerned: `triage` and `parse_sdf` are its own",
+   "passed": true,
+   "detail": "both signatures present in the module of record"
+  }
+ ],
+ "failed_checks": []
+}

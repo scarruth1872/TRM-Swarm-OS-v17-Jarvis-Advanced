@@ -1,0 +1,35 @@
+{
+ "protocol": "NATIVE_ROUTE_PROBE",
+ "base": "http://127.0.0.1:8022",
+ "passed": 18,
+ "failed": 0,
+ "checks": [
+  "GET /native/modules: 5 modules, every source measured > 0",
+  "every module's source file exists on disk",
+  "route == python on 6 (rate, draw) pairs",
+  "route clamp == python clamp for 1.5 / -0.3 / 0.42",
+  "route == python on 10 identifiers (index AND resolved key)",
+  "route == python on 6 enforcement cases (violations, state, status, content)",
+  "route body == python body (585 B)",
+  "sha3_256(route body) == the python signature (one owner, proven)",
+  "the route declares the signature unsigned rather than inventing one",
+  "fpga at 1 / 96 / 1024 MB == python",
+  "neural(64) == python",
+  "cellular(96) == python",
+  "k3 == python",
+  "GET on a POST route -> 405",
+  "POST without `rate` -> 400 naming it",
+  "unknown arch -> 400 listing the four",
+  "unknown /native sub-path -> 404",
+  "GET /native/gpu/architectures lists the four"
+ ],
+ "denominators": {
+  "chaos_pairs": 6,
+  "expert_identifiers": 10,
+  "persona_cases": 6,
+  "gpu_patterns": 6,
+  "refusals": 5
+ },
+ "oracle": "the python module of record for each route (chaos_engine, expert_registry, persona_matrix, gpu_infinity_computer), never the strip",
+ "not_covered": "the persona signature is verified by hashing the route's body; SHA3 is not implemented in the kernel tree, so it is not recomputed there"
+}

@@ -1,0 +1,1212 @@
+{
+  "analyzed_at": "2026-09-09",
+  "council_seal": "0x4D5E5F5055113EA0",
+  "total_todo": 118,
+  "by_classification": {
+    "directive_block": 1,
+    "DORMANT (semantics diverge \u2014 reimplement or de-list)": 25,
+    "STRIP_BOUND (direct DLL loader, non-native_* name)": 59,
+    "NATIVE_ACTIVE (wired+verified)": 15,
+    "HAS_CALLER (pre-existing native path)": 5,
+    "PURE_PYTHON (no strip binding found)": 1,
+    "other": 12
+  },
+  "action_plan": {
+    "directive_block": [
+      "card-b8b2697c"
+    ],
+    "REIMPLEMENT_OR_DELIST": [
+      "card-5d6d26cd",
+      "card-886a7d41",
+      "card-dbe6b4bd",
+      "card-e944d5e1",
+      "card-cac141e3",
+      "card-02d82d49",
+      "card-a3de6b1b",
+      "card-a8ab56ac",
+      "card-6ae84b91",
+      "card-cf979262",
+      "card-975c5f45",
+      "card-acc8cfdc",
+      "card-f5ba8cdf",
+      "card-51f18a9a",
+      "card-60535a2d",
+      "card-8a726857",
+      "card-9bc52dca",
+      "card-7231fbeb",
+      "card-8765b959",
+      "card-6eae1465",
+      "card-d990c227",
+      "card-64107082",
+      "card-34944ea8",
+      "card-185f65dd",
+      "card-d9ffe86f"
+    ],
+    "STRIP_BOUND (direct DLL loader, non-native_* name)": [
+      "card-563906b0",
+      "card-219a0812",
+      "card-181fb1e4",
+      "card-994fcba0",
+      "card-4139a2f7",
+      "card-aff686b3",
+      "card-fa85e45b",
+      "card-211c69f6",
+      "card-5c6521e0",
+      "card-38058565",
+      "card-e7b3b87a",
+      "card-9c62b6f9",
+      "card-8d492732",
+      "card-5cfaeb10",
+      "card-3ef5f21e",
+      "card-db194cd2",
+      "card-aaf8abdf",
+      "card-bb28482c",
+      "card-1550ea95",
+      "card-f4436100",
+      "card-2d3d6dd1",
+      "card-a8fc000c",
+      "card-6099dfdd",
+      "card-0ba9636f",
+      "card-d79b854d",
+      "card-c526782e",
+      "card-88232469",
+      "card-303cf7c2",
+      "card-21e4edd8",
+      "card-d737776b",
+      "card-8813b969",
+      "card-19aba735",
+      "card-8c93fedf",
+      "card-b7e631e2",
+      "card-f0c823b3",
+      "card-7fa73edd",
+      "card-cbedb66a",
+      "card-d5055126",
+      "card-7b17d324",
+      "card-fb61f31d",
+      "card-58750feb",
+      "card-acc557f6",
+      "card-f298e3ad",
+      "card-7f4319e2",
+      "card-794ae236",
+      "card-3adbe507",
+      "card-940e270b",
+      "card-577d148b",
+      "card-830327ba",
+      "card-a0b672de",
+      "card-a50360b7",
+      "card-22579c69",
+      "card-9c9cb725",
+      "card-8a336974",
+      "card-d15ea81b",
+      "card-e4e53ddf",
+      "card-5245619b",
+      "card-575dbba0",
+      "card-7988a965"
+    ],
+    "VERIFY_AND_CLOSE": [
+      "card-a3d09a59",
+      "card-cc8adc58",
+      "card-fb79f837",
+      "card-99906f14",
+      "card-0457c81b",
+      "card-236d666f",
+      "card-730b52e3",
+      "card-f1e61c28",
+      "card-4fb9eda6",
+      "card-bed4a5d3",
+      "card-8a8f416e",
+      "card-b37ffa96",
+      "card-1c364ae9",
+      "card-0409ce20",
+      "card-4bcf4298"
+    ],
+    "HAS_CALLER (pre-existing native path)": [
+      "card-f320dfe8",
+      "card-73bc351b",
+      "card-5ce25e0e",
+      "card-bcf46786",
+      "card-37f5ad4a"
+    ],
+    "PURE_PYTHON (no strip binding found)": [
+      "card-c971e749"
+    ],
+    "other": [
+      "card-e7a23f83",
+      "card-ff2b5e69",
+      "card-601e9d33",
+      "card-6d4cc3e3",
+      "card-23e78e28",
+      "card-0bb35b6c",
+      "card-ee127f89",
+      "card-ea48bc0b",
+      "card-c0dd146b",
+      "card-9e4c3f21",
+      "card-2092b168",
+      "card-fb2d5a4e"
+    ]
+  },
+  "cards": [
+    {
+      "card_id": "card-b8b2697c",
+      "title": "TOPIC: Full Python Codebase Voltage Stripping Campaign  CATEGORY: architecture P",
+      "assignee": "Shield",
+      "priority": "medium",
+      "classification": "directive_block",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-5d6d26cd",
+      "title": "Optimize native strip: agent_intelligence_bridge (strip_intel_bridge)",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "intel_bridge",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-886a7d41",
+      "title": "Optimize native strip: agent_mailbox_bus (strip_mailbox_bus)",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "mailbox_bus",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-563906b0",
+      "title": "Optimize native strip: agent_mesh (strip_agent_mesh)",
+      "assignee": "Archi",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "agent_mesh",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-219a0812",
+      "title": "Optimize native strip: artifact_pipeline (strip_artifact_scorer)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "artifact_scorer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-181fb1e4",
+      "title": "Optimize native strip: aura_engine (strip_aura_engine)",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "aura_engine",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-a3d09a59",
+      "title": "Optimize native strip: auto_changelog (strip_changelog_classify)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "changelog_classify",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-f320dfe8",
+      "title": "Optimize native strip: background_tasks (strip_background_tasks)",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "HAS_CALLER (pre-existing native path)",
+      "strip": "background_tasks",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-994fcba0",
+      "title": "Optimize native strip: base_agent (strip_base_agent)",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "base_agent",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-4139a2f7",
+      "title": "Optimize native strip: brain_ai_microkernel_bridge (strip_brain_ai_bridge)",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "brain_ai_bridge",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-dbe6b4bd",
+      "title": "Optimize native strip: chain_of_verification (strip_cove_fallacy)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "cove_fallacy",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-aff686b3",
+      "title": "Optimize native strip: ci_orchestrator (strip_ci_sharder)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "ci_sharder",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-fa85e45b",
+      "title": "Optimize native strip: cold_start_recovery (strip_cold_start)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "cold_start",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-211c69f6",
+      "title": "Optimize native strip: collaborative_reasoning (strip_collab_reasoning)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "collab_reasoning",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-cc8adc58",
+      "title": "Optimize native strip: cross_node_voltage_harmonizer (strip_voltage_harmonizer)",
+      "assignee": "Pulse",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "voltage_harmonizer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-5c6521e0",
+      "title": "Optimize native strip: daily_evolution_engine (strip_daily_evolution)",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "daily_evolution",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-38058565",
+      "title": "Optimize native strip: ddr_antibody (strip_ddr_antibody)",
+      "assignee": "Shield",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "ddr_antibody",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-73bc351b",
+      "title": "Optimize native strip: ddr_self_training (strip_ddr_self_training)",
+      "assignee": "Shield",
+      "priority": "high",
+      "classification": "HAS_CALLER (pre-existing native path)",
+      "strip": "ddr_self_training",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-fb79f837",
+      "title": "Optimize native strip: digital_dna_loop (strip_digital_dna)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "digital_dna",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-e7b3b87a",
+      "title": "Optimize native strip: digital_twin_singleton (strip_digital_twin)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "digital_twin",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-9c62b6f9",
+      "title": "Optimize native strip: dram_pattern_computer (strip_dram_computer)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "dram_computer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-8d492732",
+      "title": "Optimize native strip: dynamic_pipeline_router (strip_pipeline_router)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "pipeline_router",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-e944d5e1",
+      "title": "Optimize native strip: epistemology_verification (strip_epistemology_sealer)",
+      "assignee": "Verify",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "epistemology_sealer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-cac141e3",
+      "title": "Optimize native strip: evolutionary_sandbox (strip_evo_sandbox)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "evo_sandbox",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-5cfaeb10",
+      "title": "Optimize native strip: federation (strip_federation_handshake)",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "federation_handshake",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-3ef5f21e",
+      "title": "Optimize native strip: full_64_agent_orchestrator (strip_64_agent_orchestrator)",
+      "assignee": "Archi",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "64_agent_orchestrator",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-db194cd2",
+      "title": "Optimize native strip: global_knowledge_fabric (strip_knowledge_fabric)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "knowledge_fabric",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-aaf8abdf",
+      "title": "Optimize native strip: global_memory (strip_global_memory)",
+      "assignee": "Jarvis",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "global_memory",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-bb28482c",
+      "title": "Optimize native strip: gpu_infinity_computer (strip_gpu_infinity)",
+      "assignee": "Pulse",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "gpu_infinity",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-02d82d49",
+      "title": "Optimize native strip: gpu_unlock_architecture (strip_gpu_transposer)",
+      "assignee": "Pulse",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "gpu_transposer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-99906f14",
+      "title": "Optimize native strip: hardware_voltage_microkernel_binder (strip_voltage_binder",
+      "assignee": "Pulse",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "voltage_binder",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-1550ea95",
+      "title": "Optimize native strip: intent_buffer (strip_intent_buffer)",
+      "assignee": "Hermes",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "intent_buffer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-f4436100",
+      "title": "Optimize native strip: ionosphere_protocol (strip_ionosphere)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "ionosphere",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-0457c81b",
+      "title": "Optimize native strip: k3_ternary_sram (strip_k3_sram)",
+      "assignee": "Logic",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "k3_sram",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-236d666f",
+      "title": "Optimize native strip: kanban_board (strip_kanban_board)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "kanban_board",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-2d3d6dd1",
+      "title": "Optimize native strip: kernel_instructions (strip_kernel_instructions)",
+      "assignee": "Bridge",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "kernel_instructions",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-730b52e3",
+      "title": "Optimize native strip: kernel_lora_adapter (strip_kernel_lora)",
+      "assignee": "Jarvis",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "kernel_lora",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-a8fc000c",
+      "title": "Optimize native strip: llm_brain (strip_llm_brain)",
+      "assignee": "Jarvis",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "llm_brain",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-a3de6b1b",
+      "title": "Optimize native strip: llm_router (strip_llm_router)",
+      "assignee": "Archi",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "llm_router",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-a8ab56ac",
+      "title": "Optimize native strip: local_lora_trainer (strip_local_lora)",
+      "assignee": "Jarvis",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "local_lora",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-6ae84b91",
+      "title": "Optimize native strip: mcp_tool_evolver (strip_mcp_evolver)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "mcp_evolver",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-6099dfdd",
+      "title": "Optimize native strip: memory (strip_memory_compactor)",
+      "assignee": "Jarvis",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "memory_compactor",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-0ba9636f",
+      "title": "Optimize native strip: microkernel_chat_bridge (strip_chat_bridge)",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "chat_bridge",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-cf979262",
+      "title": "Optimize native strip: microkernel_spawner (strip_telemetry_bus)",
+      "assignee": "Bridge",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "telemetry_bus",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-975c5f45",
+      "title": "Optimize native strip: monad (strip_monad_merkle)",
+      "assignee": "Logic",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "monad_merkle",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-d79b854d",
+      "title": "Optimize native strip: mutation_engine (strip_mutation_engine)",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "mutation_engine",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-c526782e",
+      "title": "Optimize native strip: native_federation_bridge (strip_federation_bridge)",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "federation_bridge",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-acc8cfdc",
+      "title": "Optimize native strip: native_ipc_bus (strip_native_ipc_bus)",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "native_ipc_bus",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-88232469",
+      "title": "Optimize native strip: native_mailbox_bridge (strip_native_mailbox)",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "native_mailbox",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-f5ba8cdf",
+      "title": "Optimize native strip: neural_wall (strip_neural_wall)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "neural_wall",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-f1e61c28",
+      "title": "Optimize native strip: openclaw_gateway (strip_openclaw_gateway)",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "openclaw_gateway",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-51f18a9a",
+      "title": "Optimize native strip: pbft_consensus (strip_pbft_consensus)",
+      "assignee": "Logic",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "pbft_consensus",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-4fb9eda6",
+      "title": "Optimize native strip: porting_engine (strip_porting_engine)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "porting_engine",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-5ce25e0e",
+      "title": "Optimize native strip: predictive_watchdog (strip_predictive_watchdog)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "HAS_CALLER (pre-existing native path)",
+      "strip": "predictive_watchdog",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-bed4a5d3",
+      "title": "Optimize native strip: proactive_loop (strip_proactive_cron)",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "proactive_cron",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-60535a2d",
+      "title": "Optimize native strip: python_voltage_stripper (strip_ast_voltage)",
+      "assignee": "Pulse",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "ast_voltage",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-8a726857",
+      "title": "Optimize native strip: quantum_drug_protocol (strip_qaoa_ising)",
+      "assignee": "Logic",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "qaoa_ising",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-303cf7c2",
+      "title": "Optimize native strip: radix_trie_matcher (strip_radix_trie)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "radix_trie",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-21e4edd8",
+      "title": "Optimize native strip: reconnaissance_daemon (strip_recon_topics)",
+      "assignee": "Seeker",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "recon_topics",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-9bc52dca",
+      "title": "Optimize native strip: secrets_vault (strip_secrets_vault)",
+      "assignee": "Shield",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "secrets_vault",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-d737776b",
+      "title": "Optimize native strip: self_fuzzing_engine (strip_fuzzing_scanner)",
+      "assignee": "Verify",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "fuzzing_scanner",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-8813b969",
+      "title": "Optimize native strip: self_healing (strip_self_healing)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "self_healing",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-7231fbeb",
+      "title": "Optimize native strip: self_healing_infra (strip_self_healing_infra)",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "self_healing_infra",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-19aba735",
+      "title": "Optimize native strip: self_healing_orchestrator (strip_self_healing)",
+      "assignee": "Archi",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "self_healing",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-8c93fedf",
+      "title": "Optimize native strip: semantic_cache (strip_semantic_jaccard)",
+      "assignee": "Seeker",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "semantic_jaccard",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-8765b959",
+      "title": "Optimize native strip: sentinel (strip_sentinel_lexer)",
+      "assignee": "Shield",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "sentinel_lexer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-b7e631e2",
+      "title": "Optimize native strip: simd_accelerator (strip_kleene_quantizer)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "kleene_quantizer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-f0c823b3",
+      "title": "Optimize native strip: skill_matrix_sync (strip_skill_sync)",
+      "assignee": "Hermes",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "skill_sync",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-8a8f416e",
+      "title": "Optimize native strip: small_diffusion_engine (strip_diffusion_wavefront)",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "diffusion_wavefront",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-7fa73edd",
+      "title": "Optimize native strip: sovereign_practice (strip_sovereign_practice)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "sovereign_practice",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-cbedb66a",
+      "title": "Optimize native strip: sram_pattern_computer (strip_sram_computer)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "sram_computer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-6eae1465",
+      "title": "Optimize native strip: star_matrix (strip_star_matrix)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "star_matrix",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-b37ffa96",
+      "title": "Optimize native strip: sub_atomic_kernel (strip_subatomic_mamba)",
+      "assignee": "Bridge",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "subatomic_mamba",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-1c364ae9",
+      "title": "Optimize native strip: swarm_council (strip_council_voting)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "council_voting",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-d5055126",
+      "title": "Optimize native strip: swarm_performance_insights (strip_telemetry_trend)",
+      "assignee": "Archi",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "telemetry_trend",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-7b17d324",
+      "title": "Optimize native strip: task_arbiter (strip_task_arbiter)",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "task_arbiter",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-0409ce20",
+      "title": "Optimize native strip: ternary_kleene_engine (strip_base3_codec)",
+      "assignee": "Logic",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "base3_codec",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-d990c227",
+      "title": "Optimize native strip: thz_wave_gateway (strip_thz_wave_gateway)",
+      "assignee": "Pulse",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "thz_wave_gateway",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-fb61f31d",
+      "title": "Optimize native strip: transistor_task_scheduler (strip_transistor_scheduler)",
+      "assignee": "Pulse",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "transistor_scheduler",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-4bcf4298",
+      "title": "Optimize native strip: trm_7m_full (strip_trm7m_quantizer)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "NATIVE_ACTIVE (wired+verified)",
+      "strip": "trm7m_quantizer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-64107082",
+      "title": "Optimize native strip: trm_7m_model (strip_mamba_ssm)",
+      "assignee": "Seeker",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "mamba_ssm",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-58750feb",
+      "title": "Optimize native strip: trm_7m_optimized (strip_ddr_sgd)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "ddr_sgd",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-acc557f6",
+      "title": "Optimize native strip: trm_integration (strip_trm_token_hash)",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "trm_token_hash",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-f298e3ad",
+      "title": "Optimize native strip: trm_orchestrator (strip_trm_orchestrator)",
+      "assignee": "Archi",
+      "priority": "high",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "trm_orchestrator",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-34944ea8",
+      "title": "Optimize native strip: turbovec_memory (strip_turbovec_scorer)",
+      "assignee": "Seeker",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "turbovec_scorer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-185f65dd",
+      "title": "Optimize native strip: ultrawork_loop (strip_ultrawork_gate)",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "ultrawork_gate",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-bcf46786",
+      "title": "Optimize native strip: ultrawork_tranche (strip_ultrawork_tranche)",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "HAS_CALLER (pre-existing native path)",
+      "strip": "ultrawork_tranche",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-d9ffe86f",
+      "title": "Optimize native strip: zero_human_test_gen (strip_zero_test_gen)",
+      "assignee": "Verify",
+      "priority": "high",
+      "classification": "DORMANT (semantics diverge \u2014 reimplement or de-list)",
+      "strip": "zero_test_gen",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-c971e749",
+      "title": "Optimize native strip: synthesizer (strip_mcp_synthesizer)",
+      "assignee": "Devo",
+      "priority": "medium",
+      "classification": "PURE_PYTHON (no strip binding found)",
+      "strip": "mcp_synthesizer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-7f4319e2",
+      "title": "Optimize native strip: netcdf_parser (strip_netcdf)",
+      "assignee": "Devo",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "netcdf",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-794ae236",
+      "title": "Optimize native strip: parser_base (strip_parser_base)",
+      "assignee": "Devo",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "parser_base",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-3adbe507",
+      "title": "Optimize native strip: antibody_binding_predictor (strip_antibody_binding)",
+      "assignee": "Shield",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "antibody_binding",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-940e270b",
+      "title": "Optimize native strip: cognitive_orchestrator (strip_cognitive_orchestrator)",
+      "assignee": "Archi",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "cognitive_orchestrator",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-577d148b",
+      "title": "Optimize native strip: ddr_amp_discovery_engine (strip_amp_discovery)",
+      "assignee": "Shield",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "amp_discovery",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-830327ba",
+      "title": "Optimize native strip: drug_repurposing_matcher (strip_drug_matcher)",
+      "assignee": "Seeker",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "drug_matcher",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-a0b672de",
+      "title": "Optimize native strip: humanistic_complex_tasks_engine (strip_humanistic_engine)",
+      "assignee": "Orchestra",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "humanistic_engine",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-37f5ad4a",
+      "title": "Optimize native strip: learning_engine (strip_learning_engine)",
+      "assignee": "Orchestra",
+      "priority": "medium",
+      "classification": "HAS_CALLER (pre-existing native path)",
+      "strip": "learning_engine",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-a50360b7",
+      "title": "Optimize native strip: native_ipc_verification_suite (strip_ipc_stats)",
+      "assignee": "Flow",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "ipc_stats",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-22579c69",
+      "title": "Optimize native strip: neoantigen_predictor (strip_neoantigen_scorer)",
+      "assignee": "Devo",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "neoantigen_scorer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-9c9cb725",
+      "title": "Optimize native strip: pathogen_signature_database_builder (strip_epitope_scorer",
+      "assignee": "Devo",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "epitope_scorer",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-8a336974",
+      "title": "Optimize native strip: relationship_skill (strip_relationship_skill)",
+      "assignee": "Hermes",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "relationship_skill",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-d15ea81b",
+      "title": "Optimize native strip: rlm_skill (strip_rlm_skill)",
+      "assignee": "Hermes",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "rlm_skill",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-e4e53ddf",
+      "title": "Optimize native strip: self_evolving_antibody_generator (strip_antibody_generato",
+      "assignee": "Shield",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "antibody_generator",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-5245619b",
+      "title": "Optimize native strip: synthetic_circuit_compiler (strip_circuit_compiler)",
+      "assignee": "Devo",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "circuit_compiler",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-575dbba0",
+      "title": "Optimize native strip: validation_gate (strip_validation_gate)",
+      "assignee": "Verify",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "validation_gate",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-7988a965",
+      "title": "Optimize native strip: wetlab_robotics_driver (strip_wetlab_evaluator)",
+      "assignee": "Bridge",
+      "priority": "medium",
+      "classification": "STRIP_BOUND (direct DLL loader, non-native_* name)",
+      "strip": "wetlab_evaluator",
+      "dll_exists": true
+    },
+    {
+      "card_id": "card-e7a23f83",
+      "title": "[Flow] Synthesize optimization findings for 11 native modules",
+      "assignee": "Flow",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-ff2b5e69",
+      "title": "[Archi] Synthesize optimization findings for 7 native modules",
+      "assignee": "Archi",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-601e9d33",
+      "title": "[Devo] Synthesize optimization findings for 34 native modules",
+      "assignee": "Devo",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-6d4cc3e3",
+      "title": "[Orchestra] Synthesize optimization findings for 12 native modules",
+      "assignee": "Orchestra",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-23e78e28",
+      "title": "[Pulse] Synthesize optimization findings for 7 native modules",
+      "assignee": "Pulse",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-0bb35b6c",
+      "title": "[Shield] Synthesize optimization findings for 7 native modules",
+      "assignee": "Shield",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-ee127f89",
+      "title": "[Verify] Synthesize optimization findings for 4 native modules",
+      "assignee": "Verify",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-ea48bc0b",
+      "title": "[Jarvis] Synthesize optimization findings for 5 native modules",
+      "assignee": "Jarvis",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-c0dd146b",
+      "title": "[Hermes] Synthesize optimization findings for 4 native modules",
+      "assignee": "Hermes",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-9e4c3f21",
+      "title": "[Logic] Synthesize optimization findings for 5 native modules",
+      "assignee": "Logic",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-2092b168",
+      "title": "[Bridge] Synthesize optimization findings for 4 native modules",
+      "assignee": "Bridge",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    },
+    {
+      "card_id": "card-fb2d5a4e",
+      "title": "[Seeker] Synthesize optimization findings for 5 native modules",
+      "assignee": "Seeker",
+      "priority": "high",
+      "classification": "other",
+      "strip": "",
+      "dll_exists": false
+    }
+  ]
+}

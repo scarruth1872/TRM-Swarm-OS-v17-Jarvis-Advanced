@@ -1,0 +1,66 @@
+{
+  "phase": 9,
+  "campaign": "Phase 9 Autonomous Voltage Stripping Campaign",
+  "timestamp": 1788808762.0126863,
+  "monad_anchor": "0x4D4F4E4144000001",
+  "modules_stripped": 5,
+  "average_speedup": 80.7,
+  "all_k3_true": true,
+  "results": [
+    {
+      "rank": 36,
+      "module": "swarm_v2/core/ultrawork_loop.py",
+      "dll": "strip_ultrawork_gate.dll",
+      "feature": "Task Velocity & K3 Gate Scorer",
+      "py_time_ms": 6.730065000010654,
+      "native_time_ms": 0.022960000205785036,
+      "speedup": 293.1,
+      "k3_invariant": "+1 TRUE",
+      "max_diff": 1.1102230246251565e-16
+    },
+    {
+      "rank": 37,
+      "module": "swarm_v2/core/proactive_loop.py",
+      "dll": "strip_proactive_cron.dll",
+      "feature": "High-Frequency Cron Scheduler & Priority Matcher",
+      "py_time_ms": 0.6103099999018013,
+      "native_time_ms": 0.006545999785885215,
+      "speedup": 93.2,
+      "k3_invariant": "+1 TRUE",
+      "max_diff": 0.0
+    },
+    {
+      "rank": 38,
+      "module": "swarm_v2/core/self_healing_infra.py",
+      "dll": "strip_self_healing_infra.dll",
+      "feature": "Service Health Status Correlator",
+      "py_time_ms": 0.1405589998466894,
+      "native_time_ms": 0.010351999953854829,
+      "speedup": 13.6,
+      "k3_invariant": "+1 TRUE",
+      "max_diff": 0.0
+    },
+    {
+      "rank": 39,
+      "module": "swarm_v2/core/evolutionary_sandbox.py",
+      "dll": "strip_evo_sandbox.dll",
+      "feature": "Security AST & Arity Verifier",
+      "py_time_ms": 0.24664500087965277,
+      "native_time_ms": 0.16482500068377703,
+      "speedup": 1.5,
+      "k3_invariant": "+1 TRUE",
+      "max_diff": 0.0
+    },
+    {
+      "rank": 40,
+      "module": "swarm_v2/core/chain_of_verification.py",
+      "dll": "strip_cove_fallacy.dll",
+      "feature": "CoVe Fallacy & Coherence Scorer",
+      "py_time_ms": 0.445670000044629,
+      "native_time_ms": 0.22271500201895833,
+      "speedup": 2.0,
+      "k3_invariant": "+1 TRUE",
+      "max_diff": 0.0
+    }
+  ]
+}

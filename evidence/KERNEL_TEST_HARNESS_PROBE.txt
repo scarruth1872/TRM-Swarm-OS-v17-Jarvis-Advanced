@@ -1,0 +1,71 @@
+KERNEL TEST HARNESS - FEASIBILITY PROVEN 2026-11-03
+===================================================
+Question: can the no_std kernel be tested at all, given cargo test exits 101 with
+E0152 duplicate lang item panic_impl?
+
+Answer: YES, from a std crate that depends on the kernel library. Proven by
+building one and running real assertions against kernel code.
+
+WHY THE KERNEL CRATE ITSELF CANNOT BE TESTED
+  trm_uefi_kernel/src/main.rs:
+      #![no_std]
+      #![no_main]
+      #[panic_handler]        <- line 178
+  The std test harness needs to link its own panic machinery; a crate that
+  defines #[panic_handler] cannot also link std's. Hence E0152, 0 tests run.
+
+WHY A STD CRATE CAN
+  trm_uefi_kernel/src/lib.rs is #![no_std] but defines NO panic handler, and it
+  is a real [lib] target. A std crate supplies the panic handler and the global
+  allocator, so linking the kernel lib into a test binary is legal.
+
+THE PROBE (scratch crate, outside the repo)
+  Cargo.toml:
+      [package]
+      name = "kprobe"
+      edition = "2021"
+      [dependencies]
+      trm_uefi_kernel = { path = "F:/Development sites/TRM-Swarm-OS-v2/trm_uefi_kernel" }
+
+  src/lib.rs:
+      #[cfg(test)]
+      mod tests {
+          use trm_uefi_kernel::k3_logic::KleeneTernaryEngine;
+
+          #[test]
+          fn kleene_and_truth_table() {
+              assert_eq!(KleeneTernaryEngine::kleene_and(1, 1), 1);
+              assert_eq!(KleeneTernaryEngine::kleene_and(1, -1), -1);
+              assert_eq!(KleeneTernaryEngine::kleene_and(0, -1), -1);
+              assert_eq!(KleeneTernaryEngine::kleene_and(0, 1), 0);
+          }
+
+          #[test]
+          fn kleene_not_involution() {
+              for v in [-1i8, 0, 1] {
+                  assert_eq!(KleeneTernaryEngine::kleene_not(
+                      KleeneTernaryEngine::kleene_not(v)), v);
+              }
+          }
+      }
+
+  RESULT (measured):
+      running 2 tests
+      test tests::kleene_and_truth_table ... ok
+      test tests::kleene_not_involution ... ok
+      test result: ok. 2 passed; 0 failed; 0 ignored
+
+  So kernel logic is reachable and assertable from a std test binary today.
+
+CORRECTION TO AN EARLIER CLAIM
+  I first proposed putting these tests in trm_uefi_kernel/host_test. That is
+  wrong: its package is trm7m_host_test, its [dependencies] section is EMPTY,
+  and it is four standalone [[bin]] targets. It cannot link the kernel.
+  A new crate is required: trm_uefi_kernel/kernel_tests (package
+  trm_kernel_tests) with a path dependency on the kernel.
+
+WHAT THIS DOES NOT PROVE
+  It proves the harness works for pure functions (K3 algebra). It does not prove
+  the council tally or the SRAM CAM are testable the same way: those may touch
+  allocator state or statics. Each area needs its own probe before it is
+  scheduled as done.

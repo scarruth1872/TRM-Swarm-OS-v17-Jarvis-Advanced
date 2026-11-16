@@ -1,0 +1,31 @@
+measured phi_v = 0.6510  (supplied by the voltage binder, not a literal)
+K3 thresholds: tau_upper=0.35 tau_lower=-0.35
+
+target      affinity      norm   trit   lig_eff            verdict
+BLK            -9.06    0.3614      0     0.292 UNKNOWN(score-only)
+IFIH1          -8.61    0.2720      0     0.278            UNKNOWN
+TYK2           -8.58    0.2658      0     0.277            UNKNOWN
+STAT4          -8.24    0.1978      0     0.266            UNKNOWN
+TNFAIP3        -8.11    0.1720      0     0.262            UNKNOWN
+PTPN22         -7.83    0.1160      0     0.253            UNKNOWN
+IRF5           -7.74    0.0978      0     0.250            UNKNOWN
+TLR7           -6.47   -0.1556      0     0.209            UNKNOWN
+C1QA           -5.26   -0.3988     -1     0.170             REJECT
+ITGAM          -0.50   -1.3498     -1     0.016             REJECT
+
+TurboVec 1.58-bit quantisation of the [affinity, lig_efficiency] vectors:
+  BLK        packed=  1B  raw=[0.5162857, 0.2922]  dequant=[0.40424287, 0.40424287]  cos=0.963669
+  IFIH1      packed=  1B  raw=[0.38857144, 0.2777]  dequant=[0.33313572, 0.33313572]  cos=0.986436
+  TYK2       packed=  1B  raw=[0.37971428, 0.2767]  dequant=[0.32820714, 0.32820714]  cos=0.987909
+  STAT4      packed=  1B  raw=[0.28257143, 0.2658]  dequant=[0.27418572, 0.27418572]  cos=0.999533
+  TNFAIP3    packed=  1B  raw=[0.24571429, 0.2616]  dequant=[0.25365713, 0.25365713]  cos=0.999510
+  PTPN22     packed=  1B  raw=[0.16571428, 0.2526]  dequant=[0.20915714, 0.20915714]  cos=0.979103
+  IRF5       packed=  1B  raw=[0.13971429, 0.2496]  dequant=[0.19465715, 0.19465715]  cos=0.962399
+  TLR7       packed=  1B  raw=[-0.22228572, 0.2088]  dequant=[-0.21554285, 0.21554285]  cos=0.999511
+  C1QA       packed=  1B  raw=[-0.5697143, 0.1695]  dequant=[-0.36960715, 0.0]  cos=0.958479
+  ITGAM      packed=  1B  raw=[-1.9283143, 0.0162]  dequant=[-0.97225714, 0.0]  cos=0.999965
+
+K3 SUMMARY over 10 targets: BIND=0 UNKNOWN=8 REJECT=2
+Ternary state legend: +1=1 0=0 -1=-1
+NOTE: BIND is UNREACHABLE from a docking score alone. See the ROC evidence:
+      a measured-inactive at IC50 33 uM docks at -10.36, outranking CHIR-090.

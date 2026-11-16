@@ -1,0 +1,26 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-27T15:39:21.788625+00:00",
+  "failure_mode": "if the Instella graph genuinely needs memory state, the check is correct and the fix is deeper",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "beb3e4597b94d8d335adbd61b5a5c9aa0f1ed574b8d6fcc1d6548cdc9522f72e",
+      "motion": "MOTION-INSTELLA-FIX",
+      "phase": "consensus",
+      "proposal_id": "CP-C18DD1D0",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "FIX THE INSTELLA SERVER-BLOCK: make the 'memory-less logits' check in server-context.cpp apply only to memory models (SSM/Mamba), not Transformers. The check 'need_logits() && !llama_get_memory()' fires for every Transformer because they have no memory module; the Instella forward pass computes logits, so bypassing the misapplied guard should let it generate. Verify: build the fork, serve the 16B, and confirm a /completion returns content (CPU, slow). MEASURED: the fork's instella-moe.cpp computes logits (res->t_logits = cur after lm_head, line 336-339). The 500 is server-context.cpp:3177-3182: 'if (need_logits() && !llama_get_memory(ctx_tgt))' \u2014 a check that refuses any /completion when the context has no memory module. A Transformer (like Instella, and like the Qwen that works on the older stock server) has no memory module, so the check always fires. PREDICTION: the check is a misapplied SSM/Mamba guard; making it memory-model-only lets the Instella generate. FAILURE: if the Instella graph genuinely needs a memory state, the check is correct and the fix is deeper."
+    }
+  ],
+  "prediction_recorded": "the check is a misapplied SSM/Mamba guard; making it memory-model-only lets Instella generate",
+  "prior_state": "Instella forward pass computes logits; the block is a server-side memory check",
+  "quorum": 9,
+  "record": "NEXT MOTION -- fix the Instella server-block (memory-less-logits check)",
+  "sha256": "ba69079aaec12bf9c47db5caaab889315e85eabd1325cc4cd54a973e81360e92"
+}

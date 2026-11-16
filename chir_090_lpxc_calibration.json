@@ -1,0 +1,87 @@
+{
+  "protocol": "TRM_LPXC_DOCKING_CALIBRATION",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "status": "RESOLVED_AND_VALIDATED",
+  "revision": 2,
+  "revision_timestamp": "2026-09-10",
+  "revision_note": "Revision 1 concluded the asserted calibration was NOT reproducible. That conclusion was an artifact of the same defect under investigation: the harness defaulted to the wrong receptor. With the correct LpxC structure the claim reproduces. Corrected here.",
+
+  "engine": {
+    "name": "AutoDock Vina",
+    "version": "1.2.7",
+    "binary": "vina.exe",
+    "execution": "real, on-silicon, raw stdout captured"
+  },
+
+  "claim_under_test": {
+    "asserted_in": ["commit c1f55d1 message", "commit 353bd75", "walkthrough.md (brain a418e593)"],
+    "chir_090_kcal_mol": -10.1,
+    "verdict": "REPRODUCED — -10.17 kcal/mol"
+  },
+
+  "root_cause": {
+    "finding": "THE HARNESS WAS DOCKING INTO THE WRONG PROTEIN.",
+    "detail": "run_autodock_vina() defaulted to receptor 3TYZ_chainA_receptor.pdbqt and labelled every result 'UDP-3-O-acyl-GlcNAc Deacetylase (LpxC)'. 3TYZ is NOT LpxC — its PDB title reads 'CRYSTAL STRUCTURE OF THE YERSINIA PESTIS DIHYDROPTEROATE SYNTHETASE WITH SUBSTRATE TRANSITION STATE COMPLEX' (DHPS). CHIR-090 is an LpxC inhibitor, so it was being docked into an unrelated enzyme, scoring -3.05 kcal/mol.",
+    "evidence": "The committed pose CHIR-090_docked_LpxC.pdbqt has centroid (-7.596,-12.254,21.051), which matches the co-crystal CHIR-090 (C90) site in 5U39 at (-8.13,-13.52,21.16) to ~1.5 A — confirming the original work used 5U39, and only the harness default was wrong.",
+    "corroboration": "TRM-ABX-219_docked_DHPS.pdbqt exists (-5.683 kcal/mol), showing the DHPS docking was performed knowingly and separately."
+  },
+
+  "positive_control_validation": {
+    "method": "Redock CHIR-090 into its OWN co-crystal structure. receptor 5U39_receptor.pdbqt (P. aeruginosa LpxC + Zn, ligand and waters stripped, metal retained); box derived from co-crystal ligand C90, chain A",
+    "box_center": [-8.13, -13.52, 21.16],
+    "box_size": [24.0, 24.0, 24.0],
+    "exhaustiveness": 8,
+    "top_mode_kcal_mol": -10.17,
+    "pose_nearest_neighbour_rmsd_angstrom": 1.513,
+    "acceptance_criterion": "RMSD <= 2.0 A reproduces the crystallographic binding mode",
+    "result": "PASS — both the score (-10.17 vs claimed -10.1) and the pose reproduce",
+    "receptor_metal": "Zn retained (HETATM ZN A 300)"
+  },
+
+  "receptor_registry": {
+    "5U39_receptor.pdbqt": {
+      "target": "LpxC (UDP-3-O-acyl-N-acetylglucosamine deacetylase) — Pseudomonas aeruginosa",
+      "source_pdb": "5U39.pdb",
+      "title": "PSEUDOMONAS AERUGINOSA LPXC IN COMPLEX WITH CHIR-090",
+      "cocrystal_ligand": "C90 (CHIR-090), chain A, 32 atoms",
+      "metal": "Zn",
+      "status": "VALIDATED — use this for LpxC"
+    },
+    "3TYZ_chainA_receptor.pdbqt": {
+      "target": "Dihydropteroate synthetase (DHPS) — Yersinia pestis",
+      "title": "CRYSTAL STRUCTURE OF THE YERSINIA PESTIS DIHYDROPTEROATE SYNTHETASE WITH SUBSTRATE TRANSITION STATE COMPLEX",
+      "cocrystal_ligand": "XHP (two copies: chain A resseq 278 and chain B resseq 278)",
+      "metal": "Mg present in source, stripped from the prepared receptor (0 HETATM retained)",
+      "status": "NOT LpxC — invalid for LpxC inhibitors. Retained for DHPS work only."
+    }
+  },
+
+  "current_results_5U39_validated": [
+    {"compound": "CHIR-090", "delta_g_kcal_mol": -10.20, "kd_nm": 33.31, "role": "positive control — strongest binder, as expected"},
+    {"compound": "TRM-ABX-219", "delta_g_kcal_mol": -8.21, "kd_nm": 962.96},
+    {"compound": "TRM-ABX-220", "delta_g_kcal_mol": -7.97, "kd_nm": 1434.22}
+  ],
+
+  "notes_on_interpreting_these_numbers": [
+    "A rigid-receptor Vina score is NOT a dissociation constant. The kd_nm values are a thermodynamic conversion of the docking score and must not be quoted as measured affinity.",
+    "The -9.09 kcal/mol in commit c1f55d1 refers to hydroxamate ANALOGS (H1-H5), not to TRM-ABX-219 itself.",
+    "TRM-ABX-219's earlier committed pose recorded -8.252 kcal/mol; the validated re-run gives -8.21. Consistent.",
+    "TRM-ABX-220 has no structure on record; the benchmark docks TRM-ABX-219-H1.pdbqt under the name TRM-ABX-220. That substitution must be resolved before any ABX-220 number is used.",
+    "The CRUZA-LEAD-01 and KRAS-PEP-G12D entries are SYNTHETIC_HEURISTIC_TEST_VECTOR, not empirical."
+  ],
+
+  "remediation_applied": [
+    "RECEPTORS registry added: receptor -> true target, source PDB, co-crystal ligand, metal, validated flag",
+    "DEFAULT_RECEPTOR is now 5U39_receptor.pdbqt (validated LpxC); target label is taken from the registry, no longer hardcoded",
+    "Search box derived from the receptor's co-crystal ligand via derive_box_from_crystal_ligand(), with mandatory chain filtering",
+    "Fabricated empirical fallback (-10.1 / -9.09) removed from run_autodock_vina()",
+    "Benchmark survives offline federation nodes instead of aborting before writing its report",
+    "self_healing_verification derived from measured traces rather than asserted"
+  ],
+
+  "remediation_pending": [
+    "Replace TRM-ABX-220's ligand file (currently TRM-ABX-219-H1.pdbqt) with a real ABX-220 structure, or relabel it as an analog",
+    "Re-dock TRM-ABX-219 and TRM-ABX-220 with the validated protocol at higher exhaustiveness for the numbers that will be published",
+    "Artifacts still carrying the unreproducible figures: UEFI Sector 05 (corrected in source) and Paper 22 discussion of the docking results"
+  ]
+}

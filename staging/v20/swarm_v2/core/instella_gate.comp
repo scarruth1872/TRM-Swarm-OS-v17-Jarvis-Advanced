@@ -1,0 +1,44 @@
+
+#version 450
+#extension GL_EXT_shader_explicit_arithmetic_types_int64 : enable
+
+layout(local_size_x = 64, local_size_y = 1) in;  // 64 experts in one workgroup
+
+layout(std430, binding = 0) readonly buffer HiddenStates {
+    float hidden_states[];   // [batch][384]
+};
+
+layout(std430, binding = 1) readonly buffer ExpertWeights {
+    float expert_weights[];  // [64][384]
+};
+
+layout(std430, binding = 2) buffer ExpertScores {
+    float expert_scores[];   // [batch][64]
+};
+
+layout(push_constant) uniform PushConstants {
+    int batch_size;
+    int hidden_dim;
+    int num_experts;
+} pc;
+
+void main() {
+    int batch_idx = gl_GlobalInvocationID.y;
+    int expert_idx = gl_GlobalInvocationID.x;
+    
+    if (batch_idx >= pc.batch_size || expert_idx >= pc.num_experts) return;
+    
+    float acc = 0.0;
+    int hidden_offset = batch_idx * pc.hidden_dim;
+    int weight_offset = expert_idx * pc.hidden_dim;
+    
+    // Unrolled dot product — 384 dimensions
+    for (int i = 0; i < pc.hidden_dim; i += 4) {
+        acc += hidden_states[hidden_offset + i] * expert_weights[weight_offset + i];
+        acc += hidden_states[hidden_offset + i + 1] * expert_weights[weight_offset + i + 1];
+        acc += hidden_states[hidden_offset + i + 2] * expert_weights[weight_offset + i + 2];
+        acc += hidden_states[hidden_offset + i + 3] * expert_weights[weight_offset + i + 3];
+    }
+    
+    expert_scores[batch_idx * pc.num_experts + expert_idx] = acc;
+}

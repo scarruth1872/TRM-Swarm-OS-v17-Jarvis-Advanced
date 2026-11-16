@@ -1,0 +1,476 @@
+{
+ "totals": {
+  "python_defs": 257,
+  "live_fns": 320,
+  "unported": 152
+ },
+ "rows": [
+  {
+   "module": "chaos_engine",
+   "python_defs": 9,
+   "skeleton_fns": 1,
+   "live_fns": 9,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "_native_should_drop",
+    "should_drop_connection"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 1
+  },
+  {
+   "module": "chaos_simulator",
+   "python_defs": 6,
+   "skeleton_fns": 2,
+   "live_fns": 2,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "is_node_isolated",
+    "process_latency",
+    "start_session",
+    "stop_session"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "cognitive_load_balancer",
+   "python_defs": 8,
+   "skeleton_fns": 1,
+   "live_fns": 10,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "get_agent_load",
+    "get_capable_roles",
+    "get_swarm_load_summary",
+    "record_task_end",
+    "record_task_start",
+    "redistribute_task"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "coherence_thresholds",
+   "python_defs": 2,
+   "skeleton_fns": 0,
+   "live_fns": 4,
+   "python_present": true,
+   "unported_from_python": [],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "comm_protocol",
+   "python_defs": 4,
+   "skeleton_fns": 1,
+   "live_fns": 9,
+   "python_present": true,
+   "unported_from_python": [
+    "create_secure_payload",
+    "validate_secure_payload"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "continuum_pbft",
+   "python_defs": 7,
+   "skeleton_fns": 1,
+   "live_fns": 22,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "get_ledger_hash"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "coordination_protocol",
+   "python_defs": 2,
+   "skeleton_fns": 1,
+   "live_fns": 20,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "daily_evolution_engine",
+   "python_defs": 3,
+   "skeleton_fns": 2,
+   "live_fns": 7,
+   "python_present": true,
+   "unported_from_python": [],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "ddr_antibody",
+   "python_defs": 15,
+   "skeleton_fns": 1,
+   "live_fns": 11,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "_load",
+    "_save",
+    "from_dict",
+    "get_antibodies",
+    "get_ddr",
+    "record_error",
+    "scan_lines_native",
+    "to_dict"
+   ],
+   "skeleton_only": [
+    "get_ddr"
+   ],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "expert_registry",
+   "python_defs": 6,
+   "skeleton_fns": 2,
+   "live_fns": 4,
+   "python_present": true,
+   "unported_from_python": [
+    "__new__",
+    "_native_resolve",
+    "get_agent",
+    "get_all_agents",
+    "register_team"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 1
+  },
+  {
+   "module": "feedback_loops",
+   "python_defs": 4,
+   "skeleton_fns": 1,
+   "live_fns": 5,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "gpu_infinity_computer",
+   "python_defs": 12,
+   "skeleton_fns": 5,
+   "live_fns": 6,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "_probe_gpu",
+    "_write_pattern_to_device",
+    "benchmark_all",
+    "benchmark_all_native",
+    "compare_fabrics",
+    "gpu_pattern_cellular",
+    "gpu_pattern_fpga",
+    "gpu_pattern_k3_ternary",
+    "gpu_pattern_neural",
+    "load_architecture",
+    "summary"
+   ],
+   "skeleton_only": [
+    "compare_fabrics",
+    "gpu_pattern_cellular",
+    "gpu_pattern_fpga",
+    "gpu_pattern_k3_ternary",
+    "gpu_pattern_neural"
+   ],
+   "skeleton_bodyless": 5
+  },
+  {
+   "module": "heuristic_consensus",
+   "python_defs": 6,
+   "skeleton_fns": 1,
+   "live_fns": 11,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "bind"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "pbft_consensus",
+   "python_defs": 13,
+   "skeleton_fns": 2,
+   "live_fns": 14,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "audit_ledger",
+    "bind",
+    "get_proposal"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "persona_matrix",
+   "python_defs": 5,
+   "skeleton_fns": 2,
+   "live_fns": 4,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "_mirror_kernel",
+    "_native_compiled_body",
+    "_native_enforce",
+    "build_compiled_prompt"
+   ],
+   "skeleton_only": [
+    "build_compiled_prompt"
+   ],
+   "skeleton_bodyless": 1
+  },
+  {
+   "module": "predictive_watchdog",
+   "python_defs": 10,
+   "skeleton_fns": 2,
+   "live_fns": 9,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "_assess_risk",
+    "_monitor_loop",
+    "_take_preemptive_action",
+    "start",
+    "stop"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "radix_trie_matcher",
+   "python_defs": 33,
+   "skeleton_fns": 1,
+   "live_fns": 10,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "_handle_agent_spawn",
+    "_handle_audit",
+    "_handle_blueprint",
+    "_handle_code_compile",
+    "_handle_connect",
+    "_handle_cosmos_bridge",
+    "_handle_fetch",
+    "_handle_healing",
+    "_handle_health_check",
+    "_handle_hvbe_telemetry",
+    "_handle_jarvis_chat",
+    "_handle_jarvis_memory",
+    "_handle_jarvis_skills",
+    "_handle_jarvis_swarm",
+    "_handle_lora_status",
+    "_handle_memory_query",
+    "_handle_observe",
+    "_handle_orchestrate",
+    "_handle_research",
+    "_handle_search",
+    "_handle_security_audit",
+    "_handle_state_update",
+    "_handle_system_status",
+    "_handle_telemetry",
+    "_handle_test",
+    "_handle_theorem_prove",
+    "_handle_thz_gateway",
+    "match",
+    "match_batch_native"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "resonance_engine",
+   "python_defs": 7,
+   "skeleton_fns": 1,
+   "live_fns": 13,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "_score_sentiment"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "security_scanner",
+   "python_defs": 3,
+   "skeleton_fns": 1,
+   "live_fns": 11,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "self_fuzzing_engine",
+   "python_defs": 6,
+   "skeleton_fns": 1,
+   "live_fns": 5,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "generate_antibody",
+    "save_antibodies",
+    "scan_all",
+    "scan_file",
+    "scan_lines_native"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "semantic_knowledge_graph",
+   "python_defs": 8,
+   "skeleton_fns": 2,
+   "live_fns": 10,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "_initialize_bootstrap_graph"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "skill_matrix_sync",
+   "python_defs": 9,
+   "skeleton_fns": 1,
+   "live_fns": 15,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "bind",
+    "get_matrix",
+    "get_topology_overlay",
+    "on_skill_created",
+    "on_skill_evolved",
+    "on_skill_forgotten",
+    "record_skill_usage"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "sram_pattern_computer",
+   "python_defs": 41,
+   "skeleton_fns": 22,
+   "live_fns": 60,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "_probe_host",
+    "benchmark_all",
+    "benchmark_all_native",
+    "calc_free_energy",
+    "calc_h",
+    "compute_boltzmann",
+    "compute_cellular",
+    "compute_gnn",
+    "compute_hdc",
+    "compute_hopfield",
+    "compute_ising",
+    "compute_onn",
+    "compute_quantum",
+    "compute_sparse_attention",
+    "compute_systolic",
+    "compute_tcam",
+    "execute_computational_algorithm",
+    "get_sram_computer",
+    "load_architecture",
+    "reconfigure_and_execute",
+    "summary"
+   ],
+   "skeleton_only": [
+    "architectures",
+    "constants_are_consistent_with_the_geometry",
+    "every_architecture_matches_python",
+    "no_function_returns_a_placeholder",
+    "number",
+    "pattern_hash",
+    "ported"
+   ],
+   "skeleton_bodyless": 1
+  },
+  {
+   "module": "star_matrix_lattice",
+   "python_defs": 7,
+   "skeleton_fns": 3,
+   "live_fns": 19,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "sub_atomic_kernel",
+   "python_defs": 7,
+   "skeleton_fns": 1,
+   "live_fns": 10,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "__post_init__",
+    "native_batch_collapse"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "thz_wave_gateway",
+   "python_defs": 9,
+   "skeleton_fns": 2,
+   "live_fns": 11,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "get_gateway_stats",
+    "process_request"
+   ],
+   "skeleton_only": [
+    "new"
+   ],
+   "skeleton_bodyless": 0
+  },
+  {
+   "module": "turbovec_memory",
+   "python_defs": 15,
+   "skeleton_fns": 1,
+   "live_fns": 9,
+   "python_present": true,
+   "unported_from_python": [
+    "__init__",
+    "_atomic_append",
+    "_extract_agent_name",
+    "_load",
+    "_rebuild_index",
+    "compact",
+    "get_stats",
+    "log_event",
+    "query",
+    "query_by_agent"
+   ],
+   "skeleton_only": [],
+   "skeleton_bodyless": 0
+  }
+ ]
+}

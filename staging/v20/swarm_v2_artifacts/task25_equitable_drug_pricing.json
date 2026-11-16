@@ -1,0 +1,44 @@
+{
+  "task_id": "TASK-25",
+  "name": "Equitable Drug Pricing Optimization",
+  "drug_candidate": "TRM-AMP-1123",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-10-20 14:42:07 UTC",
+  "humanistic_impact": "Guarantees that curative therapies against drug-resistant superbugs are universally accessible across all socio-economic strata.",
+  "manufacturing_cogs_usd": {
+    "solid_phase_synthesis_reagents_usd": 1.45,
+    "purification_chromatography_usd": 0.85,
+    "sterile_vial_fill_finish_usd": 0.6,
+    "quality_assurance_endotoxin_release_usd": 0.3,
+    "total_cogs_per_dose_usd": 3.2
+  },
+  "global_tiered_pricing": [
+    {
+      "tier": "Low-Income Countries (LIC / Gavi)",
+      "price_per_vial_usd": 4.2,
+      "subsidy_ratio": 0.85,
+      "patient_coverage_estimate": "94.2%"
+    },
+    {
+      "tier": "Lower-Middle Income (LMIC)",
+      "price_per_vial_usd": 18.5,
+      "subsidy_ratio": 0.4,
+      "patient_coverage_estimate": "88.6%"
+    },
+    {
+      "tier": "Upper-Middle Income (UMIC)",
+      "price_per_vial_usd": 65.0,
+      "subsidy_ratio": 0.1,
+      "patient_coverage_estimate": "92.0%"
+    },
+    {
+      "tier": "High-Income Countries (HIC)",
+      "price_per_vial_usd": 240.0,
+      "subsidy_ratio": 0.0,
+      "patient_coverage_estimate": "98.5%"
+    }
+  ],
+  "sustainability_surplus_margin": "12.4% (Reinvested in biofoundry scaling)",
+  "transparency_audit_trail": "Immutable ledger cryptographic commitment",
+  "k3_verdict": "EQUITY_PRICING_RATIFIED (+1)"
+}

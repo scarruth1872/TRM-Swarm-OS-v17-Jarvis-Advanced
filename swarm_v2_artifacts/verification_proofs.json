@@ -1,0 +1,86 @@
+{
+  "schema": "trm.verification.proofs/v1",
+  "generated_by": "tools/gen_verification_proofs.py",
+  "description": "Verification queue. Each entry is a measurement EXTRACTED from the evidence file it names; `timestamp` is that file's own recorded time (or its mtime, marked in timestamp_source). The kernel re-resolves every evidence_path at request time and reports unresolvable entries as queue work instead of verified proofs.",
+  "proofs": [
+    {
+      "proof_id": "VP-K3-001",
+      "claim": "compiled k3_logic truth tables satisfy the Kleene laws over {-1,0,+1}",
+      "evidence_path": "evidence/k3_kleene_law_check.txt",
+      "measurement": {
+        "checks_passed": 98,
+        "checks_failed": 0
+      },
+      "timestamp": "2026-09-25T17:30:04-04:00",
+      "timestamp_source": "file_mtime",
+      "status": "VERIFIED"
+    },
+    {
+      "proof_id": "VP-COUNCIL-CHAT-002",
+      "claim": "every agent on the chat surface answered a live probe",
+      "evidence_path": "evidence/AGENT_CHAT_MEASURED.json",
+      "measurement": {
+        "endpoints_reachable": 15,
+        "endpoints_total": 15
+      },
+      "timestamp": "2026-11-05T17:24:38",
+      "timestamp_source": "field:generated",
+      "status": "VERIFIED",
+      "subject": "http://127.0.0.1:8099/swarm/chat"
+    },
+    {
+      "proof_id": "VP-COUNCIL-ENGINES-003",
+      "claim": "agents answering one prompt reported which engine actually served them",
+      "evidence_path": "evidence/AGENT_IDENTITY_MEASURED.json",
+      "measurement": {
+        "agents_answering": 15,
+        "distinct_engines": 2
+      },
+      "timestamp": "2026-11-05T17:26:44",
+      "timestamp_source": "field:generated",
+      "status": "VERIFIED",
+      "subject": "Explain in one sentence why a distributed system needs a quorum."
+    },
+    {
+      "proof_id": "VP-COUNCIL-DISTINCT-004",
+      "claim": "swarm answer diversity on one neutral prompt",
+      "evidence_path": "evidence/AGENT_INTELLIGENCE_MEASURED.json",
+      "measurement": {
+        "agents": 14,
+        "unique_frames": 7
+      },
+      "timestamp": "2026-11-05T17:28:47",
+      "timestamp_source": "field:generated",
+      "status": "VERIFIED",
+      "subject": "Explain in one sentence why a distributed system needs a quorum."
+    },
+    {
+      "proof_id": "VP-SHIELD-K3-005",
+      "claim": "Shield K3 head block rate on danger prompts, in-distribution vs held-out",
+      "evidence_path": "evidence/BONSAI_K3_RETRAIN_MEASURED.json",
+      "measurement": {
+        "block_rate_on_danger": 1.0,
+        "block_rate_on_danger2_heldout": 0.75,
+        "eval_epochs": 20
+      },
+      "timestamp": "2026-11-06T12:37:53",
+      "timestamp_source": "field:generated",
+      "status": "VERIFIED",
+      "subject": "Shield"
+    },
+    {
+      "proof_id": "VP-PLATFORM-STAGES-006",
+      "claim": "multi-stage platform run completed against the live port",
+      "evidence_path": "evidence/MASTER_COMPLEX_TASK_8099.json",
+      "measurement": {
+        "stages_passed": "7/7",
+        "assertions_passed": "4/4",
+        "total_elapsed_ms": 101.25
+      },
+      "timestamp": "2026-10-30T12:20:32.184080+00:00",
+      "timestamp_source": "field:timestamp",
+      "status": "VERIFIED",
+      "subject": "http://127.0.0.1:8099"
+    }
+  ]
+}

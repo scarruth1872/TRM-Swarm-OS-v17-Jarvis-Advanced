@@ -1,0 +1,104 @@
+WHY THE TRM LOSES EXACTNESS AT 91.75% CELLS (2026-10-25)
+Method: fetch /predict pred+solution on :8588, diff cell by cell, per-colour recall.
+
+=== THE THREE FAILURE SIGNATURES ARE DIFFERENT ===
+
+007bbfb7  81 cells  acc 0.679
+  colour 0  true  45  pred  65  recall 144.4%   (20 EXTRA background)
+  colour 7  true  36  pred  16  recall  44.4%   (20 MISSING foreground)
+  -> PARTIAL RULE APPLICATION. It paints part of the foreground, leaves the
+     rest as background. An even 20-for-20 swap, so the rule is understood
+     but only applied to ~44% of the cells.
+
+00d62c1b  400 cells  acc 0.9175   <- the 91.75% case
+  colour 0  true 289  pred 322  recall 111.4%   (33 EXTRA background)
+  colour 3  true  78  pred  78  recall 100.0%   PERFECT
+  colour 4  true  33  pred   0  recall   0.0%   NEVER PAINTED
+
+  ALL 33 errors are the identical pair: pred 0, true 4. Not one error of
+  any other kind. The model outputs a perfectly clean background grid plus
+  the source shape in colour 3, but never applies the FILL to the enclosed
+  regions. It is a RULE-APPLICATION failure, not a colour-vocabulary one.
+
+025d127b  100 cells  acc 0.88
+  colour 0  true  82  pred  82  recall 100.0%   PERFECT
+  colour 4  true  18  pred  18  recall 100.0%   PERFECT
+  histogram IDENTICAL to truth. Yet 12 cells wrong:
+    foreground MISSED   6  (true!=0, pred==0)
+    foreground SPURIOUS 6  (pred!=0, true==0)
+  -> PERFECT RULE, IMPRECISE PLACEMENT. It knows exactly how many cells to
+     paint and in which colours; 6 sit in the wrong positions.
+
+=== THE ANSWER ===
+  The TRM does not fail randomly and does not fail on colour vocabulary.
+  It fails in two specific ways:
+
+    (a) INCOMPLETE RULE APPLICATION on larger grids. On 00d62c1b it applies
+        the structural rule perfectly (colour 3 100%) but omits the fill
+        regions entirely (colour 4: 0/33).
+
+    (b) SPATIAL IMPRECISION where the rule IS applied. On 025d127b the
+        histogram is exact but 6 cells are dislocated.
+
+  BOTH ARE STRUCTURAL. Neither is 'the model does not know the colours'.
+
+=== WHY THIS MATTERS FOR A FIX ===
+  Cell accuracy is a MISLEADING metric here. 91.75% sounds like 'almost
+  right'. The diff shows 33 cells were left as background - every one of
+  them a place the fill rule should have painted. The model did not get
+  82.5% of the grid right on those cells - it got 0% of them. The high
+  score is carried entirely by the background, which dominates 20x20 grids.
+
+  So '91.75% cell accuracy' == 'background is right and the task was not
+  completed'. That is the honest reading.
+
+=== FOREGROUND-ONLY ACCURACY (the metric that should be reported) ===
+  00d62c1b  foreground cells (true!=0): 111
+            correct: 78  -> 70.3%    (vs 91.75% headline)
+  025d127b  foreground cells: 18
+            correct: 12  -> 66.7%    (vs 88.0% headline)
+  007bbfb7  foreground cells: 36
+
+  MEASURED (not estimated):
+    task        headline   fg cells  fg correct   fg accuracy
+    007bbfb7      0.679        36         13          36.1%
+    00d62c1b      0.9175      111         78          70.3%
+    025d127b      0.88         18         12          66.7%
+
+  The headline 91.75% becomes 70.3% when background is excluded. The score
+  is carried by empty cells. On a 20x20 grid, 289 of 400 cells are
+  background - getting those right is nearly free.
+
+  THIS is why the TRM 'loses exactness at 91.75%': it is not close on 91.75%
+  of the cells - it is close on the BACKGROUND and misses 30-64% of the
+  cells that carry the task.
+
+=== RECOMMENDATION ===
+  Stop reporting cell_accuracy alone. Report BOTH:
+    cell_accuracy        (existing, background-dominated)
+    foreground_accuracy  (correctness on cells where truth != 0)
+    exact                (unchanged)
+  foreground_accuracy is the number that tracks capability.
+
+=== WHAT WOULD ACTUALLY IMPROVE IT ===
+  1. Class weighting. Background dominates the loss, so the model is
+     optimised to be right about empty cells. Weighting foreground cells
+     higher during distillation targets exactly this failure.
+  2. More h_cycles helps only if the model can use extra compute - a
+     background-biased model has little incentive to. UNTESTED - would need
+     the ~50-task sweep at h_cycles 1 vs 3 with foreground_accuracy.
+  3. Distillation with a foreground-weighted loss is the concrete proposal.
+     See evidence/DISTILLATION_PLAN.txt.
+
+=== VERIFIED LIVE 2026-10-29 (server emits the fields) ===
+  :8588 /predict now returns foreground_cells, foreground_correct,
+  foreground_accuracy. Measured through the endpoint:
+
+    task         cell_acc  fg_cells  fg_correct   fg_acc  exact
+    007bbfb7        0.679        36          13   0.3611  False
+    00d62c1b       0.9175       111          78   0.7027  False
+    025d127b         0.88        18          12   0.6667  False
+
+  These match the hand-computed values exactly (0.7027 vs 0.703 etc), so the
+  metric is correct and the earlier diagnosis is confirmed through the live
+  endpoint rather than by offline diff.

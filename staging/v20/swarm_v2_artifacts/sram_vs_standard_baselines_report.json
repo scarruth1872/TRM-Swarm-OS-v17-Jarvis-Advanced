@@ -1,0 +1,245 @@
+{
+  "timestamp": "2026-09-12T18:55:24Z",
+  "all_correct": true,
+  "findings": {
+    "systolic_vs_numpy_matmul": {
+      "16x16": {
+        "max_abs_error": 0.0,
+        "rel_frob_error": 0.0,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 131.56,
+          "p50_us": 130.1,
+          "p95_us": 139.86,
+          "min_us": 124.3,
+          "max_us": 195.6
+        },
+        "blas_latency_us": {
+          "mean_us": 1.76,
+          "p50_us": 1.7,
+          "p95_us": 1.9,
+          "min_us": 1.7,
+          "max_us": 2.2
+        },
+        "slowdown_factor": 74.75
+      },
+      "32x32": {
+        "max_abs_error": 0.0,
+        "rel_frob_error": 0.0,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 132.67,
+          "p50_us": 130.95,
+          "p95_us": 144.86,
+          "min_us": 125.4,
+          "max_us": 175.8
+        },
+        "blas_latency_us": {
+          "mean_us": 3.08,
+          "p50_us": 3.1,
+          "p95_us": 3.1,
+          "min_us": 3.0,
+          "max_us": 3.4
+        },
+        "slowdown_factor": 43.07
+      },
+      "64x64": {
+        "max_abs_error": 0.0,
+        "rel_frob_error": 0.0,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 146.08,
+          "p50_us": 145.5,
+          "p95_us": 154.79,
+          "min_us": 137.8,
+          "max_us": 171.1
+        },
+        "blas_latency_us": {
+          "mean_us": 8.63,
+          "p50_us": 8.5,
+          "p95_us": 8.7,
+          "min_us": 8.4,
+          "max_us": 16.8
+        },
+        "slowdown_factor": 16.93
+      }
+    },
+    "sparse_attention_vs_torch_sdpa": {
+      "S32_D16_W8": {
+        "max_abs_error": 2.384185791015625e-07,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 242.87,
+          "p50_us": 209.8,
+          "p95_us": 323.95,
+          "min_us": 194.6,
+          "max_us": 371.9
+        },
+        "torch_sdpa_latency_us": {
+          "mean_us": 28.29,
+          "p50_us": 27.7,
+          "p95_us": 31.28,
+          "min_us": 27.0,
+          "max_us": 53.3
+        },
+        "slowdown_factor": 8.59
+      },
+      "S64_D16_W8": {
+        "max_abs_error": 2.384185791015625e-07,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 298.59,
+          "p50_us": 243.95,
+          "p95_us": 440.19,
+          "min_us": 224.6,
+          "max_us": 458.7
+        },
+        "torch_sdpa_latency_us": {
+          "mean_us": 33.01,
+          "p50_us": 32.6,
+          "p95_us": 37.09,
+          "min_us": 27.4,
+          "max_us": 43.5
+        },
+        "slowdown_factor": 9.05
+      },
+      "S128_D16_W16": {
+        "max_abs_error": 3.5762786865234375e-07,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 459.3,
+          "p50_us": 518.6,
+          "p95_us": 553.01,
+          "min_us": 320.1,
+          "max_us": 644.6
+        },
+        "torch_sdpa_latency_us": {
+          "mean_us": 39.34,
+          "p50_us": 33.55,
+          "p95_us": 66.42,
+          "min_us": 29.1,
+          "max_us": 272.6
+        },
+        "slowdown_factor": 11.68
+      }
+    },
+    "gnn_vs_torch_gcn": {
+      "N16_F16": {
+        "max_abs_error": 1.4901161193847656e-08,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 227.28,
+          "p50_us": 198.5,
+          "p95_us": 310.96,
+          "min_us": 184.8,
+          "max_us": 364.2
+        },
+        "torch_gcn_latency_us": {
+          "mean_us": 33.2,
+          "p50_us": 33.0,
+          "p95_us": 33.91,
+          "min_us": 32.4,
+          "max_us": 42.3
+        },
+        "slowdown_factor": 6.85
+      },
+      "N24_F16": {
+        "max_abs_error": 2.2351741790771484e-08,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 218.97,
+          "p50_us": 206.05,
+          "p95_us": 308.05,
+          "min_us": 197.8,
+          "max_us": 395.2
+        },
+        "torch_gcn_latency_us": {
+          "mean_us": 49.85,
+          "p50_us": 47.0,
+          "p95_us": 54.85,
+          "min_us": 45.4,
+          "max_us": 176.2
+        },
+        "slowdown_factor": 4.39
+      },
+      "N48_F32": {
+        "max_abs_error": 1.862645149230957e-08,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 396.35,
+          "p50_us": 379.7,
+          "p95_us": 521.72,
+          "min_us": 296.5,
+          "max_us": 746.9
+        },
+        "torch_gcn_latency_us": {
+          "mean_us": 37.91,
+          "p50_us": 37.1,
+          "p95_us": 44.01,
+          "min_us": 36.2,
+          "max_us": 51.4
+        },
+        "slowdown_factor": 10.46
+      }
+    },
+    "rbm_vs_standard_cd1": {
+      "V16_H8": {
+        "max_abs_error": 0.0,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 210.47,
+          "p50_us": 206.35,
+          "p95_us": 231.65,
+          "min_us": 199.9,
+          "max_us": 363.4
+        },
+        "ref_cd1_latency_us": {
+          "mean_us": 169.35,
+          "p50_us": 150.9,
+          "p95_us": 246.79,
+          "min_us": 143.3,
+          "max_us": 360.4
+        },
+        "slowdown_factor": 1.24
+      },
+      "V32_H16": {
+        "max_abs_error": 0.0,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 209.92,
+          "p50_us": 204.5,
+          "p95_us": 240.14,
+          "min_us": 189.7,
+          "max_us": 377.3
+        },
+        "ref_cd1_latency_us": {
+          "mean_us": 155.04,
+          "p50_us": 153.5,
+          "p95_us": 171.43,
+          "min_us": 138.6,
+          "max_us": 195.9
+        },
+        "slowdown_factor": 1.35
+      },
+      "V64_H32": {
+        "max_abs_error": 0.0,
+        "numerically_correct": true,
+        "sram_latency_us": {
+          "mean_us": 217.55,
+          "p50_us": 208.6,
+          "p95_us": 277.26,
+          "min_us": 196.4,
+          "max_us": 383.7
+        },
+        "ref_cd1_latency_us": {
+          "mean_us": 161.82,
+          "p50_us": 156.35,
+          "p95_us": 196.0,
+          "min_us": 146.9,
+          "max_us": 255.7
+        },
+        "slowdown_factor": 1.34
+      }
+    }
+  }
+}

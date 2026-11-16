@@ -1,0 +1,55 @@
+{
+  "multimodal_ingestion": {
+    "status": "PASS",
+    "telemetry_score": 0.739,
+    "visual_score": 0.863,
+    "telemetry_modality": "telemetry",
+    "visual_modality": "visual"
+  },
+  "multimodal_fusion": {
+    "status": "PASS",
+    "thermal_event": "BEARING_MECHANICAL_FAILURE",
+    "thermal_severity": "HIGH",
+    "thermal_confidence": 0.92,
+    "normal_event": "NOMINAL_SYSTEM_HEALTH",
+    "normal_confidence": 0.99
+  },
+  "scene_fusion": {
+    "status": "PASS",
+    "scene_class": "HAZARD_HUMAN_PROXIMITY_VIOLATION",
+    "risk_level": 0.88,
+    "summary": "Critical spatial safety violation detected: Human operator dangerously close to active industrial equipment."
+  },
+  "latent_diffusion": {
+    "status": "PASS",
+    "steps_used": 1,
+    "confidence": 0.2513,
+    "num_pass": 24,
+    "num_fault": 30,
+    "elapsed_ms": 0.19
+  },
+  "hardware_voltage": {
+    "status": "PASS",
+    "cpu_utilization_pct": 0.0,
+    "memory_pressure_pct": 35.8,
+    "clock_speed_mhz": 4000.0,
+    "phi_v_voltage_multiplier": 1.15
+  },
+  "quantum_entropy_harvesting": {
+    "status": "PASS",
+    "harvested_bytes": 32,
+    "latency_us": 2305692.4,
+    "entropy_hex_snippet": "ccd2fb465a715faad3b66c876ecea085"
+  },
+  "resonance_engine": {
+    "status": "PASS",
+    "active_dreams": 0,
+    "coherence_threshold": "PASS"
+  },
+  "spatial_ambient": {
+    "status": "PASS",
+    "nodes_tracked": 14,
+    "ambient_rssi_dbm": -3,
+    "ambient_noise_floor": 0.28
+  }
+}

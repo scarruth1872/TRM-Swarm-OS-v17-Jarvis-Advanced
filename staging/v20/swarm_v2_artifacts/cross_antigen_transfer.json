@@ -1,0 +1,31 @@
+{
+  "record": "cross-antigen transfer (MOTION-C1b)",
+  "top_complex": "pdb_00009pzi_F_E.cif",
+  "antibody_chains": [
+    "E",
+    "F"
+  ],
+  "original_contacts": 206,
+  "cutoff_angstrom": 4.5,
+  "transfers": [
+    {
+      "other_antigen_from": "pdb_00009ncy_H_L.cif",
+      "other_antigen_atoms": 1062,
+      "contacts_after_transfer": 212,
+      "original_contacts": 206
+    },
+    {
+      "other_antigen_from": "pdb_00006wwc_D_H.cif",
+      "other_antigen_atoms": 51,
+      "contacts_after_transfer": 2,
+      "original_contacts": 206
+    },
+    {
+      "other_antigen_from": "pdb_00009bia_E_+.cif",
+      "other_antigen_atoms": 3453,
+      "contacts_after_transfer": 997,
+      "original_contacts": 206
+    }
+  ],
+  "basis": "the top-density antibody's contacting surface was scored against other corpus antigens translated to the same frame (centroid alignment). A contact count comparable to the original means the paratope motif generalizes; a collapse means it is template-specific. Python re-implementation of the same 4.5 A geometry (the native scorer scores one CIF)."
+}

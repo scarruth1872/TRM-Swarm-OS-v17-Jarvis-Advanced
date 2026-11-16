@@ -1,0 +1,110 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Chat System module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Chat System (id: chat) is one of Jarvis's core modules. It provides 3 API endpoints. POST /api/chat with body { 'message': 'Hello Jarvis', 'userId': 'shawn' }. Returns { reply: '...' }. The message goes through runJarvisAgent which calls Google Gemini AI with system prompt, conversational history, and optional visual data."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/chat endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/chat: Main AI chat. Body: { message, history?, visualData?, userId?, accessToken? }. Returns: { reply }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/chat-history endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/chat-history: Return chat history. Headers: x-user-id. Returns: [{ id, role, content, timestamp }]"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/chat-history/clear endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/chat-history/clear: Clear chat history. Headers: x-user-id."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I chat with you?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/chat with body { 'message': 'Hello Jarvis', 'userId': 'shawn' }. Returns { reply: '...' }. The message goes through runJarvisAgent which calls Google Gemini AI with system prompt, conversational history, and optional visual data."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What happens when the Gemini API quota is exhausted?"
+      },
+      {
+        "role": "assistant",
+        "content": "The chat handler detects 429/RESOURCE_EXHAUSTED errors and returns: 'My apologies, Boss. It appears my core thinking matrix has exhausted the Gemini API's free request quota. Standing by on standby power.'"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does chat context work?"
+      },
+      {
+        "role": "assistant",
+        "content": "Chat loads core memory for user profile, then retrieves chat history (up to 50 messages), and sends the full context to the AI model for generation."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the Chat System module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 400 if no message, 500 on API failure (with graceful error reply), 429 when Gemini quota exhausted"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Chat System module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Chat reads Memory for context, writes to Chat History, and can trigger Skills, Swarm Delegation, and Web Analysis."
+      }
+    ]
+  }
+]

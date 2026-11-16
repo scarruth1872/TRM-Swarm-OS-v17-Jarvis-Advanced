@@ -1,0 +1,4273 @@
+{
+ "ok": true,
+ "model_tag": "gemma2:2b",
+ "blob": "C:\\Users\\shawn\\.ollama\\models\\blobs\\sha256-7462734796d67c40ecec2ca98eddf970e171dbb6b370e43fd633ee75b69abe1b",
+ "tensors_total": 288,
+ "tensors_quantized": 182,
+ "tensors_skipped": 106,
+ "skipped": [
+  {
+   "name": "token_embd.weight",
+   "reason": "NaN/inf in dequant (Q6_K)"
+  },
+  {
+   "name": "blk.0.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.0.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.0.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.0.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.1.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.1.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.1.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.1.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.10.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.10.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.10.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.10.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.11.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.11.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.11.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.11.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.12.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.12.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.12.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.12.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.13.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.13.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.13.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.13.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.14.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.14.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.14.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.14.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.15.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.15.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.15.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.15.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.16.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.16.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.16.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.16.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.17.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.17.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.17.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.17.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.18.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.18.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.18.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.18.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.19.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.19.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.19.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.19.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.2.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.2.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.2.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.2.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.20.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.20.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.20.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.20.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.21.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.21.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.21.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.21.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.22.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.22.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.22.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.22.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.23.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.23.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.23.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.23.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.3.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.3.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.3.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.3.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.4.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.4.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.4.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.4.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.5.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.5.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.5.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.5.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.6.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.6.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.6.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.6.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.7.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.7.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.7.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.7.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.8.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.8.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.8.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.8.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.9.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.9.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.9.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.9.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.24.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.24.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.24.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.24.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.25.attn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.25.post_attention_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.25.post_ffw_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "blk.25.ffn_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  },
+  {
+   "name": "output_norm.weight",
+   "reason": "1-D (norm/scale), not a weight matrix"
+  }
+ ],
+ "params_quantized": 2024275968,
+ "dequant_fp32_bytes": 8097103872,
+ "source_gguf_bytes": 1138655232,
+ "trit_bytes": 506068992,
+ "compression_vs_fp32": 16.0,
+ "compression_vs_source_gguf": 2.25,
+ "bits_per_weight": 2.0,
+ "cosine_mean": 0.8713,
+ "cosine_min": 0.8305,
+ "cosine_max": 0.8888,
+ "artifact": "F:\\Development sites\\TRM-Swarm-OS-v2\\gguf_gemma2_2b_trits.bin",
+ "artifact_bytes": 506069720,
+ "elapsed_s": 54.7,
+ "seal": "0x4b367dbf8275fde1",
+ "honesty_note": "GGUF source is already Q4_0/Q6_K pre-quantized; cosine is the REAL added loss of ternary vs dequantized fp32 weights; compression_vs_source_gguf is vs the original quantized bytes on disk, compression_vs_fp32 is the dequantized-fp32 baseline.",
+ "tensors": [
+  {
+   "name": "blk.0.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005975,
+   "cosine": 0.8797,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 0,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7091159,
+    "0": 7055696,
+    "+1": 7086809
+   }
+  },
+  {
+   "name": "blk.0.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006472,
+   "cosine": 0.8842,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 5308420,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7106498,
+    "0": 6983633,
+    "+1": 7143533
+   }
+  },
+  {
+   "name": "blk.0.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006263,
+   "cosine": 0.8852,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 10616840,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7066417,
+    "0": 7096265,
+    "+1": 7070982
+   }
+  },
+  {
+   "name": "blk.0.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.00932,
+   "cosine": 0.8665,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 15925260,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 784099,
+    "0": 790701,
+    "+1": 784496
+   }
+  },
+  {
+   "name": "blk.0.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008272,
+   "cosine": 0.869,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 16515088,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1569241,
+    "0": 1579127,
+    "+1": 1570224
+   }
+  },
+  {
+   "name": "blk.0.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.00897,
+   "cosine": 0.8638,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 17694740,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1571041,
+    "0": 1575734,
+    "+1": 1571817
+   }
+  },
+  {
+   "name": "blk.0.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.007785,
+   "cosine": 0.8788,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 18874392,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 789597,
+    "0": 781698,
+    "+1": 788001
+   }
+  },
+  {
+   "name": "blk.1.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005956,
+   "cosine": 0.8779,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 19464220,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7102576,
+    "0": 7030337,
+    "+1": 7100751
+   }
+  },
+  {
+   "name": "blk.1.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006394,
+   "cosine": 0.885,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 24772640,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7125346,
+    "0": 6940376,
+    "+1": 7167942
+   }
+  },
+  {
+   "name": "blk.1.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006253,
+   "cosine": 0.8844,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 30081060,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7056419,
+    "0": 7121276,
+    "+1": 7055969
+   }
+  },
+  {
+   "name": "blk.1.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008955,
+   "cosine": 0.8582,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 35389480,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 768021,
+    "0": 823819,
+    "+1": 767456
+   }
+  },
+  {
+   "name": "blk.1.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008539,
+   "cosine": 0.8685,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 35979308,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1556071,
+    "0": 1608820,
+    "+1": 1553701
+   }
+  },
+  {
+   "name": "blk.1.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008559,
+   "cosine": 0.8498,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 37158960,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1532368,
+    "0": 1651159,
+    "+1": 1535065
+   }
+  },
+  {
+   "name": "blk.1.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008782,
+   "cosine": 0.8789,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 38338612,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 789274,
+    "0": 780377,
+    "+1": 789645
+   }
+  },
+  {
+   "name": "blk.10.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005711,
+   "cosine": 0.8804,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 38928440,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7081160,
+    "0": 7068743,
+    "+1": 7083761
+   }
+  },
+  {
+   "name": "blk.10.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006038,
+   "cosine": 0.8721,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 44236860,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7147104,
+    "0": 6984350,
+    "+1": 7102210
+   }
+  },
+  {
+   "name": "blk.10.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005958,
+   "cosine": 0.8831,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 49545280,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7114148,
+    "0": 7004070,
+    "+1": 7115446
+   }
+  },
+  {
+   "name": "blk.10.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009107,
+   "cosine": 0.8493,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 54853700,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 772372,
+    "0": 814379,
+    "+1": 772545
+   }
+  },
+  {
+   "name": "blk.10.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008458,
+   "cosine": 0.8713,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 55443528,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1580461,
+    "0": 1556175,
+    "+1": 1581956
+   }
+  },
+  {
+   "name": "blk.10.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.00901,
+   "cosine": 0.848,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 56623180,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1541042,
+    "0": 1636481,
+    "+1": 1541069
+   }
+  },
+  {
+   "name": "blk.10.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008859,
+   "cosine": 0.8793,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 57802832,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 780341,
+    "0": 797934,
+    "+1": 781021
+   }
+  },
+  {
+   "name": "blk.11.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005644,
+   "cosine": 0.8823,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 58392660,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7089301,
+    "0": 7054488,
+    "+1": 7089875
+   }
+  },
+  {
+   "name": "blk.11.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006018,
+   "cosine": 0.8714,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 63701080,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7123873,
+    "0": 7034388,
+    "+1": 7075403
+   }
+  },
+  {
+   "name": "blk.11.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005926,
+   "cosine": 0.8841,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 69009500,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7106238,
+    "0": 7020689,
+    "+1": 7106737
+   }
+  },
+  {
+   "name": "blk.11.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009283,
+   "cosine": 0.8561,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 74317920,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 782252,
+    "0": 795539,
+    "+1": 781505
+   }
+  },
+  {
+   "name": "blk.11.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008687,
+   "cosine": 0.8654,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 74907748,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1577548,
+    "0": 1566584,
+    "+1": 1574460
+   }
+  },
+  {
+   "name": "blk.11.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009261,
+   "cosine": 0.866,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 76087400,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1561870,
+    "0": 1594128,
+    "+1": 1562594
+   }
+  },
+  {
+   "name": "blk.11.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008847,
+   "cosine": 0.8804,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 77267052,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 780919,
+    "0": 795575,
+    "+1": 782802
+   }
+  },
+  {
+   "name": "blk.12.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005623,
+   "cosine": 0.8781,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 77856880,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7089817,
+    "0": 7057678,
+    "+1": 7086169
+   }
+  },
+  {
+   "name": "blk.12.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.00575,
+   "cosine": 0.8715,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 83165300,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7128897,
+    "0": 7022417,
+    "+1": 7082350
+   }
+  },
+  {
+   "name": "blk.12.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005723,
+   "cosine": 0.8799,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 88473720,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7102746,
+    "0": 7031675,
+    "+1": 7099243
+   }
+  },
+  {
+   "name": "blk.12.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.00827,
+   "cosine": 0.84,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 93782140,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 769973,
+    "0": 820778,
+    "+1": 768545
+   }
+  },
+  {
+   "name": "blk.12.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008468,
+   "cosine": 0.8634,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 94371968,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1573323,
+    "0": 1573311,
+    "+1": 1571958
+   }
+  },
+  {
+   "name": "blk.12.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.00853,
+   "cosine": 0.8553,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 95551620,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1566673,
+    "0": 1584855,
+    "+1": 1567064
+   }
+  },
+  {
+   "name": "blk.12.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008639,
+   "cosine": 0.8822,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 96731272,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 782662,
+    "0": 792893,
+    "+1": 783741
+   }
+  },
+  {
+   "name": "blk.13.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005606,
+   "cosine": 0.8761,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 97321100,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7049450,
+    "0": 7132058,
+    "+1": 7052156
+   }
+  },
+  {
+   "name": "blk.13.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005915,
+   "cosine": 0.8657,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 102629520,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7101981,
+    "0": 7069484,
+    "+1": 7062199
+   }
+  },
+  {
+   "name": "blk.13.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005903,
+   "cosine": 0.8799,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 107937940,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7095916,
+    "0": 7041719,
+    "+1": 7096029
+   }
+  },
+  {
+   "name": "blk.13.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008461,
+   "cosine": 0.855,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 113246360,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 777481,
+    "0": 804240,
+    "+1": 777575
+   }
+  },
+  {
+   "name": "blk.13.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008509,
+   "cosine": 0.8635,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 113836188,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1569388,
+    "0": 1578408,
+    "+1": 1570796
+   }
+  },
+  {
+   "name": "blk.13.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009038,
+   "cosine": 0.8555,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 115015840,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1550103,
+    "0": 1620504,
+    "+1": 1547985
+   }
+  },
+  {
+   "name": "blk.13.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008687,
+   "cosine": 0.8773,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 116195492,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 780117,
+    "0": 797451,
+    "+1": 781728
+   }
+  },
+  {
+   "name": "blk.14.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005632,
+   "cosine": 0.8774,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 116785320,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7060801,
+    "0": 7103666,
+    "+1": 7069197
+   }
+  },
+  {
+   "name": "blk.14.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005812,
+   "cosine": 0.8706,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 122093740,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7114574,
+    "0": 7051869,
+    "+1": 7067221
+   }
+  },
+  {
+   "name": "blk.14.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005841,
+   "cosine": 0.8793,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 127402160,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7091478,
+    "0": 7050709,
+    "+1": 7091477
+   }
+  },
+  {
+   "name": "blk.14.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.00807,
+   "cosine": 0.8472,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 132710580,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 775159,
+    "0": 809144,
+    "+1": 774993
+   }
+  },
+  {
+   "name": "blk.14.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008382,
+   "cosine": 0.8725,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 133300408,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1575209,
+    "0": 1568188,
+    "+1": 1575195
+   }
+  },
+  {
+   "name": "blk.14.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008592,
+   "cosine": 0.8488,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 134480060,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1556904,
+    "0": 1604247,
+    "+1": 1557441
+   }
+  },
+  {
+   "name": "blk.14.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008761,
+   "cosine": 0.8828,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 135659712,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 781798,
+    "0": 795049,
+    "+1": 782449
+   }
+  },
+  {
+   "name": "blk.15.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005703,
+   "cosine": 0.8804,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 136249540,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7083442,
+    "0": 7072906,
+    "+1": 7077316
+   }
+  },
+  {
+   "name": "blk.15.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005879,
+   "cosine": 0.8632,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 141557960,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7112747,
+    "0": 7042005,
+    "+1": 7078912
+   }
+  },
+  {
+   "name": "blk.15.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005911,
+   "cosine": 0.88,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 146866380,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7102700,
+    "0": 7029196,
+    "+1": 7101768
+   }
+  },
+  {
+   "name": "blk.15.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008798,
+   "cosine": 0.8603,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 152174800,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 781649,
+    "0": 799486,
+    "+1": 778161
+   }
+  },
+  {
+   "name": "blk.15.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008394,
+   "cosine": 0.8781,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 152764628,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1579544,
+    "0": 1560670,
+    "+1": 1578378
+   }
+  },
+  {
+   "name": "blk.15.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008786,
+   "cosine": 0.8401,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 153944280,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1501004,
+    "0": 1716905,
+    "+1": 1500683
+   }
+  },
+  {
+   "name": "blk.15.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008423,
+   "cosine": 0.8741,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 155123932,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 778990,
+    "0": 800490,
+    "+1": 779816
+   }
+  },
+  {
+   "name": "blk.16.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005786,
+   "cosine": 0.8818,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 155713760,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7089054,
+    "0": 7057424,
+    "+1": 7087186
+   }
+  },
+  {
+   "name": "blk.16.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005897,
+   "cosine": 0.8643,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 161022180,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7146256,
+    "0": 6986479,
+    "+1": 7100929
+   }
+  },
+  {
+   "name": "blk.16.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.00599,
+   "cosine": 0.8822,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 166330600,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7102457,
+    "0": 7026484,
+    "+1": 7104723
+   }
+  },
+  {
+   "name": "blk.16.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008612,
+   "cosine": 0.8432,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 171639020,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 775087,
+    "0": 809402,
+    "+1": 774807
+   }
+  },
+  {
+   "name": "blk.16.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008468,
+   "cosine": 0.8675,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 172228848,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1582064,
+    "0": 1553022,
+    "+1": 1583506
+   }
+  },
+  {
+   "name": "blk.16.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009012,
+   "cosine": 0.8521,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 173408500,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1547802,
+    "0": 1622427,
+    "+1": 1548363
+   }
+  },
+  {
+   "name": "blk.16.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008926,
+   "cosine": 0.8753,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 174588152,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 788067,
+    "0": 784272,
+    "+1": 786957
+   }
+  },
+  {
+   "name": "blk.17.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005758,
+   "cosine": 0.8824,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 175177980,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7092200,
+    "0": 7047387,
+    "+1": 7094077
+   }
+  },
+  {
+   "name": "blk.17.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005953,
+   "cosine": 0.8697,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 180486400,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7143174,
+    "0": 6998283,
+    "+1": 7092207
+   }
+  },
+  {
+   "name": "blk.17.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005965,
+   "cosine": 0.8821,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 185794820,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7109623,
+    "0": 7015489,
+    "+1": 7108552
+   }
+  },
+  {
+   "name": "blk.17.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008632,
+   "cosine": 0.8615,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 191103240,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 785039,
+    "0": 786839,
+    "+1": 787418
+   }
+  },
+  {
+   "name": "blk.17.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008442,
+   "cosine": 0.8771,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 191693068,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1576382,
+    "0": 1564702,
+    "+1": 1577508
+   }
+  },
+  {
+   "name": "blk.17.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008715,
+   "cosine": 0.8477,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 192872720,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1504677,
+    "0": 1709705,
+    "+1": 1504210
+   }
+  },
+  {
+   "name": "blk.17.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008968,
+   "cosine": 0.8809,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 194052372,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 784855,
+    "0": 790025,
+    "+1": 784416
+   }
+  },
+  {
+   "name": "blk.18.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005813,
+   "cosine": 0.882,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 194642200,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7088917,
+    "0": 7052703,
+    "+1": 7092044
+   }
+  },
+  {
+   "name": "blk.18.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006052,
+   "cosine": 0.8718,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 199950620,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7177104,
+    "0": 6936066,
+    "+1": 7120494
+   }
+  },
+  {
+   "name": "blk.18.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006016,
+   "cosine": 0.8835,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 205259040,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7103663,
+    "0": 7024966,
+    "+1": 7105035
+   }
+  },
+  {
+   "name": "blk.18.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009353,
+   "cosine": 0.8653,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 210567460,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 783661,
+    "0": 791459,
+    "+1": 784176
+   }
+  },
+  {
+   "name": "blk.18.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008549,
+   "cosine": 0.8628,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 211157288,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1567072,
+    "0": 1585921,
+    "+1": 1565599
+   }
+  },
+  {
+   "name": "blk.18.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009565,
+   "cosine": 0.8647,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 212336940,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1561870,
+    "0": 1595804,
+    "+1": 1560918
+   }
+  },
+  {
+   "name": "blk.18.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008522,
+   "cosine": 0.865,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 213516592,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 784247,
+    "0": 792179,
+    "+1": 782870
+   }
+  },
+  {
+   "name": "blk.19.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.00588,
+   "cosine": 0.8849,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 214106420,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7097680,
+    "0": 7039635,
+    "+1": 7096349
+   }
+  },
+  {
+   "name": "blk.19.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006125,
+   "cosine": 0.8707,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 219414840,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7186618,
+    "0": 6901759,
+    "+1": 7145287
+   }
+  },
+  {
+   "name": "blk.19.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006026,
+   "cosine": 0.8836,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 224723260,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7116510,
+    "0": 7006897,
+    "+1": 7110257
+   }
+  },
+  {
+   "name": "blk.19.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008949,
+   "cosine": 0.8598,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 230031680,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 775348,
+    "0": 809408,
+    "+1": 774540
+   }
+  },
+  {
+   "name": "blk.19.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008443,
+   "cosine": 0.8757,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 230621508,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1575545,
+    "0": 1567629,
+    "+1": 1575418
+   }
+  },
+  {
+   "name": "blk.19.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009192,
+   "cosine": 0.8526,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 231801160,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1538487,
+    "0": 1639495,
+    "+1": 1540610
+   }
+  },
+  {
+   "name": "blk.19.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008348,
+   "cosine": 0.8738,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 232980812,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 786473,
+    "0": 788848,
+    "+1": 783975
+   }
+  },
+  {
+   "name": "blk.2.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005886,
+   "cosine": 0.8769,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 233570640,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7104322,
+    "0": 7020714,
+    "+1": 7108628
+   }
+  },
+  {
+   "name": "blk.2.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006364,
+   "cosine": 0.8851,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 238879060,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7129077,
+    "0": 6936337,
+    "+1": 7168250
+   }
+  },
+  {
+   "name": "blk.2.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006048,
+   "cosine": 0.8864,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 244187480,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7107010,
+    "0": 7030334,
+    "+1": 7096320
+   }
+  },
+  {
+   "name": "blk.2.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009667,
+   "cosine": 0.8699,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 249495900,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 782072,
+    "0": 794373,
+    "+1": 782851
+   }
+  },
+  {
+   "name": "blk.2.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008364,
+   "cosine": 0.8727,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 250085728,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1557015,
+    "0": 1604713,
+    "+1": 1556864
+   }
+  },
+  {
+   "name": "blk.2.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009534,
+   "cosine": 0.8743,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 251265380,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1569686,
+    "0": 1576759,
+    "+1": 1572147
+   }
+  },
+  {
+   "name": "blk.2.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008607,
+   "cosine": 0.881,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 252445032,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 787604,
+    "0": 784329,
+    "+1": 787363
+   }
+  },
+  {
+   "name": "blk.20.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005931,
+   "cosine": 0.8861,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 253034860,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7107017,
+    "0": 7023933,
+    "+1": 7102714
+   }
+  },
+  {
+   "name": "blk.20.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006128,
+   "cosine": 0.8744,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 258343280,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7203442,
+    "0": 6881082,
+    "+1": 7149140
+   }
+  },
+  {
+   "name": "blk.20.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006032,
+   "cosine": 0.8856,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 263651700,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7119245,
+    "0": 6998585,
+    "+1": 7115834
+   }
+  },
+  {
+   "name": "blk.20.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009213,
+   "cosine": 0.8658,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 268960120,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 784674,
+    "0": 791157,
+    "+1": 783465
+   }
+  },
+  {
+   "name": "blk.20.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.00857,
+   "cosine": 0.8721,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 269549948,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1577054,
+    "0": 1564463,
+    "+1": 1577075
+   }
+  },
+  {
+   "name": "blk.20.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009091,
+   "cosine": 0.8559,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 270729600,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1542338,
+    "0": 1633506,
+    "+1": 1542748
+   }
+  },
+  {
+   "name": "blk.20.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008491,
+   "cosine": 0.8719,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 271909252,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 785965,
+    "0": 786928,
+    "+1": 786403
+   }
+  },
+  {
+   "name": "blk.21.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.00598,
+   "cosine": 0.887,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 272499080,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7124374,
+    "0": 6991169,
+    "+1": 7118121
+   }
+  },
+  {
+   "name": "blk.21.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.00614,
+   "cosine": 0.8772,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 277807500,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7203416,
+    "0": 6901306,
+    "+1": 7128942
+   }
+  },
+  {
+   "name": "blk.21.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006059,
+   "cosine": 0.8868,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 283115920,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7112268,
+    "0": 7004580,
+    "+1": 7116816
+   }
+  },
+  {
+   "name": "blk.21.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008845,
+   "cosine": 0.8671,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 288424340,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 788494,
+    "0": 782687,
+    "+1": 788115
+   }
+  },
+  {
+   "name": "blk.21.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008379,
+   "cosine": 0.8681,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 289014168,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1580110,
+    "0": 1559295,
+    "+1": 1579187
+   }
+  },
+  {
+   "name": "blk.21.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008908,
+   "cosine": 0.8639,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 290193820,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1559596,
+    "0": 1599212,
+    "+1": 1559784
+   }
+  },
+  {
+   "name": "blk.21.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008615,
+   "cosine": 0.8832,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 291373472,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 782372,
+    "0": 796114,
+    "+1": 780810
+   }
+  },
+  {
+   "name": "blk.22.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006012,
+   "cosine": 0.8872,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 291963300,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7129764,
+    "0": 6980616,
+    "+1": 7123284
+   }
+  },
+  {
+   "name": "blk.22.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006161,
+   "cosine": 0.8771,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 297271720,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7212000,
+    "0": 6862176,
+    "+1": 7159488
+   }
+  },
+  {
+   "name": "blk.22.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006098,
+   "cosine": 0.887,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 302580140,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7131819,
+    "0": 6977244,
+    "+1": 7124601
+   }
+  },
+  {
+   "name": "blk.22.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008074,
+   "cosine": 0.8346,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 307888560,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 745721,
+    "0": 868953,
+    "+1": 744622
+   }
+  },
+  {
+   "name": "blk.22.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008614,
+   "cosine": 0.8749,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 308478388,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1580997,
+    "0": 1557149,
+    "+1": 1580446
+   }
+  },
+  {
+   "name": "blk.22.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008871,
+   "cosine": 0.8454,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 309658040,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1510104,
+    "0": 1700055,
+    "+1": 1508433
+   }
+  },
+  {
+   "name": "blk.22.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008472,
+   "cosine": 0.872,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 310837692,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 788673,
+    "0": 781130,
+    "+1": 789493
+   }
+  },
+  {
+   "name": "blk.23.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005984,
+   "cosine": 0.8865,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 311427520,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7107101,
+    "0": 7015422,
+    "+1": 7111141
+   }
+  },
+  {
+   "name": "blk.23.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006145,
+   "cosine": 0.8772,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 316735940,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7193516,
+    "0": 6863380,
+    "+1": 7176768
+   }
+  },
+  {
+   "name": "blk.23.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006122,
+   "cosine": 0.8888,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 322044360,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7125193,
+    "0": 6980365,
+    "+1": 7128106
+   }
+  },
+  {
+   "name": "blk.23.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.007974,
+   "cosine": 0.8513,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 327352780,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 775149,
+    "0": 808626,
+    "+1": 775521
+   }
+  },
+  {
+   "name": "blk.23.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008762,
+   "cosine": 0.8762,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 327942608,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1578575,
+    "0": 1561501,
+    "+1": 1578516
+   }
+  },
+  {
+   "name": "blk.23.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008619,
+   "cosine": 0.8534,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 329122260,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1532075,
+    "0": 1655276,
+    "+1": 1531241
+   }
+  },
+  {
+   "name": "blk.23.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008853,
+   "cosine": 0.8792,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 330301912,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 781479,
+    "0": 796892,
+    "+1": 780925
+   }
+  },
+  {
+   "name": "blk.24.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006049,
+   "cosine": 0.8748,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 330891740,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7200921,
+    "0": 6861038,
+    "+1": 7171705
+   }
+  },
+  {
+   "name": "blk.24.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009151,
+   "cosine": 0.8694,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 336200160,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 793863,
+    "0": 773614,
+    "+1": 791819
+   }
+  },
+  {
+   "name": "blk.24.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008461,
+   "cosine": 0.8617,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 336789988,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1573377,
+    "0": 1572656,
+    "+1": 1572559
+   }
+  },
+  {
+   "name": "blk.24.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.00891,
+   "cosine": 0.856,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 337969640,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1518314,
+    "0": 1683176,
+    "+1": 1517102
+   }
+  },
+  {
+   "name": "blk.24.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008682,
+   "cosine": 0.8769,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 339149292,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 784907,
+    "0": 789153,
+    "+1": 785236
+   }
+  },
+  {
+   "name": "blk.3.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005927,
+   "cosine": 0.8812,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 339739120,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7092487,
+    "0": 7048326,
+    "+1": 7092851
+   }
+  },
+  {
+   "name": "blk.3.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006425,
+   "cosine": 0.8872,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 345047540,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7123852,
+    "0": 6950272,
+    "+1": 7159540
+   }
+  },
+  {
+   "name": "blk.3.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006045,
+   "cosine": 0.8857,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 350355960,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7108437,
+    "0": 7016763,
+    "+1": 7108464
+   }
+  },
+  {
+   "name": "blk.3.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009348,
+   "cosine": 0.8731,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 355664380,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 781344,
+    "0": 799817,
+    "+1": 778135
+   }
+  },
+  {
+   "name": "blk.3.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.00846,
+   "cosine": 0.8778,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 356254208,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1582172,
+    "0": 1553682,
+    "+1": 1582738
+   }
+  },
+  {
+   "name": "blk.3.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009465,
+   "cosine": 0.8712,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 357433860,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1563904,
+    "0": 1592748,
+    "+1": 1561940
+   }
+  },
+  {
+   "name": "blk.3.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008668,
+   "cosine": 0.8848,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 358613512,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 785494,
+    "0": 787879,
+    "+1": 785923
+   }
+  },
+  {
+   "name": "blk.4.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005783,
+   "cosine": 0.8749,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 359203340,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7066662,
+    "0": 7098091,
+    "+1": 7068911
+   }
+  },
+  {
+   "name": "blk.4.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006185,
+   "cosine": 0.8802,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 364511760,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7145031,
+    "0": 6940619,
+    "+1": 7148014
+   }
+  },
+  {
+   "name": "blk.4.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005955,
+   "cosine": 0.8835,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 369820180,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7096578,
+    "0": 7034244,
+    "+1": 7102842
+   }
+  },
+  {
+   "name": "blk.4.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009132,
+   "cosine": 0.8758,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 375128600,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 789364,
+    "0": 780469,
+    "+1": 789463
+   }
+  },
+  {
+   "name": "blk.4.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008387,
+   "cosine": 0.8771,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 375718428,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1581396,
+    "0": 1556220,
+    "+1": 1580976
+   }
+  },
+  {
+   "name": "blk.4.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009117,
+   "cosine": 0.8689,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 376898080,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1565998,
+    "0": 1584565,
+    "+1": 1568029
+   }
+  },
+  {
+   "name": "blk.4.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008743,
+   "cosine": 0.8841,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 378077732,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 783667,
+    "0": 790335,
+    "+1": 785294
+   }
+  },
+  {
+   "name": "blk.5.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005705,
+   "cosine": 0.8798,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 378667560,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7061378,
+    "0": 7111298,
+    "+1": 7060988
+   }
+  },
+  {
+   "name": "blk.5.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006132,
+   "cosine": 0.875,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 383975980,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7135113,
+    "0": 6973379,
+    "+1": 7125172
+   }
+  },
+  {
+   "name": "blk.5.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005957,
+   "cosine": 0.8819,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 389284400,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7093806,
+    "0": 7046497,
+    "+1": 7093361
+   }
+  },
+  {
+   "name": "blk.5.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009215,
+   "cosine": 0.856,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 394592820,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 779134,
+    "0": 800062,
+    "+1": 780100
+   }
+  },
+  {
+   "name": "blk.5.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008642,
+   "cosine": 0.8685,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 395182648,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1575857,
+    "0": 1565989,
+    "+1": 1576746
+   }
+  },
+  {
+   "name": "blk.5.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009125,
+   "cosine": 0.8407,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 396362300,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1532918,
+    "0": 1650877,
+    "+1": 1534797
+   }
+  },
+  {
+   "name": "blk.5.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008828,
+   "cosine": 0.8773,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 397541952,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 782251,
+    "0": 794894,
+    "+1": 782151
+   }
+  },
+  {
+   "name": "blk.6.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005791,
+   "cosine": 0.878,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 398131780,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7075080,
+    "0": 7086178,
+    "+1": 7072406
+   }
+  },
+  {
+   "name": "blk.6.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.00593,
+   "cosine": 0.878,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 403440200,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7142698,
+    "0": 6962031,
+    "+1": 7128935
+   }
+  },
+  {
+   "name": "blk.6.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005813,
+   "cosine": 0.8825,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 408748620,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7102613,
+    "0": 7035377,
+    "+1": 7095674
+   }
+  },
+  {
+   "name": "blk.6.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.007907,
+   "cosine": 0.8361,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 414057040,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 759744,
+    "0": 839991,
+    "+1": 759561
+   }
+  },
+  {
+   "name": "blk.6.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008026,
+   "cosine": 0.8703,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 414646868,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1574356,
+    "0": 1567199,
+    "+1": 1577037
+   }
+  },
+  {
+   "name": "blk.6.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.00794,
+   "cosine": 0.844,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 415826520,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1525167,
+    "0": 1670120,
+    "+1": 1523305
+   }
+  },
+  {
+   "name": "blk.6.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008608,
+   "cosine": 0.873,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 417006172,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 779474,
+    "0": 800477,
+    "+1": 779345
+   }
+  },
+  {
+   "name": "blk.7.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005812,
+   "cosine": 0.8785,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 417596000,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7071368,
+    "0": 7094737,
+    "+1": 7067559
+   }
+  },
+  {
+   "name": "blk.7.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006144,
+   "cosine": 0.8738,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 422904420,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7152290,
+    "0": 7001211,
+    "+1": 7080163
+   }
+  },
+  {
+   "name": "blk.7.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006087,
+   "cosine": 0.8799,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 428212840,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7118007,
+    "0": 7000912,
+    "+1": 7114745
+   }
+  },
+  {
+   "name": "blk.7.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009088,
+   "cosine": 0.8365,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 433521260,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 776039,
+    "0": 808877,
+    "+1": 774380
+   }
+  },
+  {
+   "name": "blk.7.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008778,
+   "cosine": 0.8684,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 434111088,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1581671,
+    "0": 1555753,
+    "+1": 1581168
+   }
+  },
+  {
+   "name": "blk.7.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008778,
+   "cosine": 0.8305,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 435290740,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1520326,
+    "0": 1675489,
+    "+1": 1522777
+   }
+  },
+  {
+   "name": "blk.7.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008957,
+   "cosine": 0.8802,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 436470392,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 778899,
+    "0": 801498,
+    "+1": 778899
+   }
+  },
+  {
+   "name": "blk.8.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005829,
+   "cosine": 0.8801,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 437060220,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7068872,
+    "0": 7095391,
+    "+1": 7069401
+   }
+  },
+  {
+   "name": "blk.8.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006236,
+   "cosine": 0.8747,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 442368640,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7161233,
+    "0": 6977524,
+    "+1": 7094907
+   }
+  },
+  {
+   "name": "blk.8.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006092,
+   "cosine": 0.8819,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 447677060,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7124718,
+    "0": 6986815,
+    "+1": 7122131
+   }
+  },
+  {
+   "name": "blk.8.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008677,
+   "cosine": 0.842,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 452985480,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 767978,
+    "0": 821352,
+    "+1": 769966
+   }
+  },
+  {
+   "name": "blk.8.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008615,
+   "cosine": 0.8744,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 453575308,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1582621,
+    "0": 1555306,
+    "+1": 1580665
+   }
+  },
+  {
+   "name": "blk.8.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008888,
+   "cosine": 0.8486,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 454754960,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1551494,
+    "0": 1618044,
+    "+1": 1549054
+   }
+  },
+  {
+   "name": "blk.8.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009081,
+   "cosine": 0.8767,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 455934612,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 783415,
+    "0": 793467,
+    "+1": 782414
+   }
+  },
+  {
+   "name": "blk.9.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005768,
+   "cosine": 0.8808,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 456524440,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7077918,
+    "0": 7080538,
+    "+1": 7075208
+   }
+  },
+  {
+   "name": "blk.9.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006167,
+   "cosine": 0.8752,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 461832860,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7136842,
+    "0": 6998026,
+    "+1": 7098796
+   }
+  },
+  {
+   "name": "blk.9.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.006038,
+   "cosine": 0.8825,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 467141280,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7127111,
+    "0": 6980585,
+    "+1": 7125968
+   }
+  },
+  {
+   "name": "blk.9.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009144,
+   "cosine": 0.8591,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 472449700,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 774787,
+    "0": 809136,
+    "+1": 775373
+   }
+  },
+  {
+   "name": "blk.9.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.008793,
+   "cosine": 0.8635,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 473039528,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1579105,
+    "0": 1561733,
+    "+1": 1577754
+   }
+  },
+  {
+   "name": "blk.9.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009209,
+   "cosine": 0.8591,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 474219180,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1568647,
+    "0": 1581958,
+    "+1": 1567987
+   }
+  },
+  {
+   "name": "blk.9.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009056,
+   "cosine": 0.883,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 475398832,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 785843,
+    "0": 787261,
+    "+1": 786192
+   }
+  },
+  {
+   "name": "blk.24.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005903,
+   "cosine": 0.8842,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 475988660,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7080786,
+    "0": 7071069,
+    "+1": 7081809
+   }
+  },
+  {
+   "name": "blk.24.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.00611,
+   "cosine": 0.8866,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 481297080,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7117828,
+    "0": 6995903,
+    "+1": 7119933
+   }
+  },
+  {
+   "name": "blk.25.ffn_down.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    9216,
+    2304
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005482,
+   "cosine": 0.8823,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 486605500,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7048675,
+    "0": 7140056,
+    "+1": 7044933
+   }
+  },
+  {
+   "name": "blk.25.ffn_gate.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.005772,
+   "cosine": 0.8721,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 491913920,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7184250,
+    "0": 6899453,
+    "+1": 7149961
+   }
+  },
+  {
+   "name": "blk.25.ffn_up.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    9216
+   ],
+   "n_elements": 21233664,
+   "src_bytes": 11943936,
+   "alpha": 0.00602,
+   "cosine": 0.8842,
+   "trit_bytes": 5308416,
+   "packed_bytes": 5308416,
+   "bin_offset": 497222340,
+   "bin_len": 5308420,
+   "counts": {
+    "-1": 7097510,
+    "0": 7036733,
+    "+1": 7099421
+   }
+  },
+  {
+   "name": "blk.25.attn_k.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.009234,
+   "cosine": 0.8738,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 502530760,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 786517,
+    "0": 784231,
+    "+1": 788548
+   }
+  },
+  {
+   "name": "blk.25.attn_output.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2048,
+    2304
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.007926,
+   "cosine": 0.8673,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 503120588,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1588353,
+    "0": 1540191,
+    "+1": 1590048
+   }
+  },
+  {
+   "name": "blk.25.attn_q.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    2048
+   ],
+   "n_elements": 4718592,
+   "src_bytes": 2654208,
+   "alpha": 0.009005,
+   "cosine": 0.8656,
+   "trit_bytes": 1179648,
+   "packed_bytes": 1179648,
+   "bin_offset": 504300240,
+   "bin_len": 1179652,
+   "counts": {
+    "-1": 1560442,
+    "0": 1597140,
+    "+1": 1561010
+   }
+  },
+  {
+   "name": "blk.25.attn_v.weight",
+   "gguf_type": "Q4_0",
+   "dims": [
+    2304,
+    1024
+   ],
+   "n_elements": 2359296,
+   "src_bytes": 1327104,
+   "alpha": 0.008312,
+   "cosine": 0.8769,
+   "trit_bytes": 589824,
+   "packed_bytes": 589824,
+   "bin_offset": 505479892,
+   "bin_len": 589828,
+   "counts": {
+    "-1": 787982,
+    "0": 782341,
+    "+1": 788973
+   }
+  }
+ ]
+}

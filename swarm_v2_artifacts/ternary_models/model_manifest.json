@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-11T01:41:46Z",
+  "generated_by": "swarm_v2_artifacts/ternary_models/build_model_manifest.py",
+  "host": "Windows 11 (host), TRM-Swarm-OS-v2 v20 native Rust kernel",
+  "notes": [
+    "One entry per model that is genuinely served on this host.",
+    "parameter_count is measured (GGUF tensor dims, blob bytes, layout constants), never read from a filename.",
+    "quantisation_evidence carries the raw evidence; basis explains the reasoning and any gap.",
+    "Entries without verified_at are counted in /models stats.unverified, not hidden."
+  ],
+  "models": [
+    {
+      "id": "qwen2.5-1.5b-instruct-q4_k_m",
+      "name": "Qwen2.5-1.5B-Instruct (Q4_K_M)",
+      "kind": "llm",
+      "path": "models/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "endpoint": "http://127.0.0.1:8587",
+      "parameter_count": 1777088000,
+      "parameter_count_known": true,
+      "quantisation": "Q4_K_M",
+      "quantisation_evidence": {
+        "gguf_file_type": 15,
+        "tensor_types": {
+          "Q6_K": 29,
+          "Q4_K": 169,
+          "F32": 141
+        },
+        "bits_per_parameter": 5.03
+      },
+      "architecture": "qwen2",
+      "context_length": 32768,
+      "verified_at": "2026-11-11T01:41:46Z",
+      "verified_by": "GET http://127.0.0.1:8587/health -> 200 {\"status\": \"ok\"}; GET /props -> model_path=F:\\Development sites\\TRM-Swarm-OS-v2\\models\\qwen2.5-1.5b-instruct-q4_k_m.gguf; GGUF header parse: 339 tensors, 1777088000 parameters (sum of tensor dims)",
+      "basis": "parameter count summed from GGUF tensor dimensions; quantisation from gguf general.file_type=15 plus the per-tensor type histogram (Q4_K=169, Q6_K=29, F32=141). Neither is inferred from the filename."
+    },
+    {
+      "id": "qwen3-4b-instruct-q4_k_m",
+      "name": "Qwen3-4B-Instruct (Q4_K_M, converted from HF safetensors)",
+      "kind": "llm",
+      "path": "models/qwen3-4b-instruct-q4_k_m.gguf",
+      "endpoint": "http://127.0.0.1:8595",
+      "parameter_count": 4022468096,
+      "parameter_count_known": true,
+      "quantisation": "Q4_K_M",
+      "quantisation_evidence": {
+        "gguf_file_type": 15,
+        "tensor_types": {
+          "F32": 145,
+          "Q6_K": 37,
+          "Q4_K": 216
+        },
+        "bits_per_parameter": 4.967
+      },
+      "architecture": "qwen3",
+      "context_length": 40960,
+      "source_provenance": "F:/Development sites/huggingface_cache/hub/models--Qwen--Qwen3-4B/snapshots/1cfa9a72 -> convert_hf_to_gguf.py --outtype f16 (8,051,284,928 B) -> llama-quantize Q4_K_M (2,375.91 MiB, 36.4 s)",
+      "verified_at": "2026-11-11T01:41:46Z",
+      "verified_by": "GET http://127.0.0.1:8595/health -> 200 {\"status\": \"ok\"}; GET /props -> model_path=models/qwen3-4b-instruct-q4_k_m.gguf; GGUF header parse: 398 tensors, 4022468096 parameters (sum of tensor dims)",
+      "basis": "parameter count summed from GGUF tensor dimensions; quantisation from gguf general.file_type=15 plus the per-tensor type histogram (Q4_K=216, Q6_K=37, F32=145). Neither is inferred from the filename."
+    },
+    {
+      "id": "bonsai-27b-q1_0",
+      "name": "Bonsai-27B (Q1_0)",
+      "kind": "llm",
+      "path": "Jarvis-Advanced-main/models/Bonsai-27B-Q1_0.gguf",
+      "endpoint": "http://127.0.0.1:8591",
+      "parameter_count": 26895998464,
+      "parameter_count_known": true,
+      "quantisation": "Q1_0",
+      "quantisation_evidence": {
+        "gguf_file_type": 40,
+        "tensor_types": {
+          "type_41": 498,
+          "F32": 353
+        },
+        "bits_per_parameter": 1.131,
+        "filename_tag": "Q1_0"
+      },
+      "architecture": "qwen35",
+      "context_length": 262144,
+      "verified_at": "2026-11-11T01:41:46Z",
+      "verified_by": "GET http://127.0.0.1:8591/health -> 200 {\"status\": \"ok\"}; GET /props -> model_path=F:\\Development sites\\TRM-Swarm-OS-v2\\Jarvis-Advanced-main\\models\\Bonsai-27B-Q1_0.gguf; GGUF header parse: 851 tensors, 26895998464 parameters",
+      "basis": "parameter count is exact (sum of GGUF tensor dims). Quantisation is Q1_0 per the filename and per ggml tensor type id 41, for which this parser has no name table; corroborated by the measured 1.131 bits/param (Q1_0 = 1.125 theoretical), so the label is consistent but the type id itself was not decoded from ggml source."
+    },
+    {
+      "id": "trm7m",
+      "name": "TRM 7M (Mamba-3 SSM, seed-42 random init, UNTRAINED)",
+      "kind": "trm",
+      "path": "trm_uefi_kernel/assets/trm7m_weights.bin",
+      "endpoint": "http://127.0.0.1:8588",
+      "parameter_count": 3909447,
+      "parameter_count_known": true,
+      "quantisation": "f32",
+      "quantisation_evidence": {
+        "bytes": 15637788,
+        "bytes_per_parameter": 4,
+        "layout_expected_parameters": 3909447
+      },
+      "verified_at": "2026-11-11T01:41:46Z",
+      "verified_by": "GET http://127.0.0.1:8588/health -> 200 {\"status\": \"ok\", \"model\": \"trm7m\"}; file F:\\Development sites\\TRM-Swarm-OS-v2\\trm_uefi_kernel\\assets\\trm7m_weights.bin is 15637788 bytes = 3909447 f32 parameters, which equals the layout sum in host_council_server/src/trm7m.rs (STATE_DIM=462, INPUT_DIM=128, 3 blocks) = 3909447",
+      "basis": "parameter count = file bytes / 4 and independently reproduced by the module's own offset constants; weights are raw f32 (no quantisation, no header). Trained=false: the blob is seed-42 random init.",
+      "trained": false
+    },
+    {
+      "id": "nomic-embed-text-v1.5",
+      "name": "nomic-embed-text-v1.5 (768-dim)",
+      "kind": "embedding",
+      "path": "C:\\Users\\shawn\\.ollama\\models\\blobs\\sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6",
+      "endpoint": "http://127.0.0.1:8593",
+      "parameter_count": 136727040,
+      "parameter_count_known": true,
+      "quantisation": "F16",
+      "quantisation_evidence": {
+        "tensor_types": {
+          "F32": 51,
+          "F16": 61
+        },
+        "bits_per_parameter": 16.049
+      },
+      "architecture": "nomic-bert",
+      "embedding_length": 768,
+      "context_length": 2048,
+      "verified_at": "2026-11-11T01:41:46Z",
+      "verified_by": "GET http://127.0.0.1:8593/health -> 200 {\"status\": \"ok\"}; GET /props -> model_path=C:/Users/shawn/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6; GGUF header parse: 112 tensors, 136727040 parameters, embedding_length=768",
+      "basis": "parameter count summed from GGUF tensor dims; F16 label from the tensor type histogram (F16=61, F32=51), not from the path."
+    },
+    {
+      "id": "k3-head-set",
+      "name": "K3 head set (15 heads)",
+      "kind": "ternary-head-set",
+      "path": "trm_uefi_kernel/assets/k3_heads.bin",
+      "endpoint": "http://127.0.0.1:8022 (in-process: /crate/k3, /drug/*)",
+      "parameter_count": 7830405,
+      "parameter_count_known": true,
+      "quantisation": "f32",
+      "quantisation_evidence": {
+        "blob_magic": "K3HD",
+        "blob_version": 2,
+        "declared_heads": 15,
+        "parameters_per_head": 522027,
+        "ternary_heads": [],
+        "distinct_f32_values_per_head": [
+          393859,
+          393816,
+          393830,
+          393839,
+          393850,
+          393825,
+          393853,
+          393839,
+          393802,
+          393832,
+          393873,
+          393811,
+          393828,
+          393888,
+          393842
+        ],
+        "max_abs_per_head": [
+          4.438107,
+          4.518826,
+          4.684335,
+          5.155292,
+          5.180683,
+          4.776519,
+          4.910783,
+          5.167817,
+          4.714941,
+          4.684129,
+          4.51461,
+          4.744677,
+          4.655343,
+          4.452034,
+          4.773764
+        ]
+      },
+      "verified_at": "2026-11-11T01:41:46Z",
+      "verified_by": "GET http://127.0.0.1:8022/health -> 200 (kernel=Native Rust Sovereign Kernel v20.0.0, status=HEALTHY); blob header parse of trm_uefi_kernel/assets/k3_heads.bin (magic K3HD, version 2, 15 head records, each 522027 f32 = 7830405 parameters); per-head f32 value histogram run over all 7830405 parameters",
+      "basis": "The tier is NAMED ternary, but the blob does not prove it: every head stores IEEE-754 f32 with ~394k distinct values out of 522,027, ~48k exact zeros and max|w| between 4.4 and 5.2. A ternary tensor would show <=3 distinct values and a single non-zero magnitude. All 15 heads are dense. So quantisation is recorded as f32 and the ternary claim is marked unverified rather than repeated.",
+      "ternary_claim_verified": false,
+      "trained": false
+    }
+  ]
+}

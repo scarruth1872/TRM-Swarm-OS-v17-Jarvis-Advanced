@@ -1,0 +1,24 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T22:09:04.171912+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "beb0b2cdfe74c07bf5b307ce86d2b3130009e4910c20f3bd34ae3e2fb7d14a7d",
+      "motion": "MOTION-HF1",
+      "phase": "consensus",
+      "proposal_id": "CP-C2CF86C5",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "HDC HOLOGRAPHIC FABRIC FOR SPECIFICITY: encode each scored paratope (sequence + contact-density signature) and each antigen into HDC hypervectors using the native encoder, then measure whether the cognate paratope-antigen similarity is an OUTLIER above random's mean+2sigma (the specificity signal the physical fold+dock+scorer could not assemble). REJECT AS PREMATURE: claiming specificity from a hypervector cosine without the random-antigen distribution; claiming a native encoder result without parity against the CPU reference. MEASURED: the platform has native_encoder::encode_f32 (HDC sign-projection, wgpu GPU shader), the 15 SRAM analog patterns, a 7,783-complex scored corpus (benchmark_paratope_full.json), and the C2 sequence->density model. SP1/CP1 showed the physical path fails: single-chain fold gives no interface, the docking crate is a small-molecule scorer, the antigen mis-folds (24.2 A). Specificity is a PROPERTY question (cognate signature vs random), not a coordinate question."
+    }
+  ],
+  "prior_state": "physical path bounded (fold single-chain, dock a scorer, antigen mis-folds)",
+  "quorum": 9,
+  "record": "HDC HOLOGRAPHIC FABRIC (properties as hypervectors, specificity as similarity) -- council-voted; platform self-directs",
+  "sha256": "d3a7c06babbc5af5d2b93835fab6036f7e41ec49886d0ee8e638ba93cb3ea62d"
+}

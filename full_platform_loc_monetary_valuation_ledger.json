@@ -1,0 +1,977 @@
+{
+  "protocol": "FULL_PLATFORM_LOC_MONETARY_VALUATION_LEDGER",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-08-23 16:18:31",
+  "total_source_files": 1920,
+  "total_code_loc": 388511,
+  "total_comment_loc": 51401,
+  "total_blank_lines": 71759,
+  "total_engineering_replacement_usd": 31908335.0,
+  "total_strategic_license_4x_usd": 127633340.0,
+  "loc_pricing_rates": {
+    "rust_kernel": {
+      "rate": 145.0,
+      "desc": "Bare-Metal no_std Rust Kernel & Drivers"
+    },
+    "ai_engine": {
+      "rate": 110.0,
+      "desc": "Mamba-3 SSM, TurboVec 16x, 15 SRAM Fabrics"
+    },
+    "swarm_security": {
+      "rate": 95.0,
+      "desc": "584-Agent Byzantine Swarm, DDR, tHSM"
+    },
+    "ui_dashboard": {
+      "rate": 55.0,
+      "desc": "Jarvis LCARS React 18 Dashboard & Sectors"
+    },
+    "support_infra": {
+      "rate": 35.0,
+      "desc": "Build Scripts, Shards, Configs & Specs"
+    }
+  },
+  "subsystems": [
+    {
+      "subsystem": "TRM Bare-Metal Kernel & Drivers (Rust no_std)",
+      "file_count": 276,
+      "code_loc": 14820,
+      "average_rate_usd": 145.0,
+      "replacement_val_usd": 2148900.0,
+      "license_val_4x_usd": 8595600.0
+    },
+    {
+      "subsystem": "JARVIS Swarm Core & Microkernel Engines (Python)",
+      "file_count": 1189,
+      "code_loc": 249897,
+      "average_rate_usd": 95.07,
+      "replacement_val_usd": 23757510.0,
+      "license_val_4x_usd": 95030040.0
+    },
+    {
+      "subsystem": "JARVIS Advanced & LCARS Dashboard (React/JSX)",
+      "file_count": 112,
+      "code_loc": 82593,
+      "average_rate_usd": 55.88,
+      "replacement_val_usd": 4615075.0,
+      "license_val_4x_usd": 18460300.0
+    },
+    {
+      "subsystem": "Autonomous Drug Discovery & Docking Engine",
+      "file_count": 1,
+      "code_loc": 300,
+      "average_rate_usd": 95.0,
+      "replacement_val_usd": 28500.0,
+      "license_val_4x_usd": 114000.0
+    },
+    {
+      "subsystem": "Sovereign Security, tHSM & Memory Antibodies",
+      "file_count": 43,
+      "code_loc": 9543,
+      "average_rate_usd": 95.73,
+      "replacement_val_usd": 913565.0,
+      "license_val_4x_usd": 3654260.0
+    }
+  ],
+  "detailed_file_records": [
+    {
+      "path": "app.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 83,
+      "comment_loc": 2,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 2905.0
+    },
+    {
+      "path": "archi_code_response.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 33,
+      "comment_loc": 4,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1155.0
+    },
+    {
+      "path": "ask_system.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 21,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 735.0
+    },
+    {
+      "path": "audit_codebase_loc_and_cost.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 78,
+      "comment_loc": 14,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 2730.0
+    },
+    {
+      "path": "audit_trm.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 81,
+      "comment_loc": 6,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 2835.0
+    },
+    {
+      "path": "batch1_ref_driver.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 574,
+      "comment_loc": 39,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 20090.0
+    },
+    {
+      "path": "build_dataset.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 124,
+      "comment_loc": 13,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 4340.0
+    },
+    {
+      "path": "check_api.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 31,
+      "comment_loc": 1,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1085.0
+    },
+    {
+      "path": "check_archi.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 12,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 420.0
+    },
+    {
+      "path": "check_checkpoint_keys.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 7,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 245.0
+    },
+    {
+      "path": "check_checkpoint_shapes.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 6,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 210.0
+    },
+    {
+      "path": "check_gpu.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 37,
+      "comment_loc": 3,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1295.0
+    },
+    {
+      "path": "check_model_keys.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 27,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 945.0
+    },
+    {
+      "path": "check_server.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 17,
+      "comment_loc": 1,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 595.0
+    },
+    {
+      "path": "check_shapes_v2.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 7,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 245.0
+    },
+    {
+      "path": "clean_pipeline.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 22,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 770.0
+    },
+    {
+      "path": "copy_docs_to_swarm_artifacts.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 25,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 875.0
+    },
+    {
+      "path": "create_platform_backup.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 74,
+      "comment_loc": 1,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 2590.0
+    },
+    {
+      "path": "debug_artifact_stats.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 45,
+      "comment_loc": 10,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1575.0
+    },
+    {
+      "path": "debug_import.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 22,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 770.0
+    },
+    {
+      "path": "debug_memory_response.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 34,
+      "comment_loc": 1,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1190.0
+    },
+    {
+      "path": "debug_model_structure.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 33,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1155.0
+    },
+    {
+      "path": "debug_nn_buffer.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 21,
+      "comment_loc": 7,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 735.0
+    },
+    {
+      "path": "debug_nodes.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 18,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 630.0
+    },
+    {
+      "path": "debug_parallel_logic.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 94,
+      "comment_loc": 6,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 3290.0
+    },
+    {
+      "path": "debug_prune.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 22,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 770.0
+    },
+    {
+      "path": "debug_split.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 29,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1015.0
+    },
+    {
+      "path": "debug_weather_port.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 8,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 280.0
+    },
+    {
+      "path": "debug_weather_query.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 8,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 280.0
+    },
+    {
+      "path": "demo_continuum_microkernel_subagents.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 67,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 2345.0
+    },
+    {
+      "path": "demo_microkernel_subagents.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 67,
+      "comment_loc": 1,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 2345.0
+    },
+    {
+      "path": "demo_symbiotic_skills.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 67,
+      "comment_loc": 12,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 2345.0
+    },
+    {
+      "path": "diagnose_idle.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 111,
+      "comment_loc": 9,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 3885.0
+    },
+    {
+      "path": "diag_archi.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 27,
+      "comment_loc": 4,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 945.0
+    },
+    {
+      "path": "diag_functional.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 39,
+      "comment_loc": 3,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1365.0
+    },
+    {
+      "path": "diag_hf.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 29,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1015.0
+    },
+    {
+      "path": "ecosystem.config.js",
+      "language": "JS",
+      "tier": "support_infra",
+      "code_loc": 41,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1435.0
+    },
+    {
+      "path": "enable_gpu_acceleration.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 186,
+      "comment_loc": 15,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 6510.0
+    },
+    {
+      "path": "execute_direct_cognitive_task.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 40,
+      "comment_loc": 9,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1400.0
+    },
+    {
+      "path": "execute_exhaustive_170_module_council_protocol.py",
+      "language": "PY",
+      "tier": "swarm_security",
+      "code_loc": 150,
+      "comment_loc": 18,
+      "rate_per_loc": 95.0,
+      "replacement_val_usd": 14250.0
+    },
+    {
+      "path": "execute_master_complex_task_demo.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 104,
+      "comment_loc": 23,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 3640.0
+    },
+    {
+      "path": "execute_million_task_symbology_voltage_protocol.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 143,
+      "comment_loc": 17,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 5005.0
+    },
+    {
+      "path": "execute_monad_interdimensional_protocol.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 251,
+      "comment_loc": 12,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 8785.0
+    },
+    {
+      "path": "execute_sovereign_dock_harvest_seal_10k.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 198,
+      "comment_loc": 15,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 6930.0
+    },
+    {
+      "path": "execute_sovereign_industry_transformation_20.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 258,
+      "comment_loc": 8,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 9030.0
+    },
+    {
+      "path": "execute_sovereign_meaningful_work_100k.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 179,
+      "comment_loc": 14,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 6265.0
+    },
+    {
+      "path": "execute_trillion_task_self_knowledge_protocol.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 135,
+      "comment_loc": 9,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 4725.0
+    },
+    {
+      "path": "final_verification.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 160,
+      "comment_loc": 5,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 5600.0
+    },
+    {
+      "path": "find_continuum_endpoints.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 13,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 455.0
+    },
+    {
+      "path": "find_routes.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 29,
+      "comment_loc": 6,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1015.0
+    },
+    {
+      "path": "finetune_gemma.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 194,
+      "comment_loc": 16,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 6790.0
+    },
+    {
+      "path": "fix_arrows_global.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 19,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 665.0
+    },
+    {
+      "path": "fix_directml_install.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 144,
+      "comment_loc": 18,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 5040.0
+    },
+    {
+      "path": "fix_read_local.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 21,
+      "comment_loc": 3,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 735.0
+    },
+    {
+      "path": "fix_swarm_context.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 50,
+      "comment_loc": 11,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1750.0
+    },
+    {
+      "path": "fix_synth_paths.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 22,
+      "comment_loc": 4,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 770.0
+    },
+    {
+      "path": "generate_paper.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 21,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 735.0
+    },
+    {
+      "path": "get_dims.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 8,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 280.0
+    },
+    {
+      "path": "gpu_usage_example.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 162,
+      "comment_loc": 23,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 5670.0
+    },
+    {
+      "path": "index.html",
+      "language": "HTML",
+      "tier": "support_infra",
+      "code_loc": 21,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 735.0
+    },
+    {
+      "path": "ingest_knowledge.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 45,
+      "comment_loc": 6,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1575.0
+    },
+    {
+      "path": "ingest_knowledge_phase2.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 45,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1575.0
+    },
+    {
+      "path": "ingest_sovereign_datasets.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 151,
+      "comment_loc": 17,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 5285.0
+    },
+    {
+      "path": "initialize_all_modules.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 635,
+      "comment_loc": 31,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 22225.0
+    },
+    {
+      "path": "inspect_routes.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 79,
+      "comment_loc": 15,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 2765.0
+    },
+    {
+      "path": "inspect_server_learn.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 7,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 245.0
+    },
+    {
+      "path": "integration_test.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 254,
+      "comment_loc": 22,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 8890.0
+    },
+    {
+      "path": "investigate_and_integrate_15_sram_patterns.py",
+      "language": "PY",
+      "tier": "ai_engine",
+      "code_loc": 171,
+      "comment_loc": 4,
+      "rate_per_loc": 110.0,
+      "replacement_val_usd": 18810.0
+    },
+    {
+      "path": "launcher.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 89,
+      "comment_loc": 11,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 3115.0
+    },
+    {
+      "path": "live_testing_suite.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 71,
+      "comment_loc": 10,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 2485.0
+    },
+    {
+      "path": "microkernel_proxy.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 253,
+      "comment_loc": 6,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 8855.0
+    },
+    {
+      "path": "nexus_usage_example.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 27,
+      "comment_loc": 5,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 945.0
+    },
+    {
+      "path": "observe_symbology_hardware_voltage_engine.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 194,
+      "comment_loc": 15,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 6790.0
+    },
+    {
+      "path": "phase6_kickoff.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 40,
+      "comment_loc": 1,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1400.0
+    },
+    {
+      "path": "pretrain.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 465,
+      "comment_loc": 57,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 16275.0
+    },
+    {
+      "path": "purge_memory.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 58,
+      "comment_loc": 2,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 2030.0
+    },
+    {
+      "path": "puzzle_dataset.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 181,
+      "comment_loc": 22,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 6335.0
+    },
+    {
+      "path": "quantify_full_platform_loc_and_monetary_value.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 161,
+      "comment_loc": 12,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 5635.0
+    },
+    {
+      "path": "reallocate_ports.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 38,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1330.0
+    },
+    {
+      "path": "recover_registry.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 55,
+      "comment_loc": 5,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1925.0
+    },
+    {
+      "path": "recover_skills.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 36,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1260.0
+    },
+    {
+      "path": "render_all_sectors.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 244,
+      "comment_loc": 10,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 8540.0
+    },
+    {
+      "path": "render_and_verify_framebuffer.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 215,
+      "comment_loc": 9,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 7525.0
+    },
+    {
+      "path": "render_and_verify_setup.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 193,
+      "comment_loc": 6,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 6755.0
+    },
+    {
+      "path": "render_terminal_screenshot.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 218,
+      "comment_loc": 9,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 7630.0
+    },
+    {
+      "path": "run_nexus_build.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 47,
+      "comment_loc": 2,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1645.0
+    },
+    {
+      "path": "search_learn_resource.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 23,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 805.0
+    },
+    {
+      "path": "setup_github_remote.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 56,
+      "comment_loc": 3,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1960.0
+    },
+    {
+      "path": "setup_private_github_repo.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 48,
+      "comment_loc": 1,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1680.0
+    },
+    {
+      "path": "setup_self_hosting_environment.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 40,
+      "comment_loc": 0,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1400.0
+    },
+    {
+      "path": "simulated_microkernel_prototype.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 141,
+      "comment_loc": 29,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 4935.0
+    },
+    {
+      "path": "startup.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 22,
+      "comment_loc": 4,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 770.0
+    },
+    {
+      "path": "start_tools.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 57,
+      "comment_loc": 4,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1995.0
+    },
+    {
+      "path": "stress_test_api_comprehensive.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 407,
+      "comment_loc": 24,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 14245.0
+    },
+    {
+      "path": "stress_test_cognitive_stack.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 226,
+      "comment_loc": 17,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 7910.0
+    },
+    {
+      "path": "stress_test_comprehensive.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 562,
+      "comment_loc": 44,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 19670.0
+    },
+    {
+      "path": "stress_test_quick.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 150,
+      "comment_loc": 7,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 5250.0
+    },
+    {
+      "path": "swarm3_endpoints_snippet.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 148,
+      "comment_loc": 2,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 5180.0
+    },
+    {
+      "path": "swarm_batch_maintenance.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 29,
+      "comment_loc": 3,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 1015.0
+    },
+    {
+      "path": "swarm_manager.py",
+      "language": "PY",
+      "tier": "support_infra",
+      "code_loc": 92,
+      "comment_loc": 10,
+      "rate_per_loc": 35.0,
+      "replacement_val_usd": 3220.0
+    }
+  ]
+}

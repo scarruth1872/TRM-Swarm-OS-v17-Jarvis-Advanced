@@ -1,0 +1,75 @@
+=== HOST-ONLY: 29 ===
+  local_lora_trainer                 py=  388 rs=  12  [torch]
+  llm_router                         py=  655 rs=  28  [numpy,torch]
+  base_agent                         py= 1427 rs=  63  [numpy]
+  ddr_self_training                  py=  296 rs=  23  [numpy,psutil,torch]
+  daemon_discovery                   py=   95 rs=   9  [psutil]
+  task_arbiter                       py=  911 rs=  92  [psutil]
+  resource_arbiter                   py=  184 rs=  19  [psutil]
+  persistent_mmap_allocator          py=  320 rs=  40  [mmap,numpy]
+  lora_response_modulator            py=  216 rs=  29  [numpy]
+  cold_start_recovery                py=  234 rs=  37  [mmap]
+  rust_kernel_binder                 py=  163 rs=  26  [numpy]
+  cosmos_sparse_moe_teams            py=  161 rs=  26  [numpy]
+  neuro_continuum                    py=  172 rs=  30  [numpy,torch]
+  kernel_lora_adapter                py=  353 rs=  66  [mmap,numpy,torch]
+  continuum_genomics                 py=  119 rs=  23  [numpy]
+  predictive_watchdog                py=  289 rs=  58  [numpy,psutil]
+  hf_brain                           py=  124 rs=  25  [torch,transformers]
+  trm_7m_full                        py=  218 rs=  45  [numpy]
+  cosmos_bridge                      py=  109 rs=  23  [numpy]
+  simd_accelerator                   py=  272 rs=  59  [numpy]
+  phoenix_protocol_engine            py=  110 rs=  25  [numpy]
+  gpu_unlock_architecture            py=  393 rs= 105  [mmap,numpy,torch]
+  cosmos_moe_instella_shunter        py=  104 rs=  28  [numpy]
+  cosmos_microkernel_entanglement    py=   96 rs=  26  [numpy]
+  qisa_optimizer                     py=  244 rs=  75  [torch]
+  expert_team_harnesses              py=   82 rs=  26  [numpy]
+  thz_wave_gateway                   py=  220 rs=  71  [numpy,scipy]
+  hardware_voltage_microkernel_binder py=  284 rs=  92  [numpy,psutil]
+  monad                              py=  330 rs= 132  [numpy]
+
+=== NET-ONLY: 9 ===
+  cognitive_ingestion_engine         py=  778 rs=  32  [urllib]
+  proactive_loop                     py=  547 rs=  53  [aiohttp]
+  openclaw_gateway                   py=  503 rs=  58  [aiohttp,requests]
+  federation                         py=  476 rs=  57  [requests]
+  digital_dna_loop                   py=  540 rs=  69  [urllib]
+  external_socket_bridge             py=  166 rs=  27  [socket]
+  memory_synchronizer                py=  129 rs=  23  [aiohttp]
+  sentinel                           py=  387 rs=  82  [urllib]
+  mpu                                py=   73 rs=  23  [requests]
+
+=== KERNEL-CANDIDATE: 39 ===
+  -- SYNC-PORTABLE: 12
+  shrink   pyL   rsL  module                           missing-api
+     92%   357    28  secrets_vault                    SecretsVault, check_node_access, delete_secret
+     90%   125    12  native_ops_bridge                InstellaGateInput, InstellaGateOutput, NativeKernelOpsBridge
+     90%    87     9  redis_mock                       PersistentRedisMock, blpop, get
+     88%   224    28  brain_ai_microkernel_bridge      BrainAIMicrokernelBridge, get_swarm_health_for_brain_ai, process_brain_ai_data
+     81%   144    27  port_manager                     PortManager, acquire_port, get_agent_ports
+     80%   258    51  moltbook                         MoltbookNetwork, find_matching_queries, get_feed
+     79%   235    49  cosmos3_edge_bridge              Cosmos3EdgeBridge, CosmosActionStatus, get_stats
+     79%   284    61  native_mailbox_bridge            C_AgentMailboxMessage, HybridMailboxBus, NativeMailboxBridge
+     76%   219    53  daily_evolution_engine           run_daily_evolution
+     70%   493   148  pbft_consensus                   ConsensusPhase, ConsensusProposal, PBFTConsensusLayer
+     67%   336   110  intent_buffer                    predict_intent, prewarm_context, record_intent
+     62%    60    23  llm_orchestrator                 LLMOrchestrator, determine_routing, synthesize_context
+  -- ASYNC-OTHER: 24
+     remediation_engine, monitor_daemon, self_healing_orchestrator, evolutionary_sandbox, collaborative_reasoning, neural_wall, auto_changelog, cognitive_stack, reconnaissance_daemon, mcp_tool_evolver, ultrawork_loop, swarm_performance_insights, prism_fqm, meta_orchestrator, deterministic_forge, coordination_responder, chain_of_verification, optimization_engine, llm_brain, semantic_cache, mcp_bus, lobster_shell, mutation_engine, resonance_engine
+  -- ASYNC-DAEMON: 2
+     background_tasks, swarm_orchestrator
+  -- NET: 1
+     microkernel_chat_bridge
+
+
+=== 157 ported modules compared ===
+    KERNEL-CANDIDATE (real backlog): 39
+    HOST-ONLY / NET-ONLY (correctly stubbed): 38
+
+=== NEVER-COMPILED FILES (no `mod` declaration): 0 ===
+    none - every .rs file is declared
+
+NOTE: this finds CANDIDATES, not proof. Each still needs a read.
+NOTE: asyncio-importing candidates need re-architecting, not transliteration -
+      the kernel has no executor (see the polling model in baremetal_transition.rs).

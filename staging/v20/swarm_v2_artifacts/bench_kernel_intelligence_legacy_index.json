@@ -1,0 +1,220 @@
+{
+  "benchmark": "kernel_intelligence",
+  "root": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main",
+  "started_at": "2026-09-10T23:41:59Z",
+  "kernel_identity": {
+    "dll": "swarm_v2_rust_kernel\\target\\release\\swarm_rust_kernel.dll",
+    "dll_bytes": 703488,
+    "monad_truth_anchor": "0x4d4f4e4144000001",
+    "anchor_matches": true
+  },
+  "kleene": {
+    "laws_checked": 21,
+    "laws_obeyed": 21,
+    "kleene_exact": true
+  },
+  "council": {
+    "available": true,
+    "consensus_reached": true,
+    "rc": 1,
+    "weighted_score": 0.841614,
+    "monad_seal": "0x4d5e5f5055113e82"
+  },
+  "corpus": {
+    "source": "swarm_v2_artifacts\\semantic_index.json",
+    "documents": 80,
+    "dim": 768
+  },
+  "quantization": {
+    "vectors": 80,
+    "dim": 768,
+    "trits_written": 61440,
+    "multiplier": 1.0,
+    "fidelity_mean": 0.883585,
+    "fidelity_min": 0.870787,
+    "fidelity_max": 0.898126,
+    "nonzero_trit_fraction": 0.418587,
+    "compression_bytes_per_vector": {
+      "float32": 3072,
+      "ternary_i8": 768
+    },
+    "compression_ratio": 4.0
+  },
+  "search_correctness": {
+    "queries": 80,
+    "top_k": 5,
+    "rank1_self_hits": 79,
+    "precision_at_1": 0.9875,
+    "indistinguishable_pairs": 1,
+    "rank1_hits_allowing_twin": 80,
+    "precision_at_1_allowing_twin": 1.0,
+    "kernel_vs_oracle_matches": 80,
+    "kernel_vs_oracle_mismatches": [],
+    "search_is_correct": true
+  },
+  "latency": {
+    "iters": 2000,
+    "corpus_vectors": 80,
+    "dim": 768,
+    "top_k": 5,
+    "ternary_ns": {
+      "p50": 121200,
+      "p95": 231000,
+      "min": 112500,
+      "max": 688500
+    },
+    "ternary_us": {
+      "p50": 121.2,
+      "p95": 231.0
+    },
+    "float_cosine_search_ns": {
+      "p50": 9672800,
+      "p95": 10855400
+    },
+    "float_cosine_search_us": {
+      "p50": 9672.8,
+      "p95": 10855.4
+    },
+    "comparisons_per_query": 80,
+    "ternary_throughput_comparisons_per_s": 660066,
+    "float_throughput_comparisons_per_s": 8270
+  },
+  "live_path": {
+    "embed_model": "nomic-embed-text",
+    "attempted": 5,
+    "answered": 5,
+    "rank1_correct": 0,
+    "space_match_cosines": [
+      -0.012544,
+      0.002476,
+      -0.023112,
+      0.024959,
+      0.027999
+    ],
+    "cases": [
+      {
+        "query_doc": "research_plan_AI_code_generation_research.md",
+        "space_cosine_vs_stored": -0.012544,
+        "rank1": 40,
+        "rank1_doc": "/swarm-os/pbft-consensus-layer/src/consensus_engine.py",
+        "rank1_score": 81,
+        "top3": [
+          {
+            "idx": 40,
+            "doc": "/swarm-os/pbft-consensus-layer/src/consensus_engine.py",
+            "score": 81
+          },
+          {
+            "idx": 35,
+            "doc": "MultimodalFusionEngine.py",
+            "score": 80
+          },
+          {
+            "idx": 25,
+            "doc": "transformation_plan_multimodal_ai_integration.md",
+            "score": 77
+          }
+        ]
+      },
+      {
+        "query_doc": "research_plan_reinforcement_learning_advance.md",
+        "space_cosine_vs_stored": 0.002476,
+        "rank1": 35,
+        "rank1_doc": "MultimodalFusionEngine.py",
+        "rank1_score": 81,
+        "top3": [
+          {
+            "idx": 35,
+            "doc": "MultimodalFusionEngine.py",
+            "score": 81
+          },
+          {
+            "idx": 47,
+            "doc": "qkd_gateway/fve_proofs/invariant_001.py",
+            "score": 78
+          },
+          {
+            "idx": 76,
+            "doc": "test_AsyncHighFrequencyTelemetryGateway.py",
+            "score": 78
+          }
+        ]
+      },
+      {
+        "query_doc": "research_plan_multimodal_AI_models_papers.md",
+        "space_cosine_vs_stored": -0.023112,
+        "rank1": 25,
+        "rank1_doc": "transformation_plan_multimodal_ai_integration.md",
+        "rank1_score": 78,
+        "top3": [
+          {
+            "idx": 25,
+            "doc": "transformation_plan_multimodal_ai_integration.md",
+            "score": 78
+          },
+          {
+            "idx": 16,
+            "doc": "test_redis_state.py",
+            "score": 76
+          },
+          {
+            "idx": 1,
+            "doc": "research_plan_reinforcement_learning_advance.md",
+            "score": 74
+          }
+        ]
+      },
+      {
+        "query_doc": "research_plan_AI_safety_and_alignment_resear.md",
+        "space_cosine_vs_stored": 0.024959,
+        "rank1": 76,
+        "rank1_doc": "test_AsyncHighFrequencyTelemetryGateway.py",
+        "rank1_score": 81,
+        "top3": [
+          {
+            "idx": 76,
+            "doc": "test_AsyncHighFrequencyTelemetryGateway.py",
+            "score": 81
+          },
+          {
+            "idx": 40,
+            "doc": "/swarm-os/pbft-consensus-layer/src/consensus_engine.py",
+            "score": 78
+          },
+          {
+            "idx": 47,
+            "doc": "qkd_gateway/fve_proofs/invariant_001.py",
+            "score": 78
+          }
+        ]
+      },
+      {
+        "query_doc": "research_plan_neural_network_efficiency_pape.md",
+        "space_cosine_vs_stored": 0.027999,
+        "rank1": 12,
+        "rank1_doc": "PROPOSAL_test_research_plan_autonomous_AI_agents_research.md",
+        "rank1_score": 78,
+        "top3": [
+          {
+            "idx": 12,
+            "doc": "PROPOSAL_test_research_plan_autonomous_AI_agents_research.md",
+            "score": 78
+          },
+          {
+            "idx": 13,
+            "doc": "test_research_plan_autonomous_AI_agents_research.md",
+            "score": 75
+          },
+          {
+            "idx": 71,
+            "doc": "test_research/research_ai_code_generation_research_1783785170.py",
+            "score": 75
+          }
+        ]
+      }
+    ],
+    "space_match_mean": 0.003956,
+    "live_vectors_share_index_space": false
+  },
+  "finished_at": "2026-09-10T23:42:32Z"
+}

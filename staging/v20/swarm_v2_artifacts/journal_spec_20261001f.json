@@ -1,0 +1,58 @@
+[
+ {
+  "kind": "attribute_walk_battery_and_the_boot_s_own_verdict",
+  "fact": "The arm of the attribute-walk bug that metal found was fixed last round; this round exercises the class. Both netlink walks are pure functions now -- `netlink::messages_in`, lifted out of `recv_deadline`, and `nl80211::dump`'s filter-and-parse -- so the shapes a real kernel sends can be handed to them without a kernel. Twenty-one cases run in the crate's own `cargo test`: an empty datagram, a header with no body, a length of zero, a length below sizeof(nlmsghdr), a length past the end, two messages in one datagram, a truncated second message, an unaligned length, NLMSG_DONE, NLMSG_ERROR with and without a code, an unknown message type, a zero-length attribute, an attribute with an empty payload, padding that is not zero, a nested attribute (NLA_F_NESTED masked off), and a trailing attribute with and without its pad. `recv_deadline` advances by align4(len) too, at the same shape as the bug: there the advance is only compared against the buffer and never used to index, so it exits the loop instead of panicking -- an argument until the two cases that pin it ran. The battery's ONE failure was in the battery: it asserted that an unpadded attribute in the MIDDLE of a message is followed by the next one, which is false (the kernel pads every attribute it sends, so an unaligned length can only begin at the very end, where the buffer's end makes the pad unnecessary and the fix covers it); in the middle the walk stops rather than reading the next header one byte out of place, and the test now asserts that. Also this round: the boot's verdict read '19 of the routes asked answered; 9 of them returned the content they exist to return', which reads as ten routes failing a check they were never given -- only nine routes are asked for content and the other ten are asked whether they answer. The verdict now gives three numbers that name themselves and the log lists the checked set; the Wi-Fi line reads the kernel's own carrier file and says what a station's down/no-carrier state means before association; and the association path names which of no-credentials, no-access-point, or driver-refused it is. Image on the stick: 5daa24e4936c0638, 3,909,028 B; the boot chain still checks out at 26 ELFs and 0 problems.",
+  "not_claimed": "The battery exercises the WALKING of datagrams and attributes, not the semantics of every nl80211 attribute: an attribute whose length is plausible but wrong is still parsed at that length, which is what any walk must do. The association remains unproven -- no access point has been joined -- and this image has not yet been booted on the metal; the stick carries it and the next boot there is what runs this code against a real radio.",
+  "commit": "8156acf",
+  "rederive": {
+   "files": [
+    {
+     "path": "trm_uefi_kernel/trm_wifi/src/netlink.rs",
+     "sha256": "b29fc1356677ae121adc5f4aec6550b7db4ef8bbd71c2756ed96a454496350c6"
+    },
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "c01887bed2a8b7b694c4912dbe5d7d04c2ca01ced96c7f912101875fd0a4ce00"
+    },
+    {
+     "path": "trm_chainload/scripts/check_attr_walk.py",
+     "sha256": "3a4012c7af9a9b8a4414b24589f425d48cee0826b9612a69f82ae753884514de"
+    },
+    {
+     "path": "docs/BARE_METAL_LINUX_PATHWAY_20260930.md",
+     "sha256": "3bb3ad55e7941674601b467d0559a0fa09a82d5888bfb9a6f395b507dfa32b4d"
+    },
+    {
+     "path": "docs/NOTEBOOKLM_SOURCE_TRM_SWARM_OS_20261001.md",
+     "sha256": "a501a6d7c3480e9cd2791c74f296bc489b0f5a104e21dcd7fe43bb6219b80ff5"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "trm_chainload/scripts/check_attr_walk.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 failed"
+     ]
+    },
+    {
+     "script": "swarm_v2/core/check_boot_chain_static.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 problem(s)"
+     ]
+    },
+    {
+     "script": "trm_chainload/scripts/verify_wifi_harness.py",
+     "args": [
+      "backups/bare_metal_first_boot_20260930/harness_output.txt"
+     ],
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 disagreed"
+     ]
+    }
+   ]
+  }
+ }
+]

@@ -1,0 +1,66 @@
+{
+  "phase": 10,
+  "campaign": "Phase 10 Autonomous Voltage Stripping Campaign",
+  "timestamp": 1788808940.2094235,
+  "monad_anchor": "0x4D4F4E4144000001",
+  "modules_stripped": 5,
+  "average_speedup": 75.7,
+  "all_k3_true": true,
+  "results": [
+    {
+      "rank": 41,
+      "module": "swarm_v2/core/auto_changelog.py",
+      "dll": "strip_changelog_classify.dll",
+      "feature": "Module Path Classification & Category Resolver",
+      "py_time_ms": 0.5023180006537586,
+      "native_time_ms": 0.11670199921354651,
+      "speedup": 4.3,
+      "k3_invariant": "+1 TRUE",
+      "max_diff": 0.0
+    },
+    {
+      "rank": 42,
+      "module": "swarm_v2/core/microkernel_spawner.py",
+      "dll": "strip_telemetry_bus.dll",
+      "feature": "Fractal Telemetry & Resonance Aggregator",
+      "py_time_ms": 0.16407699999399483,
+      "native_time_ms": 0.00529080000706017,
+      "speedup": 31.0,
+      "k3_invariant": "+1 TRUE",
+      "max_diff": 0.0
+    },
+    {
+      "rank": 43,
+      "module": "swarm_v2/core/swarm_council.py",
+      "dll": "strip_council_voting.dll",
+      "feature": "Council Vote Tally, Weighted Score & PBFT Validator",
+      "py_time_ms": 1.6714160004630685,
+      "native_time_ms": 0.011899999808520079,
+      "speedup": 140.5,
+      "k3_invariant": "+1 TRUE",
+      "max_diff": 0.0
+    },
+    {
+      "rank": 44,
+      "module": "swarm_v2/core/federation.py",
+      "dll": "strip_federation_handshake.dll",
+      "feature": "P2P Federation Handshake & HMAC Capability Verifier",
+      "py_time_ms": 2.2392199956811965,
+      "native_time_ms": 0.0116799958050251,
+      "speedup": 191.7,
+      "k3_invariant": "+1 TRUE",
+      "max_diff": 0.0
+    },
+    {
+      "rank": 45,
+      "module": "swarm_v2/core/reconnaissance_daemon.py",
+      "dll": "strip_recon_topics.dll",
+      "feature": "Topic Distance & Priority Partitioner",
+      "py_time_ms": 1.030749999335967,
+      "native_time_ms": 0.09356999944429845,
+      "speedup": 11.0,
+      "k3_invariant": "+1 TRUE",
+      "max_diff": 0.0
+    }
+  ]
+}

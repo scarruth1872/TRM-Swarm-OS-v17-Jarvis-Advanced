@@ -1,0 +1,51 @@
+feat(proof): REAL-WORLD SCENARIO 1 - security gate vs the platform's own codebase
+
+New, never-before-run scenario. Not a synthetic benchmark: the negative corpus is
+the platform's 1657 DEPLOYED Python files, and the positive corpus is 12 planted
+files each containing exactly one labelled danger class.
+
+RESULT - RECALL 12/12 (100%), and THREE REAL BUGS FOUND IN MY OWN DETECTOR
+
+Running at repo scale exposed something the 15-case unit set could not: the
+detector flagged 571 of 1657 files - 34.46%. It was the SAME defect I had
+criticised the old substring matcher for, reintroduced by my own heuristics.
+
+Diagnosed by category:
+  dangerous_execution_primitive 271   almost all `compile`
+  obfuscation_evasion_indicators 225   escapes / chr() / getattr
+  sql_injection_defense         197
+  shell_injection                12
+
+BUG 1 - has_call accepted a DOT-PREFIXED name. `re.compile(` matched the bare
+  `compile` needle, and re.compile is one of the most common calls in Python.
+  Fixed: the preceding-char test now excludes '.'. Verified directly:
+    model.eval()   -> CLEAN      df.eval()      -> CLEAN
+    re.compile     -> CLEAN      bare eval(     -> FLAGGED
+                                 bare compile(  -> FLAGGED
+
+BUG 2 - obfuscation fired on ONE indicator. Escapes appear in every regex, chr()
+  in every codec, getattr(obj,"name") in every plugin dispatcher. Real
+  obfuscation shows SEVERAL at once, because its purpose is to hide a token. Now
+  requires 2+ indicators (or a dangerous NAME assembled from pieces, which is
+  decisive alone). 225 flags -> 23.
+
+BUG 3 - SQL fired on PARAMETERISED queries. Placeholders (?, %s, :{...) are the
+  CORRECT pattern and flagging them trains the reader to ignore the gate.
+
+MEASURED EFFECT: 571 -> 324 flags, 34.46% -> 19.55%, 43.3% fewer. Recall held at
+  12/12 planted and 15/15 on the standard attack set.
+
+WHAT THIS DOES NOT PROVE - stated plainly, because it is the honest boundary
+  The remaining 324 are GENUINE uses of subprocess / os.system / SQL string
+  building in a dev repo, not injected vulnerabilities. A lexical scanner cannot
+  separate 'the app shells out on purpose' from 'user input reaches a shell'; that
+  needs taint analysis, which this is not. At a 19.6% flag rate a human cannot read
+  every flag, so this is NOT a usable automatic CI gate. The defensible use is
+  review-highlighting - 'show me every place that shells out / deserialises /
+  builds SQL' - which IS a real question, but it is not an automatic pass/fail.
+
+THE SCENARIO DID ITS JOB: it converted three plausible-looking heuristics into
+measured defects by running them against real code. The unit set passed 15/15
+throughout; only real input revealed the gap.
+
+Deployed kernel 85ced55efa815f7d (4 EFI locations).

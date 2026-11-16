@@ -1,0 +1,642 @@
+{
+ "built": "2026-09-26",
+ "groups": {
+  ".bash_history": {
+   "bytes_inventoried": 672,
+   "counterparts": [],
+   "evidence": "672 B",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  ".bash_logout": {
+   "bytes_inventoried": 220,
+   "counterparts": [],
+   "evidence": "220 B",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  ".bashrc": {
+   "bytes_inventoried": 3906,
+   "counterparts": [],
+   "evidence": "shell rc; its cargo env line is a known dead pointer (~/.cargo/env does not exist), recorded in the step-4 measurement",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  ".cache": {
+   "bytes_inventoried": 0,
+   "counterparts": [],
+   "evidence": "0 B",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "ephemeral"
+  },
+  ".hermes": {
+   "bytes_inventoried": 1431156516,
+   "counterparts": [],
+   "evidence": "a SECOND Hermes home inside WSL (1,431,156,516 B, 50 files). This host's Hermes home is the Windows profile; the platform reads neither. Read-only history.",
+   "files_inventoried": 50,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  ".jarvis_failures.json": {
+   "bytes_inventoried": 1676,
+   "counterparts": [
+    "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+   ],
+   "evidence": "Jarvis runtime state",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  ".jarvis_reminders.json": {
+   "bytes_inventoried": 384,
+   "counterparts": [
+    "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+   ],
+   "evidence": "Jarvis runtime state",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  ".landscape": {
+   "bytes_inventoried": 0,
+   "counterparts": [],
+   "evidence": "0 B",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "ephemeral"
+  },
+  ".motd_shown": {
+   "bytes_inventoried": 0,
+   "counterparts": [],
+   "evidence": "0 B",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "ephemeral"
+  },
+  ".npm": {
+   "bytes_inventoried": 0,
+   "counterparts": [],
+   "evidence": "0 B",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "ephemeral"
+  },
+  ".profile": {
+   "bytes_inventoried": 854,
+   "counterparts": [],
+   "evidence": "shell profile; line 30 points at the same missing ~/.cargo/env",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  ".ssh": {
+   "bytes_inventoried": 3183,
+   "counterparts": [],
+   "evidence": "4 files, 3,183 B: CREDENTIALS. Excluded from every archive by policy -- the freeze tarball is the repo source tree only, and no secret value was read while building this manifest.",
+   "files_inventoried": 4,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "never-harvest"
+  },
+  ".wget-hsts": {
+   "bytes_inventoried": 214,
+   "counterparts": [],
+   "evidence": "214 B",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  ".zshrc": {
+   "bytes_inventoried": 26,
+   "counterparts": [],
+   "evidence": "26 B",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "Agent-Q-master": {
+   "bytes_inventoried": 32503977,
+   "counterparts": [
+    "swarm_v2_artifacts/agent_q_advanced_modules_report.json"
+   ],
+   "evidence": "v19 carries the Agent-Q integration report",
+   "files_inventoried": 108,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "Agent-Q-master-old": {
+   "bytes_inventoried": 2594638,
+   "counterparts": [
+    "swarm_v2_artifacts/agent_q_advanced_modules_report.json"
+   ],
+   "evidence": "same line, older checkout",
+   "files_inventoried": 61,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "Downloads": {
+   "bytes_inventoried": 34227446,
+   "counterparts": [],
+   "evidence": "one 34,227,446 B agent-q platform startup status JSON from 2026-08-02; a snapshot of the absorbed line",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "JarvisShawn": {
+   "bytes_inventoried": 828883,
+   "counterparts": [
+    "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json",
+    "swarm_v2_artifacts/jarvis_complex_task_report.md"
+   ],
+   "evidence": "the Jarvis line is absorbed in v19",
+   "files_inventoried": 61,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "__pycache__": {
+   "bytes_inventoried": 11799,
+   "counterparts": [],
+   "evidence": "regenerable bytecode, 11,799 B. Never delete: move, and only with a manifest.",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "ephemeral"
+  },
+  "aipro2": {
+   "bytes_inventoried": 213657,
+   "counterparts": [],
+   "evidence": "13 files, 213,657 B, one untracked run-evolution.mjs; no v19 counterpart by name",
+   "files_inventoried": 13,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "analyze_hera7.py": {
+   "bytes_inventoried": 3242,
+   "counterparts": [],
+   "evidence": "WSL-side analysis script (3,242 B)",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "backups": {
+   "bytes_inventoried": 1502556293,
+   "counterparts": [],
+   "evidence": "5 tarballs, 1,502,556,293 B (agent-q 1.31 GB + aura + jarvis, v17/v18-era). Historical snapshots of the same lineage the freeze bundle already preserves; nothing in v19 reads them, and the rule is archive never delete.",
+   "files_inventoried": 5,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "check_tools.sh": {
+   "bytes_inventoried": 669,
+   "counterparts": [],
+   "evidence": "WSL-side environment probe (669 B)",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "clinical": {
+   "bytes_inventoried": 2558578,
+   "counterparts": [],
+   "evidence": "clinical table 201,572 rows in structured_index.db, from 400 .psv timepoint files (provenance: 400 sources, 2,558,578 B)",
+   "files_inventoried": 400,
+   "in_store_provenance": true,
+   "knowledge_files": 400,
+   "store_records": 400,
+   "verdict": "harvested"
+  },
+  "datasets": {
+   "bytes_inventoried": 0,
+   "counterparts": [],
+   "evidence": "binding table 19,443 rows = the LP-PDBBind affinity table, columns by index (provenance: 10,897,207 B)",
+   "files_inventoried": 0,
+   "in_store_provenance": true,
+   "knowledge_files": 61,
+   "store_records": 19443,
+   "verdict": "harvested"
+  },
+  "docking": {
+   "bytes_inventoried": 8103146,
+   "counterparts": [],
+   "evidence": "structure table carries 20 receptor rows from the 20 .pdb/.pdbqt files (provenance: 8,078,820 B, note RECEPTOR_OBABEL)",
+   "files_inventoried": 28,
+   "in_store_provenance": true,
+   "knowledge_files": 29,
+   "store_records": 20,
+   "verdict": "harvested"
+  },
+  "drugs": {
+   "bytes_inventoried": 733869465,
+   "counterparts": [],
+   "evidence": "molecule 2,897,819 + molecule_features 2,897,818 + 2,897,805 derived structures (provenance: 2 files, 1,127,883,975 B, the large one unrestricted and streamed)",
+   "files_inventoried": 1,
+   "in_store_provenance": true,
+   "knowledge_files": 1,
+   "store_records": 5795637,
+   "verdict": "harvested"
+  },
+  "fix_pipes.py": {
+   "bytes_inventoried": 1213,
+   "counterparts": [],
+   "evidence": "WSL-side utility (1,213 B)",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "geo-ingest.log": {
+   "bytes_inventoried": 491,
+   "counterparts": [],
+   "evidence": "491 B log",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "hermes-archive": {
+   "bytes_inventoried": 38428740,
+   "counterparts": [],
+   "evidence": "38,428,740 B across 4 files; a Hermes-side archive bundle, no v19 counterpart by name",
+   "files_inventoried": 4,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "hw_kb": {
+   "bytes_inventoried": 3733431,
+   "counterparts": [],
+   "evidence": "HARVESTED 2026-09-26: 18 hardware/OS references (nvme.h, pci_regs.h, osdev_UEFI/GDT/IDT/PCI/Interrupts.html, ptx_isa.html ...) copied into swarm_v2/knowledge/hw_kb/ and indexed. Same corpus class as rust_kb; before this they appeared in the 509-file knowledge manifest and in none of the store, the fabric text store or the index",
+   "files_inventoried": 8,
+   "in_store_provenance": false,
+   "knowledge_files": 8,
+   "store_records": 0,
+   "verdict": "harvested-prose"
+  },
+  "jarvis_geo_ingest.log": {
+   "bytes_inventoried": 3488,
+   "counterparts": [
+    "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+   ],
+   "evidence": "Jarvis ingest log",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "jarvis_hands.json": {
+   "bytes_inventoried": 11105,
+   "counterparts": [
+    "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+   ],
+   "evidence": "Jarvis component",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "jarvis_mcp_config.json": {
+   "bytes_inventoried": 24,
+   "counterparts": [
+    "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+   ],
+   "evidence": "Jarvis component",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "jarvis_vector_db": {
+   "bytes_inventoried": 188416,
+   "counterparts": [
+    "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+   ],
+   "evidence": "the Jarvis vector store, absorbed",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "kb_bridge.py": {
+   "bytes_inventoried": 1329,
+   "counterparts": [],
+   "evidence": "WSL-side knowledge-bridge script (1,329 B); no v19 counterpart by name",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "llama.cpp": {
+   "bytes_inventoried": 273652,
+   "counterparts": [
+    "C:/Users/shawn/AppData/Local/hermes/runtimes/llamacpp/b10964"
+   ],
+   "evidence": "a second source checkout of the runtime the host already ships prebuilt -- corrected 2026-09-26: C:/Users/shawn/AppData/Local/hermes/runtimes/llamacpp/b10679 no longer exists (the runtime directory now holds b10964 alone), so the stale path is removed rather than carried forward",
+   "files_inventoried": 31,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "logs": {
+   "bytes_inventoried": 370,
+   "counterparts": [],
+   "evidence": "370 B, one file",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "mamba-server": {
+   "bytes_inventoried": 7492,
+   "counterparts": [
+    "swarm_v2_artifacts/mamba3step_gpu_port.json"
+   ],
+   "evidence": "the mamba3 line is recorded in v19",
+   "files_inventoried": 2,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "models": {
+   "bytes_inventoried": 4768105408,
+   "counterparts": [
+    "D:/trm-models"
+   ],
+   "evidence": "the host's own model root supersedes these WSL weights. Every weight's identity was read from its OWN GGUF header (never its filename) and its public source measured, not assumed -- and the grades are recorded as they are, not rounded up: bonsai-27b-q1_0.gguf (Bonsai-27B, 3,803,452,480 B, sha256 17ef842e47450cae...): NO byte-identical artifact -- public BASE MODEL prism-ml/Ternary-Bonsai-27B-gguf, so the quant is reproducible, not re-downloadable; qwen-moe-2.4b-q4_k_m.gguf (Qwen3-MOE, 964,652,928 B, sha256 518b01713cee4762...): NO byte-identical artifact -- public BASE MODEL EschaLabs/escha-runtime-qwen3moe, so the quant is reproducible, not re-downloadable; amd.Instella-MoE-16B-A3B-Think.f16.gguf.Q2_K.gguf (amd.Instella-MoE, 6,514,704,512 B, sha256 ba208940c2d8c66c...): NO byte-identical artifact -- public BASE MODEL amd/Instella-MoE-16B-A3B-Think, so the quant is reproducible, not re-downloadable. Each base model is public and named above, so nothing here is the only copy in existence; the counterpart path is the platform's own model root, which is what actually serves inference. Load evidence for these weights was harvested earlier (the qwen-moe one was MEASURED to load and run; the instella Q2_K was measured to FAIL to load on mainline b10964). Closing record: swarm_v2_artifacts/harvest_groups_closure_20260926.json (block 174).",
+   "files_inventoried": 2,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "prism-ml-llama.cpp": {
+   "bytes_inventoried": 1049921,
+   "counterparts": [
+    "C:/Users/shawn/AppData/Local/hermes/runtimes/llamacpp/b10964"
+   ],
+   "evidence": "superseded by the host's own runtime (b10964). The fork's code is a PUBLIC GitHub repository (https://github.com/froodx/prism-ml-llama.cpp, HEAD 0115aada4479) -- GitHub's API reports it as a standalone public repo (fork: false, parent: null), so 'public source' is the accurate claim, NOT 'a fork of llama.cpp'. Its ONLY unique content is the four untracked example instruments (capture_hidden, capture_layers, voltage_node, voltage_node_offload), whose sources the block-166 harvest holds BYTE-FOR-BYTE (re-derived: all 4 match, harvest holds 16 files = the 4 sources + the captures, reference fields and receipt). The freeze gap that let them sit unbacked was closed by backups/wsl_freeze_20260926_instruments/prism-ml-untracked.tar.gz. Nothing unique remains outside the span. Closing record: swarm_v2_artifacts/harvest_groups_closure_20260926.json (block 174).",
+   "files_inventoried": 42,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "relational": {
+   "bytes_inventoried": 245031324,
+   "counterparts": [],
+   "evidence": "ethics table 95,847 rows (ethics_commonsense.csv 14,546,224 B -> 13,910 records) + prose 1,633 rows chunked at 4000 chars (provenance: 12 files, 29,993,997 B)",
+   "files_inventoried": 16,
+   "in_store_provenance": true,
+   "knowledge_files": 0,
+   "store_records": 97480,
+   "verdict": "harvested"
+  },
+  "reports": {
+   "bytes_inventoried": 39108,
+   "counterparts": [],
+   "evidence": "39,108 B across 6 files; older report output, no v19 counterpart by name",
+   "files_inventoried": 6,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "reverse_string.py": {
+   "bytes_inventoried": 381,
+   "counterparts": [],
+   "evidence": "381 B scratch script",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "rust_kb": {
+   "bytes_inventoried": 0,
+   "counterparts": [],
+   "evidence": "HARVESTED 2026-09-26: the 5 crate archives (bootloader 0.11.17, postcard 1.1.3, spin 0.12.2, volatile 0.6.1, x86_64 0.15.5 -- the bare-metal crates the kernel's dependencies come from) were copied in and their sources extracted under swarm_v2/knowledge/rust_kb/ (92 .rs files), and the knowledge index now carries them. Prose, so the store was the wrong target: the check is the index itself, and a query for 'x86_64 GDT descriptor and segmentation' now returns gdt.rs 0.4761 / segmentation.rs 0.3937, where the pre-harvest index had no knowledge doc in its top-3 at all",
+   "files_inventoried": 0,
+   "in_store_provenance": false,
+   "knowledge_files": 5,
+   "store_records": 0,
+   "verdict": "harvested-prose"
+  },
+  "seed_ddr.py": {
+   "bytes_inventoried": 3953,
+   "counterparts": [],
+   "evidence": "WSL-side seeding script (3,953 B); no v19 counterpart by name",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "start-agentq.sh": {
+   "bytes_inventoried": 369,
+   "counterparts": [
+    "swarm_v2_artifacts/agent_q_advanced_modules_report.json"
+   ],
+   "evidence": "launcher for the same line",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "start-anythingllm.sh": {
+   "bytes_inventoried": 407,
+   "counterparts": [],
+   "evidence": "no v19 artifact names anythingllm; the service was not part of this platform",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "start-aura.sh": {
+   "bytes_inventoried": 205,
+   "counterparts": [
+    "swarm_v2_artifacts/aura_language_integration_report.json",
+    "swarm_v2_artifacts/aura_studio_integration_report.json"
+   ],
+   "evidence": "launcher for the aura line, recorded in v19",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "start-bridge.sh": {
+   "bytes_inventoried": 120,
+   "counterparts": [],
+   "evidence": "the WSL-side bridge launcher; v19's own kernel replaced the bridge role, but no counterpart file is named, so this is not called superseded",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "tox21full": {
+   "bytes_inventoried": 47298,
+   "counterparts": [],
+   "evidence": "HARVESTED 2026-09-26 (block 168): the generator that PRODUCES the matrix is preserved at swarm_v2/knowledge/tox21full/ (9 files, 82,937 B, .git/__pycache__ excluded) and its own sources are in the knowledge index (tox21full/Example.ipynb, tox21full/tox21full/__main__.py, README.rst, setup.py, tests/test_tox21full.py -- 336-doc index). It is a git clone of the NIH-assay downloader, so the CSV is reproducible rather than a bare artifact. Two measured discrepancies recorded: the README claims '64 different assays' while the file carries 75 columns (the file wins), and NO codebook for the 75 assay codes (elg271, p53823, mmp146 ...) exists anywhere in the preserved corpus -- the store therefore holds the identifiers verbatim, and that gap is stated rather than papered over with inferred meanings",
+   "files_inventoried": 6,
+   "in_store_provenance": false,
+   "knowledge_files": 5,
+   "store_records": 0,
+   "verdict": "harvested-prose"
+  },
+  "tox21full.csv.gz": {
+   "bytes_inventoried": 152757,
+   "counterparts": [],
+   "evidence": "HARVESTED 2026-09-26 (block 168): the store's provenance table names it (tox21full.csv.gz, sha256 f1a84d6c133346d771c5..., 152,757 B, hash_span=full, 577,987 records) and the tox21 table holds exactly 577,987 rows, an independent awk count over the gzip agreeing. Long form, one row per MEASURED cell (8,734 compounds x 75 assays; 551,824 inactive / 26,163 active); blanks are skipped, never written as 0.0",
+   "files_inventoried": 1,
+   "in_store_provenance": true,
+   "knowledge_files": 0,
+   "store_records": 577987,
+   "verdict": "harvested"
+  },
+  "trm-rust": {
+   "bytes_inventoried": 182652,
+   "counterparts": [
+    "C:/Users/shawn/Downloads/TRM-Swarm-OS-v19-Sovereign-Private-main/TRM-Swarm-OS-v19-Sovereign-Private-main/wsl_crates/trm-rust"
+   ],
+   "evidence": "v18.233 workspace, superseded: its six candidate crates were TRIAGED (2026-09-26, block 172) and every one is already the module of record -- host_council_server/Cargo.toml declares swarm-brain, swarm-intel, swarm-docking, swarm-drug, swarm-fit and swarm-proof as live path dependencies on wsl_crates/trm-rust/<crate>, each has a handler and a registered route, and each COMPUTED on the running kernel (:8022: /native/brain/connectome, /native/intel/agents, /native/docking/score-pair, /native/drug/triage, /native/fit/verdict, /verification/proof). There is no port to do: the in-tree wired copy IS the module of record and the ~/trm-rust copies are the superseded ones. The plan's line counts (338/263/226/176/136/134) were stale for four of the six (measured 682/350/226/222/370/134). The tree is frozen at commit 89d2d75 and archived in backups/wsl_freeze_20260923_180202/; retirement stays gated on council MOTION-013.",
+   "files_inventoried": 20,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "superseded"
+  },
+  "voicebox": {
+   "bytes_inventoried": 268375,
+   "counterparts": [],
+   "evidence": "no v19 artifact names voicebox (checked swarm_v2_artifacts/) -- and no claim is made that it is superseded, because none was verified",
+   "files_inventoried": 18,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  },
+  "warm_bridge.py": {
+   "bytes_inventoried": 7389,
+   "counterparts": [],
+   "evidence": "WSL-side glue script (7,389 B); no v19 counterpart by name",
+   "files_inventoried": 1,
+   "in_store_provenance": false,
+   "knowledge_files": 0,
+   "store_records": 0,
+   "verdict": "archive-only"
+  }
+ },
+ "inputs": {
+  "freeze_manifest": {
+   "home_inventory.tsv": "37e3567c602d4933819e6ebcbf00d92d0fe4403a27151da974c18c99dd43698b",
+   "knowledge_sha256.txt": "685777f820bc17b0d97acb10e2e63676af9bf0fb45b13d7bd89553b6d99824ba",
+   "models_manifest.tsv": "bdbe6d304bba615fc365e11ea2efb431b81ac9ff3c1579ff0d0b57661a00e0f8",
+   "trm-rust_source.tar.gz": "a2b3f9a737affc90aca35de63eb73107ac239481be5ba348df9682ccf6606ea5"
+  },
+  "home_inventory.tsv": {
+   "bytes": 8806178862,
+   "files": 918,
+   "groups": 53
+  },
+  "knowledge_sha256.txt": {
+   "files": 509,
+   "groups": 7
+  },
+  "models_manifest.tsv": {
+   "bytes": 11555581582,
+   "entries": 8
+  },
+  "structured_index.provenance": {
+   "bytes": 1179565334,
+   "records": 6490967,
+   "sources": 436
+  }
+ },
+ "plan_step": "1 -- make 'reconciled' a measured claim",
+ "store_tables": {
+  "binding": 19443,
+  "clinical": 201572,
+  "ethics": 95847,
+  "molecule": 2897819,
+  "molecule_features": 2897818,
+  "prose": 1633,
+  "provenance": 436,
+  "span": 12,
+  "structure": 20,
+  "tox21": 577987
+ },
+ "totals": {
+  "by_verdict": {
+   "archive-only": 24,
+   "ephemeral": 5,
+   "harvested": 6,
+   "harvested-prose": 3,
+   "never-harvest": 1,
+   "superseded": 16
+  },
+  "bytes_inventoried": 8806178862,
+  "groups": 55,
+  "harvested_bytes_from_provenance": 1179565334,
+  "harvested_records_from_provenance": 6490967
+ }
+}

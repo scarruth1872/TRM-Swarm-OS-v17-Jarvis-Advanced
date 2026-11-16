@@ -1,0 +1,315 @@
+# =============================================================================
+# SWARM OS v12 — CI/CD PIPELINE DEFINITION
+# Stage topology: unit → integration → e2e → chaos
+# Trigger philosophy:
+#   - Fast, deterministic stages (unit) run on every push/PR.
+#   - Integration runs on merge to main and nightly.
+#   - E2E runs on release candidates and nightly.
+#   - Chaos runs on schedule (nightly) and manual dispatch only.
+# =============================================================================
+
+version: "1.0"
+kind: "Pipeline"
+metadata:
+  name: "swarm-os-test-suite"
+  description: "Comprehensive test pipeline for all Swarm OS components"
+  owner: "Core-Platform"
+  created: "2026-08-01"
+
+# -----------------------------------------------------------------------------
+# Global execution context
+# -----------------------------------------------------------------------------
+defaults:
+  runner: "swarm-linux-x64"
+  timeout: 3600  # seconds
+  retries: 2
+  env:
+    SWARM_ENV: "CI"
+    LOG_LEVEL: "INFO"
+    ARTIFACT_REGISTRY: "s3://swarm-ci-artifacts"
+
+# -----------------------------------------------------------------------------
+# Stage 1: UNIT TESTS
+# Fast, isolated, no external dependencies. Runs on every code change.
+# -----------------------------------------------------------------------------
+stages:
+  unit:
+    description: "Unit tests for all core modules (consensus, SKG, HBTF, FVE, EDSMA)"
+    trigger:
+      events:
+        - push
+        - pull_request
+      paths:
+        include:
+          - "src/**"
+          - "tests/unit/**"
+          - "go.mod"
+          - "go.sum"
+    strategy:
+      fail_fast: false
+      matrix:
+        component:
+          - consensus
+          - knowledge_graph
+          - telemetry
+          - verification_engine
+          - self_modification
+        go_version: ["1.22", "1.23"]
+    steps:
+      - name: "Checkout"
+        uses: "vcs/checkout@v4"
+        with:
+          fetch_depth: 1
+
+      - name: "Setup Go"
+        uses: "toolchain/go@v1"
+        with:
+          version: "${{ matrix.go_version }}"
+
+      - name: "Cache Go Modules"
+        uses: "cache/go@v3"
+        with:
+          key: "go-mod-${{ matrix.component }}-${{ hashFiles('**/go.sum') }}"
+          restore_keys:
+            - "go-mod-${{ matrix.component }}-"
+
+      - name: "Run Unit Tests"
+        run: |
+          go test ./internal/${{ matrix.component }}/... \
+            -race \
+            -coverprofile=coverage.out \
+            -covermode=atomic \
+            -timeout 300s
+        env:
+          COMPONENT: "${{ matrix.component }}"
+
+      - name: "Upload Coverage"
+        uses: "reporting/coverage@v2"
+        with:
+          artifact: "coverage-${{ matrix.component }}-${{ matrix.go_version }}"
+          path: "coverage.out"
+          threshold: 80  # fail if coverage drops below 80%
+
+      - name: "Publish Test Results"
+        uses: "reporting/junit@v2"
+        with:
+          path: "**/test-results/*.xml"
+          report_title: "Unit Tests — ${{ matrix.component }}"
+
+  # ---------------------------------------------------------------------------
+  # Stage 2: INTEGRATION TESTS
+  # Requires ephemeral infrastructure (in-memory cluster, mock services).
+  # Runs on merge to main and nightly schedule.
+  # ---------------------------------------------------------------------------
+  integration:
+    description: "Integration tests across component boundaries with real message passing"
+    depends_on: ["unit"]
+    trigger:
+      events:
+        - merge_group
+        - schedule:
+            cron: "0 2 * * *"  # nightly 02:00 UTC
+        - workflow_dispatch: {}
+    strategy:
+      fail_fast: true
+      max_parallel: 2
+    environment:
+      type: "ephemeral-cluster"
+      size: "3-node"
+      topology: "pbft-mesh"
+    steps:
+      - name: "Checkout"
+        uses: "vcs/checkout@v4"
+
+      - name: "Provision Test Cluster"
+        uses: "infra/spin-up-cluster@v2"
+        with:
+          nodes: 3
+          consensus: "pbft"
+          network: "isolated"
+
+      - name: "Run Integration Suite"
+        run: |
+          make test-integration \
+            --jobs=4 \
+            --timeout=600s
+        env:
+          CLUSTER_ENDPOINT: "${{ steps.provision.outputs.endpoint }}"
+          TRACE_ENABLED: "true"
+
+      - name: "Collect Telemetry"
+        uses: "observability/collect-traces@v1"
+        with:
+          trace_endpoint: "${{ steps.provision.outputs.trace_endpoint }}"
+          artifact: "integration-traces"
+
+      - name: "Teardown Cluster"
+        uses: "infra/destroy-cluster@v2"
+        if: "always()"
+        with:
+          cluster_id: "${{ steps.provision.outputs.cluster_id }}"
+
+  # ---------------------------------------------------------------------------
+  # Stage 3: END-TO-END TESTS
+  # Full system boot, real network protocols, external API contracts.
+  # Runs on release candidates and nightly.
+  # ---------------------------------------------------------------------------
+  e2e:
+    description: "Full-stack E2E validation across all Swarm OS subsystems"
+    depends_on: ["integration"]
+    trigger:
+      events:
+        - release:
+            types: [prereleased, released]
+        - schedule:
+            cron: "0 4 * * *"  # nightly 04:00 UTC
+        - workflow_dispatch: {}
+    environment:
+      type: "staging"
+      replicas: 2
+    steps:
+      - name: "Checkout"
+        uses: "vcs/checkout@v4"
+
+      - name: "Build Release Artifacts"
+        run: |
+          make build \
+            -ldflags="-X main.version=${{ github.ref_name }}" \
+            -o dist/
+
+      - name: "Deploy to Staging"
+        uses: "deploy/helm@v3"
+        with:
+          chart: "./charts/swarm-os"
+          values: "./config/staging-values.yaml"
+          namespace: "swarm-staging"
+
+      - name: "Run E2E Suite"
+        run: |
+          make test-e2e \
+            --timeout=900s \
+            --retry=2
+        env:
+          BASE_URL: "https://staging.swarm.internal"
+          API_KEY: "${{ secrets.STAGING_API_KEY }}"
+
+      - name: "Verify Data Integrity"
+        run: |
+          make verify-skq-integrity \
+            --expected-hash-file=./testdata/expected-hashes.json
+
+      - name: "Publish E2E Report"
+        uses: "reporting/html@v2"
+        with:
+          artifact: "e2e-report"
+          path: "./reports/e2e/"
+
+  # ---------------------------------------------------------------------------
+  # Stage 4: CHAOS TESTS
+  # Destructive testing: network partitions, node kills, disk full, clock skew.
+  # Runs nightly and manual dispatch only — never on push.
+  # ---------------------------------------------------------------------------
+  chaos:
+    description: "Chaos engineering suite for resilience validation"
+    depends_on: ["e2e"]
+    trigger:
+      events:
+        - schedule:
+            cron: "0 6 * * *"  # nightly 06:00 UTC
+        - workflow_dispatch:
+            inputs:
+              scenario:
+                description: "Chaos scenario to execute"
+                required: true
+                type: choice
+                options:
+                  - "network-partition"
+                  - "node-crash"
+                  - "disk-full"
+                  - "clock-skew"
+                  - "all"
+    environment:
+      type: "chaos-cluster"
+      size: "5-node"
+      isolation: "full"
+    steps:
+      - name: "Checkout"
+        uses: "vcs/checkout@v4"
+
+      - name: "Provision Chaos Cluster"
+        uses: "infra/spin-up-cluster@v2"
+        with:
+          nodes: 5
+          chaos_enabled: true
+
+      - name: "Inject Chaos Scenario"
+        uses: "chaos/inject@v1"
+        with:
+          scenario: "${{ inputs.scenario || 'all' }}"
+          duration: "300s"
+          intensity: "moderate"
+
+      - name: "Validate Recovery"
+        run: |
+          make test-recovery \
+            --expected-consensus=pbft \
+            --max-recovery-time=120s \
+            --assert-data-integrity=true
+
+      - name: "Collect Chaos Metrics"
+        uses: "observability/collect-metrics@v1"
+        with:
+          artifact: "chaos-metrics"
+          include: ["latency", "throughput", "error-rate", "recovery-time"]
+
+      - name: "Teardown Chaos Cluster"
+        uses: "infra/destroy-cluster@v2"
+        if: "always()"
+        with:
+          cluster_id: "${{ steps.provision.outputs.cluster_id }}"
+
+# -----------------------------------------------------------------------------
+# Pipeline-level governance
+# -----------------------------------------------------------------------------
+governance:
+  approval_required:
+    - stage: "chaos"
+      approvers: ["platform-core", "sre-oncall"]
+  artifact_retention:
+    days: 30
+    paths:
+      - "coverage-*"
+      - "integration-traces"
+      - "e2e-report"
+      - "chaos-metrics"
+  notifications:
+    on_failure:
+      channels: ["#platform-alerts", "#sre-oncall"]
+      severity: "critical"
+    on_success:
+      channels: ["#platform-ci"]
+      severity: "info"
+
+# -----------------------------------------------------------------------------
+# Concurrency control
+# -----------------------------------------------------------------------------
+concurrency:
+  group: "swarm-os-pipeline"
+  cancel_in_progress: false  # never cancel running chaos tests
+
+# -----------------------------------------------------------------------------
+# Global post-actions
+# -----------------------------------------------------------------------------
+post_actions:
+  - name: "Cleanup Ephemeral Resources"
+    run: |
+      make cleanup \
+        --prune-containers=true \
+        --prune-volumes=true
+    if: "always()"
+
+  - name: "Archive Pipeline Logs"
+    uses: "observability/archive-logs@v1"
+    with:
+      destination: "s3://swarm-ci-logs/${{ github.run_id }}/"
+    if: "always()"

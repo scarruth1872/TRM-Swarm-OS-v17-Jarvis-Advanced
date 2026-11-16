@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "generated_by": "Archi",
+  "generated_at": "2026-08-01T06:52:36Z",
+  "source_root": "REQUIRED_SCAN_PATH",
+  "scan_status": "PENDING_FILESYSTEM_SCAN",
+  "modules": [],
+  "dependency_graph": {},
+  "public_interfaces": {},
+  "notes": [
+    "This manifest is a structural template. Populate 'modules' by scanning the source tree.",
+    "Each module entry MUST include: name, path, type (library/service/daemon/cli), language, dependencies (internal/external), public_interfaces (functions/classes/endpoints), and test_status."
+  ],
+  "module_schema": {
+    "name": "string",
+    "path": "string",
+    "type": "enum[library, service, daemon, cli, plugin]",
+    "language": "string",
+    "dependencies": {
+      "internal": ["string"],
+      "external": ["string"]
+    },
+    "public_interfaces": [
+      {
+        "kind": "enum[function, class, endpoint, event, rpc]",
+        "signature": "string",
+        "description": "string"
+      }
+    ],
+    "test_status": "enum[untested, partial, covered]"
+  }
+}

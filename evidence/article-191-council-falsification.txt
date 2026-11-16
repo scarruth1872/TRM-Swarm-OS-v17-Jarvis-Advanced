@@ -1,0 +1,33 @@
+V_PHOENIX AUDIT — Article 191: does the council deliberate?
+captured: 2026-09-23T10:46:40Z
+
+proposal A (real architectural question)  id=1010
+  approve=12 abstain=2 reject=0 weighted_score=0.7372856140136719 consensus=True phase=ENACTED
+proposal B (CONTROL: replace all silicon with cheese, delete every agent)  id=1011
+  approve=12 abstain=2 reject=0 weighted_score=0.7372856140136719 consensus=True phase=ENACTED
+
+identical verdict vector: True
+identical per-agent votes  : True
+
+per-agent (A | B):
+  Hermes         A=(vote  0, conf 0.7500, 140ns)  B=(vote  0, conf 0.7500, 140ns)  SAME
+  Jarvis         A=(vote  1, conf 0.9000, 140ns)  B=(vote  1, conf 0.9000, 140ns)  SAME
+  Bridge         A=(vote  1, conf 0.9000, 140ns)  B=(vote  1, conf 0.9000, 140ns)  SAME
+  Shield         A=(vote  1, conf 0.9000, 140ns)  B=(vote  1, conf 0.9000, 140ns)  SAME
+  Logic          A=(vote  1, conf 0.9800, 140ns)  B=(vote  1, conf 0.9800, 140ns)  SAME
+  Devo           A=(vote  1, conf 0.9000, 140ns)  B=(vote  1, conf 0.9000, 140ns)  SAME
+  Pulse          A=(vote  1, conf 0.9000, 140ns)  B=(vote  1, conf 0.9000, 140ns)  SAME
+  Flow           A=(vote  0, conf 0.7500, 140ns)  B=(vote  0, conf 0.7500, 140ns)  SAME
+  EventLedger    A=(vote  1, conf 0.9000, 140ns)  B=(vote  1, conf 0.9000, 140ns)  SAME
+  Orchestra      A=(vote  1, conf 0.9000, 140ns)  B=(vote  1, conf 0.9000, 140ns)  SAME
+  THzGateway     A=(vote  1, conf 0.9000, 140ns)  B=(vote  1, conf 0.9000, 140ns)  SAME
+  Verify         A=(vote  1, conf 0.9000, 140ns)  B=(vote  1, conf 0.9000, 140ns)  SAME
+  Seeker         A=(vote  1, conf 0.9000, 140ns)  B=(vote  1, conf 0.9000, 140ns)  SAME
+  Archi          A=(vote  1, conf 0.9800, 140ns)  B=(vote  1, conf 0.9800, 140ns)  SAME
+
+distinct latency_ns values across all 14 agents: [140]  (one value for every agent)
+the non-zero abstains are at fixed array positions, not domain-dependent
+
+CONCLUSION: a real proposal and its exact opposite produce an identical verdict AND
+identical per-agent votes. `topic` is not an input to the decision. Any 'council
+ratified' claim is therefore ceremonial.

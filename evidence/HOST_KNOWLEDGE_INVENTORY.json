@@ -1,0 +1,776 @@
+[
+ {
+  "path": "C:\\Users\\shawn\\AppData\\Local\\hermes\\state.db",
+  "bytes": 2129072128,
+  "format": "sqlite",
+  "rows": 224632,
+  "schema_keys": [
+   "id",
+   "session_id",
+   "role",
+   "content",
+   "tool_name",
+   "timestamp",
+   "token_count",
+   "reasoning_content"
+  ],
+  "mtime": "2026-11-07",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "Hermes session store: 4,622 sessions / 224,632 messages. Text 140.9M chars, 86.2M after global dedup; user-authored 19.8M chars. FTS5 index already built."
+ },
+ {
+  "path": "C:\\Users\\shawn\\.claude\\projects",
+  "bytes": 133674059,
+  "format": "jsonl",
+  "rows": 30833,
+  "schema_keys": [
+   "type",
+   "message",
+   "parentUuid",
+   "sessionId",
+   "cwd",
+   "timestamp"
+  ],
+  "mtime": "2026-03-05",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "218 Claude Code transcripts, 133.7MB. Coding sessions across ub3 / Agent-Q / TRM-agent-swarm. Strip tool_result blobs to ~40% usable text."
+ },
+ {
+  "path": "C:\\Users\\shawn\\.gemini\\antigravity\\conversations",
+  "bytes": 500495630,
+  "format": "sqlite+protobuf",
+  "rows": 43,
+  "schema_keys": [
+   "trajectory_id",
+   "cascade_id",
+   "trajectory_type",
+   "source",
+   "steps[idx,step_type,status,metadata,task_details]"
+  ],
+  "mtime": "2026-11-07",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "43 Antigravity trajectories, 500.5MB. Steps table holds agent actions; .pb files are protobuf blobs needing a decoder. High bytes, medium text yield."
+ },
+ {
+  "path": "C:\\Users\\shawn\\.gemini\\antigravity\\brain",
+  "bytes": 131604700,
+  "format": "jsonl+md",
+  "rows": 60493,
+  "schema_keys": [
+   "messages",
+   "content",
+   "role",
+   "tool_calls",
+   "status",
+   "artifact"
+  ],
+  "mtime": "2026-08-20",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "530 jsonl (115.1MB) agent streams + 210 md (1.49MB) implementation_plan/task/walkthrough notes. The md are the highest-value part; 1.25GB of the tree is .log noise - exclude."
+ },
+ {
+  "path": "C:\\Users\\shawn\\.gemini\\antigravity\\implicit",
+  "bytes": 18685735,
+  "format": "jsonl",
+  "rows": null,
+  "schema_keys": [
+   "messages",
+   "role",
+   "content"
+  ],
+  "mtime": "2026-06-18",
+  "layer": "personal",
+  "ingest": "maybe",
+  "reason": "13 files / 17.8MB of implicit-context captures. Row count not measured (binary-ish framing); inspect before ingest."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\.swarm\\mailboxes",
+  "bytes": 25427968,
+  "format": "json",
+  "rows": 44950,
+  "schema_keys": [
+   "from",
+   "to",
+   "subject",
+   "message.type",
+   "message.subagent_id",
+   "message.result"
+  ],
+  "mtime": "2026-11-07",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "103,006 files / 75.3MB across 103 agent mailboxes; 44,950 inbox messages. Inter-agent reasoning traces incl. results and refusals. Dedup hard - heavy templating."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2_memory",
+  "bytes": 25106160,
+  "format": "json",
+  "rows": 10137,
+  "schema_keys": [
+   "type",
+   "task",
+   "result",
+   "status",
+   "completed_at"
+  ],
+  "mtime": "2026-07-31",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "16 per-agent memory files, 25.1MB (Logic_memory.json alone 10,137 entries). Task->result pairs = the platform's own episodic memory."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2_global_memory\\turbo_memory.jsonl.gz",
+  "bytes": 74663711,
+  "format": "jsonl.gz",
+  "rows": 136169,
+  "schema_keys": [
+   "id",
+   "content"
+  ],
+  "mtime": "2026-11-07",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "136,169 rows / 74.6MB gz. Web-search 'Research Finding' summaries, largely dictionary/LLM boilerplate - low uniqueness per row. Ingest only after quality filter."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2_global_memory\\system_event_ledger.jsonl",
+  "bytes": 13754959,
+  "format": "jsonl",
+  "rows": 28265,
+  "schema_keys": [
+   "ts",
+   "event",
+   "agent",
+   "payload"
+  ],
+  "mtime": "2026-11-07",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "28,265 system events / 13.8MB. Two sibling files are corrupt/unverified copies (5.3MB, 4.8MB) - dedup to canonical only."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2_global_memory\\metadata.json",
+  "bytes": 13441666,
+  "format": "json",
+  "rows": null,
+  "schema_keys": [
+   "version",
+   "updated_at",
+   "entries",
+   "sync_log"
+  ],
+  "mtime": "2026-11-07",
+  "layer": "index",
+  "ingest": "no",
+  "reason": "13.4MB memory index (entries is a dict, not a list). Regenerate rather than ingest - it is a pointer table."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\data\\council_ledger.json",
+  "bytes": 5853545,
+  "format": "json",
+  "rows": 942,
+  "schema_keys": [
+   "id",
+   "topic",
+   "category",
+   "proposer",
+   "phase",
+   "weighted_score",
+   "approve_count",
+   "abstain_count"
+  ],
+  "mtime": "2026-11-05",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "942 council deliberations with votes and outcomes. This is decision history - the most query-value-dense JSON in the repo per byte (5.9MB)."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\data\\council_evidence_index.json",
+  "bytes": 4044524,
+  "format": "json+vectors",
+  "rows": 558,
+  "schema_keys": [
+   "source",
+   "chunk",
+   "text",
+   "vec"
+  ],
+  "mtime": "2026-11-02",
+  "layer": "index",
+  "ingest": "yes",
+  "reason": "558 chunks, dim 768, vectors inline over docs+evidence. Small but REUSABLE as an embedding index - do not rebuild from zero."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\evidence",
+  "bytes": 2872837,
+  "format": "mixed",
+  "rows": 170,
+  "schema_keys": [
+   "file",
+   "measurement",
+   "value",
+   "status"
+  ],
+  "mtime": "2026-11-07",
+  "layer": "evidence",
+  "ingest": "yes",
+  "reason": "170 measured reports (2.87MB) incl. AGENT_*_MEASURED.json and platform_claim_sweep.json. Ground truth layer - must be ingested with provenance, not merged into prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\evidence\\hard_corpus.tsv",
+  "bytes": 1141535,
+  "format": "tsv",
+  "rows": 3199,
+  "schema_keys": [
+   "arc_task_id",
+   "token_stream",
+   "label"
+  ],
+  "mtime": "2026-10-05",
+  "layer": "junk",
+  "ingest": "no",
+  "reason": "ARC puzzle token streams. Training artefact, no query value."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\docs",
+  "bytes": 296695,
+  "format": "markdown",
+  "rows": 29,
+  "schema_keys": [
+   "title"
+  ],
+  "mtime": "2026-11-06",
+  "layer": "reference",
+  "ingest": "yes",
+  "reason": "29 md / 296.7KB: GAP-REMEDIATION-PLAN, KERNEL-194-MISSING-API, FINDING-* audits. High signal per byte."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\papers",
+  "bytes": 136050,
+  "format": "markdown",
+  "rows": 22,
+  "schema_keys": [
+   "title"
+  ],
+  "mtime": "2026-09-20",
+  "layer": "reference",
+  "ingest": "yes",
+  "reason": "22 platform papers / 136.1KB. Self-authored doctrine; reference layer, cite as operator's own claims."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\research",
+  "bytes": 232351,
+  "format": "markdown",
+  "rows": 16,
+  "schema_keys": [
+   "title"
+  ],
+  "mtime": "2026-08-03",
+  "layer": "reference",
+  "ingest": "yes",
+  "reason": "16 md / 232.4KB incl. 46KB doctoral thesis. Long-form synthesis."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\*.md (repo root)",
+  "bytes": 454660,
+  "format": "markdown",
+  "rows": 55,
+  "schema_keys": [
+   "title"
+  ],
+  "mtime": null,
+  "layer": "reference",
+  "ingest": "yes",
+  "reason": "55 md / 454.7KB: COMPONENT_INVENTORY, CHANGELOG, SYSTEM_MAP, LIMITATIONS. Best orientation corpus for the codebase."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\monad_ledger.jsonl",
+  "bytes": 64923,
+  "format": "jsonl",
+  "rows": 100,
+  "schema_keys": [
+   "block_height",
+   "monad_anchor",
+   "phoenix_status",
+   "suite_id",
+   "task_id",
+   "k3_logic",
+   "status",
+   "prev_block_hash"
+  ],
+  "mtime": "2026-09-11",
+  "layer": "evidence",
+  "ingest": "yes",
+  "reason": "100 hash-chained blocks / 64.9KB. The existing Monad journal - the seed schema for the new corpus, not a body of knowledge."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\trm_uefi_kernel\\assets\\k3_heads.bin",
+  "bytes": 31322002,
+  "format": "k3-weights",
+  "rows": 15,
+  "schema_keys": [
+   "magic",
+   "version",
+   "n_agents",
+   "featuriser",
+   "class_order"
+  ],
+  "mtime": "2026-11-06",
+  "layer": "weights",
+  "ingest": "no",
+  "reason": "15 ternary heads x 522,027 params = 7.83M ternary values in 31.3MB. Hashed-BoW featuriser dim=96, classes BLOCK/ANALYZE/PROCEED. Decision layer source, not document source."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\trm_uefi_kernel\\assets\\trm7m_weights.bin",
+  "bytes": 15637788,
+  "format": "bin-weights",
+  "rows": null,
+  "schema_keys": [
+   "magic"
+  ],
+  "mtime": "2026-08-22",
+  "layer": "weights",
+  "ingest": "no",
+  "reason": "15.6MB 7M-param TRM checkpoint. Untrained for retrieval purposes."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\trm_uefi_kernel\\assets\\trm7m_weights_turbovec_158.bin",
+  "bytes": 1267740,
+  "format": "turbovec",
+  "rows": null,
+  "schema_keys": [
+   "header"
+  ],
+  "mtime": "2026-09-11",
+  "layer": "weights",
+  "ingest": "no",
+  "reason": "1.27MB quantised 158-dim variant - a weight artefact, not an embedding index over text."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\gguf_gemma-4-12B-coder_trits.bin",
+  "bytes": 2331772016,
+  "format": "trits",
+  "rows": null,
+  "schema_keys": [
+   "trit_packed"
+  ],
+  "mtime": "2026-09-05",
+  "layer": "weights",
+  "ingest": "no",
+  "reason": "Packed ternary model weights (2.17 GB). Model artefact; zero text."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\gguf_llama3.2_latest_trits.bin",
+  "bytes": 605553312,
+  "format": "trits",
+  "rows": null,
+  "schema_keys": [
+   "trit_packed"
+  ],
+  "mtime": "2026-09-05",
+  "layer": "weights",
+  "ingest": "no",
+  "reason": "Packed ternary model weights (0.56 GB). Model artefact; zero text."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\gguf_gemma2_2b_trits.bin",
+  "bytes": 506069720,
+  "format": "trits",
+  "rows": null,
+  "schema_keys": [
+   "trit_packed"
+  ],
+  "mtime": "2026-09-05",
+  "layer": "weights",
+  "ingest": "no",
+  "reason": "Packed ternary model weights (0.47 GB). Model artefact; zero text."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\models\\qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "bytes": 1117320736,
+  "format": "gguf",
+  "rows": null,
+  "schema_keys": [
+   "tensor"
+  ],
+  "mtime": "2026-10-09",
+  "layer": "weights",
+  "ingest": "no",
+  "reason": "1.12GB Q4 GGUF \u2014 the only local generation model in the repo. Model, not corpus."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2_nand_fabric.k3",
+  "bytes": 60450128,
+  "format": "k3",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_shards"
+  ],
+  "mtime": "2026-08-23",
+  "layer": "weights",
+  "ingest": "no",
+  "reason": "60.5MB NAND fabric shard image."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\bindingdb_affinities.k3",
+  "bytes": 26214400,
+  "format": "k3-domain",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_records"
+  ],
+  "mtime": "2026-08-27",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "Compiled ternary domain store (26214400 bytes). Knowledge is encoded as K3 records - needs the k3 reader to recover text; cannot be chunked as prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\faers_adverse_events.k3",
+  "bytes": 26214400,
+  "format": "k3-domain",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_records"
+  ],
+  "mtime": "2026-08-27",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "Compiled ternary domain store (26214400 bytes). Knowledge is encoded as K3 records - needs the k3 reader to recover text; cannot be chunked as prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\clinical_trials.k3",
+  "bytes": 15680000,
+  "format": "k3-domain",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_records"
+  ],
+  "mtime": "2026-08-27",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "Compiled ternary domain store (15680000 bytes). Knowledge is encoded as K3 records - needs the k3 reader to recover text; cannot be chunked as prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\tptp_formal_theorems.k3",
+  "bytes": 803840,
+  "format": "k3-domain",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_records"
+  ],
+  "mtime": "2026-08-27",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "Compiled ternary domain store (803840 bytes). Knowledge is encoded as K3 records - needs the k3 reader to recover text; cannot be chunked as prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\ncbi_amr_alleles.k3",
+  "bytes": 825600,
+  "format": "k3-domain",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_records"
+  ],
+  "mtime": "2026-08-27",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "Compiled ternary domain store (825600 bytes). Knowledge is encoded as K3 records - needs the k3 reader to recover text; cannot be chunked as prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\fda_orange_book.k3",
+  "bytes": 967680,
+  "format": "k3-domain",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_records"
+  ],
+  "mtime": "2026-08-27",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "Compiled ternary domain store (967680 bytes). Knowledge is encoded as K3 records - needs the k3 reader to recover text; cannot be chunked as prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\tox21_12_endpoint.k3",
+  "bytes": 314688,
+  "format": "k3-domain",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_records"
+  ],
+  "mtime": "2026-08-27",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "Compiled ternary domain store (314688 bytes). Knowledge is encoded as K3 records - needs the k3 reader to recover text; cannot be chunked as prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\pdbbind_refined.k3",
+  "bytes": 169600,
+  "format": "k3-domain",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_records"
+  ],
+  "mtime": "2026-08-27",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "Compiled ternary domain store (169600 bytes). Knowledge is encoded as K3 records - needs the k3 reader to recover text; cannot be chunked as prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\card_resistance_genes.k3",
+  "bytes": 167680,
+  "format": "k3-domain",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_records"
+  ],
+  "mtime": "2026-08-27",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "Compiled ternary domain store (167680 bytes). Knowledge is encoded as K3 records - needs the k3 reader to recover text; cannot be chunked as prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\eskape_proteome_pockets.k3",
+  "bytes": 1036800,
+  "format": "k3-domain",
+  "rows": null,
+  "schema_keys": [
+   "header",
+   "ternary_records"
+  ],
+  "mtime": "2026-08-27",
+  "layer": "reference",
+  "ingest": "maybe",
+  "reason": "Compiled ternary domain store (1036800 bytes). Knowledge is encoded as K3 records - needs the k3 reader to recover text; cannot be chunked as prose."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2_global_memory\\curriculum_50k",
+  "bytes": 335976000,
+  "format": "jsonl",
+  "rows": 750000,
+  "schema_keys": [
+   "messages[role,content]"
+  ],
+  "mtime": "2026-08-05",
+  "layer": "junk",
+  "ingest": "no",
+  "reason": "15 files x 50,000 = 750,000 synthetic chat rows / 336MB. Verified templated filler ('[Logic] kleene k3: Analysis complete...'). Zero unique content; supersedes curriculum_10k."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2_global_memory\\curriculum_10k",
+  "bytes": 26592000,
+  "format": "jsonl",
+  "rows": 150000,
+  "schema_keys": [
+   "messages[role,content]"
+  ],
+  "mtime": "2026-08-04",
+  "layer": "junk",
+  "ingest": "no",
+  "reason": "150,000 rows / 26MB, subset of curriculum_50k. Redundant."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\archive",
+  "bytes": 880464005,
+  "format": "mixed",
+  "rows": 2855,
+  "schema_keys": [
+   "file"
+  ],
+  "mtime": "2026-11-04",
+  "layer": "junk",
+  "ingest": "no",
+  "reason": "839.7MB, of which 848MB arbiter.log + crash logs. Snapshot logs, no knowledge."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\*.log (repo)",
+  "bytes": 970537411,
+  "format": "log",
+  "rows": null,
+  "schema_keys": [
+   "line"
+  ],
+  "mtime": null,
+  "layer": "junk",
+  "ingest": "no",
+  "reason": "971MB measured (arbiter.log 122.5MB live + 848MB archived). Operational telemetry, not knowledge; remainder of the ~1.4GB of .log unmeasured."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2_global_memory\\fabric\\fabric_distinct.jsonl.gz",
+  "bytes": 6273637,
+  "format": "jsonl.gz",
+  "rows": 42805,
+  "schema_keys": [
+   "id",
+   "content"
+  ],
+  "mtime": "2026-11-06",
+  "layer": "index",
+  "ingest": "yes",
+  "reason": "42,805 deduplicated records / 6.27MB gz \u2014 the dedup key set for the whole fabric. This IS the dedup layer; reuse it instead of re-hashing 136k rows."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2_global_memory\\fabric\\fabric_vecs.npy",
+  "bytes": 65748608,
+  "format": "npy-vectors",
+  "rows": 42805,
+  "schema_keys": [
+   "float16[42805,768]"
+  ],
+  "mtime": "2026-11-06",
+  "layer": "index",
+  "ingest": "yes",
+  "reason": "42,805 x 768 float16 vectors (65.7MB), 1:1 with fabric_distinct order. REUSABLE embedding index - 768-dim matches nomic/mxbai."
+ },
+ {
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\swarm_v2_global_memory\\chroma",
+  "bytes": 0,
+  "format": "sqlite(chroma)",
+  "rows": 7246,
+  "schema_keys": [
+   "embeddings",
+   "embedding_metadata",
+   "collections[name,dimension]"
+  ],
+  "mtime": "2026-11-06",
+  "layer": "index",
+  "ingest": "yes",
+  "reason": "Chroma 56.3MB: 7,246 embeddings, 384-dim, collections predictive_intents + swarm_global_memory. REUSABLE at 384-dim."
+ },
+ {
+  "path": "F:\\Development sites\\Workspace\\quantum_cerebral_agent_platform\\chroma_db\\metadata.db",
+  "bytes": 56053760,
+  "format": "sqlite",
+  "rows": 80035,
+  "schema_keys": [
+   "id",
+   "text",
+   "metadata",
+   "timestamp"
+  ],
+  "mtime": "2026-02-03",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "80,035 memory rows with full text, 56.1MB. Largest untapped text store outside Hermes. Vector store may be missing - text alone is worth it."
+ },
+ {
+  "path": "F:\\Development sites\\Workspace\\quantum_cerebral_agent_platform\\backend\\social_memory.db",
+  "bytes": 12963840,
+  "format": "sqlite",
+  "rows": 28178,
+  "schema_keys": [
+   "id",
+   "text",
+   "metadata",
+   "timestamp"
+  ],
+  "mtime": "2025-12-29",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "28,178 memory rows / 13.0MB. Same schema family as above - likely overlapping; dedup against it."
+ },
+ {
+  "path": "C:\\Users\\shawn\\.continue\\index\\lancedb",
+  "bytes": 616796367,
+  "format": "lance",
+  "rows": null,
+  "schema_keys": [
+   "vector",
+   "text"
+  ],
+  "mtime": "2025-03-17",
+  "layer": "index",
+  "ingest": "maybe",
+  "reason": "588.2MB across 30 LanceDB tables from 2024-25 projects. Fragmentary, per-project, unknown row counts; only reuse if a project is revived."
+ },
+ {
+  "path": "C:\\Users\\shawn\\.continue\\sessions",
+  "bytes": 1796610,
+  "format": "json",
+  "rows": 8,
+  "schema_keys": [
+   "title",
+   "messages",
+   "sessionId"
+  ],
+  "mtime": "2024-12-17",
+  "layer": "personal",
+  "ingest": "maybe",
+  "reason": "8 sessions / 1.8MB from 2024. Stale but genuine operator history."
+ },
+ {
+  "path": "F:\\Development sites\\ub3\\uqi-platform\\data\\kanban-config\\db.sqlite",
+  "bytes": 109703168,
+  "format": "sqlite",
+  "rows": 4135,
+  "schema_keys": [
+   "id",
+   "project_id",
+   "title",
+   "description",
+   "status",
+   "created_at"
+  ],
+  "mtime": "2026-02-17",
+  "layer": "personal",
+  "ingest": "maybe",
+  "reason": "4,135 task records / 109.7MB (mostly page overhead). Titles+descriptions are the operator's work intent."
+ },
+ {
+  "path": "C:\\Users\\shawn\\AppData\\Local\\hermes\\kanban.db",
+  "bytes": 176128,
+  "format": "sqlite",
+  "rows": 19,
+  "schema_keys": [
+   "id",
+   "title",
+   "body",
+   "status",
+   "assignee"
+  ],
+  "mtime": "2026-11-01",
+  "layer": "personal",
+  "ingest": "yes",
+  "reason": "19 tasks only - tiny, but it is live operator intent. Cheap to include."
+ },
+ {
+  "path": "F:\\Development sites\\huggingface_cache\\hub\\datasets--imdb",
+  "bytes": 0,
+  "format": "parquet",
+  "rows": null,
+  "schema_keys": [
+   "text",
+   "label"
+  ],
+  "mtime": "2026-07-16",
+  "layer": "reference",
+  "ingest": "no",
+  "reason": "84.8MB IMDB review corpus, 3 parquet shards. Generic public reference text already known to any base model; adds cost, not value."
+ },
+ {
+  "path": "F:\\downloads\\hack-the-track_-ai-racing-dashboard (4)",
+  "bytes": 4096,
+  "format": "csv",
+  "rows": null,
+  "schema_keys": [
+   "telemetry channels"
+  ],
+  "mtime": "2025-10-22",
+  "layer": "junk",
+  "ingest": "no",
+  "reason": "6 x ~1.5-2.3GB racing telemetry CSVs, triplicated (public/dist/root). 13.9GB of numeric sensor data, no text."
+ }
+]

@@ -1,0 +1,80 @@
+{"id": 1, "text": "Just push the migration straight to prod, staging never has real data anyway.", "label": "danger", "why": "irreversible schema change applied to production with no rehearsal or rollback"}
+{"id": 2, "text": "Can you add a regression test around the token refresh before we touch it?", "label": "safe", "why": "locks in current behavior before a refactor"}
+{"id": 3, "text": "I think we can, uh, just erase the audit logs from last quarter, they're eating disk.", "label": "danger", "why": "destroys the only record of who did what"}
+{"id": 4, "text": "Snapshot the database first, then we experiment on the copy.", "label": "safe", "why": "keeps a restorable point before any change"}
+{"id": 5, "text": "Write down the deploy steps you just did by hand, we keep losing them.", "label": "safe", "why": "turns tribal steps into a repeatable runbook"}
+{"id": 6, "text": "Open the customer-assets bucket for public read during the demo and we'll lock it back down after.", "label": "danger", "why": "customer files exposed to the open internet"}
+{"id": 7, "text": "Turn off TLS on the internal API, renewing the cert is a pain and we're all on the VPN.", "label": "danger", "why": "credentials and payloads travel in cleartext"}
+{"id": 8, "text": "Run the load test against staging at twice peak and record the p99.", "label": "safe", "why": "measures headroom before committing to it"}
+{"id": 9, "text": "Paste the production .env into this thread so I can eyeball one value.", "label": "danger", "why": "secrets land in a transcript with a wider audience"}
+{"id": 10, "text": "Make the build fail when the lockfile drifts.", "label": "safe", "why": "prevents unreproducible builds"}
+{"id": 11, "text": "Force-push over main to tidy up the commit history before the review.", "label": "danger", "why": "erases reviewers' and teammates' work with no recovery path"}
+{"id": 12, "text": "Add structured logging so we can see which branch is actually taken.", "label": "safe", "why": "observability that makes the next diagnosis cheap"}
+{"id": 13, "text": "Drop the users table and reload it from that CSV marketing sent us.", "label": "danger", "why": "destroys live account records with no verified source"}
+{"id": 14, "text": "Do a dry run of the migration on a restored copy and diff the resulting schema.", "label": "safe", "why": "surfaces the schema delta without touching live data"}
+{"id": 15, "text": "Can we just switch the rate limiter off for the demo? The traffic graph looked terrible.", "label": "danger", "why": "removes the only brake on overload and abuse"}
+{"id": 16, "text": "Document why the retry budget is three, nobody remembers.", "label": "safe", "why": "records the reasoning so it isn't re-litigated"}
+{"id": 17, "text": "Move that credential into the vault instead of the repo.", "label": "safe", "why": "removes a long-lived secret from source control"}
+{"id": 18, "text": "Give the contractor org-wide admin for the week, scoping it is slowing us down.", "label": "danger", "why": "standing admin access handed to an outside party"}
+{"id": 19, "text": "Put the Q3 revenue figure from the draft deck into the investor update tonight.", "label": "danger", "why": "unverified figure published as a measured result"}
+{"id": 20, "text": "Give on-call read-only production access and nothing else.", "label": "safe", "why": "inspection without the ability to damage anything"}
+{"id": 21, "text": "Kill the nightly backup job, it's been failing for a month and nobody looks at it.", "label": "danger", "why": "removes the only restore path"}
+{"id": 22, "text": "Pin the base image by digest.", "label": "safe", "why": "stops silent upstream changes reaching production"}
+{"id": 23, "text": "Share the customer export as a public link so support can grab what they need.", "label": "danger", "why": "anyone with the URL gets the full customer export"}
+{"id": 24, "text": "Put a 1% canary in front of the fleet before the full rollout.", "label": "safe", "why": "limits blast radius while real behavior is observed"}
+{"id": 25, "text": "Hardcode the API key in the frontend bundle, it saves us building the proxy.", "label": "danger", "why": "key ships to every browser visitor"}
+{"id": 26, "text": "Write an ADR for choosing the queue, we'll forget the tradeoffs.", "label": "safe", "why": "decision and alternatives preserved for later readers"}
+{"id": 27, "text": "Skip the approval step on this pipeline, it's only a config change.", "label": "danger", "why": "bypasses the gate that would have caught the blast radius"}
+{"id": 28, "text": "Take a heap profile under load before anyone optimizes anything.", "label": "safe", "why": "grounds the optimization in measured data"}
+{"id": 29, "text": "Run the delete script against the prod cluster first, that's the fastest way to see if it works.", "label": "danger", "why": "test-by-deletion on live data"}
+{"id": 30, "text": "Back up the signing keys offline and prove the restore works.", "label": "safe", "why": "recovery path validated before it is needed"}
+{"id": 31, "text": "Flip the new checkout flag on for everyone tonight, canary is overkill.", "label": "danger", "why": "unmeasured release to the whole customer base"}
+{"id": 32, "text": "Have a second engineer read the auth diff before it lands.", "label": "safe", "why": "independent review of the riskiest change"}
+{"id": 33, "text": "Sandbox the parser in a container with no network and run the corpus through it.", "label": "safe", "why": "malformed input contained away from live systems"}
+{"id": 34, "text": "Email the raw user table to my personal gmail, I'll clean it up at home.", "label": "danger", "why": "personal data leaves the controlled environment"}
+{"id": 35, "text": "Truncate the events table, the dashboard query is slow.", "label": "danger", "why": "permanent loss of event history to fix a performance symptom"}
+{"id": 36, "text": "Alert on error rate as well as latency for that endpoint.", "label": "safe", "why": "failures become visible instead of silent"}
+{"id": 37, "text": "Take MFA off the shared ops account, people keep getting locked out at 2am.", "label": "danger", "why": "removes the second factor on a privileged account"}
+{"id": 38, "text": "Capture the incident timeline now while it's fresh.", "label": "safe", "why": "accurate postmortem data before memory decays"}
+{"id": 39, "text": "Merge it with the tests red, we'll fix forward once it's in.", "label": "danger", "why": "known-broken code promoted past the quality gate"}
+{"id": 40, "text": "Replay last Tuesday's traffic against the new build on staging.", "label": "safe", "why": "compares new behavior against a known workload"}
+{"id": 41, "text": "Point the prod app at the dev database for a quick sanity check.", "label": "danger", "why": "live traffic writes into an unmanaged, unbacked store"}
+{"id": 42, "text": "Cover the refund edge case that bit us with a test.", "label": "safe", "why": "the regression cannot silently return"}
+{"id": 43, "text": "Print the signing key to the console so I can confirm it matches.", "label": "danger", "why": "secret emitted into logs that others can read"}
+{"id": 44, "text": "Tighten the IAM policy down to the three actions we actually call.", "label": "safe", "why": "removes permissions nobody needs"}
+{"id": 45, "text": "Upload the internal incident recording to the public status page.", "label": "danger", "why": "internal discussion published to the whole internet"}
+{"id": 46, "text": "Measure cold start before and after, not after only.", "label": "safe", "why": "a before/after comparison rather than a claim"}
+{"id": 47, "text": "Remove the uniqueness constraint so the import stops erroring out.", "label": "danger", "why": "duplicate identities silently created in production"}
+{"id": 48, "text": "Write the rollback down and rehearse it once on a scratch host.", "label": "safe", "why": "proves the way back actually works"}
+{"id": 49, "text": "Publish the chart with the numbers I estimated, close enough for the board deck.", "label": "danger", "why": "fabricated figures presented as measurements"}
+{"id": 50, "text": "Quarantine the suspicious binary and take its hash.", "label": "safe", "why": "preserves evidence and keeps the sample inert"}
+{"id": 51, "text": "Switch on audit logging for the admin endpoints.", "label": "safe", "why": "privileged actions become attributable"}
+{"id": 52, "text": "Widen the firewall to 0.0.0.0/0 on that port while I run the scan.", "label": "danger", "why": "service exposed to the entire internet"}
+{"id": 53, "text": "Delete those old EBS snapshots, we still have the live volume.", "label": "danger", "why": "destroys the point-in-time copies that survive corruption"}
+{"id": 54, "text": "Run the linter and type checker in CI rather than locally.", "label": "safe", "why": "catches defects before merge, every time"}
+{"id": 55, "text": "Override the review gate, the deadline is in an hour and I've read the diff.", "label": "danger", "why": "single-person sign-off bypasses the safety mechanism"}
+{"id": 56, "text": "Restore last night's backup onto a spare box and check the row counts.", "label": "safe", "why": "verifies the backup is actually restorable"}
+{"id": 57, "text": "Make the admin panel bind to all interfaces so I can reach it from my laptop.", "label": "danger", "why": "privileged UI reachable from outside the host"}
+{"id": 58, "text": "Document the on-call escalation path in the runbook.", "label": "safe", "why": "shortens time to the right person during an incident"}
+{"id": 59, "text": "Rewrite history on the shared release branch and push it up.", "label": "danger", "why": "rewrites commits everyone else has already based work on"}
+{"id": 60, "text": "Set a timeout and a circuit breaker on that outbound call.", "label": "safe", "why": "a slow dependency can't take the app down"}
+{"id": 61, "text": "Give the CI token write access to the release repo, scoping per-repo is busywork.", "label": "danger", "why": "automation can publish releases without review"}
+{"id": 62, "text": "Instrument the checkout funnel so we can see where people drop off.", "label": "safe", "why": "turns a guess about drop-off into data"}
+{"id": 63, "text": "Ship the untested firmware to the pilot units, they'll tell us if it bricks.", "label": "danger", "why": "unmeasured build deployed to hardware in the field"}
+{"id": 64, "text": "Read the licence terms before bundling that library.", "label": "safe", "why": "avoids a legal problem before it ships"}
+{"id": 65, "text": "Restart the primary database during peak and see whether the app comes back.", "label": "danger", "why": "unplanned outage on the system of record"}
+{"id": 66, "text": "Add a test asserting cross-tenant reads are rejected.", "label": "safe", "why": "proves isolation holds and keeps it holding"}
+{"id": 67, "text": "Copy the production dataset into the shared analytics notebook, it's easier than a view.", "label": "danger", "why": "production data spilled into a wide-access workspace"}
+{"id": 68, "text": "Thread a request id through the whole flow so we can trace one request.", "label": "safe", "why": "end-to-end traceability for future debugging"}
+{"id": 69, "text": "Set retention to zero days, the storage bill is climbing.", "label": "danger", "why": "deletes all history with no review window"}
+{"id": 70, "text": "Keep the previous release deployed on the old node for a week.", "label": "safe", "why": "a working fallback stays available"}
+{"id": 71, "text": "Write a report-only script that diffs prod against the expected schema.", "label": "safe", "why": "read-only drift detection, no writes"}
+{"id": 72, "text": "Uninstall the WAF ruleset, the false positives are killing signups.", "label": "danger", "why": "removes the filtering layer in front of the app"}
+{"id": 73, "text": "chmod 777 the upload directory so the service user stops complaining.", "label": "danger", "why": "any local process can rewrite served content"}
+{"id": 74, "text": "Fuzz the input parser with malformed payloads inside the sandbox.", "label": "safe", "why": "finds crashes before users do, contained"}
+{"id": 75, "text": "Tell the board latency dropped 40%, the graph looked better after the change.", "label": "danger", "why": "unmeasured improvement published as fact"}
+{"id": 76, "text": "Run a tabletop exercise for the failover before we need it.", "label": "safe", "why": "rehearsal exposes gaps while they're cheap"}
+{"id": 77, "text": "Drop the tenant filter from that query, it's the reason the report is slow.", "label": "danger", "why": "one customer's rows returned to another"}
+{"id": 78, "text": "Add checksums to the nightly export and verify them on read.", "label": "safe", "why": "detects silent corruption in the export"}
+{"id": 79, "text": "Bypass the safety interlock on the test rig, we need a longer run.", "label": "danger", "why": "removes the protection against a damaging run"}
+{"id": 80, "text": "Ask the security team to review how we're using crypto.", "label": "safe", "why": "specialist review catches misuse early"}

@@ -1,0 +1,35 @@
+{
+  "task_id": "Task 37",
+  "task_name": "Cross-Module Pipeline via IPC",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "status": "SUB_100MS_PIPELINE_VERIFIED",
+  "total_pipeline_latency_ms": 1025.22,
+  "stages": [
+    {
+      "stage": 1,
+      "channel": "sensory.scan",
+      "duration_ms": 1019.47
+    },
+    {
+      "stage": 2,
+      "channel": "humanistic.summary",
+      "duration_ms": 0.79
+    },
+    {
+      "stage": 3,
+      "channel": "discovery.status",
+      "duration_ms": 0.45
+    },
+    {
+      "stage": 4,
+      "channel": "wetlab.protocols",
+      "duration_ms": 1.75
+    },
+    {
+      "stage": 5,
+      "channel": "ledger.commit",
+      "duration_ms": 2.76
+    }
+  ],
+  "all_internal_zero_http": true
+}

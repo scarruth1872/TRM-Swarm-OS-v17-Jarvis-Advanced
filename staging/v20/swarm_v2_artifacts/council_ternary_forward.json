@@ -1,0 +1,38 @@
+{
+  "autonomy_note": "council votes on soundness; after the seal the work lands in the agenda + kanban and the executor + council loop run it autonomously.",
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-25T14:14:37.016784+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "f90e1717b61c95c9b8c47c34f64634fdd9d49ef50bd09c7fce8f0693a4a4c835",
+      "motion": "MOTION-F1",
+      "phase": "consensus",
+      "proposal_id": "CP-72CC7C0D",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "TERNARY-AWARE FORWARD PASS: build a native path that dequantizes the Q2_g64 ESMFold weights and runs the forward pass through the multiply-free ternary_engine GEMM, then measure the RMSD of the predicted antibody structure against pdb_00009pzi_F_E. This is the decisive test of whether 2-bit ternary preserves the fold. REJECT AS PREMATURE: claiming a fold from the 0.68 weight error alone; skipping the RMSD measurement and asserting the fold is preserved. MEASURED: ESMFold quantized 8.44 GB fp32 -> 0.99 GB Q2_g64 (8.5x, 4,535 tensors, reconstruction error 0.65-0.72 relative). The full-precision forward pass is RAM-bound (2.2 GB free). The RMSD test needs a ternary-aware forward pass: dequantize the 2-bit weights and run the ESMFold architecture through the native multiply-free GEMM. The embedding server was restored to -UD-Q4_K_XL (0.9931 vs Q8_0's 0.9999 cosine); the canonical Q8_0 (295 MB) is not on disk."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "d6a53fef6567d4a2ad2154ece68eaf5b3814223fe8981c465b91aca649325bba",
+      "motion": "MOTION-R1",
+      "phase": "consensus",
+      "proposal_id": "CP-C6FA326C",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "RESTORE THE CANONICAL EMBEDDING MODEL: re-download embeddinggemma-2-Q8_0.gguf (295 MB, HF) and switch :8590 back from the -UD-Q4_K_XL fallback, so the semantic recall returns to the 0.9999 raw-to-raw alignment. REJECT AS PREMATURE: re-classifying live encoder infrastructure as redundant during any future reclamation. MEASURED: ESMFold quantized 8.44 GB fp32 -> 0.99 GB Q2_g64 (8.5x, 4,535 tensors, reconstruction error 0.65-0.72 relative). The full-precision forward pass is RAM-bound (2.2 GB free). The RMSD test needs a ternary-aware forward pass: dequantize the 2-bit weights and run the ESMFold architecture through the native multiply-free GEMM. The embedding server was restored to -UD-Q4_K_XL (0.9931 vs Q8_0's 0.9999 cosine); the canonical Q8_0 (295 MB) is not on disk."
+    }
+  ],
+  "prior_state": "system resumed after supervisor crash; CAP-207 quantized, RMSD test pending.",
+  "quorum": 9,
+  "record": "TERNARY FORWARD PASS + EMBEDDING RESTORE -- council-voted; platform self-directs",
+  "sha256": "f84ebea8d74240084f1ab609a8be339f7eae6f5824ca2491980efd6202a8f868"
+}

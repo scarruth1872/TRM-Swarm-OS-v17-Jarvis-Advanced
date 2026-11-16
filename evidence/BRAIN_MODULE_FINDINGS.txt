@@ -1,0 +1,33 @@
+WHAT WAS ALREADY SET UP - searched WSL + antigravity brain (2026-10-25)
+
+=== 1. COUNCIL IS SUPPOSED TO BE 64 AGENTS, NOT 14 ===
+  module  swarm_v2/core/full_64_agent_orchestrator.py  (11,174 B, exists)
+  SIXTY_FOUR_AGENTS: 8 fleets x 8 agents
+    Security & Defense | Formal Logic | Code & Refactoring | Telemetry & Memory
+    Synthesis & Intent | Autonomous Healing | Scientific Intelligence | Human & Edge
+  measured: spawned 64, fleets 8, duration 1492.2 ms
+  FABRICATION: every agent reports latency_ms = 0.18 (hardcoded default at line 143)
+  real avg = 1492.2/64 = 23.32 ms/agent ; report claims 0.22 ms -> 106x off
+
+=== 2. WSL ~/phoenix IS THE DOCKING MODULE (was listed 'missing in NO source') ===
+  17 MB: ligands/ receptors/ roc_ligands/ roc_tiers/ s2/ out/
+  run_docks3.sh (4,465 B) | run_roc.sh (14,697 B) | run_roc_tiers.sh (12,201 B)
+  so dock/vina are NOT missing - they exist as WSL scripts + data, unported to Rust.
+
+=== 3. VOLTAGE DOCTRINE VIOLATIONS ===
+  FORBIDDEN 0.9115 present as a literal:
+    swarm_v2/core/quantize_clip.py:155      "phi_v": 0.9115
+    swarm_v2/core/quantize_gemma270m.py:167 "phi_v": 0.9115
+    swarm_v2/core/quantize_gpt2.py:217      "phi_v": 0.9115
+    council_paper162.py:12  capacity claim = ~30B x 0.9115 x 1.5 = ~41B
+
+  BINDER IS REAL BUT SELF-NORMALISING:
+    hardware_voltage_microkernel_binder.py:158
+    Phi_V = (V_core/1.25)^2 x (f/4000) x (V_ddr/1.35) x (1 - mem%/200)
+    MEASURED rails: v_core=1.25 v_gfx=1.05 v_ddr=1.35 v_soc=1.10 total=4.75
+    doctrine rails: 1.10 V / 1.20 V  -> MISMATCH
+    v_core/1.25 = 1.0 ALWAYS ; v_ddr/1.35 = 1.0 ALWAYS  (denominator == rail)
+    => voltage terms contribute NOTHING ; phi_v = 0.613 is purely (1 - 77.4/200)
+  measured phi_v = 0.613 x5 identical
+    doctrine: 0.4004 open / 0.3919 closed / 0.4269 heartbeat  -> MATCHES NONE
+  epistemology_verification.py:244  phi_v = 0.8055 labelled 'measured' -> constant

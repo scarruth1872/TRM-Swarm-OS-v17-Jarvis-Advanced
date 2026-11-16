@@ -1,0 +1,40 @@
+G1 - TOOLCHAIN UPGRADE - MEASURED 2026-11-03
+============================================
+Gap: 1,270 Rust tests could not build. wasmtime-internal-* 43.0.2 and
+cranelift-* 0.130.2 declare rustc 1.91.0; installed was stable 1.89.0.
+
+ACTION
+  rustup update stable
+  stable-x86_64-pc-windows-msvc updated - rustc 1.99.1 (58cf8f9c3 2026-10-13)
+                                          (from rustc 1.89.0 (29483883e 2025-08-04))
+
+VERIFIED
+  rustc 1.99.1 (58cf8f9c3 2026-10-13)
+  cargo 1.99.1 (5f94df478 2026-08-27)
+
+PREVIOUSLY BLOCKED CRATE NOW RUNS
+  cargo test --release -p openfang-kernel --lib
+    test result: ok. 289 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+    finished in 10.02s
+  Note: the static #[test] count for this crate was 255; the real run produced
+  289. Macros generate more tests than a grep finds, again.
+
+REGRESSION CHECK ON THE TOOLCHAIN JUMP (1.89 -> 1.99 is a major jump)
+  trm_uefi_kernel:        cargo check --release -> Finished in 8.45s
+                          1,852 warnings (17 duplicates); was 1,857 before the
+                          upgrade, so the count went DOWN, not up.
+  host_council_server:    cargo build --release -> Finished in 45.73s
+                          24 warnings. Builds clean.
+
+  So the kernel and the authoritative council server both still compile on
+  1.99.1. No regression observed.
+
+STILL TO MEASURE
+  openfang-runtime (881 static), openfang-api (84), openfang-cli (50) are
+  compiling in the background. G1 is not closed until all 13 crates exit 0 and
+  the total pass count is recorded.
+
+WHAT THIS DOES NOT PROVE
+  A clean build is not a passing suite. Only openfang-kernel has been observed
+  passing so far (289). The remaining blocked crates are counted, not yet
+  verified.

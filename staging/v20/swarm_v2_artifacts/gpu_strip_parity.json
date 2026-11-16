@@ -1,0 +1,110 @@
+{
+ "checks": [
+  {
+   "check": "strip count == oracle ARCHITECTURES_GPU",
+   "ok": true,
+   "detail": "strip 4, oracle 4"
+  },
+  {
+   "check": "architecture names match the oracle, in order",
+   "ok": true,
+   "detail": "['GPU FPGA-Lite', 'GPU SRAM Neural Network', 'GPU Cellular Automaton', 'GPU K3 Ternary Engine']"
+  },
+  {
+   "check": "per-architecture hashes equal the python rule",
+   "ok": true,
+   "detail": "distinct=4 of 4"
+  },
+  {
+   "check": "regression: distinct hashes == architectures (old rule gave 3)",
+   "ok": true,
+   "detail": "old byte-switch rule would yield 4"
+  },
+  {
+   "check": "fpga(1) rust == python",
+   "ok": true,
+   "detail": "rust (8192, 7) vs python (8192, 7)"
+  },
+  {
+   "check": "fpga(8) rust == python",
+   "ok": true,
+   "detail": "rust (65536, 7) vs python (65536, 7)"
+  },
+  {
+   "check": "fpga(64) rust == python",
+   "ok": true,
+   "detail": "rust (524288, 7) vs python (524288, 7)"
+  },
+  {
+   "check": "fpga(96) rust == python",
+   "ok": true,
+   "detail": "rust (786432, 7) vs python (786432, 7)"
+  },
+  {
+   "check": "fpga(1024) rust == python",
+   "ok": true,
+   "detail": "rust (8388608, 7) vs python (8388608, 7)"
+  },
+  {
+   "check": "neural(64) rust == python",
+   "ok": true,
+   "detail": "rust (8388608, 33554432) vs python (8388608, 33554432)"
+  },
+  {
+   "check": "cellular(96) rust == python",
+   "ok": true,
+   "detail": "rust 100663296/2625.000000 vs python 100663296/2625.000000"
+  },
+  {
+   "check": "k3 rust == python",
+   "ok": true,
+   "detail": "rust (805306368, 402653184, 845571686.4) vs python (805306368, 402653184, 845571686.4)"
+  },
+  {
+   "check": "batch of 400: rc 0 and hashes all distinct",
+   "ok": true,
+   "detail": "rc=0 distinct=4"
+  },
+  {
+   "check": "negative index refused with rc -1 (honest failure, not a guess)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "summary() derives the architecture count (was asserted 5 elsewhere)",
+   "ok": true,
+   "detail": "architecture_count=4"
+  },
+  {
+   "check": "summary() carries a host probe beside the described GPU",
+   "ok": true,
+   "detail": "described=AMD Radeon RX 6700 XT installed=['NVIDIA GeForce RTX 3070 Laptop GPU', 'AMD Radeon(TM) Graphics'] target_present=False"
+  },
+  {
+   "check": "benchmark reports a MEASURED speedup, not the literal '7.5x'",
+   "ok": true,
+   "detail": "measured=12.79x distinct=4"
+  },
+  {
+   "check": "compare_fabrics() GPU count matches the dict, with a basis",
+   "ok": true,
+   "detail": "gpu=4 (was hardcoded 5) combined=9 total (5 CPU + 4 GPU)"
+  }
+ ],
+ "passed": 18,
+ "failed": 0,
+ "architectures": [
+  "GPU FPGA-Lite",
+  "GPU SRAM Neural Network",
+  "GPU Cellular Automaton",
+  "GPU K3 Ternary Engine"
+ ],
+ "hashes": [
+  2393578872,
+  961840874,
+  1066394541,
+  630432544
+ ],
+ "distinct_hashes": 4,
+ "dll_bytes": 11264
+}

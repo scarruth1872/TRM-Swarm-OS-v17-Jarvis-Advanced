@@ -1,0 +1,67 @@
+[
+ {
+  "kind": "boot_content_assertions",
+  "fact": "The boot now asks its own routes for content, not only for an answer. Nine paths are checked for a string the branch behind them cannot produce without having run -- the LCARS title, native-ternary, exact-full-corpus, the tercode cross-check reporting identical:true, and the packed-alphabet divergence labelled rather than hidden -- with the needles measured off the running platform instead of declared. The image that booted reports: 'init: 19 of the routes asked answered -- the platform is up; 9 of them returned the content they exist to return', with zero CONTENT failures and 'DASHBOARD: http://127.0.0.1:5183/ui/ on this machine, and http://10.0.2.15:5183/ui/ over the network (eth0 is linked)'. The check found two defects on its first runs, both in itself: http_req NUL-terminated the response at the status line so the status could print, and the content check then searched that same buffer -- it reported all nine routes as answering without their content; moved out of the retry loop and pointed past the header terminator, it agreed. The first version also printed every body ten times over an 11 KB/s serial line (350 KB of console for one boot), so the content probes are silent unless they fail and the same boot now writes 94109 B.",
+  "not_claimed": "Content assertions are checks the platform answers about itself. They prove the ternary branch ran and the dashboard is the LCARS page; they do not prove an association, and they are not a functional test of what the routes return -- a route that returned a wrong ranking with the right field names would pass.",
+  "commit": "8e4d1a2",
+  "rederive": {
+   "files": [
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "625d31138c2b74b77fe708f76cfff0517584d2042ea2f816ea4730074fb90382"
+    },
+    {
+     "path": "docs/BARE_METAL_LINUX_PATHWAY_20260930.md",
+     "sha256": "ccdaea628fba4d6815ae74d6505c24d908c47344c60b38cd2f11b3e0a9654c76"
+    },
+    {
+     "path": "docs/NOTEBOOKLM_SOURCE_TRM_SWARM_OS_20261001.md",
+     "sha256": "ee3dfe0952b116d2f55cfa5d062b7f61bda25d88aa47a74b29f13232cbf8e666"
+    },
+    {
+     "path": "backups/bare_metal_first_boot_20260930/harness_output.txt",
+     "sha256": "1c49f10d5ee2f61dad4a04b63957c96675ec16ee6cd49b2d9bcaee2f9e8d99b6"
+    },
+    {
+     "path": "backups/bare_metal_first_boot_20260930/oracle_harness.txt",
+     "sha256": "3b84936060ae3c72ee76d4855c111df92d5b0786d7e3c1c365083f062fb3fbe3"
+    },
+    {
+     "path": "backups/bare_metal_first_boot_20260930/boot_content_check.txt",
+     "sha256": "1fb123dd17ceb697359ae71e31c6cf4733b15b7f19b3fb1da2c0a5146166ae6a"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_wifi/src/harness.rs",
+     "sha256": "0408db564a148313f5fae2e5ea3f42ca907a85444cb7d0c64033431438424166"
+    },
+    {
+     "path": "trm_chainload/scripts/verify_wifi_harness.py",
+     "sha256": "40b98429fc2b6ce9ccd673f3399467cae78aeb7a668d127e86aafdaac01a11ff"
+    },
+    {
+     "path": "swarm_v2/core/check_boot_chain_static.py",
+     "sha256": "68ffea4e81934f9e88036d290daed2b5a57d0c986cea658c83e3f2181937714a"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "trm_chainload/scripts/verify_wifi_harness.py",
+     "args": [
+      "backups/bare_metal_first_boot_20260930/harness_output.txt"
+     ],
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 disagreed"
+     ]
+    },
+    {
+     "script": "swarm_v2/core/check_boot_chain_static.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 problem(s)"
+     ]
+    }
+   ]
+  }
+ }
+]

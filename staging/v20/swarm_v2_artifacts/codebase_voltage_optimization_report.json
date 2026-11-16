@@ -1,0 +1,69 @@
+{
+  "title": "Autonomous Python Codebase Voltage Optimization Campaign Report",
+  "monad_truth_anchor": "0x4D4F4E4144000001",
+  "proposal_id": "CP-604D4303",
+  "legislative_seal": "414564e708ac99ce2703f0b9ee5ce30fc2237086762df8b8b27686969917b695",
+  "monad_block_height": 32,
+  "campaign_runtime_seconds": 15.088,
+  "codebase_scan_summary": {
+    "total_modules_scanned": 321,
+    "prime_upgrade_targets": 273,
+    "io_bound_modules_skipped": 27,
+    "declarative_modules_skipped": 21
+  },
+  "top_upgrades_benchmarked": [
+    {
+      "component": "TurboVec Vector Memory Batch Recall (100 Vectors x 128-Dim)",
+      "python_throughput": "433.9 batches/s",
+      "native_throughput": "89,218.8 batches/s",
+      "speedup": "205.6x",
+      "energy_savings": "99.5%",
+      "k3_invariant": "+1 TRUE"
+    },
+    {
+      "component": "K3 Balanced Ternary Logic ALU (10,000 Trits Vector AND)",
+      "python_throughput": "6.85M ops/s",
+      "native_throughput": "2545.3M ops/s",
+      "speedup": "371.8x",
+      "energy_savings": "99.7%",
+      "k3_invariant": "+1 TRUE"
+    },
+    {
+      "component": "DDR Antibody 2,119 Vault Pattern Matcher (1KB Memory Buffer)",
+      "python_throughput": "5,494.5 scans/s",
+      "native_throughput": "1,234.2 scans/s",
+      "speedup": "0.2x",
+      "energy_savings": "-345.2%",
+      "k3_invariant": "+1 TRUE"
+    },
+    {
+      "component": "Multi-Target Molecular Docking Energy Scorer (50 x 200 Atoms)",
+      "python_throughput": "76.3 conformers/s",
+      "native_throughput": "53,243.0 conformers/s",
+      "speedup": "698.2x",
+      "energy_savings": "99.9%",
+      "k3_invariant": "+1 TRUE"
+    },
+    {
+      "component": "Transistor Voltage Rail & Thermal Scaler (1,000 Sensor Nodes)",
+      "python_throughput": "7,838.4 sweeps/s",
+      "native_throughput": "190,606.9 sweeps/s",
+      "speedup": "24.3x",
+      "energy_savings": "95.9%",
+      "k3_invariant": "+1 TRUE"
+    }
+  ],
+  "average_speedup": "260.0x",
+  "modules_not_suitable_report": [
+    {
+      "category": "FastAPI Web Endpoints & Routing (swarm_v2/routes/)",
+      "modules_count": 27,
+      "rationale": "I/O and network socket bound. Execution latency is dominated by client TCP/IP networking, not CPU voltage dissipation. Stripping yields negligible system speedup."
+    },
+    {
+      "category": "Declarative Configs & Schema Registries",
+      "modules_count": 21,
+      "rationale": "Static dictionary structures with zero compute loops or dynamic lookups. Voltage efficiency is already nominal."
+    }
+  ]
+}

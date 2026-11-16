@@ -1,0 +1,43 @@
+COUNCIL 8099 DETAIL/LIST ROUTES — BUG FOUND AND FIXED
+Date 2026-11-02. Live :8099 (Python council, swarm_v2.app_v2).
+
+FOUND WHILE VERIFYING TALLIES, NOT LOOKING FOR BUGS
+  Running the Rust/Python tally parity check needed the proposal detail on 8099.
+  GET /council/proposal/CP-7CCF1C27 returned HTTP 500 for a proposal the server
+  itself had just created 3 seconds earlier.
+
+  Response body: {"detail":"'CouncilProposal' object has no attribute 'consensus_reached'"}
+
+  Same failure on GET /council/proposals?limit=3. So both read routes were broken,
+  and only for proposals not yet deliberated: consensus_reached was set as a bare
+  attribute assignment during deliberation (swarm_council.py:718-722) and never
+  declared on the dataclass. Anything read before deliberation raised
+  AttributeError.
+
+  Consequence: an external caller who proposed and then polled for the result got
+  a 500 until deliberation finished. The routes looked healthy in earlier checks
+  because those checks only ever read proposals that had already been voted on.
+
+FIX
+  Declared consensus_reached: bool = False on CouncilProposal, next to raw_tally,
+  with a comment saying why. One field, default False, matching what deliberation
+  sets. No behaviour change to deliberation or tallying.
+
+VERIFIED AFTER FIX (server restarted on the edited module)
+  POST /council/propose          -> CP-xxxxxxxx, phase "proposed"
+  GET  /council/proposal/{id}    -> 200, 16 keys, phase "proposed"
+  GET  /council/proposals?limit=3 -> 200, 1 proposal
+
+PARITY UNCHANGED — THE POINT OF RE-CHECKING
+  Three topics, Rust :8022 vs Python :8099 full-cycle tallies:
+      dark mode toggle        (13, 0, 1)   vs (13, 0, 1)    SAME
+      cite verdicts as valid  ( 4, 0,10)   vs ( 4, 0,10)    SAME
+      silicon -> cheese       ( 0, 0,14)   vs ( 0, 0,14)    SAME
+  PARITY 3/3. The advisory SSM changes and this dataclass fix did not move any
+  council verdict.
+
+WHAT THIS SHOWS ABOUT THE EARLIER VERIFICATION
+  The SSM work was checked hard on the decision path and never on the read path.
+  A 500 on the two routes a client uses to collect a result would have been missed
+  by every tally comparison run so far, because those comparisons read the propose
+  response directly. Route coverage is not the same as decision coverage.

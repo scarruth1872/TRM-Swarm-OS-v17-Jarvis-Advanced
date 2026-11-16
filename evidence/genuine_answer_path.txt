@@ -1,0 +1,45 @@
+GENUINE ON-DEVICE ANSWER PATH - verified working 2026-10-09
+=============================================================
+
+ENGINE (verified standalone):
+  ...
+=== REFINEMENT 2 (built, NOT deployed) ===
+Found by reading the live response: a SECOND `let reasoning_trace`
+at L1612 SHADOWED the corrected one at L1607, so reasoning_trace
+still emitted the fabricated 'Sovereign Cognitive Substrate' pipeline.
+Deleted the stale block. build rc 0.
+
+ANSWER extraction CONFIRMED LIVE (e94678b7520d2bd8):
+  Q: 'What is 17 times 23? Reply with only the number.'
+  engine=on-device-qwen2.5-1.5b-q4km-vulkan templated=False 24.91 tok/s
+  response = '391'   <- CLEAN, think-block stripped
+  reasoning_trace = FABRICATED (this is what refinement 2 fixes)
+
+
+=== DEPLOYED d8ace26ecc9227fa - FULLY VERIFIED ===
+  ANSWER: '391'  (clean, think stripped)
+  TRACE : "Here's a thinking process: 1. **Analyze User Input:**..."
+          <- the MODEL'S REAL trace, fabrication gone
+  engine=on-device-qwen2.5-1.5b-q4km-vulkan templated=False
+
+
+=== REAL PIPELINE INVESTIGATION (the 28x) ===
+Isolated against the live engine at 8587, same question, n_predict varied:
+    no-template  n=64     1.10s   predicted_n=  8   '56'  CORRECT
+    no-template  n=512    0.97s   predicted_n=  8   '56'  CORRECT
+    TEMPLATE     n=64     5.12s   predicted_n= 64   rambling (hit cap)
+    TEMPLATE     n=512   11.67s   predicted_n=233   rambling
+    qwen,NO sys, n=96     0.60s   predicted_n=  7   '56'  CORRECT
+    qwen,+minsys,n=96     4.36s   predicted_n= 96   rambling (hit cap)
+
+CAUSE: ANY system message flips this GGUF into a long structured
+'thinking process' and it never emits a clean answer within budget.
+Not the model, not the engine, not Python - the PROMPT.
+
+FIX (built, rc 0, NOT deployed):
+  build_prompt emits NO system message (user turn only)
+  n_predict 512 -> 128 (measured answers are ~8 tokens)
+  EXPECTED: p50 16.6s -> ~0.6s, ~28x
+
+Also: 1000-task bench rewritten in Rust per doctrine (was Python).
+

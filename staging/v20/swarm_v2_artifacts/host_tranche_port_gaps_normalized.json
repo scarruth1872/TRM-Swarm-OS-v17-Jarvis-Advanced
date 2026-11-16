@@ -1,0 +1,295 @@
+{
+ "targets": 232,
+ "gaps": 109,
+ "rows": [
+  {
+   "module": "chaos_engine",
+   "python_targets": 8,
+   "gaps": [
+    "_native_should_drop",
+    "should_drop_connection"
+   ],
+   "covered": 6
+  },
+  {
+   "module": "chaos_simulator",
+   "python_targets": 5,
+   "gaps": [
+    "is_node_isolated",
+    "process_latency",
+    "start_session",
+    "stop_session"
+   ],
+   "covered": 1
+  },
+  {
+   "module": "cognitive_load_balancer",
+   "python_targets": 7,
+   "gaps": [
+    "get_agent_load",
+    "get_capable_roles",
+    "get_swarm_load_summary",
+    "record_task_end",
+    "record_task_start",
+    "redistribute_task"
+   ],
+   "covered": 1
+  },
+  {
+   "module": "coherence_thresholds",
+   "python_targets": 2,
+   "gaps": [],
+   "covered": 2
+  },
+  {
+   "module": "comm_protocol",
+   "python_targets": 4,
+   "gaps": [
+    "create_secure_payload",
+    "validate_secure_payload"
+   ],
+   "covered": 2
+  },
+  {
+   "module": "continuum_pbft",
+   "python_targets": 6,
+   "gaps": [
+    "get_ledger_hash"
+   ],
+   "covered": 5
+  },
+  {
+   "module": "coordination_protocol",
+   "python_targets": 1,
+   "gaps": [],
+   "covered": 1
+  },
+  {
+   "module": "daily_evolution_engine",
+   "python_targets": 3,
+   "gaps": [],
+   "covered": 3
+  },
+  {
+   "module": "ddr_antibody",
+   "python_targets": 14,
+   "gaps": [
+    "from_dict",
+    "get_antibodies",
+    "get_ddr",
+    "record_error",
+    "scan_lines_native",
+    "to_dict"
+   ],
+   "covered": 8
+  },
+  {
+   "module": "expert_registry",
+   "python_targets": 5,
+   "gaps": [
+    "_native_resolve",
+    "get_agent",
+    "get_all_agents",
+    "register_team"
+   ],
+   "covered": 1
+  },
+  {
+   "module": "feedback_loops",
+   "python_targets": 3,
+   "gaps": [],
+   "covered": 3
+  },
+  {
+   "module": "gpu_infinity_computer",
+   "python_targets": 11,
+   "gaps": [
+    "_probe_gpu",
+    "_write_pattern_to_device",
+    "benchmark_all",
+    "benchmark_all_native",
+    "compare_fabrics",
+    "gpu_pattern_cellular",
+    "gpu_pattern_fpga",
+    "gpu_pattern_k3_ternary",
+    "gpu_pattern_neural"
+   ],
+   "covered": 2
+  },
+  {
+   "module": "heuristic_consensus",
+   "python_targets": 5,
+   "gaps": [],
+   "covered": 5
+  },
+  {
+   "module": "pbft_consensus",
+   "python_targets": 12,
+   "gaps": [
+    "audit_ledger",
+    "get_proposal"
+   ],
+   "covered": 10
+  },
+  {
+   "module": "persona_matrix",
+   "python_targets": 4,
+   "gaps": [
+    "_mirror_kernel",
+    "_native_compiled_body",
+    "_native_enforce",
+    "build_compiled_prompt"
+   ],
+   "covered": 0
+  },
+  {
+   "module": "predictive_watchdog",
+   "python_targets": 9,
+   "gaps": [
+    "_monitor_loop",
+    "_take_preemptive_action"
+   ],
+   "covered": 7
+  },
+  {
+   "module": "radix_trie_matcher",
+   "python_targets": 32,
+   "gaps": [
+    "_handle_agent_spawn",
+    "_handle_audit",
+    "_handle_blueprint",
+    "_handle_code_compile",
+    "_handle_connect",
+    "_handle_cosmos_bridge",
+    "_handle_fetch",
+    "_handle_healing",
+    "_handle_health_check",
+    "_handle_hvbe_telemetry",
+    "_handle_jarvis_chat",
+    "_handle_jarvis_memory",
+    "_handle_jarvis_skills",
+    "_handle_jarvis_swarm",
+    "_handle_lora_status",
+    "_handle_memory_query",
+    "_handle_observe",
+    "_handle_orchestrate",
+    "_handle_research",
+    "_handle_search",
+    "_handle_security_audit",
+    "_handle_state_update",
+    "_handle_system_status",
+    "_handle_telemetry",
+    "_handle_test",
+    "_handle_theorem_prove",
+    "_handle_thz_gateway",
+    "match",
+    "match_batch_native"
+   ],
+   "covered": 3
+  },
+  {
+   "module": "resonance_engine",
+   "python_targets": 6,
+   "gaps": [],
+   "covered": 6
+  },
+  {
+   "module": "security_scanner",
+   "python_targets": 2,
+   "gaps": [],
+   "covered": 2
+  },
+  {
+   "module": "self_fuzzing_engine",
+   "python_targets": 5,
+   "gaps": [
+    "generate_antibody",
+    "save_antibodies",
+    "scan_all",
+    "scan_file",
+    "scan_lines_native"
+   ],
+   "covered": 0
+  },
+  {
+   "module": "semantic_knowledge_graph",
+   "python_targets": 7,
+   "gaps": [],
+   "covered": 7
+  },
+  {
+   "module": "skill_matrix_sync",
+   "python_targets": 8,
+   "gaps": [
+    "get_matrix",
+    "get_topology_overlay",
+    "on_skill_created",
+    "on_skill_evolved",
+    "on_skill_forgotten",
+    "record_skill_usage"
+   ],
+   "covered": 2
+  },
+  {
+   "module": "sram_pattern_computer",
+   "python_targets": 40,
+   "gaps": [
+    "_probe_host",
+    "benchmark_all",
+    "benchmark_all_native",
+    "calc_free_energy",
+    "calc_h",
+    "compute_boltzmann",
+    "compute_cellular",
+    "compute_gnn",
+    "compute_hdc",
+    "compute_hopfield",
+    "compute_ising",
+    "compute_onn",
+    "compute_quantum",
+    "compute_sparse_attention",
+    "compute_systolic",
+    "compute_tcam",
+    "execute_computational_algorithm",
+    "get_sram_computer",
+    "reconfigure_and_execute"
+   ],
+   "covered": 21
+  },
+  {
+   "module": "star_matrix_lattice",
+   "python_targets": 6,
+   "gaps": [],
+   "covered": 6
+  },
+  {
+   "module": "sub_atomic_kernel",
+   "python_targets": 5,
+   "gaps": [
+    "native_batch_collapse"
+   ],
+   "covered": 4
+  },
+  {
+   "module": "thz_wave_gateway",
+   "python_targets": 8,
+   "gaps": [
+    "get_gateway_stats"
+   ],
+   "covered": 7
+  },
+  {
+   "module": "turbovec_memory",
+   "python_targets": 14,
+   "gaps": [
+    "_atomic_append",
+    "_extract_agent_name",
+    "_rebuild_index",
+    "compact",
+    "log_event",
+    "query_by_agent"
+   ],
+   "covered": 8
+  }
+ ]
+}

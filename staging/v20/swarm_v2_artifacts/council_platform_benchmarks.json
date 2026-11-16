@@ -1,0 +1,69 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-22T21:57:23.279835+00:00",
+  "finding": "The platform's intelligence is native (the CPU is the model), so benchmarks must measure the in-kernel machinery \u2014 TRM-7M, fabric/recall, council, deterministic tiers, GPU fast path \u2014 under the honesty contract (labeled kinds, black_box, noise = measurement precision).",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Benchmark",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Build a native platform benchmark suite that measures the in-kernel machinery, not ingested models. Scope: (1) TRM-7M thinking \u2014 think() late"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Build a native platform benchmark suite that measures the in-kernel machinery, not ingested models. Scope: (1) TRM-7M thinking \u2014 thi"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Build a native platform benchmark suite that measures the in-kernel machinery, not ingested models. Scope: (1) TRM-7M thinking \u2014 think() latency ns"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Build a native platform benchmark suite that measures the in-kernel machinery, not ingested models. Scope: (1) TRM-7M thinking \u2014 think() latency ns/tu"
+        }
+      ],
+      "monad_seal": "0a0404c3536a10939e1d0c75bd7d6b123371b09b6492965093019f1b3f2a590a",
+      "motion": "MOTION-B1",
+      "phase": "consensus",
+      "proposal_id": "CP-5ACFF628",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "Build a native platform benchmark suite that measures the in-kernel machinery, not ingested models. Scope: (1) TRM-7M thinking \u2014 think() latency ns/turn and the council k3 vote latency; (2) fabric/recall \u2014 P@1 over the labeled 5-domain set (expand to ~200+ queries; 8 queries gives SE ~35%), plus ms/query and score spread over the 199k-document packed store; (3) council \u2014 full propose->deliberate->vote->enact latency and consensus rate; (4) deterministic tiers \u2014 arithmetic + introspection latency; (5) GPU fast path \u2014 gpu_scan_scores_cached vs CPU k3 scan (the cached OnceLock buffers are ~35x; measure the real delta). Honesty contract: every number labeled measured_on_host/derived/declared_constant; black_box all inputs; noise = the measurement's own precision (binomial SE + Wilson 95% CI); before/after on the SAME set; pre-register any transform prediction before the run. Receipt: a sealed benchmark artifact (swarm_v2_artifacts/platform_benchmarks.json) with per-metric values + labels, served live by a /benchmarks endpoint. MEASURED (this host, live): /health returns kernel/memory_kb/monad_anchor/status/uptime_seconds; /recall routes over 199,218 documents (native-turbovec-hdc encoder, score spread sd 0.0347); the council reports k3_model_latency_ns 7,432,200 (TRM-7M vote) with a k3_trit verdict; deterministic arithmetic answers at ~0.00s. Prior honest baselines on file: k3 retrieval ~0.9-1.5 ms/query over the 76.7MB fabric, TRM Brain ~3.9 us/inference, SRAM ~1.5M ops/s. The honesty contract is already the project standard: black_box all loop inputs (compiler elision has fabricated 1e12 ops/s before), label every number measured_on_host/derived/declared_constant, and treat noise as the measurement's own precision (binomial SE + Wilson 95% CI), never a synthetic noise term. REJECT AS PREMATURE if any metric cannot be produced with a labeled kind (a number without a measured/derived/declared_constant label is not a benchmark, it is an assertion) \u2014 in which case the council names the missing measurement and schedules it rather than shipping an unlabeled figure.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 9,
+  "record": "PLATFORM BENCHMARKS -- council decision",
+  "sha256": "7faf30e5ef6274f456aa4aba023ba0eaaa8976b5e850d38b3b57bdaa10b7ff53"
+}

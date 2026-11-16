@@ -1,0 +1,1406 @@
+{
+  "protocol": "SWARM_COUNCIL_DELIBERATION_SESSION",
+  "session_name": "DAILY_AUTO_WORK_PLAN",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-10-09 12:13:34 UTC",
+  "total_agents": 15,
+  "byzantine_tolerance": 4,
+  "pbft_threshold": 11,
+  "rust_kernel_bound": true,
+  "vote_codes": {
+    "1": "APPROVE",
+    "0": "ABSTAIN",
+    "-1": "REJECT"
+  },
+  "how_to_read_this_record": "Tallies, weighted scores and PBFT outcomes are the engine's own output (swarm_v2/core/swarm_council.py, deterministic, no LLM). Abstentions carry binding conditions; a hard violation REJECTs; BLOCKED on reject, CONSENSUS only on K3 approve + quorum + zero rejects. Motions encode the daily autonomous-work plan grounded in measured facts (153.5M trits, 180-vector index, 25/20/63 matrix, five watch cadences).",
+  "council_verdict": {
+    "consensus_summary": "Council deliberated 5 motions; 5 reached PBFT quorum (>= 11/15).",
+    "motions_deliberated": 5,
+    "motions_enacted": 5,
+    "recommended_primary_direction": "MOTION-024: Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py (Score: +0.985)",
+    "secondary_direction": "MOTION-026: Nightly quarantine + NAND index re-baseline: keep the floor honest (Score: +0.984)",
+    "tertiary_direction": "MOTION-023: Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines (Score: +0.984)"
+  },
+  "motions": [
+    {
+      "motion_id": "MOTION-023",
+      "title": "Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines",
+      "category": "ops",
+      "description": "Every day the system should run, unattended, the same honest cycle: (a) verify the NAND fabric index (build_nand_fabric_index.py + verify_nand_fabric_index.py, exit 1 on a flipped byte), (b) re-baseline fabric_index_floor.json and report the delta, (c) re-measure the module matrix (25 covered / 20 host-side / 63 skeleton), (d) fresh host probe on /health + /system. Every number is measured at run time and sealed; nothing is carried forward unmeasured.",
+      "engine_proposal_id": "CP-9AB2A817",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "70957631acba2390a3c5efeb3522056e6eaaa64331c415f1a4e0eb2d1b58006c",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.592675"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.593964"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594000"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594014"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594024"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594037"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594045"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594054"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594063"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594070"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594078"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594085"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594094"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594101"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594109"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T12:13:34.592580"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T12:13:34.592590"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.592598"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.592602"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.592608"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.592613"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.592617"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.592621"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.592625"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.592630"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.592634"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.592639"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.592643"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T12:13:34.592648"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Daily autonomous work loop: one measured cadence that re-verifies the ledger and re-baselines from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.592652"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-024",
+      "title": "Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py",
+      "category": "truth",
+      "description": "daily_evolution_engine.py:40 sets TASKS_PER_DAY = 1_000_000_000_000 (1 trillion). That is a hardcoded figure with no measurement behind it -- the exact defect class this campaign has been retracting (fabricated cert, 153.5M trits resolved to the real store, 96.8%/94.8% reattributed). It must be replaced with a measured tasks-per-day count or labeled design-nominal, never carried into a daily report as if it were occupancy.",
+      "engine_proposal_id": "CP-39614746",
+      "phase": "enacted",
+      "weighted_score": 0.9847,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "d50c1e342b3e7bff6bb9fd65e9f44d7f74daaeca92e98f750dfb1d973aeed61a",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594458"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594475"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594485"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594493"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594501"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594508"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594516"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594524"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594532"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594552"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594559"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594569"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594577"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594584"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594591"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.594400"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.594405"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.594408"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T12:13:34.594412"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Truth verification: validating formal axioms under Monad Truth Anchor 0x4D4F4E4144000001.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T12:13:34.594416"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.594419"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.594423"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.594426"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T12:13:34.594431"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.594434"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.594438"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "PRIORITY: Truth verification. Proving zero hallucination, empirical validation, and Kleene K3 consensus truth.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T12:13:34.594441"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.594444"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.594447"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Retire the fabricated 1-trillion-tasks/day literal in daily_evolution_engine.py from my reasoning perspective.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.594450"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-025",
+      "title": "Continuous-ops watches report measured deltas, never fabricated throughput",
+      "category": "ops",
+      "description": "host_continuous_ops runs five watch cadences (Pathogen/AMR 60s, Supply 300s, Climate 900s, Governance 30s, Infra 600s). Each should emit a measured delta (records scanned, alerts raised, bytes processed) per cycle. A watch that reports a throughput it did not measure is the same defect as a fabricated benchmark; each cadence's report must name its measurement basis.",
+      "engine_proposal_id": "CP-01069B64",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "c9f87597226423cd475f0695d4570402740d87018ad1370aaf81a616bece6879",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594830"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594842"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594851"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594859"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594866"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594873"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594881"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594888"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594895"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594902"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594909"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594916"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594923"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594930"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.594937"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Continuous-ops watches report measured deltas, never fabricated throughput: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T12:13:34.594779"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T12:13:34.594782"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Continuous-ops watches report measured deltas, never fabricated throughput: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.594786"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Continuous-ops watches report measured deltas, never fabricated throughput: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.594789"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Continuous-ops watches report measured deltas, never fabricated throughput: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.594793"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Continuous-ops watches report measured deltas, never fabricated throughput: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.594796"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Continuous-ops watches report measured deltas, never fabricated throughput: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.594801"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Continuous-ops watches report measured deltas, never fabricated throughput: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.594804"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Continuous-ops watches report measured deltas, never fabricated throughput: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.594806"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Continuous-ops watches report measured deltas, never fabricated throughput: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.594809"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Continuous-ops watches report measured deltas, never fabricated throughput: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.594812"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Continuous-ops watches report measured deltas, never fabricated throughput: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.594815"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Continuous-ops watches report measured deltas, never fabricated throughput: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.594818"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Continuous-ops watches report measured deltas, never fabricated throughput: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T12:13:34.594821"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Continuous-ops watches report measured deltas, never fabricated throughput from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.594824"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-026",
+      "title": "Nightly quarantine + NAND index re-baseline: keep the floor honest",
+      "category": "audit",
+      "description": "ci_orchestrator.py runs nightly quarantine verification. Combined with the daily NAND index re-baseline, the invariant is: the floor is scoped to a corpus and a refresh re-baselines it, reporting the delta (cosine min 0.8116 -> 0.8055 is a real recorded move). A nightly run that cannot reproduce its own floor must say so, not silently pass.",
+      "engine_proposal_id": "CP-1E1B0301",
+      "phase": "enacted",
+      "weighted_score": 0.9844,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "0a5a64d7d45534e338dbf8861ad2418ae555dfe5520ca9a31ea8e8f632b08663",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595149"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595162"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595170"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595178"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595185"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595192"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595199"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595206"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595213"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595220"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595227"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595233"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595241"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595249"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595256"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Nightly quarantine + NAND index re-baseline: keep the floor honest: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.595099"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Nightly quarantine + NAND index re-baseline: keep the floor honest: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595102"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Nightly quarantine + NAND index re-baseline: keep the floor honest: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595105"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Nightly quarantine + NAND index re-baseline: keep the floor honest: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T12:13:34.595108"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Nightly quarantine + NAND index re-baseline: keep the floor honest: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.595112"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Nightly quarantine + NAND index re-baseline: keep the floor honest: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595116"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Nightly quarantine + NAND index re-baseline: keep the floor honest: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595118"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Nightly quarantine + NAND index re-baseline: keep the floor honest: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595121"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "PRIORITY: Regulatory audit guardian. Enforcing 21 CFR Part 11 traceability, immutable event logs, and Monad state provenance.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T12:13:34.595124"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Nightly quarantine + NAND index re-baseline: keep the floor honest: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595127"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Nightly quarantine + NAND index re-baseline: keep the floor honest: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-10-09T12:13:34.595130"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Nightly quarantine + NAND index re-baseline: keep the floor honest: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T12:13:34.595135"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Nightly quarantine + NAND index re-baseline: keep the floor honest: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595138"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Nightly quarantine + NAND index re-baseline: keep the floor honest: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.595140"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Nightly quarantine + NAND index re-baseline: keep the floor honest from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595143"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-027",
+      "title": "Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt",
+      "category": "workflow",
+      "description": "The council has voted; it must now do its job of routing and running tasks, not only deliberate. Each enacted daily-work motion is routed to its domain agent, Hermes executes it, and the result returns with a sealed receipt (bytes written, sha256, measured value). Autonomy means the loop closes -- deliberate -> route -> execute -> seal -> re-deliberate -- with no human in the middle.",
+      "engine_proposal_id": "CP-A545809A",
+      "phase": "enacted",
+      "weighted_score": 0.9835,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "c4e7bfb6a967f06b61206c593977a18d1e70fa75b144e765add700fd53f2f526",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595460"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595471"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595479"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595486"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595494"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595501"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595508"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595515"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595522"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595528"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.4,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595535"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595543"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595550"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595557"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T12:13:34.595564"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.595410"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.595414"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.595417"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-10-09T12:13:34.595421"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595424"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T12:13:34.595427"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595430"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "PRIORITY: Workflow orchestrator. Scheduling high-throughput task DAGs, streaming queues, and metabolic pathway simulations.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T12:13:34.595433"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595436"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T12:13:34.595439"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.4,
+          "timestamp": "2026-10-09T12:13:34.595441"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595444"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595447"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T12:13:34.595451"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Council routes daily work to domain-owning agents in union with Hermes: execute, seal, receipt from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T12:13:34.595454"
+        }
+      ]
+    }
+  ]
+}

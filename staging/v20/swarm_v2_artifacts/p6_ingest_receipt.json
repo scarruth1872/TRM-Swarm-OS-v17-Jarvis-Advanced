@@ -1,0 +1,60 @@
+{
+ "phase": "P6",
+ "action": "name the fabricated artifacts and serve the quarantine",
+ "council": {
+  "motions": 5,
+  "all_agree_with_oracle": true
+ },
+ "quarantine": {
+  "tasks": 467,
+  "verdicts": {
+   "FABRICATED_RESULTS_FOR_A_GATED_TASK": 74,
+   "BLOCKED_NO_ARTIFACT": 167,
+   "UNUSED_CAPACITY_NO_ARTIFACT": 155,
+   "FABRICATED_BY_A_SEEDED_RNG_PRODUCER": 61,
+   "ARTIFACT_UNVERIFIED_NO_CONTRACT": 10
+  },
+  "tasks_with_artifacts": 145,
+  "fabricated": 135,
+  "doc_comparison": {
+   "artifacts_with_results": 143,
+   "fabricated_per_doc": 72,
+   "locally_satisfiable": 226,
+   "locally_satisfiable_without_artifacts_per_doc": 155
+  },
+  "delta_note": "145 artifacts found vs the doc's 143 (this index also covers the repo root and swarm_v2_artifacts/); 74 gate-claims vs the doc's 72; the 61 seeded-RNG-on-satisfiable set is invisible to the doc's rule."
+ },
+ "route": {
+  "path": "/verification/fabrication",
+  "deployed_sha16": "6cf7ef08f57c6ced",
+  "bytes": 2775552,
+  "seconds_to_healthy": 4.46,
+  "pid_before": 28076,
+  "pid_after": 28216,
+  "new_image_proof": "the route /verification/fabrication exists only in this build",
+  "process_start_vs_mtime": "2026-09-25T12:07:28.5374349-04:00 > 2026-09-25T12:06:59",
+  "ruler": "14/14",
+  "live_at_seal": {
+   "status": 200,
+   "checked": 467,
+   "fabricated": 135
+  }
+ },
+ "operator_half": {
+  "held_only_by_the_operator": [
+   "TRM-ABX-220 identity (no SMILES or structure on disk)",
+   "LpxC structure"
+  ],
+  "not_acquirable_by_machine": 55,
+  "unstarted_capacity": 155
+ },
+ "files": [
+  "scratch/p6_quarantine_fabrications.py",
+  "scratch/council_vote.py",
+  "scratch/p6_deploy_and_probe.py",
+  "scratch/verify_fabrication_route.py",
+  "trm_uefi_kernel/host_council_server/src/verification_handlers.rs",
+  "trm_uefi_kernel/host_council_server/src/main.rs",
+  "docs/P6_FABRICATION_QUARANTINE_20260925.md"
+ ]
+}

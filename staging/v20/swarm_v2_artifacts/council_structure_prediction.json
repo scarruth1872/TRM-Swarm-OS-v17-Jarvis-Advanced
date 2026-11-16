@@ -1,0 +1,38 @@
+{
+  "autonomy_note": "council votes on soundness; after the seal the platform executes and checkpoints.",
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T23:16:15.812706+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "93e59c1adc974ed9ee905ae8d783beededd4348755cb222ee91f3d1f88b093d1",
+      "motion": "MOTION-SP1",
+      "phase": "consensus",
+      "proposal_id": "CP-CF7DB099",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "STRUCTURE PREDICTION RUNG: install and validate ESMFold (lighter than AlphaFold, ~3 GB model) to cross the sequence->3D boundary for SPECIFICITY. The validation is the first deliverable, not design: predict the structure of a KNOWN antibody-antigen complex (pdb_00009pzi_F_E), measure RMSD against its crystal, and report whether the predictor is usable before any design is attempted. REJECT AS PREMATURE: attempting design before the RMSD validation; claiming specificity from a predictor whose RMSD is not measured against a crystal. MEASURED: the paratope is promiscuous (cognate z=-2.5 sigma vs rotation-optimized random antigens); the sequence->density model predicts stickiness (36% better than mean, precision@77 45.5%), not specificity. Crossing the specificity boundary needs structure prediction against a real antigen, none of which is in-tree. Audio (no corpus + mmproj unloadable) and Mamba-3B fp16 (3.77 GB free RAM vs 5.5 GB) are named boundaries."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "be01296d03643ff4bef967a10452dff6900c10c35a9efe4dbee93970dd2b2b6a",
+      "motion": "MOTION-AU1",
+      "phase": "consensus",
+      "proposal_id": "CP-3A58EFC9",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "AUDIO CORPUS ACQUISITION: fetch or synthesize a small audio corpus (e.g. 20-50 WAV files) and attempt the audio-tower embed so the audio extension can proceed past its 'no corpus' boundary. REJECT AS PREMATURE: fabricating audio embeddings with no real audio files; claiming the recall engine is modality-agnostic without a real cross-modal retrieval test. MEASURED: the paratope is promiscuous (cognate z=-2.5 sigma vs rotation-optimized random antigens); the sequence->density model predicts stickiness (36% better than mean, precision@77 45.5%), not specificity. Crossing the specificity boundary needs structure prediction against a real antigen, none of which is in-tree. Audio (no corpus + mmproj unloadable) and Mamba-3B fp16 (3.77 GB free RAM vs 5.5 GB) are named boundaries."
+    }
+  ],
+  "prior_state": "antibody arc closed (stickiness vs specificity named); audio + Mamba blocked.",
+  "quorum": 9,
+  "record": "STRUCTURE PREDICTION RUNG + AUDIO CORPUS -- council-voted; platform self-directs",
+  "sha256": "cd980adce76846845dad2c9391faa99918d851b286c042e85a7449579ad7a1b3"
+}

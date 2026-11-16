@@ -1,0 +1,53 @@
+# OpenTelemetry Collector Configuration
+# Aggregates traces, metrics, and logs from all Swarm OS agents.
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+  jaeger:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:14250
+      thrift_http:
+        endpoint: 0.0.0.0:14268
+
+processors:
+  batch:
+    timeout: 5s
+    send_batch_size: 1024
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 512
+  attributes:
+    actions:
+      - key: swarm.service.name
+        action: upsert
+        from_attribute: service.name
+      - key: swarm.agent.id
+        action: upsert
+        from_attribute: agent.id
+
+exporters:
+  otlp:
+    endpoint: "jaeger:4317"
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    namespace: swarm_os
+  logging:
+    loglevel: debug
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp, jaeger]
+      processors: [memory_limiter, batch, attributes]
+      exporters: [otlp, logging]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch, attributes]
+      exporters: [prometheus, logging]

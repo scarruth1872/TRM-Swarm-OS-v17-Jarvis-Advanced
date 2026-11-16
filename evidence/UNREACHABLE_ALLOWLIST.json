@@ -1,0 +1,2876 @@
+{
+ "generated_by": "G7 remediation (docs/GAP-REMEDIATION-PLAN.md)",
+ "source": "evidence/MODULE_TRACE.json",
+ "scope": "every Python module in python.unreachable plus every Rust file in rust.crate_detail[*].unreachable_files",
+ "label_definitions": {
+  "SCRIPT": "one-shot tool living in a package dir for convenience; run by hand, imported by nothing",
+  "DEAD": "superseded or never-wired; no caller, no test, no entrypoint. Deletion deferred: G7 forbids deleting files.",
+  "MISSING-DECL": "real module never declared (no import edge in Python, no `mod`/[[bin]] declaration in Rust)",
+  "TEST-ONLY": "reachable only from tests / a test asset"
+ },
+ "counts": {
+  "MISSING-DECL": 86,
+  "SCRIPT": 345,
+  "DEAD": 37,
+  "TEST-ONLY": 8
+ },
+ "total": 476,
+ "entries": [
+  {
+   "module": "(repo root)",
+   "path": "__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "repo-root package marker; Python imports it implicitly when the repo root is on sys.path, the static tracer does not model that edge"
+  },
+  {
+   "module": "Jarvis-Advanced-main.add_proxy_routes",
+   "path": "Jarvis-Advanced-main/add_proxy_routes.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.audit_components",
+   "path": "Jarvis-Advanced-main/audit_components.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.audit_prism",
+   "path": "Jarvis-Advanced-main/audit_prism.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.audit_wiring",
+   "path": "Jarvis-Advanced-main/audit_wiring.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.build_expanded_dataset",
+   "path": "Jarvis-Advanced-main/build_expanded_dataset.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.build_final_gaps",
+   "path": "Jarvis-Advanced-main/build_final_gaps.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.build_gap_dataset",
+   "path": "Jarvis-Advanced-main/build_gap_dataset.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.build_jarvis_dataset",
+   "path": "Jarvis-Advanced-main/build_jarvis_dataset.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.build_jarvis_modules",
+   "path": "Jarvis-Advanced-main/build_jarvis_modules.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.build_reasoning_dataset",
+   "path": "Jarvis-Advanced-main/build_reasoning_dataset.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.combine_datasets",
+   "path": "Jarvis-Advanced-main/combine_datasets.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.computer_control",
+   "path": "Jarvis-Advanced-main/computer_control.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.core",
+   "path": "Jarvis-Advanced-main/core.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: Jarvis-Advanced-main.jarvis_inference_server, Jarvis-Advanced-main.test_jarvis_model, Jarvis-Advanced-main.test_qwen_jarvis)"
+  },
+  {
+   "module": "Jarvis-Advanced-main.expand_qwen_dataset",
+   "path": "Jarvis-Advanced-main/expand_qwen_dataset.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.finetune_gemma",
+   "path": "Jarvis-Advanced-main/finetune_gemma.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.fix_fallback",
+   "path": "Jarvis-Advanced-main/fix_fallback.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.fix_final_gaps",
+   "path": "Jarvis-Advanced-main/fix_final_gaps.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.fix_identity",
+   "path": "Jarvis-Advanced-main/fix_identity.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.fix_proxy_routes",
+   "path": "Jarvis-Advanced-main/fix_proxy_routes.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.merge_all_datasets",
+   "path": "Jarvis-Advanced-main/merge_all_datasets.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.mesh_daemon",
+   "path": "Jarvis-Advanced-main/mesh_daemon.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.patch_setup_env",
+   "path": "Jarvis-Advanced-main/patch_setup_env.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.scripts.local_codebase_indexer",
+   "path": "Jarvis-Advanced-main/scripts/local_codebase_indexer.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.scripts.personality_quantum_model",
+   "path": "Jarvis-Advanced-main/scripts/personality_quantum_model.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.scripts.scan_codebase",
+   "path": "Jarvis-Advanced-main/scripts/scan_codebase.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.substrate_agent_platform",
+   "path": "Jarvis-Advanced-main/substrate_agent_platform.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.train_jarvis_gemma",
+   "path": "Jarvis-Advanced-main/train_jarvis_gemma.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.train_qwen3_jarvis",
+   "path": "Jarvis-Advanced-main/train_qwen3_jarvis.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.train_qwen_jarvis",
+   "path": "Jarvis-Advanced-main/train_qwen_jarvis.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.train_smol_jarvis",
+   "path": "Jarvis-Advanced-main/train_smol_jarvis.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.train_thunder",
+   "path": "Jarvis-Advanced-main/train_thunder.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.train_thunder_remote",
+   "path": "Jarvis-Advanced-main/train_thunder_remote.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.turbovec_search",
+   "path": "Jarvis-Advanced-main/turbovec_search.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.vibe_consensus",
+   "path": "Jarvis-Advanced-main/vibe_consensus.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "Jarvis-Advanced-main.wire_prism",
+   "path": "Jarvis-Advanced-main/wire_prism.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "ask_system",
+   "path": "ask_system.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "audit_codebase_loc_and_cost",
+   "path": "audit_codebase_loc_and_cost.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "audit_hardware_transistor_binding",
+   "path": "audit_hardware_transistor_binding.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "audit_paper162",
+   "path": "audit_paper162.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "audit_python_purity",
+   "path": "audit_python_purity.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "audit_runtime_dispatch",
+   "path": "audit_runtime_dispatch.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "audit_trm",
+   "path": "audit_trm.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "audit_wetlab_provenance",
+   "path": "audit_wetlab_provenance.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "batch1_ref_driver",
+   "path": "batch1_ref_driver.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "benchmark_microkernel_domains",
+   "path": "benchmark_microkernel_domains.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "bridge_status",
+   "path": "bridge_status.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "build_dataset",
+   "path": "build_dataset.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "check_api",
+   "path": "check_api.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "check_archi",
+   "path": "check_archi.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "check_checkpoint_keys",
+   "path": "check_checkpoint_keys.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "check_checkpoint_shapes",
+   "path": "check_checkpoint_shapes.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "check_gpu",
+   "path": "check_gpu.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "check_model_keys",
+   "path": "check_model_keys.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "check_server",
+   "path": "check_server.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "check_shapes_v2",
+   "path": "check_shapes_v2.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "classify_port_stubs",
+   "path": "classify_port_stubs.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "clean_pipeline",
+   "path": "clean_pipeline.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "compute_full_platform_value_and_cost_analysis",
+   "path": "compute_full_platform_value_and_cost_analysis.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "copy_docs_to_swarm_artifacts",
+   "path": "copy_docs_to_swarm_artifacts.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_energize",
+   "path": "council_energize.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_fabric_mesh",
+   "path": "council_fabric_mesh.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_full_models",
+   "path": "council_full_models.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_holographic",
+   "path": "council_holographic.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_models",
+   "path": "council_models.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_next_steps",
+   "path": "council_next_steps.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_paper162",
+   "path": "council_paper162.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_parity_decision",
+   "path": "council_parity_decision.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_parity_gaps",
+   "path": "council_parity_gaps.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_phase2",
+   "path": "council_phase2.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_phase3",
+   "path": "council_phase3.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "council_phase4",
+   "path": "council_phase4.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "create_platform_backup",
+   "path": "create_platform_backup.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "create_sovereign_portal_repo",
+   "path": "create_sovereign_portal_repo.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "dashboard.pin_versions",
+   "path": "dashboard/pin_versions.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "dashboard.src.audit_hooks",
+   "path": "dashboard/src/audit_hooks.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "dashboard.src.audit_hooks2",
+   "path": "dashboard/src/audit_hooks2.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "dashboard.src.remove_framer",
+   "path": "dashboard/src/remove_framer.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "dashboard.src.remove_framer_v2",
+   "path": "dashboard/src/remove_framer_v2.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "dataset",
+   "path": "dataset/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "dataset.build_arc_dataset",
+   "path": "dataset/build_arc_dataset.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "dataset.build_maze_dataset",
+   "path": "dataset/build_maze_dataset.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "dataset.build_sudoku_dataset",
+   "path": "dataset/build_sudoku_dataset.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "dataset.common",
+   "path": "dataset/common.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "debug_import",
+   "path": "debug_import.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "debug_memory_response",
+   "path": "debug_memory_response.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "debug_model_structure",
+   "path": "debug_model_structure.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "debug_nn_buffer",
+   "path": "debug_nn_buffer.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "debug_nodes",
+   "path": "debug_nodes.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "debug_parallel_logic",
+   "path": "debug_parallel_logic.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "debug_prune",
+   "path": "debug_prune.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "debug_split",
+   "path": "debug_split.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "debug_weather_port",
+   "path": "debug_weather_port.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "debug_weather_query",
+   "path": "debug_weather_query.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "demo_continuum_microkernel_subagents",
+   "path": "demo_continuum_microkernel_subagents.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "demo_microkernel_subagents",
+   "path": "demo_microkernel_subagents.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "demo_symbiotic_skills",
+   "path": "demo_symbiotic_skills.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "deploy",
+   "path": "deploy/__init__.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "deploy.canary_release_engine",
+   "path": "deploy/canary_release_engine.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "diag_archi",
+   "path": "diag_archi.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "diag_functional",
+   "path": "diag_functional.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "diag_hf",
+   "path": "diag_hf.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "diagnose_idle",
+   "path": "diagnose_idle.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "enable_gpu_acceleration",
+   "path": "enable_gpu_acceleration.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "evaluators",
+   "path": "evaluators/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "evaluators.arc",
+   "path": "evaluators/arc.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "execute_direct_cognitive_task",
+   "path": "execute_direct_cognitive_task.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "execute_master_complex_task_demo",
+   "path": "execute_master_complex_task_demo.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fast_ecosystem_20m_scanner",
+   "path": "fast_ecosystem_20m_scanner.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "final_verification",
+   "path": "final_verification.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "find_continuum_endpoints",
+   "path": "find_continuum_endpoints.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "find_real_stubs",
+   "path": "find_real_stubs.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "find_routes",
+   "path": "find_routes.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "finetune_gemma",
+   "path": "finetune_gemma.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fix_abx220_claims",
+   "path": "fix_abx220_claims.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fix_abx220_claims2",
+   "path": "fix_abx220_claims2.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fix_abx220_rust",
+   "path": "fix_abx220_rust.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fix_arch_line",
+   "path": "fix_arch_line.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fix_arrows_global",
+   "path": "fix_arrows_global.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fix_directml_install",
+   "path": "fix_directml_install.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fix_federation_ledger",
+   "path": "fix_federation_ledger.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fix_read_local",
+   "path": "fix_read_local.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fix_swarm_context",
+   "path": "fix_swarm_context.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "fix_synth_paths",
+   "path": "fix_synth_paths.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "generate_paper",
+   "path": "generate_paper.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "generate_public_static_site",
+   "path": "generate_public_static_site.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "generate_wet_lab_bridge_package",
+   "path": "generate_wet_lab_bridge_package.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "get_dims",
+   "path": "get_dims.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "gpu_usage_example",
+   "path": "gpu_usage_example.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "infrastructure",
+   "path": "infrastructure/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: infrastructure.healing.biomimetic_matrix, infrastructure.memory.hmc_compressor, infrastructure.routing.qer_mesh)"
+  },
+  {
+   "module": "infrastructure.architect",
+   "path": "infrastructure/architect/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.architect.ags",
+   "path": "infrastructure/architect/ags/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.architect.ags.sequencer",
+   "path": "infrastructure/architect/ags/sequencer.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "infrastructure.architect.es",
+   "path": "infrastructure/architect/es/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.architect.es.simulator",
+   "path": "infrastructure/architect/es/simulator.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.architect.me",
+   "path": "infrastructure/architect/me/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.architect.me.mutation_engine",
+   "path": "infrastructure/architect/me/mutation_engine.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.architect.rmlc",
+   "path": "infrastructure/architect/rmlc/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.architect.rmlc.controller",
+   "path": "infrastructure/architect/rmlc/controller.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "infrastructure.bridge",
+   "path": "infrastructure/bridge/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.bridge.cria",
+   "path": "infrastructure/bridge/cria.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.bridge.rac",
+   "path": "infrastructure/bridge/rac.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.bridge.tfe",
+   "path": "infrastructure/bridge/tfe.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.bridge.ust",
+   "path": "infrastructure/bridge/ust.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.chaos",
+   "path": "infrastructure/chaos/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.chaos.chaos_latency",
+   "path": "infrastructure/chaos/chaos_latency.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "infrastructure.crypto",
+   "path": "infrastructure/crypto/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.crypto.quantum_crypto",
+   "path": "infrastructure/crypto/quantum_crypto.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.crypto.zkp_engine",
+   "path": "infrastructure/crypto/zkp_engine.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.economy",
+   "path": "infrastructure/economy/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.economy.market_engine",
+   "path": "infrastructure/economy/market_engine.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.economy.reputation_oracle",
+   "path": "infrastructure/economy/reputation_oracle.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.economy.resource_oracle",
+   "path": "infrastructure/economy/resource_oracle.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.healing",
+   "path": "infrastructure/healing/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: infrastructure.healing.biomimetic_matrix)"
+  },
+  {
+   "module": "infrastructure.identity",
+   "path": "infrastructure/identity/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.identity.did_manager",
+   "path": "infrastructure/identity/did_manager.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.ingestion",
+   "path": "infrastructure/ingestion/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.ingestion.hf_ingestion_pipeline",
+   "path": "infrastructure/ingestion/hf_ingestion_pipeline.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "infrastructure.memory",
+   "path": "infrastructure/memory/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: infrastructure.memory.hmc_compressor)"
+  },
+  {
+   "module": "infrastructure.remediation",
+   "path": "infrastructure/remediation/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.remediation.remediation_engine",
+   "path": "infrastructure/remediation/remediation_engine.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.routing",
+   "path": "infrastructure/routing/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: infrastructure.routing.qer_mesh)"
+  },
+  {
+   "module": "infrastructure.self-healing",
+   "path": "infrastructure/self-healing/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.self-healing.health-checker",
+   "path": "infrastructure/self-healing/health-checker.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "infrastructure.telemetry",
+   "path": "infrastructure/telemetry/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: infrastructure.telemetry.spatial_broadcaster)"
+  },
+  {
+   "module": "ingest_discovered_repos",
+   "path": "ingest_discovered_repos.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "ingest_knowledge",
+   "path": "ingest_knowledge.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "ingest_knowledge_phase2",
+   "path": "ingest_knowledge_phase2.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "ingest_sovereign_datasets",
+   "path": "ingest_sovereign_datasets.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "initialize_all_modules",
+   "path": "initialize_all_modules.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "inspect_routes",
+   "path": "inspect_routes.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "inspect_server_learn",
+   "path": "inspect_server_learn.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "integration_test",
+   "path": "integration_test.py",
+   "label": "TEST-ONLY",
+   "reason": "test asset; not collected by pytest.ini testpaths (tests, swarm_v2) and imported by no test module"
+  },
+  {
+   "module": "investigate_and_integrate_15_sram_patterns",
+   "path": "investigate_and_integrate_15_sram_patterns.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "investigate_full_platform_20m_codebase",
+   "path": "investigate_full_platform_20m_codebase.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "launcher",
+   "path": "launcher.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "list_port_stubs",
+   "path": "list_port_stubs.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "live_testing_suite",
+   "path": "live_testing_suite.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "microkernel_proxy",
+   "path": "microkernel_proxy.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "models",
+   "path": "models/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: models.common, models.layers, models.recursive_reasoning.trm)"
+  },
+  {
+   "module": "models.ema",
+   "path": "models/ema.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: models.common, models.layers, models.sparse_embedding)"
+  },
+  {
+   "module": "models.losses",
+   "path": "models/losses.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: models.common, models.layers, models.sparse_embedding)"
+  },
+  {
+   "module": "models.recursive_reasoning",
+   "path": "models/recursive_reasoning/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: models.recursive_reasoning.trm)"
+  },
+  {
+   "module": "models.recursive_reasoning.hrm",
+   "path": "models/recursive_reasoning/hrm.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: models.recursive_reasoning.trm)"
+  },
+  {
+   "module": "models.recursive_reasoning.transformers_baseline",
+   "path": "models/recursive_reasoning/transformers_baseline.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: models.recursive_reasoning.trm)"
+  },
+  {
+   "module": "models.recursive_reasoning.trm_hier6",
+   "path": "models/recursive_reasoning/trm_hier6.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: models.recursive_reasoning.trm)"
+  },
+  {
+   "module": "models.recursive_reasoning.trm_singlez",
+   "path": "models/recursive_reasoning/trm_singlez.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: models.recursive_reasoning.trm)"
+  },
+  {
+   "module": "nexus_usage_example",
+   "path": "nexus_usage_example.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "observe_symbology_hardware_voltage_engine",
+   "path": "observe_symbology_hardware_voltage_engine.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "ollama_offline_test",
+   "path": "ollama_offline_test.py",
+   "label": "TEST-ONLY",
+   "reason": "test asset; not collected by pytest.ini testpaths (tests, swarm_v2) and imported by no test module"
+  },
+  {
+   "module": "openfang.agents.langchain-code-reviewer.agent",
+   "path": "openfang/agents/langchain-code-reviewer/agent.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: openfang.agents.langchain-code-reviewer.server)"
+  },
+  {
+   "module": "openfang.sdk.python.examples.client_basic",
+   "path": "openfang/sdk/python/examples/client_basic.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "openfang.sdk.python.examples.client_streaming",
+   "path": "openfang/sdk/python/examples/client_streaming.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "openfang.sdk.python.examples.echo_agent",
+   "path": "openfang/sdk/python/examples/echo_agent.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "openfang.sdk.python.openfang_client",
+   "path": "openfang/sdk/python/openfang_client.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "openfang.sdk.python.openfang_sdk",
+   "path": "openfang/sdk/python/openfang_sdk.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "openfang.sdk.python.setup",
+   "path": "openfang/sdk/python/setup.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "phase6_kickoff",
+   "path": "phase6_kickoff.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "platform_council_abx220",
+   "path": "platform_council_abx220.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "platform_council_d1",
+   "path": "platform_council_d1.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "platform_council_remediation",
+   "path": "platform_council_remediation.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "platform_ratify_d1",
+   "path": "platform_ratify_d1.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "platform_reconcile_abx220",
+   "path": "platform_reconcile_abx220.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "pretrain",
+   "path": "pretrain.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "probe_jarvis",
+   "path": "probe_jarvis.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "probe_native_endpoints",
+   "path": "probe_native_endpoints.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "purge_memory",
+   "path": "purge_memory.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "puzzle_dataset",
+   "path": "puzzle_dataset.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "quantify_full_platform_loc_and_monetary_value",
+   "path": "quantify_full_platform_loc_and_monetary_value.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "reallocate_ports",
+   "path": "reallocate_ports.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "recompute_comprehensive_platform_and_knowledge_valuation",
+   "path": "recompute_comprehensive_platform_and_knowledge_valuation.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "recover_registry",
+   "path": "recover_registry.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "recover_skills",
+   "path": "recover_skills.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "redock_validate",
+   "path": "redock_validate.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "render_all_sectors",
+   "path": "render_all_sectors.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "render_and_verify_framebuffer",
+   "path": "render_and_verify_framebuffer.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "render_and_verify_setup",
+   "path": "render_and_verify_setup.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "render_terminal_screenshot",
+   "path": "render_terminal_screenshot.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "repoint_jarvis",
+   "path": "repoint_jarvis.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "restart_companion_proxy",
+   "path": "restart_companion_proxy.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "restore_report_section7",
+   "path": "restore_report_section7.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "run_nexus_build",
+   "path": "run_nexus_build.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "run_resident_bridge",
+   "path": "run_resident_bridge.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "scan_live_streaming_lines",
+   "path": "scan_live_streaming_lines.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "scan_targeted_ecosystem_lines",
+   "path": "scan_targeted_ecosystem_lines.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "scripts.regen_phoenix_manifest",
+   "path": "scripts/regen_phoenix_manifest.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "seal_23m_dual_platform_valuation_ledger",
+   "path": "seal_23m_dual_platform_valuation_ledger.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "search_learn_resource",
+   "path": "search_learn_resource.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "setup_github_remote",
+   "path": "setup_github_remote.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "setup_private_github_repo",
+   "path": "setup_private_github_repo.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "setup_self_hosting_environment",
+   "path": "setup_self_hosting_environment.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "simulated_microkernel_prototype",
+   "path": "simulated_microkernel_prototype.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "startup",
+   "path": "startup.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "stop_host_servers",
+   "path": "stop_host_servers.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "stress_test_api_comprehensive",
+   "path": "stress_test_api_comprehensive.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "stress_test_cognitive_stack",
+   "path": "stress_test_cognitive_stack.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "stress_test_comprehensive",
+   "path": "stress_test_comprehensive.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "stress_test_quick",
+   "path": "stress_test_quick.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "swarm3_endpoints_snippet",
+   "path": "swarm3_endpoints_snippet.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "swarm_batch_maintenance",
+   "path": "swarm_batch_maintenance.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "swarm_refine_docs",
+   "path": "swarm_refine_docs.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "swarm_v2",
+   "path": "swarm_v2/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.app_v2, swarm_v2.cli.main, swarm_v2.core)"
+  },
+  {
+   "module": "swarm_v2.cli",
+   "path": "swarm_v2/cli/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.cli.main)"
+  },
+  {
+   "module": "swarm_v2.core.abx220_reconcile",
+   "path": "swarm_v2/core/abx220_reconcile.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.agent_mailbox_bus",
+   "path": "swarm_v2/core/agent_mailbox_bus.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.architectural_rl_agent",
+   "path": "swarm_v2/core/architectural_rl_agent.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.audit_legacy_event_stream",
+   "path": "swarm_v2/core/audit_legacy_event_stream.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.bench_trm7m_python",
+   "path": "swarm_v2/core/bench_trm7m_python.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.benchmark_epistemology",
+   "path": "swarm_v2/core/benchmark_epistemology.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.brain_ai_microkernel_bridge",
+   "path": "swarm_v2/core/brain_ai_microkernel_bridge.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.bridge_e2e_test",
+   "path": "swarm_v2/core/bridge_e2e_test.py",
+   "label": "TEST-ONLY",
+   "reason": "test asset; not collected by pytest.ini testpaths (tests, swarm_v2) and imported by no test module"
+  },
+  {
+   "module": "swarm_v2.core.build_module_registry",
+   "path": "swarm_v2/core/build_module_registry.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.build_totality_memory",
+   "path": "swarm_v2/core/build_totality_memory.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.capability_test",
+   "path": "swarm_v2/core/capability_test.py",
+   "label": "TEST-ONLY",
+   "reason": "test asset; not collected by pytest.ini testpaths (tests, swarm_v2) and imported by no test module"
+  },
+  {
+   "module": "swarm_v2.core.catalyst_phase0",
+   "path": "swarm_v2/core/catalyst_phase0.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.catalyst_phase1",
+   "path": "swarm_v2/core/catalyst_phase1.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.cold_start_recovery",
+   "path": "swarm_v2/core/cold_start_recovery.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.compare_trm7m_python",
+   "path": "swarm_v2/core/compare_trm7m_python.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.complete_singletons",
+   "path": "swarm_v2/core/complete_singletons.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.cosmos_bridge",
+   "path": "swarm_v2/core/cosmos_bridge.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.cosmos_microkernel_entanglement",
+   "path": "swarm_v2/core/cosmos_microkernel_entanglement.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.cosmos_moe_instella_shunter",
+   "path": "swarm_v2/core/cosmos_moe_instella_shunter.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.cosmos_sparse_moe_teams",
+   "path": "swarm_v2/core/cosmos_sparse_moe_teams.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.daily_evolution_engine",
+   "path": "swarm_v2/core/daily_evolution_engine.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.ddr_self_training",
+   "path": "swarm_v2/core/ddr_self_training.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.dram_pattern_computer",
+   "path": "swarm_v2/core/dram_pattern_computer.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.epistemology_verification",
+   "path": "swarm_v2/core/epistemology_verification.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.export_trm7m_turbovec_158",
+   "path": "swarm_v2/core/export_trm7m_turbovec_158.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.export_trm7m_weights",
+   "path": "swarm_v2/core/export_trm7m_weights.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.final_porting_pass",
+   "path": "swarm_v2/core/final_porting_pass.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.final_porting_pass2",
+   "path": "swarm_v2/core/final_porting_pass2.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.find_truncations",
+   "path": "swarm_v2/core/find_truncations.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.formal_verification_engine",
+   "path": "swarm_v2/core/formal_verification_engine.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.full_64_agent_orchestrator",
+   "path": "swarm_v2/core/full_64_agent_orchestrator.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.gan_design_synthesizer",
+   "path": "swarm_v2/core/gan_design_synthesizer.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.gpu_cuda_microkernel_binder",
+   "path": "swarm_v2/core/gpu_cuda_microkernel_binder.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.gpu_unlock_architecture",
+   "path": "swarm_v2/core/gpu_unlock_architecture.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.heartbeat_scheduler",
+   "path": "swarm_v2/core/heartbeat_scheduler.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.hf_brain",
+   "path": "swarm_v2/core/hf_brain.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.higher_mind",
+   "path": "swarm_v2/core/higher_mind.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.instella_moe_inference",
+   "path": "swarm_v2/core/instella_moe_inference.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.instella_quantize_experts",
+   "path": "swarm_v2/core/instella_quantize_experts.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.instella_sparse_agent_teams",
+   "path": "swarm_v2/core/instella_sparse_agent_teams.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.ionosphere_protocol",
+   "path": "swarm_v2/core/ionosphere_protocol.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.k3_ternary_sram",
+   "path": "swarm_v2/core/k3_ternary_sram.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.kernel_instructions",
+   "path": "swarm_v2/core/kernel_instructions.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.kimi_k3_ingestion_engine",
+   "path": "swarm_v2/core/kimi_k3_ingestion_engine.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.local_lora_trainer",
+   "path": "swarm_v2/core/local_lora_trainer.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.manual_clearing_engine",
+   "path": "swarm_v2/core/manual_clearing_engine.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.manual_repair_pass",
+   "path": "swarm_v2/core/manual_repair_pass.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.manual_repair_pass2",
+   "path": "swarm_v2/core/manual_repair_pass2.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.mcp_bus",
+   "path": "swarm_v2/core/mcp_bus.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.microkernel_chat_bridge",
+   "path": "swarm_v2/core/microkernel_chat_bridge.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.monad",
+   "path": "swarm_v2/core/monad.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.mpu",
+   "path": "swarm_v2/core/mpu.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.native_federation_bridge",
+   "path": "swarm_v2/core/native_federation_bridge.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.native_mailbox_bridge",
+   "path": "swarm_v2/core/native_mailbox_bridge.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.native_ops_bridge",
+   "path": "swarm_v2/core/native_ops_bridge.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.optimization_engine",
+   "path": "swarm_v2/core/optimization_engine.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.persistent_mmap_allocator",
+   "path": "swarm_v2/core/persistent_mmap_allocator.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_engine",
+   "path": "swarm_v2/core/porting_engine.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass",
+   "path": "swarm_v2/core/porting_fixpass.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass10",
+   "path": "swarm_v2/core/porting_fixpass10.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass11",
+   "path": "swarm_v2/core/porting_fixpass11.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass2",
+   "path": "swarm_v2/core/porting_fixpass2.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass3",
+   "path": "swarm_v2/core/porting_fixpass3.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass4",
+   "path": "swarm_v2/core/porting_fixpass4.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass5",
+   "path": "swarm_v2/core/porting_fixpass5.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass6",
+   "path": "swarm_v2/core/porting_fixpass6.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass7",
+   "path": "swarm_v2/core/porting_fixpass7.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass8",
+   "path": "swarm_v2/core/porting_fixpass8.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.porting_fixpass9",
+   "path": "swarm_v2/core/porting_fixpass9.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.predictive_watchdog",
+   "path": "swarm_v2/core/predictive_watchdog.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.qic",
+   "path": "swarm_v2/core/qic/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.qic._state)"
+  },
+  {
+   "module": "swarm_v2.core.quantize_clip",
+   "path": "swarm_v2/core/quantize_clip.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.quantize_gemma270m",
+   "path": "swarm_v2/core/quantize_gemma270m.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.quantize_gguf",
+   "path": "swarm_v2/core/quantize_gguf.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.quantize_gpt2",
+   "path": "swarm_v2/core/quantize_gpt2.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.quantize_qwen17b",
+   "path": "swarm_v2/core/quantize_qwen17b.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.quantize_whisper",
+   "path": "swarm_v2/core/quantize_whisper.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.quantum_drug_protocol",
+   "path": "swarm_v2/core/quantum_drug_protocol.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.self_fuzzing_engine",
+   "path": "swarm_v2/core/self_fuzzing_engine.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.self_modification_api",
+   "path": "swarm_v2/core/self_modification_api.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.simd_accelerator",
+   "path": "swarm_v2/core/simd_accelerator.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.small_diffusion_engine",
+   "path": "swarm_v2/core/small_diffusion_engine.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.sovereign_practice",
+   "path": "swarm_v2/core/sovereign_practice.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.sub_atomic_kernel",
+   "path": "swarm_v2/core/sub_atomic_kernel.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.symbology_etymology_monad",
+   "path": "swarm_v2/core/symbology_etymology_monad.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.trm_7m_full",
+   "path": "swarm_v2/core/trm_7m_full.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.trm_7m_optimized",
+   "path": "swarm_v2/core/trm_7m_optimized.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.turbovec_quantize_weights",
+   "path": "swarm_v2/core/turbovec_quantize_weights.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.ultrawork_tranche",
+   "path": "swarm_v2/core/ultrawork_tranche.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "swarm_v2.core.voltage_node_engine",
+   "path": "swarm_v2/core/voltage_node_engine.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.core.web_fetch_utility",
+   "path": "swarm_v2/core/web_fetch_utility.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.core.advanced_scene_fusion, swarm_v2.core.agent_intelligence_bridge, swarm_v2.core.agent_mailbox)"
+  },
+  {
+   "module": "swarm_v2.experts",
+   "path": "swarm_v2/experts/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.experts.registry)"
+  },
+  {
+   "module": "swarm_v2.generated.async_cache_rate_limiter",
+   "path": "swarm_v2/generated/async_cache_rate_limiter.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "swarm_v2.mcp",
+   "path": "swarm_v2/mcp/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.mcp.synthesizer)"
+  },
+  {
+   "module": "swarm_v2.mcp.bridge",
+   "path": "swarm_v2/mcp/bridge.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.mcp.synthesizer)"
+  },
+  {
+   "module": "swarm_v2.routes",
+   "path": "swarm_v2/routes/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.routes.artifacts, swarm_v2.routes.batch_endpoints, swarm_v2.routes.changelog)"
+  },
+  {
+   "module": "swarm_v2.scripts",
+   "path": "swarm_v2/scripts/__init__.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.entangled_pipeline_demo",
+   "path": "swarm_v2/scripts/entangled_pipeline_demo.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.inception_pulse",
+   "path": "swarm_v2/scripts/inception_pulse.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.manus_superposition_test",
+   "path": "swarm_v2/scripts/manus_superposition_test.py",
+   "label": "TEST-ONLY",
+   "reason": "test asset; not collected by pytest.ini testpaths (tests, swarm_v2) and imported by no test module"
+  },
+  {
+   "module": "swarm_v2.scripts.propose_regional_managers",
+   "path": "swarm_v2/scripts/propose_regional_managers.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.relationship_reasoning",
+   "path": "swarm_v2/scripts/relationship_reasoning.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.swarm_benchmark",
+   "path": "swarm_v2/scripts/swarm_benchmark.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.swarm_total_exercise",
+   "path": "swarm_v2/scripts/swarm_total_exercise.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.system_integration_test",
+   "path": "swarm_v2/scripts/system_integration_test.py",
+   "label": "TEST-ONLY",
+   "reason": "test asset; not collected by pytest.ini testpaths (tests, swarm_v2) and imported by no test module"
+  },
+  {
+   "module": "swarm_v2.scripts.tri_scenario_247_exercise",
+   "path": "swarm_v2/scripts/tri_scenario_247_exercise.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.verify_phase_10",
+   "path": "swarm_v2/scripts/verify_phase_10.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.verify_phase_11",
+   "path": "swarm_v2/scripts/verify_phase_11.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.verify_phase_12",
+   "path": "swarm_v2/scripts/verify_phase_12.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.verify_phase_14",
+   "path": "swarm_v2/scripts/verify_phase_14.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.verify_phase_7",
+   "path": "swarm_v2/scripts/verify_phase_7.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.scripts.vision_broadcast",
+   "path": "swarm_v2/scripts/vision_broadcast.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "swarm_v2.skills",
+   "path": "swarm_v2/skills/__init__.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.skills.codebase_indexer, swarm_v2.skills.cognitive_orchestrator, swarm_v2.skills.doc_ingestion_skill)"
+  },
+  {
+   "module": "swarm_v2.skills.co_creator_skill",
+   "path": "swarm_v2/skills/co_creator_skill.py",
+   "label": "MISSING-DECL",
+   "reason": "real module in a live package but never imported or declared (reachable siblings: swarm_v2.skills.codebase_indexer, swarm_v2.skills.cognitive_orchestrator, swarm_v2.skills.doc_ingestion_skill)"
+  },
+  {
+   "module": "sweep_bad_hashes",
+   "path": "sweep_bad_hashes.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "sync_clean_private_repo",
+   "path": "sync_clean_private_repo.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "sync_private_repository",
+   "path": "sync_private_repository.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "system_verify",
+   "path": "system_verify.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "telegram_microkernel_bot",
+   "path": "telegram_microkernel_bot.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "tools._arc32",
+   "path": "tools/_arc32.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools._arc_pid",
+   "path": "tools/_arc_pid.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools._arc_probe",
+   "path": "tools/_arc_probe.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools._arc_real",
+   "path": "tools/_arc_real.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools._ckpt_probe",
+   "path": "tools/_ckpt_probe.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools._prep_receptors",
+   "path": "tools/_prep_receptors.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools._prep_roc_tiers",
+   "path": "tools/_prep_roc_tiers.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools._select_roc_tiers",
+   "path": "tools/_select_roc_tiers.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools._shape",
+   "path": "tools/_shape.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools._sweep",
+   "path": "tools/_sweep.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools._t",
+   "path": "tools/_t.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.bench_arc_llm",
+   "path": "tools/bench_arc_llm.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.bench_platform",
+   "path": "tools/bench_platform.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.build_module_graph",
+   "path": "tools/build_module_graph.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.calibrate_domain_router",
+   "path": "tools/calibrate_domain_router.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.calibrate_per_domain",
+   "path": "tools/calibrate_per_domain.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.dump_arc_txt",
+   "path": "tools/dump_arc_txt.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.embed_arc_probe",
+   "path": "tools/embed_arc_probe.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.functional_bench",
+   "path": "tools/functional_bench.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.functional_bench_ddr",
+   "path": "tools/functional_bench_ddr.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.master_complex_task_8099",
+   "path": "tools/master_complex_task_8099.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.phoenix_decoy_generator",
+   "path": "tools/phoenix_decoy_generator.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.phoenix_roc_analysis",
+   "path": "tools/phoenix_roc_analysis.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.phoenix_roc_final",
+   "path": "tools/phoenix_roc_final.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.phoenix_roc_prep",
+   "path": "tools/phoenix_roc_prep.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.phoenix_vina_pipeline",
+   "path": "tools/phoenix_vina_pipeline.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.platform_stress_suite",
+   "path": "tools/platform_stress_suite.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.probe_empty_body",
+   "path": "tools/probe_empty_body.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.probe_sqli",
+   "path": "tools/probe_sqli.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.probe_sqli2",
+   "path": "tools/probe_sqli2.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.probe_stage25",
+   "path": "tools/probe_stage25.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.proc_cmdline",
+   "path": "tools/proc_cmdline.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.production_bench.load",
+   "path": "tools/production_bench/load.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.production_bench.soak",
+   "path": "tools/production_bench/soak.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.production_bench.tasks1000",
+   "path": "tools/production_bench/tasks1000.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.proof_suite._s2_prep",
+   "path": "tools/proof_suite/_s2_prep.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.proof_suite.k3_triage._desc",
+   "path": "tools/proof_suite/k3_triage/_desc.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.proof_suite.scenario1_security_gate",
+   "path": "tools/proof_suite/scenario1_security_gate.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.router_evaldata",
+   "path": "tools/router_evaldata.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.scenario_sovereign_triage.run",
+   "path": "tools/scenario_sovereign_triage/run.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.security_differential_test",
+   "path": "tools/security_differential_test.py",
+   "label": "TEST-ONLY",
+   "reason": "test asset; not collected by pytest.ini testpaths (tests, swarm_v2) and imported by no test module"
+  },
+  {
+   "module": "tools.smoke_test_platform",
+   "path": "tools/smoke_test_platform.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.sram_rule_probe",
+   "path": "tools/sram_rule_probe.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.surface_diff",
+   "path": "tools/surface_diff.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.sweep50",
+   "path": "tools/sweep50.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.trace_codebase",
+   "path": "tools/trace_codebase.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.trm_server",
+   "path": "tools/trm_server.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.verify_council_parity",
+   "path": "tools/verify_council_parity.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "tools.verify_voice_live",
+   "path": "tools/verify_voice_live.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "trigger_simulation",
+   "path": "trigger_simulation.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "trigger_skill_gap_analysis",
+   "path": "trigger_skill_gap_analysis.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "trigger_test",
+   "path": "trigger_test.py",
+   "label": "TEST-ONLY",
+   "reason": "test asset; not collected by pytest.ini testpaths (tests, swarm_v2) and imported by no test module"
+  },
+  {
+   "module": "trm-sovereign-portal.push_to_github",
+   "path": "trm-sovereign-portal/push_to_github.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "trm_uefi_kernel.host_batchA.ref_part1",
+   "path": "trm_uefi_kernel/host_batchA/ref_part1.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "trm_uefi_kernel.host_batchA.ref_part2",
+   "path": "trm_uefi_kernel/host_batchA/ref_part2.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "trm_uefi_kernel.host_batchA.ref_part3",
+   "path": "trm_uefi_kernel/host_batchA/ref_part3.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "trm_uefi_kernel.trm_companion_proxy",
+   "path": "trm_uefi_kernel/trm_companion_proxy.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool (shebang/__main__/tool name) living in a package dir for convenience; no server imports it"
+  },
+  {
+   "module": "trmboot.install",
+   "path": "trmboot/install.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "trmboot.make_usb_bootable",
+   "path": "trmboot/make_usb_bootable.py",
+   "label": "SCRIPT",
+   "reason": "one-shot tool in a scripts/tools directory; no server imports it"
+  },
+  {
+   "module": "update_swarm",
+   "path": "update_swarm.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "utils",
+   "path": "utils/__init__.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "utils.functions",
+   "path": "utils/functions.py",
+   "label": "DEAD",
+   "reason": "library-shaped module in an unreachable package; no inbound import from any maintained module, no test, no __main__ entrypoint"
+  },
+  {
+   "module": "validate_15_sram_capability_map",
+   "path": "validate_15_sram_capability_map.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "validate_data_ingestion_priorities",
+   "path": "validate_data_ingestion_priorities.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "verify_api",
+   "path": "verify_api.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "verify_async_nexus",
+   "path": "verify_async_nexus.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "verify_federation_nodes",
+   "path": "verify_federation_nodes.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "verify_full_bridge",
+   "path": "verify_full_bridge.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "verify_full_frontend_functionality",
+   "path": "verify_full_frontend_functionality.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "verify_nexus_module",
+   "path": "verify_nexus_module.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "verify_trm_load",
+   "path": "verify_trm_load.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "verify_trm_system",
+   "path": "verify_trm_system.py",
+   "label": "SCRIPT",
+   "reason": "root-level one-shot tool; run by hand, imported by nothing"
+  },
+  {
+   "module": "swarm_v2_rust_kernel::font",
+   "path": "swarm_v2_rust_kernel/src/font.rs",
+   "label": "DEAD",
+   "reason": "superseded: lcars_render.rs defines its own get_embedded_glyph_8x16 inline; font.rs is declared in neither lib.rs nor main.rs and referenced nowhere"
+  },
+  {
+   "module": "trm_uefi_kernel::host_answer::time",
+   "path": "trm_uefi_kernel/host_answer/src/time.rs",
+   "label": "DEAD",
+   "reason": "superseded: src/main.rs defines an inline `mod time { ... }` that shadows this file; src/time.rs is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_fanout::attempt_sampler",
+   "path": "trm_uefi_kernel/host_fanout/src/attempt_sampler.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only agent_mailbox, semantic_knowledge_graph, skill_validator, voltage_node_engine); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_fanout::dram_pattern_computer",
+   "path": "trm_uefi_kernel/host_fanout/src/dram_pattern_computer.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only agent_mailbox, semantic_knowledge_graph, skill_validator, voltage_node_engine); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_fanout::gpu_infinity_computer",
+   "path": "trm_uefi_kernel/host_fanout/src/gpu_infinity_computer.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only agent_mailbox, semantic_knowledge_graph, skill_validator, voltage_node_engine); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_fanout::llm_brain",
+   "path": "trm_uefi_kernel/host_fanout/src/llm_brain.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only agent_mailbox, semantic_knowledge_graph, skill_validator, voltage_node_engine); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_fanout::persona_matrix",
+   "path": "trm_uefi_kernel/host_fanout/src/persona_matrix.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only agent_mailbox, semantic_knowledge_graph, skill_validator, voltage_node_engine); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_fanout::self_healing_infra",
+   "path": "trm_uefi_kernel/host_fanout/src/self_healing_infra.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only agent_mailbox, semantic_knowledge_graph, skill_validator, voltage_node_engine); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_fanout::sub_atomic_kernel",
+   "path": "trm_uefi_kernel/host_fanout/src/sub_atomic_kernel.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only agent_mailbox, semantic_knowledge_graph, skill_validator, voltage_node_engine); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_fanout::symbology_etymology_monad",
+   "path": "trm_uefi_kernel/host_fanout/src/symbology_etymology_monad.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only agent_mailbox, semantic_knowledge_graph, skill_validator, voltage_node_engine); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_fanout::trm_brain",
+   "path": "trm_uefi_kernel/host_fanout/src/trm_brain.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only agent_mailbox, semantic_knowledge_graph, skill_validator, voltage_node_engine); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_fanout::worktree_manager",
+   "path": "trm_uefi_kernel/host_fanout/src/worktree_manager.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only agent_mailbox, semantic_knowledge_graph, skill_validator, voltage_node_engine); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_jarvis::jarvis_quantum",
+   "path": "trm_uefi_kernel/host_jarvis/src/jarvis_quantum.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only jarvis_vibethinker); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_jarvis::jarvis_substrate",
+   "path": "trm_uefi_kernel/host_jarvis/src/jarvis_substrate.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only jarvis_vibethinker); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_jarvis::jarvis_vibe",
+   "path": "trm_uefi_kernel/host_jarvis/src/jarvis_vibe.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only jarvis_vibethinker); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_test_batch0::digital_twin",
+   "path": "trm_uefi_kernel/host_test_batch0/src/digital_twin.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only star_matrix and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::chaos_engine",
+   "path": "trm_uefi_kernel/host_tranche/src/chaos_engine.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::chaos_simulator",
+   "path": "trm_uefi_kernel/host_tranche/src/chaos_simulator.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::cognitive_load_balancer",
+   "path": "trm_uefi_kernel/host_tranche/src/cognitive_load_balancer.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::coherence_thresholds",
+   "path": "trm_uefi_kernel/host_tranche/src/coherence_thresholds.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::comm_protocol",
+   "path": "trm_uefi_kernel/host_tranche/src/comm_protocol.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::continuum_pbft",
+   "path": "trm_uefi_kernel/host_tranche/src/continuum_pbft.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::coordination_protocol",
+   "path": "trm_uefi_kernel/host_tranche/src/coordination_protocol.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::daily_evolution_engine",
+   "path": "trm_uefi_kernel/host_tranche/src/daily_evolution_engine.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::ddr_antibody",
+   "path": "trm_uefi_kernel/host_tranche/src/ddr_antibody.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::expert_registry",
+   "path": "trm_uefi_kernel/host_tranche/src/expert_registry.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::feedback_loops",
+   "path": "trm_uefi_kernel/host_tranche/src/feedback_loops.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::gpu_infinity_computer",
+   "path": "trm_uefi_kernel/host_tranche/src/gpu_infinity_computer.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::heuristic_consensus",
+   "path": "trm_uefi_kernel/host_tranche/src/heuristic_consensus.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::pbft_consensus",
+   "path": "trm_uefi_kernel/host_tranche/src/pbft_consensus.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::persona_matrix",
+   "path": "trm_uefi_kernel/host_tranche/src/persona_matrix.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::predictive_watchdog",
+   "path": "trm_uefi_kernel/host_tranche/src/predictive_watchdog.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::resonance_engine",
+   "path": "trm_uefi_kernel/host_tranche/src/resonance_engine.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::security_scanner",
+   "path": "trm_uefi_kernel/host_tranche/src/security_scanner.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::self_fuzzing_engine",
+   "path": "trm_uefi_kernel/host_tranche/src/self_fuzzing_engine.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::semantic_knowledge_graph",
+   "path": "trm_uefi_kernel/host_tranche/src/semantic_knowledge_graph.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::skill_matrix_sync",
+   "path": "trm_uefi_kernel/host_tranche/src/skill_matrix_sync.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::sram_pattern_computer",
+   "path": "trm_uefi_kernel/host_tranche/src/sram_pattern_computer.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::star_matrix_lattice",
+   "path": "trm_uefi_kernel/host_tranche/src/star_matrix_lattice.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::sub_atomic_kernel",
+   "path": "trm_uefi_kernel/host_tranche/src/sub_atomic_kernel.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::thz_wave_gateway",
+   "path": "trm_uefi_kernel/host_tranche/src/thz_wave_gateway.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  },
+  {
+   "module": "trm_uefi_kernel::host_tranche::turbovec_memory",
+   "path": "trm_uefi_kernel/host_tranche/src/turbovec_memory.rs",
+   "label": "MISSING-DECL",
+   "reason": "no `mod` declaration in src/main.rs (which declares only radix_trie_matcher and an inline time module); the file is never compiled"
+  }
+ ]
+}

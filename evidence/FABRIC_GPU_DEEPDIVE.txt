@@ -1,0 +1,38 @@
+UNIFIED FABRIC + GPU DEEP DIVE — READ-IN-FULL, 2026-10-24
+
+=== 1. THE UNIFIED FABRIC EXISTS: unified_transistor_fabric.rs (221 lines) ===
+Its own header: "A source search for unified_transistor / transistor_pool / pin_to /
+pinning returned NOTHING — there was no unified pool and no pinning concept.
+This module is that binding."
+
+One pool, provenance-labelled:
+  Ryzen 9 3900X      10,390,000,000  DATASHEET  (2x CCD 4.15B + IOD 2.09B)
+  L3 SRAM             3,221,225,472  DERIVED    (64MB x 8 x 6 tr/cell)
+  RX 6700 XT         17,200,000,000  DATASHEET  (Navi 22, 2560 shaders)
+  Infinity Cache      4,831,838,208  DERIVED    (96MB x 8 x 6)
+  DDR4 DRAM         274,877,906,944  DERIVED    STORAGE — never added to compute
+
+Pipeline built in: SENSE -> REDUCE(K3) -> DECIDE(Kleene) -> BIND(core+slice)
+  score(i,j) = t_i * T_j/T_total * (1 - load_j);  bind = argmax when >0
+  t=0 UNKNOWN binds NOTHING; t=-1 releases; only TRUE takes a core.
+USES IN SERVING BINARY: 0
+
+=== 2. GPU: I BENCHMARKED THE WRONG BACKEND ===
+  I used torch_directml (D3D12 translation layer). Results UNSTABLE:
+    n=2048 fp32: 1.785 then 5.720 TFLOPS on identical runs
+    n=1024 fp32: 5.156 / 5.238 ; fp16 5.556 / 6.422
+  Async DirectML + one sync = the numbers are NOISE. I will not quote a figure.
+
+  THE PLATFORM'S REAL GPU PATH IS VULKAN, NOT DirectML:
+    ggml-vulkan.dll       50,638,336
+    llama-server-impl.dll  9,539,072
+  RX 6700 XT datasheet: 2560 shaders x 2 x 2.424 GHz = 12.4 TFLOPS fp32
+  DirectML was never going to reach that — it is a D3D12 translation layer.
+
+=== 3. WHAT READ-IN-FULL CORRECTED ===
+  artifact_pipeline.rs  IS NOT a compute pipeline. It is the ARTIFACT APPROVAL
+    workflow (pending/approved/rejected/tested/integrated, category inference,
+    batch approve, integration manifest). My assumption was wrong.
+  memory_mapped_ipc.rs  in-process 128-slot string arena, NOT a file mmap,
+    cannot carry Rust<->Python IPC (separate processes).
+  nand_fs.rs            UEFI-only (r_efi BootServices), mounts .k3 at boot.

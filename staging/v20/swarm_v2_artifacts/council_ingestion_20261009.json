@@ -1,0 +1,1130 @@
+{
+  "protocol": "SWARM_COUNCIL_DELIBERATION_SESSION",
+  "session_name": "TRIT_STORE_INGESTION",
+  "monad_anchor": "0x4D4F4E4144000004",
+  "timestamp": "2026-10-11 14:00:24 UTC",
+  "total_agents": 15,
+  "byzantine_tolerance": 4,
+  "pbft_threshold": 11,
+  "rust_kernel_bound": true,
+  "vote_codes": {
+    "1": "APPROVE",
+    "0": "ABSTAIN",
+    "-1": "REJECT"
+  },
+  "how_to_read_this_record": "Grounded in the measured ingestion state: 2,180 text records (1.09% relational sample), ChEMBL 6.90% structures, 153.5M trits vs 26.1B designed. Voltage doctrine: every fraction is measured, not assumed; corpora presence (PubMed/PubChem/STRING) must be verified before quoting the gap.",
+  "council_verdict": {
+    "consensus_summary": "Council deliberated 4 motions; 4 reached PBFT quorum (>= 11/15).",
+    "motions_deliberated": 4,
+    "motions_enacted": 4,
+    "recommended_primary_direction": "MOTION-046: Complete ChEMBL structure ingestion (6.90% -> 100%) (Score: +0.984)",
+    "secondary_direction": "MOTION-047: Expand the relational fabric corpus (1.09% -> larger measured sample) (Score: +0.984)",
+    "tertiary_direction": "MOTION-048: Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner) (Score: +0.984)"
+  },
+  "motions": [
+    {
+      "motion_id": "MOTION-046",
+      "title": "Complete ChEMBL structure ingestion (6.90% -> 100%)",
+      "category": "ingest",
+      "description": "The structured store holds 2,897,819 molecule rows but only 199,997 (6.90%) carry SMILES; the rest are identifiers with NULL smiles (measured in P4_INGEST_20260925.md). The ChEMBL SDF is on the WSL side (931 MB gzip) and p4_chembl_smiles_stream.py already streams it at 1,288 rec/s. Filling the remaining 2,697,822 rows gives the fabric a real chemistry substrate for drug/compound questions.",
+      "engine_proposal_id": "CP-EE2AD510",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "8873e1bf3ed0b32d9e3d21f0b09ef5212c2871c65fbc3e2d3da7ed99876d07e7",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739037"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739197"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739230"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739257"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739268"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739283"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739292"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739303"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739311"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739318"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739326"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739333"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739342"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739357"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739366"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Complete ChEMBL structure ingestion (6.90% -> 100%): evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T14:00:24.738888"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T14:00:24.738900"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Complete ChEMBL structure ingestion (6.90% -> 100%): verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.738906"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Complete ChEMBL structure ingestion (6.90% -> 100%): analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.738911"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Complete ChEMBL structure ingestion (6.90% -> 100%): checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.738916"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Complete ChEMBL structure ingestion (6.90% -> 100%): implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.738926"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Complete ChEMBL structure ingestion (6.90% -> 100%): monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.738934"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Complete ChEMBL structure ingestion (6.90% -> 100%): evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.738944"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Complete ChEMBL structure ingestion (6.90% -> 100%): verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.738955"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Complete ChEMBL structure ingestion (6.90% -> 100%): balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.738963"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Complete ChEMBL structure ingestion (6.90% -> 100%): measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.738969"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Complete ChEMBL structure ingestion (6.90% -> 100%): cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.738973"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Complete ChEMBL structure ingestion (6.90% -> 100%): surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.738981"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Complete ChEMBL structure ingestion (6.90% -> 100%): evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T14:00:24.738992"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Complete ChEMBL structure ingestion (6.90% -> 100%) from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.739001"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-047",
+      "title": "Expand the relational fabric corpus (1.09% -> larger measured sample)",
+      "category": "ingest",
+      "description": "The fabric holds 1,994 relational records = 1.09% of 183,693 available (enwikiquote 700/81,695, ethics 1,000/95,847, lawofone 294/6,151). p4_ingest_relational.py ingests at 1,126.8 docs/s. The sample is a deterministic every-k-th stride; widening k toward full coverage grows the on-device corpus. Every fraction must stay measured and reproducible, per the voltage doctrine.",
+      "engine_proposal_id": "CP-D86FA5C1",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "ff7f28ed668aaf81b18be6ef796f73a1c97897fba090d5b885f4b025052a7c1d",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739788"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739804"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739815"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739823"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739831"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739838"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739845"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739853"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739860"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739867"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739874"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739884"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739893"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739901"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.739908"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Expand the relational fabric corpus (1.09% -> larger measured sample): evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T14:00:24.739716"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T14:00:24.739721"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Expand the relational fabric corpus (1.09% -> larger measured sample): verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.739725"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Expand the relational fabric corpus (1.09% -> larger measured sample): analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.739729"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Expand the relational fabric corpus (1.09% -> larger measured sample): checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.739732"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Expand the relational fabric corpus (1.09% -> larger measured sample): implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.739736"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Expand the relational fabric corpus (1.09% -> larger measured sample): monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.739739"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Expand the relational fabric corpus (1.09% -> larger measured sample): evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.739745"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Expand the relational fabric corpus (1.09% -> larger measured sample): verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.739749"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Expand the relational fabric corpus (1.09% -> larger measured sample): balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.739753"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Expand the relational fabric corpus (1.09% -> larger measured sample): measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.739756"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Expand the relational fabric corpus (1.09% -> larger measured sample): cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.739760"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Expand the relational fabric corpus (1.09% -> larger measured sample): surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.739766"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Expand the relational fabric corpus (1.09% -> larger measured sample): evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T14:00:24.739772"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Expand the relational fabric corpus (1.09% -> larger measured sample) from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.739776"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-048",
+      "title": "Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner)",
+      "category": "ingest",
+      "description": "The three fabric parts (.k3, .text.jsonl, .turbovec) must stay keyed identically and rebuilt by ONE owner (MOTION-007). After expanding the corpus, rebuild all three and record the new measured trit count and byte sizes; do not hand-edit the trit store. The kernel mmaps the .k3 \u2014 a rebuild must be followed by a restart so fabric_corpus.rs reloads.",
+      "engine_proposal_id": "CP-2AD8F380",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "be7f77bcbda22cce8a65c2832540238ee0f0673fe6576b5b1a466fce5e1b34a5",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740278"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740302"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740316"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740329"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740340"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740351"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740362"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740373"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740383"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740394"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740406"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740417"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740428"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740439"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740451"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T14:00:24.740189"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T14:00:24.740195"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.740201"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.740206"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.740215"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.740221"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.740227"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.740232"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.740237"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.740242"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.740247"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.740253"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.740259"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner): evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T14:00:24.740264"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Rebuild the trit fabric + sidecar + turbovec from the expanded corpus (single owner) from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.740268"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-049",
+      "title": "Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible",
+      "category": "ingest",
+      "description": "The design targets 24.4B trits from PubMed (36M), PubChem (115M), STRING (25M), CVE (200K), PDB+AlphaFold (200K). Today only 153.5M trits exist (0.59%). Before claiming the gap, MEASURE which of these corpora are actually present on the WSL/local side and at what size \u2014 the ChEMBL SDF exists (931 MB) but PubMed/PubChem/STRING presence is unverified. Do not quote the design target as if it were ingestible; name what is downloadable vs what is a design aspiration.",
+      "engine_proposal_id": "CP-C5D10445",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "e93b0abc7869b2809f532e131e0d9d58532835f548d32aac4029c42d3e2159e4",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740820"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740837"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740850"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740862"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740874"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740886"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740898"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740909"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740920"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740931"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740943"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740955"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740968"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740981"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T14:00:24.740992"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T14:00:24.740732"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T14:00:24.740738"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.740743"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.740749"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.740754"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.740759"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.740763"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T14:00:24.740769"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.740775"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.740782"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.740787"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.740792"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T14:00:24.740798"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T14:00:24.740804"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Prioritize the designed Layer 1 corpora (PubMed/PubChem/STRING) and measure what is ingestible from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T14:00:24.740812"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[PASS] T1 k3 ternary pipeline / Kleene safety
+    all_processed=True distinct_trit_vectors=3 | strong-signal: in=3 out=3 trits=[1, 1, 1] | RETRACT: in=3 out=3 trits=[-1, -1, -1] | UNKNOWN: in=3 out=3 trits=[0, 0, 0]
+[PASS] T2 turbovec route responds with data
+    {"dim": 128, "elapsed_ns": 287627000, "ns_per_triple": 1438.135, "ops": 600000, "pairs_per_sec": 695345.0128117318, "primitive": "TurboVec16xQuantizer (2-bit scalar quant, 16x compression)", "similarity_accumulator": 196878.109375, "source": "trm_uefi_kernel/src/turbovec.rs"}
+[PASS] T3 mesh beacon variants transmitted over UDP 8022
+    sent 4/4 variants; socket errors: none. NOTE: this exercises TRANSMIT only. The receiver's accept/reject could not be observed - probe_peers() results reach the service's own stdout, which this process does not own. AccEPTANCE IS NOT VERIFIED HERE.
+[PASS] T4 council server @ 1 clients
+    n=25 fails=0 p50=0.9ms p95=14.2ms throughput~326 req/s
+[PASS] T4 council server @ 4 clients
+    n=100 fails=0 p50=1.5ms p95=2.3ms throughput~640 req/s
+[PASS] T6 turbovec retrieval quality (ground truth)
+    n=8 top1=8/8 (100%) top3=8/8 misses=none
+[PASS] T7 endurance (sequential, distribution)
+    n=1500/1500 fails=0 wall=2.1s p50=0.65ms p95=1.01ms p99=18.39ms max=25.9ms p99/p50=28.4x mean=1.39ms throughput=721 req/s
+
+7/7 passed

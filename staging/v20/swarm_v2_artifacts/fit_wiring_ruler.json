@@ -1,0 +1,11 @@
+{
+ "checks": 15,
+ "failed": 0,
+ "failures": [],
+ "modules_count": 10,
+ "basis": "oracle transcribed from the crate's source: the FNV-1a/mix encoding with u64 wrapping reproduced by masking, and the K3 verdict rule; persistence is verified against the file on disk as well as the route's own flag",
+ "findings": [
+  "swarm-fit's verdict reaches all three outcomes (unlike swarm_intel::council_vote, whose BLOCK/ANALYZE branches are unreachable)",
+  "the crate's `serve` writes through swarm_paths::resolve, which maps /tmp onto this host's temp dir, so the byte-identical read-back is a real persistence check here"
+ ]
+}

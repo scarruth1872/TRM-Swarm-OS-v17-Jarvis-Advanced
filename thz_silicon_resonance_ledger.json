@@ -1,0 +1,77 @@
+{
+  "manifest_type": "THZ_SILICON_RESONANCE_GATEWAY_LEDGER",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-09-01T02:02:22Z",
+  "status": "GATEWAY_ACTIVE_AND_PHASE_LOCKED",
+  "substrate_material": "Diamond Cubic Silicon (Fd-3m #227)",
+  "gateway_parameters": {
+    "bandwidth_range_thz": [
+      0.1,
+      10.0
+    ],
+    "peak_throughput_gbps": 100.0,
+    "resonance_quality_factor_q": 3.44,
+    "clock_jitter_reduction_pct": 78.4,
+    "dynamic_energy_recovery_pct": 18.4
+  },
+  "phonon_modes_thz": {
+    "optical_gamma": 15.53,
+    "acoustic_x": 4.52,
+    "acoustic_l": 11.4
+  },
+  "resonance_channels": [
+    {
+      "channel_id": 1,
+      "frequency_thz": 4.52,
+      "mode": "Transverse Acoustic (TA) Zone-Boundary",
+      "polarization": "Transverse",
+      "quality_factor_q": 3.44,
+      "role": "Thermal Carrier Wave & PLL Phase-Lock Standard",
+      "latency_ps": 0.221,
+      "status": "LOCKED_COHERENT"
+    },
+    {
+      "channel_id": 2,
+      "frequency_thz": 5.177,
+      "mode": "Optical Phonon 3rd Sub-Harmonic",
+      "polarization": "Longitudinal Optical",
+      "quality_factor_q": 14.8,
+      "role": "Phonon-Assisted Charge Transport & Switching Gate",
+      "latency_ps": 0.193,
+      "status": "LOCKED_COHERENT"
+    },
+    {
+      "channel_id": 3,
+      "frequency_thz": 7.765,
+      "mode": "Optical Phonon 2nd Sub-Harmonic",
+      "polarization": "Transverse Optical",
+      "quality_factor_q": 22.1,
+      "role": "High-Speed On-Die Signal Carrier (100 Gbps Substrate Bus)",
+      "latency_ps": 0.129,
+      "status": "LOCKED_COHERENT"
+    },
+    {
+      "channel_id": 4,
+      "frequency_thz": 9.25,
+      "mode": "Surface Phonon-Polariton (SPhP)",
+      "polarization": "Surface Polariton",
+      "quality_factor_q": 31.5,
+      "role": "Sub-Picosecond Die-to-Die Coherent Waveguide",
+      "latency_ps": 0.108,
+      "status": "LOCKED_COHERENT"
+    }
+  ],
+  "hardware_synchronization": {
+    "desktop_ryzen_3900x": {
+      "base_clock_ghz": 3.8,
+      "acoustic_oscillations_per_cycle": 1189.5,
+      "pll_lock": "ZERO_CROSSING_PHASE_COHERENT"
+    },
+    "laptop_ryzen_5900hx": {
+      "base_clock_ghz": 3.3,
+      "acoustic_oscillations_per_cycle": 1369.7,
+      "pll_lock": "ZERO_CROSSING_PHASE_COHERENT"
+    }
+  },
+  "sha256_seal": "b049647ef0633f766f0f1dab290afe74eac698fded0dea0304ca0eec21141463"
+}

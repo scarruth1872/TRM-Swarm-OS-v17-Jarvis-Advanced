@@ -1,0 +1,73 @@
+V_PHOENIX AUDIT — Article 196: kernel run-through via the platform's own host harness
+captured: 2026-09-23T11:57:56Z
+
+HARNESS INTEGRITY CHECK (done first, because a harness testing stale code proves nothing):
+  trm_uefi_kernel/host_test/ vendors copies of k3_logic.rs, instella_router.rs,
+  turbovec.rs, trm7m.rs (the other two use #[path] includes of the real files).
+  Comparing each vendored copy against the real kernel module after stripping
+  comments and whitespace:
+    k3_logic.rs        byte-identical        -> cosmetic only
+    instella_router.rs byte-identical        -> cosmetic only
+    turbovec.rs        same chars, reordered -> same code, different order
+    trm7m.rs           same identifiers, 6 chars differ
+  => the harness runs LOGICALLY EQUIVALENT code. Results below are representative.
+  (My first reading of the byte diff said "stale copies" - the normalised comparison
+   corrected that. Formatting churn is not code drift.)
+
+--- TRIT DISTRIBUTION COMPARISON (the finding) ---
+  FP32   definite calls:  12353 (12.35%)   UNKNOWN: 87647 (87.65%)
+  TV158  definite calls:    691 ( 0.69%)   UNKNOWN: 99309 (99.31%)
+  PASS  rate: FP32 10.300% vs TV158 0.051%   -> TV158 affirms 202x LESS often
+  FAULT rate: FP32  2.053% vs TV158 0.640%
+  -> TV158 makes 17.9x fewer actual decisions.
+
+  The harness headlines "Exact Decision Match: 87470/100000 (87.47%)".
+  But both-UNKNOWN agreement alone accounts for AT LEAST 86956 of those 87470
+  matches = 99.4% of all "parity agreements" are agreement TO NOT DECIDE.
+  The 87.47% figure is therefore INFLATED and must not be quoted without the
+  trit distributions beside it. The 1.58-bit model is dramatically more
+  conservative - it almost never affirms.
+
+--- RAW HARNESS OUTPUT ---
+K3 AND==min: OK
+K3 PSI: [1, -1, 0, -1, 1, 0, 0, -1] (py: [1,-1,0,-1,1,0,0,-1])
+K3 DECISION: trit=-1 conf=0.375 amb=0.375 (py: trit=-1 conf=0.375 amb=0.375)
+K3 PACK: 65 -> [1, -1, 0, 1, -1] ok=true (py: 65 -> [1,-1,0,1,-1])
+K3 OFFLOAD mixed: INSTELLA_MOE (py: INSTELLA_MOE)
+SHA256(abc): ba7816bf8f01cfea OK
+MOE security: team=Security lead=Shield conf=0.40 (py: Security/Shield)
+MOE research: team=Research lead=Seeker conf=0.60 (py: Research/Seeker)
+TURBOVEC 2-BIT: 128-dim -> 32B, recon sim=5.904 (16x compression)
+TURBOVEC 1.58-BIT: 128-dim -> 32B trits, scale=0.4357, recon sim=22.624 (16x compression)
+Initializing TRM 7M model (Mamba-3 SSM FP32 AVX2)...
+TRM 7M FP32 BENCH     n=1000 p50=293300ns p95=1027400ns avg=416675ns tps=2399 (weight=14.91MB)
+Initializing TRM 7M TurboVec 1.58-bit model (Mamba-3 SSM 1.58b Ternary)...
+TRM 7M TURBOVEC 1.58b n=1000 p50=222400ns p95=239200ns avg=226834ns tps=4408 (weight=1.21MB)
+TURBOVEC SPEEDUP: 1.84x faster | COMPRESSION: 12.34x smaller (91.9% reduction)
+
+========================================================
+RUNNING 100,000-SAMPLE EMPIRICAL PARITY VERIFICATION
+========================================================
+  [Sample  10000/100000] Current agreement: 8763/10000 (87.6300%) | max delta: 0.000001
+  [Sample  20000/100000] Current agreement: 17522/20000 (87.6100%) | max delta: 0.000001
+  [Sample  30000/100000] Current agreement: 26278/30000 (87.5933%) | max delta: 0.000002
+  [Sample  40000/100000] Current agreement: 35024/40000 (87.5600%) | max delta: 0.000002
+  [Sample  50000/100000] Current agreement: 43744/50000 (87.4880%) | max delta: 0.000002
+  [Sample  60000/100000] Current agreement: 52536/60000 (87.5600%) | max delta: 0.000002
+  [Sample  70000/100000] Current agreement: 61246/70000 (87.4943%) | max delta: 0.000002
+  [Sample  80000/100000] Current agreement: 69974/80000 (87.4675%) | max delta: 0.000002
+  [Sample  90000/100000] Current agreement: 78748/90000 (87.4978%) | max delta: 0.000002
+  [Sample 100000/100000] Current agreement: 87470/100000 (87.4700%) | max delta: 0.000002
+--------------------------------------------------------
+100,000-SAMPLE DECISION PARITY RESULTS:
+  Total Samples Evaluated: 100000
+  Exact Decision Match:    87470/100000 (87.470000%)
+  Max Confidence Delta:    0.000002
+  Mean Confidence Delta:   0.000000
+  RMSE Confidence Delta:   0.000001
+  Trit Distribution (FP32): PASS(+1)=10300, AMB(0)=87647, FAULT(-1)=2053
+  Trit Distribution (TV158): PASS(+1)=51, AMB(0)=99309, FAULT(-1)=640
+  Total Evaluation Time:   152.27s (1522.7 µs/sample combined)
+========================================================
+
+

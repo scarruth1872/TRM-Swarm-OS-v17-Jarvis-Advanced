@@ -1,0 +1,1449 @@
+{
+  "built": "census of wsl_crates/trm-rust (step 3, after the block-172 triage)",
+  "crate_count": 36,
+  "crates": [
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-agent",
+      "internal_reference_count": 9,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-agent/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-agent/examples/ensemble_agent.rs",
+        "wsl_crates/trm-rust/swarm-agent/examples/real_act.rs",
+        "wsl_crates/trm-rust/swarm-agent/examples/real_agent.rs",
+        "wsl_crates/trm-rust/swarm-agent/examples/suite.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 8,
+      "live_references": [
+        "scratch/apply_paths_batch2.py",
+        "scratch/fix_str_args.py",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_crate_paths.py",
+        "swarm_v2_artifacts/module_copy_census.json"
+      ],
+      "src_files": 9,
+      "src_sha256": "f9fe471e11bd155249c5637a02752e9144f549f243045e9de1ca18f275f1f2a4",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-backend",
+      "internal_reference_count": 5,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-backend/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/src/main.rs",
+        "wsl_crates/trm-rust/swarm-backend/src/lib.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+          "path": "../swarm-backend",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 6,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_crate_paths.py",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json",
+        "swarm_v2_artifacts/wsl_crate_census_20260926.json"
+      ],
+      "src_files": 1,
+      "src_sha256": "0e493ee2a472b2f6fdf05616eb3cba85204156d790d5f7abc36390a47f3f4d98",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-boot",
+      "internal_reference_count": 5,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-boot/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-boot/src/main.rs",
+        "wsl_crates/trm-rust/swarm-boot/src/bin/persistence_probe.rs",
+        "wsl_crates/trm-rust/swarm-agent/examples/real_agent.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 14,
+      "live_references": [
+        "scratch/assemble_exercise_receipt.py",
+        "scratch/exercise_examples.py",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/run_crate_bins.py",
+        "scratch/seal_p2b_ledger.py"
+      ],
+      "src_files": 2,
+      "src_sha256": "3630d0dc3cccdd427c48cbc646557a4a3308ace118eafe2f8a799e7bca701bec",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [
+        "scratch/verify_brain_wiring.py",
+        "swarm_v2_artifacts/wsl_crate_triage_20260926.json",
+        "trm_uefi_kernel/host_council_server/src/brain_handlers.rs",
+        "trm_uefi_kernel/host_council_server/src/native_handlers.rs"
+      ],
+      "consumed_by_count": 4,
+      "crate": "swarm-brain",
+      "internal_reference_count": 8,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-brain/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-brain/examples/verify_brain.rs",
+        "wsl_crates/trm-rust/swarm-brain/examples/verify_brain_scale.rs",
+        "wsl_crates/trm-rust/swarm-brain/examples/verify_neural.rs",
+        "wsl_crates/trm-rust/swarm-brain/examples/verify_switch.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-brain",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 20,
+      "live_references": [
+        "scratch/build_crate_triage.py",
+        "scratch/convene_step3_council.py",
+        "scratch/example_path_repair.json",
+        "scratch/fix_verdicts_part1.py",
+        "scratch/native_routes_probe.json",
+        "scratch/p2b_inventory.json"
+      ],
+      "src_files": 8,
+      "src_sha256": "5238ed313337e9664f9e5206680365bb915220abb8c68bad7431f5f4ccac07f3",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-chat",
+      "internal_reference_count": 4,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-chat/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/src/main.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+          "path": "../swarm-chat",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 5,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json",
+        "swarm_v2_artifacts/wsl_crate_census_20260926.json"
+      ],
+      "src_files": 1,
+      "src_sha256": "cc47af4430bddb9b979c7fa9b6dbb33a4553d113240c62c45c326c7afab877a0",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-conductor",
+      "internal_reference_count": 5,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-conductor/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-conductor/examples/verify_conductor.rs",
+        "wsl_crates/trm-rust/swarm-conductor/examples/verify_hardening.rs",
+        "wsl_crates/trm-rust/swarm-conductor/src/lib.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 8,
+      "live_references": [
+        "scratch/apply_paths_batch2.py",
+        "scratch/example_path_repair.json",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/rebuild_and_run_examples.py",
+        "swarm_v2_artifacts/module_copy_census.json"
+      ],
+      "src_files": 3,
+      "src_sha256": "1eeef3b64ec2242541623f02e07f17f73b17381e5aff4b1e157f525f8705fd43",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-cosmos",
+      "internal_reference_count": 5,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-cosmos/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-health/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-health/examples/verify_cde.rs",
+        "wsl_crates/trm-rust/swarm-cosmos/src/lib.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-health/Cargo.toml",
+          "path": "../swarm-cosmos",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 6,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_crate_paths.py",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json",
+        "swarm_v2_artifacts/wsl_crate_census_20260926.json"
+      ],
+      "src_files": 1,
+      "src_sha256": "40bc37c8dee4ad60fb93bea278a995848f3c1970152f62cf1eb65866a17307e4",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [
+        "trm_uefi_kernel/host_council_server/src/crate_ops_handlers.rs"
+      ],
+      "consumed_by_count": 1,
+      "crate": "swarm-council",
+      "internal_reference_count": 4,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-council/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-council/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-council/src/bin/verify_council.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-council",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 25,
+      "live_references": [
+        "scratch/council_vote.py",
+        "scratch/dashboard_endpoints.json",
+        "scratch/dashboard_probe_results.json",
+        "scratch/dashboard_sites_SCAN_V2.json",
+        "scratch/dashboard_tab_diagnosis.json",
+        "scratch/p2b_inventory.json"
+      ],
+      "src_files": 2,
+      "src_sha256": "090e3b41b2e882249d3b14797c344962e7b291c3e3eb10ab7f124bb42c25e109",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [
+        "swarm_v2_artifacts/wsl_crate_triage_20260926.json",
+        "trm_uefi_kernel/host_council_server/src/docking_handlers.rs"
+      ],
+      "consumed_by_count": 2,
+      "crate": "swarm-docking",
+      "internal_reference_count": 4,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-docking/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-docking/examples/score_pose.rs",
+        "wsl_crates/trm-rust/swarm-docking/src/lib.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-docking",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 27,
+      "live_references": [
+        "scratch/build_crate_triage.py",
+        "scratch/convene_step3_council.py",
+        "scratch/fix_verdicts_part1.py",
+        "scratch/native_routes_probe.json",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json"
+      ],
+      "src_files": 2,
+      "src_sha256": "396e1009ea2c5d356b0cb9c7557ef78fbd6b8fdd948619f37ea115fdf6f41c09",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [
+        "swarm_v2_artifacts/wsl_crate_triage_20260926.json",
+        "trm_uefi_kernel/host_council_server/src/drug_handlers.rs"
+      ],
+      "consumed_by_count": 2,
+      "crate": "swarm-drug",
+      "internal_reference_count": 4,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-drug/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-drug/examples/verify_drug.rs",
+        "wsl_crates/trm-rust/swarm-drug/src/lib.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-drug",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 26,
+      "live_references": [
+        "scratch/apply_paths_batch2.py",
+        "scratch/build_crate_triage.py",
+        "scratch/convene_step3_council.py",
+        "scratch/fix_paths_batch2.py",
+        "scratch/fix_str_args.py",
+        "scratch/fix_verdicts_part1.py"
+      ],
+      "src_files": 2,
+      "src_sha256": "432d3a2fefe0af35f9b0acf97bca9e688763571c78738390df53eca9d10332c1",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [
+        "swarm_v2_artifacts/wsl_crate_triage_20260926.json",
+        "trm_uefi_kernel/host_council_server/src/fit_handlers.rs"
+      ],
+      "consumed_by_count": 2,
+      "crate": "swarm-fit",
+      "internal_reference_count": 8,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-fit/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-services/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-server/src/main.rs",
+        "wsl_crates/trm-rust/swarm-fit/examples/verify_fit.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+          "path": "../swarm-fit",
+          "resolves": true
+        },
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-fit",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 21,
+      "live_references": [
+        "scratch/build_crate_triage.py",
+        "scratch/convene_step3_council.py",
+        "scratch/fix_verdicts_part1.py",
+        "scratch/native_routes_probe.json",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json"
+      ],
+      "src_files": 3,
+      "src_sha256": "d9a660dfb25d8c57b82fe7d635133c476683da15fb7e1c19a23610671242a8dc",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [
+        "trm_uefi_kernel/host_council_server/src/crate_ops_handlers.rs"
+      ],
+      "consumed_by_count": 1,
+      "crate": "swarm-gguf",
+      "internal_reference_count": 13,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-gguf/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-voltage/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-voltage/examples/kv_dump.rs",
+        "wsl_crates/trm-rust/swarm-voltage/examples/type_check.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+          "path": "../swarm-gguf",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-voltage/Cargo.toml",
+          "path": "../swarm-gguf",
+          "resolves": true
+        },
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-gguf",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 12,
+      "live_references": [
+        "scratch/crate_exercise_examples.json",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_bin_paths.py",
+        "scratch/repoint_crate_paths.py",
+        "scratch/seal_p2g_ledger.py"
+      ],
+      "src_files": 4,
+      "src_sha256": "45639bef42adef59dd5c41a0fb338d5b8d5c0527ecf1e5faaa161fc3aed2157d",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [
+        "trm_uefi_kernel/host_council_server/src/crate_ops_handlers.rs"
+      ],
+      "consumed_by_count": 1,
+      "crate": "swarm-git",
+      "internal_reference_count": 5,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-git/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-git/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-git/src/bin/verify_git.rs",
+        "wsl_crates/trm-rust/swarm-git/src/bin/verify_packs.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-git",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 10,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_bin_paths.py",
+        "scratch/seal_p2g_ledger.py",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json"
+      ],
+      "src_files": 3,
+      "src_sha256": "529ab88dd08e1be9db6b2a373480e9bc3115eff5d7b23c3e3c8813a0807f9b91",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-health",
+      "internal_reference_count": 4,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-health/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-health/examples/verify_cde.rs",
+        "wsl_crates/trm-rust/swarm-health/src/lib.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 7,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_crate_paths.py",
+        "scratch/seal_p2_ledger.py",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json"
+      ],
+      "src_files": 2,
+      "src_sha256": "1ac378b64bdd2d6f3320afc2a510af55d6c3d8146a6fd5ea7c7af673054639d7",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [
+        "trm_uefi_kernel/host_council_server/src/crate_ops_handlers.rs"
+      ],
+      "consumed_by_count": 1,
+      "crate": "swarm-instella",
+      "internal_reference_count": 8,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-instella/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-router/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-runtime/src/main.rs",
+        "wsl_crates/trm-rust/swarm-router/src/lib.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-router/Cargo.toml",
+          "path": "../swarm-instella",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+          "path": "../swarm-instella",
+          "resolves": true
+        },
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-instella",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 12,
+      "live_references": [
+        "scratch/crate_exercise_examples.json",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_bin_paths.py",
+        "scratch/seal_p2d_ledger.py",
+        "scratch/seal_p2g_ledger.py"
+      ],
+      "src_files": 2,
+      "src_sha256": "52e22aaffb1cc70d513fb810f8db53842bb81893b3e43a0ae96b3fdf0c91d03d",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [
+        "scratch/seal_brain_wiring_ledger.py",
+        "scratch/seal_fit_wiring_ledger.py",
+        "scratch/seal_intel_wiring_ledger.py",
+        "scratch/verify_fit_wiring.py",
+        "scratch/verify_intel_wiring.py",
+        "swarm_v2_artifacts/fit_wiring_ruler.json"
+      ],
+      "consumed_by_count": 9,
+      "crate": "swarm-intel",
+      "internal_reference_count": 10,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-brain/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-chat/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-intel/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-intel/examples/verify_ensemble.rs",
+        "wsl_crates/trm-rust/swarm-intel/examples/verify_intel.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-brain/Cargo.toml",
+          "path": "../swarm-intel",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-chat/Cargo.toml",
+          "path": "../swarm-intel",
+          "resolves": true
+        },
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-intel",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 22,
+      "live_references": [
+        "scratch/build_crate_triage.py",
+        "scratch/convene_step3_council.py",
+        "scratch/fix_verdicts_part1.py",
+        "scratch/native_routes_probe.json",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json"
+      ],
+      "src_files": 4,
+      "src_sha256": "72a8aa7248d31120562475f70bc3ab7627a7b77022f7981df990f77acb0191c5",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-jarvis",
+      "internal_reference_count": 4,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-jarvis/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-jarvis/examples/verify_jarvis.rs",
+        "wsl_crates/trm-rust/swarm-jarvis/src/lib.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 6,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_crate_paths.py",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json",
+        "swarm_v2_artifacts/wsl_crate_census_20260926.json"
+      ],
+      "src_files": 2,
+      "src_sha256": "e40776dfe02bd02491219a081d4e1f981ef4a8dd038a88177e64f45a49c134ff",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [
+        "trm_uefi_kernel/host_council_server/src/crate_ops_handlers.rs"
+      ],
+      "consumed_by_count": 1,
+      "crate": "swarm-k3",
+      "internal_reference_count": 27,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-brain/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-council/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-fit/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-intel/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-jarvis/Cargo.toml"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-brain/Cargo.toml",
+          "path": "../swarm-k3",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-council/Cargo.toml",
+          "path": "../swarm-k3",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-fit/Cargo.toml",
+          "path": "../swarm-k3",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-intel/Cargo.toml",
+          "path": "../swarm-k3",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-jarvis/Cargo.toml",
+          "path": "../swarm-k3",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-kernel/Cargo.toml",
+          "path": "../swarm-k3",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-router/Cargo.toml",
+          "path": "../swarm-k3",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+          "path": "../swarm-k3",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-services/Cargo.toml",
+          "path": "../swarm-k3",
+          "resolves": true
+        },
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-k3",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 17,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_bin_paths.py",
+        "scratch/repoint_crate_paths.py",
+        "scratch/seal_intel_wiring_ledger.py",
+        "scratch/seal_p2d_ledger.py"
+      ],
+      "src_files": 2,
+      "src_sha256": "e04b73e62b66db4cd08f3c8a84cc44f395defe9cb053389d61666903771ade75",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-kernel",
+      "internal_reference_count": 4,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-kernel/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-paths/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-kernel/src/lib.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 15,
+      "live_references": [
+        "scratch/example_path_repair.json",
+        "scratch/fix_swarm_kernel_mamba.py",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/p4_move_skill_section.py",
+        "scratch/rebuild_and_run_examples.py"
+      ],
+      "src_files": 8,
+      "src_sha256": "46432383ff5680d76bdb98bc16cc9a08a60a48f7c19e96295a473ea9a9e73d92",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-kvstore",
+      "internal_reference_count": 4,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-kvstore/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-kvstore/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-kvstore/src/bin/fingerprint.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 5,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json",
+        "swarm_v2_artifacts/wsl_crate_census_20260926.json"
+      ],
+      "src_files": 2,
+      "src_sha256": "568896a2bae75811f1ab942f46cff24c41f415995853af51ab652c042c6c3a05",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-mesh",
+      "internal_reference_count": 7,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-conductor/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-health/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-mesh/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-mesh/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-health/examples/verify_cde.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-conductor/Cargo.toml",
+          "path": "../swarm-mesh",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-health/Cargo.toml",
+          "path": "../swarm-mesh",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 6,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/seal_p2_ledger.py",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json",
+        "swarm_v2_artifacts/wsl_crate_census_20260926.json"
+      ],
+      "src_files": 1,
+      "src_sha256": "d9ef45a30d308e995802e76996968f3b5272581a3529ab81a038e3b8b4546a3a",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [
+        "scratch/fix_swarm_runtime_paths.py",
+        "scratch/repoint_bin_paths.py",
+        "trm_uefi_kernel/host_council_server/src/crate_ops_handlers.rs"
+      ],
+      "consumed_by_count": 3,
+      "crate": "swarm-nand",
+      "internal_reference_count": 36,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-agent/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-backend/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-chat/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-fit/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-jarvis/Cargo.toml"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-agent/Cargo.toml",
+          "path": "../swarm-nand",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-backend/Cargo.toml",
+          "path": "../swarm-nand",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-chat/Cargo.toml",
+          "path": "../swarm-nand",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-fit/Cargo.toml",
+          "path": "../swarm-nand",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-jarvis/Cargo.toml",
+          "path": "../swarm-nand",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-kernel/Cargo.toml",
+          "path": "../swarm-nand",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+          "path": "../swarm-nand",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-services/Cargo.toml",
+          "path": "../swarm-nand",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-shard/Cargo.toml",
+          "path": "../swarm-nand",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-vitals/Cargo.toml",
+          "path": "../swarm-nand",
+          "resolves": true
+        },
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-nand",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 18,
+      "live_references": [
+        "scratch/assemble_exercise_receipt.py",
+        "scratch/crate_exercise_examples.json",
+        "scratch/fix_p2_nand_pio.py",
+        "scratch/fix_swarm_kernel_mamba.py",
+        "scratch/fix_swarm_runtime_paths.py",
+        "scratch/p2b_inventory.json"
+      ],
+      "src_files": 3,
+      "src_sha256": "6ad0dc43a0cf316fafdaa1d45fab3889e0ef4382e1ca2fb2bfa8a7372bcb2dd9",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [
+        "scratch/apply_paths_batch2.py",
+        "scratch/fix_examples_paths.py",
+        "scratch/fix_paths_batch2.py",
+        "scratch/fix_str_args.py",
+        "scratch/fix_swarm_runtime_paths.py",
+        "scratch/fix_verify_turbovec.py"
+      ],
+      "consumed_by_count": 13,
+      "crate": "swarm-paths",
+      "internal_reference_count": 70,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-agent/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-backend/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-brain/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-conductor/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-cosmos/Cargo.toml"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-agent/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-backend/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-brain/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-conductor/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-cosmos/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-council/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-drug/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-fit/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-gguf/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-git/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-health/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-instella/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-jarvis/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-k3/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-kernel/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-nand/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-router/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-services/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-shard/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-ssm/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-turbovec/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-vitals/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-voltage/Cargo.toml",
+          "path": "../swarm-paths",
+          "resolves": true
+        },
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-paths",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 23,
+      "live_references": [
+        "scratch/apply_paths_batch2.py",
+        "scratch/assemble_exercise_receipt.py",
+        "scratch/fix_examples_paths.py",
+        "scratch/fix_paths_batch2.py",
+        "scratch/fix_str_args.py",
+        "scratch/fix_swarm_runtime_paths.py"
+      ],
+      "src_files": 1,
+      "src_sha256": "8b0b4267c43dddd15d19516507a4d56f0ce862d3422b2bbc9950006d4d7035a5",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [
+        "scratch/build_crate_triage.py",
+        "swarm_v2_artifacts/wsl_crate_triage_20260926.json",
+        "trm_uefi_kernel/host_council_server/src/verification_handlers.rs"
+      ],
+      "consumed_by_count": 3,
+      "crate": "swarm-proof",
+      "internal_reference_count": 6,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-agent/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-proof/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-proof/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-agent/examples/ensemble_agent.rs",
+        "wsl_crates/trm-rust/swarm-agent/examples/suite.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-agent/Cargo.toml",
+          "path": "../swarm-proof",
+          "resolves": true
+        },
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-proof",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 24,
+      "live_references": [
+        "scratch/build_crate_triage.py",
+        "scratch/convene_step3_council.py",
+        "scratch/fix_verdicts_part1.py",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/seal_brain_wiring_ledger.py"
+      ],
+      "src_files": 1,
+      "src_sha256": "5d01d6a8aea0923b36f68442220ba4523b330da7b2b5c526d9f715d4d58faf98",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-proto",
+      "internal_reference_count": 11,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-kvstore/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-proto/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/src/main.rs",
+        "wsl_crates/trm-rust/swarm-server/src/bin/bench.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-kvstore/Cargo.toml",
+          "path": "../swarm-proto",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+          "path": "../swarm-proto",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 5,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json",
+        "swarm_v2_artifacts/wsl_crate_census_20260926.json"
+      ],
+      "src_files": 1,
+      "src_sha256": "89cfb26d0e405522c577a848bb3e098d2cdfcda1389ecec38bc34fa2870ea0ed",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-router",
+      "internal_reference_count": 5,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-router/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-router/examples/verify_latency.rs",
+        "wsl_crates/trm-rust/swarm-router/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-kernel/src/lib.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 7,
+      "live_references": [
+        "scratch/example_path_repair.json",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/rebuild_and_run_examples.py",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json"
+      ],
+      "src_files": 2,
+      "src_sha256": "cceeac2ff769a290675f52f37a1d6529fbbc41668bc16437a9823b4370bd28b2",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-runtime",
+      "internal_reference_count": 3,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-runtime/src/main.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 13,
+      "live_references": [
+        "scratch/crate_exercise_examples.json",
+        "scratch/fix_runtime_verdict.py",
+        "scratch/fix_swarm_runtime_paths.py",
+        "scratch/p2b_bins.json",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json"
+      ],
+      "src_files": 1,
+      "src_sha256": "c8aeb4c50cf0ebcb900c152000598a4a4bc010a4e99efd81c8d472d432ad6a2f",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-server",
+      "internal_reference_count": 3,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/src/main.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 12,
+      "live_references": [
+        "scratch/crate_exercise_examples.json",
+        "scratch/exercise_examples.py",
+        "scratch/p2b_bins.json",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/seal_p2b_ledger.py"
+      ],
+      "src_files": 5,
+      "src_sha256": "0529cece56428eac28180cb353159fe0a9006a3634c76cd76e0378ff91e5613f",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-services",
+      "internal_reference_count": 5,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-services/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-services/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-server/src/main.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+          "path": "../swarm-services",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 7,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_crate_paths.py",
+        "scratch/seal_p2_ledger.py",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json"
+      ],
+      "src_files": 1,
+      "src_sha256": "d46f39dda92c67a2625ffac63fe44d7325fbbc30642db3b2e3b21fbf02e1dbb4",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-shard",
+      "internal_reference_count": 9,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-kernel/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-shard/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-shard/examples/ingest_scale.rs",
+        "wsl_crates/trm-rust/swarm-shard/examples/verify_corpus.rs",
+        "wsl_crates/trm-rust/swarm-shard/examples/verify_migrate.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-kernel/Cargo.toml",
+          "path": "../swarm-shard",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 12,
+      "live_references": [
+        "scratch/apply_paths_batch2.py",
+        "scratch/example_path_repair.json",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/p2i_fixes.json",
+        "scratch/rebuild_and_run_examples.py"
+      ],
+      "src_files": 6,
+      "src_sha256": "b724bff9d9b0a30d8cc9b42e41171e2007141d34062bedda287003866b9c34af",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-sovereign",
+      "internal_reference_count": 4,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-sovereign/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-sovereign/examples/verify_sovereign.rs",
+        "wsl_crates/trm-rust/swarm-sovereign/src/lib.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 5,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json",
+        "swarm_v2_artifacts/wsl_crate_census_20260926.json"
+      ],
+      "src_files": 2,
+      "src_sha256": "14d4b76d147b85d5c2e1400fcd1338791f90031906c6c234591ec94c80e4c198",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [
+        "scratch/fix_swarm_kernel_mamba.py",
+        "scratch/seal_p2e_ledger.py",
+        "swarm_v2_artifacts/wsl_crate_exercise.json",
+        "trm_uefi_kernel/host_council_server/src/crate_ops_handlers.rs"
+      ],
+      "consumed_by_count": 4,
+      "crate": "swarm-ssm",
+      "internal_reference_count": 8,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-kernel/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-ssm/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-ssm/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-ssm/src/bin/verify_ssm.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-kernel/Cargo.toml",
+          "path": "../swarm-ssm",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+          "path": "../swarm-ssm",
+          "resolves": true
+        },
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-ssm",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 15,
+      "live_references": [
+        "scratch/crate_exercise_examples.json",
+        "scratch/fix_swarm_kernel_mamba.py",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_bin_paths.py",
+        "scratch/seal_p2d_ledger.py"
+      ],
+      "src_files": 3,
+      "src_sha256": "64252074d1486184077f6d362f2dbaa74efe6da4daa6c19270c61ae30ea14430",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-thsm",
+      "internal_reference_count": 2,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-thsm/Cargo.toml"
+      ],
+      "linked_by": [],
+      "live_reference_count": 5,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json",
+        "swarm_v2_artifacts/wsl_crate_census_20260926.json"
+      ],
+      "src_files": 1,
+      "src_sha256": "644b052d7b23b7deb4ff56890296e222d0aad1d2c914f6445dc23a8d589ab7bc",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    },
+    {
+      "consumed_by": [
+        "trm_uefi_kernel/host_council_server/src/crate_ops_handlers.rs"
+      ],
+      "consumed_by_count": 1,
+      "crate": "swarm-turbovec",
+      "internal_reference_count": 15,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-brain/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-kernel/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-router/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-turbovec/Cargo.toml"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-brain/Cargo.toml",
+          "path": "../swarm-turbovec",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-kernel/Cargo.toml",
+          "path": "../swarm-turbovec",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-router/Cargo.toml",
+          "path": "../swarm-turbovec",
+          "resolves": true
+        },
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-runtime/Cargo.toml",
+          "path": "../swarm-turbovec",
+          "resolves": true
+        },
+        {
+          "cargo": "trm_uefi_kernel/host_council_server/Cargo.toml",
+          "path": "../../wsl_crates/trm-rust/swarm-turbovec",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 15,
+      "live_references": [
+        "scratch/apply_paths_batch2.py",
+        "scratch/fix_verify_turbovec.py",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_bin_paths.py",
+        "scratch/seal_p2f_ledger.py"
+      ],
+      "src_files": 2,
+      "src_sha256": "e645d67e59e40aa6ce6e11d17aa9323ef134f9e19fde23e942f6222712494c08",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-vitals",
+      "internal_reference_count": 5,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-vitals/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-vitals/src/lib.rs",
+        "wsl_crates/trm-rust/swarm-server/src/main.rs"
+      ],
+      "linked_by": [
+        {
+          "cargo": "wsl_crates/trm-rust/swarm-server/Cargo.toml",
+          "path": "../swarm-vitals",
+          "resolves": true
+        }
+      ],
+      "live_reference_count": 6,
+      "live_references": [
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/repoint_crate_paths.py",
+        "swarm_v2_artifacts/module_copy_census.json",
+        "swarm_v2_artifacts/wsl_artifact_census.json",
+        "swarm_v2_artifacts/wsl_crate_census_20260926.json"
+      ],
+      "src_files": 2,
+      "src_sha256": "81dca656ca66b7114f643e936d232d5ad399196285423ef38f04dc8f5d2fb664",
+      "verdict": "superseded: the in-tree copy is a live path dependency (the module of record)"
+    },
+    {
+      "consumed_by": [],
+      "consumed_by_count": 0,
+      "crate": "swarm-voltage",
+      "internal_reference_count": 6,
+      "internal_references": [
+        "wsl_crates/trm-rust/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-voltage/Cargo.toml",
+        "wsl_crates/trm-rust/swarm-voltage/examples/verify_forward.rs",
+        "wsl_crates/trm-rust/swarm-voltage/examples/verify_real.rs",
+        "wsl_crates/trm-rust/swarm-voltage/src/forward.rs",
+        "wsl_crates/trm-rust/swarm-voltage/src/lib.rs"
+      ],
+      "linked_by": [],
+      "live_reference_count": 10,
+      "live_references": [
+        "scratch/apply_paths_batch2.py",
+        "scratch/example_path_repair.json",
+        "scratch/fix_str_args.py",
+        "scratch/p2b_inventory.json",
+        "scratch/p2b_meta.json",
+        "scratch/rebuild_and_run_examples.py"
+      ],
+      "src_files": 6,
+      "src_sha256": "b7cd555d107e058eeceeaf8fe1b1e7b69413e3b16e6e883240885c26aaf1fa01",
+      "verdict": "named-not-consumed: named in live text but consumed by nothing -- its fate is the archive, not a port"
+    }
+  ],
+  "path_dependency_names": [
+    "swarm-backend",
+    "swarm-brain",
+    "swarm-chat",
+    "swarm-cosmos",
+    "swarm-council",
+    "swarm-docking",
+    "swarm-drug",
+    "swarm-fit",
+    "swarm-gguf",
+    "swarm-git",
+    "swarm-instella",
+    "swarm-intel",
+    "swarm-k3",
+    "swarm-mesh",
+    "swarm-nand",
+    "swarm-paths",
+    "swarm-proof",
+    "swarm-proto",
+    "swarm-services",
+    "swarm-shard",
+    "swarm-ssm",
+    "swarm-turbovec",
+    "swarm-vitals"
+  ],
+  "root": "wsl_crates/trm-rust"
+}

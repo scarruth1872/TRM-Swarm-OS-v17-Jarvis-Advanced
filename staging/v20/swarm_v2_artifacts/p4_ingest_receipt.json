@@ -1,0 +1,137 @@
+{
+ "phase": "P4",
+ "acceptance": "one text document per record carrying source file + archive sha256 through the existing encoder; a stated bounded sample with the fraction recorded; chemistry queries go to the structured index, not the fabric",
+ "documents": {
+  "added": 1994,
+  "index_total": 2180,
+  "index_bytes": 53166343,
+  "docs_per_s": 1126.83,
+  "sample_fraction": 0.010855,
+  "per_source": {
+   "ethics_commonsense.csv": {
+    "available": 13910,
+    "sampled": 200,
+    "sha256": "286cb4098a66b718"
+   },
+   "ethics_deontology.csv": {
+    "available": 18164,
+    "sampled": 200,
+    "sha256": "d31e25825c43c16f"
+   },
+   "ethics_justice.csv": {
+    "available": 21791,
+    "sampled": 200,
+    "sha256": "175c8255f5ee3d99"
+   },
+   "ethics_utilitarianism.csv": {
+    "available": 13737,
+    "sampled": 200,
+    "sha256": "a057f29e667b1953"
+   },
+   "ethics_virtue.csv": {
+    "available": 28245,
+    "sampled": 200,
+    "sha256": "f1a4b619920adb7d"
+   },
+   "gutenberg_shakespeare.txt": {
+    "available": 5145,
+    "sampled": 42,
+    "sha256": "3cf4b3d44ee14cff"
+   },
+   "lawofone_unified.txt": {
+    "available": 81,
+    "sampled": 42,
+    "sha256": "707eac53036d9ab3"
+   },
+   "wisdom_14209.txt": {
+    "available": 216,
+    "sampled": 42,
+    "sha256": "260462075d03da0d"
+   },
+   "wisdom_2017.txt": {
+    "available": 82,
+    "sampled": 42,
+    "sha256": "f2d09ebf28af0bf8"
+   },
+   "wisdom_2680.txt": {
+    "available": 368,
+    "sampled": 42,
+    "sha256": "6977474f82a39dd8"
+   },
+   "wisdom_33186.txt": {
+    "available": 137,
+    "sampled": 42,
+    "sha256": "c4e2c4896bb30e22"
+   },
+   "wisdom_45159.txt": {
+    "available": 122,
+    "sampled": 42,
+    "sha256": "7a33d4139bea523c"
+   },
+   "enwikiquote.xml.bz2": {
+    "available": 81695,
+    "sampled": 700,
+    "sha256": "4f6351f96799d531"
+   },
+   "ed_train.csv": {
+    "available": 0,
+    "sampled": 0,
+    "sha256": "d5558cd419c8d46b"
+   }
+  },
+  "encoder": "NativeEmbeddingSkill 768-dim (native-turbovec-hdc)"
+ },
+ "structures": {
+  "derived": 199997,
+  "records_read": 200000,
+  "unparsable": 3,
+  "fraction_of_store": 0.069016,
+  "records_per_s": 1287.98,
+  "store_smiles_before": 0,
+  "store_smiles_after": 199997,
+  "chemistry_query_matches": 9937
+ },
+ "runtime": {
+  "top_doc": "relational/enwikiquote.xml.bz2#100",
+  "fidelity": 0.8948,
+  "rank2": "relational/enwikiquote.xml.bz2#28500",
+  "corpus_documents": 2180,
+  "candidates_scored": 2180,
+  "elapsed_us": 1522,
+  "served_by": "host_council_server (Rust)"
+ },
+ "defects_found": [
+  "the molecule table held 2,897,819 rows with smiles NULL and props = 'chembl_id' -- a 'fully ingested' ChEMBL release that stored identifiers only, so P4's own fork (chemistry to the structured index) led nowhere until structures were derived for 6.90% of it.",
+  "the assistant's first denominator for ethics_commonsense.csv was line-counted (54,093); the file has quoted multi-line fields and the csv module gives 13,910, matching the platform's own earlier ingest. Fixed, and the ingest now prunes before replacing so no stale documents survive a correction.",
+  "the ingestion design doc's chembl_37.sdf.gz size (701 MB) is stale: the file is 931,156,420 B.",
+  "ed_train.csv is a 14-byte truncated download, counted and refused as a corpus."
+ ],
+ "measurement_corrections": [
+  "the design assumed ~169 docs/s; measured 1,126.8 docs/s, so its arithmetic over-states the cost of any sample by ~6.7x.",
+  "the kernel parses the index once per process (OnceLock), so an ingest is invisible to the running kernel until it restarts: 4.9 s from stop to /health with the 53.2 MB index."
+ ],
+ "stated_limits": "1.09% of the available relational records; 6.90% of the molecule rows; no substructure search (no fingerprint index exists); the fabric's short-query discrimination is unchanged by this and was not re-measured.",
+ "files": [
+  "scratch/p4_extract_records.py",
+  "scratch/p4_ingest_relational.py",
+  "scratch/p4_chembl_smiles_stream.py",
+  "scratch/p4_fill_structures.py",
+  "scratch/p4_restart_and_probe.py",
+  "docs/P4_INGEST_20260925.md"
+ ],
+ "artifacts": {
+  "kernel_knowledge_index": {
+   "bytes": 53166343,
+   "sha256_16": "7f84449f133702b5"
+  },
+  "structured_index.db": {
+   "bytes": 532578304,
+   "sha256_16": "6ce5cd4266ae187d"
+  },
+  "chembl_structures_sample.jsonl": {
+   "bytes": 35738069,
+   "sha256_16": "85a1336257dd56c9"
+  }
+ },
+ "runtime_probe_note": "the seal's first probe indexed the response as a list; /k3/retrieve returns an object with the ranked list under `results`. The probe was wrong, not the kernel. Corrected here and in the seal script."
+}

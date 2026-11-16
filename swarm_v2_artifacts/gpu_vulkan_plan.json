@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-08-06T03:00:30",
+  "gpu": {
+    "theoretical_tflops": 12.4,
+    "theoretical_tps": 252278646,
+    "bandwidth_limit_tps": 3846154,
+    "effective_tps": 3846154,
+    "efficiency": "70%"
+  },
+  "comparison": {
+    "python": 11877,
+    "cpp_avx2": 3693,
+    "directml": 441639,
+    "vulkan_theoretical": 3846154
+  },
+  "shader_path": "swarm_v2\\core\\instella_gate.comp",
+  "note": "Vulkan compute shader ready for native GPU execution"
+}

@@ -1,0 +1,89 @@
+SSM READ-OUT DISPOSITION — MEASURED
+Date 2026-11-03. Scripts: scratch/ssm_disposition_fit.py, scratch/ssm_ablation.py,
+scratch/ssm_l2o.py, scratch/ssm_noise_check.py.
+Data: frozen snapshot scratch/council_ledger_snapshot.json
+  sha256 01d90e7bc2915a316225edb793035ca4e34f6bb8126e230a37679e23aafc4eb0
+  180 proposals, 2520 votes, 630 votes carrying ssm_trit/ssm_mean/ssm_ambiguity/
+  ssm_steps + llm_trit + decision_path, 84 (topic,agent) cells, 6 topics.
+  The live ledger grew from 616 to 630 ssm votes between the first and second read
+  (the :8022 council is writing); all numbers below are from the frozen snapshot.
+  No council call was made, no process was touched, no .rs file was edited,
+  data/ssm_readout.json was not modified.
+
+1. BAYES CEILING — ARITHMETIC
+  Model: observed label y = true label t with prob 1-p, else uniform over the
+  other K-1 classes. Best possible predictor of a fresh re-run label is t, so
+      max agreement = (1-p) + p/(K-1)
+  p = 0.19:
+      K=3 (approve/abstain/reject): 0.81 + 0.19/2 = 0.9050
+      K=2 (approve/reject):         0.81 + 0.19/1 = 0.8100
+  If 0.19 is read as a between-run disagreement rate rather than a per-run flip
+  probability, the per-run flip p0 solves 1-[(1-p0)^2 + 2(p0/2)^2] = 0.19:
+      1.5 p0^2 - 2 p0 + 0.19 = 0  ->  p0 = 0.1029  ->  ceiling 1-p0 = 0.8971
+  So the noise ceiling is 0.90 (0.81 in the binary view), i.e. 0.32 ABOVE the
+  0.583 always-majority baseline. Label noise cannot be the reason a read-out
+  fails to clear 0.583; there is 0.32 of headroom under the ceiling.
+
+  Measured flip rate in the current ledger, per field, over all repeated runs of
+  the same (topic,agent):
+      llm_trit   0 / 2730 pairwise comparisons = 0.0000   (84 cells, 0 flip cells)
+      vote       7099 / 35056 = 0.2025                    (322 cells, 58 flip cells)
+      ssm_trit   530 / 2730 = 0.1941                      (84 cells, 48 flip cells)
+  The 19% figure is the instability of `vote` and of `ssm_trit`, not of the
+  council judgement `llm_trit`, which is exactly reproducible on this slice
+  (split-half pair agreement 70/70 = 1.000). `vote` is downstream of
+  decision_path, which is downstream of the SSM, so part of the 19% is produced
+  by the SSM being in the vote path rather than being irreducible label noise.
+  With p=0.000 on the actual target the ceiling is 1.000.
+
+2. FITS (target = llm_trit, 3 classes; features standardised per fold; ridge,
+   lambda 10 unless stated; cells = one sample per (topic,agent), 84 samples)
+  Fit 1  ridge on [ssm_mean, confidence, weight], 5-fold CV grouped by proposal
+         held-out 0.8508   in-sample 0.8524
+         This split is not honest: llm_trit is constant within every
+         (topic,agent) cell, so the same cell appears in train and test.
+  Fit 2  same model, leave-one-TOPIC-out (6 folds)
+         held-out 0.8095   (lambda 1.0 0.8095, lambda 100 0.7889)
+         leave-TWO-topics-out, 15 folds: mean 0.7857 (min 0.607, max 0.964)
+  Fit 3  always-predict-majority (approve)
+         held-out 0.5833   (49/84 cells approve)
+
+  ABLATION — what actually carries the 0.81 (same LOTO split)
+         ssm_mean only                        0.4881
+         ssm_ambiguity+ssm_steps+ssm_mean     0.4405
+         weight only                          0.4167
+         confidence only                      0.6667
+         ssm_mean + confidence                0.7976
+         ssm_mean + confidence + weight       0.8095
+         always-majority baseline             0.5833
+         per-topic-majority oracle (leaks)    0.8651
+  Leave-two-topics-out, mean over 15 folds (train-majority baseline 0.4024):
+         ssm_mean 0.4167 | confidence 0.6571 | ssm+conf 0.8048 | ssm+conf+weight 0.7857
+  At vote level (630 votes, LOTO): ssm_mean only 0.4063, ssm+conf+weight 0.7905,
+  baseline 0.6190.
+
+  Reading: the SSM fields alone are at or below the majority baseline
+  (0.4881 vs 0.5833 LOTO; 0.4167 vs 0.4024 leave-two-out). Every configuration
+  that clears the baseline does so through `confidence`, which is the LLM's own
+  confidence emitted with the verdict it is being used to predict — it is not
+  available to a gate that must decide before the LLM votes, and it is not an
+  SSM read-out. ssm_mean's residual contribution is topic identification: the
+  six topic means are distinct (-0.033 to -0.116) and topic determines the
+  label, while within-topic label variance is zero (0/2730 flips), so there is
+  no per-proposal judgement for a read-out to learn.
+
+3. VERDICT
+RETIRE: ceiling is 0.905, baseline is 0.583, no read-out clears it — not because
+the label is too noisy (the noise ceiling sits 0.32 above the baseline, and the
+measured flip rate on llm_trit is 0/2730), but because the SSM fields carry no
+verdict signal: ssm_mean alone scores 0.488 against a 0.583 baseline, and the
+only fits that clear the baseline are driven by the LLM's own confidence.
+
+  To make it load-bearing: the ledger needs proposals that differ in substance
+  within a topic (the current 6 topics are 3-16 resubmissions of one sentence
+  each, so the label is constant per topic) and a target that is not the LLM's
+  own confidence — i.e. per-proposal verdicts with measurable within-topic
+  variance, on which a content-bearing feature can be tested for within-topic
+  discrimination rather than topic recall.
+
+  deploy flag in data/ssm_readout.json left at false; SSM stays advisory.

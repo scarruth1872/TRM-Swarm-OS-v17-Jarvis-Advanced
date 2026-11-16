@@ -1,0 +1,143 @@
+{
+ "benchmark": "autonomous_platform_20261014",
+ "measured_on_host": "AMD Ryzen 9 5900HX / RTX 3070 Laptop 8GB (Windows)",
+ "generated": "2026-10-15T11:57:59Z",
+ "health": {
+  "kernel": "Native Rust Sovereign Kernel v20.0.0",
+  "status": "HEALTHY",
+  "memory_kb": 185144,
+  "monad_anchor": "0x4D4F4E4144000001"
+ },
+ "gpu_dispatch": {
+  "bindings": [
+   {
+    "basis": "deterministic device-binding table (MOTION-017/018); GPU arm gated on toolchain, CPU is the fail-closed default",
+    "bound_device": "gpu",
+    "fail_closed": true,
+    "gpu_present": true,
+    "gpu_toolchain": true,
+    "gpu_toolchain_basis": "present: wgpu + naga (pure-Rust; WGSL compiled to SPIR-V at runtime; no CUDA/Vulkan SDK needed)",
+    "kind": "hdc_encode",
+    "parity": "verified: gpu_compute::tests::gpu_matches_cpu_reference / gpu_batch_matches_cpu \u2014 GPU reproduces the CPU reference",
+    "profile": "single and batch -> gpu"
+   },
+   {
+    "basis": "deterministic device-binding table (MOTION-017/018); GPU arm gated on toolchain, CPU is the fail-closed default",
+    "bound_device": "gpu",
+    "fail_closed": true,
+    "gpu_present": true,
+    "gpu_toolchain": true,
+    "gpu_toolchain_basis": "present: wgpu + naga (pure-Rust; WGSL compiled to SPIR-V at runtime; no CUDA/Vulkan SDK needed)",
+    "kind": "packed_scan",
+    "parity": "verified: gpu_compute::tests::gpu_scan_matches_cpu \u2014 top-K matches CPU packed_ternary::search",
+    "profile": "single and batch -> gpu"
+   },
+   {
+    "basis": "deterministic device-binding table (MOTION-017/018); GPU arm gated on toolchain, CPU is the fail-closed default",
+    "bound_device": "gpu",
+    "fail_closed": true,
+    "gpu_present": true,
+    "gpu_toolchain": true,
+    "gpu_toolchain_basis": "present: wgpu + naga (pure-Rust; WGSL compiled to SPIR-V at runtime; no CUDA/Vulkan SDK needed)",
+    "kind": "trm7m",
+    "parity": "verified: gpu_compute::tests::gpu_trm7m_matches_cpu \u2014 GPU forward reproduces the CPU forward (trit + confidence, 6 texts)",
+    "profile": "batch -> gpu (gpu_trm7m_batch); single-eval (evaluate_proposal) -> cpu Trm7m::forward (2.82 ms/call measured)"
+   },
+   {
+    "basis": "deterministic device-binding table (MOTION-017/018); GPU arm gated on toolchain, CPU is the fail-closed default",
+    "bound_device": "cpu",
+    "fail_closed": true,
+    "gpu_present": true,
+    "gpu_toolchain": true,
+    "gpu_toolchain_basis": "present: wgpu + naga (pure-Rust; WGSL compiled to SPIR-V at runtime; no CUDA/Vulkan SDK needed)",
+    "kind": "sram_compute",
+    "parity": "cpu-native: sram_pattern_computer serves the 15 topologies + Hopfield relaxation from the kernel's own source (bit-exact vs its Python oracles)",
+    "profile": "cpu: Hopfield relaxation + 15 topologies (sram_pattern_computer), no literal SRAM hardware"
+   }
+  ],
+  "compute_toolchain": "present: wgpu + naga (pure-Rust; WGSL compiled to SPIR-V at runtime; no CUDA/Vulkan SDK needed)",
+  "dispatcher": "voltage binder compute dispatcher (council MOTION-017)",
+  "host_gpu": "present: NVIDIA RTX 3070 Laptop + AMD Radeon (Vulkan runtime enumerates both)",
+  "rule": "gpu iff (toolchain present AND gpu present) else cpu; deterministic table, fail-closed"
+ },
+ "recall_surface": [
+  {
+   "case": "general",
+   "query": "sovereign kernel voltage doctrine",
+   "store": {
+    "bits": 2,
+    "bytes": 44167980,
+    "bytes_per_vector": 200,
+    "dim": 768,
+    "file_bytes": 44167980,
+    "file_mtime": 1791935038,
+    "levels": 3,
+    "path": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_nand_fabric.turbovec",
+    "serves_the_file_on_disk": true,
+    "vectors": 183879
+   },
+   "found": null,
+   "cached_ms": 25.3
+  },
+  {
+   "case": "molecule_id",
+   "query": "CHEMBL153534",
+   "store": "chembl",
+   "found": true,
+   "cached_ms": 1.2
+  },
+  {
+   "case": "molecule_scan",
+   "query": "aspirin-like acetyl compound",
+   "store": "chembl",
+   "found": true,
+   "cached_ms": 190.3
+  },
+  {
+   "case": "structured",
+   "query": "ethics of autonomous systems",
+   "store": "structured",
+   "found": true,
+   "cached_ms": 7.7
+  },
+  {
+   "case": "bioassay",
+   "query": "binding affinity target protein",
+   "store": "bioassay",
+   "found": true,
+   "cached_ms": 36.3
+  },
+  {
+   "case": "clinical",
+   "query": "heart rate",
+   "store": "clinical",
+   "found": true,
+   "cached_ms": 15.3,
+   "measurement": "HR",
+   "count": 14057,
+   "sum_check": true
+  },
+  {
+   "case": "clinical_alias",
+   "query": "glucose",
+   "store": "clinical",
+   "found": true,
+   "cached_ms": 15.5,
+   "measurement": "Glucose",
+   "count": 1880,
+   "sum_check": true
+  }
+ ],
+ "trm7m_batch": {
+  "backend": "gpu",
+  "n": 200,
+  "results": 200,
+  "seconds": 0.632,
+  "docs_per_sec": 316.5
+ },
+ "council_ledger": {
+  "ledger_blocks": 363,
+  "council_motions": 22,
+  "provenance": "read_from_artifact"
+ }
+}

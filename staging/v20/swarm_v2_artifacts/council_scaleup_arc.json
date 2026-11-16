@@ -1,0 +1,51 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T23:33:47.313485+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "72c572b891676e3b9dc3f56804bc4b415a792e79097fdff63e5ba79e056ebbf7",
+      "motion": "MOTION-SCALE1",
+      "phase": "consensus",
+      "proposal_id": "CP-5E3972FB",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "STAGE 1 FULL-CORPUS MEASUREMENT: run the clash-filtered, rotation-optimized scorer on the full 7,783-complex corpus (parallel + 216-rotation grid for tractability). PREDICTION: contact ratio 1.8-2.2, H-bond ratio 1.7-2.1, CI not crossing 1.5. FAILURE MODE: ratio < 1.5 = the 54-sample was a selection artifact. MEASURED: the specificity arc closed. Binding specificity = clash-filtered vdW-optimal contact count + H-bond count (cognate ~2x random, 54-complex LDA 0.721). HDC encoding preserves the signal (dot product 0.832 vs 0.663, 94.7% above 2sigma). Three instruments standardized: vdW collision filter, rotation-optimized (512) baseline, decomposition gate (0.85 factor). SCALE-UP ARC: Stage 1 full-corpus measurement; Stage 2 HDC at scale; Stage 3 live dot-product route."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "7c0ed8a833d0e09ff9c56deeb3992b12a731c985bc23fbba6b09390232e2d0d7",
+      "motion": "MOTION-SCALE2",
+      "phase": "consensus",
+      "proposal_id": "CP-D690D473",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "STAGE 2 HDC AT SCALE: encode the full corpus into hypervectors (native encoder) and test the dot-product separation. PREDICTION: mean cognate-vs-random cosine gap >= 0.10; % above 2sigma >= 70%. FAILURE MODE: gap < 0.05 = the 19-complex encoding was a small-sample artifact. MEASURED: the specificity arc closed. Binding specificity = clash-filtered vdW-optimal contact count + H-bond count (cognate ~2x random, 54-complex LDA 0.721). HDC encoding preserves the signal (dot product 0.832 vs 0.663, 94.7% above 2sigma). Three instruments standardized: vdW collision filter, rotation-optimized (512) baseline, decomposition gate (0.85 factor). SCALE-UP ARC: Stage 1 full-corpus measurement; Stage 2 HDC at scale; Stage 3 live dot-product route."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "30889e8673bd4f06e7c3bd2b89e3293ff7b2d45fc82986616b60c859ddb4f021",
+      "motion": "MOTION-SCALE3",
+      "phase": "consensus",
+      "proposal_id": "CP-8399B870",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "STAGE 3 LIVE DOT-PRODUCT ROUTE: a native endpoint takes a paratope hypervector and returns the ranked antigen hypervectors by dot product. PREDICTION: the cognate ranks top-1 for >=60% of complexes, top-3 for >=85%. FAILURE MODE: top-1 < 60% = the retrieval is not specific enough for a live route. MEASURED: the specificity arc closed. Binding specificity = clash-filtered vdW-optimal contact count + H-bond count (cognate ~2x random, 54-complex LDA 0.721). HDC encoding preserves the signal (dot product 0.832 vs 0.663, 94.7% above 2sigma). Three instruments standardized: vdW collision filter, rotation-optimized (512) baseline, decomposition gate (0.85 factor). SCALE-UP ARC: Stage 1 full-corpus measurement; Stage 2 HDC at scale; Stage 3 live dot-product route."
+    }
+  ],
+  "predictions_recorded": "S1: contact ratio 1.8-2.2, hbond 1.7-2.1 (fail <1.5); S2: cosine gap >=0.10, >70% above 2sigma (fail gap <0.05); S3: top-1 >=60%, top-3 >=85%",
+  "prior_state": "specificity arc closed; fabric basis proven in miniature (19-54 complexes)",
+  "quorum": 9,
+  "record": "SCALE-UP ARC (3 stages) -- council-voted; platform self-directs",
+  "sha256": "3c5899846a6f2180a30f246221391131340991a2de3a0bcc8d1126e1db1b8670"
+}

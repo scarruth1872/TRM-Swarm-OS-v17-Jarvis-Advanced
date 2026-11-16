@@ -1,0 +1,59 @@
+{
+  "record": "sequence -> paratope-density contact model (MOTION-C2)",
+  "target": "density (contacts per residue), NOT raw contacts",
+  "mae_units": "density (contacts/residue, range ~5-25); the MAE values are on this target, not on raw contacts (range 0-623)",
+  "n_train": 6226,
+  "n_test": 1557,
+  "boundaries_excluded": 8629,
+  "baseline_mean_density": 6.825,
+  "baseline_mae": 1.795,
+  "linear_mae": 1.63,
+  "random_forest_mae": 1.149,
+  "random_forest_beats_baseline": true,
+  "linear_beats_baseline": true,
+  "precision_at_k": 0.455,
+  "k": 77,
+  "feature_importance_top10": [
+    {
+      "aa": "Y",
+      "importance": 0.0877
+    },
+    {
+      "aa": "L",
+      "importance": 0.08
+    },
+    {
+      "aa": "F",
+      "importance": 0.0796
+    },
+    {
+      "aa": "S",
+      "importance": 0.0633
+    },
+    {
+      "aa": "P",
+      "importance": 0.0618
+    },
+    {
+      "aa": "W",
+      "importance": 0.0577
+    },
+    {
+      "aa": "G",
+      "importance": 0.0574
+    },
+    {
+      "aa": "E",
+      "importance": 0.0449
+    },
+    {
+      "aa": "N",
+      "importance": 0.0422
+    },
+    {
+      "aa": "R",
+      "importance": 0.0415
+    }
+  ],
+  "basis": "antibody AA composition + length -> density (contacts/residue); held-out 20%. Beat-the-mean baseline and precision@k on the top-density entries are the tests."
+}

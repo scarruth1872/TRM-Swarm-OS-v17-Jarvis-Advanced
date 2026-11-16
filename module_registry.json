@@ -1,0 +1,2412 @@
+{
+ "protocol": "MODULE_RECOGNITION_REGISTRY",
+ "monad_anchor": "0x4D4F4E4144000001",
+ "generated": "2026-08-23 06:48:16",
+ "summary": {
+  "kernel_modules": 179,
+  "platform_modules": 192,
+  "repos": 41
+ },
+ "by_status": {
+  "PORTED": 0,
+  "SKELETON": 0,
+  "REAL": 170,
+  "EXCLUDED": 9
+ },
+ "kernel_modules": [
+  {
+   "name": "advanced_scene_fusion",
+   "source": "kernel:advanced_scene_fusion.rs",
+   "status": "REAL",
+   "functions": 5
+  },
+  {
+   "name": "agent_mailbox",
+   "source": "kernel:agent_mailbox.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "agent_mailbox_bus",
+   "source": "kernel:agent_mailbox_bus.rs",
+   "status": "REAL",
+   "functions": 5
+  },
+  {
+   "name": "agent_mesh",
+   "source": "kernel:agent_mesh.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "agent_runtime",
+   "source": "kernel:agent_runtime.rs",
+   "status": "REAL",
+   "functions": 7
+  },
+  {
+   "name": "allocator",
+   "source": "kernel:allocator.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "architectural_rl_agent",
+   "source": "kernel:architectural_rl_agent.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "artifact_pipeline",
+   "source": "kernel:artifact_pipeline.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "attempt_sampler",
+   "source": "kernel:attempt_sampler.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "auto_changelog",
+   "source": "kernel:auto_changelog.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "background_tasks",
+   "source": "kernel:background_tasks.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "base_agent",
+   "source": "kernel:base_agent.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "benchmark_epistemology",
+   "source": "kernel:benchmark_epistemology.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "brain_ai_microkernel_bridge",
+   "source": "kernel:brain_ai_microkernel_bridge.rs",
+   "status": "EXCLUDED",
+   "functions": 1
+  },
+  {
+   "name": "bridge",
+   "source": "kernel:bridge.rs",
+   "status": "REAL",
+   "functions": 4
+  },
+  {
+   "name": "chain_of_verification",
+   "source": "kernel:chain_of_verification.rs",
+   "status": "REAL",
+   "functions": 4
+  },
+  {
+   "name": "chaos_engine",
+   "source": "kernel:chaos_engine.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "chaos_simulator",
+   "source": "kernel:chaos_simulator.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "cognitive_ingestion_engine",
+   "source": "kernel:cognitive_ingestion_engine.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "cognitive_load_balancer",
+   "source": "kernel:cognitive_load_balancer.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "cognitive_stack",
+   "source": "kernel:cognitive_stack.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "coherence_thresholds",
+   "source": "kernel:coherence_thresholds.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "cold_start_recovery",
+   "source": "kernel:cold_start_recovery.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "collaborative_reasoning",
+   "source": "kernel:collaborative_reasoning.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "comm_protocol",
+   "source": "kernel:comm_protocol.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "continuum_genomics",
+   "source": "kernel:continuum_genomics.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "continuum_pbft",
+   "source": "kernel:continuum_pbft.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "coordination_protocol",
+   "source": "kernel:coordination_protocol.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "coordination_responder",
+   "source": "kernel:coordination_responder.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "cosmos3_edge_bridge",
+   "source": "kernel:cosmos3_edge_bridge.rs",
+   "status": "EXCLUDED",
+   "functions": 2
+  },
+  {
+   "name": "cosmos_bridge",
+   "source": "kernel:cosmos_bridge.rs",
+   "status": "EXCLUDED",
+   "functions": 1
+  },
+  {
+   "name": "cosmos_microkernel_entanglement",
+   "source": "kernel:cosmos_microkernel_entanglement.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "cosmos_moe_instella_shunter",
+   "source": "kernel:cosmos_moe_instella_shunter.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "cosmos_sparse_moe_teams",
+   "source": "kernel:cosmos_sparse_moe_teams.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "council",
+   "source": "kernel:council.rs",
+   "status": "REAL",
+   "functions": 5
+  },
+  {
+   "name": "cqs",
+   "source": "kernel:cqs.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "daemon_discovery",
+   "source": "kernel:daemon_discovery.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "daily_evolution_engine",
+   "source": "kernel:daily_evolution_engine.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "ddr_antibody",
+   "source": "kernel:ddr_antibody.rs",
+   "status": "REAL",
+   "functions": 9
+  },
+  {
+   "name": "ddr_self_training",
+   "source": "kernel:ddr_self_training.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "deterministic_forge",
+   "source": "kernel:deterministic_forge.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "dge",
+   "source": "kernel:dge.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "digital_dna_loop",
+   "source": "kernel:digital_dna_loop.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "digital_twin",
+   "source": "kernel:digital_twin.rs",
+   "status": "REAL",
+   "functions": 8
+  },
+  {
+   "name": "dram_pattern_computer",
+   "source": "kernel:dram_pattern_computer.rs",
+   "status": "REAL",
+   "functions": 7
+  },
+  {
+   "name": "epistemology_core",
+   "source": "kernel:epistemology_core.rs",
+   "status": "REAL",
+   "functions": 7
+  },
+  {
+   "name": "evolutionary_sandbox",
+   "source": "kernel:evolutionary_sandbox.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "expert_registry",
+   "source": "kernel:expert_registry.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "expert_team_harnesses",
+   "source": "kernel:expert_team_harnesses.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "external_socket_bridge",
+   "source": "kernel:external_socket_bridge.rs",
+   "status": "EXCLUDED",
+   "functions": 1
+  },
+  {
+   "name": "federation",
+   "source": "kernel:federation.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "federation_manager",
+   "source": "kernel:federation_manager.rs",
+   "status": "EXCLUDED",
+   "functions": 1
+  },
+  {
+   "name": "feedback_loops",
+   "source": "kernel:feedback_loops.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "font",
+   "source": "kernel:font.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "formal_verification_engine",
+   "source": "kernel:formal_verification_engine.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "full_64_agent_orchestrator",
+   "source": "kernel:full_64_agent_orchestrator.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "gan_design_synthesizer",
+   "source": "kernel:gan_design_synthesizer.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "generative_architect",
+   "source": "kernel:generative_architect.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "global_memory",
+   "source": "kernel:global_memory.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "gpu_cuda_microkernel_binder",
+   "source": "kernel:gpu_cuda_microkernel_binder.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "gpu_infinity_computer",
+   "source": "kernel:gpu_infinity_computer.rs",
+   "status": "REAL",
+   "functions": 5
+  },
+  {
+   "name": "gpu_unlock_architecture",
+   "source": "kernel:gpu_unlock_architecture.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "hardware_voltage_microkernel_binder",
+   "source": "kernel:hardware_voltage_microkernel_binder.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "heartbeat_scheduler",
+   "source": "kernel:heartbeat_scheduler.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "heuristic_consensus",
+   "source": "kernel:heuristic_consensus.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "hf_brain",
+   "source": "kernel:hf_brain.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "higher_mind",
+   "source": "kernel:higher_mind.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "human_swarm_interaction",
+   "source": "kernel:human_swarm_interaction.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "hwprobe",
+   "source": "kernel:hwprobe.rs",
+   "status": "REAL",
+   "functions": 4
+  },
+  {
+   "name": "instella_router",
+   "source": "kernel:instella_router.rs",
+   "status": "REAL",
+   "functions": 5
+  },
+  {
+   "name": "instella_sparse_agent_teams",
+   "source": "kernel:instella_sparse_agent_teams.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "intent_buffer",
+   "source": "kernel:intent_buffer.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "ipc",
+   "source": "kernel:ipc.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "jarvis_cognitive",
+   "source": "kernel:jarvis_cognitive.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "jarvis_quantum",
+   "source": "kernel:jarvis_quantum.rs",
+   "status": "REAL",
+   "functions": 4
+  },
+  {
+   "name": "jarvis_substrate",
+   "source": "kernel:jarvis_substrate.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "jarvis_symbiosis",
+   "source": "kernel:jarvis_symbiosis.rs",
+   "status": "REAL",
+   "functions": 4
+  },
+  {
+   "name": "jarvis_vibe",
+   "source": "kernel:jarvis_vibe.rs",
+   "status": "REAL",
+   "functions": 4
+  },
+  {
+   "name": "jarvis_vibethinker",
+   "source": "kernel:jarvis_vibethinker.rs",
+   "status": "REAL",
+   "functions": 4
+  },
+  {
+   "name": "k3_logic",
+   "source": "kernel:k3_logic.rs",
+   "status": "REAL",
+   "functions": 22
+  },
+  {
+   "name": "kanban_board",
+   "source": "kernel:kanban_board.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "kernel_instructions",
+   "source": "kernel:kernel_instructions.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "kernel_lora_adapter",
+   "source": "kernel:kernel_lora_adapter.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "llm_brain",
+   "source": "kernel:llm_brain.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "llm_orchestrator",
+   "source": "kernel:llm_orchestrator.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "llm_router",
+   "source": "kernel:llm_router.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "lobster_shell",
+   "source": "kernel:lobster_shell.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "local_lora_trainer",
+   "source": "kernel:local_lora_trainer.rs",
+   "status": "EXCLUDED",
+   "functions": 1
+  },
+  {
+   "name": "lora_response_modulator",
+   "source": "kernel:lora_response_modulator.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "main",
+   "source": "kernel:main.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "mamba3_turbovec_ssm",
+   "source": "kernel:mamba3_turbovec_ssm.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "manus_engine",
+   "source": "kernel:manus_engine.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "mcp_bus",
+   "source": "kernel:mcp_bus.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "mcp_tool_evolver",
+   "source": "kernel:mcp_tool_evolver.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "memory",
+   "source": "kernel:memory.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "memory_synchronizer",
+   "source": "kernel:memory_synchronizer.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "meta_orchestrator",
+   "source": "kernel:meta_orchestrator.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "microkernel_chat_bridge",
+   "source": "kernel:microkernel_chat_bridge.rs",
+   "status": "EXCLUDED",
+   "functions": 2
+  },
+  {
+   "name": "microkernel_spawner",
+   "source": "kernel:microkernel_spawner.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "modmap_all",
+   "source": "kernel:modmap_all.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "moltbook",
+   "source": "kernel:moltbook.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "monad",
+   "source": "kernel:monad.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "monitor_daemon",
+   "source": "kernel:monitor_daemon.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "mpu",
+   "source": "kernel:mpu.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "multimodal_fusion",
+   "source": "kernel:multimodal_fusion.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "multimodal_ingestion",
+   "source": "kernel:multimodal_ingestion.rs",
+   "status": "REAL",
+   "functions": 4
+  },
+  {
+   "name": "multimodal_predictive_analytics",
+   "source": "kernel:multimodal_predictive_analytics.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "mutation_engine",
+   "source": "kernel:mutation_engine.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "nand_fs",
+   "source": "kernel:nand_fs.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "native_mailbox_bridge",
+   "source": "kernel:native_mailbox_bridge.rs",
+   "status": "EXCLUDED",
+   "functions": 5
+  },
+  {
+   "name": "native_ops_bridge",
+   "source": "kernel:native_ops_bridge.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "neural_wall",
+   "source": "kernel:neural_wall.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "neuro_continuum",
+   "source": "kernel:neuro_continuum.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "openclaw_gateway",
+   "source": "kernel:openclaw_gateway.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "optimization_engine",
+   "source": "kernel:optimization_engine.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "pbft_consensus",
+   "source": "kernel:pbft_consensus.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "persistent_mmap_allocator",
+   "source": "kernel:persistent_mmap_allocator.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "persona_matrix",
+   "source": "kernel:persona_matrix.rs",
+   "status": "REAL",
+   "functions": 4
+  },
+  {
+   "name": "phoenix_protocol_engine",
+   "source": "kernel:phoenix_protocol_engine.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "platform",
+   "source": "kernel:platform.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "port_manager",
+   "source": "kernel:port_manager.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "predictive_watchdog",
+   "source": "kernel:predictive_watchdog.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "prism_fqm",
+   "source": "kernel:prism_fqm.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "proactive_loop",
+   "source": "kernel:proactive_loop.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "qisa_optimizer",
+   "source": "kernel:qisa_optimizer.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "quantum_debugger",
+   "source": "kernel:quantum_debugger.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "quic_protocol",
+   "source": "kernel:quic_protocol.rs",
+   "status": "REAL",
+   "functions": 5
+  },
+  {
+   "name": "radix_trie_matcher",
+   "source": "kernel:radix_trie_matcher.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "reconnaissance_daemon",
+   "source": "kernel:reconnaissance_daemon.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "redis_mock",
+   "source": "kernel:redis_mock.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "remediation_engine",
+   "source": "kernel:remediation_engine.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "resonance_engine",
+   "source": "kernel:resonance_engine.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "resource_arbiter",
+   "source": "kernel:resource_arbiter.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "rust_kernel_binder",
+   "source": "kernel:rust_kernel_binder.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "secrets_vault",
+   "source": "kernel:secrets_vault.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "security_scanner",
+   "source": "kernel:security_scanner.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "self_fuzzing_engine",
+   "source": "kernel:self_fuzzing_engine.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "self_healing",
+   "source": "kernel:self_healing.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "self_healing_infra",
+   "source": "kernel:self_healing_infra.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "self_healing_orchestrator",
+   "source": "kernel:self_healing_orchestrator.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "self_modification_api",
+   "source": "kernel:self_modification_api.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "semantic_cache",
+   "source": "kernel:semantic_cache.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "semantic_index",
+   "source": "kernel:semantic_index.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "semantic_knowledge_graph",
+   "source": "kernel:semantic_knowledge_graph.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "sentinel",
+   "source": "kernel:sentinel.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "ses",
+   "source": "kernel:ses.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "simd_accelerator",
+   "source": "kernel:simd_accelerator.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "skill_loader",
+   "source": "kernel:skill_loader.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "skill_matrix_sync",
+   "source": "kernel:skill_matrix_sync.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "skill_validator",
+   "source": "kernel:skill_validator.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "small_diffusion_engine",
+   "source": "kernel:small_diffusion_engine.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "sram_pattern_computer",
+   "source": "kernel:sram_pattern_computer.rs",
+   "status": "REAL",
+   "functions": 5
+  },
+  {
+   "name": "star_matrix",
+   "source": "kernel:star_matrix.rs",
+   "status": "REAL",
+   "functions": 9
+  },
+  {
+   "name": "star_matrix_lattice",
+   "source": "kernel:star_matrix_lattice.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "sub_atomic_kernel",
+   "source": "kernel:sub_atomic_kernel.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "swarm_engine",
+   "source": "kernel:swarm_engine.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "swarm_orchestrator",
+   "source": "kernel:swarm_orchestrator.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "swarm_performance_insights",
+   "source": "kernel:swarm_performance_insights.rs",
+   "status": "REAL",
+   "functions": 4
+  },
+  {
+   "name": "symbology_etymology_monad",
+   "source": "kernel:symbology_etymology_monad.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "task_arbiter",
+   "source": "kernel:task_arbiter.rs",
+   "status": "REAL",
+   "functions": 5
+  },
+  {
+   "name": "telemetry",
+   "source": "kernel:telemetry.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "telemetry_fabric",
+   "source": "kernel:telemetry_fabric.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "thz_bonsai_gateway",
+   "source": "kernel:thz_bonsai_gateway.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "thz_wave_gateway",
+   "source": "kernel:thz_wave_gateway.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "time",
+   "source": "kernel:time.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "tool_forge",
+   "source": "kernel:tool_forge.rs",
+   "status": "REAL",
+   "functions": 0
+  },
+  {
+   "name": "trm7m",
+   "source": "kernel:trm7m.rs",
+   "status": "REAL",
+   "functions": 5
+  },
+  {
+   "name": "trm_7m_full",
+   "source": "kernel:trm_7m_full.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "trm_7m_optimized",
+   "source": "kernel:trm_7m_optimized.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "trm_brain",
+   "source": "kernel:trm_brain.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "trm_integration",
+   "source": "kernel:trm_integration.rs",
+   "status": "REAL",
+   "functions": 2
+  },
+  {
+   "name": "trm_orchestrator",
+   "source": "kernel:trm_orchestrator.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "turbovec",
+   "source": "kernel:turbovec.rs",
+   "status": "REAL",
+   "functions": 7
+  },
+  {
+   "name": "turbovec_memory",
+   "source": "kernel:turbovec_memory.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "ultrawork_loop",
+   "source": "kernel:ultrawork_loop.rs",
+   "status": "REAL",
+   "functions": 3
+  },
+  {
+   "name": "voltage_node_engine",
+   "source": "kernel:voltage_node_engine.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "web_fetch_utility",
+   "source": "kernel:web_fetch_utility.rs",
+   "status": "EXCLUDED",
+   "functions": 3
+  },
+  {
+   "name": "worktree_manager",
+   "source": "kernel:worktree_manager.rs",
+   "status": "REAL",
+   "functions": 1
+  },
+  {
+   "name": "zero_human_test_gen",
+   "source": "kernel:zero_human_test_gen.rs",
+   "status": "REAL",
+   "functions": 3
+  }
+ ],
+ "platform_modules": [
+  {
+   "name": "__init__",
+   "source": "platform:__init__.py",
+   "status": "PLATFORM",
+   "functions": 0
+  },
+  {
+   "name": "advanced_scene_fusion",
+   "source": "platform:advanced_scene_fusion.py",
+   "status": "PLATFORM",
+   "functions": 2
+  },
+  {
+   "name": "agent_intelligence_bridge",
+   "source": "platform:agent_intelligence_bridge.py",
+   "status": "PLATFORM",
+   "functions": 12
+  },
+  {
+   "name": "agent_mailbox",
+   "source": "platform:agent_mailbox.py",
+   "status": "PLATFORM",
+   "functions": 12
+  },
+  {
+   "name": "agent_mailbox_bus",
+   "source": "platform:agent_mailbox_bus.py",
+   "status": "PLATFORM",
+   "functions": 20
+  },
+  {
+   "name": "agent_mesh",
+   "source": "platform:agent_mesh.py",
+   "status": "PLATFORM",
+   "functions": 32
+  },
+  {
+   "name": "architectural_rl_agent",
+   "source": "platform:architectural_rl_agent.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "artifact_pipeline",
+   "source": "platform:artifact_pipeline.py",
+   "status": "PLATFORM",
+   "functions": 29
+  },
+  {
+   "name": "attempt_sampler",
+   "source": "platform:attempt_sampler.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "auto_changelog",
+   "source": "platform:auto_changelog.py",
+   "status": "PLATFORM",
+   "functions": 23
+  },
+  {
+   "name": "background_tasks",
+   "source": "platform:background_tasks.py",
+   "status": "PLATFORM",
+   "functions": 11
+  },
+  {
+   "name": "base_agent",
+   "source": "platform:base_agent.py",
+   "status": "PLATFORM",
+   "functions": 42
+  },
+  {
+   "name": "bench_trm7m_python",
+   "source": "platform:bench_trm7m_python.py",
+   "status": "PLATFORM",
+   "functions": 0
+  },
+  {
+   "name": "benchmark_epistemology",
+   "source": "platform:benchmark_epistemology.py",
+   "status": "PLATFORM",
+   "functions": 2
+  },
+  {
+   "name": "brain_ai_microkernel_bridge",
+   "source": "platform:brain_ai_microkernel_bridge.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "bridge_e2e_test",
+   "source": "platform:bridge_e2e_test.py",
+   "status": "PLATFORM",
+   "functions": 0
+  },
+  {
+   "name": "build_module_registry",
+   "source": "platform:build_module_registry.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "capability_test",
+   "source": "platform:capability_test.py",
+   "status": "PLATFORM",
+   "functions": 2
+  },
+  {
+   "name": "chain_of_verification",
+   "source": "platform:chain_of_verification.py",
+   "status": "PLATFORM",
+   "functions": 15
+  },
+  {
+   "name": "chaos_engine",
+   "source": "platform:chaos_engine.py",
+   "status": "PLATFORM",
+   "functions": 9
+  },
+  {
+   "name": "chaos_simulator",
+   "source": "platform:chaos_simulator.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "cognitive_ingestion_engine",
+   "source": "platform:cognitive_ingestion_engine.py",
+   "status": "PLATFORM",
+   "functions": 30
+  },
+  {
+   "name": "cognitive_load_balancer",
+   "source": "platform:cognitive_load_balancer.py",
+   "status": "PLATFORM",
+   "functions": 8
+  },
+  {
+   "name": "cognitive_stack",
+   "source": "platform:cognitive_stack.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "coherence_thresholds",
+   "source": "platform:coherence_thresholds.py",
+   "status": "PLATFORM",
+   "functions": 2
+  },
+  {
+   "name": "cold_start_recovery",
+   "source": "platform:cold_start_recovery.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "collaborative_reasoning",
+   "source": "platform:collaborative_reasoning.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "comm_protocol",
+   "source": "platform:comm_protocol.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "compare_trm7m_python",
+   "source": "platform:compare_trm7m_python.py",
+   "status": "PLATFORM",
+   "functions": 0
+  },
+  {
+   "name": "complete_singletons",
+   "source": "platform:complete_singletons.py",
+   "status": "PLATFORM",
+   "functions": 2
+  },
+  {
+   "name": "continuum_genomics",
+   "source": "platform:continuum_genomics.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "continuum_pbft",
+   "source": "platform:continuum_pbft.py",
+   "status": "PLATFORM",
+   "functions": 8
+  },
+  {
+   "name": "coordination_protocol",
+   "source": "platform:coordination_protocol.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "coordination_responder",
+   "source": "platform:coordination_responder.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "cosmos3_edge_bridge",
+   "source": "platform:cosmos3_edge_bridge.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "cosmos_bridge",
+   "source": "platform:cosmos_bridge.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "cosmos_microkernel_entanglement",
+   "source": "platform:cosmos_microkernel_entanglement.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "cosmos_moe_instella_shunter",
+   "source": "platform:cosmos_moe_instella_shunter.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "cosmos_sparse_moe_teams",
+   "source": "platform:cosmos_sparse_moe_teams.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "cqs",
+   "source": "platform:cqs.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "daemon_discovery",
+   "source": "platform:daemon_discovery.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "daily_evolution_engine",
+   "source": "platform:daily_evolution_engine.py",
+   "status": "PLATFORM",
+   "functions": 2
+  },
+  {
+   "name": "ddr_antibody",
+   "source": "platform:ddr_antibody.py",
+   "status": "PLATFORM",
+   "functions": 15
+  },
+  {
+   "name": "ddr_self_training",
+   "source": "platform:ddr_self_training.py",
+   "status": "PLATFORM",
+   "functions": 12
+  },
+  {
+   "name": "deterministic_forge",
+   "source": "platform:deterministic_forge.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "dge",
+   "source": "platform:dge.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "digital_dna_loop",
+   "source": "platform:digital_dna_loop.py",
+   "status": "PLATFORM",
+   "functions": 23
+  },
+  {
+   "name": "digital_twin_singleton",
+   "source": "platform:digital_twin_singleton.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "dram_pattern_computer",
+   "source": "platform:dram_pattern_computer.py",
+   "status": "PLATFORM",
+   "functions": 11
+  },
+  {
+   "name": "epistemology_verification",
+   "source": "platform:epistemology_verification.py",
+   "status": "PLATFORM",
+   "functions": 14
+  },
+  {
+   "name": "evolutionary_sandbox",
+   "source": "platform:evolutionary_sandbox.py",
+   "status": "PLATFORM",
+   "functions": 9
+  },
+  {
+   "name": "expert_registry",
+   "source": "platform:expert_registry.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "expert_team_harnesses",
+   "source": "platform:expert_team_harnesses.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "export_trm7m_weights",
+   "source": "platform:export_trm7m_weights.py",
+   "status": "PLATFORM",
+   "functions": 1
+  },
+  {
+   "name": "external_socket_bridge",
+   "source": "platform:external_socket_bridge.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "federation",
+   "source": "platform:federation.py",
+   "status": "PLATFORM",
+   "functions": 28
+  },
+  {
+   "name": "federation_manager",
+   "source": "platform:federation_manager.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "feedback_loops",
+   "source": "platform:feedback_loops.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "final_porting_pass",
+   "source": "platform:final_porting_pass.py",
+   "status": "PLATFORM",
+   "functions": 1
+  },
+  {
+   "name": "final_porting_pass2",
+   "source": "platform:final_porting_pass2.py",
+   "status": "PLATFORM",
+   "functions": 1
+  },
+  {
+   "name": "find_truncations",
+   "source": "platform:find_truncations.py",
+   "status": "PLATFORM",
+   "functions": 0
+  },
+  {
+   "name": "formal_verification_engine",
+   "source": "platform:formal_verification_engine.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "full_64_agent_orchestrator",
+   "source": "platform:full_64_agent_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "gan_design_synthesizer",
+   "source": "platform:gan_design_synthesizer.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "generative_architect",
+   "source": "platform:generative_architect.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "global_memory",
+   "source": "platform:global_memory.py",
+   "status": "PLATFORM",
+   "functions": 16
+  },
+  {
+   "name": "gpu_cuda_microkernel_binder",
+   "source": "platform:gpu_cuda_microkernel_binder.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "gpu_infinity_computer",
+   "source": "platform:gpu_infinity_computer.py",
+   "status": "PLATFORM",
+   "functions": 9
+  },
+  {
+   "name": "gpu_unlock_architecture",
+   "source": "platform:gpu_unlock_architecture.py",
+   "status": "PLATFORM",
+   "functions": 15
+  },
+  {
+   "name": "hardware_voltage_microkernel_binder",
+   "source": "platform:hardware_voltage_microkernel_binder.py",
+   "status": "PLATFORM",
+   "functions": 18
+  },
+  {
+   "name": "heartbeat_scheduler",
+   "source": "platform:heartbeat_scheduler.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "heuristic_consensus",
+   "source": "platform:heuristic_consensus.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "hf_brain",
+   "source": "platform:hf_brain.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "higher_mind",
+   "source": "platform:higher_mind.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "human_swarm_interaction",
+   "source": "platform:human_swarm_interaction.py",
+   "status": "PLATFORM",
+   "functions": 2
+  },
+  {
+   "name": "instella_moe_inference",
+   "source": "platform:instella_moe_inference.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "instella_single_expert_router",
+   "source": "platform:instella_single_expert_router.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "instella_sparse_agent_teams",
+   "source": "platform:instella_sparse_agent_teams.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "intent_buffer",
+   "source": "platform:intent_buffer.py",
+   "status": "PLATFORM",
+   "functions": 11
+  },
+  {
+   "name": "ionosphere_protocol",
+   "source": "platform:ionosphere_protocol.py",
+   "status": "PLATFORM",
+   "functions": 12
+  },
+  {
+   "name": "ipc",
+   "source": "platform:ipc.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "jarvis_symbiosis",
+   "source": "platform:jarvis_symbiosis.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "k3_ternary_sram",
+   "source": "platform:k3_ternary_sram.py",
+   "status": "PLATFORM",
+   "functions": 22
+  },
+  {
+   "name": "kanban_board",
+   "source": "platform:kanban_board.py",
+   "status": "PLATFORM",
+   "functions": 17
+  },
+  {
+   "name": "kernel_instructions",
+   "source": "platform:kernel_instructions.py",
+   "status": "PLATFORM",
+   "functions": 22
+  },
+  {
+   "name": "kernel_lora_adapter",
+   "source": "platform:kernel_lora_adapter.py",
+   "status": "PLATFORM",
+   "functions": 15
+  },
+  {
+   "name": "llm_brain",
+   "source": "platform:llm_brain.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "llm_orchestrator",
+   "source": "platform:llm_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "llm_router",
+   "source": "platform:llm_router.py",
+   "status": "PLATFORM",
+   "functions": 17
+  },
+  {
+   "name": "lobster_shell",
+   "source": "platform:lobster_shell.py",
+   "status": "PLATFORM",
+   "functions": 10
+  },
+  {
+   "name": "local_lora_trainer",
+   "source": "platform:local_lora_trainer.py",
+   "status": "PLATFORM",
+   "functions": 16
+  },
+  {
+   "name": "lora_response_modulator",
+   "source": "platform:lora_response_modulator.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "mamba3_turbovec_ssm",
+   "source": "platform:mamba3_turbovec_ssm.py",
+   "status": "PLATFORM",
+   "functions": 11
+  },
+  {
+   "name": "manus_engine",
+   "source": "platform:manus_engine.py",
+   "status": "PLATFORM",
+   "functions": 8
+  },
+  {
+   "name": "mcp_bus",
+   "source": "platform:mcp_bus.py",
+   "status": "PLATFORM",
+   "functions": 9
+  },
+  {
+   "name": "mcp_tool_evolver",
+   "source": "platform:mcp_tool_evolver.py",
+   "status": "PLATFORM",
+   "functions": 21
+  },
+  {
+   "name": "memory",
+   "source": "platform:memory.py",
+   "status": "PLATFORM",
+   "functions": 15
+  },
+  {
+   "name": "memory_synchronizer",
+   "source": "platform:memory_synchronizer.py",
+   "status": "PLATFORM",
+   "functions": 9
+  },
+  {
+   "name": "meta_orchestrator",
+   "source": "platform:meta_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "microkernel_chat_bridge",
+   "source": "platform:microkernel_chat_bridge.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "microkernel_spawner",
+   "source": "platform:microkernel_spawner.py",
+   "status": "PLATFORM",
+   "functions": 12
+  },
+  {
+   "name": "moltbook",
+   "source": "platform:moltbook.py",
+   "status": "PLATFORM",
+   "functions": 11
+  },
+  {
+   "name": "monad",
+   "source": "platform:monad.py",
+   "status": "PLATFORM",
+   "functions": 17
+  },
+  {
+   "name": "monitor_daemon",
+   "source": "platform:monitor_daemon.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "mpu",
+   "source": "platform:mpu.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "multimodal_fusion",
+   "source": "platform:multimodal_fusion.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "multimodal_ingestion",
+   "source": "platform:multimodal_ingestion.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "multimodal_predictive_analytics",
+   "source": "platform:multimodal_predictive_analytics.py",
+   "status": "PLATFORM",
+   "functions": 2
+  },
+  {
+   "name": "mutation_engine",
+   "source": "platform:mutation_engine.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "native_federation_bridge",
+   "source": "platform:native_federation_bridge.py",
+   "status": "PLATFORM",
+   "functions": 13
+  },
+  {
+   "name": "native_mailbox_bridge",
+   "source": "platform:native_mailbox_bridge.py",
+   "status": "PLATFORM",
+   "functions": 12
+  },
+  {
+   "name": "native_ops_bridge",
+   "source": "platform:native_ops_bridge.py",
+   "status": "PLATFORM",
+   "functions": 10
+  },
+  {
+   "name": "neural_wall",
+   "source": "platform:neural_wall.py",
+   "status": "PLATFORM",
+   "functions": 14
+  },
+  {
+   "name": "neuro_continuum",
+   "source": "platform:neuro_continuum.py",
+   "status": "PLATFORM",
+   "functions": 10
+  },
+  {
+   "name": "openclaw_gateway",
+   "source": "platform:openclaw_gateway.py",
+   "status": "PLATFORM",
+   "functions": 27
+  },
+  {
+   "name": "optimization_engine",
+   "source": "platform:optimization_engine.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "pbft_consensus",
+   "source": "platform:pbft_consensus.py",
+   "status": "PLATFORM",
+   "functions": 12
+  },
+  {
+   "name": "persistent_mmap_allocator",
+   "source": "platform:persistent_mmap_allocator.py",
+   "status": "PLATFORM",
+   "functions": 15
+  },
+  {
+   "name": "persona_matrix",
+   "source": "platform:persona_matrix.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "phoenix_protocol_engine",
+   "source": "platform:phoenix_protocol_engine.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "port_manager",
+   "source": "platform:port_manager.py",
+   "status": "PLATFORM",
+   "functions": 10
+  },
+  {
+   "name": "predictive_watchdog",
+   "source": "platform:predictive_watchdog.py",
+   "status": "PLATFORM",
+   "functions": 9
+  },
+  {
+   "name": "prism_fqm",
+   "source": "platform:prism_fqm.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "proactive_loop",
+   "source": "platform:proactive_loop.py",
+   "status": "PLATFORM",
+   "functions": 18
+  },
+  {
+   "name": "qisa_optimizer",
+   "source": "platform:qisa_optimizer.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "quantum_debugger",
+   "source": "platform:quantum_debugger.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "quantum_drug_protocol",
+   "source": "platform:quantum_drug_protocol.py",
+   "status": "PLATFORM",
+   "functions": 18
+  },
+  {
+   "name": "radix_trie_matcher",
+   "source": "platform:radix_trie_matcher.py",
+   "status": "PLATFORM",
+   "functions": 33
+  },
+  {
+   "name": "reconnaissance_daemon",
+   "source": "platform:reconnaissance_daemon.py",
+   "status": "PLATFORM",
+   "functions": 20
+  },
+  {
+   "name": "redis_mock",
+   "source": "platform:redis_mock.py",
+   "status": "PLATFORM",
+   "functions": 10
+  },
+  {
+   "name": "remediation_engine",
+   "source": "platform:remediation_engine.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "resonance_engine",
+   "source": "platform:resonance_engine.py",
+   "status": "PLATFORM",
+   "functions": 8
+  },
+  {
+   "name": "resource_arbiter",
+   "source": "platform:resource_arbiter.py",
+   "status": "PLATFORM",
+   "functions": 11
+  },
+  {
+   "name": "rust_kernel_binder",
+   "source": "platform:rust_kernel_binder.py",
+   "status": "PLATFORM",
+   "functions": 10
+  },
+  {
+   "name": "secrets_vault",
+   "source": "platform:secrets_vault.py",
+   "status": "PLATFORM",
+   "functions": 24
+  },
+  {
+   "name": "security_scanner",
+   "source": "platform:security_scanner.py",
+   "status": "PLATFORM",
+   "functions": 8
+  },
+  {
+   "name": "self_fuzzing_engine",
+   "source": "platform:self_fuzzing_engine.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "self_healing",
+   "source": "platform:self_healing.py",
+   "status": "PLATFORM",
+   "functions": 20
+  },
+  {
+   "name": "self_healing_infra",
+   "source": "platform:self_healing_infra.py",
+   "status": "PLATFORM",
+   "functions": 19
+  },
+  {
+   "name": "self_healing_orchestrator",
+   "source": "platform:self_healing_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 13
+  },
+  {
+   "name": "self_modification_api",
+   "source": "platform:self_modification_api.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "semantic_cache",
+   "source": "platform:semantic_cache.py",
+   "status": "PLATFORM",
+   "functions": 16
+  },
+  {
+   "name": "semantic_index",
+   "source": "platform:semantic_index.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "semantic_knowledge_graph",
+   "source": "platform:semantic_knowledge_graph.py",
+   "status": "PLATFORM",
+   "functions": 8
+  },
+  {
+   "name": "sentinel",
+   "source": "platform:sentinel.py",
+   "status": "PLATFORM",
+   "functions": 10
+  },
+  {
+   "name": "ses",
+   "source": "platform:ses.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "simd_accelerator",
+   "source": "platform:simd_accelerator.py",
+   "status": "PLATFORM",
+   "functions": 11
+  },
+  {
+   "name": "skill_loader",
+   "source": "platform:skill_loader.py",
+   "status": "PLATFORM",
+   "functions": 13
+  },
+  {
+   "name": "skill_matrix_sync",
+   "source": "platform:skill_matrix_sync.py",
+   "status": "PLATFORM",
+   "functions": 9
+  },
+  {
+   "name": "skill_validator",
+   "source": "platform:skill_validator.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "small_diffusion_engine",
+   "source": "platform:small_diffusion_engine.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "sovereign_practice",
+   "source": "platform:sovereign_practice.py",
+   "status": "PLATFORM",
+   "functions": 16
+  },
+  {
+   "name": "sram_pattern_computer",
+   "source": "platform:sram_pattern_computer.py",
+   "status": "PLATFORM",
+   "functions": 9
+  },
+  {
+   "name": "star_matrix",
+   "source": "platform:star_matrix.py",
+   "status": "PLATFORM",
+   "functions": 14
+  },
+  {
+   "name": "star_matrix_lattice",
+   "source": "platform:star_matrix_lattice.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "sub_atomic_kernel",
+   "source": "platform:sub_atomic_kernel.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "swarm_council",
+   "source": "platform:swarm_council.py",
+   "status": "PLATFORM",
+   "functions": 14
+  },
+  {
+   "name": "swarm_engine",
+   "source": "platform:swarm_engine.py",
+   "status": "PLATFORM",
+   "functions": 8
+  },
+  {
+   "name": "swarm_orchestrator",
+   "source": "platform:swarm_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 8
+  },
+  {
+   "name": "swarm_performance_insights",
+   "source": "platform:swarm_performance_insights.py",
+   "status": "PLATFORM",
+   "functions": 21
+  },
+  {
+   "name": "symbology_etymology_monad",
+   "source": "platform:symbology_etymology_monad.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "task_arbiter",
+   "source": "platform:task_arbiter.py",
+   "status": "PLATFORM",
+   "functions": 33
+  },
+  {
+   "name": "telemetry",
+   "source": "platform:telemetry.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "telemetry_fabric",
+   "source": "platform:telemetry_fabric.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "ternary_kleene_engine",
+   "source": "platform:ternary_kleene_engine.py",
+   "status": "PLATFORM",
+   "functions": 22
+  },
+  {
+   "name": "test_continuum_integration",
+   "source": "platform:test_continuum_integration.py",
+   "status": "PLATFORM",
+   "functions": 6
+  },
+  {
+   "name": "test_feedback_loops",
+   "source": "platform:test_feedback_loops.py",
+   "status": "PLATFORM",
+   "functions": 2
+  },
+  {
+   "name": "test_intent_buffer",
+   "source": "platform:test_intent_buffer.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "test_research_api",
+   "source": "platform:test_research_api.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "test_secrets_vault_api",
+   "source": "platform:test_secrets_vault_api.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "test_self_healing",
+   "source": "platform:test_self_healing.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "test_self_healing_infra",
+   "source": "platform:test_self_healing_infra.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "test_skill_matrix_sync",
+   "source": "platform:test_skill_matrix_sync.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "test_skill_validator",
+   "source": "platform:test_skill_validator.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "test_trm_standalone",
+   "source": "platform:test_trm_standalone.py",
+   "status": "PLATFORM",
+   "functions": 1
+  },
+  {
+   "name": "thz_bonsai_gateway",
+   "source": "platform:thz_bonsai_gateway.py",
+   "status": "PLATFORM",
+   "functions": 8
+  },
+  {
+   "name": "thz_wave_gateway",
+   "source": "platform:thz_wave_gateway.py",
+   "status": "PLATFORM",
+   "functions": 12
+  },
+  {
+   "name": "tool_forge",
+   "source": "platform:tool_forge.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "trm_7m_full",
+   "source": "platform:trm_7m_full.py",
+   "status": "PLATFORM",
+   "functions": 10
+  },
+  {
+   "name": "trm_7m_model",
+   "source": "platform:trm_7m_model.py",
+   "status": "PLATFORM",
+   "functions": 14
+  },
+  {
+   "name": "trm_7m_optimized",
+   "source": "platform:trm_7m_optimized.py",
+   "status": "PLATFORM",
+   "functions": 7
+  },
+  {
+   "name": "trm_brain",
+   "source": "platform:trm_brain.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "trm_integration",
+   "source": "platform:trm_integration.py",
+   "status": "PLATFORM",
+   "functions": 19
+  },
+  {
+   "name": "trm_orchestrator",
+   "source": "platform:trm_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 23
+  },
+  {
+   "name": "turbovec_16x_femto_engine",
+   "source": "platform:turbovec_16x_femto_engine.py",
+   "status": "PLATFORM",
+   "functions": 8
+  },
+  {
+   "name": "turbovec_memory",
+   "source": "platform:turbovec_memory.py",
+   "status": "PLATFORM",
+   "functions": 14
+  },
+  {
+   "name": "ultrawork_loop",
+   "source": "platform:ultrawork_loop.py",
+   "status": "PLATFORM",
+   "functions": 14
+  },
+  {
+   "name": "ultrawork_tranche",
+   "source": "platform:ultrawork_tranche.py",
+   "status": "PLATFORM",
+   "functions": 10
+  },
+  {
+   "name": "voltage_node_engine",
+   "source": "platform:voltage_node_engine.py",
+   "status": "PLATFORM",
+   "functions": 4
+  },
+  {
+   "name": "web_fetch_utility",
+   "source": "platform:web_fetch_utility.py",
+   "status": "PLATFORM",
+   "functions": 3
+  },
+  {
+   "name": "worktree_manager",
+   "source": "platform:worktree_manager.py",
+   "status": "PLATFORM",
+   "functions": 5
+  },
+  {
+   "name": "zero_human_test_gen",
+   "source": "platform:zero_human_test_gen.py",
+   "status": "PLATFORM",
+   "functions": 43
+  }
+ ],
+ "repos": [
+  {
+   "name": "Jarvis-Advanced-main",
+   "files": 19285
+  },
+  {
+   "name": "SwarmOS_v6_Snapshot_extracted",
+   "files": 207
+  },
+  {
+   "name": "TRM Swarm OS",
+   "files": 0
+  },
+  {
+   "name": "__pycache__",
+   "files": 2
+  },
+  {
+   "name": "artifacts",
+   "files": 0
+  },
+  {
+   "name": "assets",
+   "files": 4
+  },
+  {
+   "name": "backups",
+   "files": 94
+  },
+  {
+   "name": "blog_posts",
+   "files": 6
+  },
+  {
+   "name": "config",
+   "files": 6
+  },
+  {
+   "name": "dashboard",
+   "files": 10814
+  },
+  {
+   "name": "dashboard-lcars-backup",
+   "files": 14
+  },
+  {
+   "name": "dataset",
+   "files": 5
+  },
+  {
+   "name": "deploy",
+   "files": 3
+  },
+  {
+   "name": "docs",
+   "files": 4
+  },
+  {
+   "name": "evaluators",
+   "files": 2
+  },
+  {
+   "name": "gemma_swarm_adapter",
+   "files": 6
+  },
+  {
+   "name": "infrastructure",
+   "files": 48
+  },
+  {
+   "name": "kaggle",
+   "files": 10
+  },
+  {
+   "name": "models",
+   "files": 6
+  },
+  {
+   "name": "papers",
+   "files": 20
+  },
+  {
+   "name": "research",
+   "files": 16
+  },
+  {
+   "name": "scratch",
+   "files": 1
+  },
+  {
+   "name": "simulations",
+   "files": 0
+  },
+  {
+   "name": "swarm_v2",
+   "files": 223
+  },
+  {
+   "name": "swarm_v2_artifacts",
+   "files": 3703
+  },
+  {
+   "name": "swarm_v2_federation",
+   "files": 1
+  },
+  {
+   "name": "swarm_v2_global_memory",
+   "files": 318
+  },
+  {
+   "name": "swarm_v2_integrated",
+   "files": 2710
+  },
+  {
+   "name": "swarm_v2_learned_skills",
+   "files": 2
+  },
+  {
+   "name": "swarm_v2_memory",
+   "files": 18
+  },
+  {
+   "name": "swarm_v2_mesh",
+   "files": 1
+  },
+  {
+   "name": "swarm_v2_reconnaissance",
+   "files": 1
+  },
+  {
+   "name": "swarm_v2_reports",
+   "files": 0
+  },
+  {
+   "name": "swarm_v2_rust_kernel",
+   "files": 628
+  },
+  {
+   "name": "swarm_v2_synthesized",
+   "files": 1
+  },
+  {
+   "name": "swarm_v2_tool_versions",
+   "files": 0
+  },
+  {
+   "name": "train_dataset",
+   "files": 3
+  },
+  {
+   "name": "train_venv",
+   "files": 23161
+  },
+  {
+   "name": "trm_uefi_kernel",
+   "files": 391
+  },
+  {
+   "name": "trmboot",
+   "files": 12
+  },
+  {
+   "name": "utils",
+   "files": 2
+  }
+ ]
+}

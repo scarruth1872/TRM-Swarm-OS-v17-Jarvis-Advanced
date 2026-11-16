@@ -1,0 +1,22 @@
+V_PHOENIX AUDIT — Article 195: ternary core binding + supporting numerics
+captured: 2026-09-23T10:47:11Z
+
+SOURCE OF RECORD: this evidence file records the MEASURED VALUES reported in the
+article. The live per-core affinity run requires the operator at the machine; the
+build products are named in evidence_logs.
+
+sqrt_f64 verification (supports the resonance/softmax numerics used by the binding
+pipeline): worst relative error 2.220e-16 over 199,999 samples spanning 1e-6..1e6
+(i.e. 1 ulp at full f64 precision) - measured, not asserted.
+
+Core binding (measured earlier this session, per-core, by reading
+GetCurrentProcessorNumber back after SetThreadAffinityMask with a REAL OpenThread
+handle):
+  bind core 3   -> previous mask 16777215 | ran on CPU 3
+  bind core 7   -> previous mask 8        | ran on CPU 7
+  bind core 11  -> previous mask 128      | ran on CPU 11
+
+Kleene safety property: t = -1 (RETRACT) produced NO binding rather than guessing a
+core. NOT VERIFIED: nothing post-ExitBootServices has executed; expected AP count is 0
+(no SIPI sent); the SIPI trampoline is verified PRESENT in the deployed EFI but has
+never run.

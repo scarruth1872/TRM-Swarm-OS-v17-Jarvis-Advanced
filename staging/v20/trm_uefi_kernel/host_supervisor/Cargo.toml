@@ -1,0 +1,10 @@
+[package]
+name = "host_supervisor"
+version = "0.1.0"
+edition = "2021"
+
+# Dependency-free by design: the supervisor must be buildable with a single rustc
+# invocation on any host, exactly like the voltage strips. serde_json is deliberately
+# NOT used -- the config and status formats are simple enough to read and write
+# directly, and a dependency-free supervisor has no crate graph to resolve.
+[dependencies]

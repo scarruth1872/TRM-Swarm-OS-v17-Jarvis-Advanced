@@ -1,0 +1,40 @@
+{
+ "phase": "P6",
+ "action": "deploy the /verification/fabrication route",
+ "candidate": {
+  "sha16": "6cf7ef08f57c6ced",
+  "bytes": 2775552
+ },
+ "kernel_pid_before": 28076,
+ "kernel_pid_after": 28216,
+ "seconds_to_healthy": 4.46,
+ "process_start_time": "2026-09-25T12:07:28.5374349-04:00",
+ "exe_mtime": "2026-09-25T12:06:59",
+ "new_image_proof": "the route /verification/fabrication exists only in this build",
+ "route_get": {
+  "status": 200,
+  "checked": 467,
+  "tasks_with_artifacts": 145,
+  "verdicts": {
+   "ARTIFACT_UNVERIFIED_NO_CONTRACT": 10,
+   "BLOCKED_NO_ARTIFACT": 167,
+   "FABRICATED_BY_A_SEEDED_RNG_PRODUCER": 61,
+   "FABRICATED_RESULTS_FOR_A_GATED_TASK": 74,
+   "UNUSED_CAPACITY_NO_ARTIFACT": 155
+  },
+  "fabricated_count": 135
+ },
+ "route_post": {
+  "status": 405,
+  "error": "method_not_allowed"
+ },
+ "route_limit_1": {
+  "status": 200,
+  "fabricated_count": 135,
+  "fabricated_shown": 1
+ },
+ "derived_not_quoted": {
+  "route_counts_are_derived": true,
+  "file_summary_fabricated": 74
+ }
+}

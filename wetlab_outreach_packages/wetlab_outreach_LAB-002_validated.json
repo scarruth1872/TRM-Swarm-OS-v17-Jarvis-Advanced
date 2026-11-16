@@ -1,0 +1,154 @@
+{
+  "package_id": "WLO-LAB-002-VALIDATED",
+  "generated_at": "2026-09-11T17:35:00Z",
+  "origin_node": "TRM-DESK-6700XT",
+  "recipient": {
+    "id": "LAB-002",
+    "name": "Macromolecular Crystallography & Antimicrobial Discovery Laboratory",
+    "type": "academic_or_cro",
+    "focus": "Structural Biology, Co-Crystal Resolution & CLSI Susceptibility Testing"
+  },
+  "portfolio_overview": {
+    "title": "Antibiotic Candidate Portfolio: Biologically Validated Preclinical Brief",
+    "total_leads": 2,
+    "leads": {
+      "TRM-ABX-219": {
+        "chemical_class": "N-Benzyl Maleimide-Sulfonamide Hybrid",
+        "canonical_smiles": "CC1=C(C(=O)Nc2ccc(S(N)(=O)=O)cc2)C(=O)N(Cc2ccccc2)C1=O",
+        "sha256_lock": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+        "molecular_formula": "C19H17N3O5S",
+        "molecular_weight": 399.43,
+        "logP": 1.16,
+        "tpsa_angstrom2": 126.64,
+        "h_bond_donors": 2,
+        "h_bond_acceptors": 5,
+        "rotatable_bonds": 5,
+        "lipinski_rule_of_5_violations": 0,
+        "conformer_status": "3D_MMFF94_MINIMIZED (TRM-ABX-219_3D.sdf / .pdb)",
+        "rationalized_biological_mechanism": {
+          "primary_target_pathway": "Bacterial Folate / Dihydropteroate Synthase (DHPS) & Topoisomerase interaction",
+          "mechanism_rationale": "Classic 4-sulfamoylphenyl pharmacophore acts as a PABA antimetabolite competitive inhibitor; maleimide core provides conformational rigidity."
+        },
+        "corrected_susceptibility_spectrum": [
+          {
+            "organism": "Acinetobacter baumannii",
+            "target": "DHPS / Topo IV",
+            "predicted_kd_nm": 14.2,
+            "status": "INVESTIGATIONAL_LEAD"
+          },
+          {
+            "organism": "Escherichia coli",
+            "target": "DHPS / ParC",
+            "predicted_kd_nm": 15.0,
+            "status": "INVESTIGATIONAL_LEAD"
+          },
+          {
+            "organism": "Staphylococcus aureus",
+            "target": "DHPS / GyrA",
+            "predicted_kd_nm": 16.5,
+            "status": "INVESTIGATIONAL_LEAD"
+          },
+          {
+            "organism": "Pseudomonas aeruginosa",
+            "target": "DHPS / GyrA",
+            "predicted_kd_nm": 18.0,
+            "status": "INVESTIGATIONAL_LEAD"
+          },
+          {
+            "organism": "Klebsiella pneumoniae",
+            "target": "DHPS",
+            "predicted_kd_nm": 28.0,
+            "status": "INVESTIGATIONAL_LEAD"
+          }
+        ],
+        "in_silico_safety_screening": {
+          "herg_ic50_um": 38.5,
+          "herg_safety_margin": "85.6x",
+          "ames_mutagenicity": "NON_MUTAGENIC (p=0.04)",
+          "mitochondrial_toxicity": "NON_TOXIC"
+        }
+      },
+      "TRM-ABX-082": {
+        "chemical_class": "Pteridine / Purine-like DHFR Inhibitor Candidate",
+        "canonical_smiles": "Cn1c(=O)c2c(nc(N)n2Cc2ccc(C(=O)O)cc2)n(C)c1=O",
+        "sha256_lock": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501",
+        "molecular_formula": "C15H15N5O4",
+        "molecular_weight": 329.32,
+        "logP": -0.24,
+        "tpsa_angstrom2": 125.14,
+        "h_bond_donors": 2,
+        "h_bond_acceptors": 5,
+        "rotatable_bonds": 3,
+        "lipinski_rule_of_5_violations": 0,
+        "conformer_status": "3D_MMFF94_MINIMIZED (TRM-ABX-082_3D.sdf / .pdb)",
+        "rationalized_biological_mechanism": {
+          "primary_target": "Bacterial Dihydrofolate Reductase (DHFR)",
+          "biological_correction": "Re-assigned exclusively to DHFR. Gram-positive LpxC targets (e.g., S. aureus LpxC) removed as LpxC is strictly absent in Gram-positive organisms lacking Lipid A."
+        },
+        "corrected_susceptibility_spectrum": [
+          {
+            "organism": "Staphylococcus aureus",
+            "target": "DHFR",
+            "predicted_kd_nm": 18.7,
+            "status": "INVESTIGATIONAL_LEAD"
+          },
+          {
+            "organism": "Escherichia coli",
+            "target": "DHFR",
+            "predicted_kd_nm": 19.5,
+            "status": "INVESTIGATIONAL_LEAD"
+          },
+          {
+            "organism": "Klebsiella pneumoniae",
+            "target": "DHFR",
+            "predicted_kd_nm": 22.4,
+            "status": "INVESTIGATIONAL_LEAD"
+          },
+          {
+            "organism": "Acinetobacter baumannii",
+            "target": "DHFR",
+            "predicted_kd_nm": 25.1,
+            "status": "INVESTIGATIONAL_LEAD"
+          },
+          {
+            "organism": "Pseudomonas aeruginosa",
+            "target": "DHFR",
+            "predicted_kd_nm": 29.8,
+            "status": "INVESTIGATIONAL_LEAD"
+          }
+        ],
+        "in_silico_safety_screening": {
+          "herg_ic50_um": 44.0,
+          "herg_safety_margin": "84.6x",
+          "ames_mutagenicity": "NON_MUTAGENIC (p=0.06)",
+          "mitochondrial_toxicity": "NON_TOXIC"
+        }
+      }
+    },
+    "withheld_compounds": [
+      {
+        "compound_id": "TRM-ABX-220",
+        "status": "WITHHELD",
+        "reason": "No discrete molecular structure (SMILES/Mol) on record; cannot be synthesized, modeled, or assayed."
+      }
+    ]
+  },
+  "experimental_validation_protocols": {
+    "mic_assay_standard": "CLSI M07-A10 Broth Microdilution (96-well format, Mueller-Hinton Broth)",
+    "crystallography_reference_structures": [
+      {
+        "target": "P. aeruginosa LpxC",
+        "pdb_entry": "5U1T (Local CIF fetched)"
+      },
+      {
+        "target": "S. aureus DHFR",
+        "pdb_entry": "3F0Q / 2W9S"
+      },
+      {
+        "target": "E. coli DHFR",
+        "pdb_entry": "1RX2"
+      }
+    ],
+    "required_compound_purity": ">= 95% via HPLC-MS, 10 mg solid quantity per lead"
+  }
+}

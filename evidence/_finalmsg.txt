@@ -1,0 +1,38 @@
+feat(roc): measured inactives COLLAPSE the docking verdict - enforce UNKNOWN
+
+The larger, cleaner set finished the job the 2-active set started. It did not
+just loosen the threshold; it removed the basis for one.
+
+SET: 24 ChEMBL actives (CHEMBL3855 P. aeruginosa LpxC - the same protein as PDB
+5U39) vs 10 MEASURED-INACTIVE compounds (pChEMBL <= 4.5, IC50 >= 32 uM, tested
+against this exact target) plus the 40 synthetic decoys.
+
+THE TWO ARMS DISAGREE, AND THE SYNTHETIC ONE FLATTERED THE METHOD:
+  vs synthetic decoys     AUC = 0.988   CI [0.963, 1.000]   <- looked excellent
+  vs MEASURED inactives   AUC = 0.771   CI [0.529, 0.963]   <- collapsed
+  pooled (50 negatives)   AUC = 0.944   CI [0.883, 0.992]
+Property-matched synthetic decoys were designed to be topologically unlike the
+actives, so vina rejects them easily. Real experimental inactives are not so
+convenient. The 0.988 was an artifact of the decoy set, not a property of the
+protocol.
+
+THE SEPARATION IS ABSENT:
+  CHEMBL3356191 MEASURED INACTIVE, IC50 33,113 nM  docks -10.360  rank 2 of 32
+  CHEMBL4780842 MEASURED INACTIVE, IC50 63,096 nM  docks  -9.993  rank 7
+  0.20 kcal/mol separates a 33 uM compound from a 0.5 nM compound.
+  Spearman rho (score vs measured potency) = -0.395 - weak.
+  Inactive ranks: 2, 7, 14, 25, 27, 28, 29, 30, 31, 32.
+A cut admitting CHIR-090 (-10.17) also admits a 33 uM inactive (-10.36).
+
+ENFORCED IN CODE, not merely commented. I first wrote the conclusion into the
+docstring while leaving the logic emitting BIND - documenting an intent without
+implementing it, the same defect this session keeps finding. The harness now
+makes BIND UNREACHABLE from a docking score: a lone score downgrades to
+UNKNOWN(score-only) and says so. Corroborating evidence is required; this
+pipeline has none for these targets.
+
+Revised re-judgement of the PHOENIX dock:
+  BIND=0  UNKNOWN=8  REJECT=2   (was BIND=3, then BIND=1, now none)
+  BLK -9.057 -> UNKNOWN(score-only)
+
+No PHOENIX target may be reported as a binder on this evidence.

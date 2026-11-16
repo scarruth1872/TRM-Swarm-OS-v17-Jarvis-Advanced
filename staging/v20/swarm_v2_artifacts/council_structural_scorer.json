@@ -1,0 +1,69 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T12:44:02.940278+00:00",
+  "finding": "The binding stages have real models where one exists (DeepDTA for AMP) and validated thermodynamics (van't Hoff r=0.9837 vs SKEMPI2), but the composite->delta_G scoring is retired (r=0.1971). The next phase is a structural scorer trained on SAbDab2's curated AI/ML set and validated against SKEMPI2.",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Make the next phase the structural antibody-antigen affinity scorer: fetch the SAbDab2 curated AI/ML training set (Zenodo 10.5281/zenodo.2008"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Cognitive & interface evaluation of Make the next phase the structural antibody-antigen affinity scorer: fetch the SAbDab2 curated AI/ML training set (Zenodo 10.5281/zeno"
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Cross-domain scientific bridging: validating molecular target binding affinities and genomic data interconnects."
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Make the next phase the structural antibody-antigen affinity scorer: fetch the SAbDab2 curated AI/ML training set (Zenodo 10.5281/zenodo.20083994),"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Make the next phase the structural antibody-antigen affinity scorer: fetch the SAbDab2 curated AI/ML training set (Zenodo 10.5281/zenodo.20083994), fe"
+        }
+      ],
+      "monad_seal": "c8d14a49f7dd37ea000fedab35f43f4bcd7fa19c10a9b7590efcbac6f4b6e119",
+      "motion": "MOTION-S1",
+      "phase": "consensus",
+      "proposal_id": "CP-2B90D0B3",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.984,
+      "topic": "Make the next phase the structural antibody-antigen affinity scorer: fetch the SAbDab2 curated AI/ML training set (Zenodo 10.5281/zenodo.20083994), featurize the binding interface (buried surface area, shape complementarity, interface electrostatics, CDR/antigen residues), train a delta_G predictor, and VALIDATE it against the SKEMPI2 delta_G data already in-tree. The TEST is explicit and pre-registered: report the trained model's Pearson r on held-out SKEMPI2 delta_G, and it must EXCEED the retired heuristic's 0.1971 (ideally >= 0.5) before the numeric Kd is un-retired; otherwise the numeric Kd stays retired and only the qualitative tier is published, exactly as it is today. Every figure carries its kind label (measured_on_host / derived / declared_constant); the van't Hoff r=0.9837 is the already-valid thermodynamics, not the new model's claim. MEASURED (this host): the AMP stage now calls DeepDTA (/crate/deepdta/predict) and the antibody stage's van't Hoff delta_G->Kd step is validated r=0.9837 against 441 real SKEMPI2 (dH,dS,Kd) pairs (datasets/skempi_v2.csv, 7,085 entries). The retired component is the composite->delta_G scoring: post-fit Pearson r = 0.1971 < 0.5 vs 6 therapeutic antibodies (antibody_binding_predictor.validate_benchmarks already retires the numeric Kd and publishes only the qualitative tier). So the one missing piece for a VALIDATED numeric Kd is a real structural scorer. Data sources identified: SAbDab2 (sabdab.opig.stats.ox.ac.uk, API 2.1.5) with its curated AI/ML training set at Zenodo DOI 10.5281/zenodo.20083994 (cleaned antibody and antibody-antigen structures, versioned train/test splits); SKEMPI2 already in-tree. REJECT AS PREMATURE if the Zenodo training set cannot be fetched into this environment (network/storage), or if no held-out SKEMPI2 evaluation can be produced \u2014 in which case the numeric Kd remains RETIRED and the phase reports the fetch/featurize blocker as its result rather than asserting a scorer it does not have.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 9,
+  "record": "STRUCTURAL AFFINITY SCORER -- council next-step decision",
+  "sha256": "91e2900bb74ca808e6b6e5f98409d65fb6e9fc1ecac27b36cbafbcce1e0b1c8c"
+}

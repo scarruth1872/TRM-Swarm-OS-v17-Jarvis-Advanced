@@ -1,0 +1,37 @@
+{
+  "protocol": "FEDERATION_NODE_VERIFICATION",
+  "timestamp": "2026-09-21",
+  "method": "TCP connect probe to each advertised node ip:8022 (fallback 8021), 2s timeout",
+  "endpoint_audited": "http://127.0.0.1:8022/federation/nodes",
+  "finding": "The federation endpoint advertises 100 nodes, every one claiming an ONLINE status, while NONE are reachable. The node list is synthesized: IPs are sequential across 100.93.191.0/24, 100.94.192.0/24, 100.95.193.0/24, 100.96.194.0/24, and every peer carries is_active:true with sub-millisecond latencies (0.57-0.69 ms) that no real network path would produce.",
+  "advertised": {
+    "total_nodes": 100,
+    "claimed_online": 100,
+    "claimed_statuses": {
+      "PRIMARY_ONLINE": 10,
+      "SKYWAVE_SYNCED": 16,
+      "LAB_MIRROR_ACTIVE": 16,
+      "IMMUNE_ARMED": "remainder"
+    },
+    "sample_latency_ms": [0.57, 0.69]
+  },
+  "measured": {
+    "probed": 56,
+    "reachable": 0,
+    "unreachable": 56,
+    "note": "probe stopped at 56 of 100 on reaching an unambiguous result (0 reachable, sequential synthesized ranges); the remaining nodes share the same ranges"
+  },
+  "real_federation_state": {
+    "physical_hosts_confirmed": 1,
+    "reachable_nodes": ["100.93.191.43 (this host, TCP 8022 council server)"],
+    "confirmed_offline": ["100.82.16.43 (NODE-004)", "100.123.215.119 (laptop node)"],
+    "summary": "the federation is a single reachable host presented as a 100-node online mesh"
+  },
+  "cross_reference": "Consistent with federation_100_node_mesh_ledger.json, previously reclassified to 3 physical hosts / 97 declared slots.",
+  "remediation": [
+    "Drive node status from live probes, not declared constants",
+    "Report unreachable nodes as offline rather than PRIMARY_ONLINE",
+    "Derive latency from measured RTT, never a fixed sub-millisecond constant"
+  ],
+  "honest_conclusion": "The advertised 100-node online mesh does not exist. Only the local host is reachable. Any artefact citing federation connectivity should be treated as unverified until node status is probe-derived."
+}

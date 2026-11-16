@@ -1,0 +1,26 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-27T23:18:30.191832+00:00",
+  "failure_mode": "if MLA is too involved, ship norm + lm_head + simpler attention first, name MLA as remaining",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "529ffef4a4414756776588af24ea6f325095422d6b462cc444d9c5ab8c3cdc5f",
+      "motion": "MOTION-TRANSFORMER-SHELL",
+      "phase": "consensus",
+      "proposal_id": "CP-3A643AB1",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "BUILD THE TRANSFORMER SHELL: RMS norm + MLA attention + FarSkip residual + lm_head + sampler to complete the native Instella forward (full token generation, no llama.cpp). PREDICTION: the attention + norm + output are dense, well-defined ops (the MLA compression is the only complex piece) and can be built on the same swarm-dequant foundations. FAILURE: if the MLA compressed-KV math is too involved for a faithful first pass, ship the RMS norm + lm_head + a simpler attention first and name the MLA as the remaining piece. MEASURED: the sparse MoE core is DONE \u2014 dequant (Q8_0/Q4_K), gated expert FFN (SiLU, 2048->1408->2048), moe_router (sqrt-softplus, top-6, norm+scale 2.5), verified on blk.1 (moe_out sane, 0 NaN). The remaining transformer shell: RMS norm, MLA attention (multi-head latent attention, kv_lora_rank 512, key/value_length_mla 128), FarSkip dual residual streams, lm_head + token embedding + sampler. Hyperparams from the GGUF KV: n_embd 2048, n_layer ~32, n_head unknown yet, attention.key_length 544, value_length 512."
+    }
+  ],
+  "prediction_recorded": "dense ops buildable; MLA compression is the complex piece",
+  "prior_state": "sparse MoE core done; the dense attention/norm/output shell remains",
+  "quorum": 9,
+  "record": "Transformer shell -- RMS norm + MLA attention + FarSkip + lm_head",
+  "sha256": "60695ce049cff54df66ba1f006d3c43aef94d37007e9bf6c837494f690be5845"
+}

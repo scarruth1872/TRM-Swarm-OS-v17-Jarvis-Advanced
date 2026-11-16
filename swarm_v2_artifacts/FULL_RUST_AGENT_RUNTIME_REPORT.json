@@ -1,0 +1,17 @@
+{
+  "validation_status": "FULL_RUST_AGENT_RUNTIME_VERIFIED",
+  "runtime": {
+    "language": "Rust 1.89.0 (bare-metal compiled cdylib)",
+    "concurrency": "Rayon multi-threaded SIMD parallel dispatcher",
+    "num_agents": 14,
+    "zero_gc": true
+  },
+  "benchmark_1M_tasks": {
+    "num_tasks": 1000000,
+    "elapsed_sec": 0.01378,
+    "elapsed_ms": 13.78,
+    "tasks_per_sec": 72571573.71,
+    "avg_latency_us": 0.0138,
+    "avg_latency_ns": 13.8
+  }
+}

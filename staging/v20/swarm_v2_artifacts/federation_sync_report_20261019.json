@@ -1,0 +1,71 @@
+{
+  "protocol": "federation_state_sync",
+  "truth_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-10-19T21:37:33.658699+00:00",
+  "nodes_total": 4,
+  "nodes_online": 3,
+  "nodes_offline": 1,
+  "online": [
+    "local",
+    "DESKTOP-MEP4VQN",
+    "carruth-MacPro5-1"
+  ],
+  "offline": [
+    "DESKTOP-VB1T79V"
+  ],
+  "rows": [
+    {
+      "node_id": "local",
+      "name": "NspiredFitness Laptop Sovereign (this host)",
+      "host": "127.0.0.1",
+      "port": 8022,
+      "status": "online",
+      "latency_ms": 17.97,
+      "backend": "Native Rust Sovereign Kernel v20.0.0",
+      "monad_anchor": "0x4D4F4E4144000001",
+      "python_active": false,
+      "handshake": "endpoint_not_present",
+      "probed_at": "2026-10-19T21:37:33.658699+00:00"
+    },
+    {
+      "node_id": "DESKTOP-MEP4VQN",
+      "name": "TRM Desktop Sovereign (6700XT)",
+      "host": "100.93.191.43",
+      "port": 8022,
+      "status": "online",
+      "latency_ms": 137.72,
+      "backend": "Native Rust Sovereign Kernel v19.001",
+      "monad_anchor": "0x4D4F4E4144000001",
+      "python_active": false,
+      "handshake": "endpoint_not_present",
+      "probed_at": "2026-10-19T21:37:33.658699+00:00"
+    },
+    {
+      "node_id": "carruth-MacPro5-1",
+      "name": "MacPro5-1 Sovereign (linux)",
+      "host": "100.76.102.6",
+      "port": 8022,
+      "status": "online",
+      "latency_ms": 15.86,
+      "backend": "Native Rust Sovereign Kernel v19.001",
+      "monad_anchor": "0x4D4F4E4144000001",
+      "python_active": false,
+      "handshake": "ok",
+      "probed_at": "2026-10-19T21:37:33.658699+00:00"
+    },
+    {
+      "node_id": "DESKTOP-VB1T79V",
+      "name": "Desktop Primary Swarm (Python v5 core)",
+      "host": "100.82.16.43",
+      "port": 8021,
+      "status": "offline",
+      "latency_ms": null,
+      "backend": null,
+      "monad_anchor": null,
+      "python_active": null,
+      "handshake": null,
+      "probed_at": "2026-10-19T21:37:33.658699+00:00"
+    }
+  ],
+  "note": "only reachability + handshake are recorded as measured; a node's self-reported node count is not copied into the registry"
+}

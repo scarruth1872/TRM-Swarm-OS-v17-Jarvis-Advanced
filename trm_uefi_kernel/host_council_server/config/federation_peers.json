@@ -1,0 +1,47 @@
+{
+  "_comment": "Real Tailscale peers of this platform. Replaces the generated 100-node tier table, which enumerated one subnet (100.93.191.0/24) and had never contacted any address. Each entry is probed on TCP 8022 at startup; 'reachable' in the API means that probe completed, nothing else.",
+  "_measured": "2026-11-06 via `tailscale status` on desktop-mep4vqn",
+  "_transport_note": "None of these expose a file-transfer path today: :8022 is closed on all of them, sshd is not running on carruth-macpro5-1, and 100.82.16.43 times out on 22. Federation probing works; federation FILE SYNC does not, and must not be claimed until a transport answers.",
+  "peers": [
+    {
+      "id": "NODE-001",
+      "name": "desktop-mep4vqn (this host, RX 6700 XT)",
+      "tier": "Tier 1: Core Host & Ingestion",
+      "ip": "100.93.191.43",
+      "os": "windows",
+      "role": "master"
+    },
+    {
+      "id": "NODE-002",
+      "name": "carruth-macpro5-1",
+      "tier": "Tier 1: Core Host & Ingestion",
+      "ip": "100.76.102.6",
+      "os": "linux",
+      "role": "compute"
+    },
+    {
+      "id": "NODE-003",
+      "name": "desktop-vb1t79v (station)",
+      "tier": "Tier 1: Core Host & Ingestion",
+      "ip": "100.82.16.43",
+      "os": "windows",
+      "role": "station"
+    },
+    {
+      "id": "NODE-004",
+      "name": "nspiredfitness (field laptop, RTX 3070)",
+      "tier": "Tier 1: Core Host & Ingestion",
+      "ip": "100.123.215.119",
+      "os": "windows",
+      "role": "field"
+    },
+    {
+      "id": "NODE-005",
+      "name": "shawns-s25-ultra",
+      "tier": "Tier 6: Public Sovereign Gateways",
+      "ip": "100.114.251.33",
+      "os": "android",
+      "role": "tactical"
+    }
+  ]
+}

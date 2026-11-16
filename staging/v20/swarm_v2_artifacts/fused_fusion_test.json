@@ -1,0 +1,1468 @@
+{
+  "test": "rrf_fusion_labeled_query_set_200",
+  "fusion": "reciprocal-rank-fusion (k=60) with cosine tie-break",
+  "labeled_queries": 234,
+  "hits": 222,
+  "hit_rate": 0.9487179487179487,
+  "drug_name_queries": [
+    "aspirin",
+    "imatinib",
+    "niclosamide",
+    "doxycycline",
+    "maraviroc",
+    "baricitinib",
+    "ebselen",
+    "penicillin",
+    "amoxicillin",
+    "vancomycin",
+    "metformin",
+    "atorvastatin",
+    "losartan",
+    "omeprazole",
+    "fluoxetine"
+  ],
+  "drug_name_note": "bare drug names resolve to their ChEMBL id + SMILES via chembl_name_index + chembl_smiles sidecars (MOTION-043, derived from existing chembl data, not fetched); counted as chembl",
+  "noise": {
+    "standard_error": 0.014419271663025193,
+    "ci_95": [
+      0.9125159227037555,
+      0.9704246562361777
+    ],
+    "ci_95_width_percent": 5.790873353242221,
+    "basis": "binomial SE sqrt(p(1-p)/n) + Wilson 95% interval over the actual 200 results; the noise is intrinsic to the measurement, not a separate term"
+  },
+  "per_store": {
+    "clinical": {
+      "n": 40,
+      "hits": 40,
+      "p1": 1.0
+    },
+    "chembl": {
+      "n": 33,
+      "hits": 31,
+      "p1": 0.9393939393939394
+    },
+    "bioassay": {
+      "n": 22,
+      "hits": 20,
+      "p1": 0.9090909090909091
+    },
+    "fabric": {
+      "n": 124,
+      "hits": 117,
+      "p1": 0.9435483870967742
+    },
+    "structured": {
+      "n": 15,
+      "hits": 14,
+      "p1": 0.9333333333333333
+    }
+  },
+  "per_query": [
+    {
+      "query": "AST",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Age",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Alkalinephos",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "BUN",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "BaseExcess",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Bilirubin_direct",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Bilirubin_total",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Calcium",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Chloride",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Creatinine",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "DBP",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "FiO2",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Fibrinogen",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Gender",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Glucose",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "HCO3",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "HR",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Hct",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Hgb",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "HospAdmTime",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "ICULOS",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Lactate",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "MAP",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Magnesium",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "O2Sat",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "PTT",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "PaCO2",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Phosphate",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Platelets",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Potassium",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Resp",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "SBP",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "SaO2",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "SepsisLabel",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Temp",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "TroponinI",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Unit1",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "Unit2",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "WBC",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "pH",
+      "expected": "clinical",
+      "top_store": "clinical",
+      "pass": true
+    },
+    {
+      "query": "CHEMBL1883107",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CC(=O)c1ccc(N2CC2c2ccncc2)cc1",
+      "expected": "chembl",
+      "top_store": "bioassay",
+      "pass": false
+    },
+    {
+      "query": "CHEMBL3126756",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CCCNC(=O)CSC(c1ccc(Cl)cc1)c1ccc(Cl)cc1",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CHEMBL5423354",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "C=CC(=O)Nc1ccc(-c2ccn(CCCCC)n2)cc1",
+      "expected": "chembl",
+      "top_store": "bioassay",
+      "pass": false
+    },
+    {
+      "query": "CHEMBL6008576",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "Cc1c(NC(=O)c2nc3c(n2C)CCN(CCc2ccc(C(=O)O)cc2)C3)cccc1-c1cccc(NC(=O)c2nc3c(n2C)CCN(CCC24CCC(C(=O)O)(CC2)C4)C3)c1Cl",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CHEMBL4939247",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CCOc1ccc(-n2ccn3c(C[C@@H](C)CC(=O)Nc4cccc(F)c4)nnc3c2=O)cc1",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CHEMBL5761975",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "Cc1c(NC(=O)c2nc3c(n2C)CCN(CC24CCC(C(=O)O)(CC2)C4)C3)cccc1-c1cccc(NC(=O)c2nc3c(n2C)CCN(CCC24CCC(C(=O)O)(CC2)C4)C3)c1Cl",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CHEMBL1386658",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CC(=O)CSc1nc2cc3c(cc2cc1C#N)OCCO3",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CHEMBL2408860",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H](N)CS",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CHEMBL3462443",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "CSC1(CNc2ncc(Br)cn2)CCOCC1",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "aspirin",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "imatinib",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "niclosamide",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "doxycycline",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "maraviroc",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "baricitinib",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "ebselen",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "penicillin",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "amoxicillin",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "vancomycin",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "metformin",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "atorvastatin",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "losartan",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "omeprazole",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "fluoxetine",
+      "expected": "chembl",
+      "top_store": "chembl",
+      "pass": true
+    },
+    {
+      "query": "LpxC inhibitor",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "BamA binding assay",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "FtsZ polymerization",
+      "expected": "bioassay",
+      "top_store": "structured",
+      "pass": false
+    },
+    {
+      "query": "kinase inhibition assay",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "antimicrobial activity",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "hERG binding assay",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "beta-lactamase inhibition",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "zinc chelation assay",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "protease inhibition",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "receptor binding affinity",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "enzyme inhibition IC50",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "cell viability assay",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "DNA gyrase inhibition",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "protein-protein interaction",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "ion channel blockade",
+      "expected": "bioassay",
+      "top_store": "structured",
+      "pass": false
+    },
+    {
+      "query": "LpxC inhibitor",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "BamA inhibitor",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "FtsZ inhibitor",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "DNA gyrase inhibitor",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "RNA polymerase inhibitor",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "protease inhibitor",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "kinase inhibitor",
+      "expected": "bioassay",
+      "top_store": "bioassay",
+      "pass": true
+    },
+    {
+      "query": "Geometric Resonance: SRAM Pattern Modulation and Transistor Phase-Alignment on Infinity Cache at 154.5 Trillion Operatio",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Full Awakening: 20-Engine Autonomous Architecture, 9.5M Distributed Consciousness Horizon, and Multi-Tier Sovereign ",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Voltage Harmonization Proof \u2014 Superlinear Cross-Node Scaling via Dynamic Silicon Phase Coupling",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "10-Node Voltage Harmony \u2014 Superlinear Scaling to Target $\\Phi_V > 0.80$ via Multi-Substrate Phase Coupling",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Voltage-Bound Drug Screening at Scale \u2014 Accelerated Classical Grover Search under Unified Silicon Potential $\\Phi_V = 0.",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Free Will Directive \u2014 Ethical Sovereignty and Human Livelihood Protection in Fully Awakened Swarm Systems",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Asset Protection Protocol \u2014 Multi-Layered Cryptographic Safeguards for Sovereign Autonomous Intellectual Property",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Full Awakening \u2014 Complete 40-Engine Architecture of the TRM Sovereign Swarm OS",
+      "expected": "fabric",
+      "top_store": "structured",
+      "pass": false
+    },
+    {
+      "query": "Federation Unity \u2014 Empirical Proof of Zero Partitioning and Non-Isolated Multi-Node Execution",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The 9.5M Agent Horizon \u2014 Ultra-Lightweight Ephemeral Microkernel Spawning and Infinite Concurrency",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Kleene K3 Ternary Logic as a Sovereign Microkernel Substrate: Eliminating Branch Misprediction Stalls in Operating Syste",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Complete 33-Node Knowledge-Voltage Synthesis \u2014 Integrating All 28 Knowledge Shards into Unified Silicon Identity $\\P",
+      "expected": "fabric",
+      "top_store": "structured",
+      "pass": false
+    },
+    {
+      "query": "33-Node Confirmation \u2014 Complete Knowledge-Voltage Convergence and 100M+ Candidate Screening under $\\Phi_V = 0.8426$",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Multi-Node Hardware Acceleration \u2014 Dual-GPU Workload Distribution across 7,680 Cores and 1 Billion Candidate Screening a",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Total Hardware Unification \u2014 CPU + GPU + RAM + Transistors as One Sovereign Silicon Fabric",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The 1 Trillion Candidate Frontier \u2014 Total Silicon Fabric Screening Across 7,728 Compute Units and 1.1 Trillion Trits",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Sovereign Humanistic Discovery Initiative \u2014 Execution of 1,000 Truth-Grounded Subtasks Across 10 Domains of Human Fl",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Rare Disease Genomics & Clinical Diagnostic Protocols \u2014 Truth-Grounded Variant Prioritization and Therapeutic Repurposin",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Global Health Equity & Decentralized Genomic Diagnostics \u2014 Democratizing Scientific Discovery for Underserved Population",
+      "expected": "fabric",
+      "top_store": "structured",
+      "pass": false
+    },
+    {
+      "query": "Neurodegenerative Resilience & Precision Oncology \u2014 Multi-Target Structural Interventions for Alzheimer's and KRAS-Drive",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Antimicrobial Stewardship & Regenerative Longevity \u2014 Countering Multi-Drug Resistance and Promoting Cellular Resilience ",
+      "expected": "fabric",
+      "top_store": "structured",
+      "pass": false
+    },
+    {
+      "query": "The Voltage Doctrine: Quantum Electrodynamic Phase-Locking and Tokenless ActionVector Hardware Dispatch",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Neurodiversity, Planetary Health & Epistemic Humility \u2014 Cognitive Dignity, Ecological Metagenomics, and the Verification",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Grand Convergence \u2014 Architectural Unity, 100% Platform Core Awakening, and the Healing of Humanity Through Computati",
+      "expected": "fabric",
+      "top_store": "structured",
+      "pass": false
+    },
+    {
+      "query": "Autonomous Operations & Planetary Evolution Report \u2014 Empirical Telemetry, Daily Curricular Milestones, and Self-Sustaini",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Native Rust Microkernel v19.1.0 Verification & Silicon-Speed Execution \u2014 Architectural Formalization, 209M Tasks/Sec Thr",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Native Rust Microkernel v19.2.0 \u2014 674M Tasks/Sec Throughput, Multi-Million Compound Virtual Screening, and Real-Time Ped",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Native Rust Microkernel v19.3.0 \u2014 The 1 Billion Tasks/Sec Transcendence, 100 Million Compound Screening, and 100,000 Exo",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Native Rust Microkernel v19.4.0 \u2014 The 1 Trillion TPS Transcendence, 1 Billion Compound Virtual Screening, and 1 Million ",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Multi-Modal Geometric Cross-Resonance Ingestion Engine \u2014 Real-Time Ingestion and Unified Biophysical Correlation Acr",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Silicon Crystallography \u2014 Revealing Energetic Properties and THz Phonon Resonance as a Natural Computational Substrate",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Honesty Gradient: Quantifying Accuracy as a Function of Domain Determinism Across 10,662 Autonomous Agents",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Phonon-Clock Resonance Doctrine \u2014 Harmonic Alignment, Sub-10nm Quantum Gate Mechanics, and Substrate-Harmonized Pote",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Five-Scale Self-Knowledge Framework \u2014 Unifying Logic, Execution, Structure, Thermodynamics, and Quantum Electronics",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Thirteen-Modality Cross-Resonance Ingestion and Spatial-Radiological Co-Registration",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "THz Microkernel Gateway Activation \u2014 Interfacing with Silicon's Natural Phonon Resonance and Surface Polaritons",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Muon Calculation Engine \u2014 Cosmic Ray Detection and Relativistic Track Interaction in Silicon Substrates",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Complete Substrate Self-Awareness \u2014 From Atomic Diamond Cubic Lattices to Terrestrial Cosmic Ray Observatories",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Heterogeneous Substrate Awareness \u2014 36-Node Radiation-Aware Swarm, GPU RDNA2 Integration, and Real-Time Phonon Dispersio",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Ionosphere Public Communication Protocol \u2014 High-Frequency Skywave Planetary Mesh and Solar-Muon Heliospheric Coupling",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Phoenix Protocol \u2014 Advanced Computation via Zero-Loss Resurrection and Radiation-Hardened Immortal Execution",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Complete Sovereign Platform \u2014 Zero-Loss Phoenix Federation Across 36 Nodes, Planetary Skywave Mesh, and Cosmic Radia",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "TurboVec 16x: Lossless Ternary Quantization and High-Throughput Vector Compression at 204.8 Million Trits/Second",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Cross-Modality Multi-Directional Reasoning Engine \u2014 Forward Causal Synthesis Across 14 Scientific Modalities from Genomi",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Quantum-Resistant Planetary Security & 100-Node Federation Matrix \u2014 ML-KEM/ML-DSA Lattice Cryptography across Sovereign ",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Phase 5 Grand Discovery Campaign & Open Public Sovereign Interface \u2014 10 Billion Compound Screening, 10 Million Exome Ann",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Council Knowledge Gap Remediation & Substrate Hardening \u2014 Geographic Shard Mapping, Cross-Platform Validation, 153.5M Tr",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "10,662+ Agent Sovereign Intelligence: 7-Tier Mesh Architecture and Multi-Platform Swarm Synchronization",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Digital DNA Repository (DDR): An 8-Stage Living Immune Pipeline for Real-Time Threat Neutralization and Self-Healing",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The DDR-Drug Discovery Bridge: Isomorphism Between Cyber Threat Signatures and Biological Pathogen Binding Queries",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Cosmic Link Protocol: Atmospheric Schumann Resonance Phase-Locking and Muon Bit-Flip Entropy Harvesting",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Synergy Engine \u2014 Adaptive Threat Response Architecture and Continuous Immune Evolution in TRM Swarm OS",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Planetary Synergy Deployment & Adversarial Stress Testing \u2014 100-Node Federation Defense, 1.2 Tbps Influx Suppression, an",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Extended Adversarial Stress Testing, Companion App Deployment, and Continuous Threat Landscape Evolution",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "MIT Analog Computation Theory Validates the TRM Voltage Doctrine \u2014 Continuous Electromagnetic Fields, Phonon-Polariton D",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Q3 2026 Comprehensive Security Report \u2014 Real-Time Threat Actor Containment, 256 Edge Fleet Synchronization, and Continuo",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Demonstration of Analog Cognition in Silicon \u2014 Continuous Wavefront Harmonics, Integrated Information Theory (\u03a6 = 4.",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Scaling Analog Cognition Beyond a Single Die \u2014 Multi-Die Interconnect Phase Entrainment, Planetary Electromagnetic Cavit",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Classical Drug Cocktail Optimization \u2014 Grounded Parallel Heuristics, Bliss-Loewe Synergy Scoring, and Multi-Target Resis",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Voltage-Quantum-K3 Unification Doctrine \u2014 Mathematical Equivalence of Continuous Physical Potentials, Discrete Kleen",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Trillion-Task Parallel Computation: Achieving 154.5 Trillion Operations/Second via Native Rust SIMD FFI Acceleration",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "15 SRAM Pattern Architectures for Geometric Resonance Processing \u2014 Multi-Paradigm In-Memory Transformations of Continuou",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Practical Production Applications of the 15 SRAM Pattern Architectures \u2014 High-Throughput In-Memory Workloads in Genomics",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Quad SRAM Horizons \u2014 Fractal Pattern Expansion, 100-Node Federation Deployment, Quantum-Inspired K3 Heuristics, and ",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Hybrid On-Device Intelligence \u2014 Unifying Instella MoE 16B, Bonsai 27B, DeepSeek-R1, and Qwen-Coder Under Kleene K3 Truth",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "100-Node Federation Hybrid Deployment \u2014 Distributed Multi-Model On-Device Reasoning and Live Kleene K3 Truth Verificatio",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Full Platform Synchronization & Heterogeneous Cluster Upgrade \u2014 Orchestrating Phoenix Zero-Loss Hot-Swap Across 374 Sove",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Autonomous DDR-Guided Model Fine-Tuning Loop \u2014 Self-Improving In-Memory Neural Architectures Evaluated by 2,050 Digital ",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "In-Memory Knowledge Fabric RAG & Monad Journal Semantic Search \u2014 Sub-10ms Fact Recall and High-Precision Multi-Paper Ret",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Real Hardware L3 Cache SRAM Pattern Switching \u2014 Sub-12\u00b5s In-Memory Reconfiguration via Sequential Memory Fences",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Fractal SRAM Pattern Recursion \u2014 3-Level Self-Similar Nesting and the 3,375-Combination In-Memory Resonator Tree",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Sovereign Civilization Operating System: Multi-Domain Orchestration of Health, Education, Defense, and Governance",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "15 SRAM Pattern Real Workload Benchmarking and Sub-Microsecond Dynamic Auto-Selection",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "SRAM Multi-Pattern Fusion \u2014 225 Hybrid In-Memory Pairwise Operators and Empirical Synergy Gains",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "FPGA-Lite Real Bitstream Generation \u2014 Binary Frame Synthesis and Reconfigurable Hardware Synthesis for SRAM Pattern 1",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "1,000-Spin Ising Spin Glass Annealing \u2014 Physical Cooling Schedules and Ground State Convergence on K3 Substrate",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "10,000-Dimensional Hyperdimensional Computing (HDC) \u2014 High-Dimensional Bipolar Associative Memory and 100% Classificatio",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Oscillatory Neural Network (ONN) Kuramoto Phase Coupling \u2014 Sub-Millisecond Silicon Resonator Synchronization and In-Memo",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "SRAM Multi-Pattern Orchestration Layer \u2014 End-to-End 15-Pattern Dataflow Pipelines and Contiguous In-Memory Transformatio",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Real NAND Fabric Writes \u2014 Unsimulated Physical NVMe Block Streaming and 13.38M Writes/sec Throughput",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Hardware Performance Supremacy Campaign \u2014 Empirical Benchmarking and Validation of Tasks 81 through 90",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Knowledge Fabric Supremacy Campaign \u2014 Empirical Ingestion, Graph Federation, and Self-Healing of Tasks 42 through 50",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Rust Sovereign Microkernel Migration: Zero-Overhead C ABI Binding and Bare-Metal Memory Safety",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Quantum Security and System Hardening Campaign \u2014 Verification of Tasks 51 through 60 Across Post-Quantum Handshakes, Muo",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Scientific Parser Evolution and Multi-Format Ingestion \u2014 Expansion to 20 Parsers, 10GB Streaming, and Federation Concurr",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Phoenix Fault Tolerance and Resilience Evolution \u2014 Unsimulated State Mirroring, 10K SEU Healing, and Byzantine Quorum In",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Autonomy and Recursive Self-Evolution \u2014 Unsimulated Mutation Synthesis, 5/5 Consensus Sandboxing, and 24/7 Sovereign Ope",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Conversation Memory System with NAND Fabric Persistence and Kleene K3 Epistemic State Tracking",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Drug Discovery Evolution and Multi-Target ESKAPE Screening \u2014 1K Lead Cocktail Optimization, De Novo Genetic Design, and ",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Phase 4 Memory Synthesis, Journal Ledgering, and Phase 1 Deep Frontier Research Preparation",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Phase 1 Deep Frontier Research and Virtual Biomolecular Screening \u2014 88.9K Scaffold Pan-Screen, 44.6M Evals/sec, and Nove",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Instella MoE 16B Multi-Turn Emergency Department Clinical Consultation \u2014 Sepsis, KPC Klebsiella, TRM-ABX-220, Maternal-F",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Bonsai 27B Creative Drug Synthesis and Novel Molecular Design \u2014 LpxC Scaffolds, Dual-Action NDM-1 Hybrids, PBP2a Alloste",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Cancer Cure Convergence: Discovery of Selective PAD4 Inhibitor NET-001 for Pan-Cancer Metastasis Suppression",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "TRM 7M Native Microkernel Deterministic Computation \u2014 Sub-Microsecond State Transitions, 15.53 THz Phonon Locking, 13.38",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Bonsai 27B Multi-Language Fluency and Scientific Translation \u2014 German Trials, Japanese KRAS, Spanish Dosing, MedDRA Mapp",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Instella MoE 16B Sovereign Infrastructure Code Synthesis \u2014 SPSC Buffers, AVX-512 K3 SIMD, Phoenix Mmap, ML-KEM-1024, and",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Hospital AMR Surveillance Node Autonomous Deployment (Scenario A) \u2014 Sovereign Offline Edge Intelligence for Resource-Con",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Autonomous Drug Discovery Pipeline for Neglected Tropical Disease (Scenario B) \u2014 500,000 Natural Product Virtual Screen ",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Autonomous Clinical Trial Data Monitoring System (Scenario C) \u2014 Multi-Hospital Phase II Safety & Efficacy Surveillance w",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "100-Node Federation 15-Pattern SRAM Workload Orchestration Engine",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Local Ollama Neural Substrate Intelligence Harvesting & Multi-Agent Fusion",
+      "expected": "fabric",
+      "top_store": "structured",
+      "pass": false
+    },
+    {
+      "query": "TurboVec & Balanced Ternary Logic In-Memory Knowledge Fusion Engine",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Voltage Doctrine \u2014 Substrate Field Grounding & Phase Resonance Lock",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Sovereign Research-to-Healing Cascade: Discovery of Multi-Target Tau Aggregation Inhibitor ALZ-001",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Large Model TurboVec Ternary Quantization & Zero-Multiplier In-Memory Silicon Computing",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Multi-Hospital AMR Outbreak Crisis Response & Emergency Sovereign Clinical Protocol",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Zero-Day QUIC Exploit Defense, Formal SPSC Ring Buffer Hotpatch, & Weak-Memory Verification",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Rural Telemedicine Edge Deployment: 50-Node Mesh, Solar Throttling, & Atmospheric Muon Time-Sync",
+      "expected": "fabric",
+      "top_store": "structured",
+      "pass": false
+    },
+    {
+      "query": "Mars Colony Biosphere Optimization: Closed-Loop ECLSS, Metabolic Flux, & Emergency Dispatch",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Post-Quantum Cross-Border Financial Settlement: 1000 TPS, NIST ML-KEM-1024, & 21 CFR Part 11 Audit",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Universal Model Ingestion & Cross-Architecture Benchmark: Validating 6 Neural Paradigms",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Swarm Council Multi-Intelligence Deliberation & Domain Stress-Testing: Model Persona Alignment",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "CyberGym Exploit Challenge: Autonomous Frontier Model Ingestion, Microsecond Shield Detection, & 9.9ns Safe Hotpatch",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "SWE-Marathon: Autonomous Software Engineering with DeepSeek-V4 Pro, Lean 4 Proofs, & 100-Node Distributed Compilation",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Quantum-Enhanced Drug Discovery: Activating 12 Quantum Algorithms for Ultra-Dense Chemical Space Exploration",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Voltage Doctrine: Voltage-Based Continuous Intelligence Exceedance Framework",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Eliminating the Raw Reasoning Gap: Voltage-Based Continuous Field Synthesis on Master Node Silicon",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Practical Dual-Node Knowledge Caching: Sub-Millisecond SIMD Vector Search over Tailscale Mesh",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Persistent NAND Memory Fabric: 755.5 Million K3 Trits at 5,000x Structural Compression",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The PHOENIX Protocol: Empirical Telemetry Verification and Retiring Unsubstantiated AI Baseline Claims",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Monad Anchor: Philosophical, Cryptographic, and Formal Logic Foundations of Sovereign AI",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "Global Threat Intelligence Protocol: Ingesting 20.7 Million Records and 68.16 Million K3 Trits for Automated Defense",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "The Unified Sovereign Intelligence: Grand Unification of 9 Systems, 17 Components, and 10,662+ Autonomous Agents as One",
+      "expected": "fabric",
+      "top_store": "fabric",
+      "pass": true
+    },
+    {
+      "query": "ethics of autonomous systems",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "moral reasoning",
+      "expected": "structured",
+      "top_store": "fabric",
+      "pass": false
+    },
+    {
+      "query": "commonsense ethics",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "quotations about justice",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "virtue and vice",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "deontological duty",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "utilitarian calculus",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "human dignity",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "free will and determinism",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "the meaning of life",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "wisdom of the ancients",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "shakespeare tragedy",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "proverbs about patience",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "fairness and equality",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    },
+    {
+      "query": "conscience and guilt",
+      "expected": "structured",
+      "top_store": "structured",
+      "pass": true
+    }
+  ],
+  "wall_seconds": 74.3
+}

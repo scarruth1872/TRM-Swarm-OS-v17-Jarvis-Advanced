@@ -1,0 +1,71 @@
+{
+ "note": "Samples located and expected counts derived by an INDEPENDENT parser (scratch/o3_parser_inventory.json). expected_count is null where the independent parser did not derive one; the kernel mode must not invent it.",
+ "samples": [
+  {
+   "format": "abif",
+   "path": "swarm_v2_rust_kernel/test_data/3730.ab1",
+   "expected_count": null,
+   "method": "binary (Applied Biosystems trace); not decoded. magic=ABIF at byte 0, version 0x0065, dir name 'tdir'"
+  },
+  {
+   "format": "council",
+   "path": "swarm_v2_artifacts/evolution_proposals.json",
+   "expected_count": null,
+   "method": "generic envelope (council proposal batch: {\"proposals\":[...]}); parser returns content_length only, emits no records"
+  },
+  {
+   "format": "dicom",
+   "path": "swarm_v2_rust_kernel/test_data/CT_small.dcm",
+   "expected_count": null,
+   "method": "binary (DICOM Part 10); not decoded. 'DICM' at offset 128 confirmed, file meta group 0002 follows, SOP ClassUID 1.2.840.10008.5.1.4.1.1.2 (CT Image Storage). Preamble (first 128 B) is non-zero junk: 49 49 2a 00 ..."
+  },
+  {
+   "format": "dispatch",
+   "path": "scratch/domains_dispatch_proceed.json",
+   "expected_count": null,
+   "method": "generic envelope (task dispatch batch: {\"tasks\":[{num,title,agent,verdict,...}]}); parser returns content_length only"
+  },
+  {
+   "format": "fhir",
+   "path": "swarm_v2_rust_kernel/test_data/patient_example.json",
+   "expected_count": 1,
+   "method": "json.load -> single resource, no 'entry' array -> resources_count=1 (resourceType=Patient)"
+  },
+  {
+   "format": "fusion",
+   "path": "scratch/task_136_fusion_gene_prediction_100_translocations.csv",
+   "expected_count": 100,
+   "method": "own parser: CSV header + 100 data rows = 100 fusion calls. File is COMMA-delimited; kernel parse_fusion requires >=7 TAB-separated columns -> 0 fusions"
+  },
+  {
+   "format": "json",
+   "path": "swarm_v2_integrated/config/module_matrix_current.json",
+   "expected_count": null,
+   "method": "json.load OK (dict, 13 top-level keys). Parser is the generic envelope: returns content_length only, emits no record list"
+  },
+  {
+   "format": "mmcif",
+   "path": "swarm_v2_rust_kernel/test_data/1CRN.cif",
+   "expected_count": 327,
+   "method": "own parser: lines starting 'ATOM '/'HETATM ' with >=7 whitespace cols -> 327 atoms, 1 chain (data block data_1CRN, real wwPDB crambin entry)"
+  },
+  {
+   "format": "mzml",
+   "path": "swarm_v2_rust_kernel/test_data/sample.mzML",
+   "expected_count": 2,
+   "method": "own parser: regex '<spectrum[\\s>]' -> 2 spectra (spectrumList count=\"2\"); 0 chromatograms"
+  },
+  {
+   "format": "pdb",
+   "path": "scratch/task_463_structures/1E8X.pdb",
+   "expected_count": 7098,
+   "method": "own parser: fixed-column lines starting 'ATOM  '/'HETATM' -> 7098 atoms, 1 chain, 1104 residues (HEADER 'PHOSPHOINOSITIDE 3-KINASE GAMMA 03-OCT-00 1E8X', real wwPDB entry). Below the 25,000-atom kernel cap, so cap does not change the count"
+  },
+  {
+   "format": "smiles",
+   "path": "scratch/sample_smiles.txt",
+   "expected_count": 2000,
+   "method": "own parser: 2000 non-empty lines = 2000 molecules (SMILES, 1 per line). NOTE kernel parse_smiles takes only the FIRST whitespace token of the whole payload -> 1 molecule regardless of file length"
+  }
+ ]
+}

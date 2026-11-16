@@ -1,0 +1,77 @@
+[package]
+name = "host_council_server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tiny_http = "0.12"
+serde_json = "1.0"
+serde = "1.0"
+# The shared memory corpus on this host is stored gzip-compressed
+# (swarm_v2_global_memory/**/*.jsonl.gz, written by swarm_v2/core/turbovec_memory.py).
+# flate2 was already in this workspace's lockfile via swarm-drug and swarm-shard (MIT/Apache-2.0),
+# so reading the corpus in-tree adds no new supply-chain surface.
+flate2 = "1"
+# P2: the WSL tree's proof-tree checker, built here and served by /verification/proof. It carries no
+# dependencies of its own, so wiring it adds no supply-chain surface to the kernel.
+swarm-proof = { path = "../../wsl_crates/trm-rust/swarm-proof" }
+
+# P2g: the crates that back /crate/*. Each one passed its own gate in this workspace before being wired
+# (see the P2b-P2f ledgers); the routes compute IN them, so the kernel re-implements no algorithm.
+#
+# Supply-chain note: swarm-k3, swarm-instella and swarm-ssm declare `libloading` for their own verifier
+# binaries, so adding them here pulls libloading 0.8 as well. libloading has no dependencies of its own.
+# swarm-turbovec carries only swarm-paths.
+swarm-k3 = { path = "../../wsl_crates/trm-rust/swarm-k3" }
+swarm-instella = { path = "../../wsl_crates/trm-rust/swarm-instella" }
+swarm-turbovec = { path = "../../wsl_crates/trm-rust/swarm-turbovec" }
+swarm-ssm = { path = "../../wsl_crates/trm-rust/swarm-ssm" }
+
+# P2j: the second batch, same rule -- each crate passed its own gate in this workspace before being
+# wired, and every route computes IN the crate. swarm-paths is added because the kernel runs on the
+# host while the platform's recorded paths are WSL literals: a recorded path must be translated before
+# it can be opened, which is exactly what that crate does.
+swarm-council = { path = "../../wsl_crates/trm-rust/swarm-council" }
+# swarm-drug decides the K3 triage verdict itself; this kernel adds no rule on top of it (see drug_handlers.rs).
+swarm-drug = { path = "../../wsl_crates/trm-rust/swarm-drug" }
+swarm-deepdta = { path = "../../wsl_crates/trm-rust/swarm-deepdta" }
+swarm-humanistic = { path = "../../wsl_crates/trm-rust/swarm-humanistic" }
+swarm-agents = { path = "../../wsl_crates/trm-rust/swarm-agents" }
+swarm-strips = { path = "../../wsl_crates/trm-rust/swarm-strips" }
+swarm-tasks = { path = "../../wsl_crates/trm-rust/swarm-tasks" }
+sha2 = "0.10"
+# swarm-docking's Vina scoring decides, including its own corrected H-bond ramp (see docking_handlers.rs).
+swarm-docking = { path = "../../wsl_crates/trm-rust/swarm-docking" }
+# swarm-intel's council decides the verdict, routing and disposition (see intel_handlers.rs).
+swarm-intel = { path = "../../wsl_crates/trm-rust/swarm-intel" }
+# swarm-fit's K3 service logic decides the booking verdict and owns the NAND write (see fit_handlers.rs).
+swarm-fit = { path = "../../wsl_crates/trm-rust/swarm-fit" }
+# swarm-brain's connectome store, sparse neural mode and four-architecture switch (see brain_handlers.rs).
+swarm-brain = { path = "../../wsl_crates/trm-rust/swarm-brain" }
+swarm-nand = { path = "../../wsl_crates/trm-rust/swarm-nand" }
+swarm-gguf = { path = "../../wsl_crates/trm-rust/swarm-gguf" }
+swarm-git = { path = "../../wsl_crates/trm-rust/swarm-git" }
+swarm-paths = { path = "../../wsl_crates/trm-rust/swarm-paths" }
+# Mesh routing + the K3-native key-value store, wired as executor modes (the engines already live here).
+swarm-mesh = { path = "../../wsl_crates/trm-rust/swarm-mesh" }
+swarm-kvstore = { path = "../../wsl_crates/trm-rust/swarm-kvstore" }
+# P2k: the third batch — sovereign blockade, ensemble conductor, Jarvis bridge, fabric vitals and the
+# real-time health monitor. Same rule: each passed its own gate in this workspace; the executor computes
+# IN these crates, adding no algorithm of its own. swarm-instella (MoE gate) is already wired above.
+swarm-sovereign = { path = "../../wsl_crates/trm-rust/swarm-sovereign" }
+swarm-conductor = { path = "../../wsl_crates/trm-rust/swarm-conductor" }
+swarm-jarvis = { path = "../../wsl_crates/trm-rust/swarm-jarvis" }
+swarm-vitals = { path = "../../wsl_crates/trm-rust/swarm-vitals" }
+swarm-health = { path = "../../wsl_crates/trm-rust/swarm-health" }
+# P2l: swarm-router (voltage-native sparse-gated decision path) and swarm-shard (multi-shard fabric).
+swarm-router = { path = "../../wsl_crates/trm-rust/swarm-router" }
+swarm-shard = { path = "../../wsl_crates/trm-rust/swarm-shard" }
+# P2m: swarm-cosmos (THzGateway + Seeker spectral field) — the manifest now lives in swarm_v2_artifacts/spectral_manifest/.
+swarm-cosmos = { path = "../../wsl_crates/trm-rust/swarm-cosmos" }
+# P2n: swarm-voltage (qwen3moe dequant + forward primitives).
+swarm-voltage = { path = "../../wsl_crates/trm-rust/swarm-voltage" }
+# Instella distill dequant + int8 dot (Q4_K/Q5_0/Q6_K/Q8_0) + MLA — the pure-Rust parity engine.
+swarm-dequant = { path = "../../wsl_crates/trm-rust/swarm-dequant" }
+wgpu = { version = "30.0.1", default-features = false, features = ["vulkan", "wgsl"] }
+pollster = "1.0.1"
+bytemuck = "1.25.2"

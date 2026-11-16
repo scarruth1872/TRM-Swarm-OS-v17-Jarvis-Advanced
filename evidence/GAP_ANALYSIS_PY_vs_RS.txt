@@ -1,0 +1,50 @@
+GAP ANALYSIS: PYTHON vs RUST - MEASURED 2026-10-14
+
+METHOD: ran swarm_v2.app_v2 under uvicorn on :8099 (free port),
+probed /openapi.json + live endpoints. Not a module count.
+
+ROUTE COUNTS
+  python routes : 262
+  rust routes   : 91
+  overlap       : 43
+  PYTHON-ONLY   : 219
+  RUST-ONLY     : 48
+
+PYTHON CAN DO TODAY THAT RUST CANNOT (verified live, HTTP 200)
+  /kanban/board    real persistent board, cards with card_id
+  /kanban/stats    total_cards 15, by_status DONE 15
+  /kanban/cards    create (Rust only echoes, never persists)
+  /kanban/cards/{id}/move   real state transition
+  /memory/stats    total_memories 2092
+  /council/status  member_count 14, byzantine_tolerance 4,
+                   total_proposals/enacted/rejected counters
+  /mesh/topology   real node list (jarvis_gateway etc)
+  /verification/stats  total_verifications 0 (honest zero)
+
+RUST CAN DO TODAY THAT PYTHON CANNOT (48 rust-only routes)
+  /brain/reason, /k3/* (real ternary compute + SRAM + stress)
+  /ddr/* (antibody scan), /federation/*, /journal/*
+  /gpu, /infra/*, /continuum, /generative-architect
+  GENUINE ON-DEVICE LLM PATH: /swarm/chat -> llama.cpp 8587
+    measured 0.07-0.11s, templated:false, ~200 tok/s
+    Python has NO equivalent route
+
+NEITHER HAS (never implemented in any language)
+  /crate/* (humanistic, journal/verify, agent/census)
+  docking, chembl, clinical, bioassay, sparse-gated task router
+
+HONESTY NOTES
+  - Python reports verification stats as 0 (honest, not fabricated)
+  - Rust /verification/stats fabricated 100006 until fixed 2026-10-08
+  - Rust /kanban/* is 18 hardcoded literals; no persistence
+  - Python /kanban/* is a real persistent board
+  - Python bound 8021 by default (retired); run here on 8099
+  - Python was NOT running before this measurement
+
+PYTHON PLATFORM DEAD DEPENDENCIES (found via live run)
+  1. port 8021 RETIRED: artifact scan fails every cycle
+     'Failed to scan artifacts: Cannot connect to 127.0.0.1:8021'
+  2. port 8021 RETIRED: swarm_api registers itself on 8021
+  3. port 4000 MISSING: cognitive ingestion fetcher
+     JARVIS_BASE_URL=http://127.0.0.1:4000  -> WinError 10061 refused
+     Only Jarvis server present binds 5115 (inference, not /api/memory)

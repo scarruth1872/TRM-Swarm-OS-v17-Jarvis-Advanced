@@ -1,0 +1,26 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-27T22:37:59.102392+00:00",
+  "failure_mode": "if the toolchain won't fit the nearly-full C: or the offload stalls, name the boundary and fall back to Qwen2.5-Coder for fast coding",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "8a637f0907d66b02556ac263a7b329e9e15c103e64f0fce6e472b424a3977e78",
+      "motion": "MOTION-INSTELLA-FAST",
+      "phase": "consensus",
+      "proposal_id": "CP-47C194F5",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "MAKE INSTELLA FAST + TEST: install a GPU toolchain and rebuild the fork with GPU acceleration, then serve the 16B with partial offload and measure the speedup. Two routes: (a) the CUDA toolkit (nvcc) for a CUDA build \u2014 heavier (~3-5 GB), (b) the Vulkan SDK for a Vulkan build \u2014 lighter and works on NVIDIA via the driver. PREDICTION: a GPU build with partial offload lifts inference from ~0.25 tok/s to ~2-5 tok/s (the 10.47 GB model keeps ~2.5 GB on CPU, which caps the gain). FAILURE: if neither toolchain fits the nearly-full C: (install on D:) or the offload stalls, name the boundary and fall back to the Qwen2.5-Coder for fast coding. MEASURED: the Instella 16B Q4_K_M (10.47 GB) generates on CPU at ~0.25 tok/s (a '17*23' completion took 156.8s for 40 tokens). The fork (csabakecskemeti/llama.cpp@instella-moe) is built CPU-only (MSVC AVX2) because the host has NO CUDA toolkit (nvcc) and NO Vulkan SDK \u2014 MSVC 2022 is the only compiler. The RTX 3070 has 8 GB VRAM; the 10.47 GB model needs partial CPU offload even on GPU. The C: drive is ~96% full (models/caches already on D:)."
+    }
+  ],
+  "prediction_recorded": "a GPU build with partial offload lifts ~0.25 -> ~2-5 tok/s",
+  "prior_state": "Instella generates on CPU ~0.25 tok/s; fork is CPU-only; no CUDA/Vulkan toolchain",
+  "quorum": 9,
+  "record": "NEXT MOTION -- Instella fast inference (GPU) + testing",
+  "sha256": "9d586c7f935d167f9cea6becd9235cf5716c6da439904cfba47a3f8ccbb1fda1"
+}

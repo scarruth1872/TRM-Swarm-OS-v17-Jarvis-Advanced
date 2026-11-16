@@ -1,0 +1,119 @@
+{
+ "benchmark": "100_parsers_crucible",
+ "started_at": "2026-09-28T21:30:26.002876+00:00",
+ "producer": "scratch/bench_100_parsers_real.py",
+ "note": "Inputs are GENERATED in-harness; the original artifact's inputs do not exist on disk.",
+ "registry_parse_signature": "(payload: Any, format_hint: Optional[str] = None, filename: Optional[str] = None, **kwargs) -> Dict[str, Any]",
+ "inventory_keys": [
+  "active_parsers",
+  "active_registered_parsers_count",
+  "all_parsers_active",
+  "status",
+  "total_target_parsers",
+  "truth_anchor"
+ ],
+ "measured": [
+  {
+   "format": "vcf",
+   "input_bytes": 2051,
+   "expected_units": 50,
+   "ok": false,
+   "verdict": "RAISED",
+   "error": "No custom parser registered for format: ##fileformat=vcfv4.3\n#chrom\tpos\tid\tref\talt\tqual\tfilter\tinfo\nchr1\t10037\t.\tc\tc\t31.0\tpass\tdp=6;af=0.5\nc"
+  },
+  {
+   "format": "fastq",
+   "input_bytes": 21190,
+   "expected_units": 100,
+   "ok": false,
+   "verdict": "RAISED",
+   "error": "No custom parser registered for format: @read0\nacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacgtnacg"
+  },
+  {
+   "format": "pdb",
+   "input_bytes": 15800,
+   "expected_units": 200,
+   "ok": false,
+   "verdict": "RAISED",
+   "error": "No custom parser registered for format: atom      1  ca  ala a   1       0.000   0.000   0.000  1.00 20.00           c\natom      2  ca  ala "
+  },
+  {
+   "format": "smiles",
+   "input_bytes": 1520,
+   "expected_units": 160,
+   "ok": false,
+   "verdict": "RAISED",
+   "error": "No custom parser registered for format: cco.c1ccccc1.cc(=o)o.n[c@@h](c)c(=o)o.cco.c1ccccc1.cc(=o)o.n[c@@h](c)c(=o)o.cco.c1ccccc1.cc(=o)o.n[c"
+  },
+  {
+   "format": "mzml",
+   "input_bytes": 32825,
+   "expected_units": 60,
+   "ok": false,
+   "verdict": "RAISED",
+   "error": "No custom parser registered for format: <?xml version=\"1.0\"?><mzml><run><spectrumlist count=\"60\"><spectrum index=\"0\" id=\"s0\"><binarydataarra"
+  },
+  {
+   "format": "mmcif",
+   "input_bytes": 14034,
+   "expected_units": 200,
+   "ok": false,
+   "verdict": "RAISED",
+   "error": "No custom parser registered for format: _atom_site.group_pdb\natom 1 c ca . ala a 1 ? 0.000000 0.000000 0.000000 1.00 20.00 c\natom 2 c ca . a"
+  },
+  {
+   "format": "ontology",
+   "input_bytes": 3264,
+   "expected_units": 60,
+   "ok": false,
+   "verdict": "RAISED",
+   "error": "No custom parser registered for format: format-version: 1.2\nontology: tst\n\n[term]\nid: tst:0000001\nname: term 1\nnamespace: test\n\n[term]\nid: t"
+  },
+  {
+   "format": "fhir",
+   "input_bytes": 4289,
+   "expected_units": 50,
+   "ok": false,
+   "verdict": "RAISED",
+   "error": "No custom parser registered for format: {\"resourcetype\": \"bundle\", \"type\": \"collection\", \"entry\": [{\"resource\": {\"resourcetype\": \"patient\", "
+  },
+  {
+   "format": "netcdf",
+   "input_bytes": 4004,
+   "expected_units": 0,
+   "ok": false,
+   "verdict": "RAISED",
+   "error": "No custom parser registered for format: b'cdf\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x0"
+  }
+ ],
+ "unmeasured": [
+  {
+   "format": "dicom",
+   "why": "no generator in this harness -- binary or science-library dependent",
+   "declared_in_old_artifact": true
+  },
+  {
+   "format": "abif",
+   "why": "no generator in this harness -- binary or science-library dependent",
+   "declared_in_old_artifact": true
+  },
+  {
+   "format": "hdf5",
+   "why": "no generator in this harness -- binary or science-library dependent",
+   "declared_in_old_artifact": true
+  },
+  {
+   "format": "zarr",
+   "why": "no generator in this harness -- binary or science-library dependent",
+   "declared_in_old_artifact": true
+  }
+ ],
+ "summary": {
+  "formats_measured": 9,
+  "produced_output": 0,
+  "empty_or_raised": 9,
+  "total_us_measured": null,
+  "median_us": null,
+  "total_input_bytes": 98977
+ }
+}

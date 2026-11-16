@@ -1,0 +1,247 @@
+@echo off
+setlocal enabledelayedexpansion
+title TRM Swarm OS - Platform Launcher
+
+set ROOT_DIR=F:\Development sites\TRM-Swarm-OS-v2
+set "PY_EXE=C:\Users\shawn\AppData\Local\Programs\Python\Python311\python.exe"
+set "NPM_CMD=C:\Program Files\nodejs\npm.cmd"
+set "LLAMA_EXE=F:\Development sites\ub3\llama-vulkan-win\llama-server.exe"
+set "MODEL=%ROOT_DIR%\models\qwen2.5-1.5b-instruct-q4_k_m.gguf"
+set "LOG=%ROOT_DIR%\logs\platform_launch.log"
+
+if not "%TRM_LOGGED%"=="1" (
+    set TRM_LOGGED=1
+    if not exist "%ROOT_DIR%\logs" mkdir "%ROOT_DIR%\logs" 2>nul
+    echo ==== launch %DATE% %TIME% ==== >> "%LOG%"
+    "%COMSPEC%" /c "%~f0" 1>> "%LOG%" 2>&1
+    echo ==== done   %DATE% %TIME% ==== >> "%LOG%"
+    exit /b 0
+)
+
+if "%TRM_SELFTEST%"=="1" goto :selftest
+if "%TRM_CHECK_ONLY%"=="1" goto :check_only
+goto :main
+:: ============================================================
+:: PORT VERIFICATION HELPERS (fix: stale process squatting a port)
+:: ensure PORT EXPECTED_EXE DESC
+:: If PORT is held by a process whose image != EXPECTED_EXE, it is a STALE
+:: SQUATTER: report it loudly and kill it. Port occupancy alone is NOT proof
+:: the right binary is serving.
+:port_pid
+set "_PID="
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":%_PORT% " ^| findstr LISTENING') do set "_PID=%%a"
+exit /b 0
+
+:verify
+set "_PORT=%~1"
+set "_EXE=%~2"
+set "_DESC=%~3"
+call :port_pid
+if not defined _PID (
+    echo       [DOWN]  %_DESC% - port %_PORT% free
+    exit /b 1
+)
+set "_IMG="
+for /f "tokens=1 delims=," %%b in ('tasklist /FI "PID eq %_PID%" /FO CSV /NH 2^>nul') do set "_IMG=%%~b"
+if /i "%_IMG%"=="%_EXE%" (
+    echo       [OK]    %_DESC% - pid %_PID% ^(%_IMG%^)
+    exit /b 0
+)
+echo       [SQUAT] port %_PORT% held by '%_IMG%' pid %_PID%
+echo       [SQUAT] expected '%_EXE%' - KILLING stale process
+if not "%TRM_NO_KILL%"=="1" taskkill /PID %_PID% /F >nul 2>&1
+ping -n 3 127.0.0.1 >nul 2>&1
+exit /b 1
+
+:confirm
+:: %1=port %2=desc - wait up to 12s for the port to listen, else FAIL LOUD
+set "_PORT=%~1"
+set "_DESC=%~2"
+set /a _N=0
+:confirm_loop
+call :port_pid
+if defined _PID (
+    echo       [UP]    %_DESC% - pid %_PID%
+    exit /b 0
+)
+set /a _N+=1
+if %_N% GEQ 6 (
+    echo       [FAIL]  %_DESC% - port %_PORT% did NOT come up after 12s
+    echo       [FAIL]  the started process failed to bind. Check %LOG%
+    exit /b 1
+)
+ping -n 3 127.0.0.1 >nul 2>&1
+goto :confirm_loop
+
+:verify_cmd
+:: Like :verify but for python/node services - matches a MARKER in the command
+:: line, because many python.exe processes share the same image name.
+:: Cmdline is read with python+psutil: wmic is GONE from Win11 (verified) and
+:: nested double quotes do not survive a for/f backquote command. An UNREADABLE
+:: cmdline must NEVER kill - it reports UNVERIFIED and exits 0.
+:: %1=port %2=marker %3=desc
+set "_PORT=%~1"
+set "_MARK=%~2"
+set "_DESC=%~3"
+call :port_pid
+if not defined _PID (
+    echo       [DOWN]  %_DESC% - port %_PORT% free
+    exit /b 1
+)
+set "_CMD="
+for /f "usebackq delims=" %%c in (`"%ROOT_DIR%\tools\proc_cmdline.bat" %_PID% 2^>nul`) do set "_CMD=%%c"
+if not defined _CMD (
+    echo       [UNVERIFIED] %_DESC% - pid %_PID% up, cmdline unreadable - NOT killing
+    exit /b 0
+)
+set "_HIT=%TEMP%\trm_vc_%_PORT%.hit"
+del "%_HIT%" >nul 2>&1
+echo %_CMD%| findstr /i /c:"%_MARK%" >nul 2>&1 && echo MARK >"%_HIT%"
+if exist "%_HIT%" (
+    echo       [OK]    %_DESC% - pid %_PID% ^(matches '%_MARK%'^)
+    del "%_HIT%" >nul 2>&1
+    exit /b 0
+)
+echo       [SQUAT] port %_PORT% held by wrong process pid %_PID%
+echo       [SQUAT] cmd: %_CMD%
+if not "%TRM_NO_KILL%"=="1" taskkill /PID %_PID% /F >nul 2>&1
+ping -n 3 127.0.0.1 >nul 2>&1
+exit /b 1
+
+:main
+echo [1/7] Council Server (8022)
+call :verify 8022 host_council_server.exe "Council Server"
+if errorlevel 1 (
+    start "TRM-Council-Server" /min "%ROOT_DIR%\trm_uefi_kernel\host_council_server\target\release\host_council_server.exe"
+    call :confirm 8022 "Council Server"
+)
+echo [2/7] Companion Bridge (3002)
+call :verify 3002 trm_companion_bridge.exe "Companion Bridge"
+if errorlevel 1 (
+    start "TRM-Companion-Bridge" /min "%ROOT_DIR%\trm_uefi_kernel\trm_companion_bridge\target\release\trm_companion_bridge.exe"
+    call :confirm 3002 "Companion Bridge"
+)
+echo [3/7] Companion Proxy (3001)
+call :verify_cmd 3001 trm_companion_proxy "Companion Proxy"
+if errorlevel 1 (
+    start "TRM-Companion-Proxy" /min "%PY_EXE%" -u "%ROOT_DIR%\trm_uefi_kernel\trm_companion_proxy.py"
+    call :confirm 3001 "Companion Proxy"
+)
+echo [4/7] Inference Engine Vulkan (8587)
+call :verify 8587 llama-server.exe "Inference Engine"
+if errorlevel 1 (
+    if not exist "%LLAMA_EXE%" (
+        echo       [WARN]  llama-server.exe missing - chat will be templated
+    ) else (
+        start "TRM-Inference" /min "%LLAMA_EXE%" --model "%MODEL%" --host 127.0.0.1 --port 8587 --n-gpu-layers 99 --ctx-size 4096 --threads 12 --parallel 4 --batch-size 2048 --ubatch-size 1024 --flash-attn on
+        call :confirm 8587 "Inference Engine"
+    )
+)
+
+echo [5/7] TRM Inference Service (8588)
+call :verify_cmd 8588 trm_server "TRM Service"
+if errorlevel 1 (
+    start "TRM-TRMService" /min "%PY_EXE%" "%ROOT_DIR%\tools\trm_server.py"
+    call :confirm 8588 "TRM Service"
+)
+echo [6/7] LCARS Dashboard (5183)
+call :verify_cmd 5183 vite "LCARS Dashboard"
+if errorlevel 1 (
+    cd /d "%ROOT_DIR%\dashboard"
+    start "TRM-LCARS-Dashboard" /min cmd /c ""%NPM_CMD%" run dev"
+    cd /d "%ROOT_DIR%"
+    call :confirm 5183 "LCARS Dashboard"
+)
+echo [7/7] Council API (8099)
+call :verify_cmd 8099 app_v2 "Council API"
+if errorlevel 1 (
+    start "TRM-CouncilAPI" /min cmd /c "set SWARM_PORT=8099&& set PYTHONPATH=%ROOT_DIR%&& "%PY_EXE%" -m swarm_v2.app_v2"
+    call :confirm 8099 "Council API"
+)
+echo.
+echo === PLATFORM SERVICES INITIALIZED ===
+echo  Dashboard  http://localhost:5183
+echo  Council    http://localhost:8022
+echo  Companion  http://localhost:3001
+echo  TRM svc    http://localhost:8588
+start http://localhost:5183
+ping -n 5 127.0.0.1 >nul 2>&1
+exit /b 0
+
+:check_only
+echo --- CHECK ONLY ---
+call :verify 8022 host_council_server.exe "Council"
+call :verify_http 8022 /arc/pool unified_transistor_fabric "Council"
+call :verify_http 8022 /arc/status "arc/status" "Council"
+call :verify 3002 trm_companion_bridge.exe "Bridge"
+call :verify_cmd 3001 trm_companion_proxy "Proxy"
+call :verify_http 3001 /health "companion/status" "Proxy"
+call :verify 8587 llama-server.exe "Inference"
+call :verify_http 8587 /health "ok" "Inference"
+call :verify_cmd 8588 trm_server "TRM Svc"
+call :verify_http 8588 /health trm7m "TRM Svc"
+call :verify_cmd 5183 vite "Dashboard"
+call :verify_http 5183 / doctype "Dashboard"
+call :verify_cmd 3000 server.ts "Jarvis"
+call :verify_http 3000 /health doctype "Jarvis"
+call :verify_cmd 8099 app_v2 "Council API"
+call :verify_http 8099 /council/status rust_kernel_bound "Council API"
+exit /b 0
+
+:selftest
+:: Deliberately WRONG markers. A verifier that only ever prints OK is useless:
+:: this proves the failure path fires. Always run with TRM_NO_KILL=1.
+echo --- SELF TEST (wrong markers, expect SQUAT/STALE) ---
+call :verify_cmd 8022 WRONG_MARKER "selftest"
+call :verify_http 8022 /arc/pool WRONG_MARKER "selftest"
+call :verify_http 8022 /nope "x" "selftest"
+echo --- SELF TEST DONE ---
+exit /b 0
+
+:verify_http
+:: Port-listen is NOT proof the ROUTE exists: an old binary can listen on the
+:: right port and 404 or serve stale JSON. This checks the endpoint BODY for a
+:: marker. The body goes to a temp FILE and findstr reads the file, so HTML
+:: containing < > & | cannot break the comparison.
+:: %1=port %2=path %3=marker %4=desc
+set "_PORT=%~1"
+set "_PATH=%~2"
+set "_MARK=%~3"
+set "_DESC=%~4"
+call :port_pid
+if not defined _PID (
+    echo       [DOWN]  %_DESC% - port %_PORT% free
+    exit /b 1
+)
+set "_F=%TEMP%\trm_vh_%_PORT%.txt"
+del "%_F%" >nul 2>&1
+set "_HTTPCODE=000"
+for /f "usebackq delims=" %%h in (`curl.exe -s -m 6 -o "%_F%" -w "%%{http_code}" "http://127.0.0.1:%_PORT%%_PATH%" 2^>nul`) do set "_HTTPCODE=%%h"
+if not exist "%_F%" (
+    echo       [WARN]  %_DESC% - port %_PORT% up, %_PATH% produced no body
+    exit /b 0
+)
+if not "%_HTTPCODE%"=="200" (
+    echo       [WARN]  %_DESC% - port %_PORT% up, %_PATH% returned HTTP %_HTTPCODE%
+    del "%_F%" >nul 2>&1
+    exit /b 0
+)
+set "_SZ=0"
+for %%A in ("%_F%") do set "_SZ=%%~zA"
+if "%_SZ%"=="0" (
+    echo       [WARN]  %_DESC% - port %_PORT% up, %_PATH% returned an EMPTY body
+    del "%_F%" >nul 2>&1
+    exit /b 0
+)
+findstr /i /c:"%_MARK%" "%_F%" >nul 2>&1
+if not errorlevel 1 (
+    echo       [OK]    %_DESC% - port %_PORT% %_PATH% served '%_MARK%'
+    del "%_F%" >nul 2>&1
+    exit /b 0
+)
+echo       [STALE] port %_PORT% up but %_PATH% does NOT serve '%_MARK%'
+echo       [STALE] an older binary is holding port %_PORT% - KILLING pid %_PID%
+if not "%TRM_NO_KILL%"=="1" taskkill /PID %_PID% /F >nul 2>&1
+ping -n 3 127.0.0.1 >nul 2>&1
+del "%_F%" >nul 2>&1
+exit /b 1

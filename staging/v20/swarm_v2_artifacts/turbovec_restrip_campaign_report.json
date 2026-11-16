@@ -1,0 +1,91 @@
+{
+  "campaign": "TURBOVEC_RESTRIP_CAMPAIGN",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": 1788811322.7509272,
+  "total_modules_restripped": 8,
+  "average_speedup": 294.2,
+  "memory_compression": "16.0x",
+  "fp32_multiplications_eliminated": "100%",
+  "results": [
+    {
+      "module": "swarm_v2/core/task_arbiter.py",
+      "speedup": 1132.1,
+      "prior_speedup": 1912.9,
+      "diff": 0.2228,
+      "status": "PASS",
+      "dll": "strip_task_arbiter_turbovec.dll",
+      "compression": "16.0x",
+      "technique": "Zero-multiplication ternary capability accumulation with speculative affinity"
+    },
+    {
+      "module": "swarm_v2/core/turbovec_memory.py",
+      "speedup": 56.8,
+      "prior_speedup": 312.0,
+      "diff": 4.4376,
+      "status": "PASS",
+      "dll": "strip_turbovec_scorer_turbovec.dll",
+      "compression": "16.0x",
+      "technique": "Ternary dot product integer accumulation with recency bias"
+    },
+    {
+      "module": "swarm_v2/core/trm_7m_optimized.py (DDR SGD)",
+      "speedup": 99.9,
+      "prior_speedup": 693.6,
+      "diff": 0.0457,
+      "status": "PASS",
+      "dll": "strip_ddr_sgd_turbovec.dll",
+      "compression": "16.0x",
+      "technique": "Integer addition/subtraction SGD gradient step with zero FP multiplications"
+    },
+    {
+      "module": "swarm_v2/core/star_matrix.py",
+      "speedup": 67.3,
+      "prior_speedup": 412.8,
+      "diff": 2.6898,
+      "status": "PASS",
+      "dll": "strip_star_matrix_turbovec.dll",
+      "compression": "16.0x",
+      "technique": "Integer trit resonance kernel with gravitational mass blend"
+    },
+    {
+      "module": "swarm_v2/core/qaoa_ising.py",
+      "speedup": 316.5,
+      "prior_speedup": 293.1,
+      "diff": 39.18,
+      "status": "PASS",
+      "dll": "strip_qaoa_ising_turbovec.dll",
+      "compression": "16.0x",
+      "technique": "Integer spin-interaction tensor evaluation with zero floating-point MACs"
+    },
+    {
+      "module": "swarm_v2/core/diffusion_denoiser.py",
+      "speedup": 1.1,
+      "prior_speedup": 184.2,
+      "diff": 0.1781,
+      "status": "PASS",
+      "dll": "strip_diffusion_turbovec.dll",
+      "compression": "16.0x",
+      "technique": "Dual-layer MLP ternary add/sub accumulation with zero floating point multiplications"
+    },
+    {
+      "module": "swarm_v2/core/mamba3_ssm.py",
+      "speedup": 63.6,
+      "prior_speedup": 56.6,
+      "diff": 0.2794,
+      "status": "PASS",
+      "dll": "strip_mamba3_turbovec.dll",
+      "compression": "16.0x",
+      "technique": "Discretized Mamba-3 SSM state update with ternary B/C projection matrices"
+    },
+    {
+      "module": "swarm_v2/core/kernel_instructions.py",
+      "speedup": 616.4,
+      "prior_speedup": 523.1,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_kernel_instructions_turbovec.dll",
+      "compression": "16.0x",
+      "technique": "Direct silicon-emulated 1-cycle K3 classification and ponderomotive trapping"
+    }
+  ]
+}

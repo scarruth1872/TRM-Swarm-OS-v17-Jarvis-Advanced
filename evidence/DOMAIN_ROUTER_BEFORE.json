@@ -1,0 +1,191 @@
+{
+  "ood": [
+    {
+      "topic": "medieval history",
+      "query": "who was crowned holy roman emperor in the year 800",
+      "top": "Autonomous Healing & Resilience",
+      "score": 0.3772,
+      "margin": 0.0127,
+      "threshold": 0.0912,
+      "abstain": true
+    },
+    {
+      "topic": "medieval history",
+      "query": "how did the hanseatic league control baltic trade",
+      "top": "Code Engineering & Refactoring",
+      "score": 0.4091,
+      "margin": 0.0123,
+      "threshold": 0.0594,
+      "abstain": true
+    },
+    {
+      "topic": "marine biology",
+      "query": "how do mantis shrimp perceive polarised light",
+      "top": "Autonomous Healing & Resilience",
+      "score": 0.3645,
+      "margin": 0.0125,
+      "threshold": 0.0912,
+      "abstain": true
+    },
+    {
+      "topic": "marine biology",
+      "query": "what depth do vampire squid inhabit",
+      "top": "Security & Cryptography",
+      "score": 0.3723,
+      "margin": 0.0059,
+      "threshold": -1.0,
+      "abstain": false
+    },
+    {
+      "topic": "tax law",
+      "query": "can i deduct home office expenses for a sole proprietorship",
+      "top": "Telemetry & Memory Synchronization",
+      "score": 0.3275,
+      "margin": 0.0042,
+      "threshold": 0.0352,
+      "abstain": true
+    },
+    {
+      "topic": "tax law",
+      "query": "what is the statute of limitations on an irs audit",
+      "top": "Code Engineering & Refactoring",
+      "score": 0.4502,
+      "margin": 0.011,
+      "threshold": 0.0594,
+      "abstain": true
+    },
+    {
+      "topic": "music theory",
+      "query": "why does a diminished seventh chord resolve outward",
+      "top": "Autonomous Healing & Resilience",
+      "score": 0.4475,
+      "margin": 0.021,
+      "threshold": 0.0912,
+      "abstain": true
+    },
+    {
+      "topic": "music theory",
+      "query": "what is the difference between dorian and phrygian mode",
+      "top": "Autonomous Healing & Resilience",
+      "score": 0.3864,
+      "margin": 0.0115,
+      "threshold": 0.0912,
+      "abstain": true
+    },
+    {
+      "topic": "cooking",
+      "query": "how long should i braise beef short ribs at 150 celsius",
+      "top": "Code Engineering & Refactoring",
+      "score": 0.4266,
+      "margin": 0.025,
+      "threshold": 0.0594,
+      "abstain": true
+    },
+    {
+      "topic": "cooking",
+      "query": "why does my sourdough starter smell like acetone",
+      "top": "Code Engineering & Refactoring",
+      "score": 0.4107,
+      "margin": 0.0351,
+      "threshold": 0.0594,
+      "abstain": true
+    },
+    {
+      "topic": "astronomy",
+      "query": "how far is the andromeda galaxy in light years",
+      "top": "Telemetry & Memory Synchronization",
+      "score": 0.3947,
+      "margin": 0.0421,
+      "threshold": 0.0352,
+      "abstain": false
+    },
+    {
+      "topic": "astronomy",
+      "query": "what causes the cassini division in saturn's rings",
+      "top": "Autonomous Healing & Resilience",
+      "score": 0.4544,
+      "margin": 0.0428,
+      "threshold": 0.0912,
+      "abstain": true
+    },
+    {
+      "topic": "botany",
+      "query": "why do monstera leaves develop fenestrations",
+      "top": "Synthesis & Chain-of-Thought",
+      "score": 0.3859,
+      "margin": 0.0173,
+      "threshold": 0.0138,
+      "abstain": false
+    },
+    {
+      "topic": "linguistics",
+      "query": "when did the great vowel shift occur in english",
+      "top": "Security & Cryptography",
+      "score": 0.4633,
+      "margin": 0.0571,
+      "threshold": -1.0,
+      "abstain": false
+    }
+  ],
+  "in_domain": [
+    {
+      "query": "is this jwt signature verification constant time",
+      "expected": "Security & Cryptography",
+      "top": "Logic & Mathematical Proof",
+      "score": 0.4876,
+      "margin": 0.0177,
+      "abstain": true,
+      "correct": false
+    },
+    {
+      "query": "prove by induction that n cubed minus n is divisible by six",
+      "expected": "Logic & Mathematical Proof",
+      "top": "Logic & Mathematical Proof",
+      "score": 0.5292,
+      "margin": 0.163,
+      "abstain": false,
+      "correct": true
+    },
+    {
+      "query": "extract this duplicated block into a helper and update the callers",
+      "expected": "Code Engineering & Refactoring",
+      "top": "Code Engineering & Refactoring",
+      "score": 0.5285,
+      "margin": 0.0649,
+      "abstain": false,
+      "correct": true
+    },
+    {
+      "query": "graph the p99 latency of the ingest service over the last hour",
+      "expected": "Telemetry & Memory Synchronization",
+      "top": "Telemetry & Memory Synchronization",
+      "score": 0.6788,
+      "margin": 0.1969,
+      "abstain": false,
+      "correct": true
+    },
+    {
+      "query": "summarise the tradeoffs and recommend an approach",
+      "expected": "Synthesis & Chain-of-Thought",
+      "top": "Synthesis & Chain-of-Thought",
+      "score": 0.4516,
+      "margin": 0.0596,
+      "abstain": false,
+      "correct": true
+    },
+    {
+      "query": "the replica lagged so fail over to the standby node",
+      "expected": "Autonomous Healing & Resilience",
+      "top": "Autonomous Healing & Resilience",
+      "score": 0.5497,
+      "margin": 0.0134,
+      "abstain": true,
+      "correct": false
+    }
+  ],
+  "ood_abstained": 10,
+  "ood_total": 14,
+  "in_correct": 4,
+  "in_total": 6,
+  "floor": null
+}

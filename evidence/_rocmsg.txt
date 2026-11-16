@@ -1,0 +1,50 @@
+feat(phoenix): decoy/ROC FALSIFIES the -8.5 threshold; re-judge the verdicts
+
+THE EXPERIMENT: 42 ligands docked against 5U39 (P. aeruginosa LpxC) on the
+validated box, exhaustiveness 8, seed 42 -- 2 CRYSTAL-CONFIRMED actives
+(CHIR-090 from 5U39, NVS-LPXC-01 from 5U3B) versus 40 property-matched decoys
+(MW +/-20%, logP +/-1, HBD/HBA +/-1, rotB +/-3, ECFP4 Tanimoto < 0.35).
+Actives were built FROM SMILES so they go through the identical pipeline as the
+decoys; a crystal pose would have rigged the comparison in their favour.
+
+RESULT -- the stated threshold did not survive measurement:
+
+  rank 1  ACTIVE  CHIR-090      -10.170
+  rank 2  decoy   decoy_037      -8.541   <- a decoy
+  ...
+  rank 8  ACTIVE  NVS-LPXC-01    -8.087   <- a crystal-confirmed active
+
+  decoys beating the WEAKER active : 6 of 40
+  decoys beating the STRONGER one  : 0 of 40
+  best decoy -8.541 sits BETWEEN the two actives.
+
+  AUC 0.925 (n=2 actives: LOW CONFIDENCE)
+  exact Mann-Whitney U = 74/80, p = 0.0186 over all 861 label splits
+  active ranks: 1 and 8 of 42
+
+So -8.5, which I had used as the PHOENIX BIND cut, ADMITS A DECOY AS BIND. It is
+falsified. The threshold moves to -9.0, where zero decoys pass -- accepting the
+cost of dropping one true active, because for a triage step a missed candidate is
+cheaper than a fabricated one.
+
+APPLIED BACK: two PHOENIX BIND verdicts are downgraded.
+  IFIH1 -8.610  BIND -> UNKNOWN   (inside the measured decoy range)
+  TYK2  -8.579  BIND -> UNKNOWN   (inside the measured decoy range)
+  BLK   -9.057  BIND -> BIND      (survives, by 0.057)
+Revised ternary summary: BIND=1 UNKNOWN=7 REJECT=2 (was BIND=3 UNKNOWN=5 REJECT=2)
+
+WHAT THIS DOES AND DOES NOT ESTABLISH
+  The protocol DOES rank a strong binder cleanly: CHIR-090 sits at rank 1 with
+  0/40 decoys above it, and its SMILES-built conformer redocked to -10.170 versus
+  -10.13 from the crystal pose -- a 0.04 agreement that independently
+  cross-validates the pipeline.
+  It does NOT separate a moderate binder: 6 decoys outrank NVS-LPXC-01. With two
+  actives the AUC is not a stable estimate and is reported with that flag.
+  No single vina threshold separates this active set from these decoys, so every
+  BIND verdict resting on a bare score is weak evidence, and the journal says so.
+
+ALSO FIXED: my ROC analyzer had the sign convention INVERTED -- it stayed silent
+while the data plainly showed overlap. Affinities are negative, so overlap means
+best_decoy < worst_act, and it was testing the opposite. It now reports the count
+of decoys above each active and states plainly when a threshold admits decoys.
+A check that cannot report the failure it exists to catch is not a check.

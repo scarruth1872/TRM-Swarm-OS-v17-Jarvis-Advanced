@@ -1,0 +1,1037 @@
+{
+ "scanned_trees": [
+  "swarm_v2",
+  "swarm_v2_integrated",
+  "swarm_v2_artifacts",
+  "trm_uefi_kernel"
+ ],
+ "families": {
+  "build_nand_fabric_index.py": {
+   "copies": 1,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2/core/build_nand_fabric_index.py",
+   "functions_union": 5,
+   "rows": [
+    {
+     "path": "swarm_v2/core/build_nand_fabric_index.py",
+     "bytes": 6631,
+     "lines": 153,
+     "sha16": "61bfbfa212690c0c",
+     "functions": [
+      "cosine",
+      "main",
+      "pack",
+      "quantize",
+      "unpack"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./ingest_sovereign_datasets.py",
+      "./scratch/p4_move_skill_section.py",
+      "./swarm_v2_rust_kernel/src/turbovec_ternary_knowledge_fusion.rs",
+      "./trm_uefi_kernel/host_council_server/src/packed_ternary.rs"
+     ]
+    }
+   ]
+  },
+  "chaos_engine.py": {
+   "copies": 1,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2/core/chaos_engine.py",
+   "functions_union": 1,
+   "rows": [
+    {
+     "path": "swarm_v2/core/chaos_engine.py",
+     "bytes": 3523,
+     "lines": 92,
+     "sha16": "3a2d1a618c5b083b",
+     "functions": [
+      "get_chaos_engine"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm3_endpoints_snippet.py",
+      "./swarm_v2/core/catalyst_phase0.py",
+      "./swarm_v2/core/manual_clearing_engine.py",
+      "./swarm_v2/core/ultrawork_tranche.py"
+     ]
+    }
+   ]
+  },
+  "chaos_engine.rs": {
+   "copies": 4,
+   "distinct_hashes": 3,
+   "richest": "trm_uefi_kernel/src/chaos_engine.rs",
+   "functions_union": 9,
+   "rows": [
+    {
+     "path": "swarm_v2_integrated/code/native_voltage_strips/chaos_engine.rs",
+     "bytes": 2128,
+     "lines": 37,
+     "sha16": "bd745befcd1da64f",
+     "functions": [],
+     "exports_c_abi": true,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [
+      "apply_network_delay",
+      "disable",
+      "enable",
+      "get_chaos_engine",
+      "get_profile",
+      "new",
+      "set_dropout_rate",
+      "set_latency",
+      "should_drop_connection_with"
+     ],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm3_endpoints_snippet.py",
+      "./swarm_v2/core/catalyst_phase0.py",
+      "./swarm_v2/core/manual_clearing_engine.py",
+      "./swarm_v2/core/ultrawork_tranche.py"
+     ]
+    },
+    {
+     "path": "swarm_v2_artifacts/native_voltage_strips/chaos_engine.rs",
+     "bytes": 2128,
+     "lines": 37,
+     "sha16": "bd745befcd1da64f",
+     "functions": [],
+     "exports_c_abi": true,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [
+      "apply_network_delay",
+      "disable",
+      "enable",
+      "get_chaos_engine",
+      "get_profile",
+      "new",
+      "set_dropout_rate",
+      "set_latency",
+      "should_drop_connection_with"
+     ],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm3_endpoints_snippet.py",
+      "./swarm_v2/core/catalyst_phase0.py",
+      "./swarm_v2/core/manual_clearing_engine.py",
+      "./swarm_v2/core/ultrawork_tranche.py"
+     ]
+    },
+    {
+     "path": "trm_uefi_kernel/host_tranche/src/chaos_engine.rs",
+     "bytes": 440,
+     "lines": 16,
+     "sha16": "1cf715426a4530a7",
+     "functions": [
+      "get_chaos_engine"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 1,
+     "calls_the_module": false,
+     "missing_vs_richest": [
+      "apply_network_delay",
+      "disable",
+      "enable",
+      "get_profile",
+      "new",
+      "set_dropout_rate",
+      "set_latency",
+      "should_drop_connection_with"
+     ],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm3_endpoints_snippet.py",
+      "./swarm_v2/core/catalyst_phase0.py",
+      "./swarm_v2/core/manual_clearing_engine.py",
+      "./swarm_v2/core/ultrawork_tranche.py"
+     ]
+    },
+    {
+     "path": "trm_uefi_kernel/src/chaos_engine.rs",
+     "bytes": 2656,
+     "lines": 77,
+     "sha16": "e7f417eb0ed34045",
+     "functions": [
+      "apply_network_delay",
+      "disable",
+      "enable",
+      "get_chaos_engine",
+      "get_profile",
+      "new",
+      "set_dropout_rate",
+      "set_latency",
+      "should_drop_connection_with"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm3_endpoints_snippet.py",
+      "./swarm_v2/core/catalyst_phase0.py",
+      "./swarm_v2/core/manual_clearing_engine.py",
+      "./swarm_v2/core/ultrawork_tranche.py"
+     ]
+    }
+   ]
+  },
+  "expert_registry.py": {
+   "copies": 1,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2/core/expert_registry.py",
+   "functions_union": 1,
+   "rows": [
+    {
+     "path": "swarm_v2/core/expert_registry.py",
+     "bytes": 3184,
+     "lines": 81,
+     "sha16": "d067bccb817595b3",
+     "functions": [
+      "get_expert_registry"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./SwarmOS_v6_Snapshot_extracted/swarm_v2/app_v2.py",
+      "./SwarmOS_v6_Snapshot_extracted/swarm_v2/core/base_agent.py",
+      "./SwarmOS_v6_Snapshot_extracted/test_autonomous_loop.py",
+      "./audit_runtime_dispatch.py",
+      "./batch1_ref_driver.py",
+      "./execute_voltage_bound_harmony_protocol.py"
+     ]
+    }
+   ]
+  },
+  "expert_registry.rs": {
+   "copies": 4,
+   "distinct_hashes": 2,
+   "richest": "trm_uefi_kernel/host_tranche/src/expert_registry.rs",
+   "functions_union": 2,
+   "rows": [
+    {
+     "path": "swarm_v2_integrated/code/native_voltage_strips/expert_registry.rs",
+     "bytes": 2150,
+     "lines": 37,
+     "sha16": "d7634fd37a96d74f",
+     "functions": [],
+     "exports_c_abi": true,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [
+      "get_expert_registry",
+      "new"
+     ],
+     "module_is_referenced_by": [
+      "./SwarmOS_v6_Snapshot_extracted/swarm_v2/app_v2.py",
+      "./SwarmOS_v6_Snapshot_extracted/swarm_v2/core/base_agent.py",
+      "./SwarmOS_v6_Snapshot_extracted/test_autonomous_loop.py",
+      "./audit_runtime_dispatch.py",
+      "./batch1_ref_driver.py",
+      "./execute_voltage_bound_harmony_protocol.py"
+     ]
+    },
+    {
+     "path": "swarm_v2_artifacts/native_voltage_strips/expert_registry.rs",
+     "bytes": 2150,
+     "lines": 37,
+     "sha16": "d7634fd37a96d74f",
+     "functions": [],
+     "exports_c_abi": true,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [
+      "get_expert_registry",
+      "new"
+     ],
+     "module_is_referenced_by": [
+      "./SwarmOS_v6_Snapshot_extracted/swarm_v2/app_v2.py",
+      "./SwarmOS_v6_Snapshot_extracted/swarm_v2/core/base_agent.py",
+      "./SwarmOS_v6_Snapshot_extracted/test_autonomous_loop.py",
+      "./audit_runtime_dispatch.py",
+      "./batch1_ref_driver.py",
+      "./execute_voltage_bound_harmony_protocol.py"
+     ]
+    },
+    {
+     "path": "trm_uefi_kernel/host_tranche/src/expert_registry.rs",
+     "bytes": 685,
+     "lines": 30,
+     "sha16": "d5e40dffab1016c5",
+     "functions": [
+      "get_expert_registry",
+      "new"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 1,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./SwarmOS_v6_Snapshot_extracted/swarm_v2/app_v2.py",
+      "./SwarmOS_v6_Snapshot_extracted/swarm_v2/core/base_agent.py",
+      "./SwarmOS_v6_Snapshot_extracted/test_autonomous_loop.py",
+      "./audit_runtime_dispatch.py",
+      "./batch1_ref_driver.py",
+      "./execute_voltage_bound_harmony_protocol.py"
+     ]
+    },
+    {
+     "path": "trm_uefi_kernel/src/expert_registry.rs",
+     "bytes": 685,
+     "lines": 30,
+     "sha16": "d5e40dffab1016c5",
+     "functions": [
+      "get_expert_registry",
+      "new"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 1,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./SwarmOS_v6_Snapshot_extracted/swarm_v2/app_v2.py",
+      "./SwarmOS_v6_Snapshot_extracted/swarm_v2/core/base_agent.py",
+      "./SwarmOS_v6_Snapshot_extracted/test_autonomous_loop.py",
+      "./audit_runtime_dispatch.py",
+      "./batch1_ref_driver.py",
+      "./execute_voltage_bound_harmony_protocol.py"
+     ]
+    }
+   ]
+  },
+  "gpu_infinity_computer.py": {
+   "copies": 1,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2/core/gpu_infinity_computer.py",
+   "functions_union": 5,
+   "rows": [
+    {
+     "path": "swarm_v2/core/gpu_infinity_computer.py",
+     "bytes": 10719,
+     "lines": 265,
+     "sha16": "a1d888e0b18f5d00",
+     "functions": [
+      "compare_fabrics",
+      "gpu_pattern_cellular",
+      "gpu_pattern_fpga",
+      "gpu_pattern_k3_ternary",
+      "gpu_pattern_neural"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./execute_sovereign_industry_transformation_20.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/core/capability_test.py",
+      "./swarm_v2/core/catalyst_phase0.py",
+      "./swarm_v2/core/manual_clearing_engine.py"
+     ]
+    }
+   ]
+  },
+  "gpu_infinity_computer.rs": {
+   "copies": 2,
+   "distinct_hashes": 2,
+   "richest": "trm_uefi_kernel/src/gpu_infinity_computer.rs",
+   "functions_union": 11,
+   "rows": [
+    {
+     "path": "trm_uefi_kernel/host_tranche/src/gpu_infinity_computer.rs",
+     "bytes": 3607,
+     "lines": 101,
+     "sha16": "847fb877e8a66224",
+     "functions": [
+      "compare_fabrics",
+      "gpu_pattern_cellular",
+      "gpu_pattern_fpga",
+      "gpu_pattern_k3_ternary",
+      "gpu_pattern_neural"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 5,
+     "calls_the_module": false,
+     "missing_vs_richest": [
+      "infinity_cache_hashes",
+      "infinity_cache_line_hash",
+      "pattern_cellular",
+      "pattern_k3_ternary",
+      "pattern_neural",
+      "sram_lut_fpga"
+     ],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./execute_sovereign_industry_transformation_20.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/core/capability_test.py",
+      "./swarm_v2/core/catalyst_phase0.py",
+      "./swarm_v2/core/manual_clearing_engine.py"
+     ]
+    },
+    {
+     "path": "trm_uefi_kernel/src/gpu_infinity_computer.rs",
+     "bytes": 2312,
+     "lines": 63,
+     "sha16": "112bee6e27ceef54",
+     "functions": [
+      "infinity_cache_hashes",
+      "infinity_cache_line_hash",
+      "pattern_cellular",
+      "pattern_k3_ternary",
+      "pattern_neural",
+      "sram_lut_fpga"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./execute_sovereign_industry_transformation_20.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/core/capability_test.py",
+      "./swarm_v2/core/catalyst_phase0.py",
+      "./swarm_v2/core/manual_clearing_engine.py"
+     ]
+    }
+   ]
+  },
+  "nand_fabric_paths.py": {
+   "copies": 1,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2/core/nand_fabric_paths.py",
+   "functions_union": 5,
+   "rows": [
+    {
+     "path": "swarm_v2/core/nand_fabric_paths.py",
+     "bytes": 4289,
+     "lines": 100,
+     "sha16": "9616a1c213ed3188",
+     "functions": [
+      "assert_not_k3",
+      "is_k3_store",
+      "k3_trit_store",
+      "text_records",
+      "turbovec_index"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./swarm_v2/core/bridge_e2e_test.py",
+      "./swarm_v2/core/build_nand_fabric_index.py",
+      "./swarm_v2/core/epistemology_verification.py",
+      "./swarm_v2/core/ionosphere_protocol.py",
+      "./swarm_v2/core/route_k3_writers.py",
+      "./swarm_v2/core/sovereign_practice.py"
+     ]
+    }
+   ]
+  },
+  "nand_fabric_verify.py": {
+   "copies": 2,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2_integrated/code/nand_fabric_verify.py",
+   "functions_union": 3,
+   "rows": [
+    {
+     "path": "swarm_v2_integrated/code/nand_fabric_verify.py",
+     "bytes": 3746,
+     "lines": 101,
+     "sha16": "cab2e7082fc603c3",
+     "functions": [
+      "main",
+      "read_slot",
+      "scan"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./swarm_v2_artifacts/seal_block70.py",
+      "./swarm_v2_integrated/code/seal_block70.py"
+     ]
+    },
+    {
+     "path": "swarm_v2_artifacts/nand_fabric_verify.py",
+     "bytes": 3746,
+     "lines": 101,
+     "sha16": "cab2e7082fc603c3",
+     "functions": [
+      "main",
+      "read_slot",
+      "scan"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./swarm_v2_artifacts/seal_block70.py",
+      "./swarm_v2_integrated/code/seal_block70.py"
+     ]
+    }
+   ]
+  },
+  "persona_matrix.py": {
+   "copies": 1,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2/core/persona_matrix.py",
+   "functions_union": 1,
+   "rows": [
+    {
+     "path": "swarm_v2/core/persona_matrix.py",
+     "bytes": 5167,
+     "lines": 138,
+     "sha16": "970fd0ffda8f8e2e",
+     "functions": [
+      "build_compiled_prompt"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./batch1_ref_driver.py",
+      "./execute_voltage_bound_harmony_protocol.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/core/agent_intelligence_bridge.py",
+      "./swarm_v2/core/base_agent.py"
+     ]
+    }
+   ]
+  },
+  "persona_matrix.rs": {
+   "copies": 4,
+   "distinct_hashes": 2,
+   "richest": "trm_uefi_kernel/host_tranche/src/persona_matrix.rs",
+   "functions_union": 2,
+   "rows": [
+    {
+     "path": "swarm_v2_integrated/code/native_voltage_strips/persona_matrix.rs",
+     "bytes": 2160,
+     "lines": 37,
+     "sha16": "c27eb844be83cb4c",
+     "functions": [],
+     "exports_c_abi": true,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [
+      "build_compiled_prompt",
+      "new"
+     ],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./batch1_ref_driver.py",
+      "./execute_voltage_bound_harmony_protocol.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/core/agent_intelligence_bridge.py",
+      "./swarm_v2/core/base_agent.py"
+     ]
+    },
+    {
+     "path": "swarm_v2_artifacts/native_voltage_strips/persona_matrix.rs",
+     "bytes": 2160,
+     "lines": 37,
+     "sha16": "c27eb844be83cb4c",
+     "functions": [],
+     "exports_c_abi": true,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [
+      "build_compiled_prompt",
+      "new"
+     ],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./batch1_ref_driver.py",
+      "./execute_voltage_bound_harmony_protocol.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/core/agent_intelligence_bridge.py",
+      "./swarm_v2/core/base_agent.py"
+     ]
+    },
+    {
+     "path": "trm_uefi_kernel/host_tranche/src/persona_matrix.rs",
+     "bytes": 2421,
+     "lines": 84,
+     "sha16": "25d30006a39c1117",
+     "functions": [
+      "build_compiled_prompt",
+      "new",
+      "new",
+      "new"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 1,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./batch1_ref_driver.py",
+      "./execute_voltage_bound_harmony_protocol.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/core/agent_intelligence_bridge.py",
+      "./swarm_v2/core/base_agent.py"
+     ]
+    },
+    {
+     "path": "trm_uefi_kernel/src/persona_matrix.rs",
+     "bytes": 2421,
+     "lines": 84,
+     "sha16": "25d30006a39c1117",
+     "functions": [
+      "build_compiled_prompt",
+      "new",
+      "new",
+      "new"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 1,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_runtime_dispatch.py",
+      "./batch1_ref_driver.py",
+      "./execute_voltage_bound_harmony_protocol.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/core/agent_intelligence_bridge.py",
+      "./swarm_v2/core/base_agent.py"
+     ]
+    }
+   ]
+  },
+  "read_nand_fabric.py": {
+   "copies": 2,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2_integrated/code/read_nand_fabric.py",
+   "functions_union": 0,
+   "rows": [
+    {
+     "path": "swarm_v2_integrated/code/read_nand_fabric.py",
+     "bytes": 1225,
+     "lines": 36,
+     "sha16": "30e8d9c8f4ad144c",
+     "functions": [],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": []
+    },
+    {
+     "path": "swarm_v2_artifacts/read_nand_fabric.py",
+     "bytes": 1225,
+     "lines": 36,
+     "sha16": "30e8d9c8f4ad144c",
+     "functions": [],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": []
+    }
+   ]
+  },
+  "sram_pattern_computer.py": {
+   "copies": 1,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2/core/sram_pattern_computer.py",
+   "functions_union": 21,
+   "rows": [
+    {
+     "path": "swarm_v2/core/sram_pattern_computer.py",
+     "bytes": 47214,
+     "lines": 1036,
+     "sha16": "7ff43f91e1e976e3",
+     "functions": [
+      "_probe_host",
+      "get_sram_computer",
+      "hopfield_energy",
+      "hopfield_hamming",
+      "hopfield_relax",
+      "hopfield_weights",
+      "pattern_boltzmann_machine",
+      "pattern_cellular_automaton",
+      "pattern_content_addressable",
+      "pattern_fpga",
+      "pattern_gnn_accelerator",
+      "pattern_holographic_associative",
+      "pattern_hopfield_attractor",
+      "pattern_hyperdimensional_computing",
+      "pattern_ising_spin_glass",
+      "pattern_neural_network",
+      "pattern_oscillatory_neural_network",
+      "pattern_quantum_simulator",
+      "pattern_sparse_attention",
+      "pattern_systolic_array",
+      "pattern_tcam"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_python_purity.py",
+      "./audit_runtime_dispatch.py",
+      "./execute_advanced_microkernel_invariant_stress_suite.py",
+      "./execute_sovereign_industry_transformation_20.py",
+      "./execute_trillion_task_self_knowledge_protocol.py",
+      "./execute_voltage_bound_harmony_protocol.py"
+     ]
+    }
+   ]
+  },
+  "sram_pattern_computer.rs": {
+   "copies": 2,
+   "distinct_hashes": 2,
+   "richest": "trm_uefi_kernel/src/sram_pattern_computer.rs",
+   "functions_union": 58,
+   "rows": [
+    {
+     "path": "trm_uefi_kernel/host_tranche/src/sram_pattern_computer.rs",
+     "bytes": 219491,
+     "lines": 417,
+     "sha16": "53b743d96b717864",
+     "functions": [
+      "architectures",
+      "number",
+      "pattern_boltzmann_machine",
+      "pattern_cellular_automaton",
+      "pattern_content_addressable",
+      "pattern_fpga",
+      "pattern_gnn_accelerator",
+      "pattern_hash",
+      "pattern_holographic_associative",
+      "pattern_hopfield_attractor",
+      "pattern_hyperdimensional_computing",
+      "pattern_ising_spin_glass",
+      "pattern_neural_network",
+      "pattern_oscillatory_neural_network",
+      "pattern_quantum_simulator",
+      "pattern_sparse_attention",
+      "pattern_systolic_array",
+      "pattern_tcam"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 1,
+     "calls_the_module": true,
+     "missing_vs_richest": [
+      "f64_abs",
+      "f64_ceil",
+      "f64_cos",
+      "f64_exp",
+      "f64_floor",
+      "f64_ln",
+      "f64_log2",
+      "f64_round",
+      "f64_sin",
+      "f64_sqrt",
+      "f64_trunc",
+      "field",
+      "hopfield_energy",
+      "hopfield_hamming",
+      "hopfield_relax",
+      "hopfield_weights",
+      "int",
+      "l3_capacity_bits",
+      "pattern_len",
+      "py_pow_i64",
+      "round_to",
+      "sha256_digest",
+      "sha256_hex12",
+      "sha256_hexdigest",
+      "sram_lut_boltzmann_energy",
+      "sram_lut_cellular_automaton",
+      "sram_lut_content_addressable",
+      "sram_lut_fpga",
+      "sram_lut_gnn_aggregate",
+      "sram_lut_hdc_bind",
+      "sram_lut_holographic_interference",
+      "sram_lut_hopfield_recall",
+      "sram_lut_ising_spin_glass",
+      "sram_lut_neural_network",
+      "sram_lut_onn_sync",
+      "sram_lut_quantum_simulator",
+      "sram_lut_sparse_attention",
+      "sram_lut_systolic_matmul",
+      "sram_lut_tcam_match",
+      "text"
+     ],
+     "module_is_referenced_by": [
+      "./audit_python_purity.py",
+      "./audit_runtime_dispatch.py",
+      "./execute_advanced_microkernel_invariant_stress_suite.py",
+      "./execute_sovereign_industry_transformation_20.py",
+      "./execute_trillion_task_self_knowledge_protocol.py",
+      "./execute_voltage_bound_harmony_protocol.py"
+     ]
+    },
+    {
+     "path": "trm_uefi_kernel/src/sram_pattern_computer.rs",
+     "bytes": 36824,
+     "lines": 887,
+     "sha16": "3fe780ac17debea2",
+     "functions": [
+      "f64_abs",
+      "f64_ceil",
+      "f64_cos",
+      "f64_exp",
+      "f64_floor",
+      "f64_ln",
+      "f64_log2",
+      "f64_round",
+      "f64_sin",
+      "f64_sqrt",
+      "f64_trunc",
+      "field",
+      "hopfield_energy",
+      "hopfield_hamming",
+      "hopfield_relax",
+      "hopfield_weights",
+      "int",
+      "l3_capacity_bits",
+      "pattern_boltzmann_machine",
+      "pattern_cellular_automaton",
+      "pattern_content_addressable",
+      "pattern_fpga",
+      "pattern_gnn_accelerator",
+      "pattern_holographic_associative",
+      "pattern_hopfield_attractor",
+      "pattern_hyperdimensional_computing",
+      "pattern_ising_spin_glass",
+      "pattern_len",
+      "pattern_neural_network",
+      "pattern_oscillatory_neural_network",
+      "pattern_quantum_simulator",
+      "pattern_sparse_attention",
+      "pattern_systolic_array",
+      "pattern_tcam",
+      "py_pow_i64",
+      "round_to",
+      "sha256_digest",
+      "sha256_hex12",
+      "sha256_hexdigest",
+      "sram_lut_boltzmann_energy",
+      "sram_lut_cellular_automaton",
+      "sram_lut_content_addressable",
+      "sram_lut_fpga",
+      "sram_lut_gnn_aggregate",
+      "sram_lut_hdc_bind",
+      "sram_lut_holographic_interference",
+      "sram_lut_hopfield_recall",
+      "sram_lut_ising_spin_glass",
+      "sram_lut_neural_network",
+      "sram_lut_onn_sync",
+      "sram_lut_quantum_simulator",
+      "sram_lut_sparse_attention",
+      "sram_lut_systolic_matmul",
+      "sram_lut_tcam_match",
+      "text"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_python_purity.py",
+      "./audit_runtime_dispatch.py",
+      "./execute_advanced_microkernel_invariant_stress_suite.py",
+      "./execute_sovereign_industry_transformation_20.py",
+      "./execute_trillion_task_self_knowledge_protocol.py",
+      "./execute_voltage_bound_harmony_protocol.py"
+     ]
+    }
+   ]
+  },
+  "telemetry_fabric.py": {
+   "copies": 1,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2/core/telemetry_fabric.py",
+   "functions_union": 1,
+   "rows": [
+    {
+     "path": "swarm_v2/core/telemetry_fabric.py",
+     "bytes": 4584,
+     "lines": 121,
+     "sha16": "b2941ca87c1ad6a1",
+     "functions": [
+      "get_telemetry_fabric"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_codebase_loc_and_cost.py",
+      "./audit_runtime_dispatch.py",
+      "./execute_sovereign_industry_transformation_20.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/app_v2.py",
+      "./swarm_v2/core/catalyst_phase0.py"
+     ]
+    }
+   ]
+  },
+  "telemetry_fabric.rs": {
+   "copies": 3,
+   "distinct_hashes": 2,
+   "richest": "trm_uefi_kernel/src/telemetry_fabric.rs",
+   "functions_union": 2,
+   "rows": [
+    {
+     "path": "swarm_v2_integrated/code/native_voltage_strips/telemetry_fabric.rs",
+     "bytes": 2170,
+     "lines": 37,
+     "sha16": "4db7988dcb76a0a4",
+     "functions": [],
+     "exports_c_abi": true,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [
+      "get_telemetry_fabric",
+      "new"
+     ],
+     "module_is_referenced_by": [
+      "./audit_codebase_loc_and_cost.py",
+      "./audit_runtime_dispatch.py",
+      "./execute_sovereign_industry_transformation_20.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/app_v2.py",
+      "./swarm_v2/core/catalyst_phase0.py"
+     ]
+    },
+    {
+     "path": "swarm_v2_artifacts/native_voltage_strips/telemetry_fabric.rs",
+     "bytes": 2170,
+     "lines": 37,
+     "sha16": "4db7988dcb76a0a4",
+     "functions": [],
+     "exports_c_abi": true,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [
+      "get_telemetry_fabric",
+      "new"
+     ],
+     "module_is_referenced_by": [
+      "./audit_codebase_loc_and_cost.py",
+      "./audit_runtime_dispatch.py",
+      "./execute_sovereign_industry_transformation_20.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/app_v2.py",
+      "./swarm_v2/core/catalyst_phase0.py"
+     ]
+    },
+    {
+     "path": "trm_uefi_kernel/src/telemetry_fabric.rs",
+     "bytes": 1339,
+     "lines": 46,
+     "sha16": "30c03d8ada289fac",
+     "functions": [
+      "get_telemetry_fabric",
+      "new"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": true,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./audit_codebase_loc_and_cost.py",
+      "./audit_runtime_dispatch.py",
+      "./execute_sovereign_industry_transformation_20.py",
+      "./scratch/census_module_divergence.py",
+      "./swarm_v2/app_v2.py",
+      "./swarm_v2/core/catalyst_phase0.py"
+     ]
+    }
+   ]
+  },
+  "test_chaos_engine.py": {
+   "copies": 2,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2_integrated/code/tests/test_chaos_engine.py",
+   "functions_union": 1,
+   "rows": [
+    {
+     "path": "swarm_v2_integrated/code/tests/test_chaos_engine.py",
+     "bytes": 25742,
+     "lines": 692,
+     "sha16": "396ca8f39e8e7a9c",
+     "functions": [
+      "_random_seed"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": []
+    },
+    {
+     "path": "swarm_v2_artifacts/tests/test_chaos_engine.py",
+     "bytes": 25742,
+     "lines": 692,
+     "sha16": "396ca8f39e8e7a9c",
+     "functions": [
+      "_random_seed"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": []
+    }
+   ]
+  },
+  "verify_nand_fabric_index.py": {
+   "copies": 1,
+   "distinct_hashes": 1,
+   "richest": "swarm_v2/core/verify_nand_fabric_index.py",
+   "functions_union": 2,
+   "rows": [
+    {
+     "path": "swarm_v2/core/verify_nand_fabric_index.py",
+     "bytes": 6515,
+     "lines": 135,
+     "sha16": "5b7737073dba4ced",
+     "functions": [
+      "cosine",
+      "main"
+     ],
+     "exports_c_abi": false,
+     "todo_placeholders": 0,
+     "calls_the_module": false,
+     "missing_vs_richest": [],
+     "module_is_referenced_by": [
+      "./ingest_sovereign_datasets.py",
+      "./swarm_v2_rust_kernel/src/ollama_knowledge_harvester.rs",
+      "./swarm_v2_rust_kernel/src/turbovec_ternary_knowledge_fusion.rs"
+     ]
+    }
+   ]
+  }
+ },
+ "divergent_families": 6
+}

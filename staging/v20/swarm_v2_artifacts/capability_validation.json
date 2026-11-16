@@ -1,0 +1,481 @@
+{
+ "phase": "VALIDATION",
+ "when": "2026-09-25T16:42:34Z",
+ "route_sweep": {
+  "prefixes": 56,
+  "classes": {
+   "ANSWERS": 48,
+   "HONEST_REFUSAL": 4,
+   "HTTP_400": 1,
+   "NOT_HANDLED": 2,
+   "HTTP_400_VIA_POST": 1
+  },
+  "routes": {
+   "/api/continuum": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 269.1,
+    "note": "status"
+   },
+   "/api/mobile-sync": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.6,
+    "note": "status"
+   },
+   "/artifacts": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.5,
+    "note": "artifacts,stats,unavailable"
+   },
+   "/aura": {
+    "status": 501,
+    "class": "HONEST_REFUSAL",
+    "ms": 0.6,
+    "note": "engine_required"
+   },
+   "/brain/reason": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.5,
+    "note": "status"
+   },
+   "/comms": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 1.1,
+    "note": "messages,messages_reason,ring_store,source_route"
+   },
+   "/council/": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 21.4,
+    "note": "status"
+   },
+   "/council/proposal/": {
+    "status": 400,
+    "class": "HTTP_400",
+    "ms": 0.8,
+    "note": "Invalid proposal ID"
+   },
+   "/council/propose": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.5,
+    "note": "status"
+   },
+   "/crate/": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 13.9,
+    "note": "not_wired,note,ops,route"
+   },
+   "/ddr": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 2.3,
+    "note": "ddr_antibody_count,ddr_antibody_count_basis,ddr_antibody_count_previously_asserted,design_figures"
+   },
+   "/discovery": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 12.8,
+    "note": "status"
+   },
+   "/evolution": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.7,
+    "note": "status"
+   },
+   "/experts": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.6,
+    "note": ""
+   },
+   "/federation": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 15.1,
+    "note": "connected_nodes,discovered_peers,mesh_agents,node_list"
+   },
+   "/federation/sync": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 15.9,
+    "note": "connected_nodes,discovered_peers,mesh_agents,node_list"
+   },
+   "/generative-architect": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 15.4,
+    "note": "status"
+   },
+   "/humanistic": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 15.1,
+    "note": "status"
+   },
+   "/infra": {
+    "status": 501,
+    "class": "HONEST_REFUSAL",
+    "ms": 0.7,
+    "note": "message,status"
+   },
+   "/infrastructure": {
+    "status": 501,
+    "class": "HONEST_REFUSAL",
+    "ms": 1.0,
+    "note": "message,status"
+   },
+   "/journal": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.5,
+    "note": "status"
+   },
+   "/k3/": {
+    "status": 404,
+    "class": "NOT_HANDLED",
+    "ms": 0.6,
+    "note": "unknown_k3_route"
+   },
+   "/k3/verdict": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 13.0,
+    "note": "missing_input"
+   },
+   "/kanban": {
+    "status": 404,
+    "class": "NOT_HANDLED",
+    "ms": 16.0,
+    "note": "Not found"
+   },
+   "/learning": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 19.4,
+    "note": "basis,executed_by_kernel,previously_asserted,skill_count"
+   },
+   "/ledger": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.6,
+    "note": "status"
+   },
+   "/mailbox": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 1.1,
+    "note": "messages,messages_reason,ring_store,source_route"
+   },
+   "/mailbox/ring": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 1.3,
+    "note": "agents,layout,route,saturated"
+   },
+   "/memory": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 25.5,
+    "note": "ddr_antibody_count,ddr_antibody_count_basis,ddr_antibody_count_previously_asserted,design_figures"
+   },
+   "/mesh": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 14.1,
+    "note": "basis,links,links_reason,node_count"
+   },
+   "/models": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 1.4,
+    "note": "models,stats"
+   },
+   "/regulatory": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 14.2,
+    "note": "status"
+   },
+   "/research": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.7,
+    "note": "status"
+   },
+   "/secrets": {
+    "status": 501,
+    "class": "HONEST_REFUSAL",
+    "ms": 0.5,
+    "note": "message,status"
+   },
+   "/security": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 14.2,
+    "note": "stats,threats,threats_reason"
+   },
+   "/sensory": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.6,
+    "note": "status"
+   },
+   "/services": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 1.8,
+    "note": "basis,commercial_terms,council,kernel"
+   },
+   "/skills": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 12.1,
+    "note": "status"
+   },
+   "/swarm/agents": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.6,
+    "note": "agents,source,total"
+   },
+   "/swarm/chat": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.5,
+    "note": "status"
+   },
+   "/swarm/experts": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.6,
+    "note": ""
+   },
+   "/swarm/microkernel": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 13.7,
+    "note": "status"
+   },
+   "/swarm/orchestrator": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 15.7,
+    "note": "status"
+   },
+   "/swarm/spatial": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.9,
+    "note": "status"
+   },
+   "/swarm/telemetry": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 1.1,
+    "note": "avg_latency_ns,federation_peers,k3_consensus_rate,k3_consensus_rate_reason"
+   },
+   "/system": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 51.3,
+    "note": "active_threads,cpu_percent,dynamic_phi_v,fabricated_modules_count"
+   },
+   "/system/": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 73.9,
+    "note": "active_threads,cpu_percent,dynamic_phi_v,fabricated_modules_count"
+   },
+   "/system/modules": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 46.1,
+    "note": "active_core,basis,cognitive_skills,dormant_core_sample"
+   },
+   "/testing": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 16.1,
+    "note": "status"
+   },
+   "/thz": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 15.2,
+    "note": "status"
+   },
+   "/ultrawork": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 0.7,
+    "note": "status"
+   },
+   "/verification": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 15.1,
+    "note": "status"
+   },
+   "/verification/artifacts": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 59.6,
+    "note": "artifacts_examined,census_age_seconds,census_file,census_generated_at"
+   },
+   "/verification/fabrication": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 3.7,
+    "note": "checked,fabricated,fabricated_count,fabricated_shown"
+   },
+   "/verification/proof": {
+    "status": 400,
+    "class": "HTTP_400_VIA_POST",
+    "ms": 0.6,
+    "note": "no_proof"
+   },
+   "/wetlab": {
+    "status": 200,
+    "class": "ANSWERS",
+    "ms": 14.2,
+    "note": "status"
+   }
+  }
+ },
+ "capabilities": {
+  "retrieval": {
+   "corpus_documents": 2180,
+   "top": "relational/enwikiquote.xml.bz2#100",
+   "fidelity": 0.8947586417198181
+  },
+  "council": {
+   "verdict": "PROCEED",
+   "trit_sum": 9,
+   "voters": 3,
+   "roster": 15
+  },
+  "crate_ops": {
+   "listed": 8,
+   "keys": [
+    "not_wired",
+    "note",
+    "ops",
+    "route",
+    "status",
+    "wired"
+   ]
+  },
+  "census": {
+   "examined": 150,
+   "verdicts": {
+    "COMPUTED": 0,
+    "GENERATED": 80,
+    "STATIC": 49,
+    "UNTRACED": 21
+   },
+   "receipts_reproducible": 80,
+   "receipts_checked": 80,
+   "census_age_seconds": 60899,
+   "contracts_range_disagreed": []
+  },
+  "fabrication": {
+   "fabricated": 135,
+   "checked": 467,
+   "verdicts": {
+    "ARTIFACT_UNVERIFIED_NO_CONTRACT": 10,
+    "BLOCKED_NO_ARTIFACT": 167,
+    "FABRICATED_BY_A_SEEDED_RNG_PRODUCER": 61,
+    "FABRICATED_RESULTS_FOR_A_GATED_TASK": 74,
+    "UNUSED_CAPACITY_NO_ARTIFACT": 155
+   }
+  },
+  "proof": {
+   "sound_tree": true,
+   "rewritten_conclusion": false,
+   "engine": "swarm-proof (WSL crate trm-rust/swarm-proof, built in this workspace)",
+   "rejection_reason": "PROOF REJECTED: the implication's consequent `Q` is not this node's conclusion `R`",
+   "node_count": 3
+  },
+  "hardware": {
+   "l3_sram_kb": 16384,
+   "declared_mb": 32,
+   "host_clock_mhz": 3301.0,
+   "fabricated_modules_count": 5
+  },
+  "sram_module": {
+   "architectures": 15,
+   "l3_size_bytes": 16777216,
+   "cells": 134217728,
+   "has_dynamics": false,
+   "hopfield_keys": [
+    "applications",
+    "attractor_basins",
+    "energy_fn",
+    "name",
+    "neurons",
+    "paradigm",
+    "pattern"
+   ]
+  },
+  "chemistry_store": {
+   "matches": 72502,
+   "note": "store-side; no kernel route serves it yet"
+  }
+ },
+ "checks": [
+  {
+   "capability": "retrieval answers from its own quantized memory",
+   "ok": true,
+   "evidence": "relational/enwikiquote.xml.bz2#100 fidelity 0.8948 over 2180 docs"
+  },
+  {
+   "capability": "the council answers and agrees with the independent oracle",
+   "ok": true,
+   "evidence": "PROCEED trit_sum 9 == oracle 9"
+  },
+  {
+   "capability": "crate ops report which crates are wired",
+   "ok": true,
+   "evidence": "8 ops listed; keys ['not_wired', 'note', 'ops', 'route', 'status', 'wired']"
+  },
+  {
+   "capability": "the artifact census counts its entries at request time and re-reads its receipts",
+   "ok": true,
+   "evidence": "examined 150, verdicts {'COMPUTED': 0, 'GENERATED': 80, 'STATIC': 49, 'UNTRACED': 21}, receipts 80/80 reproducible, 0 broken"
+  },
+  {
+   "capability": "the fabrication quarantine serves a derived tally",
+   "ok": true,
+   "evidence": "135 fabricated over 467 tasks"
+  },
+  {
+   "capability": "the proof route decides, and rewriting the conclusion flips it",
+   "ok": true,
+   "evidence": "P,P\u2192Q \u22a2 Q sound=True | same tree, conclusion R sound=False (PROOF REJECTED: the implication's consequent `Q` is not )"
+  },
+  {
+   "capability": "the platform measures the SRAM it actually has",
+   "ok": true,
+   "evidence": "measured 16384 KB = 16 MB vs the module's declared 32 MB -- a real disagreement, reported not smoothed"
+  },
+  {
+   "capability": "the SRAM pattern module emits a pattern image, and has no relaxation dynamics",
+   "ok": true,
+   "evidence": "hopfield() -> dict with a 64-byte pattern; relax/recall/step present: False"
+  },
+  {
+   "capability": "the structured store answers a chemistry query",
+   "ok": true,
+   "evidence": "72502 molecules match a property filter over 2897818 features"
+  }
+ ],
+ "passed": 9,
+ "failed": 0
+}

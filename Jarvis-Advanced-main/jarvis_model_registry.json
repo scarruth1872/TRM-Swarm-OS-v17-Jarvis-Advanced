@@ -1,0 +1,70 @@
+{
+  "_comment": "Jarvis model training registry — tracks all trained adapters and their capabilities.",
+  "last_updated": "2026-07-11T14:30:00Z",
+  "current_best": "qwen3_adapter",
+  "adapters": {
+    "gemma_adapter": {
+      "base_model": "google/gemma-3-270m-it",
+      "path": "jarvis_gemma_adapter",
+      "params": 269572736,
+      "trainable": 1474560,
+      "dataset_pairs": 148,
+      "epochs": 5,
+      "final_loss": 0.92,
+      "test_pass_rate": "41%",
+      "location": "F:/Development sites/Jarvis-Advanced-main/Jarvis-Advanced-main/jarvis_gemma_adapter",
+      "note": "First run. Small model — limited reasoning capability."
+    },
+    "qwen_adapter": {
+      "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "path": "jarvis_qwen_adapter",
+      "params": 1812039680,
+      "trainable": 6291456,
+      "dataset_pairs": 267,
+      "epochs": 1,
+      "final_loss": 1.07,
+      "test_pass_rate": "50%",
+      "location": "F:/Development sites/Jarvis-Advanced-main/Jarvis-Advanced-main/jarvis_qwen_adapter",
+      "note": "Partial train — 151k vocab caused VRAM OOM after 1 epoch."
+    },
+    "smol_adapter": {
+      "base_model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "path": "jarvis_smol_adapter",
+      "params": 1812039680,
+      "trainable": 6291456,
+      "dataset_pairs": 267,
+      "epochs": 5,
+      "final_loss": 0.84,
+      "test_pass_rate": "50%",
+      "location": "F:/Development sites/Jarvis-Advanced-main/Jarvis-Advanced-main/jarvis_smol_adapter",
+      "note": "49k vocab fits VRAM. Fully trained. Good balance."
+    },
+    "qwen3_adapter": {
+      "base_model": "Qwen/Qwen3-4B",
+      "path": "jarvis_qwen3_adapter",
+      "params": 4000000000,
+      "trainable": 11796480,
+      "dataset_pairs": 519,
+      "epochs": 8,
+      "final_loss": 0.0148,
+      "test_pass_rate": "100% (12/12)",
+      "location": "F:/Development sites/Jarvis-Advanced-main/Jarvis-Advanced-main/jarvis_qwen3_adapter",
+      "gpu": "NVIDIA RTX A6000 (48GB)",
+      "training_time": "4 runs × 10 min via Thunder Compute",
+      "note": "BEST MODEL. Trained on 519 pairs. Passes identity, ports, TRM comms, DNA, skills, Law of One. Same architecture as Bonsai."
+    }
+  },
+  "datasets": {
+    "jarvis_module_dataset": {"pairs": 120, "description": "16 Jarvis modules"},
+    "jarvis_reasoning_dataset": {"pairs": 28, "description": "Reasoning chains, integration logic, identity"},
+    "jarvis_gap_dataset": {"pairs": 14, "description": "Gap-targeting — TRM comms, ECONNREFUSED, DNA"},
+    "jarvis_comprehensive_chat": {"pairs": 318, "description": "Consolidated dataset (current active)"}
+  },
+  "next_steps": [
+    "Test Qwen3-4B with max_new_tokens=200 to accommodate think tags",
+    "Expand dataset to 800+ pairs with more diverse phrasings per fact",
+    "Train Qwen3-4B on A6000 with 10+ epochs for deeper reinforcement",
+    "Integrate best adapter into Jarvis fallback chain",
+    "Investigate Bonsai-4B/8B via GGUF→HF conversion"
+  ]
+}

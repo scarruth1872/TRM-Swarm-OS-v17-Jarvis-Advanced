@@ -1,0 +1,57 @@
+PORT TO RUST - AUTHORITATIVE INVENTORY (re-derived 2026-10-25)
+
+METHOD
+  Python: @router/@app decorators in production .py (excludes snapshots/temp/venv)
+  Rust  : url.starts_with / url == dispatch chain in host_council_server/main.rs
+  Covered = prefix OR segment match with placeholder tolerance
+
+RESULT
+  production Python paths : 275 unique
+  Rust routes            : 111
+  COVERED                : 173  (62.9%)
+  UNPORTED               : 102  (37.1%)
+
+  Cross-check: 62.9% matches the earlier PORT_AUDIT figure independently.
+
+=== THE CRITICAL GAP: COUNCIL LIFECYCLE IS MISSING TWO STAGES ===
+  UNPORTED  /council/deliberate/{proposal_id}
+  UNPORTED  /council/vote/{proposal_id}
+  UNPORTED  /council/members
+  UNPORTED  /council/ledger
+  UNPORTED  /council/full-cycle
+
+  Rust council has:  propose -> enact   (evaluate_proposal runs inline at propose)
+  Python council has: propose -> deliberate -> vote -> enact
+  => the Rust port SKIPS deliberation and voting as distinct stages.
+  => this is architectural, not a missing route: votes are computed once inside
+     propose rather than in a separate, inspectable stage.
+
+=== UNPORTED BY CAPABILITY (102 routes) ===
+  26  swarm.py        agents/modes/sessions/files/model/mcp
+  16  untapped.py     continuum genomics/pbft/star-matrix, prism-fqm, mobile-sync
+  14  changelog.py    content/modules/recent/scan/start/status
+  10  insights.py     metrics/report/reports/start/status/stop
+   5  council.py      deliberate/vote/members/ledger/full-cycle
+   5  verification.py
+   4  app_v2.py       system/events, cognitive ingest/snapshot/status
+   4  synthesis.py    synthesize skill/tools/mcp, synthesize-and-test
+   3  coordination.py broadcast/respond/round/rounds
+  --  evolver (8)     evolve/history/knowledge/rollback/run/start/status/tools
+  --  tests   (6)     generate/generate-all/list/run/stats/coverage
+  --  consensus (2)   propose/status
+  --  multimodal (4)  fuse-event/human-command/predictive-analytics/scene-understand
+  --  dna (2)         mutate/profiles
+  --  resonance (2)   broadcast/status
+  --  openclaw (2)    channels/send
+  --  manus (2)       collapse/superposition
+  --  moltbook (2)    query/queries
+  --  misc single     /a2a /chat /invoke /metrics /path /telemetry
+                     /lobster/execute /qisa/optimize /robotics/status
+                     /model-training/status /v1/chat/completions
+
+=== HONEST CAVEATS ===
+  1. Prefix-coverage is generous. A Rust '/arc' prefix counts every Python
+     '/arc/*' as covered even if the sub-route behaves differently.
+     TRUE port fidelity is lower than 62.9%.
+  2. Route presence != behaviour parity. Nothing here was diff-tested for
+     response-shape equivalence.

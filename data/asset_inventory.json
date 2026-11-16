@@ -1,0 +1,389 @@
+{
+  "note": "authoritative asset list read from the deployment's own configs; a rule layer, not a model",
+  "class_rule": "ephemeral iff the name carries test, mock, demo, sandbox, scratch, fixture, sample, staging, tmp, temp, example, dummy, fake, sim, bench; otherwise prod",
+  "counts": {
+    "total": 53,
+    "by_kind": {
+      "credential": 20,
+      "directory": 3,
+      "host": 4,
+      "service": 26
+    },
+    "by_class": {
+      "prod": 53
+    }
+  },
+  "assets": [
+    {
+      "name": "ANTHROPIC_API_KEY",
+      "phrase": "the anthropic_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:21"
+    },
+    {
+      "name": "CEREBRAS_API_KEY",
+      "phrase": "the cerebras_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:24"
+    },
+    {
+      "name": "DEEPSEEK_API_KEY",
+      "phrase": "the deepseek_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:15"
+    },
+    {
+      "name": "GEMINI_API_KEY",
+      "phrase": "the gemini_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:9"
+    },
+    {
+      "name": "GITHUB_TOKEN",
+      "phrase": "the github_token credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:42"
+    },
+    {
+      "name": "GROK_API_KEY",
+      "phrase": "the grok_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:30"
+    },
+    {
+      "name": "GROQ_API_KEY",
+      "phrase": "the groq_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:27"
+    },
+    {
+      "name": "HF_TOKEN",
+      "phrase": "the hf_token credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env.example:9"
+    },
+    {
+      "name": "INCEPTION_API_KEY",
+      "phrase": "the inception_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:51"
+    },
+    {
+      "name": "MOONSHOT_API_KEY",
+      "phrase": "the moonshot_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:127"
+    },
+    {
+      "name": "NVIDIA_NIM_API_KEY",
+      "phrase": "the nvidia_nim_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:36"
+    },
+    {
+      "name": "OLLAMA_CLOUD_KEY",
+      "phrase": "the ollama_cloud_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:65"
+    },
+    {
+      "name": "OPENAI_API_KEY",
+      "phrase": "the openai_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:18"
+    },
+    {
+      "name": "OPENROUTER_API_KEY",
+      "phrase": "the openrouter_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:12"
+    },
+    {
+      "name": "PERPLEXITY_API_KEY",
+      "phrase": "the perplexity_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:33"
+    },
+    {
+      "name": "TAO_API_KEY",
+      "phrase": "the tao_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:48"
+    },
+    {
+      "name": "TAVILY_API_KEY",
+      "phrase": "the tavily_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:39"
+    },
+    {
+      "name": "TELEGRAM_BOT_TOKEN",
+      "phrase": "the telegram_bot_token credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env.example:7"
+    },
+    {
+      "name": "THUNDER_API_KEY",
+      "phrase": "the thunder_api_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env.example:37"
+    },
+    {
+      "name": "VERCEL_AI_KEY",
+      "phrase": "the vercel_ai_key credential",
+      "kind": "credential",
+      "class": "prod",
+      "source": ".env:45"
+    },
+    {
+      "name": "ARTIFACT_DIR",
+      "phrase": "the artifact_dir directory",
+      "kind": "directory",
+      "class": "prod",
+      "source": ".env:97"
+    },
+    {
+      "name": "CHROMA_PERSIST_DIR",
+      "phrase": "the chroma_persist_dir directory",
+      "kind": "directory",
+      "class": "prod",
+      "source": ".env:95"
+    },
+    {
+      "name": "TRM_WEIGHTS_DIR",
+      "phrase": "the trm_weights_dir directory",
+      "kind": "directory",
+      "class": "prod",
+      "source": ".env:102"
+    },
+    {
+      "name": "LORA_HOST",
+      "phrase": "the lora_host endpoint",
+      "kind": "host",
+      "class": "prod",
+      "source": ".env.example:20"
+    },
+    {
+      "name": "OLLAMA_HOST",
+      "phrase": "the ollama_host endpoint",
+      "kind": "host",
+      "class": "prod",
+      "source": ".env:70"
+    },
+    {
+      "name": "SWARM_API_HOST",
+      "phrase": "the swarm_api_host endpoint",
+      "kind": "host",
+      "class": "prod",
+      "source": ".env:78"
+    },
+    {
+      "name": "TRM_HOST",
+      "phrase": "the trm_host endpoint",
+      "kind": "host",
+      "class": "prod",
+      "source": ".env.example:21"
+    },
+    {
+      "name": "artifacts",
+      "phrase": "the artifacts service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.yml:139"
+    },
+    {
+      "name": "bonsai-1.7b",
+      "phrase": "the bonsai-1.7b service",
+      "kind": "service",
+      "class": "prod",
+      "source": "Jarvis-Advanced-main/docker-compose.yml:5"
+    },
+    {
+      "name": "bonsai-4b",
+      "phrase": "the bonsai-4b service",
+      "kind": "service",
+      "class": "prod",
+      "source": "Jarvis-Advanced-main/docker-compose.yml:19"
+    },
+    {
+      "name": "bonsai-8b",
+      "phrase": "the bonsai-8b service",
+      "kind": "service",
+      "class": "prod",
+      "source": "Jarvis-Advanced-main/docker-compose.yml:33"
+    },
+    {
+      "name": "brain-ai-core",
+      "phrase": "the brain-ai-core service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.yml:101"
+    },
+    {
+      "name": "brain-ai-ui",
+      "phrase": "the brain-ai-ui service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.yml:119"
+    },
+    {
+      "name": "envoy-proxy",
+      "phrase": "the envoy-proxy service",
+      "kind": "service",
+      "class": "prod",
+      "source": "infrastructure/phase1/deployment/docker-compose.phase1.yaml:4"
+    },
+    {
+      "name": "etcd",
+      "phrase": "the etcd service",
+      "kind": "service",
+      "class": "prod",
+      "source": "infrastructure/phase1/deployment/docker-compose.phase1.yaml:67"
+    },
+    {
+      "name": "etcd-data",
+      "phrase": "the etcd-data service",
+      "kind": "service",
+      "class": "prod",
+      "source": "infrastructure/phase1/deployment/docker-compose.phase1.yaml:84"
+    },
+    {
+      "name": "google-calendar-mcp",
+      "phrase": "the google-calendar-mcp service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.yml:84"
+    },
+    {
+      "name": "jaeger",
+      "phrase": "the jaeger service",
+      "kind": "service",
+      "class": "prod",
+      "source": "infrastructure/phase1/deployment/docker-compose.phase1.yaml:47"
+    },
+    {
+      "name": "jarvis",
+      "phrase": "the jarvis service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.yml:26"
+    },
+    {
+      "name": "jarvis-advanced",
+      "phrase": "the jarvis-advanced service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.live.yml:20"
+    },
+    {
+      "name": "lora",
+      "phrase": "the lora service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.yml:49"
+    },
+    {
+      "name": "ollama",
+      "phrase": "the ollama service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.yml:68"
+    },
+    {
+      "name": "ollama_data",
+      "phrase": "the ollama_data service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.yml:138"
+    },
+    {
+      "name": "openfang",
+      "phrase": "the openfang service",
+      "kind": "service",
+      "class": "prod",
+      "source": "openfang/docker-compose.yml:7"
+    },
+    {
+      "name": "openfang-data",
+      "phrase": "the openfang-data service",
+      "kind": "service",
+      "class": "prod",
+      "source": "openfang/docker-compose.yml:30"
+    },
+    {
+      "name": "otel-collector",
+      "phrase": "the otel-collector service",
+      "kind": "service",
+      "class": "prod",
+      "source": "infrastructure/phase1/deployment/docker-compose.phase1.yaml:32"
+    },
+    {
+      "name": "prometheus",
+      "phrase": "the prometheus service",
+      "kind": "service",
+      "class": "prod",
+      "source": "infrastructure/phase1/deployment/docker-compose.phase1.yaml:57"
+    },
+    {
+      "name": "swarm-dashboard",
+      "phrase": "the swarm-dashboard service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.live.yml:34"
+    },
+    {
+      "name": "swarm-net",
+      "phrase": "the swarm-net service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.yml:142"
+    },
+    {
+      "name": "swarm-os-core",
+      "phrase": "the swarm-os-core service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.live.yml:4"
+    },
+    {
+      "name": "swarm_net",
+      "phrase": "the swarm_net service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.live.yml:46"
+    },
+    {
+      "name": "trm",
+      "phrase": "the trm service",
+      "kind": "service",
+      "class": "prod",
+      "source": "docker-compose.yml:5"
+    },
+    {
+      "name": "vault",
+      "phrase": "the vault service",
+      "kind": "service",
+      "class": "prod",
+      "source": "infrastructure/phase1/deployment/docker-compose.phase1.yaml:17"
+    }
+  ]
+}

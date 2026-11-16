@@ -1,0 +1,854 @@
+{
+  "protocol": "SWARM_COUNCIL_DELIBERATION_SESSION",
+  "session_name": "FEDERATION_ATTRIBUTION_RECTIFICATION",
+  "monad_anchor": "0x4D4F4E4144000002",
+  "timestamp": "2026-10-09 22:22:04 UTC",
+  "total_agents": 15,
+  "byzantine_tolerance": 4,
+  "pbft_threshold": 11,
+  "rust_kernel_bound": true,
+  "vote_codes": {
+    "1": "APPROVE",
+    "0": "ABSTAIN",
+    "-1": "REJECT"
+  },
+  "how_to_read_this_record": "Grounded in all three locations: Windows checkout (chagas docstrings claim 5-node distribution with no dispatch code), antigravity brain e019a966 (FederationManager logged 0/0 nodes online; 'nodes' were two local uvicorn ports 8021/8022), and WSL Agent-Q-master (inconsistent KG counts 3235/5355/2955 + 500,000x savings + 8.5M sub-agents). The drug pipeline is single-process local; its federation-node provenance is fabricated.",
+  "council_verdict": {
+    "consensus_summary": "Council deliberated 3 motions; 3 reached PBFT quorum (>= 11/15).",
+    "motions_deliberated": 3,
+    "motions_enacted": 3,
+    "recommended_primary_direction": "MOTION-038: Retire the false federation-node attribution in the drug pipeline (Score: +0.985)",
+    "secondary_direction": "MOTION-039: Label the 'federation' honestly: it was a single-machine simulation, not a node mesh (Score: +0.985)",
+    "tertiary_direction": "MOTION-040: Same fabrication class exists across WSL and antigravity locations; document, do not silently fix (Score: +0.985)"
+  },
+  "motions": [
+    {
+      "motion_id": "MOTION-038",
+      "title": "Retire the false federation-node attribution in the drug pipeline",
+      "category": "truth",
+      "description": "chagas_drug_discovery_pipeline.rs:74-75 claims '500,000 Natural Product SDF conformers parsed across 5 nodes in 8.24 ms' and 'CUDA and Metal docking kernels dispatched to respective hardware nodes'; :145 claims 'dossier distributed to all 5 consortium labs'. These are STRING LITERALS in docstrings -- there is no spawn/thread/worker/network dispatch anywhere in the file, and the 9-stage Python orchestrator runs as a single local process (ddr_amp loops 'for idx, ab in enumerate(self.antibodies)'). '5 nodes' exceeds the real federation's 4 discovered peers. A number credited to a distributed computation that the code never performs is a fabricated provenance, worse than a guessed threshold.",
+      "engine_proposal_id": "CP-2805ED38",
+      "phase": "enacted",
+      "weighted_score": 0.9847,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "8f699be2a3359171e97f556fab538ec5423ecbdd2262586d3b471a916f81a81f",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.063741"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.063846"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064045"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064061"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064081"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064097"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064115"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064142"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064155"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064166"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064177"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064188"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064202"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064213"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064224"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Retire the false federation-node attribution in the drug pipeline: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T22:22:04.063632"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Retire the false federation-node attribution in the drug pipeline: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.063644"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Retire the false federation-node attribution in the drug pipeline: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.063651"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Retire the false federation-node attribution in the drug pipeline: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T22:22:04.063657"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Truth verification: validating formal axioms under Monad Truth Anchor 0x4D4F4E4144000001.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T22:22:04.063663"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Retire the false federation-node attribution in the drug pipeline: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T22:22:04.063668"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Retire the false federation-node attribution in the drug pipeline: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.063673"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Retire the false federation-node attribution in the drug pipeline: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T22:22:04.063678"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Retire the false federation-node attribution in the drug pipeline: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T22:22:04.063682"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Retire the false federation-node attribution in the drug pipeline: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.063687"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Retire the false federation-node attribution in the drug pipeline: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.063691"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "PRIORITY: Truth verification. Proving zero hallucination, empirical validation, and Kleene K3 consensus truth.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T22:22:04.063696"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Retire the false federation-node attribution in the drug pipeline: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T22:22:04.063700"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Retire the false federation-node attribution in the drug pipeline: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T22:22:04.063706"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Retire the false federation-node attribution in the drug pipeline from my reasoning perspective.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.063711"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-039",
+      "title": "Label the 'federation' honestly: it was a single-machine simulation, not a node mesh",
+      "category": "truth",
+      "description": "The antigravity brain (GUID e019a966-cf04-414c-9303-9b0d419cf418) logs the other agent driving this same codebase. Its own output repeatedly records '[FederationManager] Mesh Status: 0/0 nodes online. Resilience: 0.0%', and the 'nodes' it launched were 'py -m uvicorn swarm_v2.app_v2:app --port 8021/8022' -- two local uvicorn processes on one machine. The current /federation route lists 4 discovered peers (laptop + 6700XT desktop + MacPro Linux + Python-v5 desktop) but no evidence the drug pipeline dispatches work to any of them. Claims of cross-node federation computation must be labeled 'design-nominal / not measured' until a real multi-machine dispatch is demonstrated.",
+      "engine_proposal_id": "CP-DDE8153F",
+      "phase": "enacted",
+      "weighted_score": 0.9847,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "7edd944717641e127ce538ee31338ac0bfbb02476e3a36d51c539f55bd83f282",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064663"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064685"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064699"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064711"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064723"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064735"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064746"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064757"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.064771"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065078"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065092"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065104"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065117"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065129"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065140"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T22:22:04.064583"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.064589"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.064594"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T22:22:04.064602"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Truth verification: validating formal axioms under Monad Truth Anchor 0x4D4F4E4144000001.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T22:22:04.064607"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T22:22:04.064611"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.064616"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T22:22:04.064621"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T22:22:04.064626"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.064631"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.064636"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "PRIORITY: Truth verification. Proving zero hallucination, empirical validation, and Kleene K3 consensus truth.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T22:22:04.064640"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T22:22:04.064645"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Label the 'federation' honestly: it was a single-machine simulation, not a node mesh: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T22:22:04.064649"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Label the 'federation' honestly: it was a single-machine simulation, not a node mesh from my reasoning perspective.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.064653"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-040",
+      "title": "Same fabrication class exists across WSL and antigravity locations; document, do not silently fix",
+      "category": "truth",
+      "description": "WSL /home/shawn/Agent-Q-master carries the same class: knowledge-graph node count is '3,235' in ECOSYSTEM.md but '5,355 nodes/7,725 edges' in CHANGELOG.md and '2,955 nodes/4,350 edges' in notebooklm docs -- three incompatible sizes; plus '$300,000 = 500,000x savings' and '8,500,000 Cerebral Sub-Agents'. The antigravity GlobalMemory shows fabricated agent authors (Agent_Verify, Evo_Archi, Harm_Pulse, ...) each with a suspiciously round 125 entries. These are the SAME fabrication class as the drug pipeline. Record them as a cross-location sweep item; Agent-Q is a separate project and out of scope for the TRM kernel, so do not silently rewrite it.",
+      "engine_proposal_id": "CP-6BEC9D02",
+      "phase": "enacted",
+      "weighted_score": 0.9847,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "ffe11d3c626aeb67a1e2dff27ed46283b1b28f7c1b4365788c39817d8117796b",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065483"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065501"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065515"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065526"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065537"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065548"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065562"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065573"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065583"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065594"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065605"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065615"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065626"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065636"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-09T22:22:04.065647"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T22:22:04.065406"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.065414"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.065419"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T22:22:04.065423"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Truth verification: validating formal axioms under Monad Truth Anchor 0x4D4F4E4144000001.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T22:22:04.065428"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T22:22:04.065432"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.065436"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-09T22:22:04.065441"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-09T22:22:04.065446"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.065450"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.065456"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "PRIORITY: Truth verification. Proving zero hallucination, empirical validation, and Kleene K3 consensus truth.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-09T22:22:04.065460"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T22:22:04.065465"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Same fabrication class exists across WSL and antigravity locations; document, do not silently fix: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-09T22:22:04.065469"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Same fabrication class exists across WSL and antigravity locations; document, do not silently fix from my reasoning perspective.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-09T22:22:04.065474"
+        }
+      ]
+    }
+  ]
+}

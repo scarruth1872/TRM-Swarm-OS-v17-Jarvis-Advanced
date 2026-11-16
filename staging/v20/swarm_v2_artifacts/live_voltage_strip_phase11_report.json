@@ -1,0 +1,63 @@
+{
+  "phase": 11,
+  "monad_anchor": "0x4D4F4E4144000001",
+  "candidate_modules": [
+    {
+      "rank": 46,
+      "module": "swarm_v2/core/agent_intelligence_bridge.py",
+      "feature": "Vector Projection & Context Alignment",
+      "dll": "strip_intel_bridge.dll",
+      "py_time_us": 52.77,
+      "native_time_us": 24.52,
+      "speedup": 2.2,
+      "k3_invariant": true,
+      "max_diff": 7.450580596923828e-08
+    },
+    {
+      "rank": 47,
+      "module": "swarm_v2/core/cross_node_voltage_harmonizer.py",
+      "feature": "Multi-Machine Voltage Rail Harmonizer & Drift Balancer",
+      "dll": "strip_voltage_harmonizer.dll",
+      "py_time_us": 19.98,
+      "native_time_us": 2.41,
+      "speedup": 8.3,
+      "k3_invariant": true,
+      "max_diff": 0.0
+    },
+    {
+      "rank": 48,
+      "module": "swarm_v2/core/neural_wall.py",
+      "feature": "Security Packet Firewall & Binary Signature Validator",
+      "dll": "strip_neural_wall.dll",
+      "py_time_us": 563.82,
+      "native_time_us": 372.63,
+      "speedup": 1.5,
+      "k3_invariant": true,
+      "max_diff": 0.0
+    },
+    {
+      "rank": 49,
+      "module": "swarm_v2/core/pbft_consensus.py",
+      "feature": "PBFT Pre-Prepare, Prepare, Commit Quorum State Machine",
+      "dll": "strip_pbft_consensus.dll",
+      "py_time_us": 2505.69,
+      "native_time_us": 10.84,
+      "speedup": 231.2,
+      "k3_invariant": true,
+      "max_diff": 0.0
+    },
+    {
+      "rank": 50,
+      "module": "swarm_v2/core/mcp_tool_evolver.py",
+      "feature": "Dynamic Schema Parser & Parameter Contract Validator",
+      "dll": "strip_mcp_evolver.dll",
+      "py_time_us": 198.94,
+      "native_time_us": 3.54,
+      "speedup": 56.1,
+      "k3_invariant": true,
+      "max_diff": 9.5367431640625e-07
+    }
+  ],
+  "average_speedup": 59.9,
+  "timestamp": 1788809460.0844805
+}

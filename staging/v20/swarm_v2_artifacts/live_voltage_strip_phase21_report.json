@@ -1,0 +1,58 @@
+{
+  "phase": 21,
+  "ranks": "96-100",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "avg_speedup": 42.2,
+  "results": [
+    {
+      "rank": 96,
+      "module": "swarm_v2/core/brain_ai_microkernel_bridge.py",
+      "cdylib": "strip_brain_ai_bridge.dll",
+      "py_ms": 11.187,
+      "rust_ms": 0.11,
+      "speedup": 101.9,
+      "k3_delta": 2.220446049250313e-16,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 97,
+      "module": "swarm_v2/core/collaborative_reasoning.py",
+      "cdylib": "strip_collab_reasoning.dll",
+      "py_ms": 17.103,
+      "rust_ms": 1.081,
+      "speedup": 15.8,
+      "k3_delta": 1.7881393432617188e-07,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 98,
+      "module": "swarm_v2/core/llm_brain.py",
+      "cdylib": "strip_llm_brain.dll",
+      "py_ms": 7.36,
+      "rust_ms": 0.614,
+      "speedup": 12.0,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 99,
+      "module": "swarm_v2/core/transistor_task_scheduler.py",
+      "cdylib": "strip_transistor_scheduler.dll",
+      "py_ms": 10.197,
+      "rust_ms": 0.371,
+      "speedup": 27.5,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 100,
+      "module": "swarm_v2/skills/adc_designer.py",
+      "cdylib": "strip_adc_designer.dll",
+      "py_ms": 15.097,
+      "rust_ms": 0.28,
+      "speedup": 53.9,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    }
+  ]
+}

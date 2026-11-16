@@ -1,0 +1,48 @@
+fix(gaps): read the voltage rails; separate CONFIGURED federation from VERIFIED
+
+GAP 1 - THE VOLTAGE RAILS WERE DECLARED, NOT READ
+  voltage.rs had `const V_CORE = 1.25` and `const V_DDR = 1.35` - the same
+  numbers the formula divides by - so phi_core = (1.25/1.25)^2 = 1.0 and
+  phi_mem = 1.35/1.35 = 1.0 IDENTICALLY. Two of four terms were structurally
+  inert and phi_v collapsed to 1 - mem%/200, carrying no voltage information
+  despite being named voltage_phi_v and serving voltage_rails.
+
+  Both rails ARE readable on this host:
+    Win32_Processor.CurrentVoltage        = 11   -> 1.10 V (tenths of a volt)
+    Win32_PhysicalMemory.ConfiguredVoltage = 1200 -> 1.20 V (millivolts)
+  They are now read. The old constants survive as V_CORE_NOMINAL/V_DDR_NOMINAL,
+  which is what they actually were - the reference the measured rail is expressed
+  against. `measured` now requires ALL FOUR reads (clock, memory, both rails);
+  before, it required only clock and memory, so the rail terms could be nominal
+  constants while the snapshot still claimed measured=true.
+
+  EFFECT, verified arithmetically: phi_v moves 0.5764 -> 0.3968, because the
+  3900X runs V_core at 1.10 V against a 1.25 V nominal and V_ddr at 1.20 V
+  against 1.35 V. The substrate sits at 68.8% of nominal rail voltage, and that
+  is the information the formula could not previously express.
+
+GAP 2 - '100 FEDERATION NODES' WERE GENERATED, NEVER CONTACTED
+  The peers were built from a hardcoded tier table by string-concatenating
+  `format!("{}{}", ip_prefix, i)` over 10+16+24+25+20+5 = 100, each served with
+  is_active:true, a status of PRIMARY_ONLINE/SKYWAVE_SYNCED/..., a synthetic
+  latency of `base_lat + i*0.12`, and the RETIRED port_quic 8021.
+  /federation/stats then asserted active_nodes:100, offline_nodes:0,
+  data_integrity "100.0000%" and a merkle_root - while /swarm/telemetry on the
+  same process reported 2.
+
+  MEASURED: this machine's own address is 100.93.191.43, so the tier prefixes are
+  enumerations of its OWN SUBNET, and none of the 100 answered a TCP connect.
+
+  New src/federation_probe.rs adds the distinction the API lacked:
+    CONFIGURED - what the tier table declares (a real, checkable count)
+    VERIFIED   - what actually answered a probe (measured, one thread per peer,
+                 150 ms timeout, cached)
+  Reported separately as configured_nodes / verified_nodes, with active_nodes
+  kept as an alias for the MEASURED count so no caller silently keeps reading a
+  100 that was never true. Per-peer is_active is now the probe result, status is
+  REACHABLE or CONFIGURED_UNREACHABLE, latency is null rather than synthetic, and
+  port_quic is null because 8021 is retired.
+  REMOVED rather than guessed: byzantine_quorum, fault_tolerance, merkle_root and
+  data_integrity. No consensus protocol or replicated store exists behind them, so
+  any figure would be invented. If the cluster is real, probing finds it; if it is
+  planned, the counts now say so.

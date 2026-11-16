@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-09-05T09:11:38",
+  "passed": 7,
+  "total": 7,
+  "results": {
+    "OpenClaw Gateway": {
+      "status": "PASS",
+      "channels": [
+        "Discord",
+        "Telegram",
+        "Slack",
+        "CLI Direct",
+        "LocalFile"
+      ],
+      "adapters": [
+        "LocalFileAdapter",
+        "TelegramAdapter",
+        "DiscordAdapter"
+      ],
+      "security_envelope": "Non-Replayable Cryptographic Signature"
+    },
+    "Ionosphere Protocol": {
+      "status": "PASS",
+      "anchor": "0x4d4f4e4144000001",
+      "sample_seal": "0x24ad9638675e6af1",
+      "vlf_db": -71.02,
+      "schumann_f1_hz": 7.83
+    },
+    "Web Fetch Utility": {
+      "status": "PASS",
+      "source": "Wikipedia Academic API",
+      "live_scraping": true
+    },
+    "Daily Evolution Engine": {
+      "status": "PASS",
+      "curricula_agents": 14,
+      "tasks_per_day": "1,000,000,000,000 (1 Trillion)",
+      "cadence": "24h Planetary Cycle"
+    },
+    "Local LoRA Trainer": {
+      "status": "PASS",
+      "rank": 8,
+      "alpha": 16,
+      "quantization": "Int4 / FP32 Mixed Precision",
+      "hardware": "DirectML / AVX-512 CPU"
+    },
+    "TRM 7M Full Model": {
+      "status": "PASS",
+      "params": "7,082,496 (7.08M)",
+      "blocks": "3 Mamba-3 SSM blocks (dim=768)",
+      "quantized_size_mb": 1.7,
+      "fp32_size_mb": 27.0,
+      "latency_us": 2014.0
+    },
+    "HF Transformer Brain": {
+      "status": "PASS",
+      "device": "cpu",
+      "precision": "bfloat16 / float32",
+      "pinned_hw": true
+    }
+  }
+}

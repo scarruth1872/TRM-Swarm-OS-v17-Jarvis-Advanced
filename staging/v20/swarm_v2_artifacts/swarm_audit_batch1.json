@@ -1,0 +1,14 @@
+{
+  "Devo": {
+    "subject": "STRIP_BOUND audit batch (6 cards)",
+    "body": "Council MOTION-002 audit task. For EACH card below, verify the strip DLL actually binds: load swarm_v2_artifacts/native_voltage_strips/<strip>.dll via ctypes, resolve its exported strip_* symbol(s), and confirm the corresponding swarm_v2 module references it. Report per card: DLL_LOAD_OK / MISSING / SYMBOL_MISSING. Write findings into the card's description field via the kanban board (get_kanban_board().get_card / _save).\n- card card-219a0812: strip_artifact_scorer (module per kanban title)\n- card card-aff686b3: strip_ci_sharder (module per kanban title)\n- card card-fa85e45b: strip_cold_start (module per kanban title)\n- card card-211c69f6: strip_collab_reasoning (module per kanban title)\n- card card-e7b3b87a: strip_digital_twin (module per kanban title)\n- card card-9c62b6f9: strip_dram_computer (module per kanban title)"
+  },
+  "Flow": {
+    "subject": "STRIP_BOUND audit batch (6 cards)",
+    "body": "Council MOTION-002 audit task. For EACH card below, verify the strip DLL actually binds: load swarm_v2_artifacts/native_voltage_strips/<strip>.dll via ctypes, resolve its exported strip_* symbol(s), and confirm the corresponding swarm_v2 module references it. Report per card: DLL_LOAD_OK / MISSING / SYMBOL_MISSING. Write findings into the card's description field via the kanban board (get_kanban_board().get_card / _save).\n- card card-4139a2f7: strip_brain_ai_bridge (module per kanban title)\n- card card-5cfaeb10: strip_federation_handshake (module per kanban title)\n- card card-0ba9636f: strip_chat_bridge (module per kanban title)\n- card card-c526782e: strip_federation_bridge (module per kanban title)\n- card card-88232469: strip_native_mailbox (module per kanban title)\n- card card-a50360b7: strip_ipc_stats (module per kanban title)"
+  },
+  "Shield": {
+    "subject": "STRIP_BOUND audit batch (4 cards)",
+    "body": "Council MOTION-002 audit task. For EACH card below, verify the strip DLL actually binds: load swarm_v2_artifacts/native_voltage_strips/<strip>.dll via ctypes, resolve its exported strip_* symbol(s), and confirm the corresponding swarm_v2 module references it. Report per card: DLL_LOAD_OK / MISSING / SYMBOL_MISSING. Write findings into the card's description field via the kanban board (get_kanban_board().get_card / _save).\n- card card-38058565: strip_ddr_antibody (module per kanban title)\n- card card-3adbe507: strip_antibody_binding (module per kanban title)\n- card card-577d148b: strip_amp_discovery (module per kanban title)\n- card card-e4e53ddf: strip_antibody_generator (module per kanban title)"
+  }
+}

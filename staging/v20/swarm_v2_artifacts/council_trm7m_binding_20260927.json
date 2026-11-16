@@ -1,0 +1,380 @@
+{
+  "byzantine_tolerance": 5,
+  "date_utc": "2026-09-27T15:58:28.300788+00:00",
+  "engine_ranking": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Architecture",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Port the 14 per-agent 7M domain heads into the served path, as trm_council_models.py's docstring already claims. MEASURED (not inferred): GET"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Cognitive & interface evaluation of Port the 14 per-agent 7M domain heads into the served path, as trm_council_models.py's docstring already claims. MEASURED (not inferre"
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Port the 14 per-agent 7M domain heads into the served path, as trm_council_models.py's docstring already claims. MEASURED (not infer"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Port the 14 per-agent 7M domain heads into the served path, as trm_council_models.py's docstring already claims. MEASURED (not inferred): GET :8022"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Architectural logic review: verifying structural coherence, dependency graphs, and design pattern correctness."
+        }
+      ],
+      "monad_seal": "980e5df03291e971cc48c2e68029ba37855856e00db61dcfd13536cde134f39c",
+      "motion": "MOTION-T3",
+      "phase": "consensus",
+      "proposal_id": "CP-E32BC84C",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9838,
+      "topic": "Port the 14 per-agent 7M domain heads into the served path, as trm_council_models.py's docstring already claims. MEASURED (not inferred): GET :8022/models returns the bundle trm7m_source.trm, 985,147 B, 23 tensors quantized, min cosine 0.8979, integrity intact; GET :8022/council/status returns 15 members whose key set is ['name','role','status'] -- no model field; grepping host_council_server/src for trm7m/trm_7m returns 0 hits; its only generate paths are intelligence_router::bonsai_vulkan_generate and ollama_generate (Ollama stopped); swarm_council/src/lib.rs holds `pub static AGENT_MODELS: [AgentModel; 15]` with `struct AgentModel { name, domains, confidence }` -- a DOMAIN table with no weights and no per-agent inference; /crate/ssm/step is a generic 32-dim Mamba-3 state, not the 7M; the per-agent heads live only in swarm_v2/core/trm_council_models.py, whose only tree-wide importer is ultrawork_loop.py (offline tooling by SOVEREIGNTY.md); the UEFI kernel runs ONE global Trm7m (main.rs:209, :827), not 15. REJECT if a seeded random projection head cannot be shown by measurement to be domain-specialized -- then the honest artifact is the corrected declaration, not 14 heads shipped.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Platform Capability",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Expose the per-agent model assignment on the live council surface, generated from the one canonical table, so the binding is observable inste"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Expose the per-agent model assignment on the live council surface, generated from the one canonical table, so the binding is observa"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Expose the per-agent model assignment on the live council surface, generated from the one canonical table, so the binding is observable instead of "
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Expose the per-agent model assignment on the live council surface, generated from the one canonical table, so the binding is observable instead of imp"
+        }
+      ],
+      "monad_seal": "4a428fc1658d28debd5cf41e4c34f545b9011fa949664c57e44859feeb623704",
+      "motion": "MOTION-T1",
+      "phase": "consensus",
+      "proposal_id": "CP-7223752E",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "Expose the per-agent model assignment on the live council surface, generated from the one canonical table, so the binding is observable instead of implicit. MEASURED (not inferred): GET :8022/models returns the bundle trm7m_source.trm, 985,147 B, 23 tensors quantized, min cosine 0.8979, integrity intact; GET :8022/council/status returns 15 members whose key set is ['name','role','status'] -- no model field; grepping host_council_server/src for trm7m/trm_7m returns 0 hits; its only generate paths are intelligence_router::bonsai_vulkan_generate and ollama_generate (Ollama stopped); swarm_council/src/lib.rs holds `pub static AGENT_MODELS: [AgentModel; 15]` with `struct AgentModel { name, domains, confidence }` -- a DOMAIN table with no weights and no per-agent inference; /crate/ssm/step is a generic 32-dim Mamba-3 state, not the 7M; the per-agent heads live only in swarm_v2/core/trm_council_models.py, whose only tree-wide importer is ultrawork_loop.py (offline tooling by SOVEREIGNTY.md); the UEFI kernel runs ONE global Trm7m (main.rs:209, :827), not 15. REJECT AS COSMETIC if publishing a binding that nothing dispatches adds no real dispatch value.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Platform Capability",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Bind and actually RUN the TRM 7M in the served platform: a live evaluate route on the registered bundle running the seed-42 recurrence ported"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Bind and actually RUN the TRM 7M in the served platform: a live evaluate route on the registered bundle running the seed-42 recurren"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Bind and actually RUN the TRM 7M in the served platform: a live evaluate route on the registered bundle running the seed-42 recurrence ported 1:1 f"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Bind and actually RUN the TRM 7M in the served platform: a live evaluate route on the registered bundle running the seed-42 recurrence ported 1:1 from"
+        }
+      ],
+      "monad_seal": "06c7f792ac363e6240e64895128dd0d1d806a6b6c962d4c65543828be032e2fb",
+      "motion": "MOTION-T2",
+      "phase": "consensus",
+      "proposal_id": "CP-A5151AF8",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "Bind and actually RUN the TRM 7M in the served platform: a live evaluate route on the registered bundle running the seed-42 recurrence ported 1:1 from trm7m.rs, with the council's deterministic K3 evaluation domain routed through it -- the assigned model USED rather than listed. MEASURED (not inferred): GET :8022/models returns the bundle trm7m_source.trm, 985,147 B, 23 tensors quantized, min cosine 0.8979, integrity intact; GET :8022/council/status returns 15 members whose key set is ['name','role','status'] -- no model field; grepping host_council_server/src for trm7m/trm_7m returns 0 hits; its only generate paths are intelligence_router::bonsai_vulkan_generate and ollama_generate (Ollama stopped); swarm_council/src/lib.rs holds `pub static AGENT_MODELS: [AgentModel; 15]` with `struct AgentModel { name, domains, confidence }` -- a DOMAIN table with no weights and no per-agent inference; /crate/ssm/step is a generic 32-dim Mamba-3 state, not the 7M; the per-agent heads live only in swarm_v2/core/trm_council_models.py, whose only tree-wide importer is ultrawork_loop.py (offline tooling by SOVEREIGNTY.md); the UEFI kernel runs ONE global Trm7m (main.rs:209, :827), not 15. REJECT if the recurrence is a seeded random projection whose output cannot be distinguished from the existing 32-dim state, i.e. if wiring it changes no observable verdict.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "finding": "The per-agent TRM 7M is declared, quantized and REGISTERED, and uninvoked: the live server reports the bundle at /models but nothing in host_council_server calls it, the council's per-agent record carries no model field, and both sides' AGENT_MODELS tables bind DOMAINS and CONFIDENCE, not models.",
+  "how_to_read_this_record": "TWO instruments were run and they disagree in kind. The live kernel council (:8022) returned an IDENTICAL tally for three different motions -- 12/0/3, weighted_score 0.7372856140136719, the same score as the unrelated pre-existing proposal 1001 -- so its tally does not move with the question and cannot rank options; that is recorded as a measured defect of that surface, not as a decision. The engine below scores each motion on its own domain overlap and therefore CAN rank them, but its votes are deterministic domain rules, not scrutiny: the vote generator is not deliberation. The decision here is a RANKING produced by the platform's own engine, to be read with its mechanics stated, and MOTION-T2's rejection clause remains live: if the recurrence is a seeded random projection that changes no observable verdict, the motion rejects itself.",
+  "live_kernel_council": {
+    "endpoint": "POST http://127.0.0.1:8022/council/propose",
+    "filed": [
+      {
+        "id": 1002,
+        "status": "PROPOSED"
+      },
+      {
+        "id": 1003,
+        "status": "PROPOSED"
+      },
+      {
+        "id": 1004,
+        "status": "PROPOSED"
+      }
+    ],
+    "measured_defect": "three different topics -> one tally (12/0/3, score 0.7372856140136719 identical to proposal 1001)"
+  },
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Platform Capability",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Expose the per-agent model assignment on the live council surface, generated from the one canonical table, so the binding is observable inste"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Expose the per-agent model assignment on the live council surface, generated from the one canonical table, so the binding is observa"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Expose the per-agent model assignment on the live council surface, generated from the one canonical table, so the binding is observable instead of "
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Expose the per-agent model assignment on the live council surface, generated from the one canonical table, so the binding is observable instead of imp"
+        }
+      ],
+      "monad_seal": "4a428fc1658d28debd5cf41e4c34f545b9011fa949664c57e44859feeb623704",
+      "motion": "MOTION-T1",
+      "phase": "consensus",
+      "proposal_id": "CP-7223752E",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "Expose the per-agent model assignment on the live council surface, generated from the one canonical table, so the binding is observable instead of implicit. MEASURED (not inferred): GET :8022/models returns the bundle trm7m_source.trm, 985,147 B, 23 tensors quantized, min cosine 0.8979, integrity intact; GET :8022/council/status returns 15 members whose key set is ['name','role','status'] -- no model field; grepping host_council_server/src for trm7m/trm_7m returns 0 hits; its only generate paths are intelligence_router::bonsai_vulkan_generate and ollama_generate (Ollama stopped); swarm_council/src/lib.rs holds `pub static AGENT_MODELS: [AgentModel; 15]` with `struct AgentModel { name, domains, confidence }` -- a DOMAIN table with no weights and no per-agent inference; /crate/ssm/step is a generic 32-dim Mamba-3 state, not the 7M; the per-agent heads live only in swarm_v2/core/trm_council_models.py, whose only tree-wide importer is ultrawork_loop.py (offline tooling by SOVEREIGNTY.md); the UEFI kernel runs ONE global Trm7m (main.rs:209, :827), not 15. REJECT AS COSMETIC if publishing a binding that nothing dispatches adds no real dispatch value.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Platform Capability",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Bind and actually RUN the TRM 7M in the served platform: a live evaluate route on the registered bundle running the seed-42 recurrence ported"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Bind and actually RUN the TRM 7M in the served platform: a live evaluate route on the registered bundle running the seed-42 recurren"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Bind and actually RUN the TRM 7M in the served platform: a live evaluate route on the registered bundle running the seed-42 recurrence ported 1:1 f"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Bind and actually RUN the TRM 7M in the served platform: a live evaluate route on the registered bundle running the seed-42 recurrence ported 1:1 from"
+        }
+      ],
+      "monad_seal": "06c7f792ac363e6240e64895128dd0d1d806a6b6c962d4c65543828be032e2fb",
+      "motion": "MOTION-T2",
+      "phase": "consensus",
+      "proposal_id": "CP-A5151AF8",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "Bind and actually RUN the TRM 7M in the served platform: a live evaluate route on the registered bundle running the seed-42 recurrence ported 1:1 from trm7m.rs, with the council's deterministic K3 evaluation domain routed through it -- the assigned model USED rather than listed. MEASURED (not inferred): GET :8022/models returns the bundle trm7m_source.trm, 985,147 B, 23 tensors quantized, min cosine 0.8979, integrity intact; GET :8022/council/status returns 15 members whose key set is ['name','role','status'] -- no model field; grepping host_council_server/src for trm7m/trm_7m returns 0 hits; its only generate paths are intelligence_router::bonsai_vulkan_generate and ollama_generate (Ollama stopped); swarm_council/src/lib.rs holds `pub static AGENT_MODELS: [AgentModel; 15]` with `struct AgentModel { name, domains, confidence }` -- a DOMAIN table with no weights and no per-agent inference; /crate/ssm/step is a generic 32-dim Mamba-3 state, not the 7M; the per-agent heads live only in swarm_v2/core/trm_council_models.py, whose only tree-wide importer is ultrawork_loop.py (offline tooling by SOVEREIGNTY.md); the UEFI kernel runs ONE global Trm7m (main.rs:209, :827), not 15. REJECT if the recurrence is a seeded random projection whose output cannot be distinguished from the existing 32-dim state, i.e. if wiring it changes no observable verdict.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Architecture",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Port the 14 per-agent 7M domain heads into the served path, as trm_council_models.py's docstring already claims. MEASURED (not inferred): GET"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Cognitive & interface evaluation of Port the 14 per-agent 7M domain heads into the served path, as trm_council_models.py's docstring already claims. MEASURED (not inferre"
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Port the 14 per-agent 7M domain heads into the served path, as trm_council_models.py's docstring already claims. MEASURED (not infer"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Port the 14 per-agent 7M domain heads into the served path, as trm_council_models.py's docstring already claims. MEASURED (not inferred): GET :8022"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Architectural logic review: verifying structural coherence, dependency graphs, and design pattern correctness."
+        }
+      ],
+      "monad_seal": "980e5df03291e971cc48c2e68029ba37855856e00db61dcfd13536cde134f39c",
+      "motion": "MOTION-T3",
+      "phase": "consensus",
+      "proposal_id": "CP-E32BC84C",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9838,
+      "topic": "Port the 14 per-agent 7M domain heads into the served path, as trm_council_models.py's docstring already claims. MEASURED (not inferred): GET :8022/models returns the bundle trm7m_source.trm, 985,147 B, 23 tensors quantized, min cosine 0.8979, integrity intact; GET :8022/council/status returns 15 members whose key set is ['name','role','status'] -- no model field; grepping host_council_server/src for trm7m/trm_7m returns 0 hits; its only generate paths are intelligence_router::bonsai_vulkan_generate and ollama_generate (Ollama stopped); swarm_council/src/lib.rs holds `pub static AGENT_MODELS: [AgentModel; 15]` with `struct AgentModel { name, domains, confidence }` -- a DOMAIN table with no weights and no per-agent inference; /crate/ssm/step is a generic 32-dim Mamba-3 state, not the 7M; the per-agent heads live only in swarm_v2/core/trm_council_models.py, whose only tree-wide importer is ultrawork_loop.py (offline tooling by SOVEREIGNTY.md); the UEFI kernel runs ONE global Trm7m (main.rs:209, :827), not 15. REJECT if a seeded random projection head cannot be shown by measurement to be domain-specialized -- then the honest artifact is the corrected declaration, not 14 heads shipped.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 10,
+  "record": "TRM 7M PER-AGENT BINDING -- council decision",
+  "sha256": "0dfd327ca3f11eb21a6b789b2098498f27fbfe07e2a5094ad5617fb71c966b15"
+}

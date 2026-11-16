@@ -1,0 +1,58 @@
+{
+  "phase": 20,
+  "ranks": "91-95",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "avg_speedup": 210.9,
+  "results": [
+    {
+      "rank": 91,
+      "module": "swarm_v2/skills/synthetic_circuit_compiler.py",
+      "cdylib": "strip_circuit_compiler.dll",
+      "py_ms": 19.231,
+      "rust_ms": 1.589,
+      "speedup": 12.1,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 92,
+      "module": "swarm_v2/skills/humanistic_complex_tasks_engine.py",
+      "cdylib": "strip_humanistic_engine.dll",
+      "py_ms": 4.8,
+      "rust_ms": 0.035,
+      "speedup": 136.7,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 93,
+      "module": "swarm_v2/core/aura_engine.py",
+      "cdylib": "strip_aura_engine.dll",
+      "py_ms": 6.232,
+      "rust_ms": 0.037,
+      "speedup": 168.6,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 94,
+      "module": "swarm_v2/core/daily_evolution_engine.py",
+      "cdylib": "strip_daily_evolution.dll",
+      "py_ms": 54.299,
+      "rust_ms": 0.081,
+      "speedup": 668.6,
+      "k3_delta": 4.440892098500626e-16,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 95,
+      "module": "swarm_v2/core/full_64_agent_orchestrator.py",
+      "cdylib": "strip_64_agent_orchestrator.dll",
+      "py_ms": 115.275,
+      "rust_ms": 1.686,
+      "speedup": 68.4,
+      "k3_delta": 9.834766387939453e-07,
+      "turbovec_verified": true
+    }
+  ]
+}

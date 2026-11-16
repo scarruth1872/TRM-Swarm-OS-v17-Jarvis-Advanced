@@ -1,0 +1,147 @@
+{
+  "protocol": "Sovereign Federation Synchronization & Multi-Node Benchmark",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-09-18T11:09:19.886534",
+  "nodes_participating": 3,
+  "active_nodes": [
+    {
+      "id": "local_primary_core",
+      "name": "Primary Swarm Core",
+      "host": "127.0.0.1",
+      "port": 8021,
+      "kernel": "TurboVecNative"
+    },
+    {
+      "id": "local_rust_microkernel",
+      "name": "Local Sovereign Microkernel",
+      "host": "127.0.0.1",
+      "port": 8022,
+      "kernel": "Native Rust Sovereign Kernel v19.001"
+    },
+    {
+      "id": "remote_sovereign_host",
+      "name": "DESKTOP-MEP4VQN Sovereign Host",
+      "host": "100.93.191.43",
+      "port": 8022,
+      "kernel": "Native Rust Sovereign Kernel v19.001"
+    }
+  ],
+  "sync_operations": [
+    {
+      "node": "local_primary_core",
+      "endpoint": "/federation/sync/receive",
+      "status": "SUCCESS",
+      "latency_ms": 6.53,
+      "response": {
+        "status": "success",
+        "id": "gm_020a8bca"
+      }
+    },
+    {
+      "node": "local_rust_microkernel",
+      "endpoint": "/sync",
+      "status": "SUCCESS",
+      "latency_ms": 2.48,
+      "response": {
+        "status": "ok"
+      }
+    },
+    {
+      "node": "remote_sovereign_host",
+      "endpoint": "/sync",
+      "status": "SUCCESS",
+      "latency_ms": 29.81,
+      "response": {
+        "status": "ok"
+      }
+    }
+  ],
+  "network_tomography": {
+    "local_primary_core": {
+      "name": "Primary Swarm Core",
+      "host": "127.0.0.1",
+      "port": 8021,
+      "samples": 30,
+      "min_ms": 2.44,
+      "p50_ms": 15.35,
+      "mean_ms": 12.22,
+      "p95_ms": 27.78,
+      "max_ms": 27.79,
+      "jitter_ms": 8.91
+    },
+    "local_rust_microkernel": {
+      "name": "Local Sovereign Microkernel",
+      "host": "127.0.0.1",
+      "port": 8022,
+      "samples": 30,
+      "min_ms": 1.37,
+      "p50_ms": 15.24,
+      "mean_ms": 11.54,
+      "p95_ms": 21.88,
+      "max_ms": 22.44,
+      "jitter_ms": 6.83
+    },
+    "remote_sovereign_host": {
+      "name": "DESKTOP-MEP4VQN Sovereign Host",
+      "host": "100.93.191.43",
+      "port": 8022,
+      "samples": 30,
+      "min_ms": 10.23,
+      "p50_ms": 28.74,
+      "mean_ms": 25.07,
+      "p95_ms": 38.06,
+      "max_ms": 38.13,
+      "jitter_ms": 9.3
+    }
+  },
+  "task_offloading_benchmark": {
+    "total_tasks": 60,
+    "success_count": 60,
+    "success_rate_pct": 100.0,
+    "wall_time_sec": 0.153,
+    "throughput_tasks_per_sec": 391.02,
+    "overall_p50_ms": 9.45,
+    "overall_p95_ms": 32.94,
+    "node_breakdown": {
+      "local_primary_core": {
+        "completed": 20,
+        "p50_ms": 7.11,
+        "mean_ms": 9.87
+      },
+      "local_rust_microkernel": {
+        "completed": 20,
+        "p50_ms": 2.67,
+        "mean_ms": 6.64
+      },
+      "remote_sovereign_host": {
+        "completed": 20,
+        "p50_ms": 19.21,
+        "mean_ms": 20.43
+      }
+    }
+  },
+  "consensus_and_voltage_audit": {
+    "local_primary_core": {
+      "active_nodes": 2,
+      "quorum": "N/A",
+      "data_integrity": "100%",
+      "monad_anchor": "0x4D4F4E4144000001",
+      "pqc_cipher": "ML-KEM-1024 / Dilithium-5"
+    },
+    "local_rust_microkernel": {
+      "active_nodes": 6,
+      "quorum": "N/A",
+      "data_integrity": "100%",
+      "monad_anchor": "0x4D4F4E4144000001",
+      "pqc_cipher": "ML-KEM-1024 / Dilithium-5"
+    },
+    "remote_sovereign_host": {
+      "active_nodes": 100,
+      "quorum": "67/100",
+      "data_integrity": "100.0000%",
+      "monad_anchor": "0x4D4F4E4144000001",
+      "pqc_cipher": "ML-KEM-1024 / ML-DSA-87"
+    }
+  },
+  "verdict": "ALL_FEDERATION_NODES_SYNCHRONIZED_AND_BENCHMARKED"
+}

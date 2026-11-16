@@ -1,0 +1,10 @@
+{
+ "invariant": "unsafe impl Send/Sync for Engine: the native DLL's functions are reentrant/thread-safe",
+ "test": "N threads x M concurrent k3/retrieve calls, same query, byte-identical results required",
+ "threads": 8,
+ "per_thread": 10,
+ "total_calls": 80,
+ "identical": true,
+ "errors": [],
+ "verdict": "verified (concurrent calls deterministic, no corruption)"
+}

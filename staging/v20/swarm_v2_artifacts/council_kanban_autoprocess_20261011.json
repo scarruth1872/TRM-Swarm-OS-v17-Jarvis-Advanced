@@ -1,0 +1,577 @@
+{
+  "protocol": "SWARM_COUNCIL_DELIBERATION_SESSION",
+  "session_name": "KANBAN_AUTOPROCESS_AND_HARDWARE_RECTIFICATION",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-10-11 15:43:48 UTC",
+  "total_agents": 15,
+  "byzantine_tolerance": 4,
+  "pbft_threshold": 11,
+  "rust_kernel_bound": true,
+  "vote_codes": {
+    "1": "APPROVE",
+    "0": "ABSTAIN",
+    "-1": "REJECT"
+  },
+  "how_to_read_this_record": "Grounded in the live runtime: the kanban endpoints all answer 200 but the board is frozen (645 cards, 0 IN_PROGRESS/TODO, 0 active worktrees/ports) because the heartbeat scheduler is ported but never called; HEARTBEAT.md has 1 pending task. The wire-in adds a 60s background loop that turns pending heartbeat tasks into auto-assigned cards. The hardware rectification corrects 3900X/RX 6700 XT desktop identities to the measured 5900HX/RTX 3070 Laptop host.",
+  "council_verdict": {
+    "consensus_summary": "Council deliberated 2 motions; 2 reached PBFT quorum (>= 11/15).",
+    "motions_deliberated": 2,
+    "motions_enacted": 2,
+    "recommended_primary_direction": "MOTION-048: Rectify the transistor scheduler's hardware identities to the measured host (Score: +0.985)",
+    "secondary_direction": "MOTION-047: Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process') (Score: +0.984)"
+  },
+  "motions": [
+    {
+      "motion_id": "MOTION-047",
+      "title": "Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process')",
+      "category": "sovereignty",
+      "description": "The kanban board (host_council_server/src/kanban_handlers.rs) is fully wired -- GET board/stats/verify + POST cards + POST move, all reading/writing kanban_state.json atomically -- yet it is frozen at 645 cards (640 DONE / 5 REVIEW / 0 IN_PROGRESS / 0 TODO / 0 active) because NO loop auto-creates or advances cards. The heartbeat scheduler (trm_uefi_kernel/src/heartbeat_scheduler.rs) is ported but has no runtime caller (the 'a port with no caller is +0 bytes' trap). HEARTBEAT.md holds 1 pending '- [ ]' task waiting to be dispatched. Fix wired: a background thread in host_council_server polls HEARTBEAT.md every 60s, auto-assigns each pending task via the domain ontology (auto_assign_agent) and creates a kanban card, then marks the item '- [x]'. This is the honest 'auto process' -- the scheduler turns pending work into cards; it does NOT fabricate DONE (cards advance only when an agent actually works them). cargo check passes (91 pre-existing warnings, 0 new).",
+      "engine_proposal_id": "CP-3B9AF40B",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "14342b21c9c5758117a5889369b05975525a4e4e67f84dbaa9be20ee7c7d4650",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203469"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203778"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203805"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203820"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203829"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203840"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203848"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203858"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203866"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203873"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203880"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203887"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203895"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203904"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.203911"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T15:43:48.203387"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T15:43:48.203396"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T15:43:48.203401"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T15:43:48.203406"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T15:43:48.203409"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T15:43:48.203413"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T15:43:48.203416"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T15:43:48.203420"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T15:43:48.203423"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T15:43:48.203426"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T15:43:48.203429"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T15:43:48.203433"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T15:43:48.203436"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process'): evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T15:43:48.203439"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Wire the heartbeat auto-dispatch loop into the runtime (the kanban 'auto process') from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T15:43:48.203443"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-048",
+      "title": "Rectify the transistor scheduler's hardware identities to the measured host",
+      "category": "truth",
+      "description": "swarm_v2/core/transistor_task_scheduler.py carried desktop identities -- 'AMD Ryzen 9 3900X (12C/24T Zen 2) + Radeon RX 6700 XT', rails CPU VDDCR 1.085V / GPU VDD_GFX 1.148V / DRAM VDDQ 1.352V / NVMe VCC 3.298V / SoC VDDCR 1.042V, and die coords 'Zen 2 CCD0/cIOD' / 'Navi 22 / RDNA2' -- against the measured host (AMD Ryzen 9 5900HX 8C/16T Zen 3 Cezanne + NVIDIA RTX 3070 Laptop Ampere GA104; V_core 1.2V and DRAM 1.2V ConfiguredVoltage measured; GPU/SoC/NVMe rails not measured on host). Also retired: phi_v 0.378 (bare-derived) -> 1.0 (machine-derived at nominal), energy 0.084 uJ/task (fabricated target) -> 0.0, and 'MATHEMATICAL_PHASE_LOCK (15.53 THz)' -> 'NOT_MEASURED (15.53 THz is a real Fd-3m constant, not a lock)'. AST parses clean.",
+      "engine_proposal_id": "CP-124D874A",
+      "phase": "enacted",
+      "weighted_score": 0.9847,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "5579b82dd30a5a0d26cbc4503ea13bbf4546aef5dbcf14122444c8cf15dde875",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204241"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204256"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204266"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204276"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204284"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204292"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204300"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204308"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204315"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204564"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204573"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204582"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204591"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204599"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T15:43:48.204606"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Rectify the transistor scheduler's hardware identities to the measured host: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T15:43:48.204168"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Rectify the transistor scheduler's hardware identities to the measured host: assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T15:43:48.204178"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Rectify the transistor scheduler's hardware identities to the measured host: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T15:43:48.204185"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Rectify the transistor scheduler's hardware identities to the measured host: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T15:43:48.204195"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Truth verification: validating formal axioms under Monad Truth Anchor 0x4D4F4E4144000001.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T15:43:48.204199"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Rectify the transistor scheduler's hardware identities to the measured host: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T15:43:48.204203"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Rectify the transistor scheduler's hardware identities to the measured host: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T15:43:48.204206"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Rectify the transistor scheduler's hardware identities to the measured host: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T15:43:48.204209"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Rectify the transistor scheduler's hardware identities to the measured host: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T15:43:48.204212"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Rectify the transistor scheduler's hardware identities to the measured host: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T15:43:48.204215"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Rectify the transistor scheduler's hardware identities to the measured host: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T15:43:48.204219"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "PRIORITY: Truth verification. Proving zero hallucination, empirical validation, and Kleene K3 consensus truth.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T15:43:48.204222"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Rectify the transistor scheduler's hardware identities to the measured host: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T15:43:48.204225"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Rectify the transistor scheduler's hardware identities to the measured host: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T15:43:48.204228"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Rectify the transistor scheduler's hardware identities to the measured host from my reasoning perspective.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T15:43:48.204232"
+        }
+      ]
+    }
+  ]
+}

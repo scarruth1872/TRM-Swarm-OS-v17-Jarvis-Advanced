@@ -1,0 +1,45 @@
+{
+  "record": "paratope-density generalization test (MOTION-C1a)",
+  "scored": 7783,
+  "boundaries_excluded": 8629,
+  "density_vs_antigen_size_pearson_r": 0.1459,
+  "antigen_size_quartiles": [
+    {
+      "antigen_atoms_range": [
+        28,
+        973
+      ],
+      "mean_density": 6.765,
+      "mean_contacts": 89.7,
+      "n": 1945
+    },
+    {
+      "antigen_atoms_range": [
+        973,
+        1807
+      ],
+      "mean_density": 6.917,
+      "mean_contacts": 86.2,
+      "n": 1945
+    },
+    {
+      "antigen_atoms_range": [
+        1807,
+        2917
+      ],
+      "mean_density": 5.87,
+      "mean_contacts": 62.1,
+      "n": 1945
+    },
+    {
+      "antigen_atoms_range": [
+        2917,
+        20619
+      ],
+      "mean_density": 7.79,
+      "mean_contacts": 98.4,
+      "n": 1945
+    }
+  ],
+  "basis": "density = contacts/residue; antigen atom count from the same mmCIF. r~0 means density is independent of antigen size (an antibody property / motif); r>0 means density rises with antigen size (partly an antigen artifact)"
+}

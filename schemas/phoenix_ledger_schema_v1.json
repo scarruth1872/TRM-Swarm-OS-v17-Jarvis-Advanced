@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TRM Swarm OS PHOENIX Ledger Schema",
+  "version": "1.0.0",
+  "description": "Formal schema enforcing empirical falsificationism (Paper 17 V_PHOENIX) across all TRM Swarm OS ledgers.",
+  "type": "object",
+  "required": [
+    "protocol",
+    "timestamp",
+    "monad_truth_anchor",
+    "phoenix_status",
+    "phoenix_verification"
+  ],
+  "properties": {
+    "protocol": {
+      "type": "string",
+      "description": "Identifier of the protocol or ledger specification."
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "ISO 8601 UTC timestamp of ledger generation or audit."
+    },
+    "monad_truth_anchor": {
+      "type": "string",
+      "pattern": "^0x[0-9A-Fa-f]+$",
+      "description": "Cryptographic Monad truth anchor hex string (standard: 0x4D4F4E4144000001)."
+    },
+    "phoenix_status": {
+      "type": "string",
+      "enum": [
+        "CONFIRMED",
+        "PARTIAL",
+        "SKELETON_STUB",
+        "ASPIRATIONAL",
+        "SPEC"
+      ],
+      "description": "Empirical status under V_PHOENIX operator."
+    },
+    "phoenix_verification": {
+      "type": "object",
+      "required": [
+        "operator",
+        "auditor",
+        "falsifiable"
+      ],
+      "properties": {
+        "operator": {
+          "type": "string",
+          "default": "V_PHOENIX"
+        },
+        "formula": {
+          "type": "string"
+        },
+        "evidence_logs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "raw_hashes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "auditor": {
+          "type": "string"
+        },
+        "verified_at": {
+          "type": "string"
+        },
+        "falsifiable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "claims": {
+      "type": [
+        "array",
+        "object"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

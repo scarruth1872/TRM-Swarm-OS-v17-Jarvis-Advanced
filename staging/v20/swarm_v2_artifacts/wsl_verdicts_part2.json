@@ -1,0 +1,125 @@
+{
+  "_note": "Part 2 of the WSL artifact classification: what the platform neither holds nor needs, plus the two categories that must never be touched (credentials) or must never be deleted (ephemeral).",
+  "groups": {
+    ".bash_history": {
+      "e": "672 B",
+      "v": "archive-only"
+    },
+    ".bash_logout": {
+      "e": "220 B",
+      "v": "archive-only"
+    },
+    ".bashrc": {
+      "e": "shell rc; its cargo env line is a known dead pointer (~/.cargo/env does not exist), recorded in the step-4 measurement",
+      "v": "archive-only"
+    },
+    ".cache": {
+      "e": "0 B",
+      "v": "ephemeral"
+    },
+    ".hermes": {
+      "e": "a SECOND Hermes home inside WSL (1,431,156,516 B, 50 files). This host's Hermes home is the Windows profile; the platform reads neither. Read-only history.",
+      "v": "archive-only"
+    },
+    ".landscape": {
+      "e": "0 B",
+      "v": "ephemeral"
+    },
+    ".motd_shown": {
+      "e": "0 B",
+      "v": "ephemeral"
+    },
+    ".npm": {
+      "e": "0 B",
+      "v": "ephemeral"
+    },
+    ".profile": {
+      "e": "shell profile; line 30 points at the same missing ~/.cargo/env",
+      "v": "archive-only"
+    },
+    ".ssh": {
+      "e": "4 files, 3,183 B: CREDENTIALS. Excluded from every archive by policy -- the freeze tarball is the repo source tree only, and no secret value was read while building this manifest.",
+      "v": "never-harvest"
+    },
+    ".wget-hsts": {
+      "e": "214 B",
+      "v": "archive-only"
+    },
+    ".zshrc": {
+      "e": "26 B",
+      "v": "archive-only"
+    },
+    "Downloads": {
+      "e": "one 34,227,446 B agent-q platform startup status JSON from 2026-08-02; a snapshot of the absorbed line",
+      "v": "archive-only"
+    },
+    "__pycache__": {
+      "e": "regenerable bytecode, 11,799 B. Never delete: move, and only with a manifest.",
+      "v": "ephemeral"
+    },
+    "aipro2": {
+      "e": "13 files, 213,657 B, one untracked run-evolution.mjs; no v19 counterpart by name",
+      "v": "archive-only"
+    },
+    "analyze_hera7.py": {
+      "e": "WSL-side analysis script (3,242 B)",
+      "v": "archive-only"
+    },
+    "backups": {
+      "e": "5 tarballs, 1,502,556,293 B (agent-q 1.31 GB + aura + jarvis, v17/v18-era). Historical snapshots of the same lineage the freeze bundle already preserves; nothing in v19 reads them, and the rule is archive never delete.",
+      "v": "archive-only"
+    },
+    "check_tools.sh": {
+      "e": "WSL-side environment probe (669 B)",
+      "v": "archive-only"
+    },
+    "fix_pipes.py": {
+      "e": "WSL-side utility (1,213 B)",
+      "v": "archive-only"
+    },
+    "geo-ingest.log": {
+      "e": "491 B log",
+      "v": "archive-only"
+    },
+    "hermes-archive": {
+      "e": "38,428,740 B across 4 files; a Hermes-side archive bundle, no v19 counterpart by name",
+      "v": "archive-only"
+    },
+    "kb_bridge.py": {
+      "e": "WSL-side knowledge-bridge script (1,329 B); no v19 counterpart by name",
+      "v": "archive-only"
+    },
+    "logs": {
+      "e": "370 B, one file",
+      "v": "archive-only"
+    },
+    "reports": {
+      "e": "39,108 B across 6 files; older report output, no v19 counterpart by name",
+      "v": "archive-only"
+    },
+    "reverse_string.py": {
+      "e": "381 B scratch script",
+      "v": "archive-only"
+    },
+    "seed_ddr.py": {
+      "e": "WSL-side seeding script (3,953 B); no v19 counterpart by name",
+      "v": "archive-only"
+    },
+    "start-anythingllm.sh": {
+      "e": "no v19 artifact names anythingllm; the service was not part of this platform",
+      "v": "archive-only"
+    },
+    "start-bridge.sh": {
+      "e": "the WSL-side bridge launcher; v19's own kernel replaced the bridge role, but no counterpart file is named, so this is not called superseded",
+      "v": "archive-only"
+    },
+    "voicebox": {
+      "e": "no v19 artifact names voicebox (checked swarm_v2_artifacts/) -- and no claim is made that it is superseded, because none was verified",
+      "v": "archive-only"
+    },
+    "warm_bridge.py": {
+      "e": "WSL-side glue script (7,389 B); no v19 counterpart by name",
+      "v": "archive-only"
+    }
+  }
+}

@@ -1,0 +1,96 @@
+PLATFORM BENCHMARK - MEASURED 2026-10-29 20:54
+harness: tools/bench_platform.py  (committed, re-runnable)
+all 8 services UP at time of run
+
+[A] CORE ENDPOINT LATENCY (sequential, 20 samples each)
+  8022 /health              p50   0.63ms  p95  15.78ms  max  21.18ms
+  8022 /arc/pool            p50   0.55ms  p95  15.51ms  max  20.12ms
+  8022 /arc/status          p50  66.27ms  p95  85.67ms  max 302.48ms
+  8022 /council/status      p50   0.67ms  p95   1.07ms  max   1.14ms
+  8022 /council/members     p50   0.66ms  p95  16.21ms  max  21.13ms
+  8022 /arc/integrity       p50  12.39ms  p95  12.62ms  max  22.68ms
+  8099 /council/status      p50   1.86ms  p95   2.77ms  max  15.76ms
+  8588 /health              p50   0.71ms  p95  16.23ms  max  19.28ms
+
+[B] COUNCIL DELIBERATION (Rust :8022)
+  /council/propose          p50   6.67ms  p95  15.38ms  max  26.08ms
+  throughput                129.8 proposals/sec
+  determinism               same topic -> same votes: YES
+  distinct vote signatures  2 over 25 proposals using 4 topics
+
+  CAVEAT: 4 topics produced only 2 distinct (approve,abstain,reject,status)
+  tuples. Votes ARE topic-dependent (earlier 4/4 on other text), but the
+  projection collides on similar-length inputs. Topic sensitivity is real
+  but NOT injective - do not expect every distinct topic to give a
+  distinct tally.
+
+[D] CONCURRENCY (256 reqs, 32 parallel workers, /health on :8022)
+  wall 0.10s   rps 2642   p50 8.21ms   p95 14.36ms   errors 0
+
+=== WHAT THIS TELLS US ABOUT THE PORT ===
+  Rust endpoints answer in sub-millisecond p50 (/health 0.63, /arc/pool 0.55,
+  /council/status 0.67). That is native-Rust latency, not proxied.
+
+  TWO CLEAR OUTLIERS - port targets:
+    /arc/status      p50  66.27ms  max 302ms   <- 100x slower than /arc/pool.
+                     Reads and parses ARC JSON per request. Prime candidate
+                     for the same MemoryMappedIpc/parsed-cache treatment that
+                     took /arc/task from 27.7ms to 16.0ms.
+    /arc/integrity   p50  12.39ms            <- 400/400 check, 20x /arc/pool
+
+  p95 of 15-16ms on several endpoints while p50 is 0.6ms indicates an
+  intermittent 15ms stall - consistent with a lock or first-touch page
+  fault, not with steady-state cost. Worth investigating before load testing.
+
+  NOTE: the 15ms p95 appears on endpoints whose p50 is <1ms AND on 8588
+  /health. That pattern (a fixed ~15ms tail) suggests client-side HTTP
+  connection setup, not server cost. Not yet isolated - do not conclude.
+
+[C] ARC INTELLIGENCE (TRM via :8588, 3 tasks)
+  007bbfb7   3095ms   cells   81   acc 0.679    exact False
+  00d62c1b    763ms   cells  400   acc 0.9175   exact False
+  025d127b    739ms   cells  100   acc 0.880    exact False
+
+  0/3 EXACT. Cell accuracy 67.9-91.75%. No task fully solved.
+
+=== WHERE THE PLATFORM ACTUALLY IS ===
+  TRANSPORT / API        EXCELLENT. Sub-ms p50 on Rust endpoints, 2642 rps
+                         with 0 errors in 256 concurrent requests.
+  GOVERNANCE             WORKS. 129.8 proposals/sec, deterministic,
+                         REJECT reachable, ledger persists.
+  INTELLIGENCE           WEAKEST LINK. 0/3 exact. 67.9-91.75% cells.
+                         The TRM produces plausible grids, not solutions.
+  THROUGHPUT             Depends entirely on which layer you measure:
+                           sr kernel fast path   21,543 tasks/sec
+                           HTTP API              2,642 rps
+                           ARC per-task          0.74-3.1 s
+                           council proposal      129.8/sec
+
+  These are NOT in conflict - they are different layers. Quoting one
+  without naming the layer is how 154.5T happened.
+
+=== PORT PRIORITIES THIS BENCH JUSTIFIED ===
+  1. /arc/status   66.27ms p50, 302ms max. 100x the neighbouring /arc/pool.
+                   Fix with the parsed-cache pattern already proven on
+                   /arc/task (27.7 -> 16.0ms). Cheapest real win.
+  2. /arc/integrity 12.39ms. Recomputes a 400/400 check per request.
+                   Cache the result; it only changes when ARC data changes.
+  3. 15ms p95 tail on sub-ms endpoints - ISOLATE FIRST (likely client-side
+                   connection setup). Do not optimise the server for it.
+  4. Intelligence, not speed, is the binding constraint. 0/3 exact. Porting
+     more routes faster does not fix that. Distillation is the path.
+
+=== CORRECTION TO AN EARLIER CLAIM (found by this benchmark) ===
+  Earlier this session I set h_cycles=1 in tools/trm_server.py and reported
+  'identical accuracy, up to 3x faster' - based on only 2 tasks
+  (00d62c1b, 025d127b). This benchmark ran the THIRD task, 007bbfb7:
+
+    h_cycles=3 (TRM_CORRECTED_ENCODING.txt)   53/81  = 65.4%
+    h_cycles=1 (this run)                     55/81  = 67.9%
+
+  So the claim was WRONG in the conservative direction: h_cycles=1 is not
+  merely 'no worse'. On 007bbfb7 it is 2 cells BETTER, and faster.
+
+  REVISED CLAIM: h_cycles=1 is equal-or-better on all 3 tasks tested and
+  up to 3x faster. Still only 3 tasks - NOT a general result. A proper
+  h_cycles sweep across ~50 ARC tasks is the only way to settle it.

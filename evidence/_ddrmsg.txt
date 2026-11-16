@@ -1,0 +1,37 @@
+fix(ddr): real lexical detector - 7/15 -> 15/15, 4 -> 0 false positives
+
+The DDR antibody detector was substring matching: code.contains("eval(") and
+two more. Measured, it caught 7 of 15 standard attacks - a single space in
+'eval ("1+1")' defeated it - while flagging 4 of 5 benign snippets, because a
+COMMENT saying 'never use eval() in production' contains the literal 'eval('.
+
+REPLACED with src/ddr_scan.rs, a two-layer lexical analyser:
+  stripped - comments removed, string CONTENTS blanked; call patterns matched
+             here, which is what removes the false positives
+  raw      - obfuscation heuristics, because those evasions exist to hide the
+             token from layer 1 ("ev"+"al", chr(), base64, getattr by name)
+  tighten() - whitespace adjacent to punctuation removed, closing the
+             single-space bypass; has_call() enforces an identifier boundary
+             so 'noteval(' no longer matches 'eval('
+  pattern set expanded to eval/exec/__import__/compile/importlib/os.popen/
+  os.system/os.execv/pty.spawn/subprocess.*/marshal.loads/pickle.*/dill.loads/
+  yaml.load/shelve.open/ctypes/shell=True/SQL construction
+
+VERIFIED standalone against the identical 15-attack + 5-benign case list:
+  attacks caught 7/15 -> 15/15 ; benign false positives 4/5 -> 0/5
+I found and fixed a real bug in my own first attempt: stripping string contents
+removed the SELECT keyword, because the SQL lives inside the string. SQL is now
+matched on raw with the concat/format marker as the discriminator.
+
+COUNTERS MADE REAL. prevented_corruptions/antibodies_loaded/total_prevented were
+literals 1801/279/128 with ZERO increment statements in the whole source. They
+now derive from abs.len() and a live SCAN_DETECTIONS counter; rowhammer is
+reported NOT_IMPLEMENTED because nothing here mitigates rowhammer. Fabricated
+DDR literals remaining in served JSON: 0.
+
+LIMITS STATED IN THE MODULE: lexical, not semantic. Cannot see through three
+levels of indirection; executes nothing. An improvement on substring matching,
+not a substitute for AST/taint analysis or for not running untrusted text.
+More patterns do not raise this ceiling.
+
+Built and verified standalone. NOT deployed - needs the restart.

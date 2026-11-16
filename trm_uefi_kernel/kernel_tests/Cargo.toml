@@ -1,0 +1,14 @@
+[package]
+name = "trm_kernel_tests"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "std test harness for the no_std trm_uefi_kernel library"
+
+# The kernel crate itself cannot be `cargo test`ed: src/main.rs is
+# #![no_std] #![no_main] and defines #[panic_handler], so the std test
+# harness collides with it (E0152 duplicate lang item `panic_impl`).
+# src/lib.rs is #![no_std] but defines NO panic handler, so a std crate
+# can link it and supply the panic machinery. That is this crate.
+[dependencies]
+trm_uefi_kernel = { path = ".." }

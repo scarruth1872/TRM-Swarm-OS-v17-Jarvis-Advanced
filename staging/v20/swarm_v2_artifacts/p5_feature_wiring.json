@@ -1,0 +1,32 @@
+{
+ "phase": "P5",
+ "action": "wire an existing artifact, acquire nothing",
+ "source": "drugs/molecule_features.csv",
+ "source_sha256": "78c3a68ddb064d2bd36248a67b9fc0e08505a0be73f607923d00ff1d476a9540",
+ "source_bytes": 196727555,
+ "rows_read": 2897818,
+ "rows_stored": 2897818,
+ "duplicate_ids_skipped": 0,
+ "short_lines_skipped": 0,
+ "empty_fingerprints": 0,
+ "ids_not_in_molecule_table": 0,
+ "molecule_rows": 2897819,
+ "coverage": 1.0,
+ "fingerprints_present": 2897818,
+ "seconds": 24.56,
+ "rows_per_s": 118013.0,
+ "producer": "scratch/extract_molecular_features.py (Task 466)",
+ "gate_that_cleared_it": "scratch/verify_features_vs_rdkit.py",
+ "chemistry_query_full_coverage": {
+  "filter": "mw 300-350, hbd <= 3",
+  "matches": 444048
+ },
+ "cross_check_vs_rdkit_rows": {
+  "rows": 199997,
+  "mw_within_0.05": 186045,
+  "hbd_agree": 184936,
+  "hba_agree": 52283
+ },
+ "note": "`fp` is a 64-bit folded fingerprint hash, not a bit vector: it supports exact fingerprint matching, not substructure search.",
+ "logp": "absent from the platform's feature table; present only for the 6.90% of rows P4 derived through RDKit (molecule.props)."
+}

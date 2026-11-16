@@ -1,0 +1,35 @@
+[package]
+name = "swarm-dequant"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+swarm-gguf = { path = "../swarm-gguf" }
+
+[[bin]]
+name = "verify_dequant"
+path = "src/bin/verify_dequant.rs"
+
+[[bin]]
+name = "verify_ffn"
+path = "src/bin/verify_ffn.rs"
+
+[[bin]]
+name = "verify_q8_0_dot"
+path = "src/bin/verify_q8_0_dot.rs"
+
+[[bin]]
+name = "verify_moe"
+path = "src/bin/verify_moe.rs"
+
+[[bin]]
+name = "verify_mla"
+path = "src/bin/verify_mla.rs"
+
+[[bin]]
+name = "verify_mla_parity"
+path = "src/bin/verify_mla_parity.rs"
+
+[[bin]]
+name = "verify_mla_debug"
+path = "src/bin/verify_mla_debug.rs"

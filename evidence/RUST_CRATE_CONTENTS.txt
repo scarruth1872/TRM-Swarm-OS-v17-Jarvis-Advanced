@@ -1,0 +1,39 @@
+RUST CRATE CONTENTS - WHAT ALREADY EXISTS (2026-10-25)
+Focus: what the crates already contain, per "always assume the module exists".
+
+=== swarm_v2_rust_kernel (the .dll Python loads) ===
+  src/  agent_runtime.rs      6,784 B
+        cli.rs                7,830 B
+        council.rs           11,729 B   <- A NATIVE COUNCIL, UNUSED FROM PYTHON
+        font.rs               8,724 B
+        input_driver.rs       4,149 B
+        lcars_render.rs      29,444 B   <- LCARS UI renderer, largest
+        mesh_discovery.rs     7,367 B
+        nand_persistence.rs   2,628 B
+        quic_protocol.rs      3,977 B   <- QUIC exists in Rust
+        spatial_octree.rs     5,035 B
+  dll   swarm_rust_kernel.dll  576,512 B (3 copies on disk)
+
+  council.rs provides:
+    get_domain_weight(agent, category) -> f32
+    get_agent_deliberation(agent, category, topic) -> String
+    NativeSwarmCouncil::evaluate(topic, category, proposer) -> NativeCouncilProposal
+
+  Exported as extern "C" fn rust_council_evaluate (lib.rs:103).
+
+  BUT: rust_council_evaluate is referenced ONLY by lib.rs (definition) and
+  tests/kernel_full_suite.rs (test). The Python binder
+  (swarm_v2/core/rust_kernel_binder.py) binds:
+    rust_k3_and/or/not, rust_k3_batch_and, rust_turbovec_cosine,
+    rust_kernel_verify, rust_agent_dispatch, rust_agent_runtime_benchmark
+
+  RESULT: the native council is compiled into the DLL, exported, TESTED in
+  Rust, and NEVER CALLED from Python. A complete capability with no consumer.
+
+=== FOUR COUNCIL IMPLEMENTATIONS NOW ACCOUNTED FOR ===
+  1 host_council_server      Rust  :8022   LIVE, K3 calibrated, verified
+  2 swarm_council.py         Python :8099  LIVE, K3 calibrated, verified
+  3 host_council_deliberation Rust CLI      one-shot, hardcoded transcript
+  4 swarm_v2_rust_kernel     Rust DLL       native council, exported, UNUSED
+
+  Only 1 and 2 are reachable by any client. 3 and 4 have no live consumer.

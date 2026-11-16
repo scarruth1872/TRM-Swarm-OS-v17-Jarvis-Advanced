@@ -1,0 +1,43 @@
+{
+ "protocol": "VULKAN_PATH_RULER",
+ "passed": 17,
+ "failed": 0,
+ "checks": [
+  "the loader enumerates at least one physical device",
+  "ctypes device names == vulkaninfo device names (independent tool)",
+  "driver 0 writes 824 bytes, inside the 2340-byte struct",
+  "driver 1 writes 824 bytes, inside the 2340-byte struct",
+  "write ok, verified, and the read-back hash equals the payload hash",
+  "the allocation came from the driver's own requirements (>= payload)",
+  "timing is a distribution with min <= median <= max and all > 0",
+  "Vulkan device-local vs nvidia-smi memory.total agree within 15% (0.979)",
+  "an empty payload is refused without a timing",
+  "an out-of-range device index is refused, naming the range",
+  "load_architecture reports a vulkan write path with a measured time and a verified read-back",
+  "the retired 'simulated \u2014 Vulkan path pending' string is gone",
+  "the write names the device it went to",
+  "with the path disabled the timing is None and the reason is present (no invented number)",
+  "HVBE reports device-local VRAM equal to the probe's chosen device",
+  "the delegated value is the telemetry source's own measurement (one owner)",
+  "HVBE's figure is the machine's, not the 12GB design target"
+ ],
+ "denominators": {
+  "devices": 2,
+  "write_bytes": 128,
+  "write_samples": 5,
+  "driver_struct_bytes": 824
+ },
+ "devices": [
+  "NVIDIA GeForce RTX 3070 Laptop GPU",
+  "AMD Radeon(TM) Graphics"
+ ],
+ "cross_checks": {
+  "device_list": "vulkaninfo.exe",
+  "discrete_memory": "nvidia-smi memory.total"
+ },
+ "capability_artifact": "swarm_v2_artifacts/vulkan_capability.json",
+ "limits": [
+  "a mapped host-coherent buffer is device-visible memory, not Infinity Cache",
+  "GPU_SPECS remains a design target (RX 6700 XT, 96MB); the measured devices are this host's"
+ ]
+}

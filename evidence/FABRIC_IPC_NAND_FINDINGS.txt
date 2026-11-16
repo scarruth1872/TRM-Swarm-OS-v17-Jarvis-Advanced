@@ -1,0 +1,52 @@
+FABRIC / IPC / NAND — READ-IN-FULL FINDINGS + MEASURED RESULT
+Date: 2026-10-24
+
+=== ANSWER: NO, we were not using the fabric. Now one layer is. ===
+
+READ-IN-FULL RESULTS (assumed working, verified before wiring):
+
+memory_mapped_ipc.rs  (273 lines, read in full)
+  IS    : 128-slot fixed slab, FNV-1a + linear probe, oldest-slot evict
+  VALUES: String only (key <= 64 chars)
+  IS NOT: a file mmap. Header states "no_std kernel cannot mmap a host file"
+          and "No real host syscall mmap is issued"
+  SCOPE : IN-PROCESS only. Rust and Python cannot share it (separate procs)
+  r_efi : 0 refs -> RUNS ON WINDOWS
+
+nand_fs.rs  (138 lines, read in full)
+  IS    : UEFI SimpleFileSystem mount-verify of \\swarm_v2_nand_fabric.k3
+  GEOM  : 153,523,393 trits / 76,761,697 bytes expected
+  r_efi : 2 refs -> UEFI ONLY, cannot run in a Windows process
+  VERDICT: correctly unreachable host-side; NOT a wiring gap
+
+r_efi dependency scan (the decisive test):
+  holographic_fabric.rs        0   -> host-capable, UNUSED
+  unified_transistor_fabric.rs 0   -> host-capable, UNUSED
+  memory_mapped_ipc.rs         0   -> host-capable, NOW USED
+  ipc.rs                       0   -> host-capable, UNUSED
+  artifact_pipeline.rs         0   -> host-capable, UNUSED
+  nand_fs.rs                   2   -> UEFI-only, correctly excluded
+
+=== MEASURED RESULT OF WIRING memory_mapped_ipc ===
+                    before      after     change
+  /arc/task/{id}    27.7 ms    16.0 ms    -42%
+  /arc/stats        35.7 ms    16.7 ms    -53%
+  /arc/integrity    44.8 ms    14.0 ms    -69%
+  /arc/status      176.8 ms    73.8 ms    -58%
+  arena            slot 6/32, 9,316,397 bytes cached, hits=0 misses=6
+
+=== HONEST CAVEATS ===
+1. hits=0 in steady state. The parsed-Value HashMap short-circuits before the
+   arena is consulted, so the arena is a COLD-START text cache, not a hot-path
+   win. It holds 9.3 MB of raw JSON that is never re-read after warmup.
+2. Remaining 16-74 ms is serde_json Value::clone() cost, NOT I/O. /arc/status
+   clones all 5 sets. Reaching <1 ms needs &Value borrows, not clones.
+3. My earlier claim "mmap the JSON -> <1 ms" was WRONG. This module cannot map
+   files. It is a bounded string arena.
+4. Rust<->Python IPC is still HTTP-over-TCP. memory_mapped_ipc is in-process
+   only; cross-process needs an OS primitive (named pipe / real shared mem).
+5. TRM inference is still device="cpu". 2.571 TFLOPS measured on the 6700 XT
+   remains idle.
+
+=== WHAT REMAINS UNWIRED (all host-capable, all 0 refs) ===
+  ipc.rs, artifact_pipeline.rs, holographic_fabric.rs, unified_transistor_fabric.rs

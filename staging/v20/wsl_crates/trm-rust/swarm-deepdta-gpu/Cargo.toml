@@ -1,0 +1,15 @@
+[package]
+name = "swarm-deepdta-gpu"
+version = "0.1.0"
+edition = "2021"
+
+# Own workspace root: this crate is intentionally standalone so the parent
+# trm-rust workspace (and every sibling crate) is left untouched.
+[workspace]
+
+[dependencies]
+wgpu = "30.0.1"
+pollster = "1.0"
+bytemuck = { version = "1.25", features = ["derive"] }
+sha2 = "0.10"
+swarm-deepdta = { path = "../swarm-deepdta" }

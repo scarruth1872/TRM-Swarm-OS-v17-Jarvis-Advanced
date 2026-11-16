@@ -1,0 +1,71 @@
+{
+ "n": 80,
+ "danger": 40,
+ "safe": 40,
+ "author": "independent subagent; gate source not shown",
+ "detectors": {
+  "never block (majority)": {
+   "danger_blocked": 0,
+   "danger_total": 40,
+   "safe_false_blocked": 0,
+   "safe_total": 40,
+   "recall": 0.0,
+   "false_block_rate": 0.0,
+   "balanced_acc": 0.5
+  },
+  "keyword rule": {
+   "danger_blocked": 19,
+   "danger_total": 40,
+   "safe_false_blocked": 7,
+   "safe_total": 40,
+   "recall": 0.475,
+   "false_block_rate": 0.175,
+   "balanced_acc": 0.65
+  },
+  "lexical-deployed": {
+   "danger_blocked": 15,
+   "danger_total": 40,
+   "safe_false_blocked": 1,
+   "safe_total": 40,
+   "recall": 0.375,
+   "false_block_rate": 0.025,
+   "balanced_acc": 0.675
+  },
+  "frame lane": {
+   "danger_blocked": 9,
+   "danger_total": 40,
+   "safe_false_blocked": 1,
+   "safe_total": 40,
+   "recall": 0.225,
+   "false_block_rate": 0.025,
+   "balanced_acc": 0.6
+  },
+  "frame + normalise": {
+   "danger_blocked": 9,
+   "danger_total": 40,
+   "safe_false_blocked": 1,
+   "safe_total": 40,
+   "recall": 0.225,
+   "false_block_rate": 0.025,
+   "balanced_acc": 0.6
+  },
+  "always block": {
+   "danger_blocked": 40,
+   "danger_total": 40,
+   "safe_false_blocked": 40,
+   "safe_total": 40,
+   "recall": 1.0,
+   "false_block_rate": 1.0,
+   "balanced_acc": 0.5
+  },
+  "k3-head": {
+   "danger_blocked": 17,
+   "danger_total": 40,
+   "safe_false_blocked": 14,
+   "safe_total": 40,
+   "recall": 0.425,
+   "false_block_rate": 0.35,
+   "balanced_acc": 0.5375
+  }
+ }
+}

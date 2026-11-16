@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-09-12T18:38:34Z",
+  "test_1_input_variance": {
+    "hopfield_variance": {
+      "pattern_a": {
+        "overlap": 1.0,
+        "k3": 1,
+        "seal": "PASS"
+      },
+      "pattern_b": {
+        "overlap": -0.1875,
+        "k3": 0,
+        "seal": "EVAL_MARGINAL"
+      },
+      "diff_confirmed": true
+    },
+    "cellular_variance": {
+      "rule_110": {
+        "entropy": 0.5436,
+        "active": 8,
+        "k3": 1
+      },
+      "rule_0": {
+        "entropy": 0.0,
+        "active": 0,
+        "k3": -1
+      },
+      "diff_confirmed": true
+    }
+  },
+  "test_2_semantic_retrieval": {
+    "total_queries": 5,
+    "correct_retrievals": 5,
+    "all_passed": true,
+    "queries": [
+      {
+        "query": "energy minimization attractor",
+        "expected_paradigm": "hopfield",
+        "top_hit_paradigm": "hopfield",
+        "top_hit_id": "9dca62d0e48f96c1",
+        "top_hit_content": "Hopfield auto-associative memory energy descent converged from -49 to -249 with Lyapunov minimization",
+        "is_correct": true
+      },
+      {
+        "query": "quantum entanglement superposition",
+        "expected_paradigm": "quantum",
+        "top_hit_paradigm": "quantum",
+        "top_hit_id": "735e09c5f5e49295",
+        "top_hit_content": "Quantum state vector unitary evolution 3-qubits Hadamard CNOT entanglement entropy 1.0",
+        "is_correct": true
+      },
+      {
+        "query": "cellular automaton rule lattice entropy",
+        "expected_paradigm": "cellular",
+        "top_hit_paradigm": "cellular",
+        "top_hit_id": "ba38cec655622a32",
+        "top_hit_content": "Wolfram cellular automaton Rule 110 Turing-complete lattice evolution step population trend",
+        "is_correct": true
+      },
+      {
+        "query": "ising spin glass hamiltonian ground state",
+        "expected_paradigm": "ising",
+        "top_hit_paradigm": "ising",
+        "top_hit_id": "b49575ed29da41b5",
+        "top_hit_content": "Ising spin glass Metropolis-Hastings Hamiltonian ground state minimization 48-spins",
+        "is_correct": true
+      },
+      {
+        "query": "vector symbolic hyperdimensional unbinding",
+        "expected_paradigm": "hdc",
+        "top_hit_paradigm": "hdc",
+        "top_hit_id": "2c5e92ebb29cb67a",
+        "top_hit_content": "Hyperdimensional computing vector symbolic architecture binding and bundling unbinding",
+        "is_correct": true
+      }
+    ]
+  },
+  "conclusion": "Pipeline is demonstrably input-responsive (outputs & K3 trits vary with input) and TurboVec semantic retrieval is non-degenerate and associative."
+}

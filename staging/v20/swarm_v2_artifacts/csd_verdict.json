@@ -1,0 +1,37 @@
+{
+  "record": "Calibrated Selective Decomposition verdict (MOTION-CSD)",
+  "cutoff_angstrom": 4.5,
+  "grid_rotations": 512,
+  "complexes": 18,
+  "verdict": "Reject:SingleProperty",
+  "reason": "hbond dominates (LDA 0.779 = 1.12x joint 0.693)",
+  "joint_lda_cv_4clean": 0.6929,
+  "per_property_lda_cv": {
+    "contact_count": 0.75,
+    "electrostatics": 0.3357,
+    "hydrophobic": 0.5571,
+    "hbond": 0.7786
+  },
+  "dominant_property": "hbond",
+  "dominant_ratio": 1.1237,
+  "cognate_mean": {
+    "contact_count": 0.0364,
+    "electrostatics": -0.0,
+    "hydrophobic": 0.0094,
+    "hbond": 0.0044
+  },
+  "random_mean": {
+    "contact_count": 0.0186,
+    "electrostatics": 0.0001,
+    "hydrophobic": 0.0067,
+    "hbond": 0.0019
+  },
+  "mean_dist_fixed": {
+    "cognate_angstrom": 3.8713,
+    "random_angstrom": 3.8986,
+    "complexes_with_contacts": 4,
+    "note": "prior mean_dist 0.866 (random) was a 0.0 sentinel artifact; NaN for empty contact lists now"
+  },
+  "prediction_recorded": "clash filter eliminates JOINT1 artifact; if signal survives, no single property reproduces it (LDA 0.70-0.85, no term > 0.70)",
+  "basis": "rotation-optimized (512) random baseline + vdW collision filter + decomposition gate (0.85 factor). next_probe when exhausted: probe_hbond_geometry / probe_water_contacts."
+}

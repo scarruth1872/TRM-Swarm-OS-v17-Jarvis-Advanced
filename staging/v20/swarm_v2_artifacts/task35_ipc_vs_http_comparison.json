@@ -1,0 +1,43 @@
+{
+  "task_id": "Task 35",
+  "task_name": "IPC vs HTTP Direct Comparison",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "status": "COMPLETE_MEASURED_SUPERIORITY",
+  "comparison": [
+    {
+      "operation": "Get Ledger Blocks",
+      "native_ipc_latency_us": 5686.3,
+      "http_latency_us": 34446.5,
+      "speedup": "6.1x",
+      "parity_verified": true
+    },
+    {
+      "operation": "Get Wet-Lab Protocols",
+      "native_ipc_latency_us": 4630.0,
+      "http_latency_us": 5412.7,
+      "speedup": "1.2x",
+      "parity_verified": true
+    },
+    {
+      "operation": "Get Humanistic Summary",
+      "native_ipc_latency_us": 1190.4,
+      "http_latency_us": 15631.3,
+      "speedup": "13.1x",
+      "parity_verified": true
+    },
+    {
+      "operation": "Commit Ledger Block",
+      "native_ipc_latency_us": 3823.9,
+      "http_latency_us": 31005.5,
+      "speedup": "8.1x",
+      "parity_verified": true
+    },
+    {
+      "operation": "Get Discovery Status",
+      "native_ipc_latency_us": 902.8,
+      "http_latency_us": 2481.5,
+      "speedup": "2.7x",
+      "parity_verified": true
+    }
+  ]
+}

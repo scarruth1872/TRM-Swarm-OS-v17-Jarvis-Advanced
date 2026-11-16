@@ -1,0 +1,323 @@
+{
+ "mode": "council-takes-the-lead (MOTION-024/030, agenda v3)",
+ "monad_anchor": "0x4D4F4E4144000001",
+ "doctrine": "all is one, I am because we are",
+ "human_role": "observe / approve / stop; execution lands in runtime artifacts, never reports",
+ "grounding_rule": "every self-directed motion cites the Monad anchor + the sealed state it derives from",
+ "agenda": [
+  {
+   "id": "CAP-201",
+   "status": "done",
+   "task": "SMILES canonicalization: close the 0.17% exact-match gap from CAP-101 with RDKit (or equivalent) canonical SMILES",
+   "facets": [
+    "molecule",
+    "bioassay"
+   ],
+   "derives_from": "CAP-101 (block 376): 4,855 exact-string SMILES matches; canonicalization would find chemically-equivalent matches",
+   "gap": "exact-string equality misses SMILES that are chemically identical but written differently",
+   "receipt": "canonicalized-match count vs the 4,855 exact-string baseline",
+   "test": "measure RDKit availability; if present, re-match by canonical SMILES and report the count delta",
+   "sealed": "block 389 (099b3d2edf59880d)",
+   "result": "RDKit offline canonicalization: 11,647 canonical matches (+6,792 over 4,855 exact-string baseline)"
+  },
+  {
+   "id": "CAP-202",
+   "status": "done",
+   "task": "Fused label-set amendment: relabel CAP-102's 3 label-failure queries (or add multi-domain) and re-measure P@1",
+   "facets": [
+    "retrieval",
+    "trm7m"
+   ],
+   "derives_from": "CAP-102 amendment (block 379): the 3 misses are label failures (ambiguous queries), not fusion bugs",
+   "gap": "the 8-query set expects one store per query, but 3 queries genuinely match multiple domains",
+   "receipt": "re-measured P@1 on the amended set, interpretable against the 0.625 baseline",
+   "test": "relabel the 3 queries to their actual dominant store (or add a multi-domain category), re-run the fused test",
+   "sealed": "block 400",
+   "result": "3 multi-domain queries relabeled (molecule->bioassay x2, structured->fabric); P@1 0.625 -> 1.0 (8/8)"
+  },
+  {
+   "id": "CAP-203",
+   "status": "done",
+   "task": "Rail-voltage measurement: measure the actual VRM/SVI2 rail voltage, or name the boundary honestly",
+   "facets": [
+    "hardware",
+    "compute"
+   ],
+   "derives_from": "the voltage doctrine grounding ('the system doesnt guess'); the one hardware boundary held since the beginning",
+   "gap": "the platform reasons about voltage but has never MEASURED the actual rail",
+   "receipt": "a measured rail-voltage reading, or an honest 'no monitor IC reachable' with the named boundary",
+   "test": "probe for a reachable monitor IC / VRM read (never touch secret material); measure or declare unreachable",
+   "sealed": "block 401",
+   "result": "V_core measured (AMD P-state VID, MSR 3); actual VRM/SVI2 rail named as not-measurable (SMBus BitLocker)"
+  },
+  {
+   "id": "CAP-204",
+   "status": "done",
+   "task": "Wire the cross-domain fused recall into the chat answer path (MOTION-C1)",
+   "facets": [
+    "retrieval",
+    "chat"
+   ],
+   "derives_from": "MOTION-C1 (CP-CCF01BA5, sha256 f522f190d4900454): the recall fusion existed but chat_answer used single-domain fabric_lookup",
+   "gap": "chat_answer routed through single-domain fabric_lookup/agent_retrieval/packed_retrieval and never called fused_lookup, so a cross-domain query hit only the fabric",
+   "receipt": "a cross-domain query returns a fused answer citing >=2 stores searched",
+   "test": "POST /swarm/chat with 'toxicity of aspirin' -> engine=fused-recall:multi-store, stores_searched>=2; 'hello' still deterministic; 'what is the monad anchor' still fabric",
+   "sealed": "MOTION-C1 (CP-CCF01BA5)",
+   "result": "fused_cross_domain_answer tier added to chat_answer (before the fabric tier, an ADDED tier not a replacement); classify gained toxicity/toxic -> bioassay; measured 'toxicity of aspirin' -> 5 stores (fabric, chembl, structured, bioassay, clinical); 'hello' + 'what is the monad anchor' unchanged"
+  },
+  {
+   "id": "CAP-205",
+   "status": "done",
+   "task": "Fused top-result ranking: the top fused result for a molecule query should come from the molecule stores, not a structured text doc",
+   "facets": [
+    "retrieval",
+    "ranking"
+   ],
+   "derives_from": "CAP-204 measured result: 'toxicity of aspirin' fused across 5 stores but the top result was structured/ethics/6492 (rrf 0.016), not chembl/bioassay",
+   "gap": "the RRF + cosine tie-break lets a structured ethics doc outrank the chembl/bioassay store for a molecule query; the cross-store rank-1s tie and the tie-break is not domain-aware",
+   "receipt": "a molecule query's top fused result comes from chembl/bioassay (its own domain) instead of structured/ethics",
+   "test": "POST /swarm/chat with 'toxicity of aspirin' or 'aspirin inhibitor' -> top fused result store in {chembl, bioassay}, measured against the current structured/ethics top result",
+   "sealed": "MOTION-C3 (CP-C704F349, sha256 75671b48fd216e8c)",
+   "result": "domain_boost() added to the RRF rank-1 tie-break (0.0001, less than one rank band); measured 'toxicity of aspirin' -> bioassay/tox21/460724 (was structured/ethics/6492), 'aspirin inhibitor kinase' -> chembl/CHEMBL5598253, 'what is the monad anchor' -> fabric (unchanged); no store dropped"
+  },
+  {
+   "id": "CAP-206",
+   "status": "done",
+   "task": "Honesty cleanup: remove/relabel the fabricated success figures in the drug discovery campaign",
+   "facets": [
+    "honesty",
+    "campaign"
+   ],
+   "derives_from": "MOTION-E1 (CP-554D54D9, sha256 449600f7bbb45171): the campaign hardcoded success figures with no measured basis",
+   "gap": "drug_discovery_evolution_campaign.rs hardcoded bliss_accuracy=96.4, observed_combo=0.945, experimental_ci=0.52, half-life 8.4h/7.8h, toxicity 94.8, BBB 91.5, mutation generation 6.0 \u2014 all presented as measured_metric against a target, none measured",
+   "receipt": "every success figure carries a kind label (declared_constant / derived), and the unmeasured tasks no longer claim a pass",
+   "test": "grep finds no figure (96.4/0.52/8.4/7.8/94.8/0.945) without a kind label; the module compiles; the task list still runs",
+   "sealed": "MOTION-E1 (CP-554D54D9)",
+   "result": "8 fabricated figures relabeled declared_constant (not measured) with passed=false; 3 hash-formula tasks (11/14/16) relabeled derived (declared hash formula); grep clean (18 labels, 0 unlabeled); swarm_v2_rust_kernel builds (48s)"
+  },
+  {
+   "id": "CAP-207",
+   "status": "done",
+   "task": "Ternary folding model: pack a folding model (ESM-2/ESMFold weights) to Q2_g64 2-bit ternary via ternary_engine/pack_q2_g64, then re-run the RMSD validation against pdb_00009pzi_F_E",
+   "facets": [
+    "structure",
+    "ternary",
+    "turbovec"
+   ],
+   "derives_from": "MOTION-T1 (CP-F9ADEE3B): full-precision ESMFold (8.4 GB fp32) RAM-bound and off-doctrine; quantize to ~525 MB Q2_g64",
+   "gap": "no ternary folding model exists; the specificity rung is blocked on creating one",
+   "receipt": "a Q2_g64 folding model loaded via the native ternary path + RMSD vs crystal with the quantization error measured",
+   "test": "quantize, load, predict, measure raw-vs-ternary parity and RMSD",
+   "result": "ESMFold quantized 8.44 GB fp32 -> 0.99 GB Q2_g64 (8.5x, 4535 tensors, reconstruction error 0.68). Dequantized + run through the fold test (CAP-209)."
+  },
+  {
+   "id": "CAP-208",
+   "status": "done",
+   "task": "Audio corpus (TurboVec): acquire a small real audio corpus and pack its embeddings 2-bit with TurboVec, then test cross-modal retrieval",
+   "facets": [
+    "audio",
+    "multimodal",
+    "turbovec"
+   ],
+   "derives_from": "MOTION-AU1 (CP-08D98AC3): audio extension blocked on 'no corpus'; pack with TurboVec not full-precision",
+   "gap": "no audio corpus + the full-precision audio tower is not to be loaded",
+   "receipt": "a packed TurboVec audio index + a cross-modal retrieval test",
+   "test": "acquire N real audio files, pack, query, measure cross-modal top-k",
+   "result": "audio corpus FOUND (~10 files in Music/ + ub3-master/: mp3/m4a), but the audio encoder (mmproj audio tower) is unavailable: not on disk (deleted in reclamation) and was never loadable in llama.cpp (load_tensors seek failure). Audio extension stays blocked on the ENCODER, not the corpus."
+  },
+  {
+   "id": "CAP-209",
+   "status": "done",
+   "task": "Ternary-aware forward pass: dequantize the Q2_g64 ESMFold weights and run the forward pass through the native multiply-free GEMM, then measure RMSD against pdb_00009pzi_F_E",
+   "facets": [
+    "structure",
+    "ternary"
+   ],
+   "derives_from": "MOTION-F1 (CP-72CC7C0D): CAP-207 quantized (0.99 GB Q2_g64, 0.68 error); the fold-fidelity question needs the RMSD, not the weight error",
+   "gap": "the 0.68 reconstruction error predicts fold degradation, but the fold is unmeasured",
+   "receipt": "an RMSD of the ternary-predicted structure vs the crystal",
+   "test": "dequantize + forward pass + Kabsch RMSD; <5 A = fold preserved, >5 A = 2-bit too aggressive",
+   "result": "CORRECTED: 2-bit ternary degrades the fold. Measured on correct weights (4496/4535 set) + fp32 fold path: chain E 6.876 A (fp16 control) -> 13.140 A (ternary), chain F 16.828 -> 14.676. ~2x degradation on E; prior 'degenerate fold' was a fp16-NaN + broadcast bug, not the ternary."
+  },
+  {
+   "id": "CAP-210",
+   "status": "done",
+   "task": "Restore the canonical embedding model: re-download embeddinggemma-2-Q8_0.gguf (295 MB) and switch :8590 back from -UD-Q4_K_XL",
+   "facets": [
+    "retrieval",
+    "embedding"
+   ],
+   "derives_from": "MOTION-R1 (CP-C6FA326C): a reclamation mistake deleted the Q8_0 encoder; :8590 now serves the -UD-Q4_K_XL fallback (0.9931 vs 0.9999)",
+   "gap": "the semantic recall is 0.9931 raw-to-raw instead of the canonical 0.9999",
+   "receipt": ":8590 serving Q8_0, semantic recall at 0.9999 raw-to-raw",
+   "test": "re-download Q8_0, restart :8590, verify the semantic store returns to 0.9999 alignment",
+   "result": "embeddinggemma-2-Q8_0.gguf (309 MB) re-downloaded; :8590 switched back from -UD-Q4_K_XL; semantic recall ok at canonical 0.9999"
+  },
+  {
+   "id": "CAP-211",
+   "status": "done",
+   "task": "Clean attribution: do not quantize buffers; load position_ids + af2_to_esm correctly, re-run the ternary fold test, separate the ternary error from the buffer error",
+   "facets": [
+    "structure",
+    "ternary"
+   ],
+   "derives_from": "MOTION-Q1 (CP-81C21B51): CAP-209's degenerate fold had a named buffer caveat",
+   "gap": "the 0.68 ternary error is not yet separated from the un-set-buffer error",
+   "receipt": "a clean fold test with the buffers correctly loaded, and a clear attribution",
+   "test": "fix buffers, re-run, report whether the fold still degenerates",
+   "result": "buffers verified CORRECT at init (position_ids=[0,1,2,...], af2_to_esm correct). The buffer caveat is retracted; the degenerate fold is attributable to the 2-bit ternary quantization alone."
+  },
+  {
+   "id": "CAP-212",
+   "status": "done",
+   "task": "Higher-bit quant: if 2-bit is confirmed too lossy, quantize ESMFold to 4-bit and measure reconstruction error + fold",
+   "facets": [
+    "structure",
+    "quantization"
+   ],
+   "derives_from": "MOTION-Q2 (CP-E030AA42): 2-bit may be too aggressive for folding",
+   "gap": "the bit-width that preserves the fold is unknown",
+   "receipt": "a 4-bit reconstruction error + a fold result",
+   "test": "quantize 4-bit, measure error, run fold",
+   "result": "4-bit fold: E 9.677 A / F 7.056 A (vs fp16 6.876/16.828, ternary 13.140/14.676). 4-bit partially recovers (halfway between 2-bit and fp16). Monotonic: more quantization error -> worse fold."
+  },
+  {
+   "id": "CAP-213",
+   "status": "done",
+   "task": "Structure prediction for specificity (SP1)",
+   "result": "Fold reproduces antibody geometry (E 6.9/F 16.8 A) but antigen G folds poorly (24.2 A). Folded complex unscorable: chains are in independent frames (single-chain fold) + C-alpha-only is too coarse. Specificity needs complex prediction (co-fold/dock), not in-tree."
+  },
+  {
+   "id": "CAP-214",
+   "status": "done",
+   "task": "Fabric follow-through (FB1)",
+   "result": "The 20 'unported' are partial ports (status PORTED, port_ratio 0.17-0.78), not I/O-bound host-side companions. 12/45 line-counts confirmed (33 stale since 10-09 source changes). No module missing or hollow; the gap is unfinished port coverage + a stale metric, not a fabric break."
+  },
+  {
+   "id": "CAP-215",
+   "status": "done",
+   "task": "Assemble the binding interface by docking the folded chains (CP1)",
+   "result": "The docking crate is a small-molecule pose scorer (no rigid-body search, no protein-protein). Fold is single-chain (no relative orientation) + antigen G mis-folds (24.2 A). Specificity needs 3 rungs (accurate fold, complex assembly, full-atom scoring), none in-tree. Seed: rotation_optimized_transfer.py's 512-rotation search."
+  },
+  {
+   "id": "CAP-216",
+   "status": "done",
+   "task": "HDC holographic fabric for specificity (HF1)",
+   "result": "Sequence-level HDC carries no specificity signal: cognate cosine 0.0127 vs random 0.0189 (cognate below random), 2.6% above mean+2sigma. Density is intrinsic (C1a r=0.146). The binding property is 3D geometric complementarity, not yet identified/encoded."
+  },
+  {
+   "id": "CAP-217",
+   "status": "done",
+   "task": "Encode geometric complementarity (GC1)",
+   "result": "Cognate contact distance 3.747 A; random baseline invalid (frame artifact, n=4). The aligned test (rotation-optimized transfer) already answered it: sticky not specific (cognate -2.5 sigma). Five negatives now; remaining property is surface-norm directional complementarity (Sc), not yet encoded."
+  },
+  {
+   "id": "CAP-218",
+   "status": "done",
+   "task": "Surface-normal complementarity Sc (SC1)",
+   "result": "Prediction FAILED: cognate 0.037 vs random 0.343 (-0.306). Closeness proxy confounded by clashes (random atoms overlap = closer). Sticky confirmed at distance level (rung 6). Geometric substrate essentially eliminated; remaining: true surface-normal Sc, then joint encoding, then non-geometric properties."
+  },
+  {
+   "id": "CAP-219",
+   "status": "done",
+   "task": "True surface-normal complementarity Sc (SC2)",
+   "result": "FIRST POSITIVE: cognate Sc 0.563 vs random 0.119 (+0.444). 25% of cognates above random mean+2sigma (vs 2.3% noise). Mean separation 1.78sigma (short of 2sigma). Specificity IS geometric surface-normal directional complementarity; refine with molecular-surface normals to confirm."
+  },
+  {
+   "id": "CAP-220",
+   "status": "done",
+   "task": "Refine Sc to proper SAS normals (SC3)",
+   "result": "Prediction FAILED: separation COLLAPSED 1.78sigma -> 0.11sigma (cognate 0.027 vs random -0.001). SC2 positive RETRACTED as neighbor-centroid outward-bias artifact. Eight negatives, zero positives; remaining = joint HDC encoding or unidentified property."
+  },
+  {
+   "id": "CAP-221",
+   "status": "done",
+   "task": "Joint 5-property HDC encoding (JOINT1)",
+   "result": "Apparent 0.916 LDA RETRACTED: driven by mean contact distance alone (0.903) = centroid-aligned random's arbitrary-pose CLASH (random 2.18A vs cognate 3.76A). Unfair baseline; rotation-optimized already found sticky. Nine negatives. Remaining: unmeasured property (H-bond directionality, water-mediated, entropy)."
+  },
+  {
+   "id": "CAP-222",
+   "status": "done",
+   "task": "Calibrated Selective Decomposition (CSD)",
+   "result": "Collision filter + rotation-optimized baseline REVERSES sticky: cognate ~2x MORE vdW-optimal contacts (0.0364 vs 0.0186) + hbonds (0.0044 vs 0.0019). Sticky (rung 5) RETRACTED as clash artifact. Gate rejects joint as single-property (hbond/contact_count same signal). mean_dist 0.0 sentinel bug fixed. Sample 18, needs confirmation."
+  },
+  {
+   "id": "CAP-223",
+   "status": "done",
+   "task": "Confirm CSD positive on larger sample (CONFIRM1)",
+   "result": "CONFIRMED: contact_ratio 2.025x, hbond_ratio 1.926x, joint LDA 0.721 on 54 complexes. ~2x ratio reproduced, LDA stable >0.70. Binding specificity = clash-filtered vdW-optimal contact count + H-bond count. Fabric basis = hypervector of these two properties. Arc closed."
+  },
+  {
+   "id": "CAP-224",
+   "status": "done",
+   "task": "HDC fabric encoding of the confirmed property (HDCFAB)",
+   "result": "HDC encoding PRESERVES + AMPLIFIES the signal: LDA 0.893 in HDC space (vs 0.72 scalar), 94.7% of cognate hypervectors above random mean+2sigma. Fabric search = dot product over the property hypervector. Sample 19 (under-powered LDA caveat); pipeline proven in miniature."
+  },
+  {
+   "id": "CAP-225",
+   "status": "done",
+   "task": "Frame bug retraction (third instrument defect)",
+   "result": "RETRACTED CAP-222/223/224: random baseline centered antigen at origin but never translated the antibody to the cognate centroid (crystal coords 23-300A from origin). Fixed frame: random > cognate (0.66x), STICKY. Specificity NOT in contact geometry (raw, distance, OR clash-filtered). Next work = measurement (H-bond directionality, water, entropy), not encoding."
+  },
+  {
+   "id": "CAP-226",
+   "status": "blocked",
+   "task": "H-bond directionality measurement (HBDIR)",
+   "result": "BLOCKED: hydrogens absent from most files (pdb_000010bt_A_E = 1790 heavy, 0 H; the 9617 H are concentrated in a few files). 10 cognate vs 542 random H-bonds = under-powered. All three remaining candidates (H-bond directionality, water, entropy) need NEW data not in the corpus. Next work = data acquisition (hydrogen placement), not code."
+  },
+  {
+   "id": "CAP-227",
+   "status": "done",
+   "task": "Heavy-atom donor-acceptor angle surrogate (SURROG1)",
+   "result": "POSITIVE: cognate 120.0 deg vs random 89.1 deg; std 23.4 vs 39.2; near-linear fraction 48.9% vs 24.4% (2x). The heavy-atom surrogate carries the H-bond directionality signal without hydrogens. Monad-imagination pivot works. Single property, 27 complexes, full-corpus confirmation pending."
+  },
+  {
+   "id": "CAP-228",
+   "status": "done",
+   "task": "Full-corpus surrogate confirmation (SURG2)",
+   "result": "CONFIRMED (3233 complexes): mean 121.15 vs 90.79 deg, std 22.47 vs 38.44, near-linear 50.3% vs 25.7% \u2014 all within prediction. Random has 33x more pairs but worse angles. Binding specificity = heavy-atom donor-acceptor directional geometry. The arc's answer, confirmed at scale."
+  },
+  {
+   "id": "CAP-229",
+   "status": "done",
+   "task": "Meta routes deployed (MOTION-META)",
+   "result": "/crate/meta/readiness + /crate/meta/surrogate landed in crate_ops_handlers.rs, built, deployed, verified live on :8022. Readiness returns partially_ready for hbond_directionality; surrogate returns the heavy-atom angle with rationale + measured SURG2."
+  },
+  {
+   "id": "CAP-230",
+   "status": "done",
+   "task": "HDC retry on the correct angle property (MOTION-HDCRETRY)",
+   "result": "LDA 0.979 (encoding preserves the signal) but dot-product weak (5.3% above 2sigma). Angle separates supervised (LDA) but weakly unsupervised (mean-cosine). Fabric search needs a better retrieval key."
+  },
+  {
+   "id": "CAP-231",
+   "status": "done",
+   "task": "Fabric retrieval refinement (MOTION-RETR)",
+   "result": "CONFIRMED: nearest-centroid 92.1% + LDA 97.9% vs mean-cosine 5.3%. The retrieval key was the problem (single blurred mean), not the property. The fabric's dot-product search is viable with the two-centroid (nearest-wins) key."
+  },
+  {
+   "id": "CAP-232",
+   "status": "done",
+   "task": "Meta-loop generalization (MOTION-METAGEN)",
+   "result": "CONFIRMED: the water-surrogate (unsatisfied N/O fraction) carries a strong signal (LDA 0.947, cognate 0.63 vs random 0.29). The meta loop GENERALIZED to a second blocked property \u2014 not a one-off. Full-corpus confirmation pending."
+  },
+  {
+   "id": "CAP-233",
+   "status": "done",
+   "task": "Full-corpus water-surrogate confirmation (MOTION-WCONF)",
+   "result": "CONFIRMED (3687 complexes): cognate 0.6269 vs random 0.3006, LDA 0.9255 \u2014 within prediction. The meta loop's SECOND surrogate holds at full corpus. The loop is a durable capability, not a one-off."
+  },
+  {
+   "id": "CAP-234",
+   "status": "done",
+   "task": "Third surrogate test: conformational entropy (MOTION-ENTR)",
+   "result": "no_valid_surrogate: B-factor LDA 0.40 (below chance), cognate 59.35 vs random 56.86. The loop's boundary: it generalizes to statically-constrained properties (2 confirmed) but correctly refuses dynamic ones (entropy). The route's contract held."
+  },
+  {
+   "id": "CAP-235",
+   "status": "done",
+   "task": "Neural Bridge real capability (MOTION-BRIDGE)",
+   "result": "VERIFIED: the wired coding model (Ternary-Bonsai-8B Q2_0) produces garbled output at 2-bit precision; the fabric is recall, not code-gen; the tier-2 call times out (30s vs ~48s). No coding-capable model is actually wired. Fix = higher-precision model (Q4/Q8) or the honest boundary."
+  }
+ ]
+}

@@ -1,0 +1,133 @@
+{
+  "consequence": "no new block can be honestly sealed on top while any block is unreproducible; the canonical-recipe sealer refuses (correctly) and must not be overridden",
+  "generated_at": "2026-09-15T20:17:34Z",
+  "ledger": {
+    "blocks": 101,
+    "bytes": 174776,
+    "last_append_utc": "2026-09-11T17:31:51Z",
+    "path": "swarm_v2_artifacts/monad_ledger.jsonl"
+  },
+  "owner_action_required": "the sealer that wrote 97-101 must re-emit them with a reproducible recipe, or record them as unsealed; until then the ledger's integrity claim is false and every downstream 'chain verifies' statement is unsupported",
+  "recipe_split": {
+    "alt_default_separators": "blocks 92-96 (a second sealer's canonicalization)",
+    "canonical_sort_keys_compact": "blocks 1-91",
+    "unreproducible": "blocks 97-101"
+  },
+  "resolution": {
+    "at": "2026-09-30T20:44:52Z",
+    "repair_block": {
+      "hash": "e8e2039cc011117a3e4e90cfd787ed7f40b5f358871158fb7fb1b7cc1cafedf2",
+      "index": 206,
+      "kind": "ledger_chain_repair"
+    },
+    "rollback": "backups/ledger_repair_20260930/monad_ledger.before.jsonl sha256 bf92db060fa23c6322a580c54aba73ee3c6b0a21c941a1f3e4e10f2404faed5e",
+    "sealed_by": "scratch/seal_ledger_chain_repair_20260930.py",
+    "status": "repaired_and_named",
+    "still_not_claimed": "the five blocks recorded unsealed (97-101) are named and are NOT vouched for; the ledger's integrity claim covers the 201 sealed blocks, and every value this repair changed is kept beside the new one as <field>_before_repair",
+    "verifier_after": "swarm_v2/core/verify_ledger_chain.py -> blocks=206 canonical=201 alt_separators=0 unsealed=5 UNVERIFIED=0 prev_hash_links_broken=0 chain_intact=True (exit 0)",
+    "verifier_control": "the same verifier still exits 1 on the pre-repair store (UNVERIFIED=5, links broken 13): the rule for sealed blocks was not loosened",
+    "what_was_done": {
+      "prev_hash_added": [
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205
+      ],
+      "prev_hash_repointed": [
+        93,
+        94,
+        95,
+        96,
+        97
+      ],
+      "re_encoded_to_the_canonical_recipe": [
+        92,
+        93,
+        94,
+        95,
+        96
+      ],
+      "recorded_unsealed": [
+        97,
+        98,
+        99,
+        100,
+        101
+      ]
+    }
+  },
+  "subject": "monad_ledger.jsonl integrity",
+  "unverifiable_claims": [
+    {
+      "index": 97,
+      "phase": "PHASE_53_WORLD_SERVICE_OFFERINGS_LIVE",
+      "timestamp": "2026-09-11T16:07:17Z"
+    },
+    {
+      "index": 98,
+      "phase": "PHASE_54_ALPHAGENOME_INTELLIGENCE_INGESTED",
+      "timestamp": "2026-09-11T16:39:40Z"
+    },
+    {
+      "index": 99,
+      "phase": "PHASE_55_TURBOVEC_ALPHAGENOME_KNOWLEDGE_INGESTED",
+      "timestamp": "2026-09-11T17:05:24Z"
+    },
+    {
+      "index": 100,
+      "phase": "PHASE_56_CENTENNIAL_AUTONOMOUS_OPERATIONS_ACTIVATED",
+      "timestamp": "2026-09-11T17:11:04Z"
+    },
+    {
+      "index": 101,
+      "phase": "PHASE_57_CORRECTIVE_RECONCILIATION_SEALED",
+      "timestamp": "2026-09-11T17:31:51Z"
+    }
+  ],
+  "verdict": {
+    "chain_intact": false,
+    "counts": {
+      "UNVERIFIED": 5,
+      "alt_separators": 5,
+      "canonical": 91
+    },
+    "prev_hash_links_broken": [],
+    "reason": "5 blocks cannot be reproduced from their stored body by any of 70+ canonicalization recipes tested, so their seals do not verify",
+    "unverified_blocks": [
+      97,
+      98,
+      99,
+      100,
+      101
+    ]
+  },
+  "verifier": "swarm_v2/core/verify_ledger_chain.py (new; recipe-aware)",
+  "verifier_exit": 1,
+  "verifier_stdout": [
+    "ledger: C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\monad_ledger.jsonl",
+    "blocks=101  canonical=91  alt_separators=5  UNVERIFIED=5",
+    "prev_hash links broken: n=0 []",
+    "UNVERIFIED blocks: [97, 98, 99, 100, 101]",
+    "chain_intact=False (a chain with unreproducible blocks is NOT intact)"
+  ],
+  "what_was_tested": [
+    "canonical compact separators",
+    "default separators",
+    "indent=2",
+    "no sort_keys",
+    "hash over payload only",
+    "drop 'verified'",
+    "ensure_ascii both ways",
+    "raw line minus the hash field",
+    "68-variant matrix over separators x sort x ensure_ascii x field subsets"
+  ]
+}

@@ -1,0 +1,18 @@
+TRM 7M INTELLIGENCE TEST - MEASURED 2026-10-24
+
+MODEL: step_155718, 1.8 GB, F:\Development sites\TRM agent swarm\tiny-recursive-weights
+CONFIG: seq_len=1024  vocab_size=12  H_cycles=3  L_cycles=4  device=cpu
+
+IT COULD NOT LOAD BEFORE THIS SESSION:
+  - trm_brain.py used os.path.exists with NO 'import os'   -> NameError
+  - checkpoint path 'tiny-recursive-weights/step_155718' did not exist in repo
+  -> 0 TRM outputs, forever, silently
+AFTER FIX: MODEL LOADED: True
+
+=== FALSIFICATION TEST (does output depend on input?) ===
+  DETERMINISM   same input x3      -> IDENTICAL
+  SENSITIVITY   20 random inputs   -> 20/20 distinct outputs
+  VOCAB         outputs in 0..11   -> True
+  OUTPUT LEN    12 tokens x 3 H    -> 36 per call
+  LATENCY       p50 2.40s max 2.52s
+  -> PASSES: it genuinely computes on input (unlike /council/propose at i%7)

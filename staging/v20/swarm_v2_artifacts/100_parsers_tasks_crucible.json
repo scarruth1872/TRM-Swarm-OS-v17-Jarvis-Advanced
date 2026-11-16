@@ -1,0 +1,224 @@
+{
+  "title": "TRM Swarm OS 100 Complex Tasks Crucible Across All 20 Parsers",
+  "timestamp": "2026-09-06T12:46:33Z",
+  "total_tasks": 100,
+  "total_wall_time_ms": 1.44,
+  "mean_task_latency_ms": 0.0144,
+  "success_rate_percent": 100.0,
+  "truth_anchor": "0x4D4F4E4144000001",
+  "council_ratification": {
+    "verdict": "QUORUM_SEALED",
+    "quorum_ratio": 1.0,
+    "approvals": 14,
+    "total_agents": 14,
+    "phi_v": 0.82
+  },
+  "category_metrics": {
+    "VCF_4.3": {
+      "tasks": 10,
+      "elapsed_ms": 0.13
+    },
+    "FASTQ": {
+      "tasks": 10,
+      "elapsed_ms": 0.128
+    },
+    "FHIR_R4": {
+      "tasks": 10,
+      "elapsed_ms": 0.181
+    },
+    "DICOM": {
+      "tasks": 10,
+      "elapsed_ms": 0.163
+    },
+    "mzML": {
+      "tasks": 5,
+      "elapsed_ms": 0.227
+    },
+    "mmCIF": {
+      "tasks": 5,
+      "elapsed_ms": 0.116
+    },
+    "NetCDF": {
+      "tasks": 5,
+      "elapsed_ms": 0.077
+    },
+    "ABIF": {
+      "tasks": 5,
+      "elapsed_ms": 0.092
+    },
+    "SMILES": {
+      "tasks": 5,
+      "elapsed_ms": 0.035
+    },
+    "PDB": {
+      "tasks": 5,
+      "elapsed_ms": 0.054
+    },
+    "OBO_OWL": {
+      "tasks": 5,
+      "elapsed_ms": 0.03
+    },
+    "HDF5": {
+      "tasks": 5,
+      "elapsed_ms": 0.02
+    },
+    "Zarr": {
+      "tasks": 5,
+      "elapsed_ms": 0.056
+    },
+    "SymPy": {
+      "tasks": 5,
+      "elapsed_ms": 0.022
+    },
+    "JSON_Intent": {
+      "tasks": 5,
+      "elapsed_ms": 0.049
+    },
+    "arXiv_XML": {
+      "tasks": 5,
+      "elapsed_ms": 0.017
+    }
+  },
+  "sample_task_results": [
+    {
+      "task_id": "TASK-VCF-01",
+      "name": "VCF-01: Low Frequency Transitions",
+      "format": "VCF",
+      "latency_ms": 0.017,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-VCF-02",
+      "name": "VCF-02: Homozygous Alternate Transversions",
+      "format": "VCF",
+      "latency_ms": 0.009,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-VCF-03",
+      "name": "VCF-03: Multi-Allelic Splitting Site",
+      "format": "VCF",
+      "latency_ms": 0.007,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-VCF-04",
+      "name": "VCF-04: Single-Base Deletion Indel",
+      "format": "VCF",
+      "latency_ms": 0.005,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-VCF-05",
+      "name": "VCF-05: Tri-Nucleotide Insertion Indel",
+      "format": "VCF",
+      "latency_ms": 0.005,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-VCF-06",
+      "name": "VCF-06: Filter Flag Low Quality",
+      "format": "VCF",
+      "latency_ms": 0.005,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-VCF-07",
+      "name": "VCF-07: AMR Beta-Lactamase Marker",
+      "format": "VCF",
+      "latency_ms": 0.005,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-VCF-08",
+      "name": "VCF-08: High-Depth Exome Coverage",
+      "format": "VCF",
+      "latency_ms": 0.004,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-VCF-09",
+      "name": "VCF-09: Complex Frameshift Indel",
+      "format": "VCF",
+      "latency_ms": 0.004,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-VCF-10",
+      "name": "VCF-10: Multi-Sample Genotype Matrix",
+      "format": "VCF",
+      "latency_ms": 0.005,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-FASTQ-01",
+      "name": "FASTQ-01: High-Q Phred+33 Short Read",
+      "format": "FASTQ",
+      "latency_ms": 0.011,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-FASTQ-02",
+      "name": "FASTQ-02: Degraded 3-Prime End",
+      "format": "FASTQ",
+      "latency_ms": 0.007,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-FASTQ-03",
+      "name": "FASTQ-03: GC-Rich Promotor Read",
+      "format": "FASTQ",
+      "latency_ms": 0.006,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-FASTQ-04",
+      "name": "FASTQ-04: AT-Rich Repetitive Fragment",
+      "format": "FASTQ",
+      "latency_ms": 0.004,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-FASTQ-05",
+      "name": "FASTQ-05: Phred+64 Legacy Illumina Read",
+      "format": "FASTQ",
+      "latency_ms": 0.004,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-FASTQ-06",
+      "name": "FASTQ-06: AMR K-mer Target Exome",
+      "format": "FASTQ",
+      "latency_ms": 0.005,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-FASTQ-07",
+      "name": "FASTQ-07: Adapter Contamination Lead",
+      "format": "FASTQ",
+      "latency_ms": 0.005,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-FASTQ-08",
+      "name": "FASTQ-08: 100bp Synthetic Read",
+      "format": "FASTQ",
+      "latency_ms": 0.016,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-FASTQ-09",
+      "name": "FASTQ-09: Low Quality Noisy Read",
+      "format": "FASTQ",
+      "latency_ms": 0.004,
+      "status": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-FASTQ-10",
+      "name": "FASTQ-10: High Depth Consensual Target",
+      "format": "FASTQ",
+      "latency_ms": 0.005,
+      "status": "SUCCESS"
+    }
+  ]
+}

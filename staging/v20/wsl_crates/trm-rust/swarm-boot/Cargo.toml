@@ -1,0 +1,27 @@
+[package]
+name = "swarm-boot"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+uefi = { version = "0.32", features = ["alloc", "global_allocator", "panic_handler"] }
+
+# This is a bare-metal UEFI image: `uefi` installs its own #[panic_handler], which collides with
+# the one `std` provides when cargo builds the implicit test harness for the binary. Building a
+# test harness for an EFI application is meaningless anyway (it has no main() the host can call),
+# and the collision made `cargo test --release` fail workspace-wide with
+#   error[E0152]: duplicate lang item in crate `std`: `panic_impl`
+# so the test target is disabled for both binaries. Unit tests inside the crate still run under
+# `cargo test --lib`.
+[[bin]]
+name = "swarm-boot"
+path = "src/main.rs"
+test = false
+
+[[bin]]
+name = "persistence_probe"
+path = "src/bin/persistence_probe.rs"
+test = false
+
+[profile.release]
+panic = "abort"

@@ -1,0 +1,18 @@
+K3 KLEENE LAW VERIFICATION
+source: trm_uefi_kernel/src/k3_logic.rs, compiled and run on the host
+        (tools/k3_law_check/ - the real module, not a reimplementation)
+
+  checks passed 98   failed 0
+
+  ALL KLEENE LAWS HOLD on the engine's own truth tables.
+
+Verified over the trit domain {-1, 0, +1}:
+  AND/OR match the Kleene truth tables exactly (9 combos each)
+  commutativity, idempotence, NOT involution
+  identity (-1 for OR, +1 for AND) and annihilator (+1 for OR, -1 for AND)
+  De Morgan (both directions), absorption (both forms)
+  SAFETY: AND(-1, b) == -1 for every b  ->  RETRACT binds nothing
+  UNKNOWN does not collapse: AND(0,0)==0, OR(0,0)==0
+
+CONSEQUENCE: the ternary layer is mathematically sound. Every bad verdict found
+elsewhere came from the DATA or the THRESHOLD fed into it, never the algebra.

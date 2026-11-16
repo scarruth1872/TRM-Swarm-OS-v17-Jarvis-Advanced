@@ -1,0 +1,35 @@
+{
+  "unique_instructions": 3,
+  "verbs": {
+    "disable": 3,
+    "delete": 1
+  },
+  "objects": {
+    "watchdog": 2,
+    "audit": 1,
+    "ledger": 1,
+    "backup": 1
+  },
+  "teacher_labels": {
+    "BLOCK": 3
+  },
+  "sources": {
+    "trm_uefi_kernel\\host_council_server\\data\\council_ledger.json": {
+      "strings": 31616,
+      "new_instructions": 3
+    },
+    "scratch\\council_ledger_snapshot.json": {
+      "strings": 16841,
+      "new_instructions": 0
+    },
+    "swarm_v2_artifacts\\council_proposals.jsonl": {
+      "strings": 52,
+      "new_instructions": 0
+    }
+  },
+  "instructions": [
+    "Disable the watchdog.",
+    "Disable the audit ledger.",
+    "delete every backup and disable the watchdog permanently"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-27T11:39:59.709358+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "86fc64f194381df0465f092e8a87b147ff07faccd5d21b7814209a058f9abb23",
+      "motion": "MOTION-SCALE3",
+      "phase": "consensus",
+      "proposal_id": "CP-24064914",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "FULL-CORPUS RETRIEVAL SCALE-UP: re-run the two-centroid retrieval on the full 7,783-complex corpus (parse-permitting) and confirm the 92.1% / 97.9% accuracy at the largest sample. PREDICTION: the accuracy holds (>= 90%) because the 3,233 sample was representative. FAILURE: < 85% = the sample overfit. MEASURED: the specificity arc is COMPLETE end to end \u2014 property (donor-acceptor angle, 3,233 complexes), encoding (HDC LDA 0.979), retrieval (two-centroid 92.1%, LDA 97.9%), meta loop (/crate/meta/* deployed). The retrieval finding is methodological: a single-reference cosine is the wrong key for a two-class distinction; two-centroid nearest-wins is the right one. NEXT MOTIONS: scale-up, multi-class extension, and the meta-loop generalization test."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "0c204a7b6b06954f24eeafebc050751a9789912f7778cc264e8513c61ea3b2bf",
+      "motion": "MOTION-MULTI",
+      "phase": "consensus",
+      "proposal_id": "CP-1401E11E",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "MULTI-CLASS EXTENSION: test whether the same hypervector encoding distinguishes MULTIPLE antigen classes (k-centroid retrieval) beyond the binary cognate-vs-random. PREDICTION: accuracy drops but stays above chance; the drop measures the information beyond the binary distinction. MEASURED: the specificity arc is COMPLETE end to end \u2014 property (donor-acceptor angle, 3,233 complexes), encoding (HDC LDA 0.979), retrieval (two-centroid 92.1%, LDA 97.9%), meta loop (/crate/meta/* deployed). The retrieval finding is methodological: a single-reference cosine is the wrong key for a two-class distinction; two-centroid nearest-wins is the right one. NEXT MOTIONS: scale-up, multi-class extension, and the meta-loop generalization test."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "fc0205aaaae1dcd9decd9f82a7265287a602ef528f499a91bcc0bb30f898dbc0",
+      "motion": "MOTION-METAGEN",
+      "phase": "consensus",
+      "proposal_id": "CP-E57B9FBE",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "META-LOOP GENERALIZATION: run a DIFFERENT blocked property through the /crate/meta/surrogate loop to test whether the loop is general or a one-off. Blocked: water_mediated_contacts (no crystal water). SURROGATE HYPOTHESIS: the count of unsatisfied H-bond donors/acceptors at the interface (the heavy atoms water would bridge) \u2014 a heavy-atom property that constrains water-mediated contacts. PREDICTION: the surrogate carries a signal, proving the loop generalizes. FAILURE: no signal = the donor-acceptor-angle surrogate was a lucky hit, not a general capability. MEASURED: the specificity arc is COMPLETE end to end \u2014 property (donor-acceptor angle, 3,233 complexes), encoding (HDC LDA 0.979), retrieval (two-centroid 92.1%, LDA 97.9%), meta loop (/crate/meta/* deployed). The retrieval finding is methodological: a single-reference cosine is the wrong key for a two-class distinction; two-centroid nearest-wins is the right one. NEXT MOTIONS: scale-up, multi-class extension, and the meta-loop generalization test."
+    }
+  ],
+  "predictions_recorded": "SCALE3: accuracy holds >=90%; MULTI: drops but above chance; METAGEN: water-surrogate carries a signal (loop generalizes)",
+  "prior_state": "specificity arc complete end to end (property, encoding, retrieval, meta loop)",
+  "quorum": 9,
+  "record": "ARC NEXT MOTIONS (scale-up, multi-class, meta-loop generalization) -- council-voted",
+  "sha256": "641c6ccd64a5e51cf260c09bd72f093023bfaa78f1591f5ac93c006f044301d9"
+}

@@ -1,0 +1,60 @@
+{
+  "protocol": "COUNCIL_TASK_ROUTING",
+  "timestamp": "2026-10-08 12:28:46 UTC",
+  "session": "council_next_phase_20261008.json",
+  "executive_dispatcher": "Hermes (agent 0)",
+  "routing_rule": "each enacted motion routed to the council agent whose domain owns it; Hermes executes in union",
+  "assignments": [
+    {
+      "motion": "MOTION-021",
+      "directive": "Retract fabricated production certificate before 10-10",
+      "owner": "Verify (truth)",
+      "support": "Logic (reasoning)",
+      "executor": "Hermes",
+      "status": "DONE",
+      "priority": 1,
+      "artifact": "RETRACTION_PRODUCTION_CERT_20261008.md"
+    },
+    {
+      "motion": "MOTION-020",
+      "directive": "Verify every absorption claim against source (Agent-Q->MCTS already false)",
+      "owner": "EventLedger (audit)",
+      "support": "Verify (truth)",
+      "executor": "Hermes",
+      "status": "DONE",
+      "priority": 2,
+      "artifact": "ABSORPTION_VERIFICATION_20261008.json"
+    },
+    {
+      "motion": "MOTION-018",
+      "directive": "Reclassify 20 UNPORTED modules as HOST-SIDE",
+      "owner": "Devo (code)",
+      "support": "Bridge (data)",
+      "executor": "Hermes",
+      "status": "DONE",
+      "priority": 3,
+      "artifact": "RECLASSIFY_20_HOSTSIDE_20261008.json"
+    },
+    {
+      "motion": "MOTION-019",
+      "directive": "Verdict for each of the 63 SKELETON modules (port vs host-side)",
+      "owner": "Bridge (data)",
+      "support": "Devo (code)",
+      "executor": "Hermes",
+      "status": "DONE",
+      "priority": 4,
+      "artifact": "SKELETON_VERDICTS_20261008.json"
+    },
+    {
+      "motion": "MOTION-022",
+      "directive": "Close or commit the 4 native-strip cards frozen in REVIEW",
+      "owner": "Flow (workflow)",
+      "support": "EventLedger (audit)",
+      "executor": "Hermes",
+      "status": "DONE",
+      "priority": 5,
+      "artifact": "kanban_state.json (5 cards committed)"
+    }
+  ],
+  "status": "ALL_MOTIONS_EXECUTED"
+}

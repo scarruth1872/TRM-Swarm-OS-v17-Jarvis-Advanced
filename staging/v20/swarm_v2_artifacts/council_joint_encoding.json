@@ -1,0 +1,25 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T23:05:13.940509+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "22b6648f9e57da6fa2c5a462c02b5892cd875b1760286331fada39709c9a7da9",
+      "motion": "MOTION-JOINT1",
+      "phase": "consensus",
+      "proposal_id": "CP-B4E732C5",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "TEST JOINT ENCODING: compute five interface properties (contact count, mean contact distance, residue-level electrostatics, hydrophobic contact count, H-bond donor/acceptor count) for the cognate interface vs a centroid-aligned random antigen, build the joint representation (HDC binding of the property hypervectors AND the multivariate Mahalanobis distance from the random distribution), and test whether the cognate composite separates from random. PREDICTION: prior lowered by eight individual nulls, but the joint tests a different hypothesis (the signal is in the combination). If it separates, the finding is 'multi-property'; if not, 'not in any combination of the measurable properties'. MEASURED: eight negatives, zero positives (SC2 positive RETRACTED as a neighbor-centroid outward-bias artifact). No single property carries the specificity signal: fold precision, fold, dock, sequence, contact count, contact distance, electrostatics, surface-normal Sc. The last in-hand candidate is the JOINT encoding: the signal may be in the COMBINATION of properties, not any single term. Bind contact count + contact distance + electrostatics + hydrophobic patch + H-bond potential into one composite and test the same cognate-vs-random separation."
+    }
+  ],
+  "prediction_recorded": "joint may separate even though no single property does (signal in the combination)",
+  "prior_state": "eight negatives, zero positives; single-property space closed",
+  "quorum": 9,
+  "record": "JOINT HDC ENCODING -- council-voted; platform self-directs",
+  "sha256": "85af090c7b245339fc2a6dc3468ae2951e31cf7d50e29516d85ced46028e6f7d"
+}

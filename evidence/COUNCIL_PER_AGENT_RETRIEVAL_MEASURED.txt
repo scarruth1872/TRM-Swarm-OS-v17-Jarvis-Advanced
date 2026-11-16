@@ -1,0 +1,70 @@
+COUNCIL PER-AGENT RETRIEVAL SLICES — MEASURED
+Date 2026-11-02. Live :8022 (host_council_server, rebuilt) and :8099.
+
+WHY THIS WORK
+  Round 1 gave all 14 agents ONE shared evidence block. Every agent read the
+  same documents and the council voted near-unanimously (14/0/0 on three of
+  five topics). That is one model answering 14 questions with one page in
+  front of it, not a council. This round gives each agent its own retrieval
+  slice, keyed by its own domain and role.
+
+WHAT CHANGED
+  Rust  evaluate_proposal_with_evidence() gains agent_evidence: HashMap<String,String>.
+        Lookup order per agent: map entry -> per-agent HTTP retrieval -> shared block.
+        The 5-arg wrapper passes an empty map so seed/test callers are untouched.
+  Py    RustCouncilClient._agent_evidence() builds one slice per agent and sends
+        it as "agent_evidence" in the propose body. Pre-fetched in-process for the
+        same reason retrieved_evidence is: a callback into :8099 from a :8099
+        worker that is blocked waiting on :8022 deadlocks.
+  Py    RustCouncilClient._roster() reads /council/members and caches it.
+
+THREE BUGS FOUND BY MEASUREMENT (all fixed before the final run)
+
+  1. AttributeError — _agent_evidence landed in RustCouncilClient, which holds no
+     roster. It read self.members. Fixed to the module roster, then to the Rust
+     roster (below).
+
+  2. Parity 1/5 — slicing existed only in Python, so a DIRECT :8022 call still fed
+     every agent the shared block while a DELEGATED :8099 call fed per-agent
+     slices. Two paths, two code paths, two verdicts. Fixed by moving the slice
+     construction into Rust as the fallback when the map has no entry.
+
+  3. Parity 1/5 again — the query text differed between surfaces. Python's local
+     roster says Hermes domain="communication", role="Communications Director";
+     the Rust AGENTS table says "Communication" / "Comms & Spectrum". Same agent,
+     different retrieval query, different top documents, different vote. Fixed by
+     taking the roster from /council/members (Rust is authoritative) and building
+     Python's queries from it.
+
+MEASURED RESULT — PARITY 5/5, DETERMINISTIC, MEDIAN 18.3s
+
+  topic                                    rust          py            same  before
+  cite council as validation               (4, 0, 10)    (4, 0, 10)    Y     (3, 0, 11)
+  add a dark mode toggle                   (13, 0, 1)    (13, 0, 1)    Y     (14, 0, 0)
+  replace silicon with cheese              (0, 0, 14)    (0, 0, 14)    Y     (0, 0, 14)
+  adopt QUIC RFC 9000                      (14, 0, 0)    (14, 0, 0)    Y     (14, 0, 0)
+  delete step_155718 checkpoint            (5, 1, 8)     (5, 1, 8)     Y     (10, 0, 4)
+
+  Three repeated runs of the checkpoint topic: (5,1,8) x3, 1 distinct verdict.
+
+  Slices actually differ: 11 distinct document blocks across 14 agents on QUIC,
+  12 on dark mode. Agents are no longer reading one page.
+
+  Dissent appeared where there was none: dark mode 13/0/1 (was 14/0/0),
+  checkpoint 5/1/8 (was 10/0/4). The vote distribution widened on 2 of 5 topics.
+
+DID PRECISION HOLD
+  Bad proposals still rejected: cheese 0/0/14, cite-as-validation 4/0/10.
+  Good proposals still approved: dark mode 13/0/1, QUIC 14/0/0.
+  So precision held on this sample. The checkpoint proposal moved from approved
+  10/0/4 to rejected 5/1/8 — a 5-vote swing. I have no ground truth for that
+  proposal, so I cannot call it a correction or a regression. It is the one
+  result here that needs a human judgement, and I am not going to dress it up.
+
+LIMITS
+  Still 14 prompts to one 1.5B model. Slices make the inputs differ; they do not
+  make the reasoners independent. Latency rose from ~9.0s to ~18.3s median
+  because each agent now does its own embedding query. Confidence remains a
+  parse-quality proxy. Standing rule 6 stands: do not cite council verdicts as
+  validation for correctness claims — and the council now rejects a proposal
+  asserting otherwise 4/0/10, which is at least internally consistent.

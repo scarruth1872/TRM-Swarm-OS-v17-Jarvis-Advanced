@@ -1,0 +1,23 @@
+{
+  "ts": "2026-08-06T04:22:01",
+  "cpu_thz": {
+    "latency_us": 57,
+    "tps": 17602
+  },
+  "gpu_thz_projected": {
+    "latency_ns": 0.41,
+    "tps": 2424000000
+  },
+  "algorithm": {
+    "cpu_fp32_ops": 10240,
+    "gpu_bit_ops": 5120,
+    "speedup": 2.0
+  },
+  "unified_pipeline": {
+    "thz_gpu_tps": 2424000000,
+    "instella_gpu_tps": 1302000000,
+    "cpu_dll_tps": 13899050,
+    "bottleneck": "CPU DLL MAMBA3STEP at 13.9M/s",
+    "10B_time_s": 719
+  }
+}

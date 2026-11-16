@@ -1,0 +1,67 @@
+# Fault-injection fixture: Network partition with heal
+# Tests consensus algorithm's ability to recover from partition
+
+seed: 42
+node_factory: "consensus_node_factory"
+nodes:
+  - id: node_a
+    config:
+      role: validator
+  - id: node_b
+    config:
+      role: validator
+  - id: node_c
+    config:
+      role: validator
+  - id: node_d
+    config:
+      role: validator
+
+fault_schedule:
+  # Partition the network into two groups: {a,b} and {c,d}
+  - type: NETWORK_PARTITION
+    node_id: node_a
+    target_node_id: node_c
+    timestamp: 100
+  - type: NETWORK_PARTITION
+    node_id: node_a
+    target_node_id: node_d
+    timestamp: 100
+  - type: NETWORK_PARTITION
+    node_id: node_b
+    target_node_id: node_c
+    timestamp: 100
+  - type: NETWORK_PARTITION
+    node_id: node_b
+    target_node_id: node_d
+    timestamp: 100
+
+  # Heal the partition
+  - type: NETWORK_PARTITION
+    node_id: node_a
+    target_node_id: node_c
+    timestamp: 500
+    params:
+      heal: true
+  - type: NETWORK_PARTITION
+    node_id: node_a
+    target_node_id: node_d
+    timestamp: 500
+    params:
+      heal: true
+  - type: NETWORK_PARTITION
+    node_id: node_b
+    target_node_id: node_c
+    timestamp: 500
+    params:
+      heal: true
+  - type: NETWORK_PARTITION
+    node_id: node_b
+    target_node_id: node_d
+    timestamp: 500
+    params:
+      heal: true
+
+invariants:
+  - consensus_safety
+  - no_message_loss

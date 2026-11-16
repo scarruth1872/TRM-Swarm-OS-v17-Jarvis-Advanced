@@ -1,0 +1,180 @@
+[
+ {
+  "kind": "bare_metal_first_boot",
+  "fact": "The first physical boot of this pathway on the machine itself succeeded, and it was read off the machine's own state image rather than off a photograph: the volume was found by CONTENT on pass 7, 1500 ms in; the stores opened (.tercode 505545 B, .text.jsonl 1869777 B); the supervisor was launched as pid 277; GET /infrastructure/status answered 200 OK and GET /ui/ answered 200 OK carrying '<title>TRM SWARM OS | LCARS INTERFACE</title>'; and the boot counted itself -- 'init: 19 of the routes asked answered -- the platform is up'.",
+  "not_claimed": "The MAC in the photographed transcript was transcribed wrong (4d for d4) and was corrected against the machine's own log, because a photograph is not the authority on what the machine did. Nothing in this block is a claim about Wi-Fi or Bluetooth.",
+  "commit": "73c07fb",
+  "rederive": {
+   "files": [
+    {
+     "path": "backups/bare_metal_first_boot_20260930/metal_boot_log_off_the_stick.txt",
+     "sha256": "166d8b25b52d490777bb82de1df1620581d7f266e0296d38fcf7038f3f83c31e"
+    },
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "f1d467ec049aa380311f116e29fd87c7a7cbe72ed11a41a63e63be5afcef7821"
+    }
+   ]
+  }
+ },
+ {
+  "kind": "dashboard_reachability",
+  "fact": "The dashboard was already booting on metal -- the kernel serves it on every interface it has and the supervisor probes it ONLINE -- so the gap was reachability, not the platform. Closed by binding 0.0.0.0, by deriving a link-local address from the interface's own MAC when no ip= is configured, and by ending every boot with a DASHBOARD: line that names the URLs or says NO CARRIER when the cable is the problem, with the link state read from /sys/class/net/<dev>/carrier (the kernel's own answer) rather than from a driver log line.",
+  "not_claimed": "The link-local address is DERIVED from the MAC, not collision-probed. A service the kernel serves itself is declared in the service table, never spawned -- the dashboard's status row is the supervisor's own HTTP probe.",
+  "commit": "4d02213",
+  "rederive": {
+   "files": [
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "f1d467ec049aa380311f116e29fd87c7a7cbe72ed11a41a63e63be5afcef7821"
+    }
+   ]
+  }
+ },
+ {
+  "kind": "radio_staged",
+  "fact": "The radio's userspace prerequisites are in the image and were verified by CONTENT: decompressing the initrd's own cpio showed all 22 modules and all four firmware files byte-identical to the staged copies, and the boot reported '22 loaded, 0 not shipped'. The module list is DERIVED -- modprobe --show-depends <driver> named libarc4 and led-class, which a hand-written list misses. The firmware NAME was read out of the module itself (iwlwifi-cc-a0-77) and its PATH out of linux-firmware's own WHENCE, because the root names there are symlinks and a plain root fetch 404s. The signed regulatory database is mandatory on this kernel (CONFIG_CFG80211_REQUIRE_SIGNED_REGDB=y), and its signature was verified over the .db.",
+  "not_claimed": "No radio has ever bound to these modules in this pathway. The module list has never met a physical controller, and a radio is not a network: association is userspace.",
+  "commit": "44c50b2",
+  "rederive": {
+   "files": [
+    {
+     "path": "backups/bare_metal_first_boot_20260930/wifi_modules_and_firmware_boot.log",
+     "sha256": "610e669a54e47c51f7770c6d45474a68bb3120ff93c1fc1959745b7abe085e67"
+    },
+    {
+     "path": "trm_chainload/firmware/README.md",
+     "sha256": "552336892d06aa48e675d0583b9fb6dd9e72415b146a98662e61a40a045657f9"
+    },
+    {
+     "path": "trm_chainload/firmware/iwlwifi-cc-a0-77.ucode",
+     "sha256": "1866a58a1daee56b120362122d5f7548b443b53d33f2558a7e4407d58fd27dab"
+    },
+    {
+     "path": "trm_chainload/firmware/regulatory.db",
+     "sha256": "7e236caecd939c8ec98be4870bf30422f28ffef2565a38aaaa2d9ddabd0c2641"
+    },
+    {
+     "path": "trm_chainload/firmware/regulatory.db.p7s",
+     "sha256": "50332f0db09b8bcc719235ec4985c27377f2cc2f42abb7b5dcf951866c5a888a"
+    }
+   ]
+  }
+ },
+ {
+  "kind": "supplicant_proven_halves",
+  "fact": "The supplicant's two machine-checkable halves are proven against implementations that are not itself. Crypto: pmk/ptk/kck/kek/tk/mic recomputed with Python hashlib+hmac agree exactly; a GTK wrapped by python-cryptography under the KEK this binary derived comes back out of --unwrap byte for byte; and 6 of 6 published vectors pass on the artifact (SHA1, HMAC RFC 2202, AES FIPS-197, AES key-wrap RFC 3394 in both directions, including refusing a corrupted wrap). Netlink: --probe resolved nl80211's family id by asking the running kernel (family 33) and reported zero wiphys honestly rather than silently. The binary runs inside the RAM image, before the root is handed over, and the boot prints exactly those lines.",
+  "not_claimed": "Association. The four-way handshake has never run against an access point, because no machine in this environment has a wireless controller. What is proven is the primitives and the reachability of the code, not a network.",
+  "commit": "8cf8c39",
+  "rederive": {
+   "files": [
+    {
+     "path": "backups/bare_metal_first_boot_20260930/wifi_supplicant_boot.log",
+     "sha256": "7767e8db58f137e63584d7feae53bf325d761fd1e2e76718e8f89180968042ef"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_wifi/src/crypto.rs",
+     "sha256": "af81d382ead24ba256dbc1e0337bd96c97b6e2e8ea534024d62c2a6450dc6c62"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_wifi/src/nl80211.rs",
+     "sha256": "677c4515e51176ffbaa1732504d43a6a561f0acf3b69ae99464865e673d7b8d1"
+    },
+    {
+     "path": "trm_chainload/scripts/verify_wifi_crypto.py",
+     "sha256": "9ae8f42ab59dbd76775ee8e36a7bb76519f877a5929c5ad32df83e31a52f9a32"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "trm_chainload/scripts/verify_wifi_crypto.py",
+     "shell": "wsl",
+     "args": [
+      "/home/shawn/trm_wifi"
+     ],
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "the derived values agree with the oracle",
+      "same  msg2 mic",
+      "same  msg4 mic",
+      "same  rsn echo"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "kind": "association_frames_proven",
+  "fact": "The association is written and its arithmetic is proven. CONNECT carries the preshared key in NL80211_ATTR_PMK (254) -- the header is explicit that there is no ATTR_PSK, and the value it takes is the PMK itself, which is what pbkdf2_sha1_32 already produces. The four EAPOL frames are parsed and built with the MIC taken over the frame with the MIC FIELD ZEROED, which is the single most common way a handshake fails in silence. Message 3's MIC is verified against the PTK and its AES key-wrap is REFUSED on failure, because that integrity word is the only thing that catches a PTK derived from the wrong nonces. The oracle checks the frames, not only the primitives: the PTK recomputed from the printed nonces, the msg2 and msg4 MICs recomputed over the frames, the RSN element message 1 carried echoed back byte for byte, and the GTK round trip -- all identical.",
+  "corrected": "Re-deriving this round found one wrong ABI number in the PREVIOUS round's source: NL80211_ATTR_CIPHER_SUITES_PAIRWISE was written as 81 and is 73. Nothing inside the program can distinguish a wrong attribute number from a driver that did not answer, which is why derive_nl80211_consts.py --check now diffs all 34 constants against the kernel's own uapi header.",
+  "not_claimed": "An association. CONNECT has never been sent to an access point and no four-way handshake has run against one: no wiphy is registered on any machine in this environment. The frames are proven; the exchange is not. The launcher also says plainly when the volume carries no credentials, because an unconfigured radio and a wrong passphrase must not read the same in a boot log.",
+  "commit": "9ebfc89",
+  "rederive": {
+   "files": [
+    {
+     "path": "backups/bare_metal_first_boot_20260930/wifi_association_boot.log",
+     "sha256": "8d5d236bbda3159075b3939c0b770ee7b162fbf8677607f7e62a03a1084b9c0b"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_wifi/src/eapol.rs",
+     "sha256": "9c498a5f836271d7bc921f9ac1324a67520274728766027df14bde1dc1eed82f"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_wifi/src/supplicant.rs",
+     "sha256": "f784c3733f0f0d73b76764b3c3729a04609b8af8e77715e85bbb0d0d018422f1"
+    },
+    {
+     "path": "trm_chainload/scripts/derive_nl80211_consts.py",
+     "sha256": "4358fff02ab0d5b751ffea39ccd9d957d65ba4a1110a1345bb10a1ac4331190c"
+    },
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "f1d467ec049aa380311f116e29fd87c7a7cbe72ed11a41a63e63be5afcef7821"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "trm_chainload/scripts/verify_wifi_crypto.py",
+     "shell": "wsl",
+     "args": [
+      "/home/shawn/trm_wifi"
+     ],
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "the derived values agree with the oracle",
+      "same  msg2 mic",
+      "same  msg4 mic",
+      "same  rsn echo"
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "kind": "journal_resumed",
+  "fact": "The journal resumes. It had gone quiet after the chain repair (block 206) while five arcs of work landed in the tree, so those arcs are sealed here as blocks 207-211, and a sealer now exists -- swarm_v2/core/seal_monad_journal.py -- that re-MEASURES what a block cites instead of copying the receipt: file digests are recomputed at seal time, the crypto oracle is re-run and its verdict line required, and the chain is checked in memory BEFORE anything is appended, so a seal cannot leave a break behind for a later repair. Five blocks sealed, then this one.",
+  "not_claimed": "Resuming the journal does not retroactively vouch for every number in the five blocks above: what is vouched for is what re-derived at seal time, against the files each block names as its evidence.",
+  "commit": null,
+  "rederive": {
+   "files": [
+    {
+     "path": "swarm_v2/core/seal_monad_journal.py",
+     "sha256": "d699419c76cb15dff24fcaf6870eba85dddc573a65aa8161c114b294e7d3d4d3"
+    },
+    {
+     "path": "docs/BARE_METAL_LINUX_PATHWAY_20260930.md",
+     "sha256": "472f37394822403f02cba77567a70bc7025279b6e6f99aa150cb7a46deab58e5"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "swarm_v2/core/verify_ledger_chain.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "prev_hash links broken: n=0"
+     ]
+    }
+   ]
+  }
+ }
+]

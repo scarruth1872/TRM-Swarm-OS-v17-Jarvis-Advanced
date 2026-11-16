@@ -1,0 +1,56 @@
+fix(tests+voltage): the suite now RUNS (49/51); voltage gate binds execution
+
+=== THE TEST SUITE COULD NEVER COMPLETE. THREE CAUSES, ALL REAL. ===
+
+1. A SCRIPT NAMED LIKE A TEST. test_security_patterns.py ran its checks at MODULE
+   level and ended with sys.exit(...). pytest imported it (it matches test_*.py),
+   SystemExit escaped during collection, and the whole run died with INTERNALERROR.
+   Converted to real pytest functions - its 43 payloads are now 45 individual,
+   individually-reported tests, and importing it has no side effects. The original
+   script behaviour is preserved under __main__.
+
+2. TRMBrain.__init__ LOADED A CHECKPOINT. `torch.load(checkpoint_path)` ran inside
+   the constructor, so merely constructing the brain paid a full model load; the
+   load blocks and pytest-timeout's thread method cannot interrupt it, so any test
+   touching it froze the run. THIS IS THE ROOT CAUSE and it is fixed at source:
+   __init__ now only configures, and _ensure_loaded() loads on first reason().
+   Functionality is unchanged - nothing that only holds a reference blocks now.
+
+3. 16 TESTS REQUIRE LIVE SERVICES and were not deselected. pytest.ini had
+   asyncio_mode=auto but no marker exclusion, so @pytest.mark.integration tests
+   (the decorator was ALWAYS present on test_research_api.py) ran anyway -
+   test_start_stop_daemon_endpoints calls client.post("/research/stop") and never
+   returns. addopts now excludes integration and live_service by default; they
+   remain reachable with: pytest -m integration
+
+Also fixed: pytest.ini testpaths was `swarm_v2` alone, so the configured default
+never included tests/. Now `tests swarm_v2`. pytest-asyncio and pytest-timeout
+installed and PINNED (the first install silently bumped pytest 8.3.4 -> 9.1.1,
+which would have confounded every result; pinned back to 8.4.x).
+
+THE RESULT - the first honest test number this platform has had:
+  collected 51 | passed 49 | failed 2 | errors 0 | 20.7s
+  (16 further tests deselected as integration)
+
+THE 2 REAL FAILURES - tests asserting APIs that DO NOT EXIST:
+  swarm_v2/scripts/test_fractal_scaling.py  AttributeError:
+      'BaseAgent' object has no attribute 'spawn_subordinate'
+  swarm_v2/scripts/test_soul_of_swarm.py   AttributeError:
+      'ProactiveOrchestrationLoop' object has no attribute '_scan_for_gaps'
+  These are NOT test bugs to be silenced. Either the features are unimplemented or
+  the tests were written against a planned API. Both are open questions, left
+  failing so the gap stays visible.
+
+=== VOLTAGE: THE GATE, so the doctrine binds a DECISION not just a number ===
+The rails were read but nothing depended on them. voltage::gate() now returns
+open/phi_v/threshold/measured/reason and is served at /system/voltage. It closes
+two independent ways: (1) substrate UNMEASURED - it refuses rather than
+substituting a nominal constant, which is the doctrine's actual teeth, since a
+constant cannot degrade and so cannot warn anyone; (2) measured but below the
+stated floor GATE_THRESHOLD=0.30. /k3/bench now consults it and returns
+REFUSED_VOLTAGE_GATE rather than reporting a throughput taken under conditions it
+cannot vouch for. At measured phi_v 0.39-0.58 the gate is OPEN on this host.
+
+tools/run_platform_tests.py now runs the CONFIGURED suite (passing "." was
+overriding testpaths and collecting 154 network-dialing scripts) so /testing/stats
+reports this real number instead of the old static fixture.

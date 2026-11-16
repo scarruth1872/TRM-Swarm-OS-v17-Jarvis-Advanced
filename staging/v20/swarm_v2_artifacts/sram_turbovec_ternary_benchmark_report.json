@@ -1,0 +1,335 @@
+{
+  "benchmark_name": "SRAM_Ternary_TurboVec_Full_Pipeline_Benchmark",
+  "timestamp": "2026-09-12T18:33:08Z",
+  "total_iterations": 700,
+  "iterations_per_paradigm": 100,
+  "rust_kernel_active": true,
+  "overall_mean_pipeline_latency_us": 2484.57,
+  "pipeline_throughput_ops_per_sec": 402.5,
+  "turbovec_compression": "16.0x (512 -> 32 bytes)",
+  "paradigms": {
+    "hopfield": {
+      "paradigm": "hopfield",
+      "label": "Hopfield Attractor Network",
+      "algorithm": "Hopfield_Energy_Attractor",
+      "iterations": 100,
+      "k3_pass_rate": 96.0,
+      "avg_fidelity": 0.8608,
+      "avg_quant_mse": 0.001981,
+      "latency_us": {
+        "sram_compute_avg": 425.26,
+        "sram_compute_p50": 345.45,
+        "sram_compute_p95": 783.79,
+        "k3_gating_avg": 168.03,
+        "turbovec_recall_avg": 347.71,
+        "memory_persist_avg": 1074.12,
+        "total_pipeline_avg": 2017.16,
+        "total_pipeline_p50": 1693.6,
+        "total_pipeline_p95": 3665.98
+      },
+      "sample_computation": {
+        "algorithm": "Hopfield_Energy_Attractor",
+        "initial_energy": -49.0,
+        "final_energy": -249.0,
+        "energy_reduction": 200.0,
+        "target_overlap": 1.0,
+        "recalled_perfectly": true
+      },
+      "sample_k3_logic": {
+        "compute_trit": 1,
+        "telemetry_trit": 1,
+        "composite_trit": 1,
+        "invariant_trit": 1,
+        "contradiction_refuted": true,
+        "epistemic_seal": "PASS"
+      },
+      "sample_turbovec": {
+        "compression_ratio": 16.0,
+        "raw_bytes": 512,
+        "packed_bytes": 32,
+        "reconstruction_mse": 0.001921,
+        "cosine_fidelity": 0.8604,
+        "memory_id": "9c9e75306d65a2c2",
+        "verified_in_cache": true
+      }
+    },
+    "cellular": {
+      "paradigm": "cellular",
+      "label": "Wolfram Cellular Automata (Rule 110)",
+      "algorithm": "Wolfram_Cellular_Automaton",
+      "iterations": 100,
+      "k3_pass_rate": 93.0,
+      "avg_fidelity": 0.8601,
+      "avg_quant_mse": 0.002071,
+      "latency_us": {
+        "sram_compute_avg": 411.78,
+        "sram_compute_p50": 328.45,
+        "sram_compute_p95": 777.33,
+        "k3_gating_avg": 190.39,
+        "turbovec_recall_avg": 372.82,
+        "memory_persist_avg": 1123.71,
+        "total_pipeline_avg": 2100.51,
+        "total_pipeline_p50": 1682.5,
+        "total_pipeline_p95": 4110.02
+      },
+      "sample_computation": {
+        "algorithm": "Wolfram_Cellular_Automaton",
+        "rule": 110,
+        "steps_evaluated": 8,
+        "final_active_cells": 8,
+        "lattice_entropy": 0.5436,
+        "step_population_trend": [
+          1,
+          2,
+          3,
+          3,
+          5,
+          3,
+          5,
+          6,
+          8
+        ]
+      },
+      "sample_k3_logic": {
+        "compute_trit": 1,
+        "telemetry_trit": 1,
+        "composite_trit": 1,
+        "invariant_trit": 1,
+        "contradiction_refuted": true,
+        "epistemic_seal": "PASS"
+      },
+      "sample_turbovec": {
+        "compression_ratio": 16.0,
+        "raw_bytes": 512,
+        "packed_bytes": 32,
+        "reconstruction_mse": 0.001432,
+        "cosine_fidelity": 0.8549,
+        "memory_id": "83edcab1c30c19a9",
+        "verified_in_cache": true
+      }
+    },
+    "ising": {
+      "paradigm": "ising",
+      "label": "Ising Spin Glass (Metropolis-Hastings)",
+      "algorithm": "Ising_Spin_Glass_Metropolis",
+      "iterations": 100,
+      "k3_pass_rate": 93.0,
+      "avg_fidelity": 0.8606,
+      "avg_quant_mse": 0.001936,
+      "latency_us": {
+        "sram_compute_avg": 3175.63,
+        "sram_compute_p50": 3149.4,
+        "sram_compute_p95": 3393.28,
+        "k3_gating_avg": 172.21,
+        "turbovec_recall_avg": 326.02,
+        "memory_persist_avg": 1041.31,
+        "total_pipeline_avg": 4716.97,
+        "total_pipeline_p50": 4701.35,
+        "total_pipeline_p95": 5180.49
+      },
+      "sample_computation": {
+        "algorithm": "Ising_Spin_Glass_Metropolis",
+        "spins_count": 48,
+        "initial_hamiltonian": 9.44,
+        "final_hamiltonian": -82.98,
+        "ground_state_delta": 92.42,
+        "flips_accepted": 131
+      },
+      "sample_k3_logic": {
+        "compute_trit": 1,
+        "telemetry_trit": 0,
+        "composite_trit": 0,
+        "invariant_trit": 0,
+        "contradiction_refuted": true,
+        "epistemic_seal": "EVAL_MARGINAL"
+      },
+      "sample_turbovec": {
+        "compression_ratio": 16.0,
+        "raw_bytes": 512,
+        "packed_bytes": 32,
+        "reconstruction_mse": 0.001992,
+        "cosine_fidelity": 0.8699,
+        "memory_id": "5c0f24569dd51b65",
+        "verified_in_cache": true
+      }
+    },
+    "tcam": {
+      "paradigm": "tcam",
+      "label": "K3 Ternary Content-Addressable Memory",
+      "algorithm": "K3_Ternary_CAM_Matcher",
+      "iterations": 100,
+      "k3_pass_rate": 98.0,
+      "avg_fidelity": 0.8607,
+      "avg_quant_mse": 0.001939,
+      "latency_us": {
+        "sram_compute_avg": 893.13,
+        "sram_compute_p50": 815.85,
+        "sram_compute_p95": 1575.47,
+        "k3_gating_avg": 163.5,
+        "turbovec_recall_avg": 325.5,
+        "memory_persist_avg": 1013.73,
+        "total_pipeline_avg": 2397.58,
+        "total_pipeline_p50": 2247.7,
+        "total_pipeline_p95": 3633.18
+      },
+      "sample_computation": {
+        "algorithm": "K3_Ternary_CAM_Matcher",
+        "key_width": 16,
+        "database_entries": 32,
+        "matching_indices": [
+          0
+        ],
+        "match_count": 1
+      },
+      "sample_k3_logic": {
+        "compute_trit": 1,
+        "telemetry_trit": 1,
+        "composite_trit": 1,
+        "invariant_trit": 1,
+        "contradiction_refuted": true,
+        "epistemic_seal": "PASS"
+      },
+      "sample_turbovec": {
+        "compression_ratio": 16.0,
+        "raw_bytes": 512,
+        "packed_bytes": 32,
+        "reconstruction_mse": 0.001751,
+        "cosine_fidelity": 0.8528,
+        "memory_id": "41edc9c21d3dcc7f",
+        "verified_in_cache": true
+      }
+    },
+    "hdc": {
+      "paradigm": "hdc",
+      "label": "Hyperdimensional Computing (HDC VSA)",
+      "algorithm": "HDC_Vector_Symbolic_Binding",
+      "iterations": 100,
+      "k3_pass_rate": 95.0,
+      "avg_fidelity": 0.8596,
+      "avg_quant_mse": 0.001945,
+      "latency_us": {
+        "sram_compute_avg": 339.22,
+        "sram_compute_p50": 323.7,
+        "sram_compute_p95": 517.62,
+        "k3_gating_avg": 163.18,
+        "turbovec_recall_avg": 323.01,
+        "memory_persist_avg": 989.73,
+        "total_pipeline_avg": 1816.99,
+        "total_pipeline_p50": 1750.55,
+        "total_pipeline_p95": 2482.21
+      },
+      "sample_computation": {
+        "algorithm": "HDC_Vector_Symbolic_Binding",
+        "hypervector_dim": 1024,
+        "associative_recall_fidelity": 0.4492,
+        "unbinding_clean": true
+      },
+      "sample_k3_logic": {
+        "compute_trit": 1,
+        "telemetry_trit": 1,
+        "composite_trit": 1,
+        "invariant_trit": 1,
+        "contradiction_refuted": true,
+        "epistemic_seal": "PASS"
+      },
+      "sample_turbovec": {
+        "compression_ratio": 16.0,
+        "raw_bytes": 512,
+        "packed_bytes": 32,
+        "reconstruction_mse": 0.001784,
+        "cosine_fidelity": 0.8529,
+        "memory_id": "08dd1979f5d6d915",
+        "verified_in_cache": true
+      }
+    },
+    "onn": {
+      "paradigm": "onn",
+      "label": "Oscillatory Neural Network (Kuramoto)",
+      "algorithm": "Kuramoto_Oscillatory_Phase_Lock",
+      "iterations": 100,
+      "k3_pass_rate": 83.0,
+      "avg_fidelity": 0.8611,
+      "avg_quant_mse": 0.001989,
+      "latency_us": {
+        "sram_compute_avg": 940.88,
+        "sram_compute_p50": 916.9,
+        "sram_compute_p95": 1124.92,
+        "k3_gating_avg": 162.09,
+        "turbovec_recall_avg": 307.68,
+        "memory_persist_avg": 1083.02,
+        "total_pipeline_avg": 2495.33,
+        "total_pipeline_p50": 2463.6,
+        "total_pipeline_p95": 2881.8
+      },
+      "sample_computation": {
+        "algorithm": "Kuramoto_Oscillatory_Phase_Lock",
+        "oscillators": 16,
+        "coupling_constant": 6.0,
+        "initial_order_parameter": 0.0793,
+        "final_order_parameter": 0.9993,
+        "phase_locked": true
+      },
+      "sample_k3_logic": {
+        "compute_trit": 1,
+        "telemetry_trit": 0,
+        "composite_trit": 0,
+        "invariant_trit": 0,
+        "contradiction_refuted": true,
+        "epistemic_seal": "EVAL_MARGINAL"
+      },
+      "sample_turbovec": {
+        "compression_ratio": 16.0,
+        "raw_bytes": 512,
+        "packed_bytes": 32,
+        "reconstruction_mse": 0.001606,
+        "cosine_fidelity": 0.8604,
+        "memory_id": "78cc079c7574a4e3",
+        "verified_in_cache": true
+      }
+    },
+    "quantum": {
+      "paradigm": "quantum",
+      "label": "Quantum State Vector Simulator",
+      "algorithm": "Quantum_State_Vector_Unitary",
+      "iterations": 100,
+      "k3_pass_rate": 63.0,
+      "avg_fidelity": 0.8605,
+      "avg_quant_mse": 0.00198,
+      "latency_us": {
+        "sram_compute_avg": 265.15,
+        "sram_compute_p50": 263.7,
+        "sram_compute_p95": 337.88,
+        "k3_gating_avg": 176.34,
+        "turbovec_recall_avg": 361.99,
+        "memory_persist_avg": 1042.15,
+        "total_pipeline_avg": 1847.44,
+        "total_pipeline_p50": 1839.1,
+        "total_pipeline_p95": 2288.4
+      },
+      "sample_computation": {
+        "algorithm": "Quantum_State_Vector_Unitary",
+        "qubits": 3,
+        "superposition_states": 8,
+        "max_probability": 0.5,
+        "entanglement_entropy": 1.0
+      },
+      "sample_k3_logic": {
+        "compute_trit": 1,
+        "telemetry_trit": 1,
+        "composite_trit": 1,
+        "invariant_trit": 1,
+        "contradiction_refuted": true,
+        "epistemic_seal": "PASS"
+      },
+      "sample_turbovec": {
+        "compression_ratio": 16.0,
+        "raw_bytes": 512,
+        "packed_bytes": 32,
+        "reconstruction_mse": 0.002525,
+        "cosine_fidelity": 0.8569,
+        "memory_id": "f794068472da1e9c",
+        "verified_in_cache": true
+      }
+    }
+  }
+}

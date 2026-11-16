@@ -1,0 +1,609 @@
+{
+  "protocol": "TRM_SWARM_FEDERATION_REALWORLD_BENCHMARK_v19",
+  "timestamp": "2026-09-20T18:56:17.910839Z",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "workload_integrity_notice": {
+    "phase_1_molecular_scoring": "EMPIRICAL_AUTODOCK_VINA_PHYSICS",
+    "empirical_basis": "Real AutoDock Vina Monte Carlo forcefield physics execution on silicon against a validated receptor (see chir_090_lpxc_calibration.json)",
+    "infrastructure_validation": "This run measured a failover target that was UNREACHABLE (transfer 3001103 us) with 5/5 recovery probes answered. Failover latency and recovery streak are run-dependent and must not be restated as fixed figures."
+  },
+  "excluded_compounds": [
+    {
+      "compound": "TRM-ABX-220",
+      "reason": "NO_MOLECULAR_STRUCTURE_ON_RECORD",
+      "detail": "The canonical ABX-220 record holds no SMILES, no InChI and no ligand coordinates - only three receptor PDB ids (3P3G, 2XCT, 1S16), none of which are present in this repo. ABX-220 is withheld from the wet-lab dispatch for the same reason. Docking cannot be performed for a compound whose molecule is undefined, and an analog must not be reported in its name."
+    },
+    {
+      "compound": "CRUZA-LEAD-01",
+      "reason": "NO_RECEPTOR_OR_LIGAND_FILES",
+      "detail": "No PDBQT present; reported through the synthetic heuristic vector only."
+    },
+    {
+      "compound": "KRAS-PEP-G12D",
+      "reason": "NO_RECEPTOR_OR_LIGAND_FILES",
+      "detail": "No PDBQT present; reported through the synthetic heuristic vector only."
+    }
+  ],
+  "benchmark_summary": {
+    "total_steps_executed": 21,
+    "steps_passed": 21,
+    "success_rate_pct": 100.0,
+    "data_loss_rate_pct": 0.0,
+    "total_duration_ms": 28110.95,
+    "effective_throughput_tasks_sec": 0.75,
+    "latency_metrics_us": {
+      "mean_us": 1361504.75,
+      "p50_us": 30122.1,
+      "p90_us": 3611914.3,
+      "p99_us": 10336312.1
+    }
+  },
+  "self_healing_verification": {
+    "faults_injected": 1,
+    "fault_type": "SYNTHETIC_PACKET_STALL_NODE_002",
+    "degradation_detected": true,
+    "detection_latency_ms": 0.48,
+    "work_stealing_failover_executed": false,
+    "failover_target": "NODE-004-STATION-VB1T (desktop-vb1t79v)",
+    "failover_target_reachable": false,
+    "failover_duration_us": 3001102.7,
+    "recovery_streak_achieved": 5,
+    "recovery_streak_attempted": 5,
+    "recovery_threshold_required": 5,
+    "auto_heal_status": "AUTO_HEAL_INCOMPLETE_TARGETS_UNREACHABLE",
+    "healed_steps_count": 7
+  },
+  "nodes_participating": {
+    "desktop_primary": {
+      "id": "NODE-001-DESK-6700XT",
+      "endpoint": "100.93.191.43",
+      "role": "Master Orchestrator / Lead Optimization Node",
+      "final_health_score": 0.988,
+      "status": "ONLINE_PRIMARY"
+    },
+    "desktop_secondary": {
+      "id": "NODE-004-STATION-VB1T",
+      "endpoint": "100.82.16.43",
+      "role": "Redundant Core Host & Failover Work-Stealer",
+      "final_health_score": 0.148,
+      "status": "ONLINE_CORE_ACTIVE"
+    },
+    "laptop_secondary": {
+      "id": "NODE-002-LAPTOP-3070",
+      "endpoint": "100.123.215.119",
+      "role": "Field Ingestion Node & Auto-Healed Worker",
+      "final_health_score": 0.9418,
+      "status": "RECOVERED_HEALTHY"
+    }
+  },
+  "step_traces": [
+    {
+      "step_index": 1,
+      "step_name": "AutoDock Vina: TRM-ABX-219 against Gram-Negative LpxC",
+      "phase": "PHASE_1_EMPIRICAL_PHYSICS",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930585774532,
+      "duration_us": 7863122.2,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.59,
+      "input_digest": "f1dc574853eb4bb9",
+      "output_digest": "ed3ae70fcb4022ad",
+      "auto_heal_event": null,
+      "details": {
+        "compound": "TRM-ABX-219",
+        "target": "UDP-3-O-acyl-N-acetylglucosamine deacetylase (LpxC) \u2014 Pseudomonas aeruginosa",
+        "delta_g_kcal_mol": -8.21,
+        "kd_nm": 962.96,
+        "pkd": 6.02,
+        "is_simulated": false,
+        "workload_class": "EMPIRICAL_AUTODOCK_VINA_PHYSICS",
+        "vina_runtime_seconds": 7.861,
+        "exhaustiveness": 4,
+        "output_pdbqt": "TRM-ABX-219_benchmark_docked.pdbqt",
+        "box_center": [
+          -8.126,
+          -13.52,
+          21.157
+        ],
+        "box_size": [
+          22.2,
+          23.8,
+          25.3
+        ],
+        "box_source": "crystal_ligand:C90@5U39.pdb",
+        "receptor": "5U39_receptor.pdbqt",
+        "receptor_validated": true,
+        "receptor_metal": "Zn",
+        "receptor_warning": null,
+        "hash": "e03552f00539a58c"
+      }
+    },
+    {
+      "step_index": 2,
+      "step_name": "AutoDock Vina: CHIR-090 against Gram-Negative LpxC",
+      "phase": "PHASE_1_EMPIRICAL_PHYSICS",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930596111358,
+      "duration_us": 10336312.1,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.59,
+      "input_digest": "befb5152a8ef0c7c",
+      "output_digest": "6643a82face84f59",
+      "auto_heal_event": null,
+      "details": {
+        "compound": "CHIR-090",
+        "target": "UDP-3-O-acyl-N-acetylglucosamine deacetylase (LpxC) \u2014 Pseudomonas aeruginosa",
+        "delta_g_kcal_mol": -10.17,
+        "kd_nm": 35.04,
+        "pkd": 7.46,
+        "is_simulated": false,
+        "workload_class": "EMPIRICAL_AUTODOCK_VINA_PHYSICS",
+        "vina_runtime_seconds": 10.334,
+        "exhaustiveness": 4,
+        "output_pdbqt": "CHIR-090_benchmark_docked.pdbqt",
+        "box_center": [
+          -8.126,
+          -13.52,
+          21.157
+        ],
+        "box_size": [
+          22.2,
+          23.8,
+          25.3
+        ],
+        "box_source": "crystal_ligand:C90@5U39.pdb",
+        "receptor": "5U39_receptor.pdbqt",
+        "receptor_validated": true,
+        "receptor_metal": "Zn",
+        "receptor_warning": null,
+        "hash": "d6c3cb84357dcd69"
+      }
+    },
+    {
+      "step_index": 3,
+      "step_name": "AutoDock Vina: TRM-ABX-219-H1 against LpxC hydroxamate a",
+      "phase": "PHASE_1_EMPIRICAL_PHYSICS",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930599723365,
+      "duration_us": 3611914.3,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.59,
+      "input_digest": "362f0fd7890775c2",
+      "output_digest": "a15434486c7c308c",
+      "auto_heal_event": null,
+      "details": {
+        "compound": "TRM-ABX-219-H1",
+        "target": "UDP-3-O-acyl-N-acetylglucosamine deacetylase (LpxC) \u2014 Pseudomonas aeruginosa",
+        "delta_g_kcal_mol": -7.99,
+        "kd_nm": 1391.3,
+        "pkd": 5.86,
+        "is_simulated": false,
+        "workload_class": "EMPIRICAL_AUTODOCK_VINA_PHYSICS",
+        "vina_runtime_seconds": 3.61,
+        "exhaustiveness": 4,
+        "output_pdbqt": "TRM-ABX-219-H1_benchmark_docked.pdbqt",
+        "box_center": [
+          -8.126,
+          -13.52,
+          21.157
+        ],
+        "box_size": [
+          22.2,
+          23.8,
+          25.3
+        ],
+        "box_source": "crystal_ligand:C90@5U39.pdb",
+        "receptor": "5U39_receptor.pdbqt",
+        "receptor_validated": true,
+        "receptor_metal": "Zn",
+        "receptor_warning": null,
+        "hash": "f153e8d16c89bd51"
+      }
+    },
+    {
+      "step_index": 4,
+      "step_name": "Simulated Vector: CRUZA-LEAD-01 against Chagas Cruzain Poc",
+      "phase": "PHASE_1_SIMULATED_PAYLOAD",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930599723365,
+      "duration_us": 9.0,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.99,
+      "input_digest": "5b57a3c95c5217a2",
+      "output_digest": "6eec4e9c3c8c9ea2",
+      "auto_heal_event": null,
+      "details": {
+        "compound": "CRUZA-LEAD-01",
+        "target": "Chagas Cruzain Pocket (3IUT)",
+        "delta_g_kcal_mol": -9.2,
+        "kd_nm": 180.16,
+        "pkd": 6.74,
+        "is_simulated": true,
+        "workload_class": "SYNTHETIC_HEURISTIC_TEST_VECTOR",
+        "hash": "7a42444a2be13891"
+      }
+    },
+    {
+      "step_index": 5,
+      "step_name": "Simulated Vector: KRAS-PEP-G12D against KRAS G12D Peptide-",
+      "phase": "PHASE_1_SIMULATED_PAYLOAD",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930599723365,
+      "duration_us": 5.8,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.99,
+      "input_digest": "8363d68b89e5aab9",
+      "output_digest": "34edafb7ae7a992b",
+      "auto_heal_event": null,
+      "details": {
+        "compound": "KRAS-PEP-G12D",
+        "target": "KRAS G12D Peptide-Mimetic",
+        "delta_g_kcal_mol": -9.2,
+        "kd_nm": 180.16,
+        "pkd": 6.74,
+        "is_simulated": true,
+        "workload_class": "SYNTHETIC_HEURISTIC_TEST_VECTOR",
+        "hash": "780fe54fc9854a06"
+      }
+    },
+    {
+      "step_index": 6,
+      "step_name": "Cascade Engine: TIER_1_L3_SRAM_CAM (SRAM_CAM_EXACT_MATCH)",
+      "phase": "PHASE_2_CASCADE",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930599723365,
+      "duration_us": 7.8,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.99,
+      "input_digest": "f969759e2e737f47",
+      "output_digest": "1408dfb9ec74bad3",
+      "auto_heal_event": null,
+      "details": {
+        "tier": "TIER_1_L3_SRAM_CAM",
+        "latency_ns": 4700,
+        "trit": 1,
+        "confidence": 0.999,
+        "speedup": 680.0,
+        "tag": "SRAM_CAM_EXACT_MATCH"
+      }
+    },
+    {
+      "step_index": 7,
+      "step_name": "Cascade Engine: TIER_1_L3_SRAM_CAM (SRAM_CAM_EXACT_MATCH)",
+      "phase": "PHASE_2_CASCADE",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930599723365,
+      "duration_us": 3.5,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.99,
+      "input_digest": "fcc1e5a17f217253",
+      "output_digest": "13f0ff9af6c4a15c",
+      "auto_heal_event": null,
+      "details": {
+        "tier": "TIER_1_L3_SRAM_CAM",
+        "latency_ns": 2000,
+        "trit": 1,
+        "confidence": 0.994,
+        "speedup": 680.0,
+        "tag": "SRAM_CAM_EXACT_MATCH"
+      }
+    },
+    {
+      "step_index": 8,
+      "step_name": "Cascade Engine: TIER_0_K3_BYPASS (K3_ZERO_OVERHEAD_BYPASS)",
+      "phase": "PHASE_2_CASCADE",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930599723365,
+      "duration_us": 3.6,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.99,
+      "input_digest": "c8ca058d2ac4123d",
+      "output_digest": "64ea280960899056",
+      "auto_heal_event": null,
+      "details": {
+        "tier": "TIER_0_K3_BYPASS",
+        "latency_ns": 2100,
+        "trit": 1,
+        "confidence": 0.999,
+        "speedup": 110000.0,
+        "tag": "K3_ZERO_OVERHEAD_BYPASS"
+      }
+    },
+    {
+      "step_index": 9,
+      "step_name": "Cascade Engine: TIER_2_TRM_7M_MAMBA3_SSM (FULL_NEURAL_SSM_FORWARD)",
+      "phase": "PHASE_2_CASCADE",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930599723365,
+      "duration_us": 42.2,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.9899,
+      "input_digest": "6861fa7112f92f6b",
+      "output_digest": "69e7fbb64a5a2bf7",
+      "auto_heal_event": null,
+      "details": {
+        "tier": "TIER_2_TRM_7M_MAMBA3_SSM",
+        "latency_ns": 223000,
+        "trit": 1,
+        "confidence": 0.9704,
+        "speedup": 1.0,
+        "tag": "FULL_NEURAL_SSM_FORWARD"
+      }
+    },
+    {
+      "step_index": 10,
+      "step_name": "Cascade Engine: TIER_0_K3_BYPASS (K3_ZERO_OVERHEAD_BYPASS)",
+      "phase": "PHASE_2_CASCADE",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930599723365,
+      "duration_us": 4.3,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.99,
+      "input_digest": "c3abcf1eb4dd85b3",
+      "output_digest": "76bb440defbedf11",
+      "auto_heal_event": null,
+      "details": {
+        "tier": "TIER_0_K3_BYPASS",
+        "latency_ns": 3000,
+        "trit": 1,
+        "confidence": 0.999,
+        "speedup": 110000.0,
+        "tag": "K3_ZERO_OVERHEAD_BYPASS"
+      }
+    },
+    {
+      "step_index": 11,
+      "step_name": "Federation Dispatch: ROCm Docking Lead Batch",
+      "phase": "PHASE_3_FEDERATION",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930599731880,
+      "duration_us": 8530.5,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.9764,
+      "input_digest": "0d38392136e3dfe3",
+      "output_digest": "ac7be7672acd736e",
+      "auto_heal_event": null,
+      "details": {
+        "node_url": "http://127.0.0.1:8022",
+        "reachable": true,
+        "response": {
+          "message": "Task successfully dispatched across Laptop node and 100 federation workers.",
+          "monad_seal": "0x4D4F4E4144000001",
+          "pbft_quorum": "PASS (67/100)",
+          "pqc_token": "ML-KEM-1024-VERIFIED",
+          "status": "DISPATCHED"
+        }
+      }
+    },
+    {
+      "step_index": 12,
+      "step_name": "Federation Dispatch: Redundant Secondary Council Batch",
+      "phase": "PHASE_3_FEDERATION",
+      "target_node_id": "NODE-004-STATION-VB1T",
+      "target_node_ip": "100.82.16.43",
+      "timestamp_epoch_us": 1789930602733439,
+      "duration_us": 3000911.4,
+      "status": "DEGRADED",
+      "k3_trit": -1,
+      "health_score": 0.1653,
+      "input_digest": "93597ffa169086a2",
+      "output_digest": "005b8400ab8cbe3f",
+      "auto_heal_event": "NODE_UNREACHABLE 100.82.16.43; task retained for local execution",
+      "details": {
+        "node_url": "http://100.82.16.43:8022",
+        "reachable": false,
+        "response": {
+          "dispatch_failed": true,
+          "node_url": "http://100.82.16.43:8022",
+          "error": "URLError",
+          "detail": "<urlopen error timed out>"
+        }
+      }
+    },
+    {
+      "step_index": 13,
+      "step_name": "Federation Dispatch: Field Ingestion & CUDA Screening Batch",
+      "phase": "PHASE_3_FEDERATION",
+      "target_node_id": "NODE-002-LAPTOP-3070",
+      "target_node_ip": "100.123.215.119",
+      "timestamp_epoch_us": 1789930602784098,
+      "duration_us": 50388.7,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.9094,
+      "input_digest": "89236c0db6eb5083",
+      "output_digest": "08e2c358ce13cb67",
+      "auto_heal_event": null,
+      "details": {
+        "node_url": "http://100.123.215.119:8022",
+        "reachable": true,
+        "response": {
+          "status": "ok"
+        }
+      }
+    },
+    {
+      "step_index": 14,
+      "step_name": "CRITICAL TASK: Cruzain 10k Docking Shard",
+      "phase": "PHASE_4_FAULT_INJECTION",
+      "target_node_id": "NODE-002-LAPTOP-3070",
+      "target_node_ip": "100.123.215.119",
+      "timestamp_epoch_us": 1789930602784098,
+      "duration_us": 482000.0,
+      "status": "DEGRADED",
+      "k3_trit": -1,
+      "health_score": 0.1688,
+      "input_digest": "7342596cd6db52b8",
+      "output_digest": "a9caf3ee533454a1",
+      "auto_heal_event": null,
+      "details": {
+        "error": "LATENCY_CEILING_BREACHED",
+        "measured_ms": 482.0
+      }
+    },
+    {
+      "step_index": 15,
+      "step_name": "FAILOVER REASSIGNMENT: Work-Steal to Secondary Core",
+      "phase": "PHASE_4_AUTO_HEAL",
+      "target_node_id": "NODE-004-STATION-VB1T",
+      "target_node_ip": "100.82.16.43",
+      "timestamp_epoch_us": 1789930605785171,
+      "duration_us": 3001102.7,
+      "status": "DEGRADED",
+      "k3_trit": -1,
+      "health_score": 0.148,
+      "input_digest": "3ef872bc85da08ea",
+      "output_digest": "005b8400ab8cbe3f",
+      "auto_heal_event": "FAILOVER_TARGET_UNREACHABLE - shard held locally, no data loss",
+      "details": {
+        "failover_target": "NODE-004-STATION-VB1T",
+        "failover_duration_us": 3001102.7
+      }
+    },
+    {
+      "step_index": 16,
+      "step_name": "Self-Healing Probe 1/5: Verify Node Health",
+      "phase": "PHASE_4_RECOVERY",
+      "target_node_id": "NODE-002-LAPTOP-3070",
+      "target_node_ip": "100.123.215.119",
+      "timestamp_epoch_us": 1789930605814147,
+      "duration_us": 29006.4,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.9436,
+      "input_digest": "69ec917d5a537a95",
+      "output_digest": "08e2c358ce13cb67",
+      "auto_heal_event": "RECOVERY_STREAK_1_OF_5",
+      "details": {
+        "recovery_streak": 1,
+        "probe_reachable": true,
+        "target_status": "ONLINE_COUNCIL_ACTIVE"
+      }
+    },
+    {
+      "step_index": 17,
+      "step_name": "Self-Healing Probe 2/5: Verify Node Health",
+      "phase": "PHASE_4_RECOVERY",
+      "target_node_id": "NODE-002-LAPTOP-3070",
+      "target_node_ip": "100.123.215.119",
+      "timestamp_epoch_us": 1789930605855227,
+      "duration_us": 40849.1,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.9246,
+      "input_digest": "032350b821eb5c2d",
+      "output_digest": "08e2c358ce13cb67",
+      "auto_heal_event": "RECOVERY_STREAK_2_OF_5",
+      "details": {
+        "recovery_streak": 2,
+        "probe_reachable": true,
+        "target_status": "ONLINE_COUNCIL_ACTIVE"
+      }
+    },
+    {
+      "step_index": 18,
+      "step_name": "Self-Healing Probe 3/5: Verify Node Health",
+      "phase": "PHASE_4_RECOVERY",
+      "target_node_id": "NODE-002-LAPTOP-3070",
+      "target_node_ip": "100.123.215.119",
+      "timestamp_epoch_us": 1789930605950632,
+      "duration_us": 95306.5,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.8375,
+      "input_digest": "c91c6bda9f157cca",
+      "output_digest": "08e2c358ce13cb67",
+      "auto_heal_event": "RECOVERY_STREAK_3_OF_5",
+      "details": {
+        "recovery_streak": 3,
+        "probe_reachable": true,
+        "target_status": "ONLINE_COUNCIL_ACTIVE"
+      }
+    },
+    {
+      "step_index": 19,
+      "step_name": "Self-Healing Probe 4/5: Verify Node Health",
+      "phase": "PHASE_4_RECOVERY",
+      "target_node_id": "NODE-002-LAPTOP-3070",
+      "target_node_ip": "100.123.215.119",
+      "timestamp_epoch_us": 1789930605991336,
+      "duration_us": 40679.5,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.9249,
+      "input_digest": "d867d06a678a8efd",
+      "output_digest": "08e2c358ce13cb67",
+      "auto_heal_event": "RECOVERY_STREAK_4_OF_5",
+      "details": {
+        "recovery_streak": 4,
+        "probe_reachable": true,
+        "target_status": "ONLINE_COUNCIL_ACTIVE"
+      }
+    },
+    {
+      "step_index": 20,
+      "step_name": "Self-Healing Probe 5/5: Verify Node Health",
+      "phase": "PHASE_4_RECOVERY",
+      "target_node_id": "NODE-002-LAPTOP-3070",
+      "target_node_ip": "100.123.215.119",
+      "timestamp_epoch_us": 1789930606021852,
+      "duration_us": 30122.1,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.9418,
+      "input_digest": "605d6ba1e159fcb2",
+      "output_digest": "08e2c358ce13cb67",
+      "auto_heal_event": "NODE_AUTO_HEALED_RESTORED_HEALTHY",
+      "details": {
+        "recovery_streak": 5,
+        "probe_reachable": true,
+        "target_status": "ONLINE_COUNCIL_ACTIVE"
+      }
+    },
+    {
+      "step_index": 21,
+      "step_name": "Council Deliberation: Benchmark Ratification",
+      "phase": "PHASE_5_CONSENSUS",
+      "target_node_id": "NODE-001-DESK-6700XT",
+      "target_node_ip": "100.93.191.43",
+      "timestamp_epoch_us": 1789930606022882,
+      "duration_us": 1278.1,
+      "status": "OPTIMAL",
+      "k3_trit": 1,
+      "health_score": 0.988,
+      "input_digest": "f4a79b157e845d78",
+      "output_digest": "7df16ae3d493140f",
+      "auto_heal_event": null,
+      "details": {
+        "monad_anchor": "0x4D4F4E4144000001",
+        "pbft_quorum": 10,
+        "total_agents": 14,
+        "total_proposals": 8
+      }
+    }
+  ],
+  "merkle_root": "d499c82cc6cf272428e56543c96aa22aeca328b5b031048e93e1e07958cedbaf",
+  "sha256": "ad0a425357a617d6b76098172a034256ee7d6414ae10eef2b884001e1a839d03"
+}

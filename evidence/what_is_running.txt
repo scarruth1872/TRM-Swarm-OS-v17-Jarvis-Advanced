@@ -1,0 +1,32 @@
+WHAT IS RUNNING vs WHAT MODULES EXIST - 2026-10-14
+
+TWO SEPARATE RUST BINARIES:
+  trm_uefi_kernel.efi (BOOTX64.EFI)  206 .rs files, 122 declared, 17.7 MB
+      -> UEFI BOOT IMAGE. Runs only when the machine is booted into it.
+  host_council_server.exe            10 .rs files
+      -> the HTTP server on 8022. A THIN SUBSET of the kernel.
+
+WHAT IS RUNNING (5 processes):
+  8022 host_council_server  Rust   10 modules  <- the http shim
+  3002 trm_companion_bridge Rust
+  3001 trm_companion_proxy  Python
+  5183 vite                 node
+  8587 llama-server         C++    qwen2.5-1.5b
+
+WHAT IS NOT RUNNING:
+  trm_uefi_kernel (122 modules) - it is an .efi, not a Windows process
+  swarm_v2 Python platform (22 route modules incl kanban/memory/verification)
+
+ORPHANED: 84 of 206 kernel .rs files are not declared in main.rs
+
+NEVER BUILT (not in Rust, not in Python):
+  /crate/humanistic/reason   /crate/journal/verify   /crate/agent/census
+  sparse-gated task router   docking/ChEMBL/clinical/bioassay HTTP routes
+  grep across all .py + .rs for crate/humanistic etc = ZERO source files
+
+CONSEQUENCE FOR KANBAN TASKS 11-25:
+  11-14 route/store tasks -> no task router exists anywhere
+  14,19 humanistic        -> /crate/humanistic absent
+  22 journal verify       -> /crate/journal absent
+  24 agent census         -> /crate/agent/census absent
+  15,16,17,25 docking     -> offline artifacts exist, no HTTP route

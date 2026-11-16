@@ -1,0 +1,52 @@
+ROUTE PARITY - what the Rust council already answers vs what Python serves
+Measured 2026-11-06 against the live stack (8022 host_council_server, 8099 python app_v2).
+
+METHOD
+  Every @router.<verb>("/path") declaration in swarm_v2/routes/*.py was extracted
+  mechanically (268 declarations across 22 route modules) and probed on BOTH ports with the
+  declared verb. A path counts as answered when the port returns status < 400.
+
+RESULT
+  declared in Python            268
+  answered by Rust on 8022       84   (31%)
+  answered by Python on 8099    151   (56%)
+
+  by module            on 8022  on 8099  declared
+  artifacts                  6        1        11
+  batch_endpoints            9       10        15
+  changelog                  0       10        14
+  coordination               0        1         3
+  coordination_respond       0        0         1
+  council                    3        4        11
+  evolution                  4        4         8
+  insights                   0        6        10
+  kanban                    19       11        21
+  learning                   6        7        13
+  memory_routes              3        1         5
+  mesh                       9       11        19
+  orchestrator               2        4         4
+  remediation                0        0         1
+  research                   4        8        10
+  security                   2        3         5
+  swarm                      7       38        65
+  synthesis                  0        1         4
+  system                     6       18        21
+  system_modules             0        1         1
+  untapped                   0        5        16
+  verification               4        7        10
+  TOTAL                     84      151       268
+
+WHAT THIS MEANS FOR THE PLAN
+  The porting job is smaller than the raw 277-route count suggested. 84 of the 268 paths
+  already answer on the Rust council today - kanban (19), mesh (9), batch_endpoints (9),
+  swarm (7), artifacts and learning and system (6 each). The genuine Python-only mass is
+  concentrated: swarm 38 of 65, system 18 of 21, kanban 11 of 21 still answered only by
+  Python, plus four modules that answer nowhere at all (changelog 10/14, insights 6/10,
+  untapped 5/16, coordination 1/3).
+
+  Two caveats, stated rather than hidden:
+    - "answers" means status < 400, not "returns the documented shape". Parity by shape is
+      still unmeasured and remains P1's real work.
+    - 117 of the 268 declarations answer on neither port; some need path parameters or a
+      body this probe did not supply, so they are not necessarily dead. A parameterised
+      probe is required before anything is retired.

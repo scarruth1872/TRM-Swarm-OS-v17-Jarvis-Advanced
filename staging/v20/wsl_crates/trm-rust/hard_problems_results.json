@@ -1,0 +1,75 @@
+{
+  "protocol": "quantum-class-hard-problems",
+  "results": [
+    {
+      "scenario": "shor",
+      "small_N": 21,
+      "factored": [
+        3,
+        7
+      ],
+      "ms": 0.34,
+      "extrapolation": "GNFS ~2^70 ops (classical); full Shor needs fault-tolerant QC"
+    },
+    {
+      "scenario": "lll",
+      "dim": 32,
+      "shortest": 1697.21,
+      "ms": 5.39,
+      "extrapolation": "1024-dim SVP exponential"
+    },
+    {
+      "scenario": "qsim",
+      "sizes": [
+        [
+          8,
+          256
+        ],
+        [
+          10,
+          1024
+        ],
+        [
+          12,
+          4096
+        ]
+      ],
+      "ms": 0.8,
+      "extrapolation": "50 qubits = 18 PB"
+    },
+    {
+      "scenario": "grover",
+      "qubits": 12,
+      "correct": true,
+      "ms": 10.36,
+      "extrapolation": "2^128: quantum 2^64, classical 2^128"
+    },
+    {
+      "scenario": "coloring",
+      "nodes": 40,
+      "solvable": false,
+      "search_nodes": 3714280,
+      "ms": 10954.42
+    },
+    {
+      "scenario": "tsp",
+      "cities": 12,
+      "best": 318.67,
+      "routes": 39916800,
+      "ms": 57480.55
+    },
+    {
+      "scenario": "femoco",
+      "electrons": 54,
+      "ms": 0.01,
+      "extrapolation": "10^18 years on exascale (documented claim)"
+    },
+    {
+      "scenario": "qec",
+      "distance": 3,
+      "err_cycles": 2,
+      "corrected": 2,
+      "ms": 0.07
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+[package]
+name = "swarm-server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+swarm-proto = { path = "../swarm-proto" }
+swarm-fit = { path = "../swarm-fit" }
+swarm-services = { path = "../swarm-services" }
+swarm-vitals = { path = "../swarm-vitals" }
+swarm-chat = { path = "../swarm-chat" }
+swarm-backend = { path = "../swarm-backend" }
+quinn = "0.11"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "io-util", "net"] }
+rustls = { version = "0.23", features = ["ring"] }
+rcgen = "0.13"
+futures = "0.3"

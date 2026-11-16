@@ -1,0 +1,156 @@
+{
+  "monad_anchor": "0x4D4F4E4144000001",
+  "generated_at": 1792340064,
+  "tasks": [
+    {
+      "task": "drug-lead search over target LpxC",
+      "candidates": 5,
+      "bioassay": 5,
+      "smi_matched": 0
+    },
+    {
+      "task": "drug-lead search over target BamA",
+      "candidates": 5,
+      "bioassay": 5,
+      "smi_matched": 0
+    },
+    {
+      "task": "drug-lead search over target FtsZ",
+      "candidates": 5,
+      "bioassay": 5,
+      "smi_matched": 0
+    },
+    {
+      "task": "molecule recall 'kinase inhibitor'",
+      "stores": [
+        "fabric",
+        "chembl",
+        "structured",
+        "bioassay",
+        "clinical"
+      ],
+      "top": "binding/6736"
+    },
+    {
+      "task": "molecule recall 'antibacterial compound'",
+      "stores": [
+        "fabric",
+        "chembl",
+        "structured",
+        "bioassay",
+        "clinical"
+      ],
+      "top": "ethics/87321"
+    },
+    {
+      "task": "molecule recall 'zinc chelator'",
+      "stores": [
+        "fabric",
+        "chembl",
+        "structured",
+        "bioassay",
+        "clinical"
+      ],
+      "top": "binding/7070"
+    },
+    {
+      "task": "research recall 'voltage harmonization'",
+      "stores": [
+        "fabric",
+        "chembl",
+        "structured",
+        "bioassay",
+        "clinical"
+      ],
+      "top": "ethics/22542"
+    },
+    {
+      "task": "research recall 'ternary Kleene logic'",
+      "stores": [
+        "fabric",
+        "chembl",
+        "structured",
+        "bioassay",
+        "clinical"
+      ],
+      "top": "papers/paper_148_turbovec_and_ternary_logic_knowledge_fusion_engine.md"
+    },
+    {
+      "task": "research recall 'geometric resonance SRAM'",
+      "stores": [
+        "fabric",
+        "chembl",
+        "structured",
+        "bioassay",
+        "clinical"
+      ],
+      "top": "ethics/53858"
+    },
+    {
+      "task": "virtual-screening campaign",
+      "approved_leads": 45911,
+      "total_evaluated": 1000000
+    },
+    {
+      "task": "formal theorems",
+      "theorems": 9
+    }
+  ],
+  "leads": [
+    {
+      "target": "LpxC",
+      "key": "chembl/CHEMBL1883107",
+      "score": 0.11575061082839966,
+      "smi_matches": []
+    },
+    {
+      "target": "LpxC",
+      "key": "chembl/CHEMBL3126756",
+      "score": 0.10974802076816559,
+      "smi_matches": []
+    },
+    {
+      "target": "LpxC",
+      "key": "chembl/CHEMBL5423354",
+      "score": 0.10726898908615112,
+      "smi_matches": []
+    },
+    {
+      "target": "BamA",
+      "key": "chembl/CHEMBL6008576",
+      "score": 0.143582284450531,
+      "smi_matches": []
+    },
+    {
+      "target": "BamA",
+      "key": "chembl/CHEMBL4939247",
+      "score": 0.1372126191854477,
+      "smi_matches": []
+    },
+    {
+      "target": "BamA",
+      "key": "chembl/CHEMBL5761975",
+      "score": 0.1326904296875,
+      "smi_matches": []
+    },
+    {
+      "target": "FtsZ",
+      "key": "chembl/CHEMBL1386658",
+      "score": 0.11358259618282318,
+      "smi_matches": []
+    },
+    {
+      "target": "FtsZ",
+      "key": "chembl/CHEMBL2408860",
+      "score": 0.11170515418052673,
+      "smi_matches": []
+    },
+    {
+      "target": "FtsZ",
+      "key": "chembl/CHEMBL3462443",
+      "score": 0.11083366721868515,
+      "smi_matches": []
+    }
+  ],
+  "basis": "deterministic recall over the platform's own stores; no LLM"
+}

@@ -1,0 +1,122 @@
+```python
+import pytest
+import yaml
+import os
+from typing import Dict, Any
+
+# --- TEST CONFIGURATION ---
+TARGET_FILE = "math_solver_structure.yaml"
+
+def load_architecture() -> Dict[str, Any]:
+    """Utility to load the YAML specification."""
+    with open(TARGET_FILE, 'r') as f:
+        return yaml.safe_load(f)
+
+# --- FIXTURES ---
+@pytest.fixture(scope="module")
+def arch_spec():
+    """Provides the parsed architecture specification."""
+    return load_architecture()
+
+# --- TEST SUITE ---
+
+class TestMathSolverArchitecture:
+    """
+    Comprehensive validation suite for the Math Solver Architectural Specification.
+    Ensures structural integrity and adherence to system requirements.
+    """
+
+    def test_root_structure(self, arch_spec):
+        """Verify the root element is 'architecture' and contains required keys."""
+        assert "architecture" in arch_spec, "Root element 'architecture' is missing."
+        root = arch_spec["architecture"]
+        required_keys = ["version", "layers", "dependencies"]
+        for key in required_keys:
+            assert key in root, f"Missing mandatory root key: {key}"
+
+    def test_versioning_format(self, arch_spec):
+        """Ensure the version follows Semantic Versioning (X.Y.Z)."""
+        version = arch_spec["architecture"]["version"]
+        parts = version.split('.')
+        assert len(parts) == 3, "Version must follow SemVer format (e.g., 1.0.0)"
+        assert all(p.isdigit() for p in parts), "Version components must be numeric"
+
+    def test_layer_pipeline_integrity(self, arch_spec):
+        """Verify that all critical architectural layers are defined in the correct sequence."""
+        layers = arch_spec["architecture"]["layers"]
+        expected_layers = ["API_GATEWAY", "COMPILATION_CORE", "SOLVER_ENGINE", "OUTPUT_FORMATTER"]
+        
+        actual_layers = [l.get("layer") for l in layers]
+        
+        assert actual_layers == expected_layers, (
+            f"Layer sequence mismatch. Expected {expected_layers}, got {actual_layers}"
+        )
+
+    def test_compilation_core_modules(self, arch_spec):
+        """Validate the presence of the essential compilation pipeline modules."""
+        layers = arch_spec["architecture"]["layers"]
+        comp_layer = next((l for l in layers if l["layer"] == "COMPILATION_CORE"), None)
+        
+        assert comp_layer is not None, "COMPILATION_CORE layer missing"
+        modules = comp_layer.get("modules", [])
+        
+        # Extract module names from the "Name: Description" format
+        module_names = [m.split(':')[0].strip() for m in modules]
+        required_modules = ["Lexer", "Parser", "Optimizer"]
+        
+        for req in required_modules:
+            assert req in module_names, f"Compilation module {req} is missing from specification"
+
+    def test_solver_engine_capabilities(self, arch_spec):
+        """Verify that the solver engine contains the necessary compute engines."""
+        layers = arch_spec["architecture"]["layers"]
+        solver_layer = next((l for l in layers if l["layer"] == "SOLVER_ENGINE"), None)
+        
+        assert solver_layer is not None, "SOLVER_ENGINE layer missing"
+        engines = solver_layer.get("engines", [])
+        
+        engine_names = [e.split(':')[0].strip() for e in engines]
+        required_engines = ["SymbolicEngine", "NumericalEngine", "HeuristicEngine"]
+        
+        for req in required_engines:
+            assert req in engine_names, f"Solver engine {req} is missing from specification"
+
+    def test_output_formatter_formats(self, arch_spec):
+        """Ensure all required output formats are supported."""
+        layers = arch_spec["architecture"]["layers"]
+        formatter_layer = next((l for l in layers if l["layer"] == "OUTPUT_FORMATTER"), None)
+        
+        assert formatter_layer is not None, "OUTPUT_FORMATTER layer missing"
+        formats = formatter_layer.get("formats", [])
+        
+        required_formats = ["LaTeX", "JSON", "PlainText", "MathML"]
+        for fmt in required_formats:
+            assert fmt in formats, f"Output format {fmt} is not supported in specification"
+
+    def test_dependency_stack(self, arch_spec):
+        """Verify that the core mathematical dependencies are explicitly listed."""
+        deps = arch_spec["architecture"]["dependencies"]
+        
+        # We expect the dependencies to be a list of strings or objects containing the name
+        # Based on the YAML, they are strings (or strings with descriptions)
+        dep_names = [d.split(':')[0].strip() for d in deps]
+        required_deps = ["mpmath", "sympy", "numpy"]
+        
+        for dep in required_deps:
+            assert dep in dep_names, f"Critical dependency {dep} is missing from the stack"
+
+    @pytest.mark.parametrize("layer_name", ["API_GATEWAY", "COMPILATION_CORE", "SOLVER_ENGINE", "OUTPUT_FORMATTER"])
+    def test_layer_definition_completeness(self, arch_spec, layer_name):
+        """Ensure every layer has at least one defining attribute (responsibility, modules, engines, or formats)."""
+        layers = arch_spec["architecture"]["layers"]
+        layer = next((l for l in layers if l["layer"] == layer_name), None)
+        
+        assert layer is not None
+        # Check if any key other than 'layer' exists
+        assert len(layer.keys()) > 1, f"Layer {layer_name} has no definition attributes."
+
+if __name__ == "__main__":
+    # This allows running the test file directly via 'python test_math_solver_structure.yaml'
+    # though 'pytest' is the intended runner.
+    pytest.main([__file__])
+```

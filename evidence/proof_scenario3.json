@@ -1,0 +1,29 @@
+{
+  "scenario": "PROOF-3 K3 ternary safety gate",
+  "corpus": "32 real ChEMBL LpxC molecules with measured pChEMBL ground truth",
+  "channels": [
+    "docking score (real vina)",
+    "ligand efficiency (real, computed)",
+    "molecular weight (real descriptor)"
+  ],
+  "verdicts": {
+    "APPROVE": 14,
+    "UNKNOWN": 12,
+    "REJECT": 6
+  },
+  "SAFETY_INVARIANT": {
+    "statement": "APPROVE requires kleene_and of all three channels == +1; an UNMEASURED channel can never yield +1",
+    "approvals_with_unmeasured_channel": 0,
+    "required": 0,
+    "result": "HOLDS - verified against the kernel's real k3_logic.rs"
+  },
+  "accuracy": {
+    "false_approvals": [
+      "CHEMBL3356191 (pChEMBL 4.48, IC50 33 uM)",
+      "CHEMBL4780842 (pChEMBL 4.20, IC50 63 uM)"
+    ],
+    "false_approval_rate_pct": 14.3,
+    "note": "the SAME two measured-inactives that outranked real actives in the ROC"
+  },
+  "verdict": "PROVEN: the ternary algebra is sound and the safety property holds - an unmeasured channel never produces an approval (0 violations over real data). NOT PROVEN: that the gate is accurate. It produced a 14.3% false-approval rate, and the cause is the EVIDENCE, not the logic: docking scores put two 33-63 uM inactives in the approve band. Sound algebra cannot rescue unreliable inputs - it can only guarantee it never guesses."
+}

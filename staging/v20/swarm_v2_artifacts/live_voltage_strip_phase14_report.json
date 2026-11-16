@@ -1,0 +1,48 @@
+{
+  "phase": 14,
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": 1788810148.233653,
+  "average_speedup": 3911.4,
+  "results": [
+    {
+      "module": "swarm_v2/core/ddr_self_training.py",
+      "speedup": 80.4,
+      "diff": 2.9802322387695312e-08,
+      "status": "PASS",
+      "dll": "strip_ddr_self_training.dll",
+      "technique": "SIMD 128-dim sub-vectorization & zero-copy ASCII case-folded byte search"
+    },
+    {
+      "module": "swarm_v2/skills/learning_engine.py",
+      "speedup": 16.9,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_learning_engine.dll",
+      "technique": "Zero-allocation byte-level streaming lexer with ASCII case-folded token scanning"
+    },
+    {
+      "module": "swarm_v2/core/background_tasks.py",
+      "speedup": 4.9,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_background_tasks.dll",
+      "technique": "Batch contiguous string slice classification & zero-alloc extension router"
+    },
+    {
+      "module": "swarm_v2/core/predictive_watchdog.py",
+      "speedup": 19339.3,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_predictive_watchdog.dll",
+      "technique": "Constant-weight analytical linear regression with AVX2 vectorized telemetry threshold gates"
+    },
+    {
+      "module": "swarm_v2/core/ultrawork_tranche.py",
+      "speedup": 115.7,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_ultrawork_tranche.dll",
+      "technique": "Zero-allocation byte-level syntax scanner & stream substitution"
+    }
+  ]
+}

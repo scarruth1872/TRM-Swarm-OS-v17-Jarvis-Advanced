@@ -1,0 +1,14 @@
+[workspace]
+members = ["swarm-paths", "swarm-k3", "swarm-nand", "swarm-turbovec", "swarm-gguf", "swarm-ssm", "swarm-instella", "swarm-boot", "swarm-runtime", "swarm-proto", "swarm-server", "swarm-council", "swarm-thsm", "swarm-kvstore", "swarm-git", "swarm-voltage", "swarm-agent", "swarm-proof", "swarm-shard", "swarm-drug", "swarm-sovereign", "swarm-health", "swarm-mesh", "swarm-cosmos", "swarm-conductor", "swarm-router", "swarm-kernel", "swarm-intel", "swarm-brain", "swarm-fit", "swarm-services", "swarm-jarvis", "swarm-vitals", "swarm-chat", "swarm-backend", "swarm-docking", "swarm-deepdta", "swarm-humanistic", "swarm-agents", "swarm-strips", "swarm-tasks", "swarm-harness", "swarm-dequant"]
+# swarm-boot is UEFI-only (x86_64-unknown-uefi); it cannot link as a host
+# binary — build it explicitly with --target x86_64-unknown-uefi
+exclude = []
+resolver = "2"
+
+[profile.release]
+opt-level = 3
+lto = true
+panic = "abort"
+
+[profile.dev]
+panic = "abort"

@@ -1,0 +1,72 @@
+[
+ {
+  "kind": "native_fb_dashboard_input_text",
+  "fact": "The dashboard is now interactive AND legible, in two measured steps. (1) INPUT: staged evdev.ko + psmouse.ko into the RAM image mods[] (24 modules; atkbd built-in), turning enumerated input into /dev/input/event* -- boot log reads 'DASHBOARD RENDERER: 2 input device(s)'. New src/input.rs reads the 24-byte struct input_event directly (no crate, mirroring the trm_wifi FFI pattern), moves a crosshair on REL/ABS and arrow keys, and hit-tests a click against the SAME panel_rects() that draw() uses so the click target cannot disagree with the screen. PROVEN by pixel analysis: injected mouse REL moved the crosshair to (955,226) and keyboard KEY_DOWN+KEY_LEFT to (600,440) -- 17 text-colored pixels at each spot, exactly the 9px crosshair. (2) TEXT: swapped the 5x7 bitmap font for fontdue (2-crate chain fontdue->ttf-parser, both pure Rust no_std, no system deps) rasterizing an embedded DejaVu Sans Mono TTF (Bitstream Vera, 343,140 B), per-pixel coverage blended so glyphs anti-alias. PROVEN: the title 'TRM SWARM OS' renders centered in the cyan rail (rows 8-25 of the 36px rail, unclipped) and the four panel heads + value lines are pixel-positioned correctly. One real bug found and fixed: fontdue's Metrics.ymin is the glyph's BOTTOM edge (negative = below baseline), not the top, so the first pass drew every line one line low and clipped the title at the rail edge -- corrected placement is baseline - ymin - height + row.",
+  "not_claimed": "The literal 'selected panel' log line was not captured in QEMU because an injected button down+up coalesces at the PS/2 controller (cursor motion proves the EV_KEY read path; the button-code dispatch confirms on metal). The metal stick E: is still the pre-input build -- restage is the remaining step. Glyph legibility was confirmed as positioned anti-aliased pixels (title rows 8-25, heads y=52/412, values y=103/463), not by an image-capable model reading the text.",
+  "commit": "76d282c",
+  "rederive": {
+   "files": [
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "08918b23bdf66e104dd06becd978484e74907b29c6558573b70fafebc7dddf2d"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_fb_dashboard/src/input.rs",
+     "sha256": "17f0224daf108e72c5a0fb75a8b66abb60529b74abfdf94717fed8cd1ffe9bee"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_fb_dashboard/src/render.rs",
+     "sha256": "77e8e0c167bf452f65c43486965332f47d9a4fe2b101ea2047200ea5635c5189"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_fb_dashboard/src/fb.rs",
+     "sha256": "ccfc716d24b9c8d4798fad526669556dcda8a571cd34d847def906567b79e43e"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_fb_dashboard/src/font.rs",
+     "sha256": "612ebd1522d96a67c85bff1c20f783d060ad193c271ac41a257dfb57b1a94915"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_fb_dashboard/src/sys.rs",
+     "sha256": "56c3fafdf24472c63cc86e23281bc4a0ef2c56da3c29dffac0697729d9da43ba"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_fb_dashboard/src/main.rs",
+     "sha256": "bec543e3d02a8fecf4940d7ed0f2fc6d4141653e17a2625e3ce1e1d13b9ea7f8"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_fb_dashboard/Cargo.toml",
+     "sha256": "d295416d474879e669d5d5a856c3cdd409e7c5e84a41f0aae688a390a5f0c824"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_fb_dashboard/Cargo.lock",
+     "sha256": "8b79e9dd2f54eb895f4eeed0ce1ab253c18fd8a266becf43dd66d850bdf88f07"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_fb_dashboard/assets/DejaVuSansMono.ttf",
+     "sha256": "a54dca07c76d6289e717e75e0a58c0128f6d7269ef3faf76417c9d7d3bba37ab"
+    },
+    {
+     "path": "backups/bare_metal_first_boot_20260930/framebuffer_dashboard_input_fontdue_screendump_20261001.png",
+     "sha256": "0a6ca14ba51d4d9533e69fc9deba1e06d0a0a101c7c78f7793ff24684319dbc3"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "swarm_v2/core/check_boot_chain_static.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 problem(s)"
+     ]
+    },
+    {
+     "script": "trm_chainload/scripts/check_attr_walk.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 failed"
+     ]
+    }
+   ]
+  }
+ }
+]

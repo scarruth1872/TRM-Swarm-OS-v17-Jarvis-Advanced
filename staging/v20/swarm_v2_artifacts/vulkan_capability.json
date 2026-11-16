@@ -1,0 +1,106 @@
+{
+ "protocol": "VULKAN_CAPABILITY",
+ "devices": {
+  "ok": true,
+  "device_count": 2,
+  "devices": [
+   {
+    "index": 0,
+    "name": "NVIDIA GeForce RTX 3070 Laptop GPU",
+    "type": "DISCRETE_GPU",
+    "device_type_raw": 2,
+    "vendor_id": "0x10de",
+    "device_id": "0x24dd",
+    "api_version": "1.4.329",
+    "driver_version_raw": 2500395008,
+    "device_local_bytes": 8407482368,
+    "heaps": [
+     {
+      "size_bytes": 8407482368,
+      "device_local": true
+     },
+     {
+      "size_bytes": 8241934336,
+      "device_local": false
+     }
+    ]
+   },
+   {
+    "index": 1,
+    "name": "AMD Radeon(TM) Graphics",
+    "type": "INTEGRATED_GPU",
+    "device_type_raw": 1,
+    "vendor_id": "0x1002",
+    "device_id": "0x1638",
+    "api_version": "1.3.260",
+    "driver_version_raw": 8388887,
+    "device_local_bytes": 536870912,
+    "heaps": [
+     {
+      "size_bytes": 268435456,
+      "device_local": true
+     },
+     {
+      "size_bytes": 7973371904,
+      "device_local": false
+     },
+     {
+      "size_bytes": 268435456,
+      "device_local": true
+     }
+    ]
+   }
+  ],
+  "basis": "ctypes on the system vulkan-1.dll: vkEnumeratePhysicalDevices + vkGetPhysicalDeviceProperties + vkGetPhysicalDeviceMemoryProperties"
+ },
+ "chosen_device": {
+  "index": 0,
+  "name": "NVIDIA GeForce RTX 3070 Laptop GPU",
+  "type": "DISCRETE_GPU",
+  "device_type_raw": 2,
+  "vendor_id": "0x10de",
+  "device_id": "0x24dd",
+  "api_version": "1.4.329",
+  "driver_version_raw": 2500395008,
+  "device_local_bytes": 8407482368,
+  "heaps": [
+   {
+    "size_bytes": 8407482368,
+    "device_local": true
+   },
+   {
+    "size_bytes": 8241934336,
+    "device_local": false
+   }
+  ]
+ },
+ "write": {
+  "ok": true,
+  "device": "NVIDIA GeForce RTX 3070 Laptop GPU",
+  "device_index": 0,
+  "device_type": "DISCRETE_GPU",
+  "queue_family_index": 0,
+  "bytes": 128,
+  "allocation_bytes": 128,
+  "memory_type_index": 3,
+  "memory_type_properties": "HOST_VISIBLE|HOST_COHERENT (0x6)",
+  "heap_index": 1,
+  "host_heap_bytes": 8241934336,
+  "writes": 5,
+  "write_us_min": 0.7,
+  "write_us_median": 0.8,
+  "write_us_max": 2.5,
+  "verified": true,
+  "payload_sha256": "471fb943aa23c511",
+  "readback_sha256": "471fb943aa23c511",
+  "basis": "ctypes on vulkan-1.dll: create buffer -> driver memory requirements -> host-visible+coherent allocation -> bind -> map -> memmove -> read back the SAME mapping",
+  "limits": [
+   "a mapped host-coherent buffer is device-VISIBLE memory, not the GPU's Infinity Cache, and this does not claim a shader consumed the bytes",
+   "the read-back goes through the CPU's own mapping; it proves the write reached the buffer the driver returned, not that the GPU read it"
+  ]
+ },
+ "basis": "measured on this host at call time; vulkaninfo.exe is the independent cross-check",
+ "limits": [
+  "device_local_bytes is the driver's report for THIS machine, not the 96MB design target in GPU_SPECS"
+ ]
+}

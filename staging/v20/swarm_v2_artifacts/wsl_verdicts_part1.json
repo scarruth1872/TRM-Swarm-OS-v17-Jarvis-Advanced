@@ -1,0 +1,155 @@
+{
+  "_note": "Part 1 of the WSL artifact classification. Every verdict is checked by scratch/build_wsl_reconciliation.py: 'harvested' must appear in the live store's provenance, 'harvest' must NOT, and every 'superseded' counterpart path must exist in the v19 tree.",
+  "groups": {
+    ".jarvis_failures.json": {
+      "c": [
+        "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+      ],
+      "e": "Jarvis runtime state",
+      "v": "superseded"
+    },
+    ".jarvis_reminders.json": {
+      "c": [
+        "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+      ],
+      "e": "Jarvis runtime state",
+      "v": "superseded"
+    },
+    "Agent-Q-master": {
+      "c": [
+        "swarm_v2_artifacts/agent_q_advanced_modules_report.json"
+      ],
+      "e": "v19 carries the Agent-Q integration report",
+      "v": "superseded"
+    },
+    "Agent-Q-master-old": {
+      "c": [
+        "swarm_v2_artifacts/agent_q_advanced_modules_report.json"
+      ],
+      "e": "same line, older checkout",
+      "v": "superseded"
+    },
+    "JarvisShawn": {
+      "c": [
+        "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json",
+        "swarm_v2_artifacts/jarvis_complex_task_report.md"
+      ],
+      "e": "the Jarvis line is absorbed in v19",
+      "v": "superseded"
+    },
+    "clinical": {
+      "e": "clinical table 201,572 rows in structured_index.db, from 400 .psv timepoint files (provenance: 400 sources, 2,558,578 B)",
+      "v": "harvested"
+    },
+    "datasets": {
+      "e": "binding table 19,443 rows = the LP-PDBBind affinity table, columns by index (provenance: 10,897,207 B)",
+      "v": "harvested"
+    },
+    "docking": {
+      "e": "structure table carries 20 receptor rows from the 20 .pdb/.pdbqt files (provenance: 8,078,820 B, note RECEPTOR_OBABEL)",
+      "v": "harvested"
+    },
+    "drugs": {
+      "e": "molecule 2,897,819 + molecule_features 2,897,818 + 2,897,805 derived structures (provenance: 2 files, 1,127,883,975 B, the large one unrestricted and streamed)",
+      "v": "harvested"
+    },
+    "hw_kb": {
+      "e": "HARVESTED 2026-09-26: 18 hardware/OS references (nvme.h, pci_regs.h, osdev_UEFI/GDT/IDT/PCI/Interrupts.html, ptx_isa.html ...) copied into swarm_v2/knowledge/hw_kb/ and indexed. Same corpus class as rust_kb; before this they appeared in the 509-file knowledge manifest and in none of the store, the fabric text store or the index",
+      "v": "harvested-prose"
+    },
+    "jarvis_geo_ingest.log": {
+      "c": [
+        "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+      ],
+      "e": "Jarvis ingest log",
+      "v": "superseded"
+    },
+    "jarvis_hands.json": {
+      "c": [
+        "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+      ],
+      "e": "Jarvis component",
+      "v": "superseded"
+    },
+    "jarvis_mcp_config.json": {
+      "c": [
+        "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+      ],
+      "e": "Jarvis component",
+      "v": "superseded"
+    },
+    "jarvis_vector_db": {
+      "c": [
+        "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json"
+      ],
+      "e": "the Jarvis vector store, absorbed",
+      "v": "superseded"
+    },
+    "llama.cpp": {
+      "c": [
+        "C:/Users/shawn/AppData/Local/hermes/runtimes/llamacpp/b10964"
+      ],
+      "e": "a second source checkout of the runtime the host already ships prebuilt -- corrected 2026-09-26: C:/Users/shawn/AppData/Local/hermes/runtimes/llamacpp/b10679 no longer exists (the runtime directory now holds b10964 alone), so the stale path is removed rather than carried forward",
+      "v": "superseded"
+    },
+    "mamba-server": {
+      "c": [
+        "swarm_v2_artifacts/mamba3step_gpu_port.json"
+      ],
+      "e": "the mamba3 line is recorded in v19",
+      "v": "superseded"
+    },
+    "models": {
+      "c": [
+        "D:/trm-models"
+      ],
+      "e": "the host's own model root supersedes these WSL weights. Every weight's identity was read from its OWN GGUF header (never its filename) and its public source measured, not assumed -- and the grades are recorded as they are, not rounded up: bonsai-27b-q1_0.gguf (Bonsai-27B, 3,803,452,480 B, sha256 17ef842e47450cae...): NO byte-identical artifact -- public BASE MODEL prism-ml/Ternary-Bonsai-27B-gguf, so the quant is reproducible, not re-downloadable; qwen-moe-2.4b-q4_k_m.gguf (Qwen3-MOE, 964,652,928 B, sha256 518b01713cee4762...): NO byte-identical artifact -- public BASE MODEL EschaLabs/escha-runtime-qwen3moe, so the quant is reproducible, not re-downloadable; amd.Instella-MoE-16B-A3B-Think.f16.gguf.Q2_K.gguf (amd.Instella-MoE, 6,514,704,512 B, sha256 ba208940c2d8c66c...): NO byte-identical artifact -- public BASE MODEL amd/Instella-MoE-16B-A3B-Think, so the quant is reproducible, not re-downloadable. Each base model is public and named above, so nothing here is the only copy in existence; the counterpart path is the platform's own model root, which is what actually serves inference. Load evidence for these weights was harvested earlier (the qwen-moe one was MEASURED to load and run; the instella Q2_K was measured to FAIL to load on mainline b10964). Closing record: swarm_v2_artifacts/harvest_groups_closure_20260926.json (block 174).",
+      "v": "superseded"
+    },
+    "prism-ml-llama.cpp": {
+      "c": [
+        "C:/Users/shawn/AppData/Local/hermes/runtimes/llamacpp/b10964"
+      ],
+      "e": "superseded by the host's own runtime (b10964). The fork's code is a PUBLIC GitHub repository (https://github.com/froodx/prism-ml-llama.cpp, HEAD 0115aada4479) -- GitHub's API reports it as a standalone public repo (fork: false, parent: null), so 'public source' is the accurate claim, NOT 'a fork of llama.cpp'. Its ONLY unique content is the four untracked example instruments (capture_hidden, capture_layers, voltage_node, voltage_node_offload), whose sources the block-166 harvest holds BYTE-FOR-BYTE (re-derived: all 4 match, harvest holds 16 files = the 4 sources + the captures, reference fields and receipt). The freeze gap that let them sit unbacked was closed by backups/wsl_freeze_20260926_instruments/prism-ml-untracked.tar.gz. Nothing unique remains outside the span. Closing record: swarm_v2_artifacts/harvest_groups_closure_20260926.json (block 174).",
+      "v": "superseded"
+    },
+    "relational": {
+      "e": "ethics table 95,847 rows (ethics_commonsense.csv 14,546,224 B -> 13,910 records) + prose 1,633 rows chunked at 4000 chars (provenance: 12 files, 29,993,997 B)",
+      "v": "harvested"
+    },
+    "rust_kb": {
+      "e": "HARVESTED 2026-09-26: the 5 crate archives (bootloader 0.11.17, postcard 1.1.3, spin 0.12.2, volatile 0.6.1, x86_64 0.15.5 -- the bare-metal crates the kernel's dependencies come from) were copied in and their sources extracted under swarm_v2/knowledge/rust_kb/ (92 .rs files), and the knowledge index now carries them. Prose, so the store was the wrong target: the check is the index itself, and a query for 'x86_64 GDT descriptor and segmentation' now returns gdt.rs 0.4761 / segmentation.rs 0.3937, where the pre-harvest index had no knowledge doc in its top-3 at all",
+      "v": "harvested-prose"
+    },
+    "start-agentq.sh": {
+      "c": [
+        "swarm_v2_artifacts/agent_q_advanced_modules_report.json"
+      ],
+      "e": "launcher for the same line",
+      "v": "superseded"
+    },
+    "start-aura.sh": {
+      "c": [
+        "swarm_v2_artifacts/aura_language_integration_report.json",
+        "swarm_v2_artifacts/aura_studio_integration_report.json"
+      ],
+      "e": "launcher for the aura line, recorded in v19",
+      "v": "superseded"
+    },
+    "tox21full": {
+      "e": "HARVESTED 2026-09-26 (block 168): the generator that PRODUCES the matrix is preserved at swarm_v2/knowledge/tox21full/ (9 files, 82,937 B, .git/__pycache__ excluded) and its own sources are in the knowledge index (tox21full/Example.ipynb, tox21full/tox21full/__main__.py, README.rst, setup.py, tests/test_tox21full.py -- 336-doc index). It is a git clone of the NIH-assay downloader, so the CSV is reproducible rather than a bare artifact. Two measured discrepancies recorded: the README claims '64 different assays' while the file carries 75 columns (the file wins), and NO codebook for the 75 assay codes (elg271, p53823, mmp146 ...) exists anywhere in the preserved corpus -- the store therefore holds the identifiers verbatim, and that gap is stated rather than papered over with inferred meanings",
+      "v": "harvested-prose"
+    },
+    "tox21full.csv.gz": {
+      "e": "HARVESTED 2026-09-26 (block 168): the store's provenance table names it (tox21full.csv.gz, sha256 f1a84d6c133346d771c5..., 152,757 B, hash_span=full, 577,987 records) and the tox21 table holds exactly 577,987 rows, an independent awk count over the gzip agreeing. Long form, one row per MEASURED cell (8,734 compounds x 75 assays; 551,824 inactive / 26,163 active); blanks are skipped, never written as 0.0",
+      "v": "harvested"
+    },
+    "trm-rust": {
+      "c": [
+        "C:/Users/shawn/Downloads/TRM-Swarm-OS-v19-Sovereign-Private-main/TRM-Swarm-OS-v19-Sovereign-Private-main/wsl_crates/trm-rust"
+      ],
+      "e": "v18.233 workspace, superseded: its six candidate crates were TRIAGED (2026-09-26, block 172) and every one is already the module of record -- host_council_server/Cargo.toml declares swarm-brain, swarm-intel, swarm-docking, swarm-drug, swarm-fit and swarm-proof as live path dependencies on wsl_crates/trm-rust/<crate>, each has a handler and a registered route, and each COMPUTED on the running kernel (:8022: /native/brain/connectome, /native/intel/agents, /native/docking/score-pair, /native/drug/triage, /native/fit/verdict, /verification/proof). There is no port to do: the in-tree wired copy IS the module of record and the ~/trm-rust copies are the superseded ones. The plan's line counts (338/263/226/176/136/134) were stale for four of the six (measured 682/350/226/222/370/134). The tree is frozen at commit 89d2d75 and archived in backups/wsl_freeze_20260923_180202/; retirement stays gated on council MOTION-013.",
+      "v": "superseded"
+    }
+  }
+}

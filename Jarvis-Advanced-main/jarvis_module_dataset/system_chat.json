@@ -1,0 +1,86 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the System & Health module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The System & Health (id: system) is one of Jarvis's core modules. It provides 2 API endpoints. GET /api/system-stats returns: platform, CPU cores, memory usage, uptime, hostname, and load average. Useful for monitoring system health."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/system-stats endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/system-stats: Return system resource stats (CPU, memory, uptime, etc.)."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/execute-cmd endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/execute-cmd: Execute shell command. Body: { command }. Returns: { stdout, stderr, exitCode }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I check system stats?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/system-stats returns: platform, CPU cores, memory usage, uptime, hostname, and load average. Useful for monitoring system health."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Can I run shell commands through Jarvis?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/execute-cmd with body { 'command': 'ls -la' }. Returns { stdout: '...', stderr: '', exitCode: 0 }. This is a privileged operation."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the System & Health module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 400 if no command, 500 on execution failure"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the System & Health module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Feeds into System Optimizer skill. Stats shown on dashboard."
+      }
+    ]
+  }
+]

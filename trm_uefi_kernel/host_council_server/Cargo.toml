@@ -1,0 +1,19 @@
+[package]
+name = "host_council_server"
+version = "0.1.0"
+edition = "2021"
+
+# Diagnostic binary: one-shot Ollama connectivity probe (src/bin/test_ollama.rs).
+# Cargo auto-discovers src/bin/*.rs, but the static tracer only derives roots from
+# explicit [[bin]] blocks, so without this the file reads as unreachable code in
+# the crate that makes authoritative decisions. Declared, not moved: it is a real
+# buildable target and `cargo check --bin test_ollama` passes.
+[[bin]]
+name = "test_ollama"
+path = "src/bin/test_ollama.rs"
+
+[dependencies]
+tiny_http = "0.12"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+trm_uefi_kernel = { path = ".." }

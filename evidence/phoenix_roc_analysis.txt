@@ -1,0 +1,69 @@
+==============================================================================
+ROC / DECOY SEPARATION - LpxC (P. aeruginosa)
+==============================================================================
+run: ROC vs 5U39 LpxC | vina 1.2.5 | box -8.126,-13.52,21.157 22x24x25 | ex 8 | seed 42
+actives: 2   decoys: 40
+
+ranked by predicted affinity (more negative = stronger predicted binding):
+  rank label    name               affinity
+     1 ACTIVE   CHIR-090            -10.170
+     2 decoy    decoy_037            -8.541
+     3 decoy    decoy_025            -8.452
+     4 decoy    decoy_000            -8.377
+     5 decoy    decoy_020            -8.169
+     6 decoy    decoy_019            -8.163
+     7 decoy    decoy_031            -8.128
+     8 ACTIVE   NVS-LPXC-01          -8.087
+     9 decoy    decoy_007            -7.995
+    10 decoy    decoy_027            -7.959
+    11 decoy    decoy_015            -7.916
+    12 decoy    decoy_003            -7.887
+    13 decoy    decoy_032            -7.863
+    14 decoy    decoy_029            -7.836
+    15 decoy    decoy_014            -7.799
+    16 decoy    decoy_038            -7.799
+    17 decoy    decoy_030            -7.762
+    18 decoy    decoy_002            -7.713
+    19 decoy    decoy_016            -7.679
+    20 decoy    decoy_009            -7.614
+    21 decoy    decoy_010            -7.528
+    22 decoy    decoy_022            -7.522
+    23 decoy    decoy_021            -7.515
+    24 decoy    decoy_013            -7.503
+    25 decoy    decoy_028            -7.478
+    26 decoy    decoy_035            -7.371
+    27 decoy    decoy_033            -7.356
+    28 decoy    decoy_026            -7.308
+    29 decoy    decoy_006            -7.299
+    30 decoy    decoy_011            -7.294
+    31 decoy    decoy_024            -7.282
+    32 decoy    decoy_023            -7.238
+    33 decoy    decoy_034            -7.148
+    34 decoy    decoy_012            -7.125
+    35 decoy    decoy_001            -7.101
+    36 decoy    decoy_017            -7.088
+    37 decoy    decoy_008            -7.036
+    38 decoy    decoy_004            -6.852
+    39 decoy    decoy_005            -6.832
+    40 decoy    decoy_036            -6.775
+    41 decoy    decoy_039            -6.702
+    42 decoy    decoy_018            -6.099
+
+best active : -10.170   worst active: -8.087
+best decoy  : -8.541
+
+decoy floor vs ActIVES:
+  decoys scoring better than the WEAKEST active: 6/40
+  decoys scoring better than the BEST active  : 0/40
+  -> OVERLAP. The best decoy (-8.541) beats the weakest active (-8.087) by 0.454 kcal/mol.
+     A single score threshold CANNOT separate these actives from these decoys.
+
+AUC (actives over decoys) = 0.925   [n_actives=2: LOW CONFIDENCE]
+Mann-Whitney U = 74.0 (max possible 80.0)  exact p = 0.0186  over 861 splits
+active ranks: [1, 8] of 42
+  threshold   -8.5 -> actives kept 1/2, FALSE POSITIVES: 1 decoy(s)
+  threshold   -9.0 -> actives kept 1/2, VALID
+  threshold  -10.0 -> actives kept 1/2, VALID
+
+honest reading: with 2 actives the AUC is not a stable estimate.
+The rank of each active and the decoy floor are the numbers to trust.

@@ -1,0 +1,853 @@
+{
+  "protocol": "SWARM_COUNCIL_DELIBERATION_SESSION",
+  "session_name": "FULL_INTELLIGENCE_AND_AGENT_CAPABILITY",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-10-12 00:46:23 UTC",
+  "total_agents": 15,
+  "byzantine_tolerance": 4,
+  "pbft_threshold": 11,
+  "rust_kernel_bound": true,
+  "vote_codes": {
+    "1": "APPROVE",
+    "0": "ABSTAIN",
+    "-1": "REJECT"
+  },
+  "how_to_read_this_record": "Grounded in base_agent.py (memory max_turns=6 at line 194; 'LLM is coprocessor, not CPU' at line 923; skills + action tags + MCP present), llm_brain.py (Ollama backend, num_ctx 16384), and the kanban agent_work_loop (lifecycle tick + hardware binding, no process_task call). The voltage doctrine is 'the CPU is the intelligence' -- the deterministic interceptor + Instella MoE + K3 fabric + skills -- and the LLM is a coprocessor, never a required path.",
+  "council_verdict": {
+    "consensus_summary": "Council deliberated 3 motions; 3 reached PBFT quorum (>= 11/15).",
+    "motions_deliberated": 3,
+    "motions_enacted": 3,
+    "recommended_primary_direction": "MOTION-052: Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama (Score: +0.984)",
+    "secondary_direction": "MOTION-053: Raise and measure the agent context window -- 6 turns is why nothing completes (Score: +0.984)"
+  },
+  "motions": [
+    {
+      "motion_id": "MOTION-052",
+      "title": "Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama",
+      "category": "voltage",
+      "description": "The voltage doctrine ('the CPU is the intelligence') is already the code's stated design: base_agent.py line 923 says 'Cognitive Microkernel spec: LLM is coprocessor, not CPU'. The intelligence lives in the deterministic interceptor, the Instella MoE microkernel, the K3 fabric, and the skills. But the LLM backend (llm_brain.py -> ollama.chat) is Ollama, and Ollama is stopped by design ('keep Ollama stopped except embedder ingestion'). Any task that falls through the CPU path to the LLM therefore returns '[LLM Offline] Ollama is not running'. Full intelligence means the CPU path (deterministic interceptor + Instella MoE + K3 fabric + skills) must cover EVERY task, so nothing depends on an offline coprocessor. The LLM is a coprocessor to be invoked only when a local model is actually running, never a required path.",
+      "engine_proposal_id": "CP-7FBC1B5D",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "ece0f9558fbf60c64e010eb1ccd83c1c1190dfa141de6e1849e9df9c09e6d19a",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448675"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448758"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448780"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448794"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448803"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448814"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448824"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448835"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448842"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448850"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448857"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448865"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448872"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448886"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.448894"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-12T00:46:23.448603"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-12T00:46:23.448611"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.448617"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.448621"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.448624"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-12T00:46:23.448628"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-12T00:46:23.448631"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-12T00:46:23.448637"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.448640"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.448643"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.448646"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.448649"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.448652"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-12T00:46:23.448655"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Full intelligence is the CPU, not the LLM -- wire the CPU path so no task depends on Ollama from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.448658"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-053",
+      "title": "Raise and measure the agent context window -- 6 turns is why nothing completes",
+      "category": "voltage",
+      "description": "base_agent.py line 194 builds the agent's memory context with get_context_window(max_turns=6). The LLM's num_ctx is 16384 (llm_brain.py line 267). A 6-turn memory cap truncates any task chain longer than six exchanges, so a multi-step task loses its earlier context and cannot complete. 'Nothing is completing' is consistent with a context window too short to hold a full task. The context length must be raised and the actual limit measured (memory turns + num_ctx), not asserted from a constant.",
+      "engine_proposal_id": "CP-6D2B0F4E",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "4b5c3d35b1ed82fdcad4af8d1ec77eff3815a9c2cdc2980f5d3f7fc2f7d45967",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449203"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449229"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449240"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449250"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449258"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449266"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449273"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449281"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449514"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449526"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449534"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449542"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449550"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449558"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449565"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Raise and measure the agent context window -- 6 turns is why nothing completes: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-12T00:46:23.449147"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-12T00:46:23.449151"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Raise and measure the agent context window -- 6 turns is why nothing completes: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.449154"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Raise and measure the agent context window -- 6 turns is why nothing completes: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.449160"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Raise and measure the agent context window -- 6 turns is why nothing completes: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.449163"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Raise and measure the agent context window -- 6 turns is why nothing completes: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-12T00:46:23.449166"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Raise and measure the agent context window -- 6 turns is why nothing completes: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-12T00:46:23.449169"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Raise and measure the agent context window -- 6 turns is why nothing completes: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-12T00:46:23.449172"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Raise and measure the agent context window -- 6 turns is why nothing completes: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.449175"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Raise and measure the agent context window -- 6 turns is why nothing completes: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.449177"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Raise and measure the agent context window -- 6 turns is why nothing completes: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.449182"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Raise and measure the agent context window -- 6 turns is why nothing completes: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.449185"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Raise and measure the agent context window -- 6 turns is why nothing completes: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.449188"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Raise and measure the agent context window -- 6 turns is why nothing completes: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-12T00:46:23.449192"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Raise and measure the agent context window -- 6 turns is why nothing completes from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.449195"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-054",
+      "title": "The agents have tools but the work loop never calls them -- wire task execution, not a tick",
+      "category": "voltage",
+      "description": "The agents DO have tools: skills (write_file, read_file, search, shell/run, MCP call_tool), action tags (WRITE_FILE, CREATE_FILES, CALL_TOOL, DELEGATE_TASK, PLAN_FILE), and an autonomous code-test-fix loop (base_agent.py _route_skill + _execute_action_tags). But the kanban agent_work_loop that drives auto-processing advances card lifecycle (TODO->IN_PROGRESS->REVIEW->DONE) + computes a hardware binding, and NEVER invokes process_task -- so cards move but no tool call, no code write, no task happens. The loop must call the assigned agent's process_task (real tool execution) instead of ticking. The tools are present; the dispatcher that should fire them is not.",
+      "engine_proposal_id": "CP-E24E84BC",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "0cd0ee885c08b9386c87e93f96ab76659e076dc48d13fdd1f7bd8088335c0753",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449803"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449816"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449828"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449836"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449844"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449851"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449858"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449865"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449872"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449879"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449886"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449893"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449900"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449906"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-12T00:46:23.449913"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of The agents have tools but the work loop never calls them -- wire task execution, not a tick: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-12T00:46:23.449756"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-12T00:46:23.449759"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for The agents have tools but the work loop never calls them -- wire task execution, not a tick: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.449763"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of The agents have tools but the work loop never calls them -- wire task execution, not a tick: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.449766"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of The agents have tools but the work loop never calls them -- wire task execution, not a tick: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.449769"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of The agents have tools but the work loop never calls them -- wire task execution, not a tick: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-12T00:46:23.449772"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of The agents have tools but the work loop never calls them -- wire task execution, not a tick: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-12T00:46:23.449774"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for The agents have tools but the work loop never calls them -- wire task execution, not a tick: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-12T00:46:23.449777"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of The agents have tools but the work loop never calls them -- wire task execution, not a tick: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.449780"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for The agents have tools but the work loop never calls them -- wire task execution, not a tick: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.449783"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of The agents have tools but the work loop never calls them -- wire task execution, not a tick: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.449786"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for The agents have tools but the work loop never calls them -- wire task execution, not a tick: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.449788"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on The agents have tools but the work loop never calls them -- wire task execution, not a tick: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-12T00:46:23.449791"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of The agents have tools but the work loop never calls them -- wire task execution, not a tick: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-12T00:46:23.449794"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate The agents have tools but the work loop never calls them -- wire task execution, not a tick from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-12T00:46:23.449797"
+        }
+      ]
+    }
+  ]
+}

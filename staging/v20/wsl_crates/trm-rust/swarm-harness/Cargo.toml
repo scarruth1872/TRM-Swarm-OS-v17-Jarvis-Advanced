@@ -1,0 +1,13 @@
+[package]
+name = "swarm-harness"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "swarm-harness"
+path = "src/main.rs"
+
+[dependencies]
+serde_json = "1"
+swarm-strips = { path = "../swarm-strips" }
+swarm-instella = { path = "../swarm-instella" }

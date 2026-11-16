@@ -1,0 +1,57 @@
+host_council_deliberation - SECOND RUST COUNCIL, EXAMINED (2026-10-25)
+
+LOCATION  trm_uefi_kernel/host_council_deliberation/
+  src/main.rs   9,340 B / 179 lines
+  Cargo.toml      166 B
+  built: target/release/host_council_deliberation.exe  0.2 MB
+
+WHAT IT IS
+  A ONE-SHOT CLI harness. Not a service, not an HTTP route, not invoked by
+  host_council_server. It prints a deliberation transcript and writes JSON.
+  Hardcoded: 14 AGENTS, 3 MOTIONS (MOTION-001/002/003).
+
+THE VOTING MECHANISM (src/main.rs:84)
+  let (trit, conf, reasoning) = match (motion.id, agent.name) {
+      ("MOTION-001", "Pulse") | ("MOTION-001", "Archi") => (1i8, 0.96, "..."),
+      _ => (0i8, 0.50, "Neutral."),
+  }
+
+  A compile-time lookup table keyed on (motion, agent). Votes CANNOT vary.
+  Better than i%7 (motion-specific, domain-plausible reasoning) but still
+  a hand-authored transcript, not a computation.
+
+MEASURED VERDICTS (ran the binary twice)
+  MOTION-001 Live Muon Entropy        13 APPROVE | 1 ABSTAIN | 0 REJECT  score 0.783
+  MOTION-002 External Distribution    14 APPROVE | 0 ABSTAIN | 0 REJECT  score 0.863
+  MOTION-003 Pause & Consolidate      all APPROVE                      (highest conf 0.99)
+
+  NO MOTION IS EVER REJECTED. All three motions pass, by construction.
+  11 of 14 agents on MOTION-001 print the IDENTICAL reasoning string.
+
+=== FALSE CLAIM FOUND INSIDE THE COUNCIL'S OWN REASONING ===
+  Logic/Devo/Jarvis/Archi on MOTION-003 say, at confidence 0.99:
+    "Codebase is 100% Rust, fully wired and verified."
+
+  This is FALSE as of the same date:
+    port inventory      102 of 275 production routes UNPORTED (37.1%)
+    unreferenced modules  K3Sram, memory_mapped_ipc, unified_transistor_fabric
+                          all declared but never called before this session
+
+  So the council APPROVED a motion using a false premise, at 0.99 confidence.
+  That is the clearest demonstration yet that the verdict is not a judgement.
+
+=== PRIOR DELIBERATION RECORDS ON DISK (real history) ===
+  autonomous_cadence_council_deliberation.json         33,094 B  Sep 3
+  chat_intelligence_absorption_deliberation.json       20,834 B  Sep 4
+  council_absorption_deliberation.json                  9,244 B  Aug 27
+  These are OUTPUT artifacts of this crate, not live state.
+
+=== VERDICT ===
+  Not a second live council. A demo harness with 3 frozen motions.
+  It does not conflict with host_council_server and need not be merged.
+  Its value: it shows the INTENDED shape of per-agent reasoning output
+  (agent, role, k3_trit, confidence, reasoning) which the live server's
+  /council/deliberate/{id} route now also emits.
+
+  RECOMMENDATION: leave as-is (it is honest about being a harness). Do not
+  present its output as a live governance record.

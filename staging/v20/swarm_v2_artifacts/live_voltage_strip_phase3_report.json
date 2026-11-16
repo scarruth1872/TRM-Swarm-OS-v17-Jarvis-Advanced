@@ -1,0 +1,55 @@
+{
+  "monad_anchor": "0x4D4F4E4144000001",
+  "campaign": "PHASE_3_LIVE_VOLTAGE_STRIP_TOP5",
+  "timestamp": "2026-09-07T18:39:07Z",
+  "modules_stripped": 5,
+  "average_speedup": "526.5x",
+  "all_k3_true": true,
+  "results": [
+    {
+      "module": "swarm_v2/core/global_memory.py",
+      "kernel": "Token Overlap & Memory Matcher (1,000 entries)",
+      "py_time_ms": 2.857,
+      "nat_time_ms": 0.178,
+      "speedup": "16.1x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_global_memory.dll"
+    },
+    {
+      "module": "swarm_v2/core/kernel_instructions.py",
+      "kernel": "Silicon Instruction Suite (65,536 elements)",
+      "py_time_ms": 13.593,
+      "nat_time_ms": 0.026,
+      "speedup": "523.1x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_kernel_instructions.dll"
+    },
+    {
+      "module": "swarm_v2/core/sovereign_practice.py",
+      "kernel": "State Matrix Entropy & Mixer (4,096 nodes)",
+      "py_time_ms": 1.527,
+      "nat_time_ms": 0.01,
+      "speedup": "148.8x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_sovereign_practice.dll"
+    },
+    {
+      "module": "swarm_v2/core/task_arbiter.py",
+      "kernel": "Multi-Agent Allocation & Priority Scorer (1,024 tasks)",
+      "py_time_ms": 312.194,
+      "nat_time_ms": 0.163,
+      "speedup": "1912.9x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_task_arbiter.dll"
+    },
+    {
+      "module": "swarm_v2/core/agent_mesh.py",
+      "kernel": "Topological Mesh Distance & Routing Scorer (128 nodes)",
+      "py_time_ms": 0.147,
+      "nat_time_ms": 0.005,
+      "speedup": "31.6x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_agent_mesh.dll"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-27T23:02:01.538245+00:00",
+  "failure_mode": "if the FFN tensors are non-standard or need offload, name the boundary",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "eccce9bdcab404483908ca0fb1bc5b9b79d9b960c5a1d77bfc428b8137f91812",
+      "motion": "MOTION-DISTILL-FORWARD",
+      "phase": "consensus",
+      "proposal_id": "CP-C7070CF9",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "DISTILL THE NATIVE SPARSE FORWARD: (1) inspect the Instella GGUF's expert tensor names/shapes via swarm-gguf to confirm the 64 expert FFN matrices (blk.N.ffn_gate_exps.weight, 384-dim) are extractable; (2) replace the placeholder expert_forward (single dot) with the real 384-dim expert FFN from the extracted weights; (3) wire gate_topk + the 2 active experts as the native sparse forward. PREDICTION: the expert FFN tensors are present + extractable via swarm-gguf, so a native sparse forward can run ~3B active without the 10.47 GB llama.cpp. FAILURE: if the FFN tensors are in a non-standard layout or the offload is needed, name the boundary. MEASURED: Instella-MoE is 16B total / ~2.8B active (2 of 64 experts per token). The GGUF (amd.Instella-MoE-16B-A3B-Think.Q4_K_M, 10.47 GB) holds the 64 expert FFN weights as blk.N.ffn_gate_exps.weight tensors. swarm-gguf is a native GGUF parser verified against this file (n_kv, tensor count, KV types). swarm-instella::gate_topk (64-expert top-k) + expert_forward (single dot product) are verified vs c_instella_gate_topk. The CUDA path is a dead end (pip nvcc ships ptxas only, no nvcc.exe; the full 3.19 GB installer loads the whole 10.47 GB to fire ~3B)."
+    }
+  ],
+  "prediction_recorded": "the expert FFN tensors are present + extractable, so a native sparse forward runs ~3B active",
+  "prior_state": "expert_forward is a single-dot placeholder; CUDA path is a dead end (pip nvcc incomplete)",
+  "quorum": 9,
+  "record": "Distill the native sparse forward -- extract expert FFN weights + real expert forward",
+  "sha256": "5be4878b4745939a48e5d1e7e4688d6828f8911105f8ab8ca83acc6a613796b0"
+}

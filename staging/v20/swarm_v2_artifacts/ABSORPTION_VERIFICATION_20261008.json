@@ -1,0 +1,76 @@
+{
+  "repos": [
+    {
+      "repo": "Agent-Q-master",
+      "claim": "-> MCTS Deep Planner -> mcts_planning_skill.py",
+      "harvested_exists": true,
+      "source_has_concept": false,
+      "verdict": "FALSE \u2014 mcts_planning_skill.py is real (121 lines, UCB1), but Agent-Q source has no MCTS/UCB1/tree-search; attribution fabricated"
+    },
+    {
+      "repo": "agent-zero",
+      "claim": "-> tool_forge.py",
+      "harvested_exists": true,
+      "source_has_concept": false,
+      "verdict": "UNVERIFIED \u2014 swarm_v2/core/tool_forge.py exists, but agent-zero source has no 'tool_forge' concept; the harvest does not trace to the claimed source"
+    },
+    {
+      "repo": "Metatron v3",
+      "claim": "-> SpatialMesh",
+      "harvested_exists": false,
+      "source_has_concept": false,
+      "verdict": "FALSE \u2014 no SpatialMesh/spatial_mesh in either TRM or Metatron v3 source"
+    },
+    {
+      "repo": "Metatron v3",
+      "claim": "-> 12-qubit lattice",
+      "harvested_exists": false,
+      "source_has_concept": true,
+      "verdict": "UNVERIFIED \u2014 Metatron mentions 'qubit' (5 files), but no 12-qubit-lattice harvest exists in TRM"
+    },
+    {
+      "repo": "JarvisShawn",
+      "claim": "-> memory (user profile + learned insights)",
+      "harvested_exists": true,
+      "source_has_concept": true,
+      "verdict": "PARTIAL \u2014 absorbed_jarvis_metatron_matrix.json records jarvis_shawn_memory; JarvisShawn source has memory (but hits dominated by .venv noise); profile-level trace not confirmed"
+    },
+    {
+      "repo": "TRM-Swarm-OS-v17-Enterprise",
+      "claim": "(none)",
+      "harvested_exists": false,
+      "source_has_concept": false,
+      "verdict": "NO RECORD \u2014 975 py modules, no absorption entry"
+    },
+    {
+      "repo": "genesis-lab-main",
+      "claim": "(none)",
+      "harvested_exists": false,
+      "source_has_concept": false,
+      "verdict": "NO RECORD"
+    },
+    {
+      "repo": "baobab-nexus (x3)",
+      "claim": "(none)",
+      "harvested_exists": false,
+      "source_has_concept": false,
+      "verdict": "NO RECORD"
+    },
+    {
+      "repo": "the-adamas-engine",
+      "claim": "(none)",
+      "harvested_exists": false,
+      "source_has_concept": false,
+      "verdict": "NO RECORD"
+    },
+    {
+      "repo": "v0-ai-programming-language",
+      "claim": "(none)",
+      "harvested_exists": false,
+      "source_has_concept": false,
+      "verdict": "NO RECORD"
+    }
+  ],
+  "summary": "Of 11 external repos: 0 absorption claims fully trace to source. 1 false (Agent-Q->MCTS), 1 false (Metatron->SpatialMesh), 3 unverified (agent-zero->tool_forge, Metatron->12-qubit, JarvisShawn->memory), 6 with no record. The two absorption reports (master_absorption vs absorbed_jarvis_metatron) name different repos and neither survives a source-level trace.",
+  "timestamp": "2026-10-08 12:33:17 UTC"
+}

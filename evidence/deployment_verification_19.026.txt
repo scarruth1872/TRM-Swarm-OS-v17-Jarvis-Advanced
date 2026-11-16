@@ -1,0 +1,20 @@
+DEPLOYMENT VERIFICATION - host 3f412b5cef6abdac
+
+1. VOLTAGE - five endpoints, ONE value:
+   health 0.4105 | status 0.4105 | resources 0.4105 | telemetry 0.4105 | voltage 0.4105
+   rails READ: v_core 1.1 V, v_ddr 1.2 V (were const 1.25/1.35 = inert)
+   gate OPEN: 'phi_v 0.4105 at or above the floor 0.30; substrate has headroom'
+
+2. FEDERATION - three endpoints now AGREE on agent_mesh_nodes 14:
+   /federation/stats  agent_mesh_nodes 14 | configured_remote_peers 100 | verified_remote_peers 0
+   /swarm/telemetry   agent_mesh_nodes 14 | active_nodes GONE (was literal 2)
+   /mesh/stats        node_count 14
+
+3. DDR - space bypass and obfuscation both DETECTED; re.compile and comments CLEAN
+   antibodies 1801 (registry count) | rowhammer NOT_IMPLEMENTED | ARMED_WITH_REGISTRY
+
+4. TESTING - real run, not a fixture:
+   status FAILURES | total 51 | passed 49 | failed 2 | errors 0
+
+OPEN: the 2 failures are tests for APIs that do not exist
+  ('BaseAgent.spawn_subordinate', 'ProactiveOrchestrationLoop._scan_for_gaps')

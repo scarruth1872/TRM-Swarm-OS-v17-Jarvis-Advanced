@@ -1,0 +1,55 @@
+{
+  "monad_anchor": "0x4D4F4E4144000001",
+  "campaign": "PHASE_4_LIVE_VOLTAGE_STRIP_TOP5",
+  "timestamp": "2026-09-07T18:48:10Z",
+  "modules_stripped": 5,
+  "average_speedup": "323.1x",
+  "all_k3_true": true,
+  "results": [
+    {
+      "module": "swarm_v2/core/trm_orchestrator.py",
+      "kernel": "Context Shard Partitioning (32K tokens)",
+      "py_time_ms": 3.235,
+      "nat_time_ms": 0.265,
+      "speedup": "12.2x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_trm_orchestrator.dll"
+    },
+    {
+      "module": "swarm_v2/core/cognitive_ingestion_engine.py",
+      "kernel": "Cognitive Gene Byte Encoder (500 genes)",
+      "py_time_ms": 28.711,
+      "nat_time_ms": 0.132,
+      "speedup": "216.7x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_cognitive_encoder.dll"
+    },
+    {
+      "module": "swarm_v2/core/trm_7m_optimized.py",
+      "kernel": "DDR Antibody Vector SGD (1,024 samples)",
+      "py_time_ms": 100.929,
+      "nat_time_ms": 0.146,
+      "speedup": "693.6x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_ddr_sgd.dll"
+    },
+    {
+      "module": "swarm_v2/core/swarm_performance_insights.py",
+      "kernel": "Telemetry Trend & Variance (128 streams)",
+      "py_time_ms": 56.655,
+      "nat_time_ms": 0.108,
+      "speedup": "522.4x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_telemetry_trend.dll"
+    },
+    {
+      "module": "swarm_v2/core/artifact_pipeline.py",
+      "kernel": "Artifact Content Scorer (1,000 artifacts)",
+      "py_time_ms": 103.355,
+      "nat_time_ms": 0.607,
+      "speedup": "170.3x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_artifact_scorer.dll"
+    }
+  ]
+}

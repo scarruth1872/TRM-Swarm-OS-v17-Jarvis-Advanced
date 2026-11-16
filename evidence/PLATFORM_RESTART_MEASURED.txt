@@ -1,0 +1,72 @@
+PLATFORM RESTART - MEASURED 2026-11-04
+======================================
+Requested: "restart platform". Performed through START_TRM_PLATFORM.bat, the
+same path a cold boot takes, after stopping all nine services.
+
+WHAT WAS DONE
+  1. All nine listeners terminated gracefully via psutil (taskkill refuses on
+     this box). Ports confirmed closed: all nine returned 000.
+  2. START_TRM_PLATFORM.bat launched.
+  3. Launcher verification: 9/9 services healthy, RESULT: PASS.
+
+FINAL STATE - all nine answering 200
+  8022 council (Rust)   200
+  8099 council API      200
+  3000 Jarvis           200
+  3001 companion proxy  200
+  3002 companion bridge 200
+  5183 LCARS dashboard  200
+  8587 inference        200
+  8588 trm_server       200
+  8593 embeddings       200
+
+DEFECT FOUND AND FIXED: FALSE LAUNCH FAILURE
+  The first launcher run reported:
+      [FAIL] Council API - port 8099 did NOT come up after 12s
+      === PLATFORM NOT READY ===
+      === LAUNCH FAILED ===
+  ...while the very next smoke test in the same run found 8099 healthy, and the
+  service was serving 200 seconds later.
+
+  Cause: :confirm waits 6 rounds of ~2s = 12s, hardcoded. When all nine start
+  together, llama-server is still loading a model and the heavy Python imports
+  compete for CPU, so 8099 binds well after 12s. The launcher declared failure
+  for a service that was merely slow.
+
+  Fix: :confirm now takes an optional round count (default 6). Slow starters get
+  more: 8099 -> 45 rounds (~90s), 8587 -> 45, 3000 -> 20.
+
+  Verified after the fix:
+    TRM_CHECK_ONLY=1  -> rc=0, 9/9 healthy, every marker OK including 8099
+    full launcher     -> rc=0, "PLATFORM SERVICES INITIALIZED", 9/9 healthy
+  Both now agree; before, the launcher and its own smoke test contradicted
+  each other.
+
+DEFECT FOUND, NOT FIXED: CHILD INHERITS THE LAUNCHER'S STDOUT
+  The launcher prints "primary log locked by another process - logging to
+  %TEMP%\trm_platform_launch.log" on every subsequent run. Measured cause:
+  `start /min "title" prog.exe` makes each child inherit the launcher's stdout.
+  With the launcher's own output redirected to logs\platform_launch.log, every
+  service then holds that file handle and writes into it.
+
+  Two observable consequences:
+    - the launcher window becomes a firehose of all service output, which reads
+      as an infinite loop (this is the most likely thing the user saw);
+    - the log cannot be reopened: `mv logs\platform_launch.log` reports
+      "Device or resource busy", so later launches fall back to a temp log.
+
+  Attempted fix: a scripts\run_quiet.cmd wrapper that redirects each service to
+  its own log. It returned rc=49 and wrote no log, and I could not make it
+  reliable within the time available. REMOVED rather than shipped broken. The
+  wrapper approach is sound but needs its own test cycle.
+
+  Recommended next step: a Python starter using subprocess.Popen with
+  DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP and stdout/stderr opened per
+  service. That pattern was used successfully four times this session and has
+  no batch quoting hazards. Keep START_TRM_PLATFORM.bat as the verification
+  path so the two do not drift.
+
+WHAT THIS DOES NOT PROVE
+  A 9/9 smoke pass is not a proof of correctness. It proves the nine ports serve
+  parseable JSON right now. It says nothing about whether each subsystem behind
+  them is behaving, which is what the CI stages and the council probes are for.

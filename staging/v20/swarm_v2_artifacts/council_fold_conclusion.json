@@ -1,0 +1,37 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T17:06:33.402594+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "fc33fb033b9ed398fa823fa56ab49034b8b973a3fa67ea56cac57e545a522c8c",
+      "motion": "MOTION-R2",
+      "phase": "consensus",
+      "proposal_id": "CP-EFB5BD79",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "RETRY THE 4-BIT FOLD: run CAP-212 (q4_fold_rmsd.py) with PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True and the stale GPU processes killed, to get the 4-bit RMSD that decides whether a higher width recovers the fold. REJECT AS PREMATURE: claiming a 4-bit result without a clean run; claiming the OOM was capacity when it was fragmentation. MEASURED (correct pipeline, fp16 encoder + fp32 fold modules + centered Kabsch): fp16 control E 6.876 A / F 16.828 A; 2-bit ternary (0.68 reconstruction error) E 13.140 A / F 14.676 A = ~2x degradation on the well-folded chain. 4-bit (0.09 error) run OOM'd on 8 GB VRAM -- CUDA fragmentation (failed a 50 MiB alloc with 5.48 GiB free), not capacity; fix = PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True + stale-process cleanup."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "07da31e6e7a6dec285b3b0e4c259e6fa4fe520bf73e219e3319a2f8ca5a3aa3f",
+      "motion": "MOTION-F2",
+      "phase": "consensus",
+      "proposal_id": "CP-986E40DB",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "NAME THE FOLD-FIDELITY BOUNDARY: from the measured 2-bit result, the platform's native 2-bit quantization degrades a full-precision folding model (~2x on E). The boundary to record: ternary preserves native models (TRM-7M, Mamba-3B, TurboVec) but not ESMFold; structure prediction needs 4-bit-or-higher OR a natively-low-precision fold model. REJECT AS PREMATURE: drawing the 4-bit conclusion before R2 runs. MEASURED (correct pipeline, fp16 encoder + fp32 fold modules + centered Kabsch): fp16 control E 6.876 A / F 16.828 A; 2-bit ternary (0.68 reconstruction error) E 13.140 A / F 14.676 A = ~2x degradation on the well-folded chain. 4-bit (0.09 error) run OOM'd on 8 GB VRAM -- CUDA fragmentation (failed a 50 MiB alloc with 5.48 GiB free), not capacity; fix = PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True + stale-process cleanup."
+    }
+  ],
+  "prior_state": "CAP-209 measured 2-bit degrades fold (E 6.9->13.1 A); CAP-212 4-bit OOM'd on CUDA fragmentation",
+  "quorum": 9,
+  "record": "FOLD-FIDELITY CLOSE (4-bit retry + boundary) -- council-voted; platform self-directs",
+  "sha256": "754bb167aeb87ff6079d7c19d5dca958ac9a2552deb347469acaeeed6d2569f1"
+}

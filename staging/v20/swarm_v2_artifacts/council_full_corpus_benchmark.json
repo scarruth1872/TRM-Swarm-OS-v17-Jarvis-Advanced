@@ -1,0 +1,38 @@
+{
+  "autonomy_note": "council votes on soundness; after the seal the platform executes and checkpoints.",
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T22:21:00.696383+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "8d2685537269c5dc6d4cfb0bfebf2c303987b7d11220da15c045f4640a4ba614",
+      "motion": "MOTION-B1",
+      "phase": "consensus",
+      "proposal_id": "CP-E63BE84A",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "Score the FULL 16,415-complex SAbDab2 corpus with the native structural scorer and record the complete paratope distribution (contacts + residues + distance), with antibody-only complexes counted as boundaries, not scores. This turns the 500-sample into the complete benchmark. REJECT AS PREMATURE: reporting a total without actually scoring the corpus; skipping boundaries instead of counting them. MEASURED: the 500-complex benchmark scored 324 (176 antibody-only boundaries, 0 errors): paratope contacts 17..241 (mode ~92), residues mean 13.6 (4..22), mean distance 3.728 A. The scorer is validated; the 500 was a sample of the 16,415-complex SAbDab2 corpus. The full corpus and a paratope-density ranking are the natural completion."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "c6acaeffe4913d253220efd5e1d5489b8f7f40d1291cecc1fee3faca89cc079d",
+      "motion": "MOTION-B2",
+      "phase": "consensus",
+      "proposal_id": "CP-445F2664",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "Derive a paratope-density ranking: order the scored antibodies by contacts-per-residue (the density of the antigen-contacting surface) and record the top and bottom as a measured leaderboard, labeled per-complex (pdb id, chains, contacts, residues, density). REJECT AS PREMATURE: fabricating a ranking without the per-complex measurements; ranking complexes with no antigen (boundaries are excluded, not ranked). MEASURED: the 500-complex benchmark scored 324 (176 antibody-only boundaries, 0 errors): paratope contacts 17..241 (mode ~92), residues mean 13.6 (4..22), mean distance 3.728 A. The scorer is validated; the 500 was a sample of the 16,415-complex SAbDab2 corpus. The full corpus and a paratope-density ranking are the natural completion."
+    }
+  ],
+  "prior_state": "A1 antibody task mode done; A2 500-complex benchmark done (324 scored/176 boundaries).",
+  "quorum": 9,
+  "record": "FULL-CORPUS BENCHMARK + PARATOPE RANKING -- council-voted; platform self-directs",
+  "sha256": "b0f7a50d9f4c08cb8055ef09a9208af7ed487dfe842e59c309f1daa5e950d066"
+}

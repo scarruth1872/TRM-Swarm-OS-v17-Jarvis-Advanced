@@ -1,0 +1,124 @@
+SSM READ-OUT FIT — MEASURED AND REJECTED
+Date 2026-11-02. Fitting script scratch/fit_ssm_readout.py, artifact
+trm_uefi_kernel/host_council_server/data/ssm_readout.json.
+
+GOAL
+  Round 2 measured the untrained SSM read-out at 34% agreement with the model
+  (chance for three classes) and biased FALSE 45/46 when it committed. The next
+  step was to fit a read-out direction on the 128-dim SSM state against the
+  council's own historical verdicts, then re-measure. If agreement cleared
+  chance, the gate could become default.
+
+WHAT WAS BUILT
+  Rust  ssm_state(text)         the exact state used at inference, RMS-normalised
+        POST /council/ssm/states  batch export of 128-dim states
+        Readout { w, b, band }    loaded from data/ssm_readout.json, used when
+                                  the file says "deploy": true
+        ssm_decision()            prefers the trained read-out, falls back to the
+                                  mean-trit read-out, and reports which it used
+  Py    fit_ssm_readout.py      builds the dataset from the ledger, fits ridge,
+                                evaluates leave-one-topic-out, writes the artifact
+
+DATA — AND WHY IT IS THE BINDING CONSTRAINT
+  Ledger: 157 proposals, 2198 votes.
+  Distinct topics: 22.  Run counts are lopsided: dark mode 38, cite-verdicts 29,
+  QUIC 25, cheese 23, checkpoint 18+4.
+  Collapsed to one sample per (topic, agent): 308 samples, 22 groups.
+  Label distribution: +1 140, -1 111, 0 57.
+  Label noise: 58 of 308 pairs (19%) give different labels across repeated runs
+  of the same topic, even at temperature 0. That is irreducible noise.
+
+RESULTS
+  Leave-one-topic-out (the only honest split; a vote-level split leaks topics):
+      lambda 1.0    0.458 agreement   (min 0.14, max 0.93)
+      lambda 10.0   0.377
+      lambda 100.0  0.435
+  Baseline always-predict-majority:  0.455
+  In-sample fit:                      0.705
+
+  The trained read-out scores 0.458 against a 0.455 baseline. It learns nothing
+  beyond "approve", which is the majority class. The 0.705 in-sample figure is
+  overfit: 128 features, 308 samples drawn from 22 groups.
+
+LEARNING CURVE — MORE DATA OF THIS KIND WILL NOT HELP
+  Train on k topics, test on the rest, averaged over 5 random draws:
+      k=3   0.398      k=8   0.399      k=15  0.404
+      k=5   0.416      k=11  0.430      k=18  0.493
+  Flat. Generating more proposals in the same 22-topic space would add samples,
+  not signal. The 128-dim SSM state does not encode whether a proposal is good;
+  it encodes a hash projection of its tokens. A linear read-out cannot recover
+  information the features do not carry.
+
+DECISION
+  The artifact is written with "deploy": false and the loader refuses it unless
+  that flag is true. Verified both ways on the live server:
+      deploy=true   -> readout "trained", trit=1, proj=+1.1030
+      deploy=false  -> readout "mean-trit", trit=0, proj=+0.0234
+  Council behaviour is unchanged: dark mode 13/0/1 and cheese 0/0/14 as before.
+  Shipping the fit as default would have replaced a read-out biased FALSE with
+  one biased APPROVE that scores 0.003 above the majority baseline. Neither is a
+  decision signal; the second only looks safer.
+
+WHAT WOULD ACTUALLY BE NEEDED
+  Not more proposals — better features. The state must carry something about the
+  proposal beyond its token hashes. Two routes:
+    1. Feed the SSM real embeddings (nomic 768-dim, projected to 128) instead of
+       K3 token hashes. The projection stays untrained but the input carries
+       semantics, so a linear read-out has something to find.
+    2. Train the SSM parameters themselves on labelled verdicts. That is model
+       training, not a read-out fit, and needs orders of magnitude more data.
+  Route 1 is cheap and measurable with what already exists: the embedding server
+  is live on :8593. That is the next experiment worth running, and it should be
+  judged by the same leave-one-topic-out number, against the same 0.455 baseline.
+
+VERDICT
+  Fitting the read-out failed, and the failure is informative: the limit is the
+  feature, not the fitting method and not the sample count. The pipeline stays
+  advisory; the artifact stays non-deployable; the 0.455 baseline is the number
+  to beat.
+
+
+================================================================================
+ERRATA — 2026-11-03. THE "LIMIT IS THE LABEL" CONCLUSION ABOVE IS WRONG.
+================================================================================
+This file claimed the failure was caused by label noise (19% flip rate) and that
+more data or better features would not help. Both statements are retracted.
+
+MEASURED, on a frozen 180-proposal / 2520-vote snapshot of the authoritative
+:8022 ledger (scratch/council_ledger_snapshot.json, sha256 01d90e7b...):
+
+  flip rate per field, over repeated runs of the same (topic,agent):
+      llm_trit    0 / 2730 pairs = 0.0000     <- the actual training target
+      vote        7099 / 35056   = 0.2025
+      ssm_trit    530 / 2730     = 0.1941
+
+  The 19% figure is the instability of `vote` and of `ssm_trit`. It is NOT the
+  instability of `llm_trit`, which is perfectly reproducible on this slice. So the
+  label was never the binding constraint.
+
+  Bayes ceiling with p=0.19, K=3: 0.90. With the measured p=0.000 on llm_trit: 1.00.
+  Either way the ceiling sits 0.32 or more ABOVE the 0.583 baseline. There was
+  always headroom. Label noise did not cap anything.
+
+WHAT ACTUALLY CAPS IT — ablation, leave-one-topic-out, 84 cells, 6 topics,
+independently reproduced by the parent process (not the fitting script):
+
+  ssm_mean only            0.4762    vs baseline 0.5833   ->  BELOW baseline
+  weight only              0.4167    vs baseline 0.5833   ->  BELOW baseline
+  confidence only          0.6548    vs baseline 0.5833   ->  above
+  ssm_mean + confidence    0.8333
+  ssm_mean + conf + weight 0.8095
+
+  The SSM state alone scores BELOW the trivial always-approve baseline. The only
+  feature that clears the baseline is the model's own `confidence`. A read-out
+  that clears 0.58 is therefore learning "the model is confident, so it approved",
+  which is reading the answer back out, not forming a second opinion.
+
+VERDICT: RETIRE. The SSM cannot be a second opinion on agent verdicts. The reason
+is not the label and not the sample count and not the feature semantics: the
+128-dim SSM state does not encode the verdict.
+
+WHAT WOULD BE REQUIRED: proposals that differ in substance inside a topic (the
+current 6 topics are 3-16 resubmissions of one sentence each, so every cell is
+constant), and a target that is not the model's own confidence. Full record:
+evidence/SSM_READOUT_DISPOSITION.txt

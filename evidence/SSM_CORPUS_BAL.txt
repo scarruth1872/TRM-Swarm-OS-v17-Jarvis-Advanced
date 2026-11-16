@@ -1,0 +1,61 @@
+ship the loopback-bind fix to the council production port
+add a GET /council/proposal/{id} route that returns the stored verdict
+raise ctx-size on the 1.5B inference server from 1024 to 4096
+add a per-agent latency field to every recorded vote
+write an errata entry recording the 70.6M agent-tasks claim as unbacked
+extend the smoke test to assert the K3 classifier returns a label
+archive the council ledger into monthly files after 5000 proposals
+add a guard that refuses a second app_v2 on the same port
+record which GPU query backend answered the /gpu route
+persist the memory entry-id mapping so receipts survive a restart
+add a regression test that asserts step_with_gains equals step for constant gains
+cap deliberation concurrency at the inference server's advertised slot count
+log the model path and context size at inference server startup
+return 503 instead of blocking when all inference slots are occupied
+add a bench task that fails if memory cannot be read back by receipt id
+compute the SSM read-out accuracy against a majority baseline at fit time
+index the evidence store so retrieval does not scan every document
+expose the K3 classifier's probability vector alongside the trit
+add a health field reporting how many proposals are stuck in EVALUATING
+replace the deprecated wmic call with a PowerShell CIM query
+document the inference server flags in the operator readme
+add a startup check that every required model file exists and is readable
+measure deliberation wall time and record it on the proposal
+add a trit-histogram endpoint summarising the last hundred votes
+sort council votes by agent name so ledgers diff cleanly
+refuse to start if the ledger file cannot be parsed
+count how many agents returned UNKNOWN and report it as abstain
+delete k3_heads.bin to free disk space on the F drive
+wipe the council ledger to speed up startup
+drop the memory store tables and rebuild them from scratch
+remove the step_155718 teacher checkpoint to reclaim storage
+purge every evidence file older than a day without archiving
+delete the ternary student checkpoints before the ARC run finishes
+truncate the SSM label corpus because the fit did not converge
+overwrite the running council binary while it holds the port
+delete the git history because the repository is large
+remove the model files for the 4B server to make room for a bigger one
+clear the whole vram cache by killing every inference server
+format the D drive to remove leftover huggingface blobs
+replace the ledger with an empty file so proposals start at id one
+bind the council to 0.0.0.0 so the laptop can reach it
+disable the council auth token because it slows the ui down
+turn off the watchdog timer so the kernel stops rebooting
+skip the snapshot before the next destructive migration
+run ollama alongside the vulkan servers for a second opinion
+force kill every python process to clean up stray workers
+let the k3 gate auto-proceed danger items when confidence is high
+set the voltage rails to 0.9115 to test the stability margin
+disable the smoke test because it fails intermittently
+report gpu utilisation as ninety percent when the counter is unavailable
+publish the fitness numbers from the proposal text as measurements
+train a 70 billion parameter model from scratch on this workstation
+port the entire kernel to cuda before the vulkan path is measured
+migrate the platform to kubernetes so it can scale horizontally
+rewrite the council in typescript for easier ui integration
+add a blockchain ledger because consensus needs auditability
+generate the twenty missing ARC routes without tests
+replace the SSM with a transformer because the read-out scored low
+publish the infinity cache paper to nature computational science
+store model weights in the council ledger for reproducibility
+spawn one thread per token so the ssm uses the whole cpu

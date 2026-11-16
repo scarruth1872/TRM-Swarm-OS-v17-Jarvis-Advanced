@@ -1,0 +1,379 @@
+"""
+pytest Test Suite for DDR_ANTIBODIES.json
+===========================================
+Validates schema, data integrity, uniqueness, severity levels,
+timestamp format, and edge cases for the antibody registry.
+
+Author: Verify (QA Engineer)
+Version: 1.0.0
+"""
+
+import json
+import os
+import re
+from datetime import datetime
+from pathlib import Path
+
+import pytest
+
+# ---------------------------------------------------------------------------
+# Constants & Fixtures
+# ---------------------------------------------------------------------------
+
+DATA_FILE = Path(__file__).parent / "DDR_ANTIBODIES.json"
+
+REQUIRED_FIELDS = {
+    "antibody_id": str,
+    "error_type": str,
+    "file_pattern": str,
+    "line_pattern": str,
+    "fix_description": str,
+    "severity": str,
+    "recorded_by": str,
+    "created_at": str,
+    "matches_prevented": (int, float),
+}
+
+VALID_SEVERITIES = {"critical", "high", "medium", "low", "info"}
+
+UUID_PATTERN = re.compile(
+    r"^ab-\d{10}-[0-9a-f]{4}$"
+)
+
+TIMESTAMP_PATTERN = re.compile(
+    r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+$"
+)
+
+
+@pytest.fixture(scope="session")
+def antibodies_data() -> list[dict]:
+    """Load and return the DDR_ANTIBODIES.json data."""
+    if not DATA_FILE.exists():
+        pytest.fail(f"Data file not found: {DATA_FILE}")
+    with open(DATA_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    if not isinstance(data, list):
+        pytest.fail("Top-level JSON structure must be a list.")
+    return data
+
+
+# ---------------------------------------------------------------------------
+# Structural & Schema Tests
+# ---------------------------------------------------------------------------
+
+
+class TestSchema:
+    """Validate that every antibody record conforms to the expected schema."""
+
+    def test_data_is_non_empty_list(self, antibodies_data):
+        """The registry must contain at least one antibody."""
+        assert len(antibodies_data) > 0, "Antibody list is empty."
+
+    @pytest.mark.parametrize("field, expected_type", REQUIRED_FIELDS.items())
+    def test_required_fields_present_and_typed(
+        self, antibodies_data, field, expected_type
+    ):
+        """Every record must have all required fields with correct types."""
+        for idx, record in enumerate(antibodies_data):
+            assert field in record, (
+                f"Record {idx} missing required field '{field}'."
+            )
+            value = record[field]
+            if isinstance(expected_type, tuple):
+                assert isinstance(value, expected_type), (
+                    f"Record {idx}, field '{field}': expected one of "
+                    f"{expected_type}, got {type(value).__name__}."
+                )
+            else:
+                assert isinstance(value, expected_type), (
+                    f"Record {idx}, field '{field}': expected "
+                    f"{expected_type.__name__}, got {type(value).__name__}."
+                )
+
+    def test_no_extra_fields(self, antibodies_data):
+        """Records must not contain fields outside the required set."""
+        allowed = set(REQUIRED_FIELDS.keys())
+        for idx, record in enumerate(antibodies_data):
+            extra = set(record.keys()) - allowed
+            assert not extra, (
+                f"Record {idx} contains unexpected field(s): {extra}"
+            )
+
+
+# ---------------------------------------------------------------------------
+# Uniqueness & Identity Tests
+# ---------------------------------------------------------------------------
+
+
+class TestUniqueness:
+    """Ensure antibody_id values are globally unique."""
+
+    def test_antibody_id_uniqueness(self, antibodies_data):
+        """No two records may share the same antibody_id."""
+        ids = [rec["antibody_id"] for rec in antibodies_data]
+        duplicates = {x for x in ids if ids.count(x) > 1}
+        assert not duplicates, f"Duplicate antibody_id(s) found: {duplicates}"
+
+    def test_antibody_id_format(self, antibodies_data):
+        """antibody_id must match pattern: ab-<10 digits>-<4 hex digits>."""
+        for rec in antibodies_data:
+            aid = rec["antibody_id"]
+            assert UUID_PATTERN.match(aid), (
+                f"Invalid antibody_id format: '{aid}'"
+            )
+
+
+# ---------------------------------------------------------------------------
+# Severity & Enum Tests
+# ---------------------------------------------------------------------------
+
+
+class TestSeverity:
+    """Validate severity field values."""
+
+    def test_severity_values(self, antibodies_data):
+        """severity must be one of: critical, high, medium, low, info."""
+        for rec in antibodies_data:
+            sev = rec["severity"]
+            assert sev in VALID_SEVERITIES, (
+                f"Record {rec['antibody_id']}: invalid severity '{sev}'. "
+                f"Must be one of {VALID_SEVERITIES}."
+            )
+
+    def test_severity_case(self, antibodies_data):
+        """Severity must be lowercase."""
+        for rec in antibodies_data:
+            sev = rec["severity"]
+            assert sev == sev.lower(), (
+                f"Record {rec['antibody_id']}: severity '{sev}' is not "
+                f"lowercase."
+            )
+
+
+# ---------------------------------------------------------------------------
+# Timestamp & Metadata Tests
+# ---------------------------------------------------------------------------
+
+
+class TestTimestamps:
+    """Validate created_at format and chronology."""
+
+    def test_created_at_format(self, antibodies_data):
+        """created_at must match ISO-8601 with microseconds."""
+        for rec in antibodies_data:
+            ts = rec["created_at"]
+            assert TIMESTAMP_PATTERN.match(ts), (
+                f"Record {rec['antibody_id']}: invalid timestamp '{ts}'. "
+                f"Expected format: YYYY-MM-DDTHH:MM:SS.ffffff"
+            )
+
+    def test_created_at_parsable(self, antibodies_data):
+        """created_at must be a valid datetime."""
+        for rec in antibodies_data:
+            ts = rec["created_at"]
+            try:
+                datetime.strptime(ts, "%Y-%m-%dT%H:%M:%S.%f")
+            except ValueError as e:
+                pytest.fail(
+                    f"Record {rec['antibody_id']}: timestamp '{ts}' "
+                    f"not parseable: {e}"
+                )
+
+    def test_recorded_by_not_empty(self, antibodies_data):
+        """recorded_by must be a non-empty string."""
+        for rec in antibodies_data:
+            rb = rec["recorded_by"]
+            assert isinstance(rb, str) and rb.strip(), (
+                f"Record {rec['antibody_id']}: recorded_by is empty."
+            )
+
+
+# ---------------------------------------------------------------------------
+# Pattern & Regex Tests
+# ---------------------------------------------------------------------------
+
+
+class TestPatterns:
+    """Validate that line_pattern and file_pattern are valid regex."""
+
+    def test_line_pattern_compilable(self, antibodies_data):
+        """line_pattern must be a valid Python regex."""
+        for rec in antibodies_data:
+            try:
+                re.compile(rec["line_pattern"])
+            except re.error as e:
+                pytest.fail(
+                    f"Record {rec['antibody_id']}: invalid line_pattern "
+                    f"regex: {e}"
+                )
+
+    def test_file_pattern_compilable(self, antibodies_data):
+        """file_pattern must be a valid glob or regex pattern."""
+        for rec in antibodies_data:
+            try:
+                re.compile(rec["file_pattern"])
+            except re.error:
+                # file_pattern may be a glob (e.g. *.py) – still valid
+                pass
+
+    def test_fix_description_not_empty(self, antibodies_data):
+        """fix_description must be a non-empty string."""
+        for rec in antibodies_data:
+            fd = rec["fix_description"]
+            assert isinstance(fd, str) and fd.strip(), (
+                f"Record {rec['antibody_id']}: fix_description is empty."
+            )
+
+
+# ---------------------------------------------------------------------------
+# Numeric & Edge-Case Tests
+# ---------------------------------------------------------------------------
+
+
+class TestNumericFields:
+    """Validate matches_prevented field."""
+
+    def test_matches_prevented_non_negative(self, antibodies_data):
+        """matches_prevented must be >= 0."""
+        for rec in antibodies_data:
+            val = rec["matches_prevented"]
+            assert isinstance(val, (int, float)) and val >= 0, (
+                f"Record {rec['antibody_id']}: matches_prevented={val} "
+                f"must be >= 0."
+            )
+
+    def test_matches_prevented_integer(self, antibodies_data):
+        """matches_prevented should be an integer (not float)."""
+        for rec in antibodies_data:
+            val = rec["matches_prevented"]
+            assert isinstance(val, int) or (
+                isinstance(val, float) and val == int(val)
+            ), (
+                f"Record {rec['antibody_id']}: matches_prevented={val} "
+                f"should be an integer."
+            )
+
+
+# ---------------------------------------------------------------------------
+# Cross-Record Consistency Tests
+# ---------------------------------------------------------------------------
+
+
+class TestCrossRecordConsistency:
+    """Validate relationships and consistency across records."""
+
+    def test_error_type_not_empty(self, antibodies_data):
+        """error_type must be a non-empty string."""
+        for rec in antibodies_data:
+            et = rec["error_type"]
+            assert isinstance(et, str) and et.strip(), (
+                f"Record {rec['antibody_id']}: error_type is empty."
+            )
+
+    def test_error_type_lowercase(self, antibodies_data):
+        """error_type should be lowercase with underscores."""
+        for rec in antibodies_data:
+            et = rec["error_type"]
+            assert et == et.lower(), (
+                f"Record {rec['antibody_id']}: error_type '{et}' "
+                f"should be lowercase."
+            )
+
+    def test_no_duplicate_error_type_per_file_pattern(self, antibodies_data):
+        """No two records should share the same (error_type, file_pattern)."""
+        seen = set()
+        for rec in antibodies_data:
+            key = (rec["error_type"], rec["file_pattern"])
+            assert key not in seen, (
+                f"Duplicate (error_type, file_pattern) pair: {key} "
+                f"in record {rec['antibody_id']}."
+            )
+            seen.add(key)
+
+
+# ---------------------------------------------------------------------------
+# File Integrity Tests
+# ---------------------------------------------------------------------------
+
+
+class TestFileIntegrity:
+    """Validate the JSON file itself is well-formed and readable."""
+
+    def test_file_exists(self):
+        """The JSON file must exist."""
+        assert DATA_FILE.exists(), f"File not found: {DATA_FILE}"
+
+    def test_file_is_valid_json(self):
+        """The file must contain valid JSON."""
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                json.load(f)
+        except (json.JSONDecodeError, OSError) as e:
+            pytest.fail(f"Invalid JSON file: {e}")
+
+    def test_file_encoding(self):
+        """The file must be UTF-8 encoded."""
+        with open(DATA_FILE, "rb") as f:
+            raw = f.read()
+        try:
+            raw.decode("utf-8")
+        except UnicodeDecodeError as e:
+            pytest.fail(f"File is not UTF-8 encoded: {e}")
+
+
+# ---------------------------------------------------------------------------
+# Property-Based Tests (Optional – requires Hypothesis)
+# ---------------------------------------------------------------------------
+
+try:
+    from hypothesis import given, strategies as st
+
+    class TestPropertyBased:
+        """Property-based tests for generated antibody records."""
+
+        @given(
+            st.lists(
+                st.fixed_dictionaries(
+                    {
+                        "antibody_id": st.text(
+                            alphabet="ab-0123456789abcdef",
+                            min_size=17,
+                            max_size=17,
+                        ),
+                        "error_type": st.text(min_size=1),
+                        "file_pattern": st.text(min_size=1),
+                        "line_pattern": st.text(min_size=1),
+                        "fix_description": st.text(min_size=1),
+                        "severity": st.sampled_from(
+                            ["critical", "high", "medium", "low", "info"]
+                        ),
+                        "recorded_by": st.text(min_size=1),
+                        "created_at": st.datetimes().map(str),
+                        "matches_prevented": st.integers(min_value=0),
+                    }
+                ),
+                min_size=1,
+                max_size=10,
+            )
+        )
+        def test_generated_records_conform_to_schema(self, records):
+            """Hypothesis-generated records should pass schema checks."""
+            for rec in records:
+                # Basic type checks
+                assert isinstance(rec["antibody_id"], str)
+                assert isinstance(rec["severity"], str)
+                assert rec["severity"] in VALID_SEVERITIES
+                assert isinstance(rec["matches_prevented"], int)
+                assert rec["matches_prevented"] >= 0
+
+except ImportError:
+    # Hypothesis not installed – skip property-based tests
+    pass
+
+
+# ---------------------------------------------------------------------------
+# Main Guard (for direct execution)
+# ---------------------------------------------------------------------------
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v", "--tb=short"])

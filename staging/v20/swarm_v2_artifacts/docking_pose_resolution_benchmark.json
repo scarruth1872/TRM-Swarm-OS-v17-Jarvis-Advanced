@@ -1,0 +1,120 @@
+{
+  "timestamp": "2026-09-18T16:09:00",
+  "scorer_type": "Native C-ABI Shape-Complementarity (Lennard-Jones 6-12) & Aperture Desolvation Gate",
+  "description": "Pairwise van der Waals shape complementarity plus continuous distance-to-aperture quadratic desolvation penalty",
+  "parameters": {
+    "r0_binding_core_radius_A": 0.2,
+    "k_desolvation_kcal_per_mol_A2": 2.5,
+    "pass_threshold_dG_kcal_mol": -3.0
+  },
+  "canonical_cases": {
+    "reference_0.0A": {
+      "rmsd": 0.0,
+      "dG": -5.8758931159973145,
+      "passed": true
+    },
+    "channel_0.8A": {
+      "rmsd": 0.800000011920929,
+      "dG": -4.093675136566162,
+      "passed": true
+    },
+    "rotated_0.8A": {
+      "rmsd": 0.7827205657958984,
+      "dG": 13.445499420166016,
+      "passed": false
+    },
+    "transverse_1.5A": {
+      "rmsd": 1.4999998807907104,
+      "dG": 939683949314048.0,
+      "passed": false
+    },
+    "aperture_escape_1.5A": {
+      "rmsd": 1.4958277940750122,
+      "dG": 0.9184892177581787,
+      "passed": false
+    }
+  },
+  "isotropic_rmsd_spectrum": {
+    "0.0": {
+      "rmsd_A": 0.0,
+      "pass_rate": 1.0,
+      "passed_count": 100,
+      "median_dG": -5.8758931159973145,
+      "min_dG": -5.8758931159973145,
+      "max_dG": -5.8758931159973145
+    },
+    "0.2": {
+      "rmsd_A": 0.2,
+      "pass_rate": 1.0,
+      "passed_count": 100,
+      "median_dG": -6.07517147064209,
+      "min_dG": -7.322810173034668,
+      "max_dG": -5.595412731170654
+    },
+    "0.4": {
+      "rmsd_A": 0.4,
+      "pass_rate": 0.96,
+      "passed_count": 96,
+      "median_dG": -6.339528322219849,
+      "min_dG": -8.60221004486084,
+      "max_dG": -0.8133722543716431
+    },
+    "0.6": {
+      "rmsd_A": 0.6,
+      "pass_rate": 0.56,
+      "passed_count": 56,
+      "median_dG": -5.760106563568115,
+      "min_dG": -9.052579879760742,
+      "max_dG": 406.90362548828125
+    },
+    "0.8": {
+      "rmsd_A": 0.8,
+      "pass_rate": 0.33,
+      "passed_count": 33,
+      "median_dG": 3.349604845046997,
+      "min_dG": -8.508675575256348,
+      "max_dG": 45199.0234375
+    },
+    "1.0": {
+      "rmsd_A": 1.0,
+      "pass_rate": 0.17,
+      "passed_count": 17,
+      "median_dG": 82.60057067871094,
+      "min_dG": -7.253168106079102,
+      "max_dG": 31267502.0
+    },
+    "1.2": {
+      "rmsd_A": 1.2,
+      "pass_rate": 0.07,
+      "passed_count": 7,
+      "median_dG": 237.42171478271484,
+      "min_dG": -5.361809730529785,
+      "max_dG": 39258497024.0
+    },
+    "1.5": {
+      "rmsd_A": 1.5,
+      "pass_rate": 0.0,
+      "passed_count": 0,
+      "median_dG": 289.2821044921875,
+      "min_dG": -2.470061779022217,
+      "max_dG": 2.0601021088661504e+16
+    },
+    "2.0": {
+      "rmsd_A": 2.0,
+      "pass_rate": 0.0,
+      "passed_count": 0,
+      "median_dG": 6.39368748664856,
+      "min_dG": 2.6878204345703125,
+      "max_dG": 20729418.0
+    }
+  },
+  "resolution_verdict": {
+    "passes_0.8A_channel": true,
+    "fails_0.8A_rotated": true,
+    "fails_1.5A_transverse": true,
+    "fails_1.5A_aperture_escape": true,
+    "pass_rate_1.5A": 0.0,
+    "pass_rate_2.0A": 0.0,
+    "scorer_characterization": "Shape-Complementarity & Continuous Aperture Desolvation Gate with sub-angstrom stereochemical resolution"
+  }
+}

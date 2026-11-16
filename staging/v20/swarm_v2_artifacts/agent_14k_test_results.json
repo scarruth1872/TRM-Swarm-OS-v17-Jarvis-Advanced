@@ -1,0 +1,275 @@
+{
+  "ts": "2026-08-07T10:50:06",
+  "total_tasks": 14000,
+  "total_steps": 70000000,
+  "time_s": 5.1,
+  "overall_accuracy": 0.86,
+  "agents": {
+    "Shield": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.884,
+      "correct": 883,
+      "failed": 117,
+      "domains": {
+        "detect_zeroday": 0.884,
+        "classify_malware": 0.891,
+        "generate_antibody": 0.847,
+        "audit_protocol": 0.887,
+        "verify_tls": 0.875,
+        "scan_vuln": 0.893,
+        "block_exploit": 0.855,
+        "assess_cvss": 0.945,
+        "harden_config": 0.89,
+        "correlate_threat": 0.869
+      }
+    },
+    "Logic": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.954,
+      "correct": 953,
+      "failed": 47,
+      "domains": {
+        "prove_theorem_coq": 0.968,
+        "prove_theorem_lean4": 0.99,
+        "translate_proof": 0.949,
+        "solve_imo": 0.933,
+        "verify_invariant": 0.948,
+        "sat_solve": 0.98,
+        "k3_evaluate": 0.99,
+        "causal_infer": 0.91,
+        "temporal_reason": 0.974,
+        "synthesize_proof": 0.897
+      }
+    },
+    "Archi": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.843,
+      "correct": 843,
+      "failed": 157,
+      "domains": {
+        "design_nanobot": 0.842,
+        "design_circuit": 0.848,
+        "design_bridge": 0.792,
+        "design_swarm": 0.805,
+        "generate_art": 0.851,
+        "optimize_structure": 0.92,
+        "design_bionic": 0.864,
+        "design_clockwork": 0.821,
+        "design_metamaterial": 0.845,
+        "design_city": 0.844
+      }
+    },
+    "Devo": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.931,
+      "correct": 931,
+      "failed": 69,
+      "domains": {
+        "implement_kernel_patch": 0.918,
+        "synthesize_asic": 0.918,
+        "train_model": 0.96,
+        "deploy_k8s": 0.912,
+        "optimize_query": 0.967,
+        "build_compiler": 0.953,
+        "design_rocket": 0.919,
+        "program_fpga": 0.944,
+        "secure_crypto": 0.886,
+        "simulate_cfd": 0.935
+      }
+    },
+    "Seeker": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.786,
+      "correct": 786,
+      "failed": 214,
+      "domains": {
+        "literature_review": 0.79,
+        "drug_discovery": 0.752,
+        "protein_dock": 0.799,
+        "pathway_analysis": 0.814,
+        "variant_interpret": 0.841,
+        "trial_analyze": 0.787,
+        "patent_search": 0.762,
+        "knowledge_graph_query": 0.783,
+        "cross_domain_synthesis": 0.767,
+        "hypothesis_generate": 0.77
+      }
+    },
+    "Jarvis": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.918,
+      "correct": 917,
+      "failed": 83,
+      "domains": {
+        "render_dashboard": 0.933,
+        "animate_concept": 0.901,
+        "voice_respond": 0.901,
+        "viz_3d_molecule": 0.952,
+        "stream_realtime": 0.903,
+        "build_mobile_ui": 0.889,
+        "design_accessible": 0.901,
+        "chart_complex": 0.916,
+        "orchestrate_websocket": 0.956,
+        "generate_explanation": 0.924
+      }
+    },
+    "Pulse": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.821,
+      "correct": 820,
+      "failed": 180,
+      "domains": {
+        "detect_arrhythmia": 0.804,
+        "predict_sepsis": 0.84,
+        "classify_sleep_stage": 0.754,
+        "monitor_vitals": 0.827,
+        "analyze_ecg": 0.842,
+        "detect_fall": 0.834,
+        "track_activity": 0.793,
+        "predict_decompensation": 0.813,
+        "assess_pain": 0.835,
+        "estimate_fluid": 0.865
+      }
+    },
+    "Flow": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.826,
+      "correct": 825,
+      "failed": 175,
+      "domains": {
+        "model_metabolic_flux": 0.847,
+        "predict_drug_interaction": 0.826,
+        "analyze_pathway": 0.788,
+        "simulate_glycolysis": 0.828,
+        "optimize_enzyme": 0.801,
+        "map_metabolome": 0.826,
+        "predict_toxicity": 0.846,
+        "model_signaling": 0.828,
+        "design_agonist": 0.836,
+        "balance_redox": 0.829
+      }
+    },
+    "EventLedger": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.783,
+      "correct": 783,
+      "failed": 217,
+      "domains": {
+        "analyze_adverse_event": 0.746,
+        "predict_trial_outcome": 0.82,
+        "detect_safety_signal": 0.75,
+        "classify_regulatory": 0.81,
+        "track_approval": 0.755,
+        "audit_compliance": 0.797,
+        "forecast_submission": 0.81,
+        "compare_guidelines": 0.753,
+        "assess_risk": 0.781,
+        "monitor_postmarket": 0.811
+      }
+    },
+    "Orchestra": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.774,
+      "correct": 773,
+      "failed": 227,
+      "domains": {
+        "forecast_mortality": 0.805,
+        "analyze_demographics": 0.752,
+        "detect_outbreak": 0.733,
+        "model_pandemic": 0.746,
+        "project_population": 0.799,
+        "assess_inequality": 0.776,
+        "simulate_aging": 0.783,
+        "track_life_expectancy": 0.761,
+        "correlate_environment": 0.766,
+        "predict_health_trend": 0.816
+      }
+    },
+    "THzGateway": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.851,
+      "correct": 851,
+      "failed": 149,
+      "domains": {
+        "classify_galaxy": 0.82,
+        "detect_exoplanet": 0.874,
+        "analyze_spectra": 0.83,
+        "predict_orbit": 0.907,
+        "map_cmb": 0.89,
+        "simulate_merger": 0.824,
+        "identify_transient": 0.85,
+        "measure_redshift": 0.79,
+        "model_nebula": 0.893,
+        "calibrate_telescope": 0.832
+      }
+    },
+    "Verify": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.95,
+      "correct": 949,
+      "failed": 51,
+      "domains": {
+        "run_test_suite": 0.988,
+        "find_bug": 0.953,
+        "generate_fuzz": 0.961,
+        "measure_coverage": 0.981,
+        "verify_contract": 0.981,
+        "mutation_test": 0.91,
+        "load_test": 0.918,
+        "accessibility_audit": 0.947,
+        "static_analyze": 0.948,
+        "chaos_experiment": 0.912
+      }
+    },
+    "Bridge": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.886,
+      "correct": 886,
+      "failed": 114,
+      "domains": {
+        "predict_binding": 0.912,
+        "design_ligand": 0.87,
+        "optimize_affinity": 0.938,
+        "screen_library": 0.888,
+        "dock_molecule": 0.893,
+        "predict_selectivity": 0.871,
+        "assess_druggability": 0.889,
+        "optimize_adme": 0.827,
+        "design_linker": 0.875,
+        "predict_resistance": 0.9
+      }
+    },
+    "Hermes": {
+      "tasks": 1000,
+      "steps": 5000000,
+      "avg_accuracy": 0.834,
+      "correct": 834,
+      "failed": 166,
+      "domains": {
+        "coordinate_swarm": 0.869,
+        "distill_knowledge": 0.805,
+        "route_task": 0.867,
+        "summarize_session": 0.836,
+        "translate_message": 0.789,
+        "resolve_conflict": 0.806,
+        "handoff_agent": 0.842,
+        "orchestrate_pipeline": 0.899,
+        "aggregate_results": 0.815,
+        "maintain_context": 0.815
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "record": "ternary ESMFold forward pass + RMSD (MOTION-F1 / CAP-209)",
+  "model": "facebook/esmfold_v1",
+  "weights": "Q2_g64 ternary (dequantized)",
+  "device": "cuda",
+  "tensors_set": 4496,
+  "tensors_total": 4535,
+  "results": [
+    {
+      "chain": "E",
+      "predicted_residues": 109,
+      "crystal_residues": 109,
+      "rmsd_angstrom": 13.14
+    },
+    {
+      "chain": "F",
+      "predicted_residues": 126,
+      "crystal_residues": 126,
+      "rmsd_angstrom": 14.676
+    }
+  ],
+  "basis": "the 2-bit ternary weights were dequantized into the ESMFold architecture and the fold predicted; RMSD is Kabsch-aligned C-alpha vs the crystal. <5 A = fold preserved at 2-bit; >5 A = 2-bit too aggressive."
+}

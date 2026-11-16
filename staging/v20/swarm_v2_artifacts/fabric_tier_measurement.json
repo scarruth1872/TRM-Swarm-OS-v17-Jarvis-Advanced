@@ -1,0 +1,63 @@
+{
+  "artifacts": {
+    "code": [
+      "trm_uefi_kernel/host_council_server/src/k3_retrieval.rs (fabric_lookup + term/snippet helpers)",
+      "trm_uefi_kernel/host_council_server/src/chat_handlers.rs (fabric tier before the model tiers)",
+      "swarm_v2_artifacts/gen_chat_handlers.py (regenerates the same tier)"
+    ],
+    "engine_dll": {
+      "bytes": 714752,
+      "path": "swarm_v2_rust_kernel/target/release/swarm_rust_kernel.dll",
+      "sha256_prefix": "231c0ef8bfdd22e5"
+    },
+    "server_exe": {
+      "bytes": 1449472,
+      "path": "trm_uefi_kernel/host_council_server/target/release/host_council_server.exe",
+      "sha1_prefix": "77416e88afc30348"
+    }
+  },
+  "chat_path": "POST /swarm/chat on :8022 (the dashboard posts to ${API_BASE}/swarm/chat, App.jsx:846)",
+  "confirmation_rule_shipped": {
+    "evidence": "3 nonsense queries scored 0 shared terms in every case; covered queries scored 2 (Kleene K3 @171, input sanitizer @174)",
+    "rule": "top-k candidates whose search score is reproduced by the independent agreement export, and whose sealed document shares >= 2 of the query's content words"
+  },
+  "generated_at": "2026-09-15T20:19:02Z",
+  "known_coverage_gap": "the 73-document kernel_knowledge_index.json holds research plans and source files; it does NOT hold the platform's own knowledge (Nomos axioms, monad anchor 0x4D4F4E4144000001, voltage doctrine), so those questions still fall through. Ingesting them is the next step.",
+  "measurements": {
+    "after_fix_covered_query": {
+      "doc": "input_sanitizer.rs",
+      "engine": "fabric:k3-index",
+      "latency_us": 33571,
+      "model_call": false,
+      "query": "explain the input sanitizer memory safety",
+      "score": 174,
+      "score_cross_checked": true
+    },
+    "after_fix_uncovered_query": {
+      "engine": "no_tier_available",
+      "latency_us": 10645343,
+      "outcome": "abstains and falls through honestly",
+      "query": "zqxv wibble flarn glorp"
+    },
+    "restore_before_fix_known_knowledge_query": {
+      "engine": "no_tier_available",
+      "latency_us": 14700336,
+      "outcome": "NO_INTELLIGENCE_TIER_AVAILABLE (Bonsai Vulkan :8587 offline; Ollama generation cannot load)"
+    },
+    "speedup_vs_dead_tier": 437.9
+  },
+  "subject": "Neural Bridge chat latency: fabric tier vs dead model tier",
+  "tier_probe_stall": "a request that reaches the model tiers still burns 10.6-19.7 s discovering that they are down (measured); probing dead tiers should be bounded and cached",
+  "user_report_being_answered": "neural bridge chat is still going to slow for known knowledge",
+  "why_the_score_cannot_be_the_gate": {
+    "conclusion": "the ternary score ranges overlap, so a score threshold would be an invented criterion",
+    "known_top1_range": [
+      137,
+      171
+    ],
+    "nonsense_top1_range": [
+      134,
+      144
+    ]
+  }
+}

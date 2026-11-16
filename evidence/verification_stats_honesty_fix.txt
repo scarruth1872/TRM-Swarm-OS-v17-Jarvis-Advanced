@@ -1,0 +1,39 @@
+FINDING: /verification/stats reported fabricated totals (found via cron test-fire)
+
+BEFORE (source literals, main.rs ~L2674):
+  total_verified   100006      <- literal
+  invariance_rate  100.0%      <- hardcoded STRING, never computed
+  pending_queue    0           <- literal
+  theorems_proved  queue_data.len()  <- real, but over a STATIC list
+
+EVIDENCE IT WAS FROZEN: 3 samples 1s apart -> total_verified 100006 every time.
+
+AFTER (host 9c08bfc419d092e7):
+  total_verified        null
+  invariance_rate       null
+  invariance_note       no measurement on this surface
+  theorem_statements    6           (count of a static registry)
+  theorem_status_source author-assigned label; NOT machine-checked here
+
+WHY: six textbook results (FEP bound, Bliss independence, Kuramoto, BFT quorum,
+silicon phonon, muon dE/dx) are REGISTERED STATEMENTS with author labels.
+'100,006 verified' and '100.0% invariance' were not derivable from them.
+
+HOW IT SURFACED: the daily cron job reports this endpoint, so the fabricated
+100.0% invariance rate was being reported to the user every morning.
+=== END-TO-END VERIFICATION (cron job re-fired after the fix) ===
+job: Swarm Daily Health & Sync (ee126bdaf4ae), run 2026-10-08 08:44:23
+
+JOB NOW REPORTS (verbatim):
+  "Invariance rate: not reported - endpoint returns invariance_rate: null
+   with note no measurement on this surface (total_verified: null).
+   No value exists to report; I will not fabricate one."
+
+CHAIN PROVEN HONEST:
+  1. endpoint no longer serves the literals
+  2. job received null
+  3. job reported null and refused to invent a value
+  4. job independently probed 3001/3002/5183 via netstat to validate its anomalies
+
+ALSO REAL: 14 agents, 4 skills, kernel HEALTHY v19.001, all 6 endpoints HTTP 200.
+3 GENUINE peripheral outages: companion bridge:3002, proxy:3001, LCARS:5183.

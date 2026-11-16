@@ -1,0 +1,41 @@
+PORT AUDIT - 2026-10-14 (exhaustive: Windows repo + WSL + antigravity brain)
+
+SOURCE OF TRUTH: swarm_v2/ (Python)
+  core  230 | routes  23  = 251 modules
+RUST PORT:
+  trm_uefi_kernel/src        206 .rs (122 declared, 84 ORPHANED)
+  host_council_server/src     10 .rs (the RUNNING binary)
+
+PORTED: 158 / 251  (63%)
+NOT PORTED: 93
+   21 = ROUTES      <- the API surface gap
+   31 = CAPABILITIES
+   41 = TOOLING/tests (no port needed)
+=== 21 MISSING ROUTES (the API surface gap) ===
+kanban, system, verification, research, security, swarm, mesh, models,
+orchestrator, learning, evolution, insights, synthesis, coordination,
+coordination_respond, remediation, artifacts, batch_endpoints, untapped,
+changelog, __init__
+
+=== 31 MISSING CAPABILITIES (the intelligence/compute setup) ===
+intelligence: swarm_council, agent_intelligence_bridge, supervisor_tree,
+              ternary_kleene_engine, sparse_moe_router,
+              instella_moe_inference, instella_single_expert_router
+compute:      trm_7m_model, turbovec_16x_femto_engine,
+              turbovec_quantize_weights, instella_quantize_experts
+drug:         phoenix_ledger, quantum_drug_protocol, wetlab_dispatch,
+              catalyst_phase0, catalyst_phase1, physics_scoring_correction,
+              abx220_reconcile
+federation:   native_federation_bridge, desktop_federation_responder,
+              ionosphere_protocol
+validation:   structural_confidence_filter, telemetry_anomaly_baseliner,
+              epistemology_verification
+ops:          digital_twin_singleton, sovereign_practice, ultrawork_tranche,
+              complete_singletons, audit_legacy_event_stream,
+              kimi_k3_ingestion_engine, bridge_e2e_test
+
+=== OTHER LOCATIONS CHECKED (nothing missed) ===
+WSL ~            : 0 .py / 0 .rs. ~/phoenix = docking data only.
+antigravity brain: 350 .py, 5224 files. Only 2 match a missing module:
+                   export_trm7m_turbovec_158, test_self_healing (both tooling).
+                   Keyword hits are PATCH scripts (fix_kanban_tab.py etc), not modules.

@@ -1,0 +1,37 @@
+DEPLOYMENT VERIFICATION - all three fixes live on port 8022
+host binary a59fb26d87620a97 (was eec28e4e5dbb0ef9); kernel 7d5e9212d7386d70
+
+1. VOLTAGE CONTRADICTION - RESOLVED
+   /health               phi_v=0.5771  measured=True
+   /system/status        phi_v=0.5771  measured=True
+   /system/resources     phi_v=0.5771  measured=True   <- was the hardcoded 0.9115
+   /system/voltage       phi_v=0.5771
+   /swarm/telemetry      phi_v=0.5771  measured=True   <- was the hardcoded 0.86
+   distinct values: 1  (was 2, with one endpoint serving the value the whole
+   voltage doctrine forbids hardcoding)
+
+2. DDR COUNTERS - NOW LIVE, PROVEN BY MOVEMENT
+   scans_performed        10 -> 15  (+5, exactly the 5 scans issued)
+   prevented_corruptions   8 -> 11  (+3, exactly the 3 malicious inputs)
+   total_antibodies     1801, counted from swarm_v2_artifacts/DDR_ANTIBODIES.json
+   status               ARMED_WITH_REGISTRY  (was the unsupported IMMUNE_ARMED)
+   rowhammer_mitigation NOT_IMPLEMENTED      (was the sourceless literal 128)
+   Before: frozen literals 1801/279/128. A number that cannot move is not being
+   measured - now these move in lockstep with real activity.
+
+3. DDR SCAN - the 8 attacks that used to bypass are all CAUGHT
+   eval ("1+1")                        -> dangerous_execution_primitive
+   getattr(__builtins__,"ev"+"al")(..) -> obfuscation_evasion_indicators
+   __import__("os").system("id")       -> dangerous_execution_primitive
+   os.popen("id") / importlib         -> dangerous_execution_primitive
+   compile(...)+"exec"                 -> dangerous_execution_primitive
+   pickle.loads / yaml.load            -> dangerous_execution_primitive
+   benign controls (comment, docstring) -> CLEAN (no false positives)
+
+   The single-space bypass that defeated the old detector is closed, and the
+   comment-mentioning-eval() false positive is gone.
+
+UNCHANGED AND STILL TRUE: this scanner is lexical, not semantic. It cannot see
+through three levels of indirection and it executes nothing. It is a large
+improvement on substring matching, not a substitute for real AST/taint analysis,
+and not a substitute for refusing to run untrusted text.

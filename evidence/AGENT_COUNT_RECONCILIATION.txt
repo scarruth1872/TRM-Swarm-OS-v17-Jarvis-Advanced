@@ -1,0 +1,53 @@
+AGENT COUNT RECONCILIATION - THREE NUMBERS, MEASURED (2026-10-25)
+
+Three different agent counts circulate. All three now traced to source.
+
+=== 14 - COUNCIL AGENTS (REAL) ===
+  source  trm_uefi_kernel/host_council_server/src/main.rs
+  struct  const AGENTS: &[Agent] = &[ ... ]
+  count   14 named entries, verified by regex:
+          Hermes Jarvis Bridge Shield Logic Devo Pulse Flow EventLedger
+          Orchestra THzGateway Verify Seeker Archi
+  each has name, role, weight, domain - individually inspectable
+  LIVE: /council/members returns all 14
+
+=== 64 - FLEET AGENTS (REAL) ===
+  source  swarm_v2/core/full_64_agent_orchestrator.py
+  count   64 named agents in 8 fleets x 8
+  RUNS: measured 64 spawned, 1492 ms real duration
+  CAVEAT: per-agent latency_ms is a hardcoded default 0.18 (measured 23.3)
+
+=== 584 - DISPATCH SLOTS (NOT AGENTS) ===
+  source  trm_uefi_kernel/src/digital_twin.rs (238 lines)
+  300 FastPath slots   state_trit =  1 (active)   - hardcoded
+  150 Instella slots   state_trit =  0 (idle)     - hardcoded
+  134 Bonsai slots     state_trit = -1 (FAULT)    - hardcoded
+
+  THE SLOTS ARE HOLLOW. In the constructor:
+      let role_idx = i % FAST_ROLES.len();
+      let _ = role_idx;                 <- computed, then DISCARDED
+  No per-role identity is ever stored. All 584 are identical structs
+  distinguished only by slot_id and a compile-time state_trit.
+
+=== 598 = A CATEGORY ERROR ===
+  sovereign_practice.py::real_agent_count():
+      twin = 584
+      council = 14
+      return twin + council        <- adds SLOTS to AGENTS, counts nothing
+  It is a hardcoded literal sum, not a measurement. 598 mixes two categories:
+  584 execution SLOTS + 14 governance AGENTS. The figure is meaningless.
+
+=== THE HONEST ANSWER ===
+  78 NAMED AGENTS    = 14 council (governance) + 64 fleet (orchestration)
+  584 DISPATCH SLOTS = execution capacity, no individual identity
+  ---
+  10,662   FALSE (nothing in kernel)
+  598      FALSE (slots + agents, hardcoded sum)
+  584      FALSE as 'agents' (hollow slots)
+
+NOTE: the 134 Bonsai slots are correctly marked -1 (fault). The Bonsai-27B
+model is not present on this box, so dormancy is accurate, not a defect.
+
+RECOMMENDED FIX: real_agent_count() should COUNT the AGENTS arrays, not
+  return a constant. Suite3 task 3 currently reports 598 as the 'honest count'
+  - it is a different constant, not a count. That should be corrected next.

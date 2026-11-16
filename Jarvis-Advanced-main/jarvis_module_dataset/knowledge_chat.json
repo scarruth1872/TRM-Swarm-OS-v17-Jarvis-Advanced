@@ -1,0 +1,62 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Knowledge Graph & Memory module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Knowledge Graph & Memory (id: knowledge) is one of Jarvis's core modules. It runs as a background system. Jarvis persists: core memory (user profile), episodic memory (64+ events), semantic graph (1,410 concepts, 99 relations), chat history (439+ messages), skills registry (9 skills), noospheric calibration state, biomimetic presets, and DNA behavioral parameters."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What data does Jarvis persist?"
+      },
+      {
+        "role": "assistant",
+        "content": "Jarvis persists: core memory (user profile), episodic memory (64+ events), semantic graph (1,410 concepts, 99 relations), chat history (439+ messages), skills registry (9 skills), noospheric calibration state, biomimetic presets, and DNA behavioral parameters."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Where are Jarvis's memory files?"
+      },
+      {
+        "role": "assistant",
+        "content": "All in the root directory: jarvis_core_memory.json, jarvis_episodic_memory.json, jarvis_semantic_graph.json, jarvis_chat_history.json, jarvis_skills.json, jarvis_biomimetic_presets.json, jarvis_noospheric_calibration.json, jarvis_core_memory.json."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the semantic graph work?"
+      },
+      {
+        "role": "assistant",
+        "content": "The semantic graph stores 1,410 concept nodes and 99 directional relations. Each node has an id, label, and type. Relations connect source→target with a label. New knowledge is added via POST /api/memory/add-relation. The graph is persisted to jarvis_semantic_graph.json."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Knowledge Graph & Memory module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "All memory files are read/written by the Memory API, Substrate Platform, and Chat System."
+      }
+    ]
+  }
+]

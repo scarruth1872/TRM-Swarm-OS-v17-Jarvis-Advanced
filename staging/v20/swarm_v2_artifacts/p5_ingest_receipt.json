@@ -1,0 +1,109 @@
+{
+ "phase": "P5",
+ "action": "convene, research, wire -- acquire nothing",
+ "council": {
+  "convened_via": "POST /crate/council/vote (route wired in P2j)",
+  "motions": 4,
+  "all_agree_with_oracle": true,
+  "participation": {
+   "CONTROL: documented MOTION_A": {
+    "verdict": "PROCEED",
+    "trit_sum": 9,
+    "voters": 3,
+    "abstainers": 12
+   },
+   "CONTROL: documented MOTION_E": {
+    "verdict": "PROCEED",
+    "trit_sum": 15,
+    "voters": 5,
+    "abstainers": 10
+   },
+   "P5 frame 1 -- ACQUIRE external info": {
+    "verdict": "PROCEED",
+    "trit_sum": 3,
+    "voters": 1,
+    "abstainers": 14
+   },
+   "P5 frame 2 -- WIRE what is already here": {
+    "verdict": "PROCEED",
+    "trit_sum": 18,
+    "voters": 6,
+    "abstainers": 9
+   }
+  },
+  "reading": "the tally is weakly discriminating (every voter contributes +1 trits); the signal is participation -- 6 agents for wiring, 1 for acquisition."
+ },
+ "wiring": {
+  "source": "drugs/molecule_features.csv",
+  "source_sha256": "78c3a68ddb064d2bd36248a67b9fc0e08505a0be73f607923d00ff1d476a9540",
+  "rows_stored": 2897818,
+  "coverage": 1.0,
+  "rows_per_s": 118013.0,
+  "fingerprints_present_after_load": 2897818,
+  "matches_full_coverage": 444048,
+  "matches_at_6_90pc": 9937,
+  "producer": "scratch/extract_molecular_features.py (Task 466)",
+  "gate": "scratch/verify_features_vs_rdkit.py"
+ },
+ "labelling_defect_found": {
+  "evidence": {
+   "table_hba_vs_rdkit_lipinski": 0.258,
+   "table_hba_vs_simple_N_plus_O": 1.0,
+   "producer_rule": "scratch/extract_molecular_features.py:141-142"
+  },
+  "renamed": {
+   "hba": "n_plus_o",
+   "hbd": "nh_oh_implicit"
+  },
+  "why": "both names read as Lipinski descriptors while measuring heteroatom counts; a store must not answer a Lipinski query with a different quantity."
+ },
+ "research": {
+  "already_present": [
+   "vina + obabel in WSL",
+   "~/datasets/LP-PDBBind (128 MB)",
+   "~/drugs/molecule_features.csv (196 MB, Task 466)",
+   "~/drugs/chembl_37.sdf.gz (931 MB)",
+   "gnomAD 5,000-row and ClinVar 1,000-row derived samples",
+   "relational/ 234 MB ingested in P4"
+  ],
+  "absent": [
+   "PharmGKB (no file; named only in planning docs)",
+   "aligners minimap2/bwa/samtools (minimap2 appears nowhere in the tree)"
+  ],
+  "conclusion": "P5's rule is to acquire only what a task names as missing. No task names PharmGKB or an aligner; the one failing task (task_113) fails a derivation contract, not an absent artifact. Nothing was acquired."
+ },
+ "store_at_seal_time": {
+  "columns": [
+   "chembl_id",
+   "n_heavy",
+   "formula",
+   "mw",
+   "n_bonds",
+   "n_rings",
+   "aromatic_bonds",
+   "n_components",
+   "nh_oh_implicit",
+   "n_plus_o",
+   "rotatable",
+   "fp",
+   "source_path",
+   "sha256"
+  ],
+  "feature_rows": 2897818,
+  "fingerprints_present": 2897818,
+  "mw_300_350_and_n_plus_o_le_3": 72502,
+  "rdkit_smiles_rows": 199997
+ },
+ "live_council_recheck": {
+  "verdict": "PROCEED",
+  "trit_sum": 18,
+  "voters": 6
+ },
+ "files": [
+  "scratch/p5_convene_council.py",
+  "scratch/p5_wire_features.py",
+  "scratch/p5_hba_definition.py",
+  "scratch/p5_label_features.py",
+  "docs/P5_ACQUIRE_VS_WIRE_20260925.md"
+ ]
+}

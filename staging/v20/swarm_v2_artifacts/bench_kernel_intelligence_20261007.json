@@ -1,0 +1,221 @@
+{
+  "benchmark": "kernel_intelligence",
+  "root": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main",
+  "started_at": "2026-10-07T22:58:54Z",
+  "kernel_identity": {
+    "dll": "swarm_v2_rust_kernel\\target\\release\\swarm_rust_kernel.dll",
+    "dll_bytes": 727552,
+    "monad_truth_anchor": "0x4d4f4e4144000001",
+    "anchor_matches": true
+  },
+  "kleene": {
+    "laws_checked": 21,
+    "laws_obeyed": 21,
+    "kleene_exact": true
+  },
+  "council": {
+    "available": true,
+    "consensus_reached": true,
+    "rc": 1,
+    "weighted_score": 0.840325,
+    "monad_seal": "0x4c5e5f50551141b7"
+  },
+  "corpus": {
+    "source": "swarm_v2_artifacts\\kernel_knowledge_index.json",
+    "documents": 2180,
+    "dim": 768,
+    "model": "native-turbovec-hdc"
+  },
+  "quantization": {
+    "vectors": 2180,
+    "dim": 768,
+    "trits_written": 1674240,
+    "multiplier": 1.0,
+    "fidelity_mean": 0.889572,
+    "fidelity_min": 0.837919,
+    "fidelity_max": 0.906345,
+    "nonzero_trit_fraction": 0.423838,
+    "compression_bytes_per_vector": {
+      "float32": 3072,
+      "ternary_i8": 768
+    },
+    "compression_ratio": 4.0
+  },
+  "search_correctness": {
+    "queries": 2180,
+    "top_k": 5,
+    "rank1_self_hits": 2180,
+    "precision_at_1": 1.0,
+    "indistinguishable_pairs": 0,
+    "rank1_hits_allowing_twin": 2180,
+    "precision_at_1_allowing_twin": 1.0,
+    "kernel_vs_oracle_matches": 2180,
+    "kernel_vs_oracle_mismatches": [],
+    "search_is_correct": true
+  },
+  "latency": {
+    "iters": 1000,
+    "corpus_vectors": 2180,
+    "dim": 768,
+    "top_k": 5,
+    "ternary_ns": {
+      "p50": 1378500,
+      "p95": 2258900,
+      "min": 1119400,
+      "max": 2606600
+    },
+    "ternary_us": {
+      "p50": 1378.5,
+      "p95": 2258.9
+    },
+    "float_cosine_search_us": {
+      "p50": 388151.5,
+      "p95": 464112.0
+    },
+    "comparisons_per_query": 2180,
+    "ternary_throughput_comparisons_per_s": 1581429
+  },
+  "live_path": {
+    "embed_model": "native-turbovec-hdc",
+    "attempted": 5,
+    "answered": 5,
+    "rank1_correct": 5,
+    "space_match_cosines": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "cases": [
+      {
+        "query_doc": "papers/paper_01_geometric_resonance.md",
+        "encode_latency_us": 9132.2,
+        "space_cosine_vs_stored": 1.0,
+        "rank1": 0,
+        "rank1_doc": "papers/paper_01_geometric_resonance.md",
+        "rank1_score": 311,
+        "top3": [
+          {
+            "idx": 0,
+            "doc": "papers/paper_01_geometric_resonance.md",
+            "score": 311
+          },
+          {
+            "idx": 60,
+            "doc": "papers/paper_10_trillion_tasks.md",
+            "score": 215
+          },
+          {
+            "idx": 42,
+            "doc": "papers/paper_05_turbovec.md",
+            "score": 193
+          }
+        ]
+      },
+      {
+        "query_doc": "papers/paper_021_the_full_awakening_20_engine_architecture.md",
+        "encode_latency_us": 6387.0,
+        "space_cosine_vs_stored": 1.0,
+        "rank1": 1,
+        "rank1_doc": "papers/paper_021_the_full_awakening_20_engine_architecture.md",
+        "rank1_score": 321,
+        "top3": [
+          {
+            "idx": 1,
+            "doc": "papers/paper_021_the_full_awakening_20_engine_architecture.md",
+            "score": 321
+          },
+          {
+            "idx": 2,
+            "doc": "papers/paper_022_voltage_harmonization_proof.md",
+            "score": 228
+          },
+          {
+            "idx": 29,
+            "doc": "papers/paper_048_multimodal_ingestion_engine.md",
+            "score": 227
+          }
+        ]
+      },
+      {
+        "query_doc": "papers/paper_022_voltage_harmonization_proof.md",
+        "encode_latency_us": 8316.2,
+        "space_cosine_vs_stored": 1.0,
+        "rank1": 2,
+        "rank1_doc": "papers/paper_022_voltage_harmonization_proof.md",
+        "rank1_score": 329,
+        "top3": [
+          {
+            "idx": 2,
+            "doc": "papers/paper_022_voltage_harmonization_proof.md",
+            "score": 329
+          },
+          {
+            "idx": 3,
+            "doc": "papers/paper_023_10_node_voltage_harmony.md",
+            "score": 254
+          },
+          {
+            "idx": 29,
+            "doc": "papers/paper_048_multimodal_ingestion_engine.md",
+            "score": 240
+          }
+        ]
+      },
+      {
+        "query_doc": "papers/paper_023_10_node_voltage_harmony.md",
+        "encode_latency_us": 7317.3,
+        "space_cosine_vs_stored": 1.0,
+        "rank1": 3,
+        "rank1_doc": "papers/paper_023_10_node_voltage_harmony.md",
+        "rank1_score": 282,
+        "top3": [
+          {
+            "idx": 3,
+            "doc": "papers/paper_023_10_node_voltage_harmony.md",
+            "score": 282
+          },
+          {
+            "idx": 2,
+            "doc": "papers/paper_022_voltage_harmonization_proof.md",
+            "score": 254
+          },
+          {
+            "idx": 29,
+            "doc": "papers/paper_048_multimodal_ingestion_engine.md",
+            "score": 223
+          }
+        ]
+      },
+      {
+        "query_doc": "papers/paper_024_voltage_bound_drug_screening_at_scale.md",
+        "encode_latency_us": 6513.5,
+        "space_cosine_vs_stored": 1.0,
+        "rank1": 4,
+        "rank1_doc": "papers/paper_024_voltage_bound_drug_screening_at_scale.md",
+        "rank1_score": 270,
+        "top3": [
+          {
+            "idx": 4,
+            "doc": "papers/paper_024_voltage_bound_drug_screening_at_scale.md",
+            "score": 270
+          },
+          {
+            "idx": 2,
+            "doc": "papers/paper_022_voltage_harmonization_proof.md",
+            "score": 230
+          },
+          {
+            "idx": 29,
+            "doc": "papers/paper_048_multimodal_ingestion_engine.md",
+            "score": 214
+          }
+        ]
+      }
+    ],
+    "space_match_mean": 1.0,
+    "live_vectors_share_index_space": true
+  },
+  "finished_at": "2026-10-07T23:03:38Z"
+}

@@ -1,0 +1,66 @@
+{
+  "timestamp": "2026-08-06T01:14:28",
+  "instructions": [
+    {
+      "name": "K3CLASS",
+      "current_ns": 7679.7,
+      "optimized_ns": 5074.9,
+      "speedup": 1.5,
+      "ops_replaced_est": 767
+    },
+    {
+      "name": "MAMBA3STEP",
+      "current_ns": 18780.1,
+      "optimized_ns": 18316.7,
+      "speedup": 1.0,
+      "ops_replaced_est": 1878
+    },
+    {
+      "name": "PONDEROMOTIVE",
+      "current_ns": 81834.2,
+      "optimized_ns": 8461.7,
+      "speedup": 9.7,
+      "ops_replaced_est": 8183
+    },
+    {
+      "name": "LORA_FUSED",
+      "current_ns": 6087.3,
+      "optimized_ns": 4891.5,
+      "speedup": 1.2,
+      "ops_replaced_est": 608
+    },
+    {
+      "name": "RADIX_TRIE_WALK",
+      "current_ns": 788.0,
+      "optimized_ns": 6171.2,
+      "speedup": 0.1,
+      "ops_replaced_est": 78
+    },
+    {
+      "name": "DDR_MATCH",
+      "current_ns": 1255.2,
+      "optimized_ns": 1343.7,
+      "speedup": 0.9,
+      "ops_replaced_est": 125
+    },
+    {
+      "name": "TURBOVEC_DOT",
+      "current_ns": 1092.0,
+      "optimized_ns": 8590.8,
+      "speedup": 0.1,
+      "ops_replaced_est": 109
+    },
+    {
+      "name": "INSTELLA_GATE",
+      "current_ns": 22638.1,
+      "optimized_ns": 11907.0,
+      "speedup": 1.9,
+      "ops_replaced_est": 2263
+    }
+  ],
+  "total_current_ns": 140154.6,
+  "total_opt_ns": 64757.5,
+  "overall_speedup": 2.2,
+  "native_cycles": 18,
+  "native_speedup_vs_emulated": 31145.0
+}

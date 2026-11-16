@@ -1,0 +1,25 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-27T11:56:42.522673+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "083daad2c8d042780a43564cc7aeeab931bb922540f53dc3e4751f35224c1478",
+      "motion": "MOTION-ENTR",
+      "phase": "consensus",
+      "proposal_id": "CP-404FFCAA",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "THIRD SURROGATE TEST (conformational entropy): compute the interface B-factor (B_iso_or_equiv, the crystallographic flexibility proxy) for the cognate vs the fixed-frame rotation-optimized random, and test whether it separates. PREDICTION: if the B-factor carries a signal, the loop generalizes a third time; if not, the loop returns no_valid_surrogate (the boundary \u2014 entropy is dynamic, the static structure does not constrain it). The route's contract (reject a proxy without a physical rationale) is exercised here. MEASURED: the meta loop has TWO confirmed surrogates (donor-acceptor angle, unsatisfied N/O fraction). THIRD TEST: conformational entropy. SURROGATE HYPOTHESIS: the crystallographic B-factor (B_iso_or_equiv, present in every CIF) reflects atomic flexibility, which constrains the conformational entropy \u2014 a specific interface is more constrained (lower B-factor) than an incidental one. PREDICTION: either the B-factor surrogate carries a signal (the loop generalizes a third time) OR the loop returns no_valid_surrogate (entropy is dynamic, not constrained by the static B-factor) \u2014 both outcomes are valid and name the boundary."
+    }
+  ],
+  "prediction_recorded": "B-factor surrogate carries a signal (loop generalizes a third time) OR no_valid_surrogate (the boundary \u2014 entropy is dynamic)",
+  "prior_state": "two confirmed surrogates; third test = conformational entropy via the B-factor",
+  "quorum": 9,
+  "record": "THIRD SURROGATE TEST (conformational entropy) -- council-voted; platform self-directs",
+  "sha256": "dc16d81f00da1c0475289c92b443639677bee9a82c9a0bbb0ddcb805897e21c5"
+}

@@ -1,0 +1,68 @@
+{
+  "manifest_type": "MUON_SILICON_DETECTOR_LEDGER",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-09-01T02:06:15Z",
+  "status": "COSMIC_DETECTOR_ACTIVE_AND_CALIBRATED",
+  "muon_kinematics": {
+    "rest_mass_mev": 105.6583755,
+    "mean_energy_gev": 4.0,
+    "lorentz_gamma": 37.86,
+    "velocity_c": 0.999651,
+    "proper_lifetime_us": 2.1969811,
+    "dilated_lifetime_us": 83.17,
+    "mean_flight_length_km": 24.93
+  },
+  "silicon_ionization": {
+    "wafer_thickness_um": 300.0,
+    "energy_deposited_kev": 115.98,
+    "eh_pairs_created": 31776,
+    "charge_deposited_fc": 5.091,
+    "transit_time_ps": 1.001
+  },
+  "hardware_nodes": {
+    "desktop_ryzen_3900x_cpu": {
+      "name": "Desktop AMD Ryzen 9 3900X (2x CCD + 1x cIOD)",
+      "area_cm2": 2.73,
+      "transistor_count_billions": 9.89,
+      "muons_per_min": 2.73,
+      "muons_per_sec": 0.0455,
+      "muons_per_hour": 163.8,
+      "muons_per_day": 3931.0
+    },
+    "desktop_rx6700xt_gpu": {
+      "name": "Desktop AMD Radeon RX 6700 XT (Navi 22)",
+      "area_cm2": 3.35,
+      "transistor_count_billions": 17.2,
+      "muons_per_min": 3.35,
+      "muons_per_sec": 0.05583,
+      "muons_per_hour": 201.0,
+      "muons_per_day": 4824.0
+    },
+    "laptop_ryzen_5900hx_cpu": {
+      "name": "Laptop AMD Ryzen 9 5900HX (Cezanne APU)",
+      "area_cm2": 1.8,
+      "transistor_count_billions": 10.7,
+      "muons_per_min": 1.8,
+      "muons_per_sec": 0.03,
+      "muons_per_hour": 108.0,
+      "muons_per_day": 2592.0
+    },
+    "tactical_s25_ultra_soc": {
+      "name": "Tactical Galaxy S25 Ultra (Snapdragon 8 Gen 4 / 3nm)",
+      "area_cm2": 1.25,
+      "transistor_count_billions": 20.0,
+      "muons_per_min": 1.25,
+      "muons_per_sec": 0.02083,
+      "muons_per_hour": 75.0,
+      "muons_per_day": 1800.0
+    }
+  },
+  "swarm_aggregate": {
+    "total_silicon_area_cm2": 9.13,
+    "total_transistors_billions": 57.79,
+    "muon_rate_per_min": 9.13,
+    "muon_rate_per_day": 13147.0,
+    "muon_rate_per_year": 4802015.0
+  },
+  "sha256_seal": "a2f0dbcf8d5e357321fb3939f4ba2f98838ed26c07be0d53566dad207235b4cc"
+}

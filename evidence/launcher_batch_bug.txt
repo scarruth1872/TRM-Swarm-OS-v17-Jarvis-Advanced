@@ -1,0 +1,50 @@
+ROOT CAUSE: the platform launcher never worked - a 2-char batch bug
+
+SYMPTOM: 3 services down (3002 bridge, 3001 proxy, 5183 LCARS);
+         daily cron health report showed ANOMALY_DETECTED.
+
+CHAIN:
+  scheduled task 'TRM-Swarm-OS-Microkernel' runs START_TRM_PLATFORM.bat
+  at logon. Last Run 9/11/2026, Last Result -2147024894 (0x80070002).
+  It has FAILED SILENTLY for ~1 month.
+
+BISECT (minimal repros):
+  echo Starting (Release Binary)...   FAILS '... unexpected at this time'
+  echo Starting (Release Binary)      OK
+  echo Starting Release Binary...     OK
+  => ')' immediately followed by '...' inside an if/else block breaks cmd.
+     4 such lines existed, one per step. Step 2 is the first, so the
+     launcher aborted before starting ANY service.
+
+FIX:
+  1. removed ')''...' from the 4 echo lines inside if/else blocks
+  2. absolute paths: PY_EXE=...Python311\python.exe, NPM_CMD=...nodejs\npm.cmd
+     (Task Scheduler has a minimal PATH - bare python/npm are absent there)
+  3. added logs/platform_launch.log so it can never fail silently again
+
+VERIFIED: ran the fixed launcher from a cold start (all 4 ports free).
+  It brought up all four. 8022, 3002, 3001, 5183 all ALIVE.
+  /system/health_matrix: status OPTIMAL, anomalies [].
+
+backup: START_TRM_PLATFORM.bat.pre-pathfix-2026-10-08.bak
+
+=== 2026-10-14 POST-REBOOT VERIFICATION ===
+machine booted 10:32, services were DOWN 5 min later.
+launcher was run BY HAND and started all 5 services correctly.
+
+TWO BUGS FOUND IN MY OWN LAUNCHER PATCH:
+  1. the log-write lines were LOST when I restored from the pre-pathfix
+     backup after the ')...' syntax error. Only 'set LOG=' survived, with
+     no mkdir and no echo. I had reported logging as a working fix.
+     -> the log's only entry was from 10/08, proving it never recorded.
+  2. the launcher never EXITED - cmd /c hung 400s (start + timeout combo)
+
+FIXED:
+  - self-logging wrapper: re-invokes itself via COMSPEC with 1>> log 2>&1.
+    TRM_LOGGED guards recursion, so the FULL transcript is captured.
+  - 'exit /b 0' so it returns cleanly.
+
+VERIFIED 10/14:
+  launcher by hand  -> exit 0, full transcript logged
+  Startup .lnk      -> FIRED, wrote log, exit clean
+

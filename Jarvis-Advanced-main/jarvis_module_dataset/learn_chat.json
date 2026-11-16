@@ -1,0 +1,62 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Resource Learning module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Resource Learning (id: learn) is one of Jarvis's core modules. It provides 1 API endpoints. POST /api/learn-resource with body { 'url': 'https://docs.example.com/api', 'format': 'markdown' }. Jarvis ingests the content and stores it in the semantic graph for future recall."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/learn-resource endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/learn-resource: Learn from a resource. Body: { url?, text?, format? }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I teach Jarvis something new?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/learn-resource with body { 'url': 'https://docs.example.com/api', 'format': 'markdown' }. Jarvis ingests the content and stores it in the semantic graph for future recall."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the Resource Learning module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 400 if no url or text"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Resource Learning module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Learned resources are stored in Semantic Graph memory."
+      }
+    ]
+  }
+]

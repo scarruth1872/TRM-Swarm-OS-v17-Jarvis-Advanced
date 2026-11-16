@@ -1,0 +1,95 @@
+FULL CODEBASE INVENTORY - F:\Development sites\TRM-Swarm-OS-v2
+Measured 2026-10-25. Every figure counted, none estimated.
+
+=== SCALE ===
+  59 top-level directories
+  ~50 GB total
+  109,746 files
+  76 Cargo crates
+  43 built release binaries
+  13,205 .py files (1,667 production; 11,538 are train_venv)
+
+=== TOP-LEVEL BY SIZE ===
+  31,542.3 MB    4,033 f  swarm_v2_artifacts      <- dominates the repo
+   9,028.9 MB   19,413 f  Jarvis-Advanced-main
+   2,362.6 MB       94 f  backups                 <- 94 files, 2.4 GB
+   2,058.1 MB   23,161 f  train_venv              <- NOT source
+   1,065.7 MB       25 f  models
+     838.5 MB    2,711 f  swarm_v2_integrated     <- duplicate tree
+     789.2 MB      320 f  swarm_v2_global_memory
+     701.0 MB    2,628 f  trm_uefi_kernel         <- THE KERNEL
+     280.5 MB    1,300 f  swarm_v2_rust_kernel    <- the .dll the Python loads
+     140.6 MB   10,845 f  dashboard
+      37.5 MB        6 f  gemma_swarm_adapter
+      32.0 MB       15 f  trmboot
+      28.5 MB      216 f  SwarmOS_v6_Snapshot_extracted
+      27.5 MB       18 f  swarm_v2_memory
+      24.4 MB      567 f  openfang                <- separate 15-crate workspace
+      16.8 MB       95 f  tools
+      15.2 MB   35,484 f  .swarm                  <- mailboxes, runtime state
+      14.4 MB      539 f  preserved_sources
+      10.2 MB       10 f  kaggle
+       8.6 MB      573 f  swarm_v2                <- THE PYTHON PACKAGE
+
+=== RUST ENVIRONMENT (measured) ===
+  rustc 1.89.0 (29483883e 2025-08-04)
+  cargo 1.89.0 (c24e10642 2025-06-23)
+  toolchain: stable-x86_64-pc-windows-msvc (default)
+  targets installed: x86_64-pc-windows-msvc, x86_64-unknown-uefi (BARE METAL)
+  build output: trm_uefi_kernel/target 78 MB, swarm_v2_rust_kernel/target 187 MB
+
+=== RUST CRATES: 76 total ===
+  openfang workspace           15 crates  (api channels cli desktop extensions
+                                hands kernel memory migrate runtime skills
+                                types wire + xtask)
+  preserved_sources/openfang_original  15 crates  <- EXACT DUPLICATE of above
+  swarm_v2_rust_kernel          1 lib     (the .dll loaded by swarm_council.py)
+  trm_uefi_kernel               1 bin     (the bare-metal UEFI kernel)
+    + 44 host_* sub-crates: host_answer host_batch2 host_batch3 host_batchA
+      host_batchB host_catalyst host_continuous_ops host_council_deliberation
+      host_council_server (LIVE :8022) host_ddr host_defense
+      host_direct_memory_runner host_drugscreen host_epi host_fanout
+      host_fractal host_gaps host_global_ops host_holo host_intel
+      host_invariant_stress host_jarvis host_manus_runner host_mcts host_monad
+      host_operate host_pipeline1 host_pipeline23 host_probe host_registry
+      host_small1 host_small2 host_small3 host_test host_test_batch0
+      host_totality host_tranche host_vep sovereign_fusion_scanner
+      sovereign_installer trm_companion_bridge
+  trm-fang-gateway              1 bin
+  swarm-predictive-analytics    2 bins (duplicated tree)
+
+=== BUILT BINARIES: 43 in release/ ===
+  16.4 MB  trm7m_host_test.exe            <- largest
+   2.5 MB  host_council_server.exe        <- SERVING :8022
+   1.4 MB  fast_path_sram_bench.exe       <- SRAM benchmark, UNEXAMINED
+   0.7 MB  trm_companion_bridge.exe
+   0.4 MB  trm_swarm_boot.exe             <- v19 kernel
+   0.2 MB  host_council_deliberation.exe  <- SEPARATE deliberation crate, UNEXAMINED
+   0.2 MB  test_ollama.exe                <- violates NO-OLLAMA doctrine
+
+=== PYTHON PACKAGE: swarm_v2 (329 files, 2.5 MB) ===
+  core/       swarm_council.py full_64_agent_orchestrator.py k3_ternary_sram.py
+              hardware_voltage_microkernel_binder.py epistemology_verification.py
+  routes/     council.py swarm.py insights.py etc (608 route decorators)
+  app_v2.py   275 production routes, SWARM_PORT default 8001 (running :8099)
+
+=== DUPLICATION (measured) ===
+  openfang  +  preserved_sources/openfang_original   15 crates each = 2x
+  swarm_v2_integrated (838 MB) vs swarm_v2_artifacts (31.5 GB) vs swarm_v2 (8.6 MB)
+  SwarmOS_v6_Snapshot_extracted (28.5 MB) - third copy of the tree
+  swarm-predictive-analytics crate in BOTH swarm_v2_artifacts and _integrated
+
+=== UNEXAMINED - HIGHEST VALUE ===
+  1. fast_path_sram_bench.exe (1.4 MB) - may be the source of SRAM throughput
+     claims; never run this session.
+  2. host_council_deliberation crate+exe (0.2 MB) - a SECOND council
+     implementation in Rust, built but never invoked.
+  3. trm7m_host_test.exe (16.4 MB) - largest binary, purpose unknown.
+  4. UQI orchestrator_agent.py 260,630 B (F:\Development sites\ub3)
+
+=== HONEST NOTES ===
+  31.5 GB of the ~50 GB repo is swarm_v2_artifacts (4,033 files). It is not
+  source; it dwarfs everything and makes the repo hard to reason about.
+  backups/ is 2.4 GB in only 94 files - large archive blobs.
+  train_venv (2.0 GB, 23,161 files) is a virtualenv counted in the tree.
+  Both inflate every naive 'file count' of this repo.

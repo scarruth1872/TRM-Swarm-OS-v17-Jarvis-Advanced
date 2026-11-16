@@ -1,0 +1,64 @@
+FUNCTIONAL BENCHMARKS - host 3f412b5cef6abdac, 2026-10-05
+
+=== A. PRIMITIVE FUNCTIONAL (real kernel modules, host harness) ===
+K3 CLEAN CHANNEL  veto rate 100.00% at K=4,16,64,256 (20000 trials each)
+                  a single RETRACT vetoes the AND at every stream length
+K3 THROUGHPUT     1e6 kleene_and in 35.2us = 28,409 M ops/sec
+TURBOVEC FIDELITY dim=256 n=2000  mean cos 0.937657  worst 0.918801
+TURBOVEC THROUGHPUT 2,065,866 encodes/sec = 132.2 MB/s packed
+TURBOVEC COMPRESSION fp32 1024 B -> 64 B = 16.0x exact
+
+=== B. HTTP SURFACE FUNCTIONAL (91 routes x 5 calls) ===
+ok=79 failed=12
+surface latency p50 0.7 ms  (p95 dominated by the 4 federation timeouts)
+8 x HTTP 404 on parameterised routes (need args/method) - expected
+4 x TIMEOUT  /federation{,/100,/peers,/stats} at 8010-8030 ms each  <-- DEFECT I INTRODUCED
+
+CAUSE: federation_probe::probe() called INSIDE the 100-peer build loop.
+       100 x 80 ms = 8 s PER REQUEST, defeating the OnceLock cache.
+FIX (built, NOT deployed): cache per-peer outcomes; handlers read
+       peer_reachable(i) and never re-probe.
+
+=== C. DDR FUNCTIONAL (live HTTP endpoint) ===
+300 real .py files in 4.1 s = 74.0 files/sec | 0.37 MB/sec | 1.51 MB scanned
+flag rate 37/300 = 12.33%
+  dangerous_execution_primitive 25 | sql_injection_defense 9
+  shell_injection 7 | obfuscation_evasion_indicators 6
+NOTE: 0.37 MB/s is per-file HTTP overhead, not scanner cost.
+
+=== AFTER THE FIX (host f9de1198852aae66, re-run) ===
+ok=83  failed=8   (was ok=79 failed=12)
+surface latency p50 0.6 ms
+/federation 9100ms -> 10.1ms -> 1.9ms on repeat (cache holds)
+/federation/stats 9128->11.4  /federation/peers 9218->1.8  /federation/100 9099->1.7
+the 4 TIMEOUTs are GONE.
+
+the 8 remaining 'failures' are all HTTP 404 on POST/parameterised routes
+(/brain/reason /council/propose /k3/reduce /journal/submit /swarm/spatial/simulate
+ /system/heal_anomaly /council/cadence/trigger /council/federation/dispatch)
+a bare GET on a write endpoint correctly 404s - NOT a defect.
+
+NEW FINDING: the voltage gate was applied INCONSISTENTLY.
+  /k3/bench      consulted the gate
+  /k3/stress118  did NOT  <- 500k ops, 3849ms, the heaviest endpoint on the platform
+  /k3/sram/patterns did NOT
+  stress118 is 6400x the p50 and the sole driver of the p95.
+  fix built (both now refuse when the gate is closed); deploy pending.
+=== VOLTAGE GATE APPLIED CONSISTENTLY (host 1f86dd7f5b063cf6) ===
+DEFECT FOUND: the gate was applied to /k3/bench but NOT to /k3/stress118 or
+/k3/sram/patterns. stress118 is the HEAVIEST endpoint (500k ops, 3849ms,
+6400x p50, sole driver of p95) - the one endpoint that most needed the gate.
+
+STATE 1 (default floor 0.30, OPEN) - all three consult AND advertise the gate:
+  /k3/stress118     3795.6 ms  voltage_gate={open:true, phi_v:0.4004}
+  /k3/sram/patterns  375.0 ms  voltage_gate={open:true, phi_v:0.4004}
+  /k3/bench            1.9 ms  voltage_gate={open:true, phi_v:0.4004}
+
+STATE 2 (floor 0.99 via TRM_VOLTAGE_GATE_THRESHOLD, CLOSED):
+  all three -> REFUSED_VOLTAGE_GATE in 0.7 ms  (was 3795 ms for stress118)
+  gate.open=false  reason: 'phi_v 0.3919 is below the floor 0.99'
+  => refuses WITHOUT doing the work: 3796ms -> 0.7ms.
+
+Still open after this: /k3/stress118 remains 3796ms when the gate is OPEN.
+That is by design (500k ops is a stress test) but it dominates the p95;
+if the p95 matters, the work count wants to be configurable.

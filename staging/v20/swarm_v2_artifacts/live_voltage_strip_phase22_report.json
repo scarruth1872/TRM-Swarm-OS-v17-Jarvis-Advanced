@@ -1,0 +1,58 @@
+{
+  "phase": 22,
+  "ranks": "101-105",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "avg_speedup": 408.2,
+  "results": [
+    {
+      "rank": 101,
+      "module": "swarm_v2/core/mutation_engine.py",
+      "cdylib": "strip_mutation_engine.dll",
+      "py_ms": 20.337,
+      "rust_ms": 0.024,
+      "speedup": 853.6,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 102,
+      "module": "swarm_v2/core/ddr_antibody.py",
+      "cdylib": "strip_ddr_antibody.dll",
+      "py_ms": 13.973,
+      "rust_ms": 0.626,
+      "speedup": 22.3,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 103,
+      "module": "swarm_v2/core/native_federation_bridge.py",
+      "cdylib": "strip_federation_bridge.dll",
+      "py_ms": 5.775,
+      "rust_ms": 0.02,
+      "speedup": 283.9,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 104,
+      "module": "swarm_v2/core/native_mailbox_bridge.py",
+      "cdylib": "strip_native_mailbox.dll",
+      "py_ms": 10.36,
+      "rust_ms": 0.05,
+      "speedup": 209.3,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 105,
+      "module": "swarm_v2/core/dynamic_pipeline_router.py",
+      "cdylib": "strip_pipeline_router.dll",
+      "py_ms": 54.536,
+      "rust_ms": 0.081,
+      "speedup": 671.9,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    }
+  ]
+}

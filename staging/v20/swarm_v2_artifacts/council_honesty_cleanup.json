@@ -1,0 +1,69 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T15:00:45.642328+00:00",
+  "finding": "The campaign module hardcodes success figures (96.4 synergy, 0.52 CI, 8.4h/7.8h half-life, 94.8 toxicity) with no measured basis, violating the honesty contract. Relabel or remove them without deleting the task structure.",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Honesty",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of The next phase is the honesty cleanup: remove or relabel every unmeasured figure in drug_discovery_evolution_campaign.rs so the platform stop"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for The next phase is the honesty cleanup: remove or relabel every unmeasured figure in drug_discovery_evolution_campaign.rs so the plat"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of The next phase is the honesty cleanup: remove or relabel every unmeasured figure in drug_discovery_evolution_campaign.rs so the platform stops asse"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of The next phase is the honesty cleanup: remove or relabel every unmeasured figure in drug_discovery_evolution_campaign.rs so the platform stops asserti"
+        }
+      ],
+      "monad_seal": "f9d092e82c4c3d777ce323b7df89240e28ce05c3f8ff35a0edbbf7875e965c46",
+      "motion": "MOTION-E1",
+      "phase": "consensus",
+      "proposal_id": "CP-554D54D9",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "The next phase is the honesty cleanup: remove or relabel every unmeasured figure in drug_discovery_evolution_campaign.rs so the platform stops asserting numbers it did not produce. Each hardcoded success figure (bliss_accuracy, observed_combo, experimental_ci, the half-life pair, toxicity_ensemble_accuracy) must be either (a) derived from a real computation present in the module, or (b) relabeled declared_constant / placeholder with an explicit 'not measured' note, or (c) removed and replaced by an honest 'unmeasured' result. The hash-based formulas (mw/clogp/tpsa/predicted_kd) are declared formulas, so they are labeled derived (from the declared hash formula), not measured. The TEST is pre-registered: after the change, grep of the module finds no success figure (96.4 / 0.52 / 8.4 / 7.8 / 94.8 / 0.945) presented without a kind label, and the module still compiles and its task list still runs (no figure is silently deleted to hide a gap \u2014 a removed figure is replaced by an explicit 'unmeasured', never a vanishing act). READ FROM SOURCE (this host): swarm_v2_rust_kernel/src/drug_discovery_evolution_campaign.rs, 275 lines, hardcodes these success figures with no measured basis: bliss_accuracy = 96.4 (Task 12), observed_combo = 0.945, experimental_ci = 0.52 (Task 13), predicted_human_t_half_hours = 8.4 vs clinical_t_half_hours = 7.8 (Task 17), toxicity_ensemble_accuracy = 94.8 (Task 18). Each is then reported as a measured_metric against a target_threshold. None was ever measured or derived \u2014 they are the fabricated campaign literals the honesty contract flags, still present after every prior phase. Also present: predicted_kd = 0.35 + (hash % 850)/100 (a hash heuristic, not a model), and mw/clogp/tpsa = base + hash%N (declared formula, not measured). REJECT AS PREMATURE if the cleanup would delete a task rather than relabel its figure (the campaign's structure stays; only the fabricated numbers change), or if any remaining figure lacks a kind label.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 9,
+  "record": "HONESTY CLEANUP -- remove/relabel the fabricated campaign literals",
+  "sha256": "449600f7bbb45171df27b0f14e49680e768ff0f4fb277dec21e8db971781a2bd"
+}

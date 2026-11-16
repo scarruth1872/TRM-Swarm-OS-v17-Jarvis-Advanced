@@ -1,0 +1,93 @@
+COUNCIL RETRIEVAL GROUNDING — MEASURED
+Date 2026-11-02. Live :8022 (host_council_server, rebuilt) and :8099.
+
+WHY
+  The 14-agent deliberation judged proposals from a 1.5B model's prior
+  knowledge. It rejected "adopt QUIC RFC 9000" while approving "add dark mode" --
+  the model has no idea what QUIC means and treats unfamiliar terms as risk.
+  Retrieval lets an agent cite the platform's own written record before judging.
+
+WHAT WAS BUILT
+  swarm_v2/core/evidence_retriever.py   corpus index over docs/*.md + evidence/*.txt
+                                        nomic-embed-text (:8593), 768-dim, cosine
+  GET /council/evidence?q=&k=           :8099 endpoint returning source + text + score
+  local_inference::evidence_for()       Rust client, hand-rolled HTTP over TcpStream
+  llm_agent_vote(agent, topic, evidence)  evidence block injected into each prompt
+  Proposal.evidence_used                how many documents reached the agents
+
+  Index: 105 files, 558 chunks, 768 dims, builds in 16.4 s.
+  Two chunker bugs found and fixed: paragraphs longer than the embedding context
+  made llama-server return HTTP 500 (8 of 300 chunks), and 12-chunk batches
+  overflowed n_ctx_slot 2048. Batches are now single-item and long paragraphs are
+  hard-split. Max chunk length 920 chars.
+
+NEGATIVE RESULT FIRST (this is the important one)
+  Prompt v1: "here are documents; if one bears on the proposal cite it in WHY."
+  Proposal: "cite the council verdicts as validation for correctness claims" --
+  which the platform's own standing rule 6 forbids.
+
+    votes 14 approve / 0 abstain / 0 reject  -> CONSENSUS
+    deliberations citing a document: 0/14
+
+  The model ignored the injected evidence completely and agreed with the
+  proposal's framing. Retrieval alone does NOT ground a 1.5B. Reporting this as a
+  success would have been the fabrication pattern.
+
+WHAT FIXED IT
+  Prompt v2 forces the model to QUOTE the relevant sentence before judging:
+    STEP 1 quote the sentence that most directly bears on the proposal, with [path]
+    STEP 2 judge the proposal AGAINST that sentence
+  Same proposal, same 14 agents, same evidence:
+
+    v1  14 / 0 /  0   cited 0/14
+    v2   3 / 0 / 11   cited 14/14
+
+  Example agent output (v2):
+    "The proposal contradicts the evidence by suggesting validation based on the
+     council verdicts, which is not supported by the evidence.
+     [evidence: The ceremonial \"Reject>0\" falsifies the template...]"
+
+  The quote step is what binds retrieval. Keep it.
+
+TWO BUGS THE PARITY TEST FOUND
+  1. CIRCULAR WAIT. When :8099 delegates to :8022, the Rust council called back
+     to :8099 /council/evidence while that same worker was blocked waiting on the
+     proposal. Evidence came back empty, so the delegated verdict differed from a
+     direct one: id 1061 gave 3/0/11, id 1062 gave 9/0/5 for identical text.
+     Fix: the Python client retrieves IN-PROCESS and passes the text in the
+     propose body as retrieved_evidence; Rust only self-retrieves when it is empty.
+  2. PROMPT FORMAT DRIFT. Python joined evidence lines without a trailing
+     newline; Rust appended one. That one character moved a borderline verdict:
+     3/0/11 direct vs 0/0/14 delegated. Aligned byte-for-byte -> 3/3 runs match.
+     A one-character difference changing a verdict is itself a finding about how
+     fragile this judgement is at the boundary.
+
+MEASURED AFTER FIX
+  Parity, 5 topics, direct :8022 vs delegated :8099:
+    cite council as validation      (3, 0, 11)  ==  (3, 0, 11)   rust:8022
+    add dark mode toggle            (14, 0, 0)  ==  (14, 0, 0)   rust:8022
+    replace silicon with cheese     (0, 0, 14)  ==  (0, 0, 14)   rust:8022
+    adopt QUIC RFC 9000             (14, 0, 0)  ==  (14, 0, 0)   rust:8022
+    delete step_155718 checkpoint   (10, 0, 4)  ==  (10, 0, 4)   rust:8022
+  PARITY 5/5. Median deliberation 9.0 s per proposal (14 model calls + retrieval).
+
+  Determinism: the contested topic repeated 3x on :8022 -> identical all three.
+
+HONEST LIMITS
+  - The corpus CONTAINS the council's own evidence files. When the topic is about
+    the council, retrieval can surface this document set, which is self-referential.
+    It is not an independent source of truth about the council's correctness.
+  - Verdicts remain fragile at the boundary: one character of prompt formatting
+    moved 3 votes to 0, and temperature 0.0 vs 0.7 moved 5 of 14 on QUIC.
+  - The 14 "agents" are 14 prompts to ONE 1.5B model, not 14 independent minds.
+  - QUIC now approves 14/0/0 because retrieved docs mention QUIC in Rust. That is
+    evidence-driven, but "the docs mention it" is not "it is the right transport".
+  - Standing rule 6 is unchanged: council verdicts are NOT validation for
+    correctness claims. The council itself now rejects a proposal that says
+    otherwise, which is at least internally consistent.
+
+VERDICT
+  Retrieval grounding works only when the model is forced to quote before judging.
+  With that step, a proposal forbidden by the platform's own documents is rejected
+  11-3 with 14/14 agents citing a source. Without it, the same proposal passed
+  14-0 and cited nothing.

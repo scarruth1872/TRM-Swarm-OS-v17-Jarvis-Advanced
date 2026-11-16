@@ -1,0 +1,69 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T17:48:47.547702+00:00",
+  "finding": "The mmproj fails identically in b11457 and b11856 (tensor-offset read error), so it is not a build regression. Build the image/audio index offline with a Python EmbeddingGemma 2 encoder and keep the runtime recall in Rust.",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Bypass the llama.cpp mmproj load bug by building the image/audio index OFFLINE with a Python EmbeddingGemma 2 multimodal encoder (sentence-tr"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Cognitive & interface evaluation of Bypass the llama.cpp mmproj load bug by building the image/audio index OFFLINE with a Python EmbeddingGemma 2 multimodal encoder (sent"
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Cross-domain scientific bridging: validating molecular target binding affinities and genomic data interconnects."
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Bypass the llama.cpp mmproj load bug by building the image/audio index OFFLINE with a Python EmbeddingGemma 2 multimodal encoder (sentence-transfor"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Bypass the llama.cpp mmproj load bug by building the image/audio index OFFLINE with a Python EmbeddingGemma 2 multimodal encoder (sentence-transformer"
+        }
+      ],
+      "monad_seal": "0402b632f18baf7b97f8baad45d8870867a95819f8ddd9f468a8dd2fd6094599",
+      "motion": "MOTION-M2",
+      "phase": "consensus",
+      "proposal_id": "CP-B1C65D5A",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.984,
+      "topic": "Bypass the llama.cpp mmproj load bug by building the image/audio index OFFLINE with a Python EmbeddingGemma 2 multimodal encoder (sentence-transformers / transformers with the vision+audio config), appending those 768-dim vectors to the SAME semantic index the Rust runtime already scans. Python is used only as offline ingestion tooling (the same as the existing build_semantic_index.py); the runtime recall stays Rust. The mmproj server path remains wired but deferred until a llama.cpp build loads it. The TEST is pre-registered: image and audio vectors are appended to the index, and a TEXT query retrieves the matching image/audio document cross-modally (a picture of a cat retrieves via 'a cat' and vice versa), with every vector labeled measured_on_host (produced by the offline encoder), no fabricated figure. READ FROM SOURCE (this host): llama-server b11856 AND b11457 both fail to load mmproj-embeddinggemma-2-Q8_0.gguf with the identical 'clip_init: failed to load model ... load_tensors: failed to seek for tensor v.blk.0.attn_k.weight' (a tensor-offset read failure), so it is NOT a build regression. The mmproj file is 554,696,704 bytes (matches the HF-listed 529 MB) with a valid GGUF v3 header (963 tensors, 30 kv). The reporter's working case used the matching text model embeddinggemma-2-Q8_0.gguf; this host runs the 'UD' variant embeddinggemma-2-UD-Q4_K_XL.gguf (175 MB), which is text-verified (cat-feline 0.96) but is a DIFFERENT conversion. huggingface.co now rate-limits this host (ConnectionResetError on /api/models and /resolve), so a clean re-download is blocked for now. The Rust interface is already multimodal-ready: intelligence_router::embed_media + semantic_recall::lookup_media + POST /recall/semantic/media, all fail-closed. REJECT AS PREMATURE if the media vectors are appended WITHOUT a cross-modal retrieval check (same-space claim must be proven by retrieval, not asserted), or if any runtime recall path is moved into Python (ingestion may be Python; the live recall stays Rust).",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 9,
+  "record": "MMPROJ RESOLUTION -- bypass the llama.cpp media-path bug with an offline encoder",
+  "sha256": "e5497351fd163434f362fa1088b552eb39e2dcf7aaee116a59a3ca84275f7b39"
+}

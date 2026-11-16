@@ -1,0 +1,55 @@
+[
+ {
+  "kind": "reproducibility_measured_per_stage",
+  "fact": "The pipeline is reproducible per stage, and the stage that was not is named. `trm_chainload/scripts/check_reproducible.py` builds each stage twice from the same inputs and compares by content. The cpio was already deterministic (inode numbers are a counter, mtime 0, uid/gid 0, entries sorted by depth then name) and the gzip header already carried mtime=0; the difference was the COMPRESSOR. The same 13,291,564-byte archive is 3,976,503 B through Windows' zlib 1.3.1.zlib-ng and 3,909,028 B through Linux's stock zlib 1.3.1 at the same level, so a compressed image reproduces only where it was built. The RAM image now ships uncompressed by default -- a plain cpio has no compressor to vary, and the kernel takes it, which was measured by booting it -- at 13,291,564 B instead of 3.9 MB; `--gzip <level>` is kept for size and says what it costs. Two packs on opposite sides of the WSL boundary, a second apart, are now byte-identical. The squashfs differed by exactly one byte between two packs of the same tree: offset 8, the superblock's mkfs_time (`-all-time 0` pins the files, not the filesystem); `-mkfs-time 0` closes it, alongside `-no-exports`, `-processors 1` and a pinned `-Xcompression-level 9`, and the two packs are then identical with zero differing bytes. The compilers are deterministic at the versions in use -- gcc 15.2.0 compiles platform_init twice to the same bytes (`9321e47c63439458`) and the musl crate recompiled twice gives the same binary (`553564fd2c8bda18`) -- and that is the limit of the claim: the toolchain versions are recorded, not enforced. Two of the checkers were wrong before they were right: one compared two packs made inside the same second (a timestamp field has second resolution, so it reported SAME for a pipeline that was not), and one compared two files that did not exist (`$TMPDIR` was empty; two absent files hash equal in a shell one-liner, so it reported same=yes for a measurement that never happened). Image on the stick: 583f0dd4f25a9f88, 13,291,564 B; rootfs.squashfs 55cd5d28679edff9; both booted after restaging with the dashboard answering from outside the guest.",
+  "not_claimed": "Reproducibility here is GIVEN THE TOOLCHAIN: the gcc, rustc, mksquashfs and kernel-module versions are recorded in this tree's history, not pinned or enforced, so a rebuild with a different one yields a different artifact. The squashfs's compressor is zlib on the WSL side only, which is where it is always built. Nothing here makes the image's BOOT reproducible -- it makes the artifact comparable, which is what lets a boot-test carry forward instead of being re-run for every rebuild.",
+  "commit": "b99f93d",
+  "rederive": {
+   "files": [
+    {
+     "path": "trm_chainload/scripts/make_rootfs.py",
+     "sha256": "fdab9c5d2a9e152b0fffb328ada7c5f470c7f6393960a395daa92ac1f846e159"
+    },
+    {
+     "path": "trm_chainload/scripts/check_reproducible.py",
+     "sha256": "e55c43353042edf19e40805b11130015c4eb34e0f0f99cfa14fd5ed72d4d88c8"
+    },
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "f3d12c469c8378f54138f5346106a062c7b2512c11093b875cfa90b834233af9"
+    },
+    {
+     "path": "swarm_v2/core/check_boot_chain_static.py",
+     "sha256": "85eb85df99c912814e4bdf7debbe36c4d7591a98acdb8242f3c9624ea275721e"
+    },
+    {
+     "path": "docs/BARE_METAL_LINUX_PATHWAY_20260930.md",
+     "sha256": "0dfd1650f659e7a21d24b3608a6dafb45e3ebb6261e6538a2d2c5131b8c4bc58"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "trm_chainload/scripts/check_reproducible.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "3 of 3 stage(s) reproducible"
+     ]
+    },
+    {
+     "script": "trm_chainload/scripts/check_attr_walk.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 failed"
+     ]
+    },
+    {
+     "script": "swarm_v2/core/check_boot_chain_static.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 problem(s)"
+     ]
+    }
+   ]
+  }
+ }
+]

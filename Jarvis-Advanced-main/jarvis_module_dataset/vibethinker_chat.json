@@ -1,0 +1,98 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the VibeThinker Consensus Engine module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The VibeThinker Consensus Engine (id: vibethinker) is one of Jarvis's core modules. It provides 2 API endpoints. VibeThinker is a claim-level reliability (CLR) consensus evaluation system. It runs multiple AI trajectories on the same prompt (default 3 samples) using Ollama models (default deepseek-r1:1.5b), and evaluates consensus across responses. It provides a reliability score. VibeThinker-1.5B and 3B are open-source models from WeiboAI."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/vibe/consensus endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/vibe/consensus: Simple VibeThinker evaluation. Body: { prompt, model?, voltage? }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/vibe-thinker/consensus endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/vibe-thinker/consensus: Multi-trajectory VibeThinker. Body: { prompt, model?, numSamples? }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is VibeThinker?"
+      },
+      {
+        "role": "assistant",
+        "content": "VibeThinker is a claim-level reliability (CLR) consensus evaluation system. It runs multiple AI trajectories on the same prompt (default 3 samples) using Ollama models (default deepseek-r1:1.5b), and evaluates consensus across responses. It provides a reliability score. VibeThinker-1.5B and 3B are open-source models from WeiboAI."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I run VibeThinker consensus?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/vibe-thinker/consensus with body { 'prompt': 'Analyze this claim', 'model': 'deepseek-r1:1.5b', 'numSamples': 3 }. Returns { trajectories: [...], consensusScore, aggregatedResponse }."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What's the difference between /api/vibe/consensus and /api/vibe-thinker/consensus?"
+      },
+      {
+        "role": "assistant",
+        "content": "/api/vibe/consensus is the simple evaluation (single pass, optional voltage parameter). /api/vibe-thinker/consensus is the full multi-trajectory engine that runs multiple parallel Ollama calls, collects trajectories, and computes a consensus score."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the VibeThinker Consensus Engine module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 400 if no prompt, 502 if Ollama unreachable"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the VibeThinker Consensus Engine module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Calls Ollama API (localhost:11434) for model inference. Uses deepseek-r1:1.5b by default. Trajectories feed into decision-making."
+      }
+    ]
+  }
+]

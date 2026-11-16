@@ -1,0 +1,5163 @@
+{
+ "protocol": "MODULE_RECOGNITION_REGISTRY",
+ "monad_anchor": "0x4D4F4E4144000001",
+ "generated": "2026-10-26 13:49:29",
+ "summary": {
+  "kernel_modules": 322,
+  "platform_modules": 247,
+  "repos": 49
+ },
+ "kernel_trees": {
+  "uefi": 188,
+  "dll": 93,
+  "trm-rust": 41
+ },
+ "tree_collisions": {
+  "agent_runtime": [
+   "uefi:agent_runtime.rs=REAL",
+   "dll:agent_runtime.rs=REAL"
+  ],
+  "coherence_thresholds": [
+   "uefi:coherence_thresholds.rs=REAL",
+   "dll:coherence_thresholds.rs=REAL"
+  ],
+  "comm_protocol": [
+   "uefi:comm_protocol.rs=REAL",
+   "dll:comm_protocol.rs=REAL"
+  ],
+  "continuum_pbft": [
+   "uefi:continuum_pbft.rs=PORTED",
+   "dll:continuum_pbft.rs=PORTED"
+  ],
+  "coordination_protocol": [
+   "uefi:coordination_protocol.rs=PORTED",
+   "dll:coordination_protocol.rs=PORTED"
+  ],
+  "council": [
+   "uefi:council.rs=REAL",
+   "dll:council.rs=REAL"
+  ],
+  "dram_pattern_computer": [
+   "uefi:dram_pattern_computer.rs=REAL",
+   "dll:dram_pattern_computer.rs=REAL"
+  ],
+  "font": [
+   "uefi:font.rs=REAL",
+   "dll:font.rs=REAL"
+  ],
+  "k3_logic": [
+   "uefi:k3_logic.rs=REAL",
+   "dll:k3_logic.rs=REAL"
+  ],
+  "main": [
+   "uefi:main.rs=REAL",
+   "dll:main.rs=REAL"
+  ],
+  "phoenix_protocol_engine": [
+   "uefi:phoenix_protocol_engine.rs=PORTED",
+   "dll:phoenix_protocol_engine.rs=PORTED"
+  ],
+  "quic_protocol": [
+   "uefi:quic_protocol.rs=REAL",
+   "dll:quic_protocol.rs=REAL"
+  ],
+  "radix_trie_matcher": [
+   "uefi:radix_trie_matcher.rs=REAL",
+   "dll:radix_trie_matcher.rs=REAL"
+  ],
+  "voltage_node_engine": [
+   "uefi:voltage_node_engine.rs=PORTED",
+   "dll:voltage_node_engine.rs=PORTED"
+  ]
+ },
+ "fabricated_audit": {},
+ "by_status": {
+  "PORTED": 39,
+  "REAL": 274,
+  "EXCLUDED": 9
+ },
+ "native_strips": {
+  "scan_dir": "swarm_v2_artifacts/native_voltage_strips",
+  "total": 265,
+  "real_pe": 265,
+  "marker": 0,
+  "marker_modules": [],
+  "note": "A MARKER strip is Rust source renamed .dll, not a loadable PE image; its Python module runs the pure fallback."
+ },
+ "kernel_modules": [
+  {
+   "name": "advanced_scene_fusion",
+   "source": "uefi:advanced_scene_fusion.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 5,
+   "strip": "strip_advanced_scene_fusion.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "agent_mailbox",
+   "source": "uefi:agent_mailbox.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 17,
+   "strip": "strip_agent_mailbox.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "agent_mailbox_bus",
+   "source": "uefi:agent_mailbox_bus.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 22,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "agent_mesh",
+   "source": "uefi:agent_mesh.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 13,
+   "strip": "strip_agent_mesh.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "agent_runtime",
+   "source": "uefi:agent_runtime.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "allocator",
+   "source": "uefi:allocator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "analog_cognition_engine",
+   "source": "dll:analog_cognition_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "architectural_rl_agent",
+   "source": "uefi:architectural_rl_agent.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 10,
+   "strip": "strip_architectural_rl_agent.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "artifact_pipeline",
+   "source": "uefi:artifact_pipeline.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 20,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "asset_sealing",
+   "source": "dll:asset_sealing.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "attempt_sampler",
+   "source": "uefi:attempt_sampler.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": "strip_attempt_sampler.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "aura_engine",
+   "source": "dll:aura_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 5,
+   "strip": "strip_aura_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "auto_changelog",
+   "source": "uefi:auto_changelog.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "autonomous_finetuning_loop",
+   "source": "dll:autonomous_finetuning_loop.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "autonomy_evolution_campaign",
+   "source": "dll:autonomy_evolution_campaign.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "background_tasks",
+   "source": "uefi:background_tasks.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": "strip_background_tasks.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "base_agent",
+   "source": "uefi:base_agent.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 18,
+   "strip": "strip_base_agent.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "benchmark_epistemology",
+   "source": "uefi:benchmark_epistemology.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 2,
+   "strip": "strip_benchmark_epistemology.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "bonsai_creative_drug_synthesis",
+   "source": "dll:bonsai_creative_drug_synthesis.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "bonsai_multilingual_fluency",
+   "source": "dll:bonsai_multilingual_fluency.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "boot_payload",
+   "source": "uefi:boot_payload.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "brain_ai_microkernel_bridge",
+   "source": "uefi:brain_ai_microkernel_bridge.rs",
+   "tree": "uefi",
+   "status": "EXCLUDED",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "bridge",
+   "source": "uefi:bridge.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "campaign_provenance",
+   "source": "dll:campaign_provenance.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "chagas_drug_discovery_pipeline",
+   "source": "dll:chagas_drug_discovery_pipeline.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "chain_of_verification",
+   "source": "uefi:chain_of_verification.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 27,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "chaos_engine",
+   "source": "uefi:chaos_engine.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 9,
+   "strip": "strip_chaos_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "chaos_simulator",
+   "source": "uefi:chaos_simulator.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 4,
+   "strip": "strip_chaos_simulator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cli",
+   "source": "dll:cli.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "clinical_trial_safety_monitor",
+   "source": "dll:clinical_trial_safety_monitor.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "cognitive_ingestion_engine",
+   "source": "uefi:cognitive_ingestion_engine.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 41,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "cognitive_load_balancer",
+   "source": "uefi:cognitive_load_balancer.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 18,
+   "strip": "strip_cognitive_load_balancer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cognitive_stack",
+   "source": "uefi:cognitive_stack.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 9,
+   "strip": "strip_cognitive_stack.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "coherence_thresholds",
+   "source": "uefi:coherence_thresholds.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_coherence_thresholds.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cold_start_recovery",
+   "source": "uefi:cold_start_recovery.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 13,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "collaborative_reasoning",
+   "source": "uefi:collaborative_reasoning.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 11,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "comm_protocol",
+   "source": "uefi:comm_protocol.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 6,
+   "strip": "strip_comm_protocol.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "continuum_genomics",
+   "source": "uefi:continuum_genomics.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 9,
+   "strip": "strip_continuum_genomics.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "continuum_pbft",
+   "source": "uefi:continuum_pbft.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 20,
+   "strip": "strip_continuum_pbft.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "conversation_memory_nand_fabric",
+   "source": "dll:conversation_memory_nand_fabric.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "coordination_protocol",
+   "source": "uefi:coordination_protocol.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 19,
+   "strip": "strip_coordination_protocol.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "coordination_responder",
+   "source": "uefi:coordination_responder.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": "strip_coordination_responder.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cosmos3_edge_bridge",
+   "source": "uefi:cosmos3_edge_bridge.rs",
+   "tree": "uefi",
+   "status": "EXCLUDED",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "cosmos_bridge",
+   "source": "uefi:cosmos_bridge.rs",
+   "tree": "uefi",
+   "status": "EXCLUDED",
+   "functions": 4,
+   "strip": "strip_cosmos_bridge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cosmos_microkernel_entanglement",
+   "source": "uefi:cosmos_microkernel_entanglement.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": "strip_cosmos_microkernel_entanglement.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cosmos_moe_instella_shunter",
+   "source": "uefi:cosmos_moe_instella_shunter.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": "strip_cosmos_moe_instella_shunter.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cosmos_sparse_moe_teams",
+   "source": "uefi:cosmos_sparse_moe_teams.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "council",
+   "source": "uefi:council.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "council_multi_intelligence_deliberation_engine",
+   "source": "dll:council_multi_intelligence_deliberation_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "cqs",
+   "source": "uefi:cqs.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": "strip_cqs.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cross_modality_reasoning",
+   "source": "dll:cross_modality_reasoning.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "cybergym_exploit_challenge_engine",
+   "source": "dll:cybergym_exploit_challenge_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "daemon_discovery",
+   "source": "uefi:daemon_discovery.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": "strip_daemon_discovery.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "daily_evolution_engine",
+   "source": "uefi:daily_evolution_engine.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ddr_antibody",
+   "source": "uefi:ddr_antibody.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 11,
+   "strip": "strip_ddr_antibody.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "ddr_antibody_vault",
+   "source": "dll:ddr_antibody_vault.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ddr_self_training",
+   "source": "uefi:ddr_self_training.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": "strip_ddr_self_training.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "deep_frontier_research_engine",
+   "source": "dll:deep_frontier_research_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "deterministic_forge",
+   "source": "uefi:deterministic_forge.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 6,
+   "strip": "strip_deterministic_forge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "dge",
+   "source": "uefi:dge.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": "strip_dge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "digital_dna_loop",
+   "source": "uefi:digital_dna_loop.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 21,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "digital_twin",
+   "source": "uefi:digital_twin.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": "strip_digital_twin.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "disk_explorer",
+   "source": "uefi:disk_explorer.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "dram_pattern_computer",
+   "source": "uefi:dram_pattern_computer.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 19,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "drug_cocktail_optimizer",
+   "source": "dll:drug_cocktail_optimizer.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "drug_discovery_evolution_campaign",
+   "source": "dll:drug_discovery_evolution_campaign.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "dynamic_pattern_selector",
+   "source": "dll:dynamic_pattern_selector.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "epistemology_core",
+   "source": "uefi:epistemology_core.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "evolutionary_sandbox",
+   "source": "uefi:evolutionary_sandbox.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "expert_registry",
+   "source": "uefi:expert_registry.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 4,
+   "strip": "strip_expert_registry.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "expert_team_harnesses",
+   "source": "uefi:expert_team_harnesses.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 6,
+   "strip": "strip_expert_team_harnesses.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "external_socket_bridge",
+   "source": "uefi:external_socket_bridge.rs",
+   "tree": "uefi",
+   "status": "EXCLUDED",
+   "functions": 5,
+   "strip": "strip_external_socket_bridge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "fabric_corpus",
+   "source": "uefi:fabric_corpus.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "federation",
+   "source": "uefi:federation.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 14,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "federation_manager",
+   "source": "uefi:federation_manager.rs",
+   "tree": "uefi",
+   "status": "EXCLUDED",
+   "functions": 8,
+   "strip": "strip_federation_manager.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "federation_sram_workload_orchestrator",
+   "source": "dll:federation_sram_workload_orchestrator.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "federation_sync_upgrade",
+   "source": "dll:federation_sync_upgrade.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "federation_zero_day_defense_engine",
+   "source": "dll:federation_zero_day_defense_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "feedback_loops",
+   "source": "uefi:feedback_loops.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_feedback_loops.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "font",
+   "source": "uefi:font.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "formal_verification",
+   "source": "dll:formal_verification.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 13,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "formal_verification_engine",
+   "source": "uefi:formal_verification_engine.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_formal_verification_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "fpga_lite_bitstream_generator",
+   "source": "dll:fpga_lite_bitstream_generator.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "fractal_pattern_recursion",
+   "source": "dll:fractal_pattern_recursion.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "full_64_agent_orchestrator",
+   "source": "uefi:full_64_agent_orchestrator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "gan_design_synthesizer",
+   "source": "uefi:gan_design_synthesizer.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_gan_design_synthesizer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "generative_architect",
+   "source": "uefi:generative_architect.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_generative_architect.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "generative_architect_mitosis",
+   "source": "dll:generative_architect_mitosis.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "global_memory",
+   "source": "uefi:global_memory.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 13,
+   "strip": "strip_global_memory.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "gpu_cuda_microkernel_binder",
+   "source": "uefi:gpu_cuda_microkernel_binder.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_gpu_cuda_microkernel_binder.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "gpu_infinity_computer",
+   "source": "uefi:gpu_infinity_computer.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 13,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "gpu_rdna2_phonon",
+   "source": "dll:gpu_rdna2_phonon.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "gpu_unlock_architecture",
+   "source": "uefi:gpu_unlock_architecture.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 18,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "grand_discovery_portal",
+   "source": "dll:grand_discovery_portal.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "hardware_l3_pattern_switching",
+   "source": "dll:hardware_l3_pattern_switching.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "hardware_voltage_microkernel_binder",
+   "source": "uefi:hardware_voltage_microkernel_binder.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 16,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "heartbeat_scheduler",
+   "source": "uefi:heartbeat_scheduler.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": "strip_heartbeat_scheduler.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "heuristic_consensus",
+   "source": "uefi:heuristic_consensus.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 11,
+   "strip": "strip_heuristic_consensus.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "hf_brain",
+   "source": "uefi:hf_brain.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": "strip_hf_brain.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "higher_mind",
+   "source": "uefi:higher_mind.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_higher_mind.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "hospital_amr_surveillance_node",
+   "source": "dll:hospital_amr_surveillance_node.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "human_swarm_interaction",
+   "source": "uefi:human_swarm_interaction.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_human_swarm_interaction.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "hwprobe",
+   "source": "uefi:hwprobe.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "hybrid_federation_deployment",
+   "source": "dll:hybrid_federation_deployment.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "hybrid_intelligence_engine",
+   "source": "dll:hybrid_intelligence_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "hyperdimensional_10k_classifier",
+   "source": "dll:hyperdimensional_10k_classifier.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "input_driver",
+   "source": "dll:input_driver.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "instella_moe_hospital_consultation",
+   "source": "dll:instella_moe_hospital_consultation.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "instella_router",
+   "source": "uefi:instella_router.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "instella_sovereign_code_synthesis",
+   "source": "dll:instella_sovereign_code_synthesis.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "instella_sparse_agent_teams",
+   "source": "uefi:instella_sparse_agent_teams.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 3,
+   "strip": "strip_instella_sparse_agent_teams.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "intent_buffer",
+   "source": "uefi:intent_buffer.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 10,
+   "strip": "strip_intent_buffer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "ionosphere_hf_mesh",
+   "source": "dll:ionosphere_hf_mesh.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ipc",
+   "source": "uefi:ipc.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_ipc.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "ising_spin_glass_solver",
+   "source": "dll:ising_spin_glass_solver.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "jarvis_answers",
+   "source": "uefi:jarvis_answers.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "jarvis_cognitive",
+   "source": "uefi:jarvis_cognitive.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "jarvis_quantum",
+   "source": "uefi:jarvis_quantum.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "jarvis_substrate",
+   "source": "uefi:jarvis_substrate.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "jarvis_symbiosis",
+   "source": "uefi:jarvis_symbiosis.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_jarvis_symbiosis.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "jarvis_vibe",
+   "source": "uefi:jarvis_vibe.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "jarvis_vibethinker",
+   "source": "uefi:jarvis_vibethinker.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "k3_logic",
+   "source": "uefi:k3_logic.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 22,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "kanban_board",
+   "source": "uefi:kanban_board.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": "strip_kanban_board.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "kernel_instructions",
+   "source": "uefi:kernel_instructions.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 11,
+   "strip": "strip_kernel_instructions.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "kernel_lora_adapter",
+   "source": "uefi:kernel_lora_adapter.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "kernel_skills_tools",
+   "source": "uefi:kernel_skills_tools.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "knowledge_fabric_supremacy_campaign",
+   "source": "dll:knowledge_fabric_supremacy_campaign.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "knowledge_gap_remediation",
+   "source": "dll:knowledge_gap_remediation.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 10,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "knowledge_rag_and_semantic_search",
+   "source": "dll:knowledge_rag_and_semantic_search.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "large_model_turbovec_quantizer",
+   "source": "dll:large_model_turbovec_quantizer.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "lcars_render",
+   "source": "dll:lcars_render.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 19,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "lib",
+   "source": "dll:lib.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "llm_brain",
+   "source": "uefi:llm_brain.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_llm_brain.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "llm_orchestrator",
+   "source": "uefi:llm_orchestrator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": "strip_llm_orchestrator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "llm_router",
+   "source": "uefi:llm_router.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 12,
+   "strip": "strip_llm_router.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "lobster_shell",
+   "source": "uefi:lobster_shell.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 22,
+   "strip": "strip_lobster_shell.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "local_lora_trainer",
+   "source": "uefi:local_lora_trainer.rs",
+   "tree": "uefi",
+   "status": "EXCLUDED",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "lora_response_modulator",
+   "source": "uefi:lora_response_modulator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "main",
+   "source": "uefi:main.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "mamba3_turbovec_ssm",
+   "source": "uefi:mamba3_turbovec_ssm.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 21,
+   "strip": "strip_mamba3_turbovec_ssm.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "manus_engine",
+   "source": "uefi:manus_engine.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 9,
+   "strip": "strip_manus_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "mars_biosphere_colony_engine",
+   "source": "dll:mars_biosphere_colony_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "mcp_bus",
+   "source": "uefi:mcp_bus.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 19,
+   "strip": "strip_mcp_bus.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "mcp_tool_evolver",
+   "source": "uefi:mcp_tool_evolver.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "memory",
+   "source": "uefi:memory.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 10,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "memory_synchronizer",
+   "source": "uefi:memory_synchronizer.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": "strip_memory_synchronizer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "mesh_discovery",
+   "source": "dll:mesh_discovery.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "meta_orchestrator",
+   "source": "uefi:meta_orchestrator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 10,
+   "strip": "strip_meta_orchestrator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "microkernel_chat_bridge",
+   "source": "uefi:microkernel_chat_bridge.rs",
+   "tree": "uefi",
+   "status": "EXCLUDED",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "microkernel_spawner",
+   "source": "uefi:microkernel_spawner.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 18,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "modmap_all",
+   "source": "uefi:modmap_all.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "module_registry",
+   "source": "uefi:module_registry.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "moltbook",
+   "source": "uefi:moltbook.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 10,
+   "strip": "strip_moltbook.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "monad",
+   "source": "uefi:monad.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "monad_emanation",
+   "source": "dll:monad_emanation.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "monad_journal_consensus",
+   "source": "dll:monad_journal_consensus.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "monitor_daemon",
+   "source": "uefi:monitor_daemon.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": "strip_monitor_daemon.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "mpu",
+   "source": "uefi:mpu.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": "strip_mpu.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "multi_hospital_amr_crisis_engine",
+   "source": "dll:multi_hospital_amr_crisis_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "multimodal_fusion",
+   "source": "uefi:multimodal_fusion.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 8,
+   "strip": "strip_multimodal_fusion.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "multimodal_ingestion",
+   "source": "uefi:multimodal_ingestion.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 4,
+   "strip": "strip_multimodal_ingestion.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "multimodal_predictive_analytics",
+   "source": "uefi:multimodal_predictive_analytics.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 3,
+   "strip": "strip_multimodal_predictive_analytics.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "muon_detector",
+   "source": "dll:muon_detector.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "mutation_engine",
+   "source": "uefi:mutation_engine.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 9,
+   "strip": "strip_mutation_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "nand_fs",
+   "source": "uefi:nand_fs.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "nand_persistence",
+   "source": "dll:nand_persistence.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "native_mailbox_bridge",
+   "source": "uefi:native_mailbox_bridge.rs",
+   "tree": "uefi",
+   "status": "EXCLUDED",
+   "functions": 20,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "native_ops_bridge",
+   "source": "uefi:native_ops_bridge.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 6,
+   "strip": "strip_native_ops_bridge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "native_parsers",
+   "source": "uefi:native_parsers.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "native_query_encoder",
+   "source": "dll:native_query_encoder.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "native_text_engine",
+   "source": "dll:native_text_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "neural_wall",
+   "source": "uefi:neural_wall.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 5,
+   "strip": "strip_neural_wall.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "neuro_continuum",
+   "source": "uefi:neuro_continuum.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 11,
+   "strip": "strip_neuro_continuum.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "ollama_knowledge_harvester",
+   "source": "dll:ollama_knowledge_harvester.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "onn_kuramoto_synchronizer",
+   "source": "dll:onn_kuramoto_synchronizer.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "openclaw_gateway",
+   "source": "uefi:openclaw_gateway.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 5,
+   "strip": "strip_openclaw_gateway.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "optimization_engine",
+   "source": "uefi:optimization_engine.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 11,
+   "strip": "strip_optimization_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "p2p_direct_route",
+   "source": "dll:p2p_direct_route.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 3,
+   "strip": "strip_p2p_direct_route.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "pattern_fusion_engine",
+   "source": "dll:pattern_fusion_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "pbft_consensus",
+   "source": "uefi:pbft_consensus.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 13,
+   "strip": "strip_pbft_consensus.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "performance_supremacy_campaign",
+   "source": "dll:performance_supremacy_campaign.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "persistent_mmap_allocator",
+   "source": "uefi:persistent_mmap_allocator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 16,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "persona_matrix",
+   "source": "uefi:persona_matrix.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 6,
+   "strip": "strip_persona_matrix.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "pharmacophore",
+   "source": "dll:pharmacophore.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "phase4_synthesis_and_frontier_prep",
+   "source": "dll:phase4_synthesis_and_frontier_prep.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "phoenix_advanced_compute",
+   "source": "dll:phoenix_advanced_compute.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "phoenix_protocol_engine",
+   "source": "uefi:phoenix_protocol_engine.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 11,
+   "strip": "strip_phoenix_protocol_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "phoenix_resilience_campaign",
+   "source": "dll:phoenix_resilience_campaign.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "platform",
+   "source": "uefi:platform.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "port_manager",
+   "source": "uefi:port_manager.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 11,
+   "strip": "strip_port_manager.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "ported_dispatch",
+   "source": "dll:ported_dispatch.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "post_quantum_financial_settlement_engine",
+   "source": "dll:post_quantum_financial_settlement_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "predictive_watchdog",
+   "source": "uefi:predictive_watchdog.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 9,
+   "strip": "strip_predictive_watchdog.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "prism_fqm",
+   "source": "uefi:prism_fqm.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": "strip_prism_fqm.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "proactive_loop",
+   "source": "uefi:proactive_loop.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "qisa_optimizer",
+   "source": "uefi:qisa_optimizer.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 13,
+   "strip": "strip_qisa_optimizer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "quad_sram_horizons",
+   "source": "dll:quad_sram_horizons.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "quantum_debugger",
+   "source": "uefi:quantum_debugger.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 2,
+   "strip": "strip_quantum_debugger.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "quantum_security",
+   "source": "dll:quantum_security.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "quantum_security_supremacy_campaign",
+   "source": "dll:quantum_security_supremacy_campaign.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "quic_protocol",
+   "source": "uefi:quic_protocol.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "radix_trie_matcher",
+   "source": "uefi:radix_trie_matcher.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "real_nand_fabric_writer",
+   "source": "dll:real_nand_fabric_writer.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "reconnaissance_daemon",
+   "source": "uefi:reconnaissance_daemon.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "redis_mock",
+   "source": "uefi:redis_mock.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 14,
+   "strip": "strip_redis_mock.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "remediation_engine",
+   "source": "uefi:remediation_engine.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": "strip_remediation_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "resonance_engine",
+   "source": "uefi:resonance_engine.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 13,
+   "strip": "strip_resonance_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "resource_arbiter",
+   "source": "uefi:resource_arbiter.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 10,
+   "strip": "strip_resource_arbiter.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "rural_telemedicine_kisumu_engine",
+   "source": "dll:rural_telemedicine_kisumu_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "rust_kernel_binder",
+   "source": "uefi:rust_kernel_binder.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 26,
+   "strip": "strip_rust_kernel_binder.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "scientific_parser_evolution_campaign",
+   "source": "dll:scientific_parser_evolution_campaign.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "secrets_vault",
+   "source": "uefi:secrets_vault.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 15,
+   "strip": "strip_secrets_vault.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "security_audit",
+   "source": "dll:security_audit.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "security_scanner",
+   "source": "uefi:security_scanner.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": "strip_security_scanner.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "self_fuzzing_engine",
+   "source": "uefi:self_fuzzing_engine.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 11,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "self_healing",
+   "source": "uefi:self_healing.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 13,
+   "strip": "strip_self_healing.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "self_healing_infra",
+   "source": "uefi:self_healing_infra.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 9,
+   "strip": "strip_self_healing_infra.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "self_healing_orchestrator",
+   "source": "uefi:self_healing_orchestrator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 29,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "self_modification_api",
+   "source": "uefi:self_modification_api.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 2,
+   "strip": "strip_self_modification_api.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "semantic_cache",
+   "source": "uefi:semantic_cache.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 28,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "semantic_index",
+   "source": "uefi:semantic_index.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": "strip_semantic_index.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "semantic_knowledge_graph",
+   "source": "uefi:semantic_knowledge_graph.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 10,
+   "strip": "strip_semantic_knowledge_graph.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "sentinel",
+   "source": "uefi:sentinel.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 10,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ses",
+   "source": "uefi:ses.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": "strip_ses.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "silicon_crystallography",
+   "source": "dll:silicon_crystallography.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "simd_accelerator",
+   "source": "uefi:simd_accelerator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "skill_loader",
+   "source": "uefi:skill_loader.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 3,
+   "strip": "strip_skill_loader.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "skill_matrix_sync",
+   "source": "uefi:skill_matrix_sync.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 15,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "skill_validator",
+   "source": "uefi:skill_validator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 10,
+   "strip": "strip_skill_validator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "small_diffusion_engine",
+   "source": "uefi:small_diffusion_engine.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "sovereign_unity",
+   "source": "dll:sovereign_unity.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "spatial_octree",
+   "source": "dll:spatial_octree.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 8,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "sram_pattern_architectures",
+   "source": "dll:sram_pattern_architectures.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "sram_pattern_computer",
+   "source": "uefi:sram_pattern_computer.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 55,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "sram_pattern_orchestration_layer",
+   "source": "dll:sram_pattern_orchestration_layer.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "sram_practical_applications",
+   "source": "dll:sram_practical_applications.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "star_matrix",
+   "source": "uefi:star_matrix.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 10,
+   "strip": "strip_star_matrix.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "star_matrix_lattice",
+   "source": "uefi:star_matrix_lattice.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 9,
+   "strip": "strip_star_matrix_lattice.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "strip_registry",
+   "source": "dll:strip_registry.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "sub_atomic_kernel",
+   "source": "uefi:sub_atomic_kernel.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 12,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-agent",
+   "source": "trm-rust:swarm-agent",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-agents",
+   "source": "trm-rust:swarm-agents",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-backend",
+   "source": "trm-rust:swarm-backend",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-boot",
+   "source": "trm-rust:swarm-boot",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 0,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-brain",
+   "source": "trm-rust:swarm-brain",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 10,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-chat",
+   "source": "trm-rust:swarm-chat",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-conductor",
+   "source": "trm-rust:swarm-conductor",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-cosmos",
+   "source": "trm-rust:swarm-cosmos",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-council",
+   "source": "trm-rust:swarm-council",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-deepdta",
+   "source": "trm-rust:swarm-deepdta",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-docking",
+   "source": "trm-rust:swarm-docking",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 8,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-drug",
+   "source": "trm-rust:swarm-drug",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-fit",
+   "source": "trm-rust:swarm-fit",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-gguf",
+   "source": "trm-rust:swarm-gguf",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-git",
+   "source": "trm-rust:swarm-git",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-health",
+   "source": "trm-rust:swarm-health",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-humanistic",
+   "source": "trm-rust:swarm-humanistic",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-instella",
+   "source": "trm-rust:swarm-instella",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-intel",
+   "source": "trm-rust:swarm-intel",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-jarvis",
+   "source": "trm-rust:swarm-jarvis",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-k3",
+   "source": "trm-rust:swarm-k3",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-kernel",
+   "source": "trm-rust:swarm-kernel",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 0,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-kvstore",
+   "source": "trm-rust:swarm-kvstore",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-mesh",
+   "source": "trm-rust:swarm-mesh",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-nand",
+   "source": "trm-rust:swarm-nand",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 19,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-paths",
+   "source": "trm-rust:swarm-paths",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 11,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-proof",
+   "source": "trm-rust:swarm-proof",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-proto",
+   "source": "trm-rust:swarm-proto",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-router",
+   "source": "trm-rust:swarm-router",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-runtime",
+   "source": "trm-rust:swarm-runtime",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 0,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-server",
+   "source": "trm-rust:swarm-server",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 0,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-services",
+   "source": "trm-rust:swarm-services",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-shard",
+   "source": "trm-rust:swarm-shard",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 11,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-sovereign",
+   "source": "trm-rust:swarm-sovereign",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-ssm",
+   "source": "trm-rust:swarm-ssm",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 15,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-strips",
+   "source": "trm-rust:swarm-strips",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 22,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-tasks",
+   "source": "trm-rust:swarm-tasks",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-thsm",
+   "source": "trm-rust:swarm-thsm",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-turbovec",
+   "source": "trm-rust:swarm-turbovec",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-vitals",
+   "source": "trm-rust:swarm-vitals",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm-voltage",
+   "source": "trm-rust:swarm-voltage",
+   "tree": "trm-rust",
+   "status": "REAL",
+   "functions": 11,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm_engine",
+   "source": "uefi:swarm_engine.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 15,
+   "strip": "strip_swarm_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "swarm_orchestrator",
+   "source": "uefi:swarm_orchestrator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 11,
+   "strip": "strip_swarm_orchestrator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "swarm_performance_insights",
+   "source": "uefi:swarm_performance_insights.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 15,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swe_marathon_challenge_engine",
+   "source": "dll:swe_marathon_challenge_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "symbology_etymology_monad",
+   "source": "uefi:symbology_etymology_monad.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": "strip_symbology_etymology_monad.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "synergy_engine",
+   "source": "dll:synergy_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 11,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "task_arbiter",
+   "source": "uefi:task_arbiter.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 21,
+   "strip": "strip_task_arbiter.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "telemetry",
+   "source": "uefi:telemetry.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": "strip_telemetry.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "telemetry_fabric",
+   "source": "uefi:telemetry_fabric.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 2,
+   "strip": "strip_telemetry_fabric.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "telemetry_probe",
+   "source": "uefi:telemetry_probe.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ternary_knowledge_index",
+   "source": "dll:ternary_knowledge_index.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "thz_bonsai_gateway",
+   "source": "uefi:thz_bonsai_gateway.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 10,
+   "strip": "strip_thz_bonsai_gateway.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "thz_silicon_resonance",
+   "source": "dll:thz_silicon_resonance.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "thz_wave_gateway",
+   "source": "uefi:thz_wave_gateway.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": "strip_thz_wave_gateway.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "time",
+   "source": "uefi:time.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "tool_forge",
+   "source": "uefi:tool_forge.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 6,
+   "strip": "strip_tool_forge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "total_silicon_fabric",
+   "source": "dll:total_silicon_fabric.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "totality",
+   "source": "uefi:totality.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm7m",
+   "source": "uefi:trm7m.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm_7m_deterministic_computation",
+   "source": "dll:trm_7m_deterministic_computation.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm_7m_full",
+   "source": "uefi:trm_7m_full.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm_7m_optimized",
+   "source": "uefi:trm_7m_optimized.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 8,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm_brain",
+   "source": "uefi:trm_brain.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 2,
+   "strip": "strip_trm_brain.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "trm_integration",
+   "source": "uefi:trm_integration.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm_orchestrator",
+   "source": "uefi:trm_orchestrator.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 23,
+   "strip": "strip_trm_orchestrator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "turbovec",
+   "source": "uefi:turbovec.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "turbovec_memory",
+   "source": "uefi:turbovec_memory.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 11,
+   "strip": "strip_turbovec_memory.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "turbovec_ternary_knowledge_fusion",
+   "source": "dll:turbovec_ternary_knowledge_fusion.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ultrawork_loop",
+   "source": "uefi:ultrawork_loop.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "unified_resonance_stream",
+   "source": "dll:unified_resonance_stream.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "universal_model_ingestion_validator",
+   "source": "dll:universal_model_ingestion_validator.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "virtual_screening",
+   "source": "dll:virtual_screening.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "voltage_doctrine_harmonization_engine",
+   "source": "dll:voltage_doctrine_harmonization_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "voltage_intelligence_exceedance_engine",
+   "source": "dll:voltage_intelligence_exceedance_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "voltage_node_engine",
+   "source": "uefi:voltage_node_engine.rs",
+   "tree": "uefi",
+   "status": "PORTED",
+   "functions": 5,
+   "strip": "strip_voltage_node_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "voltage_raw_reasoning_engine",
+   "source": "dll:voltage_raw_reasoning_engine.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 1,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "web_fetch_utility",
+   "source": "uefi:web_fetch_utility.rs",
+   "tree": "uefi",
+   "status": "EXCLUDED",
+   "functions": 6,
+   "strip": "strip_web_fetch_utility.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "worktree_manager",
+   "source": "uefi:worktree_manager.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 13,
+   "strip": "strip_worktree_manager.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "zero_human_test_gen",
+   "source": "uefi:zero_human_test_gen.rs",
+   "tree": "uefi",
+   "status": "REAL",
+   "functions": 32,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "zero_network_colocation",
+   "source": "dll:zero_network_colocation.rs",
+   "tree": "dll",
+   "status": "REAL",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  }
+ ],
+ "platform_modules": [
+  {
+   "name": "__init__",
+   "source": "platform:__init__.py",
+   "status": "PLATFORM",
+   "functions": 0,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "advanced_scene_fusion",
+   "source": "platform:advanced_scene_fusion.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": "strip_advanced_scene_fusion.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "agent_intelligence_bridge",
+   "source": "platform:agent_intelligence_bridge.py",
+   "status": "PLATFORM",
+   "functions": 36,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "agent_mailbox",
+   "source": "platform:agent_mailbox.py",
+   "status": "PLATFORM",
+   "functions": 12,
+   "strip": "strip_agent_mailbox.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "agent_mailbox_bus",
+   "source": "platform:agent_mailbox_bus.py",
+   "status": "PLATFORM",
+   "functions": 23,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "agent_mesh",
+   "source": "platform:agent_mesh.py",
+   "status": "PLATFORM",
+   "functions": 33,
+   "strip": "strip_agent_mesh.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "alphagenome_bridge",
+   "source": "platform:alphagenome_bridge.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "alphagenome_kernel_engine",
+   "source": "platform:alphagenome_kernel_engine.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "architectural_rl_agent",
+   "source": "platform:architectural_rl_agent.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_architectural_rl_agent.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "artifact_pipeline",
+   "source": "platform:artifact_pipeline.py",
+   "status": "PLATFORM",
+   "functions": 30,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "attempt_sampler",
+   "source": "platform:attempt_sampler.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_attempt_sampler.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "aura_cognition",
+   "source": "platform:aura_cognition.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "aura_engine",
+   "source": "platform:aura_engine.py",
+   "status": "PLATFORM",
+   "functions": 9,
+   "strip": "strip_aura_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "auto_changelog",
+   "source": "platform:auto_changelog.py",
+   "status": "PLATFORM",
+   "functions": 24,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "background_tasks",
+   "source": "platform:background_tasks.py",
+   "status": "PLATFORM",
+   "functions": 13,
+   "strip": "strip_background_tasks.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "base_agent",
+   "source": "platform:base_agent.py",
+   "status": "PLATFORM",
+   "functions": 43,
+   "strip": "strip_base_agent.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "bench_kernel_intelligence",
+   "source": "platform:bench_kernel_intelligence.py",
+   "status": "PLATFORM",
+   "functions": 20,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "bench_trm7m_python",
+   "source": "platform:bench_trm7m_python.py",
+   "status": "PLATFORM",
+   "functions": 0,
+   "strip": "strip_bench_trm7m_python.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "benchmark_all_modules",
+   "source": "platform:benchmark_all_modules.py",
+   "status": "PLATFORM",
+   "functions": 12,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "benchmark_epistemology",
+   "source": "platform:benchmark_epistemology.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": "strip_benchmark_epistemology.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "brain_ai_microkernel_bridge",
+   "source": "platform:brain_ai_microkernel_bridge.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "bridge_e2e_test",
+   "source": "platform:bridge_e2e_test.py",
+   "status": "PLATFORM",
+   "functions": 0,
+   "strip": "strip_bridge_e2e_test.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "build_kernel_knowledge_index",
+   "source": "platform:build_kernel_knowledge_index.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "build_module_registry",
+   "source": "platform:build_module_registry.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_build_module_registry.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "build_nand_fabric_index",
+   "source": "platform:build_nand_fabric_index.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "build_structured_index",
+   "source": "platform:build_structured_index.py",
+   "status": "PLATFORM",
+   "functions": 19,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "build_totality_memory",
+   "source": "platform:build_totality_memory.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": "strip_build_totality_memory.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "capability_test",
+   "source": "platform:capability_test.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": "strip_capability_test.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "catalyst_phase0",
+   "source": "platform:catalyst_phase0.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": "strip_catalyst_phase0.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "catalyst_phase1",
+   "source": "platform:catalyst_phase1.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_catalyst_phase1.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "chain_of_verification",
+   "source": "platform:chain_of_verification.py",
+   "status": "PLATFORM",
+   "functions": 16,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "chaos_engine",
+   "source": "platform:chaos_engine.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": "strip_chaos_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "chaos_simulator",
+   "source": "platform:chaos_simulator.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_chaos_simulator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "check_boot_chain_static",
+   "source": "platform:check_boot_chain_static.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ci_orchestrator",
+   "source": "platform:ci_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "cognitive_ingestion_engine",
+   "source": "platform:cognitive_ingestion_engine.py",
+   "status": "PLATFORM",
+   "functions": 31,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "cognitive_load_balancer",
+   "source": "platform:cognitive_load_balancer.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_cognitive_load_balancer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cognitive_stack",
+   "source": "platform:cognitive_stack.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": "strip_cognitive_stack.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "coherence_thresholds",
+   "source": "platform:coherence_thresholds.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": "strip_coherence_thresholds.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cold_start_recovery",
+   "source": "platform:cold_start_recovery.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "collaborative_reasoning",
+   "source": "platform:collaborative_reasoning.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "comm_protocol",
+   "source": "platform:comm_protocol.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_comm_protocol.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "compare_trm7m_python",
+   "source": "platform:compare_trm7m_python.py",
+   "status": "PLATFORM",
+   "functions": 0,
+   "strip": "strip_compare_trm7m_python.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "compile_strip_markers",
+   "source": "platform:compile_strip_markers.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "complete_singletons",
+   "source": "platform:complete_singletons.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": "strip_complete_singletons.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "continuum_genomics",
+   "source": "platform:continuum_genomics.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": "strip_continuum_genomics.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "continuum_pbft",
+   "source": "platform:continuum_pbft.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_continuum_pbft.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "coordination_protocol",
+   "source": "platform:coordination_protocol.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_coordination_protocol.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "coordination_responder",
+   "source": "platform:coordination_responder.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": "strip_coordination_responder.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cosmos3_edge_bridge",
+   "source": "platform:cosmos3_edge_bridge.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "cosmos_bridge",
+   "source": "platform:cosmos_bridge.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_cosmos_bridge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cosmos_microkernel_entanglement",
+   "source": "platform:cosmos_microkernel_entanglement.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_cosmos_microkernel_entanglement.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cosmos_moe_instella_shunter",
+   "source": "platform:cosmos_moe_instella_shunter.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_cosmos_moe_instella_shunter.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cosmos_sparse_moe_teams",
+   "source": "platform:cosmos_sparse_moe_teams.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "cqs",
+   "source": "platform:cqs.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": "strip_cqs.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "cross_node_voltage_harmonizer",
+   "source": "platform:cross_node_voltage_harmonizer.py",
+   "status": "PLATFORM",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "daemon_discovery",
+   "source": "platform:daemon_discovery.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": "strip_daemon_discovery.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "daily_evolution_engine",
+   "source": "platform:daily_evolution_engine.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ddr_antibody",
+   "source": "platform:ddr_antibody.py",
+   "status": "PLATFORM",
+   "functions": 16,
+   "strip": "strip_ddr_antibody.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "ddr_self_training",
+   "source": "platform:ddr_self_training.py",
+   "status": "PLATFORM",
+   "functions": 13,
+   "strip": "strip_ddr_self_training.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "dead_wiring_census",
+   "source": "platform:dead_wiring_census.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "derive_repo_root",
+   "source": "platform:derive_repo_root.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "deterministic_forge",
+   "source": "platform:deterministic_forge.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_deterministic_forge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "dge",
+   "source": "platform:dge.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_dge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "digital_dna_loop",
+   "source": "platform:digital_dna_loop.py",
+   "status": "PLATFORM",
+   "functions": 24,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "digital_twin_singleton",
+   "source": "platform:digital_twin_singleton.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "dram_pattern_computer",
+   "source": "platform:dram_pattern_computer.py",
+   "status": "PLATFORM",
+   "functions": 12,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "dynamic_pipeline_router",
+   "source": "platform:dynamic_pipeline_router.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "epistemology_verification",
+   "source": "platform:epistemology_verification.py",
+   "status": "PLATFORM",
+   "functions": 15,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "evolutionary_sandbox",
+   "source": "platform:evolutionary_sandbox.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "expert_registry",
+   "source": "platform:expert_registry.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_expert_registry.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "expert_team_harnesses",
+   "source": "platform:expert_team_harnesses.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": "strip_expert_team_harnesses.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "export_trm7m_weights",
+   "source": "platform:export_trm7m_weights.py",
+   "status": "PLATFORM",
+   "functions": 1,
+   "strip": "strip_export_trm7m_weights.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "external_socket_bridge",
+   "source": "platform:external_socket_bridge.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_external_socket_bridge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "federation",
+   "source": "platform:federation.py",
+   "status": "PLATFORM",
+   "functions": 30,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "federation_manager",
+   "source": "platform:federation_manager.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": "strip_federation_manager.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "feedback_loops",
+   "source": "platform:feedback_loops.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_feedback_loops.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "final_porting_pass",
+   "source": "platform:final_porting_pass.py",
+   "status": "PLATFORM",
+   "functions": 1,
+   "strip": "strip_final_porting_pass.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "final_porting_pass2",
+   "source": "platform:final_porting_pass2.py",
+   "status": "PLATFORM",
+   "functions": 1,
+   "strip": "strip_final_porting_pass2.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "find_truncations",
+   "source": "platform:find_truncations.py",
+   "status": "PLATFORM",
+   "functions": 0,
+   "strip": "strip_find_truncations.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "formal_verification_engine",
+   "source": "platform:formal_verification_engine.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_formal_verification_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "fractal_telemetry",
+   "source": "platform:fractal_telemetry.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "full_64_agent_orchestrator",
+   "source": "platform:full_64_agent_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "gan_design_synthesizer",
+   "source": "platform:gan_design_synthesizer.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_gan_design_synthesizer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "generative_architect",
+   "source": "platform:generative_architect.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_generative_architect.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "global_knowledge_fabric",
+   "source": "platform:global_knowledge_fabric.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "global_memory",
+   "source": "platform:global_memory.py",
+   "status": "PLATFORM",
+   "functions": 18,
+   "strip": "strip_global_memory.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "gpu_cuda_microkernel_binder",
+   "source": "platform:gpu_cuda_microkernel_binder.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_gpu_cuda_microkernel_binder.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "gpu_infinity_computer",
+   "source": "platform:gpu_infinity_computer.py",
+   "status": "PLATFORM",
+   "functions": 12,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "gpu_unlock_architecture",
+   "source": "platform:gpu_unlock_architecture.py",
+   "status": "PLATFORM",
+   "functions": 16,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "hardware_voltage_microkernel_binder",
+   "source": "platform:hardware_voltage_microkernel_binder.py",
+   "status": "PLATFORM",
+   "functions": 26,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "heartbeat_scheduler",
+   "source": "platform:heartbeat_scheduler.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_heartbeat_scheduler.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "heuristic_consensus",
+   "source": "platform:heuristic_consensus.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": "strip_heuristic_consensus.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "hf_brain",
+   "source": "platform:hf_brain.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_hf_brain.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "higher_mind",
+   "source": "platform:higher_mind.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_higher_mind.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "human_swarm_interaction",
+   "source": "platform:human_swarm_interaction.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": "strip_human_swarm_interaction.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "ingest_ollama_embeddings",
+   "source": "platform:ingest_ollama_embeddings.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ingest_real_model_embeddings",
+   "source": "platform:ingest_real_model_embeddings.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "instella_moe_inference",
+   "source": "platform:instella_moe_inference.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_instella_moe_inference.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "instella_single_expert_router",
+   "source": "platform:instella_single_expert_router.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": "strip_instella_single_expert_router.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "instella_sparse_agent_teams",
+   "source": "platform:instella_sparse_agent_teams.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_instella_sparse_agent_teams.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "intent_buffer",
+   "source": "platform:intent_buffer.py",
+   "status": "PLATFORM",
+   "functions": 11,
+   "strip": "strip_intent_buffer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "ionosphere_protocol",
+   "source": "platform:ionosphere_protocol.py",
+   "status": "PLATFORM",
+   "functions": 16,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ipc",
+   "source": "platform:ipc.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_ipc.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "jarvis_symbiosis",
+   "source": "platform:jarvis_symbiosis.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_jarvis_symbiosis.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "k3_ternary_sram",
+   "source": "platform:k3_ternary_sram.py",
+   "status": "PLATFORM",
+   "functions": 23,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "kanban_board",
+   "source": "platform:kanban_board.py",
+   "status": "PLATFORM",
+   "functions": 20,
+   "strip": "strip_kanban_board.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "kernel_instructions",
+   "source": "platform:kernel_instructions.py",
+   "status": "PLATFORM",
+   "functions": 23,
+   "strip": "strip_kernel_instructions.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "kernel_lora_adapter",
+   "source": "platform:kernel_lora_adapter.py",
+   "status": "PLATFORM",
+   "functions": 16,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "llm_brain",
+   "source": "platform:llm_brain.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_llm_brain.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "llm_orchestrator",
+   "source": "platform:llm_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_llm_orchestrator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "llm_router",
+   "source": "platform:llm_router.py",
+   "status": "PLATFORM",
+   "functions": 18,
+   "strip": "strip_llm_router.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "lobster_shell",
+   "source": "platform:lobster_shell.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": "strip_lobster_shell.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "local_lora_trainer",
+   "source": "platform:local_lora_trainer.py",
+   "status": "PLATFORM",
+   "functions": 17,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "lora_response_modulator",
+   "source": "platform:lora_response_modulator.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "mamba3_turbovec_ssm",
+   "source": "platform:mamba3_turbovec_ssm.py",
+   "status": "PLATFORM",
+   "functions": 11,
+   "strip": "strip_mamba3_turbovec_ssm.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "manus_engine",
+   "source": "platform:manus_engine.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_manus_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "mcp_bus",
+   "source": "platform:mcp_bus.py",
+   "status": "PLATFORM",
+   "functions": 9,
+   "strip": "strip_mcp_bus.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "mcp_tool_evolver",
+   "source": "platform:mcp_tool_evolver.py",
+   "status": "PLATFORM",
+   "functions": 22,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "measure_all_stores",
+   "source": "platform:measure_all_stores.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "measure_aura_transform",
+   "source": "platform:measure_aura_transform.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "memory",
+   "source": "platform:memory.py",
+   "status": "PLATFORM",
+   "functions": 15,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "memory_synchronizer",
+   "source": "platform:memory_synchronizer.py",
+   "status": "PLATFORM",
+   "functions": 9,
+   "strip": "strip_memory_synchronizer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "meta_orchestrator",
+   "source": "platform:meta_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_meta_orchestrator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "microkernel_chat_bridge",
+   "source": "platform:microkernel_chat_bridge.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "microkernel_spawner",
+   "source": "platform:microkernel_spawner.py",
+   "status": "PLATFORM",
+   "functions": 13,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "module_matrix_recheck",
+   "source": "platform:module_matrix_recheck.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "moltbook",
+   "source": "platform:moltbook.py",
+   "status": "PLATFORM",
+   "functions": 11,
+   "strip": "strip_moltbook.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "monad",
+   "source": "platform:monad.py",
+   "status": "PLATFORM",
+   "functions": 21,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "monitor_daemon",
+   "source": "platform:monitor_daemon.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_monitor_daemon.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "mpu",
+   "source": "platform:mpu.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_mpu.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "multimodal_fusion",
+   "source": "platform:multimodal_fusion.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": "strip_multimodal_fusion.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "multimodal_ingestion",
+   "source": "platform:multimodal_ingestion.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_multimodal_ingestion.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "multimodal_predictive_analytics",
+   "source": "platform:multimodal_predictive_analytics.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": "strip_multimodal_predictive_analytics.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "mutation_engine",
+   "source": "platform:mutation_engine.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": "strip_mutation_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "nand_fabric_paths",
+   "source": "platform:nand_fabric_paths.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "native_federation_bridge",
+   "source": "platform:native_federation_bridge.py",
+   "status": "PLATFORM",
+   "functions": 14,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "native_ipc_bus",
+   "source": "platform:native_ipc_bus.py",
+   "status": "PLATFORM",
+   "functions": 27,
+   "strip": "strip_native_ipc_bus.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "native_mailbox_bridge",
+   "source": "platform:native_mailbox_bridge.py",
+   "status": "PLATFORM",
+   "functions": 13,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "native_ops_bridge",
+   "source": "platform:native_ops_bridge.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": "strip_native_ops_bridge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "neural_wall",
+   "source": "platform:neural_wall.py",
+   "status": "PLATFORM",
+   "functions": 15,
+   "strip": "strip_neural_wall.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "neuro_continuum",
+   "source": "platform:neuro_continuum.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": "strip_neuro_continuum.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "on_device_knowledge_engine",
+   "source": "platform:on_device_knowledge_engine.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "openclaw_gateway",
+   "source": "platform:openclaw_gateway.py",
+   "status": "PLATFORM",
+   "functions": 28,
+   "strip": "strip_openclaw_gateway.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "optimization_engine",
+   "source": "platform:optimization_engine.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": "strip_optimization_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "p2p_direct_route",
+   "source": "platform:p2p_direct_route.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_p2p_direct_route.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "pbft_consensus",
+   "source": "platform:pbft_consensus.py",
+   "status": "PLATFORM",
+   "functions": 13,
+   "strip": "strip_pbft_consensus.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "persistent_mmap_allocator",
+   "source": "platform:persistent_mmap_allocator.py",
+   "status": "PLATFORM",
+   "functions": 22,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "persona_matrix",
+   "source": "platform:persona_matrix.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_persona_matrix.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "phoenix_protocol_engine",
+   "source": "platform:phoenix_protocol_engine.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_phoenix_protocol_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "port_manager",
+   "source": "platform:port_manager.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": "strip_port_manager.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "predictive_watchdog",
+   "source": "platform:predictive_watchdog.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": "strip_predictive_watchdog.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "prism_fqm",
+   "source": "platform:prism_fqm.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_prism_fqm.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "proactive_loop",
+   "source": "platform:proactive_loop.py",
+   "status": "PLATFORM",
+   "functions": 20,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "python_voltage_stripper",
+   "source": "platform:python_voltage_stripper.py",
+   "status": "PLATFORM",
+   "functions": 34,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "qisa_optimizer",
+   "source": "platform:qisa_optimizer.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": "strip_qisa_optimizer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "qsar_predictor",
+   "source": "platform:qsar_predictor.py",
+   "status": "PLATFORM",
+   "functions": 12,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "quantum_debugger",
+   "source": "platform:quantum_debugger.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_quantum_debugger.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "quantum_drug_protocol",
+   "source": "platform:quantum_drug_protocol.py",
+   "status": "PLATFORM",
+   "functions": 19,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "radix_trie_matcher",
+   "source": "platform:radix_trie_matcher.py",
+   "status": "PLATFORM",
+   "functions": 35,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "reconnaissance_daemon",
+   "source": "platform:reconnaissance_daemon.py",
+   "status": "PLATFORM",
+   "functions": 22,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "redis_mock",
+   "source": "platform:redis_mock.py",
+   "status": "PLATFORM",
+   "functions": 11,
+   "strip": "strip_redis_mock.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "remediation_engine",
+   "source": "platform:remediation_engine.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_remediation_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "resonance_engine",
+   "source": "platform:resonance_engine.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_resonance_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "resource_arbiter",
+   "source": "platform:resource_arbiter.py",
+   "status": "PLATFORM",
+   "functions": 11,
+   "strip": "strip_resource_arbiter.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "route_k3_writers",
+   "source": "platform:route_k3_writers.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "rust_kernel_binder",
+   "source": "platform:rust_kernel_binder.py",
+   "status": "PLATFORM",
+   "functions": 23,
+   "strip": "strip_rust_kernel_binder.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "rust_python_parity",
+   "source": "platform:rust_python_parity.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "seal_monad_journal",
+   "source": "platform:seal_monad_journal.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "secrets_vault",
+   "source": "platform:secrets_vault.py",
+   "status": "PLATFORM",
+   "functions": 25,
+   "strip": "strip_secrets_vault.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "security_scanner",
+   "source": "platform:security_scanner.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_security_scanner.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "self_fuzzing_engine",
+   "source": "platform:self_fuzzing_engine.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "self_healing",
+   "source": "platform:self_healing.py",
+   "status": "PLATFORM",
+   "functions": 20,
+   "strip": "strip_self_healing.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "self_healing_infra",
+   "source": "platform:self_healing_infra.py",
+   "status": "PLATFORM",
+   "functions": 20,
+   "strip": "strip_self_healing_infra.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "self_healing_orchestrator",
+   "source": "platform:self_healing_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 13,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "self_modification_api",
+   "source": "platform:self_modification_api.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_self_modification_api.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "semantic_cache",
+   "source": "platform:semantic_cache.py",
+   "status": "PLATFORM",
+   "functions": 16,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "semantic_index",
+   "source": "platform:semantic_index.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_semantic_index.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "semantic_knowledge_graph",
+   "source": "platform:semantic_knowledge_graph.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_semantic_knowledge_graph.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "sentinel",
+   "source": "platform:sentinel.py",
+   "status": "PLATFORM",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ses",
+   "source": "platform:ses.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_ses.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "simd_accelerator",
+   "source": "platform:simd_accelerator.py",
+   "status": "PLATFORM",
+   "functions": 12,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "skill_loader",
+   "source": "platform:skill_loader.py",
+   "status": "PLATFORM",
+   "functions": 13,
+   "strip": "strip_skill_loader.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "skill_matrix_sync",
+   "source": "platform:skill_matrix_sync.py",
+   "status": "PLATFORM",
+   "functions": 9,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "skill_validator",
+   "source": "platform:skill_validator.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": "strip_skill_validator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "small_diffusion_engine",
+   "source": "platform:small_diffusion_engine.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "sovereign_practice",
+   "source": "platform:sovereign_practice.py",
+   "status": "PLATFORM",
+   "functions": 17,
+   "strip": "strip_sovereign_practice.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "sram_pattern_computer",
+   "source": "platform:sram_pattern_computer.py",
+   "status": "PLATFORM",
+   "functions": 41,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "star_matrix",
+   "source": "platform:star_matrix.py",
+   "status": "PLATFORM",
+   "functions": 15,
+   "strip": "strip_star_matrix.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "star_matrix_lattice",
+   "source": "platform:star_matrix_lattice.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": "strip_star_matrix_lattice.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "sub_atomic_kernel",
+   "source": "platform:sub_atomic_kernel.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm_council",
+   "source": "platform:swarm_council.py",
+   "status": "PLATFORM",
+   "functions": 15,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "swarm_engine",
+   "source": "platform:swarm_engine.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_swarm_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "swarm_orchestrator",
+   "source": "platform:swarm_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_swarm_orchestrator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "swarm_performance_insights",
+   "source": "platform:swarm_performance_insights.py",
+   "status": "PLATFORM",
+   "functions": 22,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "symbology_etymology_monad",
+   "source": "platform:symbology_etymology_monad.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": "strip_symbology_etymology_monad.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "task_arbiter",
+   "source": "platform:task_arbiter.py",
+   "status": "PLATFORM",
+   "functions": 34,
+   "strip": "strip_task_arbiter.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "telemetry",
+   "source": "platform:telemetry.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_telemetry.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "telemetry_fabric",
+   "source": "platform:telemetry_fabric.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_telemetry_fabric.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "ternary_kleene_engine",
+   "source": "platform:ternary_kleene_engine.py",
+   "status": "PLATFORM",
+   "functions": 23,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "test_continuum_integration",
+   "source": "platform:test_continuum_integration.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_test_continuum_integration.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "test_cross_node_determinism",
+   "source": "platform:test_cross_node_determinism.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "test_fabric_intelligence",
+   "source": "platform:test_fabric_intelligence.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "test_feedback_loops",
+   "source": "platform:test_feedback_loops.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": "strip_test_feedback_loops.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "test_intent_buffer",
+   "source": "platform:test_intent_buffer.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": "strip_test_intent_buffer.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "test_k3_logical_fast_path",
+   "source": "platform:test_k3_logical_fast_path.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "test_kernel_knowledge_index",
+   "source": "platform:test_kernel_knowledge_index.py",
+   "status": "PLATFORM",
+   "functions": 12,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "test_module_registry_contract",
+   "source": "platform:test_module_registry_contract.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "test_native_strips",
+   "source": "platform:test_native_strips.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "test_research_api",
+   "source": "platform:test_research_api.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_test_research_api.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "test_secrets_vault_api",
+   "source": "platform:test_secrets_vault_api.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_test_secrets_vault_api.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "test_self_healing",
+   "source": "platform:test_self_healing.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_test_self_healing.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "test_self_healing_infra",
+   "source": "platform:test_self_healing_infra.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_test_self_healing_infra.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "test_skill_matrix_sync",
+   "source": "platform:test_skill_matrix_sync.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": "strip_test_skill_matrix_sync.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "test_skill_validator",
+   "source": "platform:test_skill_validator.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_test_skill_validator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "test_trm_standalone",
+   "source": "platform:test_trm_standalone.py",
+   "status": "PLATFORM",
+   "functions": 1,
+   "strip": "strip_test_trm_standalone.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "thz_bonsai_gateway",
+   "source": "platform:thz_bonsai_gateway.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_thz_bonsai_gateway.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "thz_wave_gateway",
+   "source": "platform:thz_wave_gateway.py",
+   "status": "PLATFORM",
+   "functions": 13,
+   "strip": "strip_thz_wave_gateway.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "tool_forge",
+   "source": "platform:tool_forge.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": "strip_tool_forge.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "transistor_task_scheduler",
+   "source": "platform:transistor_task_scheduler.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm_7m_full",
+   "source": "platform:trm_7m_full.py",
+   "status": "PLATFORM",
+   "functions": 11,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm_7m_model",
+   "source": "platform:trm_7m_model.py",
+   "status": "PLATFORM",
+   "functions": 15,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm_7m_optimized",
+   "source": "platform:trm_7m_optimized.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm_brain",
+   "source": "platform:trm_brain.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_trm_brain.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "trm_council_models",
+   "source": "platform:trm_council_models.py",
+   "status": "PLATFORM",
+   "functions": 10,
+   "strip": "strip_trm_council_models.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "trm_integration",
+   "source": "platform:trm_integration.py",
+   "status": "PLATFORM",
+   "functions": 19,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "trm_orchestrator",
+   "source": "platform:trm_orchestrator.py",
+   "status": "PLATFORM",
+   "functions": 24,
+   "strip": "strip_trm_orchestrator.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "turbovec_16x_femto_engine",
+   "source": "platform:turbovec_16x_femto_engine.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": "strip_turbovec_16x_femto_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "turbovec_memory",
+   "source": "platform:turbovec_memory.py",
+   "status": "PLATFORM",
+   "functions": 15,
+   "strip": "strip_turbovec_memory.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "ultrawork_loop",
+   "source": "platform:ultrawork_loop.py",
+   "status": "PLATFORM",
+   "functions": 15,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "ultrawork_tranche",
+   "source": "platform:ultrawork_tranche.py",
+   "status": "PLATFORM",
+   "functions": 11,
+   "strip": "strip_ultrawork_tranche.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "verify_council_roster",
+   "source": "platform:verify_council_roster.py",
+   "status": "PLATFORM",
+   "functions": 7,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "verify_council_vote_vs_c",
+   "source": "platform:verify_council_vote_vs_c.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "verify_gpu_neural_v17_reference",
+   "source": "platform:verify_gpu_neural_v17_reference.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "verify_k3_derivation",
+   "source": "platform:verify_k3_derivation.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "verify_k3_v17_reference",
+   "source": "platform:verify_k3_v17_reference.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "verify_k3_write_guard",
+   "source": "platform:verify_k3_write_guard.py",
+   "status": "PLATFORM",
+   "functions": 6,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "verify_ledger_chain",
+   "source": "platform:verify_ledger_chain.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "verify_module_recognition",
+   "source": "platform:verify_module_recognition.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "verify_nand_fabric_index",
+   "source": "platform:verify_nand_fabric_index.py",
+   "status": "PLATFORM",
+   "functions": 2,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "verify_strip_binaries",
+   "source": "platform:verify_strip_binaries.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "voltage_node_engine",
+   "source": "platform:voltage_node_engine.py",
+   "status": "PLATFORM",
+   "functions": 4,
+   "strip": "strip_voltage_node_engine.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "voltage_strip_truth",
+   "source": "platform:voltage_strip_truth.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "vulkan_capability",
+   "source": "platform:vulkan_capability.py",
+   "status": "PLATFORM",
+   "functions": 8,
+   "strip": null,
+   "strip_kind": null
+  },
+  {
+   "name": "web_fetch_utility",
+   "source": "platform:web_fetch_utility.py",
+   "status": "PLATFORM",
+   "functions": 3,
+   "strip": "strip_web_fetch_utility.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "worktree_manager",
+   "source": "platform:worktree_manager.py",
+   "status": "PLATFORM",
+   "functions": 5,
+   "strip": "strip_worktree_manager.dll",
+   "strip_kind": "REAL_PE"
+  },
+  {
+   "name": "zero_human_test_gen",
+   "source": "platform:zero_human_test_gen.py",
+   "status": "PLATFORM",
+   "functions": 44,
+   "strip": null,
+   "strip_kind": null
+  }
+ ],
+ "repos": [
+  {
+   "name": "Jarvis-Advanced-main",
+   "files": 170
+  },
+  {
+   "name": "SwarmOS_v6_Snapshot_extracted",
+   "files": 263
+  },
+  {
+   "name": "__pycache__",
+   "files": 330
+  },
+  {
+   "name": "assets",
+   "files": 4
+  },
+  {
+   "name": "backups",
+   "files": 653
+  },
+  {
+   "name": "blog_posts",
+   "files": 6
+  },
+  {
+   "name": "cache",
+   "files": 20
+  },
+  {
+   "name": "config",
+   "files": 6
+  },
+  {
+   "name": "dashboard",
+   "files": 10837
+  },
+  {
+   "name": "dashboard-lcars-backup",
+   "files": 14
+  },
+  {
+   "name": "dataset",
+   "files": 10
+  },
+  {
+   "name": "deploy",
+   "files": 11
+  },
+  {
+   "name": "docs",
+   "files": 106
+  },
+  {
+   "name": "evaluators",
+   "files": 4
+  },
+  {
+   "name": "gemma_swarm_adapter",
+   "files": 6
+  },
+  {
+   "name": "infrastructure",
+   "files": 95
+  },
+  {
+   "name": "kaggle",
+   "files": 10
+  },
+  {
+   "name": "logs",
+   "files": 9
+  },
+  {
+   "name": "models",
+   "files": 29
+  },
+  {
+   "name": "papers",
+   "files": 129
+  },
+  {
+   "name": "public_site",
+   "files": 1
+  },
+  {
+   "name": "research",
+   "files": 122
+  },
+  {
+   "name": "scratch",
+   "files": 251
+  },
+  {
+   "name": "services",
+   "files": 2
+  },
+  {
+   "name": "src",
+   "files": 1
+  },
+  {
+   "name": "swarm_v2",
+   "files": 1232
+  },
+  {
+   "name": "swarm_v2_artifacts",
+   "files": 37915
+  },
+  {
+   "name": "swarm_v2_backups",
+   "files": 5
+  },
+  {
+   "name": "swarm_v2_federation",
+   "files": 4
+  },
+  {
+   "name": "swarm_v2_generated_tests",
+   "files": 8
+  },
+  {
+   "name": "swarm_v2_global_memory",
+   "files": 39
+  },
+  {
+   "name": "swarm_v2_integrated",
+   "files": 15934
+  },
+  {
+   "name": "swarm_v2_learned_skills",
+   "files": 2
+  },
+  {
+   "name": "swarm_v2_memory",
+   "files": 24
+  },
+  {
+   "name": "swarm_v2_mesh",
+   "files": 1
+  },
+  {
+   "name": "swarm_v2_reconnaissance",
+   "files": 1
+  },
+  {
+   "name": "swarm_v2_reports",
+   "files": 2481
+  },
+  {
+   "name": "swarm_v2_rust_kernel",
+   "files": 3220
+  },
+  {
+   "name": "swarm_v2_synthesized",
+   "files": 1
+  },
+  {
+   "name": "swarm_v2_tool_versions",
+   "files": 0
+  },
+  {
+   "name": "swarm_v2_worktrees",
+   "files": 0
+  },
+  {
+   "name": "tests",
+   "files": 12
+  },
+  {
+   "name": "train_dataset",
+   "files": 3
+  },
+  {
+   "name": "trm-sovereign-portal",
+   "files": 0
+  },
+  {
+   "name": "trm_chainload",
+   "files": 19
+  },
+  {
+   "name": "trm_uefi_kernel",
+   "files": 5400
+  },
+  {
+   "name": "trmboot",
+   "files": 4
+  },
+  {
+   "name": "utils",
+   "files": 4
+  },
+  {
+   "name": "wsl_crates",
+   "files": 33061
+  }
+ ]
+}

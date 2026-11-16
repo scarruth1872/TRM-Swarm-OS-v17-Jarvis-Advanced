@@ -1,0 +1,69 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T14:27:35.310418+00:00",
+  "finding": "The recall fusion and sparse gate are built but the chat answer path uses single-domain recall, and the self-directing agenda is dormant. Wire the fused recall into the answer path as an added tier (never replacing a working tier) and re-activate the agenda.",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Core",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Deepen the core by wiring the already-built machinery into the live answer path: (1) make the chat answer path consult the cross-domain fused"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Deepen the core by wiring the already-built machinery into the live answer path: (1) make the chat answer path consult the cross-dom"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Deepen the core by wiring the already-built machinery into the live answer path: (1) make the chat answer path consult the cross-domain fused recal"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Deepen the core by wiring the already-built machinery into the live answer path: (1) make the chat answer path consult the cross-domain fused recall ("
+        }
+      ],
+      "monad_seal": "df6f997bd2bfb6d3a314f7a92f8f7069bc4f957aadf480d1da71099cc5bbebf8",
+      "motion": "MOTION-C1",
+      "phase": "consensus",
+      "proposal_id": "CP-CCF01BA5",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "Deepen the core by wiring the already-built machinery into the live answer path: (1) make the chat answer path consult the cross-domain fused recall (fused_lookup_text for text queries, the full fused_lookup for molecule/bioassay queries) BEFORE falling back to the single-domain fabric tier, so a cross-domain question fuses across its real stores instead of hitting only the fabric; and (2) re-activate the self-directing agenda with a new active item derived from the sealed state (the fused-recall wiring itself is the first item). The TEST is pre-registered: (1) a cross-domain query (e.g. 'toxicity of aspirin' or a bare drug name) returns a fused answer that cites its stores_searched across >=2 domains in the chat route note, measured against the current single-domain behavior; and (2) council_agenda.json gains an active item with a receipt + test, and the sealed record proves the council authored it (not a human edit). The existing single-domain fast paths (deterministic, safety gate, fabric confirm, TRM-7M block, council block) are PRESERVED \u2014 the fusion is inserted as an additional store tier, never a replacement, so nothing that currently answers stops answering. READ FROM SOURCE (this host): recall_router.rs already ships fused_lookup / fused_lookup_text (reciprocal-rank-fusion k=60 over fabric + chembl 2.9M + structured 97K + bioassay 597K + clinical, with TRM-7M re-rank, MOTION-020/021/022/023/026/042/043) and intelligence_router.rs ships the Instella single-team sparse gate (15 teams, exactly one activates). But chat_handlers::chat_answer (lines 248-504) routes through fast_reply -> safety_block -> fabric_lookup (single domain) -> unified_route -> Trm7m::think -> unified_verdict -> agent_retrieval (single domain) -> packed_retrieval (single domain) -> bonsai/ollama -> distilled verdict, and NEVER calls fused_lookup, so a cross-domain query (e.g. 'toxicity of aspirin') hits only the fabric and misses the chembl/bioassay/clinical fusion that already exists. And council_agenda.json has all 3 items status=done, so the 'council takes the lead' (MOTION-024/030) self-direction is dormant. REJECT AS PREMATURE if the change would replace a working tier instead of adding a tier, or if the test cannot be measured in the running kernel (a phase with no measurable receipt is motion).",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 9,
+  "record": "CORE DEEPENING -- wire fused recall into the answer path, re-activate the agenda",
+  "sha256": "f522f190d49004548b3abe53dae68e456345e4c4d2531b88c5ad3bcfbbc0f84c"
+}

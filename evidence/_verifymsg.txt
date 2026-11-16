@@ -1,0 +1,29 @@
+verify(deploy): voltage contradiction resolved; DDR counters live; bypasses closed
+
+Restarted the council server with operator consent and verified all three fixes
+against the LIVE service rather than the build.
+
+1. VOLTAGE - RESOLVED. All five endpoints now report the same measured 0.5771
+   (distinct values: 1, was 2). /system/resources was serving the hardcoded
+   0.9115 and /swarm/telemetry the hardcoded 0.86 - the exact constant the
+   voltage doctrine forbids. Both now call voltage::phi_v() and expose
+   voltage_measured.
+
+2. DDR COUNTERS - LIVE, PROVEN BY MOVEMENT, not by reading a value back.
+     scans_performed       10 -> 15   (+5, exactly the 5 scans issued)
+     prevented_corruptions  8 -> 11   (+3, exactly the 3 malicious inputs)
+   total_antibodies 1801 counted from the shipped registry file; status is now
+   ARMED_WITH_REGISTRY (was the unsupported IMMUNE_ARMED); rowhammer is
+   NOT_IMPLEMENTED (was the sourceless literal 128). Before, these were frozen
+   literals that could never move - which is the definition of not measuring.
+
+3. DDR SCAN - all 8 previously-bypassing attacks now caught (eval-with-space,
+   getattr evasion, __import__, os.popen, importlib, compile+exec, pickle.loads,
+   yaml.load), and the benign comment/docstring controls stay CLEAN.
+
+Deployed: host a59fb26d87620a97 (was eec28e4e5dbb0ef9), kernel 7d5e9212d7386d70
+across 5 EFI locations.
+
+Still stated in the module: lexical not semantic, cannot see through three levels
+of indirection, executes nothing. Improvement on substring matching, not a
+substitute for AST/taint analysis or for refusing untrusted text.

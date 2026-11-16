@@ -1,0 +1,52 @@
+feat(proof): SCENARIOS 3 and 4 - ternary safety gate and TurboVec retrieval
+
+Both run against REAL data with objective ground truth, both produced a
+proven/unproven split rather than a headline number.
+
+=== PROOF-3: K3 TERNARY SAFETY GATE (regulatory triage on real ChEMBL data) ===
+32 molecules with measured pChEMBL. Three REAL independent channels - vina score,
+ligand efficiency (computed), molecular weight - each ternary, combined with the
+kernel's real kleene_and. The label is never an input; it only scores the output.
+
+  verdicts: APPROVE=14  UNKNOWN=12  REJECT=6
+  SAFETY INVARIANT: approvals reached while ANY channel was UNMEASURED = 0
+                    REQUIRED = 0   ->  HOLDS
+
+  PROVEN: the algebra is sound and an unmeasured channel can never produce an
+  approval. That is the entire reason a ternary gate exists - two-valued logic
+  has to coerce 'I don't know' into yes or no, and coercing it into yes is how a
+  gate approves what it has no basis to approve.
+
+  NOT PROVEN: accuracy. False-approval rate 14.3% - CHEMBL3356191 (33 uM) and
+  CHEMBL4780842 (63 uM), the SAME two measured-inactives that outranked real
+  actives in the ROC. The cause is the EVIDENCE, not the logic. Sound algebra
+  cannot rescue unreliable inputs; it can only guarantee it never guesses.
+
+  FIRST RUN WAS A VACUOUS PASS and I caught it: 0 candidates parsed because my
+  regex expected tabs where the dock output uses spaces, so the invariant 'held'
+  on an empty set. Fixed. A second version had APPROVE=0 because two channels
+  were always NA, making the invariant trivially true - also weak. Only after
+  giving it three real measurable channels was approval reachable and the test
+  meaningful.
+
+=== PROOF-4: TURBOVEC 1.58-BIT RETRIEVAL (real corpus) ===
+107 real documents (the platform's journal + docs), 2153-term vocabulary. Query =
+held-out odd half of each document, so ground truth is exact by construction.
+Same vectors ranked twice: full precision and after 1.58-bit quantisation.
+
+  full precision  recall@1 100.0%   recall@3 100.0%
+  1.58-bit        recall@1  18.7%   recall@3  40.2%
+  storage: 921484 -> 57673 bytes  =  16.0x   (chance recall@1 = 0.93%)
+
+  PROVEN: the 16x compression claim is EXACT, 921484/57673 = 16.0.
+  NOT PROVEN: that it preserves retrieval. recall@1 collapses 100.0% -> 18.7%,
+  an 81.3-point loss, and recall@3 100% -> 40.2%. 18.7% is far above chance, so
+  the representation retains real signal - but '16x smaller' and 'works as well'
+  are different claims and only the first is true on this corpus.
+
+  A BUG IN MY OWN HARNESS, caught by an impossible number: the first run reported
+  recall@1 0.9% == chance AT FULL PRECISION, which cannot be right for a
+  self-match. Cause: the loop skipped even k WITHOUT incrementing k, so k stayed
+  0, every token was skipped, and the QUERY VECTOR WAS ALL ZEROS - every cosine 0,
+  ranking arbitrary. Fixed, and a non-vacuity guard added so a zero query can
+  never silently produce a score. The tell was an impossible value, not a crash.

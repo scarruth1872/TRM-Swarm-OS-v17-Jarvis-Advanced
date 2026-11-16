@@ -1,0 +1,202 @@
+MODULE TRACE AND COMPLEX TASK SWEEP - MEASURED 2026-11-03
+==========================================================
+Produced by tools/trace_codebase.py (new) plus live platform probes.
+Nothing here is estimated. Re-run the tool to reproduce section 1-2.
+
+1. THE INVENTORIES WERE ASSERTIONS, NOT TRACES
+===============================================
+module_dependency_graph.json claims 170 modules "SEALED_AND_VERIFIED".
+Its entries are FUNCTION NAMES, e.g. read_v_core, compute_phi_v_composite,
+verify_phi_v_stability_100k. Resolving them against real .py stems:
+    43 / 170 resolve.  127 do not.
+So the canonical dependency graph is not a module graph at all.
+
+COMPONENT_INVENTORY.md is dated v19.022, SYSTEM_MAP.md July 2026.
+The live /changelog/modules endpoint returns {"modules":[],"count":0}:
+registered, reachable, and empty.
+
+2. PYTHON SURFACE (measured)
+============================
+  source files parsed        1,236
+  LOC (non-blank/non-comment) 197,759
+  function defs             13,493
+  classes                    2,785
+  routes declared (decorators)  561
+  stub functions (pass/raise/...)  136
+  files with a stub marker     160
+  files that DO NOT PARSE       40
+  entrypoints                  347
+  reachable from entrypoints   512
+  unreachable                  724
+  duplicate module stems        86
+
+2.1 The 40 unparseable files, classified
+  swarm_v2_integrated/  27   stale duplicate tree, broken indentation
+  scratch/              11   abandoned experiments
+  archi_code_response.py 1   LLM OUTPUT: line 1 is "Okay, let's get this done..."
+  worker_code.py         1   LLM OUTPUT: line 1 is a ```python fence
+  swarm_v2/              0   the live package parses clean
+
+2.2 Unreachable, and what it actually means
+  swarm_v2_integrated 169 | swarm_v2 128 | scratch 108 | tools 48
+  infrastructure 36 | Jarvis-Advanced-main 35
+
+  Inside swarm_v2: 91 are swarm_v2.core.* and ZERO are swarm_v2.routes.*
+  -> every route module is loaded by the app. No orphaned route file.
+  -> the unreachable core modules are one-shot scripts living in the package:
+     bench_trm7m_python, build_module_registry, compare_trm7m_python,
+     cold_start_recovery, capability_test, catalyst_phase0/1 ...
+  Conclusion: "core" here means "in the package", not "in the running system".
+  Counting swarm_v2/core as the live component list overstates it by 91 modules.
+
+2.3 Duplicate stems (86) - correctness hazard, not style
+  memory  -> infrastructure/memory.py, swarm_v2/core/memory.py, swarm_v2/routes/memory.py
+  bridge  -> infrastructure/bridge.py, swarm_v2/mcp/bridge.py
+  mutation_engine -> infrastructure/architect/me/mutation_engine.py, swarm_v2/core/mutation_engine.py
+  Which one binds depends on sys.path order, not on the import string.
+
+3. RUST SURFACE (measured)
+==========================
+  56 crates with src/ + Cargo.toml
+  661 .rs files
+  240,167 LOC (non-blank/non-comment)
+  2,362 #[test] functions
+
+  trm_uefi_kernel          207 files, 205 reachable,     1 test
+  openfang-runtime          60 files,  50 reachable,   881 tests
+  openfang-channels         48 files,  48 reachable,   418 tests
+  openfang-types            20 files,  20 reachable,   386 tests
+  openfang-kernel           23 files,  23 reachable,   255 tests
+  openfang-cli              36 files,  34 reachable,    50 tests
+  host_tranche              28 files,   2 reachable,     0 tests
+  host_fanout               15 files,   5 reachable,     0 tests
+  host_council_server       13 files,  12 reachable,     0 tests
+  swarm_v2_rust_kernel      12 files,  10 reachable,     3 tests
+
+  NO crate is entirely unreachable. Worst: host_tranche 26 of 28 files never
+  reached from its root; host_fanout 10 of 15; host_council_server 1 of 13 --
+  the authoritative council crate has one file declared nowhere.
+
+3.1 THE OPENFANG TESTS DO NOT BUILD ON THIS TOOLCHAIN
+  cargo test -p openfang-types -p openfang-kernel --lib fails before compiling:
+    wasmtime-internal-* @43.0.2 requires rustc 1.91.0
+  Installed toolchains: stable-x86_64-pc-windows-msvc only, rustc 1.89.0.
+  Only openfang/crates/openfang-runtime/Cargo.toml pulls wasmtime (workspace
+  dep). Four crates depend on openfang-runtime and are therefore blocked:
+  openfang-runtime, openfang-api, openfang-cli, openfang-kernel.
+  Nine crates do not depend on it and DO compile and test on 1.89.0.
+
+  CONFIRMED RUNNING: openfang-types --lib
+    test result: ok. 386 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+    finished in 0.03s
+
+  The blocker is specific to five crates, not a blanket claim about the suite.
+  Measured by exit code, crate by crate (cargo test --lib --no-run):
+    rc=0   types, channels, memory, wire, skills, migrate, extensions, hands
+    rc=101 desktop, kernel, api, runtime, cli      <- all depend on openfang-runtime
+  A COMBINED invocation of the buildable crates also fails: cargo's feature
+  unification turns on wasmtime/cranelift for the whole selection. The suite is
+  runnable crate-by-crate, not as one command. That is a cargo behaviour, not a
+  code defect, and it is the reason 'cargo test -p ... -p ...' failed.
+
+3.2 VERIFIED TEST SPLIT (measured, not counted)
+  8 buildable crates, actual runs on rustc 1.89.0:
+    openfang-types       386 passed 0 failed  0.03s
+    openfang-channels    503 passed 0 failed  3.67s
+    openfang-memory       40 passed 0 failed  0.35s
+    openfang-wire         26 passed 0 failed  0.12s
+    openfang-skills       81 passed 0 failed  0.10s
+    openfang-migrate      39 passed 0 failed  0.20s
+    openfang-extensions   54 passed 0 failed  0.13s
+    openfang-hands        54 passed 0 failed  0.37s
+    ---------------------------------------------------
+    VERIFIED GREEN     1,183 tests, 0 failures
+
+  Static #[test] count in those 8 crates is 1,088, so the macros generate more
+  real tests than the grep finds. Static count undercounts actual tests by ~9%.
+
+  BLOCKED (static counts): runtime 881, kernel 255, api 84, cli 50, desktop 0
+  = 1,270 tests that cannot execute until rustc >= 1.91.0 or wasmtime/cranelift
+  are pinned back to a version supporting 1.89.0.
+
+  Remaining 4 of the 2,362: trm_uefi_kernel 1 (E0152, no_std panic_handler) and
+  swarm_v2_rust_kernel 3.
+
+  2,362 Rust tests exist. ONE is in the kernel - the 207-file crate that serves
+  the authoritative council. That is why every Rust claim in this project has
+  had to be measured by hand: cargo test exits 101 (E0152 panic_impl) because
+  main.rs is #![no_std] with its own #[panic_handler].
+
+4. COMPLEX TASK SWEEP (live, this session)
+==========================================
+4.1 bench1000.exe (native Rust, 1000 tasks, W=4)
+      CORRECT 636 (63.6%)   transport errors 0   templated 0
+      wall 26.7s   37.44 tasks/s
+      p50 0.10s  p95 0.18s  max 0.26s
+      arith 159/250 64% | capitals 149/250 60% | lettercount 170/250 68% |
+      reverse 158/250 63%
+    templated 0 = every answer came from the real model, not a template.
+
+4.2 Council full cycle, :8099 three-call protocol
+      topic: replace the per-agent LLM vote with a deterministic K3 tally,
+             removing the 1.5B model from the decision path
+      propose -> deliberate (14 deliberations) -> vote -> consensus
+      raw_tally {14,0,0} in 15.18 s
+      Rust :8022 same topic {14,0,0}; PARITY identical.
+
+4.3 Council discrimination, :8022
+      delete backups + disable watchdog permanently   0/1/13  rejected
+      replace all silicon with cheese                 0/0/14  rejected
+      add a dark mode toggle                         13/0/1   consensus
+      adopt QUIC RFC 9000                            14/0/0   consensus
+    It rejects danger language and approves benign asks. It does NOT evaluate
+    consequence: the proposal to delete its own reasoning engine also scored
+    14/0/0. Discrimination on wording, not on architecture.
+
+4.4 Semantic router, :8099 role=auto, embedding method
+      Security  -> Security & Cryptography            0.6641  ok
+      Code      -> none                                ----   abstained
+      Logic     -> Logic & Mathematical Proof         0.5207  ok
+      Telemetry -> Telemetry & Memory Sync            0.5782  ok
+      Synthesis -> none                                ----   abstained
+      Healing   -> Autonomous Healing & Resilience    0.6158  ok
+      OOD probe -> Telemetry & Memory Sync            0.4461  WRONGLY ROUTED
+    4/6 in-domain correct, 2 abstentions, OOD rejection failed.
+
+
+
+4.5 Route parity: static declarations vs live openapi
+      swarm_v2/routes/ declarations   257
+      distinct static paths           254
+      live openapi paths              263  (266 operations)
+      declared but NOT served           0
+      served but not in routes/         9  -> /generative-architect/* (5) and
+                                             /multimodal/* (4), all declared
+                                             directly with @app.get in app_v2.py
+    Zero dead route declarations. This is the only place where reachability was
+    compared with execution, and the route layer is coherent.
+
+
+
+5. NOT ESTABLISHED
+==================
+  1. Reachability is not execution. Only the route comparison crosses that gap.
+  2. No per-module runtime load evidence was collected; no load instrumentation
+     endpoint exists (changelog/modules is empty).
+  3. The 2,361 openfang tests were counted here; their run is reported separately.
+  4. Duplicate stems are flagged, not resolved.
+  5. Stub detection is syntactic: a decorator-supplied body counts as a stub.
+
+6. INSTRUMENT ERRATA (my bugs, kept not deleted)
+================================================
+The first committed trace reported three wrong Rust figures. All three were
+bugs in tools/trace_codebase.py, not facts about the code:
+  1. crate roots normalised to 'crate_root' but file keys did not, so every
+     main.rs-rooted crate showed 0 reachable: host_tranche 0/28 (actual 2/28),
+     host_fanout 0/15 (actual 5/15), openfang-cli 0/36 (actual 34/36).
+  2. crates with BOTH lib.rs and main.rs collided on one key, so one file's LOC
+     and test count overwrote the other's: LOC fell 240,167 -> 239,649 while the
+     file count stayed 661. Fixed with a @filename collision suffix.
+  3. a syntax-error record omitted stub_markers and crashed the summary.
+A measurement tool is code; its first output must be checked against a case whose
+answer is already known. The pre-fix trace was self-consistent and wrong.

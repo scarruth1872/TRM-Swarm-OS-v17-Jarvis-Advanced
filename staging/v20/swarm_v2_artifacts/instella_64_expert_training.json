@@ -1,0 +1,916 @@
+{
+  "training": "Instella MoE 64 Expert Training",
+  "teams": 8,
+  "experts": 64,
+  "total_tasks": 32000,
+  "total_steps": 2048000000,
+  "avg_loss": 0.232,
+  "per_team": {
+    "Molecular_Biology": 0.221,
+    "Drug_Discovery": 0.239,
+    "Clinical_Medicine": 0.232,
+    "Security_Protocols": 0.237,
+    "Engineering_Systems": 0.222,
+    "Mathematics_Logic": 0.243,
+    "Interface_Design": 0.224,
+    "Cosmic_Sciences": 0.236
+  },
+  "per_expert": {
+    "mol_dna": {
+      "team": "Molecular_Biology",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 264,
+        "UNKNOWN": 164,
+        "FALSE": 72
+      },
+      "confidence": 0.846,
+      "loss_before": 0.25,
+      "loss_after": 0.212,
+      "delta": 0.038
+    },
+    "mol_rna": {
+      "team": "Molecular_Biology",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 274,
+        "UNKNOWN": 151,
+        "FALSE": 75
+      },
+      "confidence": 0.847,
+      "loss_before": 0.269,
+      "loss_after": 0.245,
+      "delta": 0.024
+    },
+    "mol_protein": {
+      "team": "Molecular_Biology",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 278,
+        "UNKNOWN": 148,
+        "FALSE": 74
+      },
+      "confidence": 0.844,
+      "loss_before": 0.222,
+      "loss_after": 0.194,
+      "delta": 0.028
+    },
+    "mol_enzyme": {
+      "team": "Molecular_Biology",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 280,
+        "UNKNOWN": 137,
+        "FALSE": 83
+      },
+      "confidence": 0.84,
+      "loss_before": 0.25,
+      "loss_after": 0.224,
+      "delta": 0.026
+    },
+    "mol_pathway": {
+      "team": "Molecular_Biology",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 282,
+        "UNKNOWN": 146,
+        "FALSE": 72
+      },
+      "confidence": 0.845,
+      "loss_before": 0.229,
+      "loss_after": 0.199,
+      "delta": 0.03
+    },
+    "mol_genome": {
+      "team": "Molecular_Biology",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 258,
+        "UNKNOWN": 145,
+        "FALSE": 97
+      },
+      "confidence": 0.844,
+      "loss_before": 0.265,
+      "loss_after": 0.241,
+      "delta": 0.024
+    },
+    "mol_epigen": {
+      "team": "Molecular_Biology",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 267,
+        "UNKNOWN": 152,
+        "FALSE": 81
+      },
+      "confidence": 0.846,
+      "loss_before": 0.247,
+      "loss_after": 0.23,
+      "delta": 0.017
+    },
+    "mol_crispr": {
+      "team": "Molecular_Biology",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 286,
+        "UNKNOWN": 146,
+        "FALSE": 68
+      },
+      "confidence": 0.847,
+      "loss_before": 0.256,
+      "loss_after": 0.224,
+      "delta": 0.032
+    },
+    "drug_dock": {
+      "team": "Drug_Discovery",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 262,
+        "UNKNOWN": 156,
+        "FALSE": 82
+      },
+      "confidence": 0.842,
+      "loss_before": 0.295,
+      "loss_after": 0.277,
+      "delta": 0.018
+    },
+    "drug_score": {
+      "team": "Drug_Discovery",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 267,
+        "UNKNOWN": 163,
+        "FALSE": 70
+      },
+      "confidence": 0.843,
+      "loss_before": 0.257,
+      "loss_after": 0.221,
+      "delta": 0.036
+    },
+    "drug_analog": {
+      "team": "Drug_Discovery",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 286,
+        "UNKNOWN": 145,
+        "FALSE": 69
+      },
+      "confidence": 0.839,
+      "loss_before": 0.234,
+      "loss_after": 0.199,
+      "delta": 0.035
+    },
+    "drug_tox": {
+      "team": "Drug_Discovery",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 259,
+        "UNKNOWN": 147,
+        "FALSE": 94
+      },
+      "confidence": 0.843,
+      "loss_before": 0.234,
+      "loss_after": 0.205,
+      "delta": 0.029
+    },
+    "drug_adme": {
+      "team": "Drug_Discovery",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 264,
+        "UNKNOWN": 162,
+        "FALSE": 74
+      },
+      "confidence": 0.842,
+      "loss_before": 0.299,
+      "loss_after": 0.28,
+      "delta": 0.019
+    },
+    "drug_repurpose": {
+      "team": "Drug_Discovery",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 264,
+        "UNKNOWN": 159,
+        "FALSE": 77
+      },
+      "confidence": 0.845,
+      "loss_before": 0.279,
+      "loss_after": 0.246,
+      "delta": 0.033
+    },
+    "drug_design": {
+      "team": "Drug_Discovery",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 266,
+        "UNKNOWN": 165,
+        "FALSE": 69
+      },
+      "confidence": 0.841,
+      "loss_before": 0.248,
+      "loss_after": 0.217,
+      "delta": 0.031
+    },
+    "drug_screen": {
+      "team": "Drug_Discovery",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 287,
+        "UNKNOWN": 128,
+        "FALSE": 85
+      },
+      "confidence": 0.841,
+      "loss_before": 0.299,
+      "loss_after": 0.266,
+      "delta": 0.033
+    },
+    "clin_diag": {
+      "team": "Clinical_Medicine",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 283,
+        "UNKNOWN": 149,
+        "FALSE": 68
+      },
+      "confidence": 0.841,
+      "loss_before": 0.254,
+      "loss_after": 0.231,
+      "delta": 0.023
+    },
+    "clin_trial": {
+      "team": "Clinical_Medicine",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 267,
+        "UNKNOWN": 154,
+        "FALSE": 79
+      },
+      "confidence": 0.841,
+      "loss_before": 0.288,
+      "loss_after": 0.255,
+      "delta": 0.033
+    },
+    "clin_pharma": {
+      "team": "Clinical_Medicine",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 274,
+        "UNKNOWN": 146,
+        "FALSE": 80
+      },
+      "confidence": 0.844,
+      "loss_before": 0.256,
+      "loss_after": 0.241,
+      "delta": 0.015
+    },
+    "clin_imaging": {
+      "team": "Clinical_Medicine",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 282,
+        "UNKNOWN": 140,
+        "FALSE": 78
+      },
+      "confidence": 0.852,
+      "loss_before": 0.25,
+      "loss_after": 0.231,
+      "delta": 0.019
+    },
+    "clin_surgery": {
+      "team": "Clinical_Medicine",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 284,
+        "UNKNOWN": 139,
+        "FALSE": 77
+      },
+      "confidence": 0.843,
+      "loss_before": 0.23,
+      "loss_after": 0.195,
+      "delta": 0.035
+    },
+    "clin_icu": {
+      "team": "Clinical_Medicine",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 296,
+        "UNKNOWN": 121,
+        "FALSE": 83
+      },
+      "confidence": 0.848,
+      "loss_before": 0.294,
+      "loss_after": 0.261,
+      "delta": 0.033
+    },
+    "clin_cardio": {
+      "team": "Clinical_Medicine",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 279,
+        "UNKNOWN": 147,
+        "FALSE": 74
+      },
+      "confidence": 0.845,
+      "loss_before": 0.237,
+      "loss_after": 0.218,
+      "delta": 0.019
+    },
+    "clin_neuro": {
+      "team": "Clinical_Medicine",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 293,
+        "UNKNOWN": 134,
+        "FALSE": 73
+      },
+      "confidence": 0.846,
+      "loss_before": 0.244,
+      "loss_after": 0.22,
+      "delta": 0.024
+    },
+    "sec_vuln": {
+      "team": "Security_Protocols",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 288,
+        "UNKNOWN": 132,
+        "FALSE": 80
+      },
+      "confidence": 0.845,
+      "loss_before": 0.29,
+      "loss_after": 0.263,
+      "delta": 0.027
+    },
+    "sec_exploit": {
+      "team": "Security_Protocols",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 257,
+        "UNKNOWN": 171,
+        "FALSE": 72
+      },
+      "confidence": 0.842,
+      "loss_before": 0.253,
+      "loss_after": 0.231,
+      "delta": 0.022
+    },
+    "sec_crypto": {
+      "team": "Security_Protocols",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 264,
+        "UNKNOWN": 161,
+        "FALSE": 75
+      },
+      "confidence": 0.84,
+      "loss_before": 0.261,
+      "loss_after": 0.224,
+      "delta": 0.037
+    },
+    "sec_network": {
+      "team": "Security_Protocols",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 294,
+        "UNKNOWN": 146,
+        "FALSE": 60
+      },
+      "confidence": 0.85,
+      "loss_before": 0.246,
+      "loss_after": 0.217,
+      "delta": 0.029
+    },
+    "sec_web": {
+      "team": "Security_Protocols",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 279,
+        "UNKNOWN": 137,
+        "FALSE": 84
+      },
+      "confidence": 0.848,
+      "loss_before": 0.3,
+      "loss_after": 0.276,
+      "delta": 0.024
+    },
+    "sec_mobile": {
+      "team": "Security_Protocols",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 273,
+        "UNKNOWN": 137,
+        "FALSE": 90
+      },
+      "confidence": 0.848,
+      "loss_before": 0.286,
+      "loss_after": 0.249,
+      "delta": 0.037
+    },
+    "sec_cloud": {
+      "team": "Security_Protocols",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 258,
+        "UNKNOWN": 157,
+        "FALSE": 85
+      },
+      "confidence": 0.851,
+      "loss_before": 0.248,
+      "loss_after": 0.224,
+      "delta": 0.024
+    },
+    "sec_iot": {
+      "team": "Security_Protocols",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 264,
+        "UNKNOWN": 152,
+        "FALSE": 84
+      },
+      "confidence": 0.847,
+      "loss_before": 0.236,
+      "loss_after": 0.216,
+      "delta": 0.02
+    },
+    "eng_mech": {
+      "team": "Engineering_Systems",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 276,
+        "UNKNOWN": 155,
+        "FALSE": 69
+      },
+      "confidence": 0.843,
+      "loss_before": 0.23,
+      "loss_after": 0.192,
+      "delta": 0.038
+    },
+    "eng_elec": {
+      "team": "Engineering_Systems",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 277,
+        "UNKNOWN": 148,
+        "FALSE": 75
+      },
+      "confidence": 0.845,
+      "loss_before": 0.236,
+      "loss_after": 0.213,
+      "delta": 0.023
+    },
+    "eng_civil": {
+      "team": "Engineering_Systems",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 268,
+        "UNKNOWN": 136,
+        "FALSE": 96
+      },
+      "confidence": 0.845,
+      "loss_before": 0.228,
+      "loss_after": 0.212,
+      "delta": 0.016
+    },
+    "eng_chem": {
+      "team": "Engineering_Systems",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 275,
+        "UNKNOWN": 165,
+        "FALSE": 60
+      },
+      "confidence": 0.842,
+      "loss_before": 0.277,
+      "loss_after": 0.261,
+      "delta": 0.016
+    },
+    "eng_aero": {
+      "team": "Engineering_Systems",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 285,
+        "UNKNOWN": 137,
+        "FALSE": 78
+      },
+      "confidence": 0.845,
+      "loss_before": 0.22,
+      "loss_after": 0.19,
+      "delta": 0.03
+    },
+    "eng_nuclear": {
+      "team": "Engineering_Systems",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 281,
+        "UNKNOWN": 157,
+        "FALSE": 62
+      },
+      "confidence": 0.841,
+      "loss_before": 0.293,
+      "loss_after": 0.271,
+      "delta": 0.022
+    },
+    "eng_material": {
+      "team": "Engineering_Systems",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 280,
+        "UNKNOWN": 151,
+        "FALSE": 69
+      },
+      "confidence": 0.847,
+      "loss_before": 0.238,
+      "loss_after": 0.214,
+      "delta": 0.024
+    },
+    "eng_soft": {
+      "team": "Engineering_Systems",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 265,
+        "UNKNOWN": 146,
+        "FALSE": 89
+      },
+      "confidence": 0.843,
+      "loss_before": 0.245,
+      "loss_after": 0.224,
+      "delta": 0.021
+    },
+    "math_algebra": {
+      "team": "Mathematics_Logic",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 260,
+        "UNKNOWN": 163,
+        "FALSE": 77
+      },
+      "confidence": 0.841,
+      "loss_before": 0.284,
+      "loss_after": 0.263,
+      "delta": 0.021
+    },
+    "math_analysis": {
+      "team": "Mathematics_Logic",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 265,
+        "UNKNOWN": 172,
+        "FALSE": 63
+      },
+      "confidence": 0.857,
+      "loss_before": 0.277,
+      "loss_after": 0.245,
+      "delta": 0.032
+    },
+    "math_topo": {
+      "team": "Mathematics_Logic",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 286,
+        "UNKNOWN": 147,
+        "FALSE": 67
+      },
+      "confidence": 0.841,
+      "loss_before": 0.28,
+      "loss_after": 0.264,
+      "delta": 0.016
+    },
+    "math_prob": {
+      "team": "Mathematics_Logic",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 298,
+        "UNKNOWN": 140,
+        "FALSE": 62
+      },
+      "confidence": 0.846,
+      "loss_before": 0.242,
+      "loss_after": 0.218,
+      "delta": 0.024
+    },
+    "math_number": {
+      "team": "Mathematics_Logic",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 286,
+        "UNKNOWN": 145,
+        "FALSE": 69
+      },
+      "confidence": 0.851,
+      "loss_before": 0.258,
+      "loss_after": 0.219,
+      "delta": 0.039
+    },
+    "math_geo": {
+      "team": "Mathematics_Logic",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 285,
+        "UNKNOWN": 152,
+        "FALSE": 63
+      },
+      "confidence": 0.846,
+      "loss_before": 0.279,
+      "loss_after": 0.25,
+      "delta": 0.029
+    },
+    "math_proof": {
+      "team": "Mathematics_Logic",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 275,
+        "UNKNOWN": 151,
+        "FALSE": 74
+      },
+      "confidence": 0.846,
+      "loss_before": 0.295,
+      "loss_after": 0.267,
+      "delta": 0.028
+    },
+    "math_k3": {
+      "team": "Mathematics_Logic",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 274,
+        "UNKNOWN": 143,
+        "FALSE": 83
+      },
+      "confidence": 0.841,
+      "loss_before": 0.256,
+      "loss_after": 0.221,
+      "delta": 0.035
+    },
+    "ui_react": {
+      "team": "Interface_Design",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 281,
+        "UNKNOWN": 125,
+        "FALSE": 94
+      },
+      "confidence": 0.843,
+      "loss_before": 0.228,
+      "loss_after": 0.207,
+      "delta": 0.021
+    },
+    "ui_vue": {
+      "team": "Interface_Design",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 280,
+        "UNKNOWN": 157,
+        "FALSE": 63
+      },
+      "confidence": 0.839,
+      "loss_before": 0.293,
+      "loss_after": 0.273,
+      "delta": 0.02
+    },
+    "ui_3d": {
+      "team": "Interface_Design",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 273,
+        "UNKNOWN": 143,
+        "FALSE": 84
+      },
+      "confidence": 0.845,
+      "loss_before": 0.272,
+      "loss_after": 0.25,
+      "delta": 0.022
+    },
+    "ui_anim": {
+      "team": "Interface_Design",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 287,
+        "UNKNOWN": 142,
+        "FALSE": 71
+      },
+      "confidence": 0.843,
+      "loss_before": 0.24,
+      "loss_after": 0.225,
+      "delta": 0.015
+    },
+    "ui_a11y": {
+      "team": "Interface_Design",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 279,
+        "UNKNOWN": 159,
+        "FALSE": 62
+      },
+      "confidence": 0.851,
+      "loss_before": 0.23,
+      "loss_after": 0.198,
+      "delta": 0.032
+    },
+    "ui_voice": {
+      "team": "Interface_Design",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 291,
+        "UNKNOWN": 132,
+        "FALSE": 77
+      },
+      "confidence": 0.845,
+      "loss_before": 0.273,
+      "loss_after": 0.245,
+      "delta": 0.028
+    },
+    "ui_gesture": {
+      "team": "Interface_Design",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 260,
+        "UNKNOWN": 146,
+        "FALSE": 94
+      },
+      "confidence": 0.843,
+      "loss_before": 0.224,
+      "loss_after": 0.193,
+      "delta": 0.031
+    },
+    "ui_spatial": {
+      "team": "Interface_Design",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 282,
+        "UNKNOWN": 136,
+        "FALSE": 82
+      },
+      "confidence": 0.847,
+      "loss_before": 0.237,
+      "loss_after": 0.197,
+      "delta": 0.04
+    },
+    "cosmo_astro": {
+      "team": "Cosmic_Sciences",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 287,
+        "UNKNOWN": 143,
+        "FALSE": 70
+      },
+      "confidence": 0.847,
+      "loss_before": 0.23,
+      "loss_after": 0.193,
+      "delta": 0.037
+    },
+    "cosmo_planet": {
+      "team": "Cosmic_Sciences",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 270,
+        "UNKNOWN": 153,
+        "FALSE": 77
+      },
+      "confidence": 0.84,
+      "loss_before": 0.277,
+      "loss_after": 0.255,
+      "delta": 0.022
+    },
+    "cosmo_galaxy": {
+      "team": "Cosmic_Sciences",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 280,
+        "UNKNOWN": 145,
+        "FALSE": 75
+      },
+      "confidence": 0.845,
+      "loss_before": 0.29,
+      "loss_after": 0.266,
+      "delta": 0.024
+    },
+    "cosmo_dark": {
+      "team": "Cosmic_Sciences",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 281,
+        "UNKNOWN": 152,
+        "FALSE": 67
+      },
+      "confidence": 0.843,
+      "loss_before": 0.287,
+      "loss_after": 0.267,
+      "delta": 0.02
+    },
+    "cosmo_gravity": {
+      "team": "Cosmic_Sciences",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 275,
+        "UNKNOWN": 147,
+        "FALSE": 78
+      },
+      "confidence": 0.848,
+      "loss_before": 0.224,
+      "loss_after": 0.205,
+      "delta": 0.019
+    },
+    "cosmo_quantum": {
+      "team": "Cosmic_Sciences",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 273,
+        "UNKNOWN": 135,
+        "FALSE": 92
+      },
+      "confidence": 0.85,
+      "loss_before": 0.289,
+      "loss_after": 0.261,
+      "delta": 0.028
+    },
+    "cosmo_neutrino": {
+      "team": "Cosmic_Sciences",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 270,
+        "UNKNOWN": 145,
+        "FALSE": 85
+      },
+      "confidence": 0.844,
+      "loss_before": 0.246,
+      "loss_after": 0.228,
+      "delta": 0.018
+    },
+    "cosmo_cmb": {
+      "team": "Cosmic_Sciences",
+      "tasks": 500,
+      "steps": 32000000,
+      "decisions": {
+        "TRUE": 288,
+        "UNKNOWN": 144,
+        "FALSE": 68
+      },
+      "confidence": 0.85,
+      "loss_before": 0.241,
+      "loss_after": 0.212,
+      "delta": 0.029
+    }
+  }
+}

@@ -1,0 +1,288 @@
+FABRICATED CONSTANTS - PHASE 4 EVIDENCE
+Repo: F:\Development sites\TRM-Swarm-OS-v2
+Date: 2026-11-03
+Scope authorised: swarm_v2/core/quantize_clip.py, council_paper162.py
+No git commands were run. No service was started, stopped or restarted.
+Nothing was deleted. Errata were added; the historical value remains recorded in
+evidence/PHI_V_ERRATA.txt.
+
+====================================================================
+1. WHAT THE VALUE WAS
+====================================================================
+Literal: 0.9115 used as phi_v (voltage coherence) in two live code paths.
+
+  swarm_v2/core/quantize_clip.py:155
+      "phi_v": 0.9115,
+      "claim": "measured on real cached openai/clip-vit-base-patch32 weights",
+
+  council_paper162.py:12 (inside the council proposal topic string)
+      "effective capacity = ~30B x 0.9115 Phi_V x 1.5 ternary = ~41B "
+      "intelligence units ..."
+
+Both presented the constant as if it were a hardware telemetry reading. In the
+clip ledger the neighbouring "claim" key explicitly asserted measurement, which
+is what made that artefact a false record rather than merely a missing field.
+
+====================================================================
+2. WHERE IT CAME FROM
+====================================================================
+It was never measured. It was a platform-wide "voltage harmonization" constant
+copied into quantisation ledgers as a decorative field. Recorded history:
+  - evidence/PHI_V_ERRATA.txt (2026-10-25): "the literal 0.9115 is NOT deleted.
+    It is superseded, and the records ..."
+  - CHANGELOG.md:117: "Phi_V was hardcoded (0.9115, 0.86, 1.0 in three places)
+    while docstrings claimed hardware telemetry."
+  - trm_uefi_kernel/host_council_server/src/voltage.rs:6: "Phi_V was previously
+    a hardcoded constant (0.9115) while docstrings claimed ..."
+
+====================================================================
+3. THE AUTHORITATIVE NON-FABRICATED SOURCE
+====================================================================
+Derivation (single source of truth), trm_uefi_kernel/host_council_server/src/
+voltage.rs:
+
+    Phi_V = (V_core/1.25)^2 * (f_actual/4000) * (V_ddr/1.35)
+            * max(0.5, 1 - mem%/200)
+
+The divisors 1.25 V (core) and 1.35 V (DDR) are NOMINAL references, deliberately
+not the rails themselves, so the rail terms are not structurally inert.
+
+Exposed at GET http://127.0.0.1:8022/system/voltage with a `measured` flag.
+
+Read live for this evidence file (2026-11-03):
+  {"phi_v": 0.6884, "measured": false,
+   "voltage_rails": {"v_core": 1.1, "v_ddr": 1.2},
+   "cpu_clock_mhz": 4000.0, "memory_percent": 0.0,
+   "source": "FALLBACK: one or more telemetry reads failed; values are nominal,
+              NOT measured"}
+
+measured=false is correct and expected: this box has NO voltage sensor (no
+LibreHardwareMonitor, no OpenHardwareMonitor, no HWiNFO). The rails reported are
+the public nominal 1.10 V core / 1.20 V DDR and the clock/memory reads failed,
+so the server refuses to call the result a measurement.
+
+Arithmetic re-checked independently:
+  (1.1/1.25)^2 * (4000/4000) * (1.2/1.35) * max(0.5, 1 - 0/200) = 0.6884
+i.e. 0.7744 * 1.0 * 0.8889 * 1.0 = 0.688356... -> 0.6884. The endpoint's value is
+reproducible from the documented formula; it is DERIVED, not read.
+
+====================================================================
+4. WHAT REPLACED IT
+====================================================================
+(a) swarm_v2/core/quantize_clip.py
+    New helper sample_phi_v() GETs http://127.0.0.1:8022/system/voltage with a
+    1.5 s timeout and returns {phi_v, measured, source, detail}. The ledger now
+    emits:
+
+        "phi_v": <value read from /system/voltage, or null>,
+        "phi_v_measured": <the endpoint's measured flag, verbatim>,
+        "phi_v_source": "http://127.0.0.1:8022/system/voltage",
+        "phi_v_note": "derived from nominal rails via the voltage.rs formula, not
+                       read from a sensor (this host has none); the measured flag
+                       is authoritative ...",
+        "claim": "compression and reconstruction cosine measured on real cached
+                  openai/clip-vit-base-patch32 weights; phi_v is derived, not
+                  measured (see phi_v_measured)"
+
+    If the endpoint is unreachable the artefact carries "phi_v": null and
+    "phi_v_measured": false - an absent value, never a placeholder number.
+
+(b) council_paper162.py
+    The proposal topic is now composed at run time. read_phi_v() reads the same
+    endpoint; the capacity clause is computed as 30 * phi_v * 1.5 and the voltage
+    term is labelled in the emitted text. Measured live for this file:
+
+        "effective capacity = ~30B x 0.6884 Phi_V x 1.5 ternary = ~31B
+         intelligence units. Phi_V = 0.6884 DERIVED from nominal rails by the
+         voltage.rs formula, measured=false (this host has no voltage sensor, so
+         it is not a reading)."
+
+    followed by an ERRATA sentence stating the earlier ~41B figure multiplied by
+    a hardcoded constant that was never measured, and that it is withdrawn. If
+    the endpoint is unreachable the topic omits the Phi_V term entirely ("Phi_V
+    term OMITTED - this host has no voltage sensor ... no substitute constant is
+    used") and reports ~45B as an UNDERTATED UPPER BOUND. Both branches were
+    exercised.
+
+The corrected figure moves (~41B -> ~31B). That is intended: the old number was
+the product of a fake multiplier. docs/PAPER-162-TRANSISTOR-MAPPING.md already
+carries the corrected measured band 0.63-0.74, and 0.6884 sits inside it, so the
+new figure agrees with the published errata rather than inventing a new range.
+
+====================================================================
+5. WHY THIS IS NOT A FABRICATION
+====================================================================
+- Neither file asserts a voltage number. Neither contains a numeric voltage
+  literal any more; both read the doctrine endpoint at run time.
+- The only number they can emit is computed by the documented formula from the
+  rails the host reports, and it travels with measured=false. The artefact text
+  calls it DERIVED, so it cannot be cited as a reading.
+- When the source is unavailable both fall back to null / omission, never to a
+  constant. No code path in either file can produce a stand-in number.
+- The forbidden literal is gone from both files, so no new artefact can carry
+  it; the historical value survives in the errata record instead of in code.
+
+Transient note: during verification the first call to read_phi_v() returned None
+(endpoint miss) and later calls returned 0.6884. The fallback branch handled the
+miss correctly, which is the intended behaviour and is why the null path is
+documented above.
+
+====================================================================
+6. VERIFICATION
+====================================================================
+Python: C:\Users\shawn\AppData\Local\Programs\Python\Python311\python.exe
+
+  python -c "import ast; ast.parse(open(p, encoding='utf-8').read())"
+  -> OK swarm_v2/core/quantize_clip.py
+  -> OK council_paper162.py
+
+quantize_clip.py was additionally imported as a module (main() is __main__-
+guarded) and sample_phi_v() called three times; all three returned phi_v=0.6884,
+measured=false, source=http://127.0.0.1:8022/system/voltage.
+
+council_paper162.py is not import-safe (it executes council propose/deliberate/
+vote/enact at import - unchanged from before) and was therefore NOT executed. Its
+module prefix (imports + read_phi_v + clause construction) was exec'd directly
+and its `topic` assignment was evaluated from the AST; the resulting string is
+quoted in 4(b). ast.parse passes on the whole file.
+
+Literal count after the change:
+  swarm_v2/core/quantize_clip.py : 0
+  council_paper162.py            : 0
+
+====================================================================
+7. GREP AFTER THE CHANGE (0.9115 across the whole tree)
+====================================================================
+Command actually run (ripgrep; plain `grep -rn "0.9115"` does not finish inside
+180 s on this tree because of multi-megabyte single-line JSON):
+
+  rg -n --no-heading --color never --max-columns 220 --max-columns-preview
+     --glob '!evidence/FABRICATED_CONSTANTS_PHASE4.txt' 0.9115 <repo>
+  -> then lines whose match is merely a substring of a longer float (e.g.
+     0.029115131...) are dropped by a Python word-boundary filter.
+
+73 matching lines below.
+
+Both edited files are gone from the result. Every remaining hit is either an
+audit/errata/changelog record that DESCRIBES the historical error, a checker
+(audit_paper162.py), a generated JSON ledger or older site copy (historical
+artefacts), or an out-of-scope source file listed in section 8. This evidence
+file is excluded from its own listing (it is itself an errata document); it is
+the only 0.9115 match under evidence/ that was written today. Verbatim:
+
+--- BEGIN GREP ---
+F:/Development sites/TRM-Swarm-OS-v2\audit_paper162.py:30:for m in ["3.8B", "26.8B", "40 CU", "402M trits", "53 modules ENERGIZED", "70.6M agent-tasks", "0.9115", "41.8B"]:
+F:/Development sites/TRM-Swarm-OS-v2\autonomous_periodic_task_cadence_ledger.json:29:        "description": "Maintain Phi V = 0.9115 +/- 0.000 mV voltage coherence across 100 federation nodes. Verify 15.5342 THz optical phonon breathing mode resonance at 0.00 ppm detuning.",
+F:/Development sites/TRM-Swarm-OS-v2\autonomous_cadence_council_deliberation.json:43:        "name": "Hourly Voltage Harmonization (Phi_V = 0.9115)",
+F:/Development sites/TRM-Swarm-OS-v2\autonomous_cadence_council_deliberation.json:328:      "argument": "Hardware telemetry validates that silicon longevity and computational determinism depend directly on junction temperature and voltage stability. Our hourly Phi_V = 0.9115 voltage harmonization routine  [... omitted end of long line]
+F:/Development sites/TRM-Swarm-OS-v2\autonomous_cadence_council_deliberation.json:331:        "Hourly multi-rail voltage harmonization enforcing Phi_V = 0.9115 +/- 0.0005",
+F:/Development sites/TRM-Swarm-OS-v2\CHANGELOG.md:102:- **Paper 162 corrected.** Φ was the fabricated `0.9115` (measured: ~0.63–0.74) → effective units 41.8B → **33.9B**; "of 188" → 182 (derived); "53 modules energized" withdrawn (no such mechanism exists).
+F:/Development sites/TRM-Swarm-OS-v2\CHANGELOG.md:117:- **Voltage doctrine was not applied.** `Phi_V` was hardcoded (`0.9115`, `0.86`, `1.0` in three places) while docstrings claimed hardware telemetry. New `src/voltage.rs` measures the real host: `Phi_V = (V_core/1.25)² ×  [... omitted end of long line]
+F:/Development sites/TRM-Swarm-OS-v2\data\council_ledger.json:475:        "comment": "Hourly Phi_V = 0.9115 voltage harmonization routine aligns 4 power rails (CPU, SoC, DRAM, GPU). Continuous 15.53 THz optical phonon phase-lock achieves +21.60% dynamic energy recovery.",
+F:/Development sites/TRM-Swarm-OS-v2\data\council_ledger.json:692:        "comment": "Thermal-aware task pacing bounds Laptop Mobile GPU to 68°C and Desktop to 52°C, continuously enforcing Phi_V = 0.9115 voltage harmonization across all nodes.",
+F:/Development sites/TRM-Swarm-OS-v2\docs\CLAIM-AUDIT-platform.md:51:| `voltage_phi_v` | /health 0.6778, /system/status 0.6778, /system/voltage 0.6778 | **/system/resources 0.9115** |
+F:/Development sites/TRM-Swarm-OS-v2\docs\CLAIM-AUDIT-platform.md:55:0.9115 is the value the voltage doctrine says must never be hardcoded; one
+F:/Development sites/TRM-Swarm-OS-v2\docs\index.html:481:          <tr><td>Daily</td><td>Voltage Harmonization (Phi_V=0.9115)</td><td>Every 1 hour</td><td>Pulse, Archi</td><td>15.53 THz PLL phase lock</td></tr>
+F:/Development sites/TRM-Swarm-OS-v2\evidence\BRAIN_MODULE_FINDINGS.txt:18:  FORBIDDEN 0.9115 present as a literal:
+F:/Development sites/TRM-Swarm-OS-v2\evidence\BRAIN_MODULE_FINDINGS.txt:19:    swarm_v2/core/quantize_clip.py:155      "phi_v": 0.9115
+F:/Development sites/TRM-Swarm-OS-v2\evidence\BRAIN_MODULE_FINDINGS.txt:20:    swarm_v2/core/quantize_gemma270m.py:167 "phi_v": 0.9115
+F:/Development sites/TRM-Swarm-OS-v2\evidence\BRAIN_MODULE_FINDINGS.txt:21:    swarm_v2/core/quantize_gpt2.py:217      "phi_v": 0.9115
+F:/Development sites/TRM-Swarm-OS-v2\evidence\BRAIN_MODULE_FINDINGS.txt:22:    council_paper162.py:12  capacity claim = ~30B x 0.9115 x 1.5 = ~41B
+F:/Development sites/TRM-Swarm-OS-v2\evidence\claim_audit_1.json:6:    "evidence": "endpoints disagree: {'health': 0.6778, 'system/status': 0.6778, 'system/resources': 0.9115, 'system/voltage': 0.6778}"
+F:/Development sites/TRM-Swarm-OS-v2\docs\PAPER-162-TRANSISTOR-MAPPING.md:21:| **Φ (voltage coherence)** | `0.9115` | **measured ~0.63–0.74**, live from host telemetry | Φ was a **hardcoded constant**, not a doctrine reading. It is now derived in `voltage.rs`: `(V_core/1.25)² × (f_actual/4000) ×  [... omitted end of long line]
+F:/Development sites/TRM-Swarm-OS-v2\docs\PRODUCTION-READINESS-PLAN.md:135:But `0.9115` — the value the voltage doctrine forbids — is still live in
+F:/Development sites/TRM-Swarm-OS-v2\docs\PRODUCTION-READINESS-PLAN.md:238:1. Replace `0.9115` in `quantize_clip.py` and `council_paper162.py` with the derived
+F:/Development sites/TRM-Swarm-OS-v2\evidence\deployment_verification.txt:7:   /system/resources     phi_v=0.5771  measured=True   <- was the hardcoded 0.9115
+F:/Development sites/TRM-Swarm-OS-v2\federation_task_coordination_ledger.json:128:      "coordination_action": "Thermal-aware task pacing (Laptop max 68\u00b0C, Desktop max 52\u00b0C) maintaining Phi_V = 0.9115 federation-wide.",
+F:/Development sites/TRM-Swarm-OS-v2\evidence\PG_CARGO.tmp:1656:21 | pub const PHI_VOLTAGE_TARGET: f32 = 0.9115;
+F:/Development sites/TRM-Swarm-OS-v2\evidence\PHI_V_ERRATA.txt:1:PHI_V ERRATA - 0.9115 SUPERSEDED BY MEASUREMENT (2026-10-25)
+F:/Development sites/TRM-Swarm-OS-v2\evidence\PHI_V_ERRATA.txt:3:STATUS: the literal 0.9115 is NOT deleted. It is superseded, and the records
+F:/Development sites/TRM-Swarm-OS-v2\evidence\PHI_V_ERRATA.txt:28:  0.9115  ->  0.4394   : the cited constant is 2.07x the measured value
+F:/Development sites/TRM-Swarm-OS-v2\evidence\PHI_V_ERRATA.txt:40:RECORDS CITING 0.9115 (left intact - these are calibration history)
+F:/Development sites/TRM-Swarm-OS-v2\evidence\PHI_V_ERRATA.txt:41:  swarm_v2/core/quantize_clip.py:155         "phi_v": 0.9115
+F:/Development sites/TRM-Swarm-OS-v2\evidence\PHI_V_ERRATA.txt:42:  swarm_v2/core/quantize_gemma270m.py:167    "phi_v": 0.9115
+F:/Development sites/TRM-Swarm-OS-v2\evidence\PHI_V_ERRATA.txt:43:  swarm_v2/core/quantize_gpt2.py:217         "phi_v": 0.9115
+F:/Development sites/TRM-Swarm-OS-v2\evidence\PHI_V_ERRATA.txt:44:  council_paper162.py:12   capacity = ~30B x 0.9115 x 1.5 = ~41B
+F:/Development sites/TRM-Swarm-OS-v2\evidence\platform_claim_sweep.json:37:    "voltage_phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\evidence\platform_claim_sweep.json:1108:        "finding": "Formal ratification of the Swarm Council Autonomous Periodic Task Scheduling and Cadence Engine: (1) Daily Cadence: continuous cosmic muon & 6s SEU memory scrubbing, hourly Phi_V=0.9115 voltage harmon [... omitted end of long line]
+F:/Development sites/TRM-Swarm-OS-v2\evidence\platform_claim_sweep.json:1700:      "phi_voltage_current": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\evidence\platform_claim_sweep.json:1701:      "phi_voltage_target": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\evidence\_auditmsg.txt:18:  voltage_phi_v: /system/resources serves 0.9115 while three other endpoints serve
+F:/Development sites/TRM-Swarm-OS-v2\evidence\_testmsg.txt:30:  /system/resources served the hardcoded 0.9115 and /swarm/telemetry served
+F:/Development sites/TRM-Swarm-OS-v2\hybrid_intelligence_6_tier_60_tasks_ledger.json:528:          "output": "Phi V harmonic index = 0.9115 maintained across all 100 federation nodes. Zero voltage drift detected (+/- 0.000 mV).",
+F:/Development sites/TRM-Swarm-OS-v2\evidence\_verifymsg.txt:8:   0.9115 and /swarm/telemetry the hardcoded 0.86 - the exact constant the
+F:/Development sites/TRM-Swarm-OS-v2\public_site\index.html:481:          <tr><td>Daily</td><td>Voltage Harmonization (Phi_V=0.9115)</td><td>Every 1 hour</td><td>Pulse, Archi</td><td>15.53 THz PLL phase lock</td></tr>
+F:/Development sites/TRM-Swarm-OS-v2\phoenix_journal_audit_manifest.json:839:      "finding": "Formal ratification of the Swarm Council Autonomous Periodic Task Scheduling and Cadence Engine: (1) Daily Cadence: continuous cosmic muon & 6s SEU memory scrubbing, hourly Phi_V=0.9115 voltage harmoniz [... omitted end of long line]
+F:/Development sites/TRM-Swarm-OS-v2\platform_full_sync_manifest_v19_4.json:139:    "Voltage Harmonization": "Phi_V = 0.9115 (0.00 ppm drift)",
+F:/Development sites/TRM-Swarm-OS-v2\quantize_clip_ledger.json:25: "phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\sovereign_capability_task_suite.json:67:      "expected_output": "0.00 ppm detuning with \u03a6_V = 0.9115 harmonic index maintained across 100 nodes.",
+F:/Development sites/TRM-Swarm-OS-v2\turbovec_quantization_ledger_qwen17b.json:42: "phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\turbovec_quantization_ledger_gpt2.json:59: "phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\turbovec_quantization_ledger_gemma270m.json:50: "phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\turbovec_quantization_ledger.json:13: "phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\swarm_v2\core\turbovec_quantize_weights.py:8:On-device only — no API. Voltage doctrine: Phi_V = 0.9115 coherence.
+F:/Development sites/TRM-Swarm-OS-v2\swarm_v2\core\turbovec_quantize_weights.py:108:        "phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\scratch\council_ledger_snapshot.json:485:        "comment": "Hourly Phi_V = 0.9115 voltage harmonization routine aligns 4 power rails (CPU, SoC, DRAM, GPU). Continuous 15.53 THz optical phonon phase-lock achieves +21.60% dynamic energy recovery.",
+F:/Development sites/TRM-Swarm-OS-v2\scratch\council_ledger_snapshot.json:707:        "comment": "Thermal-aware task pacing bounds Laptop Mobile GPU to 68°C and Desktop to 52°C, continuously enforcing Phi_V = 0.9115 voltage harmonization across all nodes.",
+F:/Development sites/TRM-Swarm-OS-v2\swarm_v2\core\quantize_whisper.py:157:        "phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\swarm_v2\core\quantize_qwen17b.py:16:On-device only - no API. Voltage doctrine: Phi_V = 0.9115 coherence.
+F:/Development sites/TRM-Swarm-OS-v2\swarm_v2\core\quantize_qwen17b.py:165:        "phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\swarm_v2\core\quantize_gpt2.py:217:        "phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\swarm_v2\core\quantize_gemma270m.py:167:        "phi_v": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\tools\phoenix_k3_analysis\README.md:43:constant**. An earlier version of the platform hardcoded `0.9115`. Making the
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\src\autonomous_cadence.rs:6://! 1. Real-Time & Hourly: 15.92 fs Muon timing, 15.53 THz optical phonon lock, 6s SEU scrub, hourly Phi_V=0.9115
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\src\autonomous_cadence.rs:21:pub const PHI_VOLTAGE_TARGET: f32 = 0.9115;
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\src\autonomous_cadence.rs:92:                name: "Hourly Voltage Harmonization (Phi_V = 0.9115)",
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\src\federation_sync_upgrade.rs:92:            voltage_harmonic_phi_v: 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\trm-sovereign-portal\index.html:481:          <tr><td>Daily</td><td>Voltage Harmonization (Phi_V=0.9115)</td><td>Every 1 hour</td><td>Pulse, Archi</td><td>15.53 THz PLL phase lock</td></tr>
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\host_council_server\src\main.rs:522:            - **DAILY-02 (Hourly):** Voltage harmonization (Phi_V = 0.9115) & 15.53 THz optical phonon phase-lock.\n\
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\host_council_server\src\main.rs:927:            "comment": "Thermal-aware task pacing bounds Laptop Mobile GPU to 68°C and Desktop to 52°C, continuously enforcing Phi_V = 0.9115 voltage harmonization across all nodes.",
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\host_council_server\src\main.rs:1042:            "comment": "Hourly Phi_V = 0.9115 voltage harmonization routine aligns 4 power rails (CPU, SoC, DRAM, GPU). Continuous 15.53 THz optical phonon phase-lock achieves +21.60% dynamic energy recovery.",
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\host_council_server\src\main.rs:1626:                "phi_voltage_target": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\host_council_server\src\main.rs:1627:                "phi_voltage_current": 0.9115,
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\host_council_server\src\main.rs:2942:                "title": "Hourly Voltage Harmonization (Phi_V = 0.9115)",
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\host_council_server\data\council_ledger.json:485:        "comment": "Hourly Phi_V = 0.9115 voltage harmonization routine aligns 4 power rails (CPU, SoC, DRAM, GPU). Continuous 15.53 THz optical phonon phase-lock achieves +21.60% dynamic energy recovery.",
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\host_council_server\data\council_ledger.json:707:        "comment": "Thermal-aware task pacing bounds Laptop Mobile GPU to 68°C and Desktop to 52°C, continuously enforcing Phi_V = 0.9115 voltage harmonization across all nodes.",
+F:/Development sites/TRM-Swarm-OS-v2\trm_uefi_kernel\host_council_server\src\voltage.rs:6://! the OS. Phi_V was previously a hardcoded constant (0.9115) while docstrings
+--- END GREP ---
+
+====================================================================
+8. FOUND BUT DELIBERATELY LEFT ALONE (out of scope)
+====================================================================
+The same fabricated field is live in sibling quantisation scripts. Not touched:
+this phase's authorised scope is exactly two files. Listed so the next phase
+picks them up:
+
+  swarm_v2/core/quantize_gemma270m.py:167         "phi_v": 0.9115
+  swarm_v2/core/quantize_gpt2.py:217              "phi_v": 0.9115
+  swarm_v2/core/quantize_whisper.py:157           "phi_v": 0.9115
+  swarm_v2/core/quantize_qwen17b.py:165           "phi_v": 0.9115  (+ docstring:16)
+  swarm_v2/core/turbovec_quantize_weights.py:108  "phi_v": 0.9115  (+ docstring:8)
+
+Rust, also out of scope, and worse than a report field because it is a live
+constant or a served claim:
+
+  trm_uefi_kernel/src/autonomous_cadence.rs:21              pub const PHI_VOLTAGE_TARGET: f32 = 0.9115;
+  trm_uefi_kernel/host_operate/src/autonomous_cadence.rs:21  same constant, duplicate crate copy
+  trm_uefi_kernel/src/federation_sync_upgrade.rs:92          voltage_harmonic_phi_v: 0.9115
+  trm_uefi_kernel/host_council_server/src/main.rs:619        serves "PhiV = 0.9115 maintained
+      across VDDCR_CPU, VDDCR_SOC, DRAM, and VDD_GPU rails" as live hardware
+      telemetry; also 522, 807, 927, 1042, 1626-1627, 2942 and the mirrored
+      data/council_ledger.json comments.
+
+  main.rs:619 is the most serious survivor: it is an API response claiming a
+  measured harmonic across four rails. It is a different phase (server code, not
+  the two authorised files) and is flagged here, not edited.
+
+Left intact on purpose because they ARE the audit trail (never delete):
+  audit_paper162.py:30 (checker), CHANGELOG.md:102,117,
+  docs/PAPER-162-TRANSISTOR-MAPPING.md:21, docs/CLAIM-AUDIT-platform.md:51,55,
+  docs/PRODUCTION-READINESS-PLAN.md:135,238, evidence/PHI_V_ERRATA.txt,
+  evidence/BRAIN_MODULE_FINDINGS.txt, evidence/deployment_verification.txt,
+  evidence/_auditmsg.txt, evidence/_testmsg.txt, evidence/_verifymsg.txt,
+  tools/phoenix_k3_analysis/README.md:43.
+
+Generated ledgers still carrying the old value (historical artefacts; regenerate
+rather than edit): quantize_clip_ledger.json, turbovec_quantization_ledger*.json,
+data/council_ledger.json, platform_claim_sweep.json, plus site copy under
+docs/index.html and public_site/index.html.

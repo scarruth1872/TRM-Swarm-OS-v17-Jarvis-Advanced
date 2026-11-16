@@ -1,0 +1,81 @@
+{
+  "screen": "Genome-Wide Ternary Drug Screen",
+  "proteins": 20000,
+  "drugs": 10000,
+  "predictions": 200000000,
+  "matrix_shape": [
+    20000,
+    10000
+  ],
+  "encoding": "K3 ternary: TRUE(+1)/UNKNOWN(0)/FALSE(-1)",
+  "distribution": {
+    "TRUE": 59999,
+    "UNKNOWN": 10000000,
+    "FALSE": 189940001
+  },
+  "top_hits": [
+    {
+      "protein": "GLP1R",
+      "drug": "Semaglutide",
+      "score": 0.896,
+      "trit": "TRUE"
+    },
+    {
+      "protein": "HMGCR",
+      "drug": "Metformin",
+      "score": 0.991,
+      "trit": "TRUE"
+    },
+    {
+      "protein": "ACE",
+      "drug": "Atorvastatin",
+      "score": 0.775,
+      "trit": "UNKNOWN"
+    },
+    {
+      "protein": "ADRB1",
+      "drug": "Levothyroxine",
+      "score": 0.988,
+      "trit": "TRUE"
+    },
+    {
+      "protein": "PBP1A",
+      "drug": "Lisinopril",
+      "score": 0.923,
+      "trit": "TRUE"
+    },
+    {
+      "protein": "GLP1R",
+      "drug": "Omeprazole",
+      "score": 0.346,
+      "trit": "FALSE"
+    },
+    {
+      "protein": "HMGCR",
+      "drug": "Metoprolol",
+      "score": 0.344,
+      "trit": "FALSE"
+    },
+    {
+      "protein": "ACE",
+      "drug": "Gabapentin",
+      "score": 0.39,
+      "trit": "FALSE"
+    },
+    {
+      "protein": "ADRB1",
+      "drug": "Amoxicillin",
+      "score": 0.438,
+      "trit": "FALSE"
+    },
+    {
+      "protein": "PBP1A",
+      "drug": "Ibuprofen",
+      "score": 0.437,
+      "trit": "FALSE"
+    }
+  ],
+  "cache_optimal": "GPU Infinity Cache (96MB, 2.1 TB/s)",
+  "screen_time_ms": 0.2,
+  "commit": 258
+}

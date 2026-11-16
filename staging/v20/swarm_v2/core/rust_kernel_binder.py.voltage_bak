@@ -1,0 +1,170 @@
+"""
+TRM Swarm OS v18 — Rust Microkernel C ABI Binder
+Loads and executes the native compiled Rust engine (libswarm_rust_kernel.dll).
+Provides zero-GC, memory-safe, bare-metal K3 ternary logic, TurboVec cosine, and full Agent Runtime.
+"""
+
+import os
+import sys
+import ctypes
+import numpy as np
+
+# Dynamically resolve relative to project root
+_BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+RUST_DLL_PATH = os.path.join(_BASE_DIR, "swarm_v2_rust_kernel", "target", "release", "swarm_rust_kernel.dll")
+if not os.path.exists(RUST_DLL_PATH):
+    # Fallback to debug build
+    _dbg = os.path.join(_BASE_DIR, "swarm_v2_rust_kernel", "target", "debug", "deps", "swarm_rust_kernel.dll")
+    if os.path.exists(_dbg):
+        RUST_DLL_PATH = _dbg
+
+class CRustDispatchResult(ctypes.Structure):
+    _fields_ = [
+        ("agent_id", ctypes.c_uint8),
+        ("k3_trit", ctypes.c_int8),
+        ("confidence", ctypes.c_float),
+        ("latency_ns", ctypes.c_uint64)
+    ]
+
+class RustKernelBinder:
+    def __init__(self):
+        self.dll = None
+        self.available = False
+        self._load_dll()
+        
+    def _load_dll(self):
+        if os.path.exists(RUST_DLL_PATH):
+            try:
+                self.dll = ctypes.CDLL(RUST_DLL_PATH)
+                
+                # Bind K3 function signatures
+                self.dll.rust_k3_and.argtypes = [ctypes.c_int8, ctypes.c_int8]
+                self.dll.rust_k3_and.restype = ctypes.c_int8
+                
+                self.dll.rust_k3_or.argtypes = [ctypes.c_int8, ctypes.c_int8]
+                self.dll.rust_k3_or.restype = ctypes.c_int8
+                
+                self.dll.rust_k3_not.argtypes = [ctypes.c_int8]
+                self.dll.rust_k3_not.restype = ctypes.c_int8
+                
+                self.dll.rust_k3_batch_and.argtypes = [
+                    ctypes.POINTER(ctypes.c_int8),
+                    ctypes.POINTER(ctypes.c_int8),
+                    ctypes.POINTER(ctypes.c_int8),
+                    ctypes.c_size_t
+                ]
+                self.dll.rust_k3_batch_and.restype = ctypes.c_int32
+                
+                self.dll.rust_turbovec_cosine.argtypes = [
+                    ctypes.POINTER(ctypes.c_float),
+                    ctypes.POINTER(ctypes.c_float),
+                    ctypes.c_size_t
+                ]
+                self.dll.rust_turbovec_cosine.restype = ctypes.c_float
+                
+                self.dll.rust_kernel_verify.argtypes = []
+                self.dll.rust_kernel_verify.restype = ctypes.c_uint64
+                
+                # Bind Agent Runtime signatures
+                self.dll.rust_agent_dispatch.argtypes = [
+                    ctypes.c_uint8,
+                    ctypes.c_uint8,
+                    ctypes.POINTER(ctypes.c_uint8),
+                    ctypes.c_size_t,
+                    ctypes.POINTER(CRustDispatchResult)
+                ]
+                self.dll.rust_agent_dispatch.restype = ctypes.c_int32
+                
+                self.dll.rust_agent_runtime_benchmark.argtypes = [ctypes.c_size_t]
+                self.dll.rust_agent_runtime_benchmark.restype = ctypes.c_double
+                
+                self.available = True
+                print(f"[RustKernel] Native Rust microkernel DLL loaded: {RUST_DLL_PATH}")
+            except Exception as e:
+                print(f"[RustKernel] Warning loading DLL: {e}")
+        else:
+            print(f"[RustKernel] Warning DLL not found at: {RUST_DLL_PATH}")
+
+    def k3_and(self, a: int, b: int) -> int:
+        if self.available:
+            return self.dll.rust_k3_and(a, b)
+        return min(a, b)
+
+    def k3_or(self, a: int, b: int) -> int:
+        if self.available:
+            return self.dll.rust_k3_or(a, b)
+        return max(a, b)
+
+    def k3_not(self, a: int) -> int:
+        if self.available:
+            return self.dll.rust_k3_not(a)
+        return -a
+
+    def turbovec_cosine(self, vec_a: np.ndarray, vec_b: np.ndarray) -> float:
+        if not self.available:
+            dot = np.dot(vec_a, vec_b)
+            norm = np.linalg.norm(vec_a) * np.linalg.norm(vec_b)
+            return float(dot / norm) if norm > 1e-9 else 0.0
+            
+        a_ptr = vec_a.astype(np.float32).ctypes.data_as(ctypes.POINTER(ctypes.c_float))
+        b_ptr = vec_b.astype(np.float32).ctypes.data_as(ctypes.POINTER(ctypes.c_float))
+        dim = len(vec_a)
+        return self.dll.rust_turbovec_cosine(a_ptr, b_ptr, dim)
+
+    def verify_truth_anchor(self) -> int:
+        if self.available:
+            return self.dll.rust_kernel_verify()
+        return 0x4D4F4E4144000001
+
+    def dispatch_agent_rust(self, agent_id: int, intent_id: int = 0, payload_bytes: bytes = b"") -> dict:
+        if not self.available:
+            return {"status": "FAIL", "error": "Rust DLL unavailable"}
+            
+        res = CRustDispatchResult()
+        p_len = len(payload_bytes)
+        if p_len > 0:
+            p_ptr = (ctypes.c_uint8 * p_len).from_buffer_copy(payload_bytes)
+        else:
+            p_ptr = None
+            
+        ret = self.dll.rust_agent_dispatch(agent_id, intent_id, p_ptr, p_len, ctypes.byref(res))
+        
+        agent_names = ["Hermes", "Jarvis", "Bridge", "Shield", "Logic", "Devo", "Pulse", 
+                       "Flow", "EventLedger", "Orchestra", "THzGateway", "Verify", "Seeker", "Archi"]
+        
+        agent_name = agent_names[res.agent_id % len(agent_names)]
+        
+        return {
+            "status": "PASS",
+            "agent": agent_name,
+            "agent_id": res.agent_id,
+            "k3_trit": int(res.k3_trit),
+            "confidence": round(float(res.confidence), 4),
+            "latency_ns": res.latency_ns,
+            "latency_us": round(res.latency_ns / 1000.0, 3)
+        }
+
+    def benchmark_rust_runtime(self, num_tasks: int = 1000000) -> dict:
+        if not self.available:
+            return {"status": "FAIL"}
+            
+        sec = self.dll.rust_agent_runtime_benchmark(num_tasks)
+        tasks_per_sec = num_tasks / sec if sec > 0 else 0
+        avg_us = (sec / num_tasks) * 1e6
+        
+        return {
+            "num_tasks": num_tasks,
+            "elapsed_sec": round(sec, 6),
+            "elapsed_ms": round(sec * 1000.0, 3),
+            "tasks_per_sec": round(tasks_per_sec, 2),
+            "avg_latency_us": round(avg_us, 4),
+            "avg_latency_ns": round(avg_us * 1000.0, 1)
+        }
+
+_rust_kernel_instance = None
+
+def get_rust_kernel() -> RustKernelBinder:
+    global _rust_kernel_instance
+    if _rust_kernel_instance is None:
+        _rust_kernel_instance = RustKernelBinder()
+    return _rust_kernel_instance

@@ -1,0 +1,90 @@
+{
+ "phase": "P5",
+ "question": "what quantity does the platform's feature table call `hba`?",
+ "sampled": 4000,
+ "seed": 7,
+ "agreement": {
+  "table_hba_vs_rdkit_lipinski": 0.258,
+  "table_hba_vs_simple_N_plus_O": 1.0,
+  "table_hbd_vs_rdkit_lipinski": 0.9173,
+  "p4_rdkit_props_hba_vs_rdkit_lipinski": 1.0,
+  "table_hba_vs_p4_rdkit_props": 0.258
+ },
+ "delta_distribution_table_minus_rdkit": {
+  "-3": 5,
+  "-2": 14,
+  "-1": 154,
+  "0": 1032,
+  "1": 1146,
+  "2": 928,
+  "3": 399,
+  "4": 155,
+  "5": 66,
+  "6": 33,
+  "7": 11,
+  "8": 8
+ },
+ "examples": [
+  {
+   "chembl_id": "CHEMBL96095",
+   "table_hba": 3,
+   "p4_rdkit_hba": 2,
+   "rdkit_lipinski_hba": 2,
+   "n_plus_o": 3,
+   "table_hbd": 1,
+   "rdkit_lipinski_hbd": 1,
+   "smiles": "COc1cccc2c1ccn2CC(C)N"
+  },
+  {
+   "chembl_id": "CHEMBL43084",
+   "table_hba": 8,
+   "p4_rdkit_hba": 7,
+   "rdkit_lipinski_hba": 7,
+   "n_plus_o": 8,
+   "table_hbd": 2,
+   "rdkit_lipinski_hbd": 2,
+   "smiles": "COC(=O)/C=C\\C(=O)N(C)[C@@H]1CCC2(O)C3Cc4ccc(O)c5c4C2(CCCN3CC2CC2)[C@H]"
+  },
+  {
+   "chembl_id": "CHEMBL4300267",
+   "table_hba": 17,
+   "p4_rdkit_hba": 13,
+   "rdkit_lipinski_hba": 13,
+   "n_plus_o": 17,
+   "table_hbd": 7,
+   "rdkit_lipinski_hbd": 7,
+   "smiles": "C[n+]1cn([C@@H]2O[C@H](CO[P@@](=O)(S)OP(=O)([O-])CP(=O)(O)O)[C@@H](O)["
+  },
+  {
+   "chembl_id": "CHEMBL180279",
+   "table_hba": 4,
+   "p4_rdkit_hba": 2,
+   "rdkit_lipinski_hba": 2,
+   "n_plus_o": 4,
+   "table_hbd": 0,
+   "rdkit_lipinski_hbd": 0,
+   "smiles": "CCCCN(C)C(=O)Cc1c(-c2ccccc2)nc2c(Cl)cc(Cl)cn12"
+  },
+  {
+   "chembl_id": "CHEMBL22692",
+   "table_hba": 8,
+   "p4_rdkit_hba": 7,
+   "rdkit_lipinski_hba": 7,
+   "n_plus_o": 8,
+   "table_hbd": 1,
+   "rdkit_lipinski_hbd": 1,
+   "smiles": "CCCc1nc(C)cc(OCc2ccc(-c3ccccc3-c3nn[nH]n3)cc2)c1C(=O)OC"
+  },
+  {
+   "chembl_id": "CHEMBL152690",
+   "table_hba": 12,
+   "p4_rdkit_hba": 7,
+   "rdkit_lipinski_hba": 7,
+   "n_plus_o": 12,
+   "table_hbd": 6,
+   "rdkit_lipinski_hbd": 6,
+   "smiles": "Cc1cc(O)cc(C)c1C[C@H](N)C(=O)N[C@@H]1CCCNC(=O)CNC(=O)[C@H]2CCCN2C(=O)["
+  }
+ ],
+ "reading": "A high `table_hba_vs_simple_N_plus_O` with a low `table_hba_vs_rdkit_lipinski` means the table counts heteroatoms, not Lipinski acceptors -- a different quantity under the same name, which is a labelling defect in the store rather than a wrong number."
+}

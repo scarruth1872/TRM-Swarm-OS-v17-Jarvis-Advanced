@@ -1,0 +1,63 @@
+{
+  "phase": 12,
+  "monad_anchor": "0x4D4F4E4144000001",
+  "candidate_modules": [
+    {
+      "rank": 51,
+      "module": "swarm_v2/core/kanban_board.py",
+      "feature": "Task Domain Resolution & Priority Tally",
+      "dll": "strip_kanban_board.dll",
+      "py_time_us": 278.03,
+      "native_time_us": 7.27,
+      "speedup": 38.3,
+      "k3_invariant": true,
+      "max_diff": 1.5258789005656581e-06
+    },
+    {
+      "rank": 52,
+      "module": "swarm_v2/core/native_ipc_bus.py",
+      "feature": "SPSC Ring Buffer Pointer Advancement & Cache Alignment",
+      "dll": "strip_native_ipc_bus.dll",
+      "py_time_us": 373.9,
+      "native_time_us": 4.23,
+      "speedup": 88.3,
+      "k3_invariant": true,
+      "max_diff": 0.0
+    },
+    {
+      "rank": 53,
+      "module": "swarm_v2/core/persistent_mmap_allocator.py",
+      "feature": "Arena Header CRC32 Checksum & Resumption State",
+      "dll": "strip_persistent_mmap.dll",
+      "py_time_us": 458.94,
+      "native_time_us": 19.3,
+      "speedup": 23.8,
+      "k3_invariant": true,
+      "max_diff": 0.0
+    },
+    {
+      "rank": 54,
+      "module": "swarm_v2/core/zero_human_test_gen.py",
+      "feature": "Endpoint Matrix & Parameter Permutation Synthesizer",
+      "dll": "strip_zero_test_gen.dll",
+      "py_time_us": 282.7,
+      "native_time_us": 7.24,
+      "speedup": 39.1,
+      "k3_invariant": true,
+      "max_diff": 4.76837158203125e-07
+    },
+    {
+      "rank": 55,
+      "module": "swarm_v2/core/secrets_vault.py",
+      "feature": "Quantum Amplitude Entropy Projection & Key Derivation",
+      "dll": "strip_secrets_vault.dll",
+      "py_time_us": 31.75,
+      "native_time_us": 4.27,
+      "speedup": 7.4,
+      "k3_invariant": true,
+      "max_diff": 0.0
+    }
+  ],
+  "average_speedup": 39.4,
+  "timestamp": 1788809735.8998735
+}

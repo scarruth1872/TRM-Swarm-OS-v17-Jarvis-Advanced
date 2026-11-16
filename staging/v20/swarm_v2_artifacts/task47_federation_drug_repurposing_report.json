@@ -1,0 +1,33 @@
+{
+  "task_id": "Task 47",
+  "task_name": "Distributed Drug Repurposing Campaign",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "status": "SCREENING_COMPLETED_UNDER_SLA",
+  "fda_approved_drugs_screened": 1420,
+  "pathogen_targets_docked": 1023,
+  "total_docking_combinations": 1452660,
+  "turbovec_docking_latency_ms": 0.26,
+  "screening_time_seconds": 0.0055,
+  "sla_met": true,
+  "top_synergies": [
+    {
+      "drug": "Doxycycline + TRM-ABX-220",
+      "measured_cosine_sim": 0.3002,
+      "target": "Topo IV / 30S Ribosome",
+      "repurposing_indication": "Multi-Drug Resistant Acinetobacter"
+    },
+    {
+      "drug": "Atorvastatin + LpxC Macrocycle",
+      "measured_cosine_sim": 0.2461,
+      "target": "Lipid A Biosynthesis",
+      "repurposing_indication": "Gram-Negative Sepsis"
+    },
+    {
+      "drug": "Metformin + Anti-HER2 ADC",
+      "measured_cosine_sim": 0.2454,
+      "target": "mTOR / HER2 Dual Blockade",
+      "repurposing_indication": "HER2+ Breast Carcinoma"
+    }
+  ],
+  "k3_consensus": "K3Vector(3 trits) [+1 02 -0] density=0.333"
+}

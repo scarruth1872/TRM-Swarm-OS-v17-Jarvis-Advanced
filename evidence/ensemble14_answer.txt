@@ -1,0 +1,34 @@
+CAN 14x 1.58-BIT EXPERTS REACH 99.9 RECALL?  (K40 full precision kept)
+
+BENCHMARK: evidence/hard_corpus2.tsv - 800 docs, 400 clusters x 8 near-dup variants
+  TRUE vocab 1500, dim = FULL (no cap), deterministic BTreeMap index
+  chance recall@1 = 0.125%   |   ALL 800 queries scored, none sampled out
+
+RESULT
+  A  fp32, K40 kept         recall@1 100.00%  (800/800)
+  B  single 1.58-bit        recall@1  99.88%  (799/800)   MISSES the target
+  C  14x 1.58-bit ensemble  recall@1 100.00%  (800/800)   HITS the target
+  D  ensemble + fp32 rerank@20  recall@1 100.00%
+  E  ensemble + fp32 rerank@40  recall@1 100.00%
+
+ANSWER: YES on this benchmark - the 14-expert 1.58-bit ensemble reaches 99.9%
+recall where a single 1.58-bit model (99.88%) does not. The ensemble recovers
+the one case the single model loses, matching full precision exactly.
+
+HONEST LIMITS
+  * The margin is ONE QUERY (799/800 vs 800/800). n=800 gives 95% CIs of about
+    [99.3,100] for B and [99.5,100] for C - they OVERLAP. 'Ensemble beats single'
+    is supported by a single case: suggestive, not statistically strong.
+  * To certify 99.9% as a FLOOR you need a lower CI bound >= 99.9%: with zero
+    failures that needs n >= ~3000. n=800 cannot do it.
+  * This corpus is synthetic near-duplicates with independent per-expert error ->
+    a favourable regime for ensembling. Real corpora may not behave the same.
+
+BENCHMARK-VALIDITY NOTE (why two earlier runs were discarded)
+  run 1 (n=200):  A..C all ~100%  -> saturated, no discriminating power
+  run 2 (n=1067): A..C all ~87.7% -> fp32 ITSELF capped at 87.7%, which is
+                  impossible for self-retrieval. Cause: dim was CAPPED at 1024
+                  of a 6600-token vocabulary (84.5% of tokens dropped, so docs
+                  lost their distinguishing tokens), AND the kept 1024 came from
+                  HashMap iteration order - arbitrary, not reproducible.
+  run 3 (this):   fixed - full vocab, deterministic order, all queries scored.

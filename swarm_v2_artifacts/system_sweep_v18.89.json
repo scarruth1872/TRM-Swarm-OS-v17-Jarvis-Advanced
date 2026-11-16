@@ -1,0 +1,48 @@
+{
+  "version": "v18.89",
+  "timestamp": "2026-08-06T03:12:10",
+  "comparisons": [
+    {
+      "system": "GPT-4o API",
+      "tasks_per_second": 10,
+      "cost_per_1M": 30000,
+      "latency_ms": 500
+    },
+    {
+      "system": "Claude API",
+      "tasks_per_second": 15,
+      "cost_per_1M": 15000,
+      "latency_ms": 400
+    },
+    {
+      "system": "Llama 3 70B (local)",
+      "tasks_per_second": 50,
+      "cost_per_1M": 0.5,
+      "latency_ms": 100
+    },
+    {
+      "system": "Mistral 7B (local)",
+      "tasks_per_second": 200,
+      "cost_per_1M": 0.1,
+      "latency_ms": 50
+    },
+    {
+      "system": "TRM v18.89 CPU",
+      "tasks_per_second": 13899050,
+      "cost_per_1M": 6e-05,
+      "latency_us": 71.9
+    },
+    {
+      "system": "TRM v18.89 GPU",
+      "tasks_per_second": 252000000,
+      "cost_per_1M": 6e-06,
+      "latency_ns": 3.96
+    },
+    {
+      "system": "TRM v18.89 ASIC",
+      "tasks_per_second": 222222222,
+      "cost_per_1M": 5e-06,
+      "latency_ns": 4.5
+    }
+  ]
+}

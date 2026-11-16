@@ -1,0 +1,63 @@
+{
+  "ts": "2026-08-06T01:34:06",
+  "before": {
+    "ns": 64134,
+    "tps": 15592
+  },
+  "after": {
+    "ns": 63047,
+    "tps": 15861
+  },
+  "improvement": 1.0,
+  "avg_gap_to_asic": 14.0,
+  "instructions": [
+    {
+      "name": "K3CLASS v2",
+      "emu_ns": 7069,
+      "asic_ns": 250,
+      "gap": 28.3
+    },
+    {
+      "name": "MAMBA3STEP (fix)",
+      "emu_ns": 19942,
+      "asic_ns": 500,
+      "gap": 39.9
+    },
+    {
+      "name": "PONDEROMOTIVE",
+      "emu_ns": 8536,
+      "asic_ns": 500,
+      "gap": 17.1
+    },
+    {
+      "name": "LORA_FUSED",
+      "emu_ns": 4767,
+      "asic_ns": 750,
+      "gap": 6.4
+    },
+    {
+      "name": "RADIX v2",
+      "emu_ns": 771,
+      "asic_ns": 250,
+      "gap": 3.1
+    },
+    {
+      "name": "DDR_MATCH",
+      "emu_ns": 1015,
+      "asic_ns": 1000,
+      "gap": 1.0
+    },
+    {
+      "name": "TURBOVEC_DOT",
+      "emu_ns": 8559,
+      "asic_ns": 750,
+      "gap": 11.4
+    },
+    {
+      "name": "INSTELLA v2",
+      "emu_ns": 12388,
+      "asic_ns": 500,
+      "gap": 24.8
+    }
+  ]
+}

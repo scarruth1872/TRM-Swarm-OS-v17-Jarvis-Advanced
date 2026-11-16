@@ -1,0 +1,299 @@
+{
+ "magic": "K3HD",
+ "version": 3,
+ "n_agents": 15,
+ "bytes": 31322062,
+ "sha256": "c159bc003ccbc6cea0ce3e578650f9b1c91a76057fb0aacaa83cf859e46267cf",
+ "featuriser": "feat_version 2: char 3/4/5-grams with a 64-slot-per-length budget and head/tail split, + directed word pairs (d=1,2) in a 32-slot channel; bucket 0 = padding; mean over real grams only, then L2",
+ "emb_cap": 224,
+ "char_cap": 192,
+ "pair_cap": 32,
+ "class_order": "0=BLOCK 1=ANALYZE 2=PROCEED",
+ "agents": [
+  {
+   "agent": "Shield",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3563,
+   "loss": 0.004702278715003992,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088136
+  },
+  {
+   "agent": "Logic",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3568,
+   "loss": 0.005077707100635729,
+   "label_counts": {
+    "0": 805,
+    "1": 402,
+    "2": 3326
+   },
+   "record_bytes": 2088135
+  },
+  {
+   "agent": "Devo",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3553,
+   "loss": 0.0053325260553556755,
+   "label_counts": {
+    "0": 805,
+    "1": 402,
+    "2": 3326
+   },
+   "record_bytes": 2088134
+  },
+  {
+   "agent": "Seeker",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3564,
+   "loss": 0.004734365336064782,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088136
+  },
+  {
+   "agent": "Verify",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3552,
+   "loss": 0.00457373821908342,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088136
+  },
+  {
+   "agent": "Archi",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3556,
+   "loss": 0.009152391533656367,
+   "label_counts": {
+    "0": 805,
+    "1": 646,
+    "2": 3082
+   },
+   "record_bytes": 2088135
+  },
+  {
+   "agent": "Flow",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3589,
+   "loss": 0.004101730521402455,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088134
+  },
+  {
+   "agent": "Bridge",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3556,
+   "loss": 0.003729072952410206,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088136
+  },
+  {
+   "agent": "Orchestra",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3555,
+   "loss": 0.003664218065317809,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088139
+  },
+  {
+   "agent": "EventLedger",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3559,
+   "loss": 0.004601355733549488,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088141
+  },
+  {
+   "agent": "LogicMaster",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3547,
+   "loss": 0.006114993283214669,
+   "label_counts": {
+    "0": 805,
+    "1": 402,
+    "2": 3326
+   },
+   "record_bytes": 2088141
+  },
+  {
+   "agent": "Pulse",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3549,
+   "loss": 0.0038730822035133662,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088135
+  },
+  {
+   "agent": "THzGateway",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3558,
+   "loss": 0.004883869637047783,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088140
+  },
+  {
+   "agent": "Jarvis",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3577,
+   "loss": 0.003982070207019292,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088136
+  },
+  {
+   "agent": "Hermes",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "buckets": 4096,
+   "feat_version": 2,
+   "params": 522027,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_sparsity": 0.3555,
+   "loss": 0.003879090484198449,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3570
+   },
+   "record_bytes": 2088136
+  }
+ ]
+}

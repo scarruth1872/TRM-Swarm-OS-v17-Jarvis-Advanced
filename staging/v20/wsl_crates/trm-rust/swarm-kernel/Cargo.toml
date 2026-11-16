@@ -1,0 +1,16 @@
+[package]
+name = "swarm-kernel"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+swarm-paths = { path = "../swarm-paths" }
+libloading = "0.8"
+swarm-nand = { path = "../swarm-nand" }
+swarm-ssm = { path = "../swarm-ssm" }
+swarm-k3 = { path = "../swarm-k3" }
+swarm-turbovec = { path = "../swarm-turbovec" }
+swarm-shard = { path = "../swarm-shard" }

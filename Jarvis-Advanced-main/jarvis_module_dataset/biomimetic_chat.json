@@ -1,0 +1,98 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the Biomimetic Science & Presets module?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Biomimetic Science & Presets (id: biomimetic) is one of Jarvis's core modules. It provides 3 API endpoints. Biologically-inspired behavioral configuration states. Each preset encodes neural oscillation frequency, synaptic plasticity levels, neurotransmitter balance, and other bio-inspired parameters that shape AI response profiles."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the GET /api/biomimetic/presets endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/biomimetic/presets: List biomimetic presets from jarvis_biomimetic_presets.json."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/biomimetic/presets endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/biomimetic/presets: Update biomimetic presets. Body: { presets }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use the POST /api/biomimetic endpoint?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/biomimetic: Run biomimetic simulation. Body: { type, params? }"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What are biomimetic presets?"
+      },
+      {
+        "role": "assistant",
+        "content": "Biologically-inspired behavioral configuration states. Each preset encodes neural oscillation frequency, synaptic plasticity levels, neurotransmitter balance, and other bio-inspired parameters that shape AI response profiles."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How do I use biomimetic simulations?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /api/biomimetic with body { 'type': 'alphafold', 'params': { 'sequence': 'MVLSPADKTNVKAAW...' } }. This triggers AlphaFold/AlphaGenome structure prediction through the Substrate Agent Platform."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What errors can occur in the Biomimetic Science & Presets module?"
+      },
+      {
+        "role": "assistant",
+        "content": "Errors: 400 if type missing"
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Biomimetic Science & Presets module integrate with other Jarvis modules?"
+      },
+      {
+        "role": "assistant",
+        "content": "Biomimetic presets feed into Chat personality modulation. Simulations call the Substrate Agent Platform."
+      }
+    ]
+  }
+]

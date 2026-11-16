@@ -1,0 +1,58 @@
+{
+ "constants": {
+  "l3_size_bytes": 16777216,
+  "basis": "measured: kernel /system l3_sram_kb (host_probe.rs)",
+  "cpu": "AMD Ryzen 9 5900HX with Radeon Graphics",
+  "cells": 134217728,
+  "architectures": 15
+ },
+ "strip_loaded": true,
+ "summary": {
+  "cpu": "AMD Ryzen 9 5900HX with Radeon Graphics",
+  "l3_cache": "17MB",
+  "l3_basis": "measured: kernel /system l3_sram_kb (host_probe.rs)",
+  "host_l3_matches_design_target": false,
+  "sram_cells": 134217728,
+  "transistors": 805306368,
+  "transistors_str": "0.81B SRAM Transistors",
+  "cache_lines": 262144,
+  "sets": 4096,
+  "ways": 16,
+  "slices": 4,
+  "architectures_available_count": 15,
+  "architectures_available": [
+   "fpga",
+   "cellular",
+   "neural",
+   "cam",
+   "quantum",
+   "ising",
+   "hopfield",
+   "boltzmann",
+   "gnn",
+   "tcam",
+   "systolic",
+   "sparse_attention",
+   "hdc",
+   "holographic",
+   "onn"
+  ],
+  "active_architecture": "Oscillatory Neural Network (ONN)"
+ },
+ "native": {
+  "mode": "NATIVE_CDYLIB_L3_DIRECT",
+  "strip_rc": 0,
+  "strip_ok": true,
+  "total_reconfigurations": 3000,
+  "total_elapsed_ms": 6.6945,
+  "per_reconfig_us": 2.2315,
+  "out_distinct_values": 15,
+  "python_per_arch_us": 25.19,
+  "measured_speedup_per_arch": 11.3,
+  "speedup": "measured above; the strip reports rc and a per-op output, so this is not asserted",
+  "match_check": {
+   "strip_pattern_hash": "693e5f0f347a",
+   "architectures": 15
+  }
+ }
+}

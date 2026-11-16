@@ -1,0 +1,220 @@
+{
+  "monad_anchor": "0x4D4F4E4144000001",
+  "version": "1.0.0",
+  "timestamp": "2026-10-20 14:42:07 UTC",
+  "total_circuits": 5,
+  "statistics": {
+    "high_fidelity_circuits (+1)": 5,
+    "acceptable_circuits (0)": 0,
+    "leaky_circuits (-1)": 0,
+    "mean_dynamic_range": 127.6,
+    "mean_response_latency_min": 20.2
+  },
+  "circuits": [
+    {
+      "circuit_id": "SYN-CIRC-001",
+      "name": "Bacterial Threat NOT Inverter",
+      "logic_type": "NOT",
+      "input_signal": "Anhydrotetracycline (aTc) / TetR",
+      "output_payload": "sfGFP Reporter",
+      "plasmid_size_bp": 887,
+      "full_dna_sequence": "TCCCTATCAGTGATAGAGATTGACATCCCTATCAGTGATAGAGATAATGAGCACTACTAGAGAAAGAGGAGAAATACTAGAGATGCGTAAAGGAGAAGAACTTTTCACTGGAGTTGTCCCAATTCTTGTTGAATTAGATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTCTGACCTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCACATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAAATACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAGTACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCCGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAACTATACAAATAATACTAGAGCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTC",
+      "parts_breakdown": [
+        {
+          "role": "Promoter",
+          "part_name": "pTet",
+          "bp": 54,
+          "desc": "Anhydrotetracycline (aTc) inducible repressor pTet promoter"
+        },
+        {
+          "role": "Ribosome Binding Site",
+          "part_name": "B0034",
+          "bp": 12,
+          "desc": "Strong synthetic E. coli RBS (Elowitz)"
+        },
+        {
+          "role": "Coding Sequence",
+          "part_name": "sfGFP",
+          "bp": 717,
+          "desc": "Superfolder Green Fluorescent Protein"
+        },
+        {
+          "role": "Terminator",
+          "part_name": "B0015",
+          "bp": 80,
+          "desc": "Double terminator (B0010 + B0012)"
+        }
+      ],
+      "hill_vmax_au": 12500.0,
+      "hill_vmin_leaky_au": 120.0,
+      "dynamic_range_ratio": 104.2,
+      "noise_margin": 0.637,
+      "response_latency_min": 18.5,
+      "k3_status": "+1"
+    },
+    {
+      "circuit_id": "SYN-CIRC-002",
+      "name": "Dual-Pathogen Co-Infection AND Gate",
+      "logic_type": "AND",
+      "input_signal": "IPTG (LacI) AND Arabinose (AraC)",
+      "output_payload": "LpxC_Targeting_Peptide",
+      "plasmid_size_bp": 230,
+      "full_dna_sequence": "AATTGTGAGCGGATAACAATTGACATTGTGAGCGGATAACAAGATACTGAGCACTACTAGAGAAAGAGGAGAAATACTAGAGATGCGTCGCAAATGGTTTCGCCGTCTTCGCCGCAAATGGTTTCGCCGTCTTCGCCGCTAATACTAGAGCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTC",
+      "parts_breakdown": [
+        {
+          "role": "Promoter",
+          "part_name": "pLac",
+          "bp": 54,
+          "desc": "IPTG-inducible LacI-repressed promoter"
+        },
+        {
+          "role": "Ribosome Binding Site",
+          "part_name": "B0034",
+          "bp": 12,
+          "desc": "Strong synthetic E. coli RBS (Elowitz)"
+        },
+        {
+          "role": "Coding Sequence",
+          "part_name": "LpxC_Targeting_Peptide",
+          "bp": 60,
+          "desc": "Bactericidal LpxC inhibitory peptide payload"
+        },
+        {
+          "role": "Terminator",
+          "part_name": "B0015",
+          "bp": 80,
+          "desc": "Double terminator (B0010 + B0012)"
+        }
+      ],
+      "hill_vmax_au": 18200.0,
+      "hill_vmin_leaky_au": 145.0,
+      "dynamic_range_ratio": 125.5,
+      "noise_margin": 0.682,
+      "response_latency_min": 24.0,
+      "k3_status": "+1"
+    },
+    {
+      "circuit_id": "SYN-CIRC-003",
+      "name": "Biochemical Stress NOR Gate",
+      "logic_type": "NOR",
+      "input_signal": "TetR OR PhlF repressor cascade",
+      "output_payload": "mCherry",
+      "plasmid_size_bp": 853,
+      "full_dna_sequence": "TCCCTATCAGTGATAGAGATTGACATCCCTATCAGTGATAGAGATAATGAGCACTACTAGAGTTTAAGAAGGAGATATATACTAGAGATGGTGAGCAAGGGCGAGGAGGATAACATGGCCATCATCAAGGAGTTCATGCGCTTCAAGGTGCACATGGAGGGCTCCGTGAACGGCCACGAGTTCGAGATCGAGGGCGAGGGCGAGGGCCGCCCCTACGAGGGCACCCAGACCGCCAAGCTGAAGGTGACCAAGGGTGGCCCCCTGCCCTTCGCCTGGGACATCCTGTCCCCTCAGTTCATGTACGGCTCCAAGGCCTACGTGAAGCACCCCGCCGACATCCCCGACTACTTGAAGCTGTCCTTCCCCGAGGGCTTCAAGTGGGAGCGCGTGATGAACTTCGAGGACGGCGGCGTGGTGACCGTGACCCAGGACTCCTCCCTGCAGGACGGCGAGTTCATCTACAAGGTGAAGCTGCGCGGCACCAACTTCCCCTCCGACGGCCCCGTAATGCAGAAGAAGACCATGGGCTGGGAGGCCTCCTCCGAGCGGATGTACCCCGAGGACGGCGCCCTGAAGGGCGAGATCAAGCAGAGGCTGAAGCTGAAGGACGGCGGCCACTACGACGCTGAGGTCAAGACCACCTACAAGGCCAAGAAGCCCGTGCAGCTGCCCGGCGCCTACAACGTCAACATCAAGTTGGACATCACCTCCCACAACGAGGACTACACCATCGTGGAACAGTACGAACGCGCCGAGGGCCGCCACTCCACCGGCGGCATGGACGAGCTGTACAAGTAATACTAGAGAGAAAGGCCCAGTCTTTCGACTGAGCCTTTCGTTTTATTTGATGCCT",
+      "parts_breakdown": [
+        {
+          "role": "Promoter",
+          "part_name": "pTet",
+          "bp": 54,
+          "desc": "Anhydrotetracycline (aTc) inducible repressor pTet promoter"
+        },
+        {
+          "role": "Ribosome Binding Site",
+          "part_name": "B0030",
+          "bp": 17,
+          "desc": "T7 bacteriophage derived RBS"
+        },
+        {
+          "role": "Coding Sequence",
+          "part_name": "mCherry",
+          "bp": 711,
+          "desc": "Monomeric red fluorescent protein"
+        },
+        {
+          "role": "Terminator",
+          "part_name": "T1",
+          "bp": 47,
+          "desc": "E. coli rrnB T1 terminator"
+        }
+      ],
+      "hill_vmax_au": 9400.0,
+      "hill_vmin_leaky_au": 110.0,
+      "dynamic_range_ratio": 85.5,
+      "noise_margin": 0.577,
+      "response_latency_min": 21.0,
+      "k3_status": "+1"
+    },
+    {
+      "circuit_id": "SYN-CIRC-004",
+      "name": "Autonomous AMR Sensor-Actuator NAND Gate",
+      "logic_type": "NAND",
+      "input_signal": "Quorum Sensing Autoinducer + Beta-Lactam Ring",
+      "output_payload": "LpxC_Targeting_Peptide",
+      "plasmid_size_bp": 230,
+      "full_dna_sequence": "ACGCAAGAAAATGGTTTGTTATAGTCGAATAAACACAAAGAGTTAGGTTTTTTATACTAGAGAAAGAGGAGAAATACTAGAGATGCGTCGCAAATGGTTTCGCCGTCTTCGCCGCAAATGGTTTCGCCGTCTTCGCCGCTAATACTAGAGCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTC",
+      "parts_breakdown": [
+        {
+          "role": "Promoter",
+          "part_name": "pBAD",
+          "bp": 54,
+          "desc": "L-arabinose inducible AraC-regulated promoter"
+        },
+        {
+          "role": "Ribosome Binding Site",
+          "part_name": "B0034",
+          "bp": 12,
+          "desc": "Strong synthetic E. coli RBS (Elowitz)"
+        },
+        {
+          "role": "Coding Sequence",
+          "part_name": "LpxC_Targeting_Peptide",
+          "bp": 60,
+          "desc": "Bactericidal LpxC inhibitory peptide payload"
+        },
+        {
+          "role": "Terminator",
+          "part_name": "B0015",
+          "bp": 80,
+          "desc": "Double terminator (B0010 + B0012)"
+        }
+      ],
+      "hill_vmax_au": 16400.0,
+      "hill_vmin_leaky_au": 180.0,
+      "dynamic_range_ratio": 91.1,
+      "noise_margin": 0.659,
+      "response_latency_min": 22.5,
+      "k3_status": "+1"
+    },
+    {
+      "circuit_id": "SYN-CIRC-005",
+      "name": "K3 Sovereign Balanced Ternary Consensus Gate",
+      "logic_type": "K3_TERNARY",
+      "input_signal": "Tri-state Biomarker ({TRUE, UNKNOWN, FALSE})",
+      "output_payload": "Dual sfGFP (True) / mCherry (False) Ratio",
+      "plasmid_size_bp": 868,
+      "full_dna_sequence": "TTGACGGCTAGCTCAGTCCTAGGTACAGTGCTAGCTACTAGAGAAAGAGGAGAAATACTAGAGATGCGTAAAGGAGAAGAACTTTTCACTGGAGTTGTCCCAATTCTTGTTGAATTAGATGGTGATGTTAATGGGCACAAATTTTCTGTCAGTGGAGAGGGTGAAGGTGATGCAACATACGGAAAACTTACCCTTAAATTTATTTGCACTACTGGAAAACTACCTGTTCCATGGCCAACACTTGTCACTACTCTGACCTATGGTGTTCAATGCTTTTCCCGTTATCCGGATCACATGAAACGGCATGACTTTTTCAAGAGTGCCATGCCCGAAGGTTATGTACAGGAACGCACTATATCTTTCAAAGATGACGGGAAATACAAGACGCGTGCTGAAGTCAAGTTTGAAGGTGATACCCTTGTTAATCGTATCGAGTTAAAAGGTATTGATTTTAAAGAAGATGGAAACATTCTCGGACACAAACTCGAGTACAACTATAACTCACACAATGTATACATCACGGCAGACAAACAAAAGAATGGAATCAAAGCTAACTTCAAAATTCGCCACAACATTGAAGATGGATCCGTTCAACTAGCAGACCATTATCAACAAAATACTCCAATTGGCGATGGCCCTGTCCTTTTACCAGACAACCATTACCTGTCGACACAATCTGCCCTTTCGAAAGATCCCAACGAAAAGCGTGACCACATGGTCCTTCTTGAGTTTGTAACTGCTGCTGGGATTACACATGGCATGGATGAACTATACAAATAATACTAGAGCCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTC",
+      "parts_breakdown": [
+        {
+          "role": "Promoter",
+          "part_name": "J23100",
+          "bp": 35,
+          "desc": "Strong constitutive synthetic sigma70 promoter"
+        },
+        {
+          "role": "Ribosome Binding Site",
+          "part_name": "B0034",
+          "bp": 12,
+          "desc": "Strong synthetic E. coli RBS (Elowitz)"
+        },
+        {
+          "role": "Coding Sequence",
+          "part_name": "sfGFP",
+          "bp": 717,
+          "desc": "Superfolder Green Fluorescent Protein"
+        },
+        {
+          "role": "Terminator",
+          "part_name": "B0015",
+          "bp": 80,
+          "desc": "Double terminator (B0010 + B0012)"
+        }
+      ],
+      "hill_vmax_au": 22000.0,
+      "hill_vmin_leaky_au": 95.0,
+      "dynamic_range_ratio": 231.6,
+      "noise_margin": 0.719,
+      "response_latency_min": 15.0,
+      "k3_status": "+1"
+    }
+  ]
+}

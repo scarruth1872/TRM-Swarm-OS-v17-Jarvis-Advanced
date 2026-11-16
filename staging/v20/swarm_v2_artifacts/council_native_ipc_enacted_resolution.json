@@ -1,0 +1,262 @@
+{
+  "proposal_id": "CP-73F2103E",
+  "topic": "Replace Internal HTTP with Native IPC Layer",
+  "category": "architecture",
+  "description": "All internal module-to-module communication shall migrate from HTTP on port 8022 to native IPC. HTTP remains only for external clients and cross-machine federation. 1. Native IPC module registry (direct calls + ring buffer). 2. SPSC ring buffer for small payloads (<4KB, 9.9 ns). 3. Shared memory maps (mmap) for large payloads (>4KB, zero-copy). 4. HTTP endpoints preserved as thin wrappers for external access. 5. Benchmark: internal calls sub-100ns vs 1-10ms HTTP.",
+  "proposer": "Architect",
+  "phase": "enacted",
+  "deliberations": [
+    {
+      "agent_name": "Hermes",
+      "agent_id": 0,
+      "position": "support",
+      "reasoning": "From a communications standpoint, Replace Internal HTTP with Native IPC Layer \u2014 I evaluate message clarity, protocol compliance, and inter-agent coordination impact.",
+      "domain_relevance": 0.4,
+      "timestamp": "2026-09-07T14:45:52.392466"
+    },
+    {
+      "agent_name": "Jarvis",
+      "agent_id": 1,
+      "position": "support",
+      "reasoning": "As Executive Assistant, I evaluate Replace Internal HTTP with Native IPC Layer from my general perspective.",
+      "domain_relevance": 0.5,
+      "timestamp": "2026-09-07T14:45:52.392482"
+    },
+    {
+      "agent_name": "Bridge",
+      "agent_id": 2,
+      "position": "support",
+      "reasoning": "As API & Data Bridge, I evaluate Replace Internal HTTP with Native IPC Layer from my data perspective.",
+      "domain_relevance": 0.6,
+      "timestamp": "2026-09-07T14:45:52.392491"
+    },
+    {
+      "agent_name": "Shield",
+      "agent_id": 3,
+      "position": "support",
+      "reasoning": "Security assessment of Replace Internal HTTP with Native IPC Layer: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+      "domain_relevance": 0.5,
+      "timestamp": "2026-09-07T14:45:52.392500"
+    },
+    {
+      "agent_name": "Logic",
+      "agent_id": 4,
+      "position": "support",
+      "reasoning": "Architectural logic review: verifying structural coherence, dependency graphs, and design pattern correctness.",
+      "domain_relevance": 0.9,
+      "timestamp": "2026-09-07T14:45:52.392507"
+    },
+    {
+      "agent_name": "Devo",
+      "agent_id": 5,
+      "position": "support",
+      "reasoning": "Engineering assessment of Replace Internal HTTP with Native IPC Layer: implementation feasibility, technical debt impact, and code quality.",
+      "domain_relevance": 0.6,
+      "timestamp": "2026-09-07T14:45:52.392514"
+    },
+    {
+      "agent_name": "Pulse",
+      "agent_id": 6,
+      "position": "uncertain",
+      "reasoning": "As Health Monitor, I evaluate Replace Internal HTTP with Native IPC Layer from my health perspective.",
+      "domain_relevance": 0.3,
+      "timestamp": "2026-09-07T14:45:52.392521"
+    },
+    {
+      "agent_name": "Flow",
+      "agent_id": 7,
+      "position": "support",
+      "reasoning": "As Workflow Orchestrator, I evaluate Replace Internal HTTP with Native IPC Layer from my infrastructure perspective.",
+      "domain_relevance": 0.5,
+      "timestamp": "2026-09-07T14:45:52.392529"
+    },
+    {
+      "agent_name": "EventLedger",
+      "agent_id": 8,
+      "position": "support",
+      "reasoning": "As Audit Ledger, I evaluate Replace Internal HTTP with Native IPC Layer from my protocol perspective.",
+      "domain_relevance": 0.4,
+      "timestamp": "2026-09-07T14:45:52.392538"
+    },
+    {
+      "agent_name": "Orchestra",
+      "agent_id": 9,
+      "position": "support",
+      "reasoning": "As Meta-Orchestrator, I evaluate Replace Internal HTTP with Native IPC Layer from my infrastructure perspective.",
+      "domain_relevance": 0.7,
+      "timestamp": "2026-09-07T14:45:52.392546"
+    },
+    {
+      "agent_name": "THzGateway",
+      "agent_id": 10,
+      "position": "support",
+      "reasoning": "As Spectrum Gateway, I evaluate Replace Internal HTTP with Native IPC Layer from my communication perspective.",
+      "domain_relevance": 0.4,
+      "timestamp": "2026-09-07T14:45:52.392554"
+    },
+    {
+      "agent_name": "Verify",
+      "agent_id": 11,
+      "position": "support",
+      "reasoning": "Truth verification for Replace Internal HTTP with Native IPC Layer: cross-referencing claims against Monad anchor and known state.",
+      "domain_relevance": 0.5,
+      "timestamp": "2026-09-07T14:45:52.392562"
+    },
+    {
+      "agent_name": "Seeker",
+      "agent_id": 12,
+      "position": "support",
+      "reasoning": "Research perspective on Replace Internal HTTP with Native IPC Layer: surveying prior art, identifying knowledge gaps, and evidence quality.",
+      "domain_relevance": 0.5,
+      "timestamp": "2026-09-07T14:45:52.392571"
+    },
+    {
+      "agent_name": "Archi",
+      "agent_id": 13,
+      "position": "support",
+      "reasoning": "PRIORITY: This is an architectural decision. Analyzing component boundaries, coupling, and evolution path.",
+      "domain_relevance": 1.0,
+      "timestamp": "2026-09-07T14:45:52.392579"
+    }
+  ],
+  "votes": {
+    "Hermes": {
+      "agent_name": "Hermes",
+      "agent_id": 0,
+      "vote": 1,
+      "confidence": 0.978,
+      "weight": 0.4,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.392716"
+    },
+    "Jarvis": {
+      "agent_name": "Jarvis",
+      "agent_id": 1,
+      "vote": 1,
+      "confidence": 0.978,
+      "weight": 0.5,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.392838"
+    },
+    "Bridge": {
+      "agent_name": "Bridge",
+      "agent_id": 2,
+      "vote": 1,
+      "confidence": 0.985,
+      "weight": 0.6,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.392870"
+    },
+    "Shield": {
+      "agent_name": "Shield",
+      "agent_id": 3,
+      "vote": 1,
+      "confidence": 0.99,
+      "weight": 0.5,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.392892"
+    },
+    "Logic": {
+      "agent_name": "Logic",
+      "agent_id": 4,
+      "vote": 1,
+      "confidence": 0.995,
+      "weight": 0.9,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.392912"
+    },
+    "Devo": {
+      "agent_name": "Devo",
+      "agent_id": 5,
+      "vote": 1,
+      "confidence": 0.98,
+      "weight": 0.6,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.392931"
+    },
+    "Pulse": {
+      "agent_name": "Pulse",
+      "agent_id": 6,
+      "vote": 1,
+      "confidence": 0.992,
+      "weight": 0.3,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.392948"
+    },
+    "Flow": {
+      "agent_name": "Flow",
+      "agent_id": 7,
+      "vote": 1,
+      "confidence": 0.985,
+      "weight": 0.5,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.392966"
+    },
+    "EventLedger": {
+      "agent_name": "EventLedger",
+      "agent_id": 8,
+      "vote": 1,
+      "confidence": 0.98,
+      "weight": 0.4,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.392983"
+    },
+    "Orchestra": {
+      "agent_name": "Orchestra",
+      "agent_id": 9,
+      "vote": 1,
+      "confidence": 0.98,
+      "weight": 0.7,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.393001"
+    },
+    "THzGateway": {
+      "agent_name": "THzGateway",
+      "agent_id": 10,
+      "vote": 1,
+      "confidence": 0.98,
+      "weight": 0.4,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.393019"
+    },
+    "Verify": {
+      "agent_name": "Verify",
+      "agent_id": 11,
+      "vote": 1,
+      "confidence": 0.995,
+      "weight": 0.5,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.393037"
+    },
+    "Seeker": {
+      "agent_name": "Seeker",
+      "agent_id": 12,
+      "vote": 1,
+      "confidence": 0.98,
+      "weight": 0.5,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.393055"
+    },
+    "Archi": {
+      "agent_name": "Archi",
+      "agent_id": 13,
+      "vote": 1,
+      "confidence": 0.98,
+      "weight": 1.0,
+      "reasoning": "",
+      "timestamp": "2026-09-07T14:45:52.393073"
+    }
+  },
+  "weighted_score": 0.9843,
+  "raw_tally": {
+    "approve": 14,
+    "abstain": 0,
+    "reject": 0
+  },
+  "consensus_reached": true,
+  "monad_seal": "22844aa599f1ca281cb4cd2ad9f55ea379a2adac31a9f90b2bb4f368e8448857",
+  "created_at": "2026-09-07T14:45:52.392331",
+  "decided_at": "2026-09-07T14:45:52.393093",
+  "enacted_at": "2026-09-07T14:45:52.393395",
+  "rejection_reason": null
+}

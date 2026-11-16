@@ -1,0 +1,184 @@
+{
+  "duplicates": [
+    {
+      "stem": "bridge",
+      "live": [],
+      "bare": null,
+      "others": [
+        "infrastructure/bridge/__init__.py",
+        "swarm_v2/mcp/bridge.py"
+      ],
+      "implied_ok": null,
+      "new": false
+    },
+    {
+      "stem": "common",
+      "live": [
+        [
+          "models.common",
+          "models/common.py"
+        ]
+      ],
+      "bare": null,
+      "others": [
+        "dataset/common.py"
+      ],
+      "implied_ok": true,
+      "new": false
+    },
+    {
+      "stem": "core",
+      "live": [
+        [
+          "swarm_v2.core",
+          "swarm_v2/core/__init__.py"
+        ]
+      ],
+      "bare": null,
+      "others": [
+        "Jarvis-Advanced-main/core.py"
+      ],
+      "implied_ok": true,
+      "new": false
+    },
+    {
+      "stem": "finetune_gemma",
+      "live": [],
+      "bare": "finetune_gemma.py",
+      "others": [
+        "Jarvis-Advanced-main/finetune_gemma.py",
+        "finetune_gemma.py"
+      ],
+      "implied_ok": null,
+      "new": false
+    },
+    {
+      "stem": "memory",
+      "live": [
+        [
+          "swarm_v2.core.memory",
+          "swarm_v2/core/memory.py"
+        ],
+        [
+          "swarm_v2.routes.memory",
+          "swarm_v2/routes/memory.py"
+        ]
+      ],
+      "bare": null,
+      "others": [
+        "infrastructure/memory/__init__.py"
+      ],
+      "implied_ok": true,
+      "new": false
+    },
+    {
+      "stem": "models",
+      "live": [
+        [
+          "models",
+          "models/__init__.py"
+        ],
+        [
+          "swarm_v2.routes.models",
+          "swarm_v2/routes/models.py"
+        ]
+      ],
+      "bare": "models/__init__.py",
+      "others": [],
+      "implied_ok": true,
+      "new": false
+    },
+    {
+      "stem": "mutation_engine",
+      "live": [],
+      "bare": null,
+      "others": [
+        "infrastructure/architect/me/mutation_engine.py",
+        "swarm_v2/core/mutation_engine.py"
+      ],
+      "implied_ok": null,
+      "new": false
+    },
+    {
+      "stem": "remediation",
+      "live": [
+        [
+          "swarm_v2.routes.remediation",
+          "swarm_v2/routes/remediation.py"
+        ]
+      ],
+      "bare": null,
+      "others": [
+        "infrastructure/remediation/__init__.py"
+      ],
+      "implied_ok": true,
+      "new": false
+    },
+    {
+      "stem": "remediation_engine",
+      "live": [
+        [
+          "swarm_v2.core.remediation_engine",
+          "swarm_v2/core/remediation_engine.py"
+        ]
+      ],
+      "bare": null,
+      "others": [
+        "infrastructure/remediation/remediation_engine.py"
+      ],
+      "implied_ok": true,
+      "new": false
+    },
+    {
+      "stem": "telemetry",
+      "live": [
+        [
+          "infrastructure.telemetry",
+          "infrastructure/telemetry/__init__.py"
+        ],
+        [
+          "swarm_v2.core.telemetry",
+          "swarm_v2/core/telemetry.py"
+        ]
+      ],
+      "bare": null,
+      "others": [],
+      "implied_ok": true,
+      "new": false
+    }
+  ],
+  "baseline": [
+    "bridge",
+    "common",
+    "core",
+    "finetune_gemma",
+    "memory",
+    "models",
+    "mutation_engine",
+    "remediation",
+    "remediation_engine",
+    "telemetry"
+  ],
+  "entrypoints": [
+    {
+      "label": "swarm_v2.app_v2",
+      "module": "swarm_v2.app_v2",
+      "ok": true
+    },
+    {
+      "label": "app.py",
+      "module": "app",
+      "ok": true
+    },
+    {
+      "label": "microkernel_proxy.py",
+      "module": "microkernel_proxy",
+      "ok": true
+    },
+    {
+      "label": "swarm_manager.py",
+      "module": "swarm_manager",
+      "ok": true
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+ "language": [
+  {
+   "model": "Qwen3-1.7B",
+   "source": "HF blobs 4GB",
+   "role": "general language"
+  },
+  {
+   "model": "olmo-3",
+   "source": "Ollama GGUF 4.47GB",
+   "role": "general language"
+  },
+  {
+   "model": "phi3",
+   "source": "Ollama GGUF 2.18GB",
+   "role": "general language"
+  },
+  {
+   "model": "llama3.2",
+   "source": "Ollama GGUF 2.02GB",
+   "role": "general language"
+  },
+  {
+   "model": "gemma3:4b",
+   "source": "Ollama GGUF 3.34GB",
+   "role": "general language"
+  },
+  {
+   "model": "gemma2:2b",
+   "source": "Ollama GGUF 1.63GB",
+   "role": "language edge"
+  },
+  {
+   "model": "gemma3:1b",
+   "source": "Ollama GGUF 0.82GB",
+   "role": "language edge"
+  },
+  {
+   "model": "tinyllama",
+   "source": "Ollama GGUF 0.64GB",
+   "role": "language edge"
+  }
+ ],
+ "code": [
+  {
+   "model": "qwen2.5-coder",
+   "source": "Ollama GGUF 4.68GB",
+   "role": "code"
+  },
+  {
+   "model": "starcoder2:3b",
+   "source": "Ollama GGUF 1.71GB",
+   "role": "code"
+  },
+  {
+   "model": "deepseek-coder:1.3b",
+   "source": "Ollama GGUF 0.78GB",
+   "role": "code edge"
+  }
+ ],
+ "reasoning": [
+  {
+   "model": "deepseek-r1:8b",
+   "source": "Ollama GGUF 5.23GB",
+   "role": "reasoning"
+  },
+  {
+   "model": "deepseek-r1:1.5b",
+   "source": "Ollama GGUF 1.12GB",
+   "role": "reasoning edge"
+  },
+  {
+   "model": "gemma4:12b",
+   "source": "Ollama GGUF 7.56GB",
+   "role": "frontier"
+  },
+  {
+   "model": "bonsai-27b",
+   "source": "Ollama GGUF 3.80GB",
+   "role": "ternary native"
+  }
+ ],
+ "vision": [
+  {
+   "model": "llava",
+   "source": "Ollama GGUF 4.73GB",
+   "role": "multimodal"
+  },
+  {
+   "model": "CLIP",
+   "source": "HF DONE",
+   "role": "vision encoder"
+  }
+ ],
+ "audio": [
+  {
+   "model": "faster-whisper",
+   "source": "HF CT2 0.15GB",
+   "role": "speech",
+   "status": "deferred"
+  }
+ ],
+ "retrieval": [
+  {
+   "model": "qwen3-embedding:4b",
+   "source": "Ollama GGUF 2.50GB",
+   "role": "embeddings"
+  },
+  {
+   "model": "qwen3-embedding:0.6b",
+   "source": "Ollama GGUF 0.64GB",
+   "role": "embeddings edge"
+  },
+  {
+   "model": "mxbai-embed-large",
+   "source": "Ollama GGUF 0.67GB",
+   "role": "embeddings"
+  },
+  {
+   "model": "nomic-embed-text",
+   "source": "Ollama GGUF 0.27GB",
+   "role": "embeddings"
+  }
+ ],
+ "native_ternary": [
+  {
+   "model": "bitnet-b1.58-2B",
+   "source": "Ollama GGUF 1.19GB",
+   "role": "ternary reference"
+  }
+ ]
+}

@@ -1,0 +1,259 @@
+PRODUCTION GAP ANALYSIS - RAW MEASUREMENTS
+Host: Windows 11, RX 6700 XT, measured 2026-11-03
+Repo: F:\Development sites\TRM-Swarm-OS-v2
+
+Every value below was produced by a command in this session. Command shown
+immediately before its output. Nothing here is copied from another document.
+
+================================================================
+1. GIT STATE
+================================================================
+
+$ git log --oneline -12
+0ea0101 docs: mark Phase 1 complete with its acceptance evidence
+175106f ledger: single-writer seq allocation, chain rebuilt, 51/51 green
+2178cdb docs: production readiness gap analysis and phased plan
+...
+-> Both commits cited by docs/PRODUCTION-READINESS-PLAN.md exist.
+   Phase 1 DONE marker (0ea0101) is real; it does not mean the state still holds.
+
+$ git status --porcelain | wc -l
+253
+$ git status --porcelain | grep -E "^ M" | wc -l
+31
+-> 31 tracked files modified, 222 untracked/other. Tree is dirty.
+
+$ git tag
+v19.024-baremetal-binding
+-> Only tag. No release tag for the current tree.
+
+================================================================
+2. LEDGER INTEGRITY
+================================================================
+
+File: swarm_v2_global_memory/system_event_ledger.jsonl
+Size 10,754,078 bytes, mtime 2026-11-03 10:24:09
+
+$ python -c "<parse, count seqs, verify prev_hash>"
+lines                         22723
+unparseable                       0
+first_seq                         1
+last_seq                      22723
+distinct_seq                  22723
+duplicate seq values              0
+dup_seq_count                     0
+noncontiguous_adjacent            0
+missing_in_1..N                   0
+prev_hash_breaks                  0
+last_hash    774e8217ab7c4f183c4121b3aeaffed83792d31027969529a4b62e9a56228791
+
+-> The chain itself is CLEAN. Phase 1's core claim holds for the file.
+
+Manifest: phoenix_event_stream_audit_manifest.json  (repo root, NOT in
+swarm_v2_global_memory/ as the plan's path implied)
+mtime 2026-11-03 07:56:28 (frozen; ledger is 2.5 h newer and still growing)
+
+summary.total_legacy_events_audited   22523
+summary.confirmed_empirical_events    13234
+event_streams.system_event_ledger.total_events      22521
+event_streams.system_event_ledger.final_chain_hash
+  8ae0ed46cbe829305fd5aa08eae7159baa3ad67f3680b8b61951f71c5eabb458
+
+$ python -c "<compare manifest hash to line 22521>"
+line 22521 hash = 8ae0ed46cbe829305fd5aa08eae7159baa3ad67f3680b8b61951f71c5eabb458
+manifest match at line 22521: True
+growth since manifest: 204 events (at snapshot time 22725; 22723 at first read)
+
+-> The manifest is an accurate snapshot of line 22,521 and nothing more. It is
+   not regenerated on append, so it diverges from the live head every minute
+   the platform runs. The chain is sound; the ATTESTATION is stale.
+
+Consistency note: first count 22723 lines, second read 22725. The ledger is
+being appended to by the live platform during measurement. This is why the
+manifest can never be equal to the head by construction.
+
+================================================================
+3. PORT BIND TABLE
+================================================================
+
+$ netstat -ano | grep LISTENING | grep -E ":(8022|8099|3000|3001|3002|5183|8587|8588|8593)\b"
+
+127.0.0.1:3000    LISTENING  16984
+127.0.0.1:3001    LISTENING  14712
+127.0.0.1:3002    LISTENING  38796
+127.0.0.1:5183    LISTENING  36804
+127.0.0.1:8022    LISTENING  21224
+127.0.0.1:8099    LISTENING  15948
+127.0.0.1:8587    LISTENING  3168
+127.0.0.1:8588    LISTENING  29232
+127.0.0.1:8593    LISTENING  35656
+
+$ tasklist | grep <pid>
+16984  node.exe                  (dashboard / vite)
+14712  python.exe                (companion proxy)
+38796  trm_companion_bridge.exe
+36804  node.exe                  (LCARS)
+21224  host_council_server.exe   (authoritative Rust council)
+15948  python.exe                (council API, 2.5 GB RSS)
+3168   llama-server.exe          (inference)
+29232  python.exe                (trm_server)
+35656  llama-server.exe          (embeddings)
+
+-> 9/9 listening, all on 127.0.0.1. Zero control-plane ports on 0.0.0.0.
+   Phase 2's binding step is measurably done.
+
+Health probes:
+$ curl http://127.0.0.1:<port>/health
+8022 200 {"kernel":"Native Rust Sovereign Kernel v19.001","status":"H..."}
+8099 200 {"status":"v5_online","phase":5,"agents":12,"backend":"TurboVecNative"}
+3000 200 text/html  (Vite/index.html fallback - NOT a health document)
+3001 200 {"anchor":"0x4D4F...","endpoints":[...]}
+3002 200 {"anchor":"0x4D4F...","endpoints":[...]}
+5183 200 kernel JSON (vite proxies to 8022)
+8587 200 {"status":"ok"}
+8588 200 {"status":"ok","model":"trm7m"}
+8593 200 {"status":"ok"}
+
+Extra:
+$ curl -o /dev/null -w %{http_code} http://127.0.0.1:3000/api/status   -> 500
+$ curl -o /dev/null -w %{http_code} http://127.0.0.1:3000/api/health   -> 500
+$ curl http://127.0.0.1:8099/council/status
+  {"member_count":14,"byzantine_tolerance":4,"rust_kernel_bound":true,
+   "rust_dll_bound":true,"council_authority":"rust:8022", ...}
+$ curl -o /dev/null -w %{http_code} http://127.0.0.1:8022/arc/pool -> 200
+
+================================================================
+4. CONTROL-PLANE AUTHENTICATION
+================================================================
+
+$ grep -nEi "authorization|bearer|api[_-]?key|shared.?secret|x-api" \
+        trm_uefi_kernel/host_council_server/src/main.rs
+(no matches)
+
+$ grep -rniE "TRM_API_TOKEN|TRM_SHARED_SECRET" --include=*.rs --include=*.py .
+(no matches)
+
+Bind (main.rs:3278-3286):
+  // SECURITY 2026-11-03: this used to bind 0.0.0.0 unconditionally...
+  let bind_host = std::env::var("TRM_BIND_HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
+  let server = Arc::new(Server::http(format!("{}:{}", bind_host, port)).unwrap());
+
+Unauthenticated write routes in main.rs (method+path match, no header inspect):
+  1601 POST /council/federation/dispatch
+  1660 POST /council/cadence/trigger
+  1690 POST /council/ssm/states
+  1767 POST /council/propose | /council/full-cycle
+  1821 POST /council/enact/<id>
+  1890 POST /journal/submit
+  2242 POST /system/heal_anomaly
+  2350 POST /swarm/spatial/simulate
+  2390 POST /k3/reduce
+  2782 POST /infra/toggle | /infra/watchdog
+  3057-3063 POST /secrets/rotate | /secrets/decrypt | /secrets/delete | /secrets/store
+
+Handler body at 1767-1797 reads no headers; with an empty body it defaults
+  topic = "Operator Sovereign Directive", proposer = "OPERATOR"
+and runs the full 14-agent deliberation.
+
+LIVE PROOF (side effect, reported for honesty):
+$ curl -X POST -d '{}' http://127.0.0.1:8022/council/propose
+  -> curl returned 000 (no HTTP response within 5 s; deliberation outlives the
+     client timeout)
+$ curl http://127.0.0.1:8022/council/proposals
+  count 181
+  1181 Operator Sovereign Directive NO_CONSENSUS
+-> Proposal 1181 was created by this probe, with no credential of any kind.
+   The route is reachable, unauthenticated, and executes. Loopback binding is
+   the only thing between this and the LAN.
+
+================================================================
+5. TEST SUITE
+================================================================
+
+$ python -m pytest -q -m 'not integration' --timeout=60
+1 failed, 50 passed, 16 deselected, 1 warning in 40.64s
+PYTEST_RC=1
+
+FAILED tests/test_phoenix_ledger_schema.py::test_legacy_event_stream_phoenix_compliance
+  tests\test_phoenix_ledger_schema.py:135
+  assert last_entry["hash"] == manifest[...]["final_chain_hash"]
+  E  assert '774e8217...' == '8ae0ed46...'
+
+-> The plan's "51/51 tests pass" (line 198) is FALSE as of this run. It was
+   true at 07:56 when the manifest was regenerated; the ledger has appended
+   204 events since and the test compares the manifest to the live head.
+
+$ python -m pytest -q -m integration --collect-only
+16/67 tests collected (51 deselected)
+-> 16 integration tests exist and are excluded from the gate. Their state is
+   unknown; nobody has run them in this configuration.
+
+================================================================
+6. CARGO CHECK
+================================================================
+
+$ cargo check --release
+CARGO_RC=0
+Finished `release` profile [optimized] target(s) in 0.27s
+
+warning: `trm_uefi_kernel` (lib) generated 11 warnings
+warning: `trm_uefi_kernel` (bin "trm_uefi_kernel") generated 1846 warnings
+         (11 duplicates)
+$ grep -cE "^warning: "  -> 1848
+
+-> 0 errors. 1,848 warning lines; 1,846 unique-ish for the bin target.
+   Consistent with the plan's 1,846. Not a blocker, but warnings are useless
+   as a defect signal at this volume.
+
+================================================================
+7. DOCUMENT CLAIMS RE-VERIFIED, SOME NOW STALE
+================================================================
+
+CLAIM (plan line 118): "grep -c 8593 returns 0" - the launcher omits embeddings.
+  $ grep -c 8593 START_TRM_PLATFORM.bat
+  7
+  Line 202: start "TRM-Embeddings" ... --host 127.0.0.1 --port 8593 --embeddings
+  -> STALE. 8593 is now in the launcher.
+
+CLAIM (plan line 125): launcher returns RC=0 despite an abort.
+  START_TRM_PLATFORM.bat:137  set "FAILED=0"
+  ...:143-204 each started step: if errorlevel 1 set "FAILED=1"
+  ...:214-218 if "%FAILED%"=="1" ( echo LAUNCH INCOMPLETE ... exit /b 1 )
+  ...:225-255 :check_only aggregates CHK_FAIL over 9 services and exit /b 1
+  Line 29-30: log lock now falls back to %TEMP%\trm_platform_launch.log
+  -> STALE/FIXED. P1-1 as written no longer describes the file.
+
+CLAIM (plan line 136): 0.9115 remains in exactly two files
+  (quantize_clip.py:155 and council_paper162.py:12).
+  $ grep -rn "0\.9115" --include=*.py --include=*.rs .
+  swarm_v2/core/quantize_gemma270m.py:167
+  swarm_v2/core/quantize_gpt2.py:217
+  swarm_v2/core/quantize_qwen17b.py:16,165
+  swarm_v2/core/quantize_whisper.py:157
+  swarm_v2/core/turbovec_quantize_weights.py:8,108
+  trm_uefi_kernel/host_council_server/src/main.rs:522,619
+  (audit_paper162.py:30 references the string only as an audit pattern)
+  -> UNDERSTATED. At least 6 code paths and 2 council response templates emit
+     the forbidden constant. Note quantize_clip.py and council_paper162.py no
+     longer appear in the grep, so the plan's two named sites were fixed while
+     six other sites were never in scope.
+
+CLAIM (plan line 155): SSM status ACTIVE (ADVISORY).
+  main.rs:2384 {"id":"mamba3_ssm", "status":"ACTIVE (ADVISORY)", ...
+    "two read-out attempts scored 0.458 and 0.474 leave-one-topic-out against
+     a 0.455 always-majority baseline. Not load-bearing."}
+  main.rs:1776-1782 ssm_gate defaults false; COUNCIL_SSM_GATE=hard required
+  -> CONFIRMED. The label is honest and the gate is off by default.
+
+CLAIM (plan line 97-106): all control-plane ports on 0.0.0.0.
+  -> STALE. All nine are on 127.0.0.1 (section 3).
+
+================================================================
+8. SIDE EFFECTS OF THIS AUDIT
+================================================================
+
+- One proposal (id 1181, "Operator Sovereign Directive", NO_CONSENSUS) was
+  created on the authoritative council by the unauthenticated POST probe.
+  This was the auth test; it is disclosed rather than hidden.
+- Nothing was stopped, restarted, killed or reconfigured.
+- No source, .bat or plan file was modified.

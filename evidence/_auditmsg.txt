@@ -1,0 +1,35 @@
+audit(claims): 100% test pass is a static fixture; 44.5C unmeasurable; 76 metric literals
+
+Tested what the platform says about itself against independent sources.
+
+FABRICATED:
+  /testing/stats - "60 tests, 60 passed, 100% accuracy, 100% coverage" is a
+  hardcoded array of six runs, all timestamped 2026-09-03T13:36:06Z, with
+  string-literal durations. The real tests/ suite collects 31 -> 28 passed, 3
+  ERRORS (90.3%). 16,749 test functions exist repo-wide; ZERO run artifacts.
+  Origin checked FIRST, as instructed: the tier fixture appears in exactly ONE
+  file, the server that serves it - not in the antigravity brain (1,133 files
+  scanned), not in the WSL home, not in bash history. Not a stale copy of a real
+  plan; invented where it is served.
+  /infra/health - cpu_temp_c 44.5 and fan_rpm 1200. All five host sensor APIs are
+  unavailable on this machine; the values are literals at main.rs:2131-2133.
+
+CONTRADICTORY:
+  voltage_phi_v: /system/resources serves 0.9115 while three other endpoints serve
+  the measured 0.6778 - the exact constant the voltage doctrine forbids.
+  active_nodes: /federation/stats says 100, /swarm/telemetry says 2.
+  journal latest_article names 189 while the served set runs to 197.
+
+76 hardcoded metric literals across 45 names, split into legitimate static config
+(memory_total_mb, GPU total_gb) and fabricated measurement (temp, rpm, accuracy,
+latencies, fitness, completed_tasks, total_verified).
+
+VERIFIED REAL, and it matters: k3/bench, turbovec/bench, turbovec/femto and
+k3/sram/bench all VARY run to run (k3/bench gave 6 distinct values in 7 calls) -
+genuine measurements. /system/voltage is measured with formula and source
+disclosed. /research/stats self-reports the TRM-ABX-220 retraction. The
+sram/patterns endpoint exposes that Article 118's 235.2 ns claim does not hold.
+
+THE TELL: fabricated numbers cluster in status/completion surfaces and are round
+and flattering (100, 100.0%, 99.98%, 100000). Measurement surfaces are real and
+noisy. A number that never moves is not being measured.

@@ -1,0 +1,80 @@
+{
+  "package_id": "WLO-CRO-002",
+  "generated_at": "2026-09-10T06:43:10.677885",
+  "origin_node": "TRM-DESK-6700XT",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "recipient": {
+    "id": "CRO-002",
+    "name": "WuXi AppTec Custom Chemical Synthesis",
+    "type": "cro",
+    "focus": "Gram-Scale Purity Verification (>=95% HPLC / NMR)"
+  },
+  "portfolio_overview": {
+    "title": "Sovereign Antibiotic Portfolio: Preclinical Validation Dossier",
+    "total_leads": 2,
+    "leads": {
+      "TRM-ABX-219": {
+        "chemical_class": "Novel Sulfonamide Derivative",
+        "primary_target": "AmpC / DNA gyrase / GyrA / LpxC / PBP5 / ParC / Topo IV",
+        "potency_summary": "Kd = 14.2 - 45.0 nM (susceptible range; 7 organisms)",
+        "eskape_spectrum": "Acinetobacter baumannii (14.2 nM); Escherichia coli (15.0 nM); Staphylococcus aureus (16.5 nM); Pseudomonas aeruginosa (18.0 nM); Klebsiella pneumoniae (28.0 nM); Enterobacter spp (32.0 nM); Enterococcus faecium (45.0 nM)",
+        "non_susceptible_disclosed": "Mycobacterium tuberculosis (65.0 nM, INTERMEDIATE)",
+        "safety_profile": "hERG 38.5 uM (85.6x margin), Ames NON_MUTAGENIC, mito NON_TOXIC_TO_MITOCHONDRIA",
+        "synthesis_target": ">= 95% HPLC, 10 mg scale",
+        "smiles": "CC1=C(C(=O)N(C1=O)CC2=CC=CC=C2)C(=O)NC3=CC=C(C=C3)S(=O)(=O)N",
+        "sha256_lock": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+        "structure_lock_basis": "sha256(canonical SMILES)",
+        "structure_status": "VERIFIED_ON_RECORD"
+      },
+      "TRM-ABX-082": {
+        "chemical_class": "Pteridine-Based DHR Inhibitor Candidate",
+        "primary_target": "LpxC / LpxC / DHFR",
+        "potency_summary": "Kd = 18.7 - 29.8 nM (susceptible range; 6 organisms)",
+        "eskape_spectrum": "Staphylococcus aureus (18.7 nM); Escherichia coli (19.5 nM); Klebsiella pneumoniae (22.4 nM); Enterobacter spp (24.0 nM); Acinetobacter baumannii (25.1 nM); Pseudomonas aeruginosa (29.8 nM)",
+        "non_susceptible_disclosed": "Enterococcus faecium (52.0 nM, INTERMEDIATE); Mycobacterium tuberculosis (85.0 nM, INTERMEDIATE)",
+        "safety_profile": "hERG 44.0 uM (84.6x margin), Ames NON_MUTAGENIC, mito NON_TOXIC_TO_MITOCHONDRIA",
+        "synthesis_target": ">= 95% HPLC, 10 mg scale",
+        "smiles": "CN1C2=C(C(=O)N(C1=O)C)N(C(=N2)N)CC3=CC=C(C=C3)C(=O)O",
+        "sha256_lock": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501",
+        "structure_lock_basis": "sha256(canonical SMILES)",
+        "structure_status": "VERIFIED_ON_RECORD"
+      }
+    },
+    "withheld_compounds": [
+      {
+        "compound_id": "TRM-ABX-220",
+        "structure_status": "NO_STRUCTURE_ON_RECORD",
+        "reason": "No SMILES, no pre-registration, and no safety screening exist anywhere in the corpus. A structure lock cannot be derived and the compound cannot be synthesised, assayed, or pre-registered.",
+        "present_in": [
+          "eskape_spectrum_full.json",
+          "trm_abx_220_recalibration.json"
+        ],
+        "disposition": "WITHHELD_FROM_DISPATCH"
+      }
+    ],
+    "withheld_count": 1,
+    "disclosure": "Compounds are withheld when no molecular structure is on record, because without a structure they cannot be synthesised, assayed, or pre-registered."
+  },
+  "computational_rigor": {
+    "pdbbind_ground_truth_correlation_r": 0.9248,
+    "rmse_kcal_mol": 1.062,
+    "physics_scoring": "5-Term Generalized Born Desolvation + Screened Electrostatics + Directional H-Bonds",
+    "structural_filter": "AlphaFold pLDDT > 90.0 Active Pocket Centering",
+    "tox21_safety_benchmark_roc_auc": 0.874
+  },
+  "validation_assay_guidelines": {
+    "mic_testing_standard": "CLSI M07-A10 Broth Microdilution against ATCC Reference Strains",
+    "synergy_testing": "Checkerboard assay with Meropenem, Colistin, and Ciprofloxacin",
+    "time_kill_kinetics": "0, 2, 4, 8, 24-hour bactericidal reduction (>= 3 log10 CFU/mL)",
+    "purity_verification": "Analytical HPLC (>= 95.0%), 1H/13C NMR, and High-Res MS confirmation"
+  },
+  "provenance_security": {
+    "protocol": "PRE_REGISTERED_CRYPTOGRAPHIC_LOCK",
+    "structure_lock_basis": "sha256(canonical SMILES), derived at generation time",
+    "independently_verifiable": true,
+    "public_portal_reference": "https://scarruth1872.github.io/trm-sovereign-portal/",
+    "provenance_status": "LOCKED_AND_PRE_REGISTERED",
+    "limitation": "Locks bind the molecular structure only. Potency, safety and target assignments are in-silico predictions and are NOT wet-lab confirmed."
+  },
+  "sha256": "69eb2737cd50094ff7959ba5de1892965a3fa4e4015d0c312a7e666e87840131"
+}

@@ -1,0 +1,84 @@
+INTEGRATION TEST COVERAGE - MEASURED 2026-11-03
+===============================================
+All numbers below are from runs on this host. Nothing here is projected.
+
+THE "51 PASSED" FIGURE WAS WRONG
+--------------------------------
+The briefing carried "python -m pytest -m 'not integration' gives 51 passed".
+Measured now: 50 passed, 18 deselected.
+
+The discrepancy is not a regression. test_llm_brain_direct was UNMARKED, so
+-m integration deselected it and -m "not integration" selected it. It was being
+counted as a unit test while testing a live inference endpoint. Now marked, so:
+
+    unit         50 passed, 18 deselected
+    integration  18 passed, 50 deselected
+
+Earlier integration figure was 16. It is 18 now because two things changed: the
+unmarked test moved into the integration set, and one new regression guard was
+added for the model-banner defect below.
+
+THE REAL GAP WAS NOT FAILURES - IT WAS TESTS THAT COULD NOT FAIL
+----------------------------------------------------------------
+Before fixes: 16 integration tests passed, zero failures. Two of those 16 were
+structurally incapable of failing.
+
+1. swarm_v2/core/test_trm_standalone.py::test_trm
+   Asserted brain._model right after get_trm_brain(). TRMBrain became lazy, so
+   _model is ALWAYS None at that point -> early return -> pass, while printing
+   "Failed to initialize TRM model." No assertions; bare except swallowed all.
+   Verdict: stale test AND vacuous. Product is healthy - checkpoint loads, 36
+   predictions, H_cycles=3.
+
+2. swarm_v2/scripts/test_cognitive_stack_gemma3_270m.py
+   Zero assertions. Printed "gemma3:270m is active" from the REQUESTED model
+   string, not from what actually ran. Returned True unconditionally.
+   Verdict: vacuous.
+
+Both were rewritten strictly stronger: 6 assertions in the first, 15 in the
+second. No assertion was weakened. Measured after: 18 passed.
+
+REAL DEFECTS FIXED
+------------------
+A. swarm_v2/core/llm_router.py printed a model name the server was not running.
+   Banner hardcoded "Bonsai-27B". Independently confirmed on this host:
+       GET 127.0.0.1:8587/v1/models -> qwen2.5-1.5b-instruct-q4_k_m.gguf
+   The banner now reads the served model from the response. This is the
+   "banner model mismatch" class: telemetry text asserting a value the system
+   did not produce. A regression guard was added.
+
+B. swarm_v2/core/llm_router.get_session() cached an aiohttp ClientSession across
+   event loops. The second async caller in a process got
+   "[Error] All local inference endpoints unreachable" while every service was
+   healthy - reproduced deterministically with two async tests in one process.
+   Any asyncio.run-per-request path would hit it. Session is now recreated when
+   the cached one belongs to a different or closed loop.
+
+C. swarm_v2/core/cognitive_stack.py reported the requested model as if it ran.
+   Now tracks last_served_model parsed from the attribution banner and exposes
+   served_model in get_status(). Routing behaviour unchanged.
+
+CI ENTRYPOINT
+-------------
+tools/run_ci.py runs unit -> integration -> ledger concurrency and prints one
+summary with a real exit code. Actual output on this host:
+
+    [CI] unit         PASS    33.4s
+    [CI] integration  PASS    34.3s
+    [CI] ledger       PASS    48.4s
+    OVERALL: PASS      exit 0
+
+Failure path verified by forcing a stage to rc=3: reported FAIL, exit non-zero.
+It does not rubber-stamp.
+
+REMAINING GAP, STATED PLAINLY
+-----------------------------
+13 of the 18 integration tests use an in-process TestClient(app) and never touch
+the nine live ports. They are ASGI tests mislabelled as integration. They prove
+the handlers work, not that the running stack does. Converting them to real HTTP
+calls against 8022/8099/3000/3001/3002/5183/8587/8588/8593 is a follow-up that
+was NOT done here, and until it is, "18 integration tests pass" means "18 ASGI
+tests pass" for 13 of them.
+
+Ledger concurrency: 1000/1000 records, 8 workers, 0 duplicates, 0 hash breaks,
+seq contiguous 1..N. That one does exercise real concurrent processes.

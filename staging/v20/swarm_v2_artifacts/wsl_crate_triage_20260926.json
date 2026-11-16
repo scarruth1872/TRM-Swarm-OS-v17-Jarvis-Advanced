@@ -1,0 +1,382 @@
+{
+  "built": "step 3 triage (council MOTION-011)",
+  "crates": [
+    {
+      "call_proof": {
+        "payload": {
+          "hub_fraction": 0.1,
+          "n_neurons": 64,
+          "seed": 7
+        },
+        "proof": "swarm_brain::build_connectome + active_neurons + sparse_weight -- the crate's own functions; the packed length is the crate's TurboVec output, not a computed estimate",
+        "route": "POST /native/brain/connectome",
+        "status": 200
+      },
+      "capability": "connectome store + sparse neural mode + four-architecture switch",
+      "cargo_dependency": "swarm-brain = { path = \"../../wsl_crates/trm-rust/swarm-brain\" }",
+      "crate": "swarm-brain",
+      "handler": {
+        "file": "trm_uefi_kernel/host_council_server/src/brain_handlers.rs",
+        "import_form": [
+          "fully-qualified",
+          "use-import"
+        ],
+        "imports": [
+          "use swarm_brain::neural::{build_neural, firing_rate, neuron_collapse, step};",
+          "use swarm_brain::pattern_switch::{compute, switch_loop, Architecture};",
+          "use swarm_brain::{active_neurons, build_connectome, sparse_weight};",
+          "\"basis\": \"swarm_brain::build_connectome + active_neurons + sparse_weight -- the crate's own functions; \\"
+        ],
+        "lines": 169
+      },
+      "module_of_record": {
+        "files": [
+          "examples/verify_brain.rs",
+          "examples/verify_brain_scale.rs",
+          "examples/verify_gpu_neural.rs",
+          "examples/verify_neural.rs",
+          "examples/verify_switch.rs",
+          "src/lib.rs",
+          "src/neural.rs",
+          "src/pattern_switch.rs"
+        ],
+        "lines": 696,
+        "path": "wsl_crates/trm-rust/swarm-brain",
+        "src_sha256": "5238ed313337e9664f9e5206680365bb915220abb8c68bad7431f5f4ccac07f3"
+      },
+      "routed_by": [
+        "the kernel's /native route table"
+      ],
+      "routes_from_kernel_table": [
+        [
+          "POST",
+          "/native/brain/connectome",
+          "swarm-brain's scale-free connectome store"
+        ],
+        [
+          "POST",
+          "/native/brain/neural",
+          "swarm-brain's sparse neural timestep"
+        ],
+        [
+          "POST",
+          "/native/brain/collapse",
+          "swarm-brain's K3 neuron collapse"
+        ],
+        [
+          "POST",
+          "/native/brain/switch",
+          "swarm-brain's four-architecture switch"
+        ]
+      ],
+      "verdict": "already-the-module-of-record: v19 links it as a live path dependency and the running kernel computes in it, so the v18 workspace copy is superseded -- to be retired, not ported"
+    },
+    {
+      "call_proof": {
+        "payload": null,
+        "proof": "swarm_intel::AGENTS -- the crate's own table, relayed without a copy",
+        "route": "GET /native/intel/agents",
+        "status": 200
+      },
+      "capability": "council verdicts, domain routing, ensemble field",
+      "cargo_dependency": "swarm-intel = { path = \"../../wsl_crates/trm-rust/swarm-intel\" }",
+      "crate": "swarm-intel",
+      "handler": {
+        "file": "trm_uefi_kernel/host_council_server/src/intel_handlers.rs",
+        "import_form": [
+          "fully-qualified",
+          "use-import"
+        ],
+        "imports": [
+          "use swarm_intel::{council_vote, decide as intel_decide, ensemble_council, route as intel_route,",
+          "\"basis\": \"swarm_intel::AGENTS -- the crate's own table, relayed without a copy\",",
+          "\"basis\": \"swarm_intel::route -- real domain overlap; overlap 0 means no agent's domains matched\",",
+          "\"signals\": \"swarm_intel::council_vote collapses [domain-fit, 0.9, 0.7] at tau 0.35 (the crate's)\","
+        ],
+        "lines": 108
+      },
+      "module_of_record": {
+        "files": [
+          "examples/verify_ensemble.rs",
+          "examples/verify_intel.rs",
+          "src/ensemble_council.rs",
+          "src/lib.rs"
+        ],
+        "lines": 350,
+        "path": "wsl_crates/trm-rust/swarm-intel",
+        "src_sha256": "72a8aa7248d31120562475f70bc3ab7627a7b77022f7981df990f77acb0191c5"
+      },
+      "routed_by": [
+        "the kernel's /native route table"
+      ],
+      "routes_from_kernel_table": [
+        [
+          "GET",
+          "/native/intel/agents",
+          "swarm-intel's agent roster"
+        ],
+        [
+          "POST",
+          "/native/intel/route",
+          "swarm-intel's domain routing"
+        ],
+        [
+          "POST",
+          "/native/intel/vote",
+          "swarm-intel's council vote"
+        ],
+        [
+          "POST",
+          "/native/intel/decide",
+          "swarm-intel's decide"
+        ],
+        [
+          "POST",
+          "/native/intel/ensemble",
+          "swarm-intel's ensemble field"
+        ]
+      ],
+      "verdict": "already-the-module-of-record: v19 links it as a live path dependency and the running kernel computes in it, so the v18 workspace copy is superseded -- to be retired, not ported"
+    },
+    {
+      "call_proof": {
+        "payload": {
+          "a": {
+            "pos": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "type": "C"
+          },
+          "b": {
+            "pos": [
+              1.4,
+              0.0,
+              0.0
+            ],
+            "type": "O"
+          }
+        },
+        "proof": "swarm_docking::score_pair -- the crate's Vina weights and its own H-bond ramp decide; this route adds nothing",
+        "route": "POST /native/docking/score-pair",
+        "status": 200
+      },
+      "capability": "Vina empirical scoring incl. the crate's own corrected H-bond ramp",
+      "cargo_dependency": "swarm-docking = { path = \"../../wsl_crates/trm-rust/swarm-docking\" }",
+      "crate": "swarm-docking",
+      "handler": {
+        "file": "trm_uefi_kernel/host_council_server/src/docking_handlers.rs",
+        "import_form": [
+          "fully-qualified",
+          "use-import"
+        ],
+        "imports": [
+          "use swarm_docking::{Atom, AtomType, BindingSite, LigandConformer, Vec3};",
+          "let (score, clash, hbond) = swarm_docking::score_pair(&a, &b);",
+          "\"basis\": \"swarm_docking::score_pair -- the crate's Vina weights and its own H-bond ramp decide; this \\",
+          "let r = swarm_docking::dock_conformer(&site, &ligand);"
+        ],
+        "lines": 117
+      },
+      "module_of_record": {
+        "files": [
+          "examples/score_pose.rs",
+          "src/lib.rs"
+        ],
+        "lines": 360,
+        "path": "wsl_crates/trm-rust/swarm-docking",
+        "src_sha256": "396e1009ea2c5d356b0cb9c7557ef78fbd6b8fdd948619f37ea115fdf6f41c09"
+      },
+      "routed_by": [
+        "the kernel's /native route table"
+      ],
+      "routes_from_kernel_table": [
+        [
+          "POST",
+          "/native/docking/score-pair",
+          "swarm-docking's pair score"
+        ],
+        [
+          "POST",
+          "/native/docking/dock",
+          "swarm-docking's conformer dock"
+        ]
+      ],
+      "verdict": "already-the-module-of-record: v19 links it as a live path dependency and the running kernel computes in it, so the v18 workspace copy is superseded -- to be retired, not ported"
+    },
+    {
+      "call_proof": {
+        "payload": {
+          "molecules": [
+            {
+              "atom_count": 9,
+              "heavy_atoms": 3,
+              "mw": 46.07,
+              "name": "ethanol"
+            }
+          ]
+        },
+        "proof": "swarm_drug::triage(&Molecule, tau) -- the crate in wsl_crates/trm-rust/swarm-drug decides; this route adds no rule, clamp or default",
+        "route": "POST /native/drug/triage",
+        "status": 200
+      },
+      "capability": "SDF parsing + K3 triage verdicts",
+      "cargo_dependency": "swarm-drug = { path = \"../../wsl_crates/trm-rust/swarm-drug\" }",
+      "crate": "swarm-drug",
+      "handler": {
+        "file": "trm_uefi_kernel/host_council_server/src/drug_handlers.rs",
+        "import_form": [
+          "fully-qualified",
+          "use-import"
+        ],
+        "imports": [
+          "use swarm_drug::Molecule;",
+          "let (verdict, detail) = swarm_drug::triage(&m, tau);",
+          "\"basis\": \"swarm_drug::triage(&Molecule, tau) -- the crate in wsl_crates/trm-rust/swarm-drug decides; \\",
+          "let mols = swarm_drug::parse_sdf(path, limit);"
+        ],
+        "lines": 104
+      },
+      "module_of_record": {
+        "files": [
+          "examples/verify_drug.rs",
+          "src/lib.rs"
+        ],
+        "lines": 222,
+        "path": "wsl_crates/trm-rust/swarm-drug",
+        "src_sha256": "432d3a2fefe0af35f9b0acf97bca9e688763571c78738390df53eca9d10332c1"
+      },
+      "routed_by": [
+        "the kernel's /native route table"
+      ],
+      "routes_from_kernel_table": [
+        [
+          "POST",
+          "/native/drug/triage",
+          "swarm-drug's triage"
+        ],
+        [
+          "POST",
+          "/native/drug/sdf",
+          "swarm-drug's SDF parse"
+        ]
+      ],
+      "verdict": "already-the-module-of-record: v19 links it as a live path dependency and the running kernel computes in it, so the v18 workspace copy is superseded -- to be retired, not ported"
+    },
+    {
+      "call_proof": {
+        "payload": {
+          "signals": [
+            0.8,
+            0.7,
+            0.9
+          ]
+        },
+        "proof": "swarm_fit::verdict -- Booked when t >= 2 and f == 0, Blocked when f > t, else Analyze (the crate's rule on its own collapse at the given tau)",
+        "route": "POST /native/fit/verdict",
+        "status": 200
+      },
+      "capability": "K3 booking verdict + the NAND append/read-back",
+      "cargo_dependency": "swarm-fit = { path = \"../../wsl_crates/trm-rust/swarm-fit\" }",
+      "crate": "swarm-fit",
+      "handler": {
+        "file": "trm_uefi_kernel/host_council_server/src/fit_handlers.rs",
+        "import_form": [
+          "fully-qualified",
+          "use-import"
+        ],
+        "imports": [
+          "use swarm_fit::{encode as fit_encode, serve as fit_serve, verdict as fit_verdict, NandFabric,",
+          "\"basis\": \"swarm_fit::encode -- the crate's FNV-derived K3 encoding with its own Monad anchor header; \\",
+          "\"basis\": \"swarm_fit::verdict -- Booked when t >= 2 and f == 0, Blocked when f > t, else Analyze \\",
+          "\"basis\": \"swarm_fit::serve -- encode + fabric append + flush, with the bytes read back through the \\"
+        ],
+        "lines": 123
+      },
+      "module_of_record": {
+        "files": [
+          "examples/verify_fit.rs",
+          "src/bin/fit_server.rs",
+          "src/lib.rs"
+        ],
+        "lines": 370,
+        "path": "wsl_crates/trm-rust/swarm-fit",
+        "src_sha256": "d9a660dfb25d8c57b82fe7d635133c476683da15fb7e1c19a23610671242a8dc"
+      },
+      "routed_by": [
+        "the kernel's /native route table"
+      ],
+      "routes_from_kernel_table": [
+        [
+          "POST",
+          "/native/fit/encode",
+          "swarm-fit's K3 record encoding"
+        ],
+        [
+          "POST",
+          "/native/fit/verdict",
+          "swarm-fit's Booked/Blocked/Analyze rule"
+        ],
+        [
+          "POST",
+          "/native/fit/serve",
+          "swarm-fit's NAND append + read-back"
+        ]
+      ],
+      "verdict": "already-the-module-of-record: v19 links it as a live path dependency and the running kernel computes in it, so the v18 workspace copy is superseded -- to be retired, not ported"
+    },
+    {
+      "call_proof": {
+        "payload": {
+          "proof": {
+            "conclusion": "Q",
+            "premises": [
+              {
+                "conclusion": "P",
+                "premises": [],
+                "rule": "Axiom"
+              }
+            ],
+            "rule": "ModusPonens"
+          }
+        },
+        "proof": "swarm-proof (WSL crate trm-rust/swarm-proof, built in this workspace)",
+        "route": "POST /verification/proof",
+        "status": 200
+      },
+      "capability": "proof-tree checking (Axiom / ModusPonens / OrIntro / AndElim)",
+      "cargo_dependency": "swarm-proof = { path = \"../../wsl_crates/trm-rust/swarm-proof\" }",
+      "crate": "swarm-proof",
+      "handler": {
+        "file": "trm_uefi_kernel/host_council_server/src/verification_handlers.rs",
+        "import_form": [
+          "fully-qualified"
+        ],
+        "imports": [
+          "fn build(v: &Value, depth: usize) -> Result<swarm_proof::ProofNode, String> {",
+          "\"Axiom\" => swarm_proof::Rule::Axiom,",
+          "\"ModusPonens\" => swarm_proof::Rule::ModusPonens,",
+          "\"OrIntro\" => swarm_proof::Rule::OrIntro,"
+        ],
+        "lines": 537
+      },
+      "module_of_record": {
+        "files": [
+          "src/lib.rs"
+        ],
+        "lines": 137,
+        "path": "wsl_crates/trm-rust/swarm-proof",
+        "src_sha256": "5d01d6a8aea0923b36f68442220ba4523b330da7b2b5c526d9f715d4d58faf98"
+      },
+      "routed_by": [
+        "main.rs dispatch"
+      ],
+      "routes_from_kernel_table": [],
+      "verdict": "already-the-module-of-record: v19 links it as a live path dependency and the running kernel computes in it, so the v18 workspace copy is superseded -- to be retired, not ported"
+    }
+  ],
+  "kernel": "host_council_server :8022",
+  "kernel_route_count": 37,
+  "rule": "a live cargo path-dependency is the module of record -- wire it as a path dependency, never port a copy"
+}

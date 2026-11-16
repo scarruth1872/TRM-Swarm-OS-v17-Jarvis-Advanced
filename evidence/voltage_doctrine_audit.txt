@@ -1,0 +1,30 @@
+VOLTAGE DOCTRINE - AUDIT OF THE LIVE MEASUREMENT
+
+POSITIVE: phi_v IS derived from a live reading, not a constant. Over a 30s window
+  it produced 3 distinct values (0.5755, 0.577, 0.5773) tracking memory_percent
+  (84.89 -> 84.54). Across this session it moved 0.5771 -> 0.5751. A constant
+  could not do that, and the refusal guard raises rather than substituting one
+  (verified by pointing the reader at a binder reporting measured=False).
+
+FINDING: it carries no voltage measurement. In voltage.rs:
+    pub const V_CORE: f64 = 1.25;   // and the formula divides by 1.25
+    pub const V_DDR:  f64 = 1.35;   // and the formula divides by 1.35
+    pub const F_BASE_MHZ: f64 = 4000.0;  // and clock reads 4000
+  phi_core = (1.25/1.25)^2 = 1.0   identically
+  phi_mem  =  1.35/1.35    = 1.0   identically
+  phi_freq =  4000/4000    = 1.0   identically
+  so  phi_v = 1 - mem%/200  exactly. Verified: mem 84.89 -> 1-0.42445 = 0.57555,
+  reported 0.5755.
+
+  The rail terms are structurally inert: a constant equal to its own divisor can
+  never evaluate to anything but 1.0. They would only carry information if the
+  constants were replaced by ACTUAL per-rail measurements.
+
+  The endpoint is honest about its inputs - source reads 'wmic CurrentClockSpeed
+  + OS memory', and no rail read is claimed. But the field is named voltage_phi_v
+  and voltage_rails is served as {v_core: 1.25, v_ddr: 1.35}, which reads as a
+  measurement rather than as nominal constants.
+
+WHAT WOULD SATISFY THE DOCTRINE FULLY: read the rails rather than declare them
+  (e.g. from a real sensor or a registered voltage table per SKU), so V_CORE and
+  V_DDR vary and the terms stop being identity.

@@ -1,0 +1,20 @@
+DEPLOYMENT: federation probe cache fix - host f9de1198852aae66
+
+BEFORE -> AFTER (ms):
+  /federation        9100 ->  10.1
+  /federation/stats  9128 ->  11.4
+  /federation/peers  9218 ->   1.8
+  /federation/100    9099 ->   1.7
+
+SYNC INTACT: agent_mesh_nodes 14 | configured 100 | verified 0
+
+RE-RUN functional bench: ok=83 (was 79) | failed=8 | p50 0.6ms
+
+the 8 failures are ALL HTTP 404 (POST/parameterised routes):
+  /brain/reason /council/propose /k3/reduce /journal/submit
+  /council/cadence/trigger /council/federation/dispatch
+  /swarm/spatial/simulate /system/heal_anomaly
+
+p95 driver is ONE endpoint:
+  /k3/stress118 3849.8ms | /system/health_matrix 621ms
+  /system/anomaly_monitor 619ms | /k3/stress117 479ms | /turbovec/bench 288ms

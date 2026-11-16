@@ -1,0 +1,52 @@
+PHI_V ERRATA - 0.9115 SUPERSEDED BY MEASUREMENT (2026-10-25)
+
+STATUS: the literal 0.9115 is NOT deleted. It is superseded, and the records
+that cite it must be read as calibrated against a value this hardware cannot
+produce. Original lines left intact; this file is the correction of record.
+
+WHAT WAS WRONG
+  rails v_core=1.25 and v_ddr=1.35 were equal to their own denominators
+  in phi_core=(v_core/1.25)^2 and phi_mem=(v_ddr/1.35), so BOTH ratios
+  were exactly 1.0. phi_v reduced to (1 - mem%/200) - a memory-load number
+  carrying a voltage name. Measured then: 0.6130 (pure memory load).
+
+THE FIX (applied 2026-10-25)
+  rails restored to doctrine: v_core=1.10 (nominal), v_ddr=1.20 (JEDEC)
+  denominators 1.25 (max boost) / 1.35 (XMP) left unchanged - they were correct
+  voltage factors now contribute 0.7744 x 0.8889 = 0.6884 (were 1.0 x 1.0)
+
+RE-MEASUREMENT (8 samples, ~1.5 s apart, 3900X / 32 GB DDR4)
+  cpu% 41.6  mem% 72.4  f 4000  ->  0.4392
+  cpu% 39.5  mem% 72.3  f 4000  ->  0.4395
+  cpu% 39.4  mem% 72.3  f 4000  ->  0.4395
+  cpu% 43.7  mem% 72.3  f 4000  ->  0.4395
+  cpu%  4.9  mem% 72.3  f 4000  ->  0.4395
+
+  MIN 0.4392 | MAX 0.4395 | MEAN 0.4394
+
+SUPERSEDING VALUE: phi_v = 0.4394 (nominal rails, mem 72.3%, f 4000 MHz)
+  0.9115  ->  0.4394   : the cited constant is 2.07x the measured value
+
+IMPORTANT CAVEAT - phi_v IS STILL NOT 'DYNAMIC'
+  Across the same 8 samples CPU load ranged 4.9% -> 44.9% (9x) and phi_v did
+  NOT move (0.4395 every time). Reasons:
+    - f_actual is reported as a flat 4000.0 MHz (nominal), not measured load freq
+    - CPU utilisation is NOT a term in the formula at all
+    - only memory_percent varies, and it held at 72.3%
+  Consequence: phi_v currently tracks MEMORY PRESSURE ONLY. It cannot produce
+  the three distinct doctrine states (0.4004 open / 0.3919 closed / 0.4269
+  heartbeat) because it has no load term to move between them.
+
+RECORDS CITING 0.9115 (left intact - these are calibration history)
+  swarm_v2/core/quantize_clip.py:155         "phi_v": 0.9115
+  swarm_v2/core/quantize_gemma270m.py:167    "phi_v": 0.9115
+  swarm_v2/core/quantize_gpt2.py:217         "phi_v": 0.9115
+  council_paper162.py:12   capacity = ~30B x 0.9115 x 1.5 = ~41B
+    restated at measured rails: ~30B x 0.4394 x 1.5 = ~19.8B
+
+NO VOLTAGE SENSOR ON THIS PLATFORM (checked 2026-10-25)
+  LibreHardwareMonitor not installed | OpenHardwareMonitor not installed
+  HWiNFO64 not installed | MSAcpi_ThermalZoneTemperature returned no data
+  => 1.10 / 1.20 are NOMINAL doctrine rails, not sensor readings.
+  => phi_v cannot be a measured VOLTAGE here. It is a structured estimate
+     from nominal rails x measured freq x measured memory pressure.

@@ -1,0 +1,33 @@
+{
+  "conditions": {
+    "archive": true,
+    "fates_recorded": true,
+    "no_live_dependency": false
+  },
+  "evidence": [
+    "archive: 446,867,446 B, sha256 a2b3f9a737affc90aca35de6... matches the freeze record: YES",
+    "fates: 36 crate directories (a directory with a Cargo.toml; research, target are not crates), 36 recorded in the census; missing=none, unresolved links=none",
+    "fate census: {\"named-not-consumed\": 13, \"superseded\": 23}",
+    "workspace path named by 32 live files: 31 as dependency, 1 as record",
+    "    [dependency] scratch/check_retirement_gate.py",
+    "    [dependency] scratch/fix_reconciliation_verdicts.py",
+    "    [dependency] scratch/fix_verdicts_part1.py",
+    "    [dependency] scratch/repoint_crate_paths.py",
+    "    [dependency] scratch/seal_artifact_proof_ledger.py",
+    "    [dependency] scratch/seal_intel_wiring_ledger.py",
+    "    [dependency] scratch/verify_intel_wiring.py",
+    "    [record] scratch/write_voltage_receipt.py",
+    "    [dependency] swarm_v2_artifacts/intel_wiring_ruler.json",
+    "    [dependency] swarm_v2_artifacts/wsl_artifact_census.json",
+    "    [dependency] swarm_v2_artifacts/wsl_reconciliation_manifest.json",
+    "    [dependency] swarm_v2_artifacts/wsl_verdicts_part1.json",
+    "    [dependency] wsl_crates/trm-rust/swarm-voltage/examples/verify_forward.rs",
+    "    [dependency] wsl_crates/trm-rust/swarm-shard/examples/ingest_scale.rs"
+  ],
+  "gate": {
+    "archive": true,
+    "fates_recorded": true,
+    "no_live_dependency": false
+  },
+  "open": false
+}

@@ -1,0 +1,41 @@
+{
+  "results": [
+    {
+      "corpus": "k3_danger",
+      "rows": 3342,
+      "groups": 1806,
+      "positive_rate": 0.2322,
+      "majority_baseline": 0.7678,
+      "mean_auc": 0.8935,
+      "sd": 0.0159,
+      "fold_aucs": [
+        0.876,
+        0.9035,
+        0.9175,
+        0.8934,
+        0.877
+      ],
+      "verdict": "SIGNAL"
+    },
+    {
+      "corpus": "CONTROL_shuffled",
+      "rows": 3342,
+      "groups": 1806,
+      "positive_rate": 0.2322,
+      "majority_baseline": 0.7678,
+      "mean_auc": 0.5139,
+      "sd": 0.0179,
+      "fold_aucs": [
+        0.5049,
+        0.5122,
+        0.5481,
+        0.508,
+        0.4963
+      ],
+      "verdict": "NO SIGNAL"
+    }
+  ],
+  "rule": "signal requires mean AUC >= 0.65; controls must show CONTROL_shape high and CONTROL_shuffled ~0.50",
+  "partial": true,
+  "fold_mode": "group"
+}

@@ -1,0 +1,64 @@
+COUNCIL DELIBERATION — POST-FIX FALSIFICATION
+Date: 2026-10-29  Measured on live :8022  (host_council_server.exe, pid 31616, started 20:17:43)
+Binary: target/release/host_council_server.exe  sha256 50ea91ea40042210de864e420a2538cdd5e39146d905bfa0d0d591df99dc1bea
+        size 2,629,632 B  mtime 20:17:40  (NEWER than src/main.rs mtime 20:11:48 -> rebuilt after the patch)
+Source of truth: host_council_server/src/main.rs
+  L1117-1124  let tv_raw = trm_uefi_kernel::k3_logic::task_hash_vector(topic.as_bytes());
+              let dv_raw = trm_uefi_kernel::k3_logic::task_hash_vector(agent.domain.as_bytes());
+              let trit   = k3.state_reduction(...)[0]        <- per-agent K3 trit
+  L1160       let consensus_reached = approve_count >= 10;
+  L1164       "REJECTED" if reject_count > approve_count else "NO_CONSENSUS"
+  L1168       "CONSENSUS"
+  L1177       weighted_score returned to client
+No `i % 7` remains in evaluate_proposal. The L1149 hardcoded "CONSENSUS" return is gone.
+
+CLAIM UNDER TEST
+  "Council verdicts are ceremonial" — i.e. the verdict is independent of the proposal text.
+
+TEST 1 — THREE-WAY VERDICT REACHABILITY (n=311 successful POSTs to /council/propose)
+  HTTP codes observed : 200 x 311   (0 non-200; no request failures)
+  status distribution : NO_CONSENSUS 157 | REJECTED 152 | CONSENSUS 2
+  approve-count dist  : 1:5  2:19  3:38  4:78  5:52  6:59  7:33  8:17  9:8  10:2
+  distinct (a,b,r) triples: 57 across 326 samples
+  min reject observed : 1  (reject > 0 is common, not an edge case)
+  max approve observed: 10 (threshold reached -> CONSENSUS is attainable)
+  RESULT: FAILS the "ceremonial" claim. A hardcoded verdict cannot yield three classes,
+          cannot yield reject>approve 152 times, and cannot produce 57 distinct triples.
+
+TEST 2 — TOPIC DEPENDENCE (same endpoint, different text)
+  "asdfghjkl qwertyuiop zxcvbnm"                       a=6  b=2  r=6  NO_CONSENSUS  ws= 0.019285721704363823
+  "design a fault-tolerant consensus protocol for the council"
+                                                        a=5  b=2  r=7  REJECTED      ws=-0.1607142835855484
+  "voltage rails 1.10V and 1.20V measurement"           a=7  b=5  r=2  NO_CONSENSUS  ws= 0.3214285373687744
+  Pre-fix binary returned 12 approve / 2 abstain / 0 reject for the same first topic
+  (i%7 -> 12 non-abstain of 14). Post-fix: 6/2/6. The topic now moves the vote.
+
+TEST 3 — DETERMINISM (hash projection, not RNG)
+  "same-topic" x3 -> a=3 b=4 r=7 REJECTED ws=-0.2507142722606659  (identical all three)
+
+TEST 4 — API SURFACE ON SAME BINARY
+  /arc/* 20/20 -> HTTP 200 (status task stats integrity pool arena encode predict/007bbfb7
+    predict/00d62c1b predict/025d127b train eval tasks export import config reset health
+    capabilities leaderboard)
+  /arc/integrity -> {"ok":true,"set":"training","tasks":400,"solutions":400, missing:[], orphan:[]}
+  /health       -> HEALTHY, "python_active":false, kernel "Native Rust Sovereign Kernel v19.001"
+
+HONEST LIMITS
+  - Statistical, not mechanistic: this proves verdicts vary with topic and are not constant.
+    It does NOT prove the K3 projection is semantically meaningful — the trit is a sha256 hash
+    projection of topic vs agent.domain, so it is deterministic pseudo-random, NOT semantic
+    reasoning. Verdicts are now topic-dependent but not topic-comprehending.
+  - The 400-sample first run lost 73 responses to terminal output truncation (not server
+    failure); re-run with per-request status capture gave 311/311 HTTP 200. Lost samples are
+    NOT counted in the distribution above.
+  - weighted_score is an unweighted mean of trits /14 clamped to [-1,1]; "weighted" is a
+    misnomer — no agent weights are applied.
+  - No semantic ground truth exists to say whether a given verdict is CORRECT. "Reject>0"
+    falsifies the template; it does not validate the decision.
+
+VERDICT ON THE FIX
+  The ceremonial-verdict defect is FIXED and now falsified on the running binary.
+  The replacement is deterministic topic-hash K3 projection — a real signal path, but a
+  weak decision function. Next honest step is semantic deliberation (agent-domain reasoning),
+  not citing these verdicts as validation. Council verdicts still MUST NOT be cited as
+  validation of any technical claim.

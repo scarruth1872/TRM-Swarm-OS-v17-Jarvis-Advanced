@@ -1,0 +1,16 @@
+====================================================================================================
+G5 IMPORT-BINDING PROBE — duplicate module stems
+repo: F:\Development sites\TRM-Swarm-OS-v2
+entrypoints: swarm_v2.app_v2, app, microkernel_proxy, swarm_manager
+duplicate stems on disk (measured surface): 1
+====================================================================================================
+
+[NEW] stem: memory
+    bound   swarm_v2.core.memory                          swarm_v2/core/memory.py   [ok]
+    bare    import memory                       -> <no top-level module>
+    other   utils/memory.py
+
+----------------------------------------------------------------------------------------------------
+duplicate stems: 1   new since baseline: 1 (memory)
+baseline: evidence\duplicate_stems_baseline.json (0 stems)
+FAIL: new duplicate stem(s) not in the baseline

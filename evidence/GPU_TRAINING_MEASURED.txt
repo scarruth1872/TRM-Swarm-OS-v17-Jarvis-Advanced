@@ -1,0 +1,33 @@
+GPU TRAINING INVESTIGATION - MEASURED 2026-10-24 (voltage doctrine: no assumed constants)
+
+=== DEVICE (measured, not claimed) ===
+torch_directml 0.2.5 present in venv/
+dml.is_available() = True,  device_count = 1
+device_name(0) = "AMD Rade...[truncated]
+=== THROUGHPUT (1024x1024 matmul, 6 iters, measured) ===
+  CPU fp32        3.53 ms    0.609 TFLOPS
+  6700XT fp32     1.14 ms    1.883 TFLOPS
+  6700XT fp16     0.84 ms    2.571 TFLOPS
+  speedup: fp32 3.1x | fp16 4.2x
+
+=== WHY 'FINISH 200k EPOCHS' IS INFEASIBLE (arithmetic, not opinion) ===
+  steps/epoch = 160000 samples / batch 4608 = 34.7
+  total steps = 200000 epochs x 34.7 = 6,940,000
+  done so far = 155,718  =>  2.2%
+  trunk ~7M active params (455M total incl 74.7M puzzle-emb lookup)
+  FLOPs/step = 6 x 7e6 x (4608 x 900) = 1.7e14
+  at 2.571 TFLOPS (measured fp16) => ~67 s/step
+  6.94M steps x 67 s = ~14.7 years. INFEASIBLE on this GPU.
+
+=== WHAT *IS* FEASIBLE ON THE 6700 XT (bounded fine-tune) ===
+  batch 32 instead of 4608:
+  FLOPs/step = 6 x 7e6 x (32 x 900) = 1.2e12
+  at 2.571 TFLOPS => ~0.47 s/step
+  5000 steps => ~39 minutes  <-- FEASIBLE, measurable
+
+=== HONEST VERDICT ===
+  GPU training works on this platform (measured 3.1-4.2x over CPU).
+  Full 200k-epoch training is infeasible on ANY single consumer GPU:
+  6.94M steps is enormous; typical TRM runs are ~100k steps.
+  step_155718 may BE the intended endpoint, not 2.2% of a plan.
+  Only a bounded fine-tune (batch 32, ~5000 steps, ~39 min) is honest.

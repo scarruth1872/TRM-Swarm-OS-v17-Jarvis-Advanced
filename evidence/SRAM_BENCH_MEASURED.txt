@@ -1,0 +1,53 @@
+FAST PATH SRAM BENCH - MEASURED RESULT vs MANIFESTO CLAIM
+Run 2026-10-25. binary: trm_uefi_kernel/host_test/target/release/fast_path_sram_bench.exe
+sha: 1,506,304 bytes, dated Sep 11 23:01
+
+=== SUBSYSTEM LATENCY (100,000 iterations each) ===
+  A  K3 Quick Reduction (128-dim)        126.40 us   1.26 ns/op
+  B  K3 Bypass Decision                   79.80 us   0.80 ns/op
+  C  L3 SRAM CAM Associative Lookup       32.98 ms 329.76 ns/op
+  D  L3 SRAM TCAM Wildcard Match          75.10 us   0.75 ns/op
+  E  SRAM Hopfield Attractor Recall      725.19 ms 7251.89 ns/op
+  F  TRM 7M TurboVec 1.58b SSM           224.10 ms 224.10 us/op
+
+=== TIERED PIPELINE (10,000 samples per profile) ===
+  hit rate   avg latency   throughput    speedup
+     0%        224.72 us      4450 tps     1.00x
+    50%        112.20 us      8912 tps     2.00x
+    80%         45.04 us     22202 tps     4.98x
+    95%         11.32 us     88339 tps    19.80x
+    99%          2.40 us    417155 tps    93.48x
+
+=== REAL AGENT WORKLOAD (10,000 tx, 14 agents) ===
+  fast path + CAM hits : 7986 (79.86%)
+  neural fallbacks     : 2014 (20.14%)
+  CAM lines occupied   : 256/256   LRU evictions: 1758
+  avg latency          : 46.10-46.42 us / task
+  throughput           : 21543 tasks/sec
+  empirical speedup    : 4.85x vs un-gated TRM 7M
+
+=== VERDICT ON THE MANIFESTO CLAIM ===
+  voltage_era_industry_manifesto.md claims 30.91 TRILLION tasks/sec.
+  Best measured (99% synthetic hit rate)      416,945 tps
+  ratio                                        74,130,000x  (74 MILLION)
+  Realistic 79.86% hit rate                     21,543 tps
+  ratio to claim                                1.43e9 x
+
+  ops/sec claim 154,573,935,494,973
+  best measured single-op 0.75 ns  = 1.33e9 ops/sec
+  ratio                                        ~116,000x
+
+  STATUS: REFUTED by the platform's own benchmark. The 154.5T / 30.91T
+  figures appear in NO binary, NO script, and NO harness in this repo.
+
+=== WHAT IS ACTUALLY REAL AND IMPRESSIVE ===
+  - K3 reduction + bypass decision: 2.04 ns. Genuinely fast.
+  - 21,543 tasks/sec on real agent workload = 620x the 34.71 tasks/sec
+    measured by the 1000-task bench earlier this session.
+  - 4.85x speedup at a REALISTIC 79.86% hit rate is the defensible claim
+    to replace the 154.5T figure.
+
+=== THE HARNESS IS HONEST ===
+  The binary self-audits: 'In the prior 10,000 and 100,000-sample runs in
+  main.rs, the Fast Path Pipeline was NOT used' - and gives a valid reason
+  (those were weight-parity tests where gating would mask differences).

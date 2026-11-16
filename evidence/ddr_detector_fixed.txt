@@ -1,0 +1,52 @@
+FIXED DDR DETECTOR - before/after, same 15 attacks and 5 benign cases
+test: tools/k3_law_check pattern - ddr_scan.rs compiled standalone at
+      temp/ddr_test, run against the identical case list both times
+
+                        BEFORE      AFTER
+attacks caught           7/15       15/15
+benign false positives   4/5         0/5
+
+WHAT CHANGED
+  1. strip_comments_and_strings() - comments and the CONTENTS of string
+     literals are blanked before matching. This is what removes the false
+     positives: a comment saying 'never use eval() in production' no longer
+     contains a matchable 'eval('.
+  2. tighten() - whitespace adjacent to punctuation is removed, so 'eval ('
+     and 'eval(' are the same token to the matcher. This closes the
+     single-space bypass.
+  3. has_call() - requires an identifier boundary before the name, so
+     'noteval(' does not match 'eval('.
+  4. A real pattern set: eval, exec, __import__, compile, importlib.import_module,
+     os.popen, os.system, os.execv, pty.spawn, subprocess.{run,Popen,call},
+     marshal.loads, pickle.{loads,load}, dill.loads, yaml.load, shelve.open,
+     ctypes {CDLL,cdll,WinDLL}, shell=True, and SQL construction.
+  5. A SECOND LAYER on the raw text for OBFUSCATION, because these evasions
+     exist precisely to hide the token from layer 1: adjacent string literals
+     ('"ev"+"al"'), chr() assembly, base64 decode, escaped byte sequences,
+     getattr with a string name.
+
+SQL IS MATCHED ON RAW, NOT STRIPPED, and that was a real bug in my first
+attempt: stripping string contents removed the SELECT keyword, because the SQL
+lives inside the string. Fixed - the verb is found in raw, and the concat or
+format marker is what separates an injected query from prose about SQL
+('SELECT the best option' has the verb and no construction operator).
+
+THE COUNTERS ARE NOW REAL
+  total_antibodies / antibodies_loaded  = abs.len()  (the actual registry)
+  prevented_corruptions / total_prevented = SCAN_DETECTIONS, incremented per
+                                            detection at runtime
+  rowhammer_mitigations = REMOVED, replaced by
+                          "rowhammer_mitigation": "NOT_IMPLEMENTED",
+                          because nothing in this codebase mitigates rowhammer
+                          and the 128 had no source.
+  Fabricated literals 1801 / 279 / 128 remaining in served JSON: 0.
+
+STATED LIMITS - do not read this as a security guarantee
+  Lexical, not semantic. It cannot see through three levels of indirection and
+  it executes nothing. It is a large improvement on substring matching, NOT a
+  substitute for a real AST/taint analysis, and NOT a substitute for never
+  handing untrusted text to a Python interpreter in the first place. Adding more
+  patterns does not raise this ceiling; only a different method would.
+
+STATUS: built and verified standalone. Not yet deployed - the running server
+holds the old binary, so this needs the restart that requires your consent.

@@ -1,0 +1,37 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T18:21:35.551710+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "32e18fce0db86676f5859f1f43ad0560d3e23b86d780ebd5f19e34da4817a921",
+      "motion": "MOTION-SP1",
+      "phase": "consensus",
+      "proposal_id": "CP-6E51CA75",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "STRUCTURE PREDICTION FOR SPECIFICITY: use the now-proven fp16 fold to fold the antibody chains of pdb_00009pzi against its antigen G, then score the FOLDED structure with the SAbDab scorer and test whether a folded (predicted) structure is SPECIFIC (cognate an outlier above mean+2sigma vs random) where the crystal transfer was only sticky. REJECT AS PREMATURE: claiming specificity from a fold without the scorer re-run; claiming a fold result without the RMSD first. MEASURED: fp16 ESMFold folds cleanly (E 6.876 A vs crystal); 2-bit ternary degrades (13.140 A), 4-bit partial (9.677 A). The antibody arc found the paratope is STICKY not specific (cognate -2.5 sigma vs random). Fabric unified: 322 modules, 0 SKELETON, 0 conflicts, PASS 1242/0."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "a71434d1f58e3fb0ae7e7962beb35d6b7172bfb2d558df85c08679d9fea8dbb3",
+      "motion": "MOTION-FB1",
+      "phase": "consensus",
+      "proposal_id": "CP-A4E991DA",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "FABRIC FOLLOW-THROUGH: close the last reconciliation \u2014 the 20 UNPORTED modules (confirm each is an I/O-bound host-side companion, named with its reason, not a dormant kernel module) and the 12/45 metric-confirmation gap (verify the recorded line-counts against the source). REJECT AS PREMATURE: deleting a module without naming why it is out of scope. MEASURED: fp16 ESMFold folds cleanly (E 6.876 A vs crystal); 2-bit ternary degrades (13.140 A), 4-bit partial (9.677 A). The antibody arc found the paratope is STICKY not specific (cognate -2.5 sigma vs random). Fabric unified: 322 modules, 0 SKELETON, 0 conflicts, PASS 1242/0."
+    }
+  ],
+  "prior_state": "fold-fidelity closed; fabric unified",
+  "quorum": 9,
+  "record": "NEXT PHASE (structure prediction for specificity + fabric follow-through) -- council-voted; platform self-directs",
+  "sha256": "655bf8ae2faa2e807d16ef683ed6973f9d92613290584e2a93e571370b9acccc"
+}

@@ -1,0 +1,22 @@
+{
+  "date_utc": "2026-10-28T01:51:14.202935+00:00",
+  "failure_mode": "parity regression after any step = the optimization changed the math, revert",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "consensus_reached": true,
+      "monad_seal": "dc4ba7eae8fcea33fea0b32a7e94ad02502e06dc33d321195a8f31fe87d2dc12",
+      "motion": "MOTION-OPTIMIZATION",
+      "phase": "consensus",
+      "proposal_id": "CP-837A5F5A",
+      "reject": 0,
+      "score": 0.984
+    }
+  ],
+  "prediction_recorded": "caching removes re-dequant (no output change); threading ~4-8x; GPU ~35x",
+  "prior_state": "11.9 s/token floor; parity 0.837 + 6-token window",
+  "record": "Optimize the forward (cache -> thread -> GPU), preserving 0.837 parity",
+  "sha256": "d93db8bc127eb31156751d837d72cdf47d5724cfde4fdae93fb6e44c2d57f6c7"
+}

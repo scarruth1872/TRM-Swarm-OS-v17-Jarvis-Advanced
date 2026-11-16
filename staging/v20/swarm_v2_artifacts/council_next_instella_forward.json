@@ -1,0 +1,26 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-27T15:04:11.903880+00:00",
+  "failure_mode": "if the graph is structurally incomplete, name the boundary + the CUDA-toolkit prerequisite",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "cc3265355cbf15323e9cc0059863738a3d575427805b78b1ecdd81e35bfda6f2",
+      "motion": "MOTION-NEXT",
+      "phase": "consensus",
+      "proposal_id": "CP-D0E4C9E5",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "INSTELLA FORWARD-PASS DIAGNOSIS + SUPERVISOR LEAK FIX: (1) diagnose the fork's logits gap \u2014 read src/models/instella-moe.cpp graph construction to find whether the output/logits node is missing or miswired (the model loads, so the tensor map is right; the graph is the suspect); fix in-tree if it is a small bug, else NAME the boundary + the exact prerequisite (CUDA toolkit install for a GPU build). (2) fix the supervisor's tier-2 duplicate-spawn (kill the old llama-server before spawning a new one) so one Coder serves :8587 instead of two overflowing the 8 GB VRAM. PREDICTION: the logits gap is a missing output-graph node in the fork's forward, fixable in-tree without the CUDA toolkit. FAILURE: if the graph is structurally incomplete, the boundary is named and the CUDA-toolkit install becomes the prerequisite. MEASURED: the bridge codes (Qwen2.5-Coder-7B Q4_K_M on :8587, ChatML-corrected; /swarm/chat returns correct Rust), swarm-harness CLI + /crate/harness/code + /crate/harness/strip live. The Instella fork (csabakecskemeti/llama.cpp@instella-moe) BUILDS and LOADS the 16B (arch parses, model initializes on :8588) but generation returns 500 'the current context does not logits computation. skipping' \u2014 the forward pass does not compute logits. Also: the supervisor leaked duplicate Coder processes (two 4.36 GB loads overflow the 8 GB VRAM)."
+    }
+  ],
+  "prediction_recorded": "the logits gap is a missing output-graph node, fixable in-tree without the CUDA toolkit",
+  "prior_state": "bridge codes; swarm-harness + crate ops live; Instella fork loads but no logits; supervisor leaks duplicate Coders",
+  "quorum": 9,
+  "record": "NEXT MOTION -- Instella forward-pass diagnosis + supervisor tier-2 leak fix",
+  "sha256": "b1ad8aa4572003de189a571b8958f36dade5deeab4adb2196fefda1aa1fade12"
+}

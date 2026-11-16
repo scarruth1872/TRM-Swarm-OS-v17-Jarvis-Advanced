@@ -1,0 +1,112 @@
+{
+  "monad_anchor": "0x4D4F4E4144000001",
+  "version": "1.0.0",
+  "latest_scan": {
+    "scan_id": "SCAN-ENV-1792507327",
+    "timestamp": "2026-10-20 14:42:07 UTC",
+    "nodes_active": 6,
+    "global_coherence_index": 0.778,
+    "anomaly_score": 0.391,
+    "triangulated_hotspots": [
+      {
+        "hotspot_id": "HOTSPOT-ALPHA-01",
+        "centroid_latitude": 37.77486,
+        "centroid_longitude": -122.41933,
+        "estimated_radius_meters": 14.5,
+        "signal_density": "HIGH_DENSITY"
+      }
+    ],
+    "pathogen_signature_correlations": [
+      {
+        "signature_id": "SIG-SARS-SPIK-0001",
+        "pathogen": "SARS-CoV-2",
+        "target": "Spike_RBD",
+        "environmental_resonance_p_value": 0.0033,
+        "containment_status": "MONITORED_SECURE"
+      },
+      {
+        "signature_id": "SIG-SARS-SPIK-0002",
+        "pathogen": "SARS-CoV-2",
+        "target": "Spike_RBD",
+        "environmental_resonance_p_value": 0.0033,
+        "containment_status": "MONITORED_SECURE"
+      },
+      {
+        "signature_id": "SIG-SARS-SPIK-0003",
+        "pathogen": "SARS-CoV-2",
+        "target": "Spike_RBD",
+        "environmental_resonance_p_value": 0.0033,
+        "containment_status": "MONITORED_SECURE"
+      }
+    ],
+    "k3_status": "0"
+  },
+  "sensor_nodes": [
+    {
+      "node_id": "NODE-SDR-01",
+      "node_type": "SDR_Wideband",
+      "frequency_mhz": 433.92,
+      "rssi_dbm": -68.4,
+      "snr_db": 22.5,
+      "packet_entropy": 0.78,
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "status": "ONLINE"
+    },
+    {
+      "node_id": "NODE-SDR-02",
+      "node_type": "SDR_Wideband",
+      "frequency_mhz": 915.0,
+      "rssi_dbm": -72.1,
+      "snr_db": 19.8,
+      "packet_entropy": 0.82,
+      "latitude": 37.7752,
+      "longitude": -122.4188,
+      "status": "ONLINE"
+    },
+    {
+      "node_id": "NODE-LORA-01",
+      "node_type": "LoRa_Gateway",
+      "frequency_mhz": 868.1,
+      "rssi_dbm": -84.2,
+      "snr_db": 14.2,
+      "packet_entropy": 0.65,
+      "latitude": 37.7745,
+      "longitude": -122.4201,
+      "status": "ONLINE"
+    },
+    {
+      "node_id": "NODE-BLE-01",
+      "node_type": "BLE_Microbeacon",
+      "frequency_mhz": 2402.0,
+      "rssi_dbm": -55.0,
+      "snr_db": 28.4,
+      "packet_entropy": 0.91,
+      "latitude": 37.7748,
+      "longitude": -122.4192,
+      "status": "ONLINE"
+    },
+    {
+      "node_id": "NODE-BLE-02",
+      "node_type": "BLE_Microbeacon",
+      "frequency_mhz": 2426.0,
+      "rssi_dbm": -58.2,
+      "snr_db": 26.1,
+      "packet_entropy": 0.88,
+      "latitude": 37.775,
+      "longitude": -122.4196,
+      "status": "ONLINE"
+    },
+    {
+      "node_id": "NODE-BLE-03",
+      "node_type": "BLE_Microbeacon",
+      "frequency_mhz": 2480.0,
+      "rssi_dbm": -61.5,
+      "snr_db": 24.7,
+      "packet_entropy": 0.85,
+      "latitude": 37.7747,
+      "longitude": -122.419,
+      "status": "ONLINE"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+COMPANION APP FUNCTIONAL CHECK - 2026-10-08
+all four services UP: 3002 bridge, 3001 proxy, 5183 dashboard, 8022 council
+
+=== WHAT WORKS ===
+3002 GET /                       200  service index
+3002 GET /companion/status       200  agent roster (14) - but see literals below
+3002 GET /companion/agents       200
+3001 GET /health                 200
+3001 GET /companion/*            200  correctly routed
+3001 POST /companion/chat        200  routes to 8022 /swarm/chat FIRST, 3002 fallback
+5183 GET /                       200  LCARS UI (vite dev)
+8022 POST /swarm/chat            200
+
+=== WHAT DOES NOT WORK: THE CHAT IS A TEMPLATE ===
+Three probes to 8022 /swarm/chat:
+  'What is the capital of France?'      -> generic 'I have processed your inquiry: <echo>'
+  'Explain quantum entanglement...'     -> DIFFERENT canned essay (keyword 'quantum')
+  '2+2=?'                               -> generic template, never says 4
+  confidence = 0.99 CONSTANT across all three
+
+Bridge 3002 /companion/chat: identical output for two unrelated questions
+  confidence 0.995 and latency_us 850.0 are literals in main.rs L646-647
+  keyword chain does not even match: 'status'/'security'/'oncology' all -> same fallback
+
+=== FABRICATED VALUES IN THE COMPANION ===
+bridge main.rs L70-83   14 CompanionAgentStatus entries: confidence/latency_us ALL literals
+bridge main.rs L646-647 "confidence": 0.995, "latency_us": 850.0   literals
+council /swarm/chat     "confidence": 0.99  literal
+
+=== VERDICT ===
+Companion app is FUNCTIONAL AS A DASHBOARD/SURFACE (status, roster, UI, routing).
+Companion app is NOT FUNCTIONAL AS AN ASSISTANT - chat answers nothing; it is a
+keyword->canned-essay lookup with a generic fallback and constant confidence.
+
+NOTE: my first proxy probe used POST /chat; the real route is /companion/chat
+(startswith). That was MY test error, not a proxy defect - the proxy routes correctly.

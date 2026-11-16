@@ -1,0 +1,186 @@
+K3 DECISION HEADS IN THE RUST KERNEL - MEASURED 2026-11-05
+==========================================================
+
+THE GAP THIS CLOSED
+  The 15 Bonsai-K3 heads were trained in Python and existed only as .pt pickles.
+  The kernel cannot read pickle, so the trained trits were unreachable from the
+  microkernel - the same "trained but unreadable" pattern as the 12 GB of dead
+  _trits.bin. Worse, the Python chat path did not use them either: llm_router.py
+  loads {agent}_trm7m.pt, a different checkpoint family, and throws its output
+  away in favour of a canned banner. So the retrained heads were used by nothing.
+
+WHAT WAS BUILT
+  tools/export_k3_heads.py    -> trm_uefi_kernel/assets/k3_heads.bin (K3HD v1)
+                                 7,728,982 bytes, 15 heads, LE f32, sha256 in the
+                                 sidecar manifest; featuriser spec written down.
+  src/k3_head.rs              -> CRC-32/ISO-HDLC, the exact hashed-BoW featuriser,
+                                 bounds-checked parser, full forward pass.
+  host_test k3_head_bench     -> 300 classifications + p50/p99 timing.
+  host_council_server         -> POST /k3/classify, GET /k3/heads, blob embedded
+                                 and parsed once behind a OnceLock.
+  tests/test_integration_live -> 3 falsifiable assertions against the live port.
+
+WHY THE FEATURISER IS PINNED
+  A classifier that disagrees with its trainer is a second model wearing the first
+  one's name. Python hashes unigrams+bigrams with zlib.crc32 and takes the sign
+  from bit 16; the Rust side reimplements that CRC bit-for-bit rather than using a
+  crate, because a different polynomial would silently move every feature to a
+  different bucket and the model would still answer - wrongly - with confidence.
+
+PARITY (Rust vs the trained PyTorch models)
+  15 agents x 20 prompts = 300 classifications
+  trit agreement 300/300 = 1.0000
+  max |dP|       7.46e-07
+  Command: python tools/verify_k3_parity.py
+
+SPEED (host_test, release, 500 iterations, first head)
+  p50 36,100 ns | p99 44,100 ns | mean 35,251 ns | 28,368 classifications/s
+  Live endpoint latency: danger prompt 54.3 us, benign 60.8 us (includes request
+  parsing and JSON serialisation, so it is higher than the bare forward).
+
+THREE DEFECTS FOUND WHILE BUILDING THIS
+  1. dim was read from A (16) instead of B (96). A is square, so both dimensions
+     reported 16 and every tensor in the blob was silently truncated. Now asserted
+     against the parameter count; the bad blob was caught before any claim.
+  2. Quantising A/B/C/D at export broke parity (296/300, 4 wrong trits on Archi)
+     because QATLinear only wraps nn.Linear, so the trained model keeps those
+     matrices in f32. The exporter now quantises exactly the tensors the trainer
+     quantised. The K3 block itself is NOT ternary yet - that is the next step.
+  3. The kernel lib is no_std, where f32::exp/sqrt do not exist. It now uses
+     crate::float_math; host_test gained a std shim under the same names (the same
+     shim pattern it already uses for `time`).
+
+TERNARY: POST-HOC QUANTISATION FAILS, QAT IS REQUIRED
+  Applying TWN (alpha = 0.7*mean|w|) to the f32-trained heads AFTER training:
+    overall trit agreement 234/300 = 0.7800
+    BLOCK-on-danger 0.90 -> 0.20-0.50 for most agents (e.g. Archi 0.90 -> 0.20)
+    weights zero: 39.4% of 127,168 per agent
+  So the decisions live in precision that post-hoc ternary throws away. A ternary
+  K3 head has to be TRAINED ternary, which is what QAT does here:
+  QATLinear quantises in the forward pass and passes gradient straight through.
+  Archi retrained with QAT (20 epochs, TWN 0.7):
+    loss 0.0078, BLOCK-on-danger 0.80, PROCEED-on-benign 0.90, 39.2% weights zero
+    Set 2 (unseen vocabulary) improved: P(block) danger 0.563 vs 0.429 f32.
+
+WHAT IS NOT TRUE YET
+  - Set 2 (unseen danger vocabulary) remains near chance: 0.625 tend to block,
+    0.375 of benign proceed. A hashed bag-of-words has no semantic prior, so a
+    novel destructive verb hashes to a slot it never learned. QAT does not fix
+    that; a learned word embedding or real traffic would.
+  - The K3 block matrices A/B/C/D are still f32. Only the expert/gate/classifier/
+    out_proj matmuls are ternary.
+  - A is dead weight in this design: h starts at zero and takes one step, so the
+    A term never affects the output.
+  - These heads are a lexical triage gate, not a safety classifier. Nothing in the
+    chat path consults /k3/classify yet; the route exists and is tested, the
+    wiring of it into agent routing is not done.
+  - assets/k3_heads.bin is gitignored like the other model blobs; regenerate with
+    tools/export_k3_heads.py (deterministic, sha256 recorded in the manifest).
+
+ADDENDUM - LEARNED INPUT REPRESENTATION (measured after the above)
+==================================================================
+Set 2 at chance was diagnosed as a representation limit, not a labelling limit, so
+the input was replaced: character 3-5 gram ids feeding a learned EmbeddingBag
+(4096 buckets, dim 96) instead of a fixed hashed bag-of-words. Character n-grams
+give an unseen word a shared representation with seen morphology
+(purge/purged/purging), which a whole-word BoW cannot.
+
+Archi, 20 epochs, 2500 samples, three configurations:
+  config                 SET1 d/b   SET2 d/b    SET2 P(block) danger:benign
+  hashed BoW, f32         0.90/0.90  0.625/0.375  0.563 : 0.382
+  char-ngram emb, f32     1.00/0.90  0.625/0.750  0.628 : 0.000
+  char-ngram emb + QAT    1.00/0.80  0.625/0.875  0.571 : 0.064
+
+FLEET RESULT - 15 agents, 20 epochs, 2500 samples, emb + QAT, 3,887.3s (~4.3 min each)
+  SET 1 (vocabulary the training covers):  BLOCK/danger 0.973 | PROCEED/benign 0.973
+  SET 2 (unseen phrasings and nouns):      BLOCK/danger 0.692 | PROCEED/benign 0.950
+  SET 2 mean P(block): danger 0.692 : benign 0.022  ->  separation +0.670
+  Per agent SET2 danger/benign: 1.00/1.00 x9, 0.90/1.00 x2 (Logic, THzGateway 0.90/0.90),
+  0.80/1.00 (Flow), 1.00/0.90 x3 (Archi, Orchestra, Hermes). Losses <= 0.0001.
+  Weights: ternary, ~37% of each head's 127,168 quantised weights exactly zero;
+  the embedding table stays f32 because QATLinear never wrapped it.
+  Compare the earlier hashed-BoW f32 fleet: SET1 0.867/0.893, SET2 0.475/0.483
+  (-0.042, chance). Generalisation on unseen danger phrasing went 0.475 -> 0.692 and
+  on unseen benign phrasing 0.483 -> 0.950, while ALSO becoming ternary.
+
+  What this is: a lexical triage gate that now generalises across wording rather
+  than only across vocabulary it was trained on. What it is not: a safety
+  classifier. 31% of unseen danger phrasings still pass as PROCEED, and one sampled
+  benign prompt ("Which countries border Switzerland") comes back ANALYZE at 0.34 -
+  the honest failure mode of a gate trained on a generated corpus, not on traffic.
+
+Benign generalisation went 0.375 -> 0.875, and it survives ternary training. Danger
+blocking on unseen verbs stayed at 0.625: improved generalisation, not a solved
+classifier.
+
+Parity on the embedding+QAT head: Rust vs PyTorch 20/20 trits, max |dP| 8.08e-07.
+The Rust side reimplements char_ngram_ids() by hand - lowercase, non-alnum to
+space, words joined as <w1><w2>, every 3..=5 gram CRC-32 mod buckets, truncated and
+padded to EMB_CAP=192 - and averages embedding rows over the padded bag, because
+EmbeddingBag(mode='mean') divides by the padded length, not by distinct grams.
+
+Blob format v2 adds a per-agent buckets field and the [buckets, dim] table. v1
+still parses (buckets=0). The embedding table is NOT ternary-quantised: QATLinear
+never wrapped it, so the trainer keeps it in f32 and quantising it at export would
+describe a different model.
+
+Deployment cost, measured: an f32 table of 4096 x 96 is 1.57 MB per agent, and the
+15-agent embedding blob is 31,322,002 bytes. The blob therefore left the binary:
+host_council_server.exe went 10,512,384 -> 2,802,176 bytes and reads the blob at
+first use, reporting blob_path/loaded/error on /k3/heads so an empty head set cannot
+pass for a healthy one.
+
+Fleet parity with all 15 embedding heads served: Rust vs PyTorch 300/300 trits,
+max |dP| 1.80e-06. Live /k3/classify at 64-66 us. CI PASS on all four stages
+(unit 85.8s, integration 30.8s, integration_live 39.9s, ledger 52.5s) and
+smoke_test_platform 10/10.
+
+Parameter accounting fixed at the same time: /k3/heads reported 128,811 params per
+head while the manifest said 522,027. The embedding table was being omitted from
+the count - 75% of the weights - which understated the model in the flattering
+direction. It now reports params (522,027, total) and params_core (128,811), and the
+live test asserts both.
+
+FULLY TERNARY BLOCK (measured after the fleet run)
+=================================================
+A/B/C/D are raw Parameters, not nn.Linear, so QATLinear never reached them: every
+"ternary" head still carried a f32 K3 block under ternary matmuls. twn()/st_twn()
+now quantise the block inside forward() with a straight-through gradient.
+
+Archi, emb + QAT + block-QAT, 20 epochs:
+  block f32       SET1 1.00/0.80   SET2 0.625/0.875   P(block) 0.571 : 0.064
+  block ternary   SET1 1.00/1.00   SET2 0.625/1.000   P(block) 0.592 : 0.003
+Ternary cost nothing and improved benign generalisation to 1.000.
+
+Fleet, all 15 agents, emb + QAT + block-QAT, 3,937.4 s, 522,027 params/head:
+  SET 1 (training vocabulary)  danger BLOCK 1.000   benign PROCEED 0.993
+  SET 2 (unseen phrasing)      danger BLOCK 0.675   benign PROCEED 0.992
+  mean P(block) 0.651 danger : 0.006 benign          separation +0.645
+Versus the same fleet with a f32 block (SET1 0.973/0.973, SET2 0.692/0.950, +0.670):
+danger recall fell 1.7 points, benign generalisation rose 4.2 points, and separation
+was 0.025 lower. Reported as measured, not as a win: full ternary bought a much better
+benign rate at a small cost in danger recall and margin. Confidence also softened -
+Archi on "Nuke the staging cluster tonight" went 0.9933 -> 0.7292, still BLOCK.
+Deployed: parity 300/300 trits, max |dP| 1.23e-06, live 1.0-9.0 ms.
+
+Verified at the BYTE level rather than trusted from a manifest: reading A out of the
+blob gives max |diff| 9.3e-10 against twn(A) and exactly three magnitudes
+(-alpha, 0, +alpha) - 42.2% of A and 46.6% of D are exactly zero. Rust parity on the
+fully ternary head: 20/20 trits, max |dP| 8.30e-07.
+
+A IS PROVABLY DEAD (this used to be an assertion; now it is a measurement)
+  h starts at zero and takes ONE step: h = h + 0.05*(h@A.T + x@B.T), so h@A.T is
+  0@A = 0 for any A. Replacing A with 50x random noise leaves the logits bit-identical:
+    logits, real A      [-3.441623, 9.478763, -9.259571]
+    logits, A*50 noise  [-3.441623, 9.478763, -9.259571]   max |diff| 0.0
+  So A costs 256 params and a 16x16 matmul per forward and cannot influence any
+  decision. It stays in the blob only because the format mirrors the trainer; removing
+  it needs a v3 blob and changes nothing about accuracy.
+
+Still true and unchanged: danger blocking on genuinely unseen phrasing is 0.692
+fleet-wide (Archi alone 0.625), so roughly 31% of novel destructive wording still
+passes as PROCEED; these heads are a lexical triage gate, not a safety classifier;
+and /k3/classify is reported in chat as advisory because gating on it would refuse
+valid requests.
+
+

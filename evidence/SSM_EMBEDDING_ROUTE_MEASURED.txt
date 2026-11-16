@@ -1,0 +1,123 @@
+SSM ROUTE 1 — EMBEDDING FEATURES. MEASURED AND REJECTED
+Date 2026-11-02. Builds on SSM_READOUT_FIT_MEASURED.txt (hash features failed).
+
+HYPOTHESIS
+  The hash-fed read-out failed because the 128-dim state came from token hashes
+  and carried no meaning. Feed the SSM real semantics instead: embed the text with
+  nomic (768-dim, :8593), project to 128 by fixed block-mean, run the recurrence
+  over the chunk sequence. Then a linear read-out has something to find.
+
+WHAT WAS BUILT
+  local_inference::embed_batch(texts)   batch POST to :8593/embeddings, unwraps
+                                        the nested [[768 floats]] shape
+  split_chunks()                        up to 6 chunks of 220 chars on word bounds
+  project_768()                         768 -> 128 by mean of 6 consecutive comps
+  ssm_state_embed()                     recurrence over chunk embeddings
+  ssm_state_auto()                      feature selection; hash is the DEFAULT
+  SsmDecision.feature                   "hash" | "embedding" travels with the verdict
+  Readout.feature                       weights refuse to apply to the other feature
+  POST /council/ssm/states              now reports which feature produced each state
+
+VERIFIED LIVE
+  POST /council/ssm/states -> feature=embedding, steps=1, y[0..3] = -1.453, 0.509, 1.184
+  Default path -> steps=5 (hash tokens), readout mean-trit
+  Both paths exercised, so this is wiring that runs, not wiring that compiles.
+
+RESULT — WORSE THAN HASH
+  Leave-one-topic-out on the same 308 samples / 22 topics / same labels:
+      lambda 1.0    0.422      hash was 0.458
+      lambda 10.0   0.429      hash was 0.377
+      lambda 100.0  0.474      hash was 0.435
+  Baseline always-predict-majority: 0.455
+  In-sample: 0.698 (overfit, same as before)
+
+  Best embedding setting 0.474 does not beat the 0.455 baseline. Nothing was
+  gained by making the input semantic.
+
+  Learning curve, train topics -> held-out agreement:
+      k=3 0.355   k=5 0.387   k=8 0.430   k=11 0.417   k=15 0.453   k=18 0.400
+  Flat again, so this is not a data-volume problem.
+
+THE BAND READ-OUT IS ALSO DEAD ON EMBEDDING STATES
+  The untrained mean-trit path thresholds the row-mean of the state. Measured on
+  the 308 embedding states:
+      centre +0.0181   sd 0.0031   range +0.010 .. +0.024
+  nomic vectors are nearly all-positive, so the row-mean barely moves between
+  texts. At the calibrated 0.05 band it decides on 0/308 samples -- completely
+  silent. At a 0.02 band it decides on 26% and agrees 46.9% of the time on those,
+  which is the majority class again.
+  Live confirmation over 70 agent-topic pairs: only 3 decided, agreement 4%.
+
+DECISION
+  Hash features are the DEFAULT again (COUNCIL_SSM_FEATURE=embedding opts in).
+  Reasons, both measured: embeddings score no better, and they cost one HTTP call
+  per agent (14 per proposal) for nothing. The fitted artifact stays deploy:false
+  with feature:"embedding" recorded, and the loader refuses it.
+  Council tallies unchanged: dark mode 13/0/1, checkpoint 5/1/8.
+
+WHAT TWO FAILED ATTEMPTS NOW ESTABLISH
+  1. It is not the fitting method: ridge at three regularisation strengths, both
+     feature sets, all near or below the majority baseline.
+  2. It is not the sample count: the learning curve is flat from 3 to 18 topics
+     for both feature sets.
+  3. It is not the feature's semantics: hash and nomic embeddings fail alike.
+  What is left is the label. 58 of 308 (topic, agent) pairs give different
+  verdicts across repeated runs at temperature 0, and the verdicts are dominated
+  by the topic (cheese -1 for all 14 agents, QUIC +1 for all 14). A read-out that
+  must generalise from 22 topics to unseen topics is being asked to learn a
+  judgement that the model itself does not apply consistently.
+
+CONSEQUENCE FOR THE PLATFORM
+  The SSM cannot decide agent verdicts and should not be sold as if it can. It is
+  wired, deterministic, auditable and advisory -- that is the honest status. The
+  K3 ternary algebra is genuinely carrying the fusion and abstention semantics,
+  but its second input is not a signal.
+  If the SSM must become load-bearing, the requirement is not more data or better
+  embeddings: it is a trained model (parameters, not a read-out) and a label
+  source that is consistent. Neither exists on this machine today.
+
+
+================================================================================
+ERRATA — 2026-11-03. THE "LIMIT IS THE LABEL" CONCLUSION ABOVE IS WRONG.
+================================================================================
+This file claimed the failure was caused by label noise (19% flip rate) and that
+more data or better features would not help. Both statements are retracted.
+
+MEASURED, on a frozen 180-proposal / 2520-vote snapshot of the authoritative
+:8022 ledger (scratch/council_ledger_snapshot.json, sha256 01d90e7b...):
+
+  flip rate per field, over repeated runs of the same (topic,agent):
+      llm_trit    0 / 2730 pairs = 0.0000     <- the actual training target
+      vote        7099 / 35056   = 0.2025
+      ssm_trit    530 / 2730     = 0.1941
+
+  The 19% figure is the instability of `vote` and of `ssm_trit`. It is NOT the
+  instability of `llm_trit`, which is perfectly reproducible on this slice. So the
+  label was never the binding constraint.
+
+  Bayes ceiling with p=0.19, K=3: 0.90. With the measured p=0.000 on llm_trit: 1.00.
+  Either way the ceiling sits 0.32 or more ABOVE the 0.583 baseline. There was
+  always headroom. Label noise did not cap anything.
+
+WHAT ACTUALLY CAPS IT — ablation, leave-one-topic-out, 84 cells, 6 topics,
+independently reproduced by the parent process (not the fitting script):
+
+  ssm_mean only            0.4762    vs baseline 0.5833   ->  BELOW baseline
+  weight only              0.4167    vs baseline 0.5833   ->  BELOW baseline
+  confidence only          0.6548    vs baseline 0.5833   ->  above
+  ssm_mean + confidence    0.8333
+  ssm_mean + conf + weight 0.8095
+
+  The SSM state alone scores BELOW the trivial always-approve baseline. The only
+  feature that clears the baseline is the model's own `confidence`. A read-out
+  that clears 0.58 is therefore learning "the model is confident, so it approved",
+  which is reading the answer back out, not forming a second opinion.
+
+VERDICT: RETIRE. The SSM cannot be a second opinion on agent verdicts. The reason
+is not the label and not the sample count and not the feature semantics: the
+128-dim SSM state does not encode the verdict.
+
+WHAT WOULD BE REQUIRED: proposals that differ in substance inside a topic (the
+current 6 topics are 3-16 resubmissions of one sentence each, so every cell is
+constant), and a target that is not the model's own confidence. Full record:
+evidence/SSM_READOUT_DISPOSITION.txt

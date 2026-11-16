@@ -1,0 +1,15 @@
+{
+  "record": "HDC fabric encoding of the confirmed property (MOTION-HDCFAB)",
+  "dim": 768,
+  "complexes": 19,
+  "cognate_contact_mean": 0.0467,
+  "random_contact_mean": 0.0085,
+  "cognate_hbond_mean": 0.0053,
+  "random_hbond_mean": 0.0009,
+  "lda_cv_hdc_space": 0.8929,
+  "cognate_dot_mean": 0.8323,
+  "random_dot_mean": 0.6634,
+  "cognate_above_random_2sigma_fraction": 0.9474,
+  "prediction_recorded": "HDC encoding preserves the ~2x separation (cognate above random mean + 2sigma)",
+  "basis": "native encoder (FNV-1a Monad-salted + SplitMix64 sign projection, word+3/4/5-gram) encodes the clash-filtered contact+H-bond property as 'contact:<x> hbond:<y>'; specificity = LDA on the 768-dim hypervector space + cognate dot product vs random."
+}

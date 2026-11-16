@@ -1,0 +1,19 @@
+[package]
+name = "trm_fb_dashboard"
+version = "0.1.0"
+edition = "2021"
+
+# The framebuffer and the loopback HTTP are both issued as raw syscalls (see src/sys.rs), the same
+# way the supplicant reaches netlink, so the renderer carries no libc beyond musl's own statics.
+# TWO external crates, each chosen over reinventing its code:
+#   fontdue -> ttf-parser        real TTF text; a 2-node chain, pure Rust no_std
+#   evdev   -> libc+nix+bitvec   the mature input parser (ABS_MT multi-touch, SYN_DROPPED, and device
+#                                names via EVIOCGNAME); no C .so, tokio is off by default, so it is a
+#                                small chain of pure-Rust bindings, not an async runtime
+[dependencies]
+fontdue = "0.9"
+evdev = "0.13"
+
+[[bin]]
+name = "trm_fb_dashboard"
+path = "src/main.rs"

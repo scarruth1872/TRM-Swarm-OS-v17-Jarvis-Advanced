@@ -1,0 +1,192 @@
+//! /memory/stats, /memory/recent, /memory/intel and /swarm/intel -- the SHARED INTEL RESERVOIR.
+//!
+//! The dashboard's swarm-intel tab reads `total_memories`, `sync_events` and `by_type` from
+//! /memory/stats, and a `{entries, count}` list from /memory/recent (App.jsx:470-471). Both routes
+//! previously fell into the /memory*fabric* handler at main.rs:727, whose payload carries none of
+//! those fields -- so every card rendered a placeholder and the feed read "no memories indexed yet".
+//! The page was healthy; the SHAPE was wrong. That is why it looked like "nothing loaded".
+//!
+//! Every number here is derived from a store that exists:
+//!   * total_memories / by_type -- the corpus the kernel's own search engine holds (its key list).
+//!   * corpus metadata -- the meta block of swarm_v2_artifacts/kernel_knowledge_index.json.
+//!   * the live feed -- the newest files in swarm_v2_artifacts/research, by mtime, read from disk.
+//! Nothing is asserted. A value that cannot be measured is null WITH its basis, never a 0 that would
+//! read as a clean result, and every derived field carries the basis it was derived from.
+
+use serde_json::{json, Value};
+
+const RESEARCH_REL: &str = "swarm_v2_artifacts/research";
+const INDEX_REL: &str = "swarm_v2_artifacts/kernel_knowledge_index.json";
+
+/// The live feed: (total findings on disk, newest `limit` findings).
+///
+/// Ordered by mtime because that is the ordering that actually exists -- the corpus keys carry no
+/// timestamp in the form the engine loads. None when the directory cannot be read, which is not the
+/// same as an empty reservoir.
+fn recent_findings(limit: usize) -> Option<(u64, Vec<Value>)> {
+    use std::time::UNIX_EPOCH;
+    let dir = crate::k3_retrieval::repo_relative(RESEARCH_REL)?;
+    let mut files: Vec<(std::time::SystemTime, std::path::PathBuf)> = Vec::new();
+    for e in std::fs::read_dir(&dir).ok()?.flatten() {
+        let path = e.path();
+        if path.extension().and_then(|s| s.to_str()) != Some("md") {
+            continue;
+        }
+        let mt = e.metadata().ok().and_then(|m| m.modified().ok()).unwrap_or(UNIX_EPOCH);
+        files.push((mt, path));
+    }
+    let total = files.len() as u64;
+    files.sort_by(|a, b| b.0.cmp(&a.0));
+    let entries = files
+        .iter()
+        .take(limit)
+        .map(|(mt, path)| {
+            let id = path.file_stem().and_then(|s| s.to_str()).unwrap_or("").to_string();
+            let title = std::fs::File::open(path)
+                .ok()
+                .and_then(|f| {
+                    use std::io::{BufRead, BufReader};
+                    BufReader::new(f)
+                        .lines()
+                        .take(5)
+                        .flatten()
+                        .find(|l| l.starts_with('#'))
+                })
+                .map(|l| {
+                    l.trim_start_matches('#')
+                        .replace("Research Finding:", "")
+                        .trim()
+                        .to_string()
+                })
+                .filter(|s| !s.is_empty())
+                .unwrap_or_else(|| id.clone());
+            json!({
+                "id": id,
+                "title": title,
+                "file": path.file_name().and_then(|s| s.to_str()).unwrap_or(""),
+                "type": "research",
+                "role": "Researcher",
+                "indexed_at_unix": mt.duration_since(UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0),
+            })
+        })
+        .collect();
+    Some((total, entries))
+}
+
+/// The knowledge index's own meta block.
+///
+/// Read from the HEAD of the file (meta is the first key) and brace-matched, so a status route never
+/// parses the 53 MB index to report a document count. None when the file is absent or the block is
+/// malformed -- reported by the caller as an unmeasured field, not as zero.
+fn index_meta() -> Option<Value> {
+    use std::io::Read;
+    let path = crate::k3_retrieval::repo_relative(INDEX_REL)?;
+    let mut buf = vec![0u8; 32 * 1024];
+    let n = std::fs::File::open(&path).ok()?.read(&mut buf).ok()?;
+    buf.truncate(n);
+    let s = String::from_utf8_lossy(&buf);
+    let start = s.find("\"meta\"")?;
+    let open = s[start..].find('{')? + start;
+    let mut depth = 0i32;
+    let mut end = None;
+    for (i, c) in s[open..].char_indices() {
+        match c {
+            '{' => depth += 1,
+            '}' => {
+                depth -= 1;
+                if depth == 0 {
+                    end = Some(open + i);
+                    break;
+                }
+            }
+            _ => {}
+        }
+    }
+    serde_json::from_str(&s[open..=end?]).ok()
+}
+
+/// meta field, or null -- never a default that would read as a measurement.
+fn meta_field(meta: &Option<Value>, key: &str) -> Value {
+    meta.as_ref().and_then(|m| m.get(key)).cloned().unwrap_or(Value::Null)
+}
+
+/// /memory/stats -- the census the dashboard's Collective Stats card and Type Breakdown read.
+pub fn stats_payload() -> Value {
+    let census = crate::k3_retrieval::corpus_census();
+    let (docs, by_type) = match census {
+        Some((n, m)) => (json!(n), json!(m)),
+        None => (Value::Null, json!({})),
+    };
+    let meta = index_meta();
+    json!({
+        "status": "online",
+        "total_memories": docs,
+        "total_memories_basis": "documents in the kernel's own corpus, counted from the key list its search engine loaded. Null means the corpus could not be loaded -- an unreadable store is not an empty one.",
+        "by_type": by_type,
+        "by_type_basis": "the corpus's own filing scheme: the leading path segment of each key, counted from the engine's key list. A measured breakdown, not an invented taxonomy.",
+        "sync_events": meta_field(&meta, "relational_documents_added"),
+        "sync_events_basis": "meta.relational_documents_added -- relational documents ingested into the corpus. This is NOT a sync-log length: the Rust kernel keeps no sync log because the corpus was built in ONE pass (built_at below), not synced incrementally. The count that exists is reported rather than the 0 an absent log would suggest.",
+        "corpus": {
+            "model": meta_field(&meta, "model"),
+            "dim": meta_field(&meta, "dim"),
+            "documents": meta_field(&meta, "documents"),
+            "built_at": meta_field(&meta, "built_at"),
+            "monad_anchor": meta_field(&meta, "monad_anchor"),
+            "sovereign_zero_llm": meta_field(&meta, "sovereign_zero_llm"),
+            "source": INDEX_REL,
+        },
+    })
+}
+
+/// /memory/recent?limit=N -- the Live Memory Feed, `{entries, count}` as the dashboard reads it.
+pub fn recent_payload(limit: usize) -> Value {
+    let limit = limit.clamp(1, 200);
+    match recent_findings(limit) {
+        Some((total, entries)) => {
+            let count = entries.len();
+            json!({
+                "entries": entries,
+                "count": count,
+                "total_findings": total,
+                "basis": "the newest files in swarm_v2_artifacts/research, ordered by mtime and read from disk. The corpus keys carry no timestamp in the loaded form, so mtime is the ordering that exists.",
+            })
+        }
+        None => json!({
+            "entries": [],
+            "count": 0,
+            "total_findings": Value::Null,
+            "basis": format!("swarm_v2_artifacts/research is not readable from the kernel's root, so no feed could be derived. An unreadable reservoir is not an empty one; total_findings is null rather than 0."),
+        }),
+    }
+}
+
+/// /memory/intel and /swarm/intel -- the whole reservoir in the shape the Python route returned.
+pub fn intel_payload() -> Value {
+    let stats = stats_payload();
+    let (total, feed) = recent_findings(30).unwrap_or((0, Vec::new()));
+    json!({
+        "status": "online",
+        "total_memories": stats["total_memories"],
+        "total_memories_basis": stats["total_memories_basis"],
+        "by_type": stats["by_type"],
+        "by_type_basis": stats["by_type_basis"],
+        "by_author": {},
+        "by_author_basis": "the corpus keys record no author, so this is empty rather than guessed; the research feed below carries the role each finding was filed under",
+        "sync_events": stats["sync_events"],
+        "sync_events_basis": stats["sync_events_basis"],
+        "total_papers": total,
+        "total_papers_basis": "*.md counted in swarm_v2_artifacts/research at request time",
+        "recent_intel": feed.clone(),
+        "latest_research": feed,
+        "corpus": stats["corpus"],
+        "basis": "total_memories/by_type/sync_events are derived from the kernel's own corpus; recent_intel and latest_research are the newest findings on disk. This route is the Rust equivalent of swarm_v2/routes/memory.py::get_shared_intel, served from stores that exist with no Python process.",
+    })
+}
+
+/// ?limit=N from the query string, defaulting to 25 as the Python route did.
+pub fn limit_from(url: &str) -> usize {
+    url.split_once("?limit=")
+        .and_then(|(_, rest)| rest.split('&').next())
+        .and_then(|v| v.parse::<usize>().ok())
+        .unwrap_or(25)
+}

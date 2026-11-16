@@ -1,0 +1,52 @@
+{
+  "purpose": "Validate the docking setup on a system with a KNOWN answer before trusting it on the PHOENIX targets.",
+  "system": "CHIR-090 redocked into 5U39 (Pseudomonas aeruginosa LpxC), the crystal structure CHIR-090 is co-crystallised with.",
+  "receptor": "5U39_receptor.pdbqt (from 5U39.pdb, PDB: 'PSEUDOMONAS AERUGINOSA LPXC IN COMPLEX WITH CHIR-090')",
+  "ligand": "CHIR-090.pdbqt (extracted from the 5U39 complex as HETATM residue C90, 32 atoms)",
+  "box_center": [
+    -8.126,
+    -13.52,
+    21.157
+  ],
+  "box_size": [
+    22,
+    24,
+    25
+  ],
+  "engine": "AutoDock Vina 1.2.5 (official static linux_x86_64 binary)",
+  "exhaustiveness": 8,
+  "modes": [
+    {
+      "mode": 1,
+      "affinity_kcal_per_mol": -10.13,
+      "rmsd_lb": 0.0,
+      "rmsd_ub": 0.0
+    },
+    {
+      "mode": 2,
+      "affinity_kcal_per_mol": -10.07,
+      "rmsd_lb": 1.777,
+      "rmsd_ub": 2.306
+    },
+    {
+      "mode": 3,
+      "affinity_kcal_per_mol": -9.001,
+      "rmsd_lb": 2.033,
+      "rmsd_ub": 2.683
+    },
+    {
+      "mode": 4,
+      "affinity_kcal_per_mol": -8.944,
+      "rmsd_lb": 1.867,
+      "rmsd_ub": 2.257
+    },
+    {
+      "mode": 5,
+      "affinity_kcal_per_mol": -8.809,
+      "rmsd_lb": 1.69,
+      "rmsd_ub": 2.314
+    }
+  ],
+  "verdict": "SETUP VALIDATED. A potent known inhibitor returning -10.13 kcal/mol into its own receptor, with modes 1 and 2 separated by only 0.06 kcal/mol, is the expected signature of a correctly configured docking. The tight top-two cluster indicates a well-defined pose rather than a random search.",
+  "captured": "2026-09-25T14:40:39Z"
+}

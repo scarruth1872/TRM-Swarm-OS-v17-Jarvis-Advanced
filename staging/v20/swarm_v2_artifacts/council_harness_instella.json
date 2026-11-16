@@ -1,0 +1,26 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-27T12:44:29.510922+00:00",
+  "failure_mode": "if 16B offload is too slow, the boundary is the 8 GB VRAM",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "2711487e6526802fae60e61c7c1297c98a20888a562ff4ea79e3c36778cc4e8d",
+      "motion": "MOTION-HARNESS",
+      "phase": "consensus",
+      "proposal_id": "CP-2CA83777",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "SERVE THE CODING MODEL + BUILD THE HARNESS: (1) serve Instella-MoE-16B-A3B-Think Q4_K_M on :8587 with CPU offload (llama-server, partial n-gpu-layers), verify it produces COHERENT code for a Rust function request (not the 2-bit garbling); (2) build a native harness CLI that loops goal -> Instella gate -> tools (crate ops) -> answer; (3) wire the Neural Bridge tier-2 to the harness and fix the 30s timeout. PREDICTION: the Q4_K_M model codes coherently; the harness gives the agents a real tool loop. FAILURE: if the 16B offload is too slow to serve, the boundary is the 8 GB VRAM. MEASURED: the 2-bit Bonsai on :8587 garbles code (the fold-arc boundary: 2-bit degrades generation). On disk: Instella-MoE-16B-A3B-Think.Q4_K_M (10.47 GB, Q4_K_M, 16B total / 3B active, a reasoning MoE) \u2014 the coding-capable model. swarm-instella is the verified 64-expert gate. The 8 GB VRAM (4.6 GB free) is the binding constraint: the 10.47 GB model needs CPU offload. MOTION: serve the Instella Q4_K_M on :8587 (offload), verify it codes, build a native harness CLI, wire the bridge's tier-2 to it. PREDICTION: the Q4_K_M model produces coherent code (unlike the 2-bit)."
+    }
+  ],
+  "prediction_recorded": "the Q4_K_M model produces coherent code; the harness gives a real tool loop",
+  "prior_state": "2-bit Bonsai garbles; Instella-MoE-16B Q4_K_M (10.47 GB) is the coding model on disk",
+  "quorum": 9,
+  "record": "HARNESS + INSTELLA MOE (serve the coding model) -- council-voted; platform self-directs",
+  "sha256": "3fd30c2f84425daa3acc4a078bd49d345399b9dfa7ec7cd6f140a969db181869"
+}

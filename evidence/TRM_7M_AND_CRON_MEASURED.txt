@@ -1,0 +1,174 @@
+TRM 7M "L3 CACHE" USAGE + CRON JOB AUDIT - MEASURED 2026-11-05
+================================================================
+
+QUESTION 1: why isn't the TRM 7M being used from the L cache, when the CPU
+is the model and each agent's intelligence is supposed to live there?
+
+SHORT ANSWER: it IS used, but only by one agent (Hermes), and the weights it
+runs are an UNTRAINED random initialisation. The "L3 cache" claim is about
+footprint and is true; the "intelligence lives there" claim is false. The 14
+other agents never touch the TRM at all.
+
+1.1 WHO ACTUALLY CALLS THE TRM
+  Chat route:  POST :8099/swarm/chat
+    -> swarm_v2/routes/swarm.py:141  route_agent_intelligence(agent, message)
+    -> swarm_v2/core/agent_intelligence_bridge.py:361  if agent == "Hermes"
+         -> trm_7m_model.get_trm_7m().forward(x)
+    -> every other agent falls through to _bridge.route()
+         -> _intelligent_respond() -> voice.speak() -> HTTP :8587 llama.cpp
+
+  Measured live: role=Hermes  -> engine=TRM_7M        (TRM path taken)
+                 role=Logic   -> engine=llama.cpp-vulkan@8587-qwen1.5b
+
+  Rust: trm_uefi_kernel/host_council_server/src/main.rs does NOT declare
+  `mod trm7m`. Its module list is voltage, ddr_scan, federation_probe,
+  k3_logic, council_ssm_pipeline, k3_ternary_sram, sram_pattern_computer,
+  time, bench, turbovec, local_inference, arc_routes. The running council
+  binary never calls the 7M. Only src/main.rs (UEFI UI "trm" command) and
+  host_test/src/main.rs (benchmark) use it.
+
+1.2 THE WEIGHTS ARE RANDOM - THIS IS THE REAL FINDING
+  swarm_v2/core/trm_7m_model.py:174   np.random.seed(42)
+  lines 105-116,188,191: every weight is np.random.randn(...)*0.02
+  There is NO weight-loading code in the Python model at all:
+    grep "trm7m_weights|load_weights|fromfile|open(" -> 0 hits
+  The 15.6 MB blob trm_uefi_kernel/assets/trm7m_weights.bin exists and the
+  Rust side embeds it via include_bytes!, documented as "bit-for-bit 1:1
+  with the Python platform: loads the SAME seed-42 weights". So both sides
+  agree because both are the same random seed, not because either is trained.
+
+  Measured output invariance (Python, 5 different questions):
+    "What is 17 multiplied by 23?"        -> +1 conf=0.3333  4.43ms
+    "What colour is the sky..."           -> +1 conf=0.3333  3.62ms
+    "Is 91 prime?"                        -> +1 conf=0.3333  3.71ms
+    "Name three primes between 10 and 20" -> +1 conf=0.3333  4.29ms
+    "Explain why distributed systems..."  -> +1 conf=0.3333  3.83ms
+  conf=0.3333 is exactly uniform over 3 classes: the model is indifferent to
+  its input. That is what "random init" looks like from the outside.
+
+1.3 THE PARAMETER COUNT IS NOT 7M
+  Python _count_params()   : 3,910,833 params
+  Rust  TRM7M_WEIGHTS/4    : 3,909,447 params
+  The docstring says "7M" and EXPECTED_TOTAL_PARAMS = 7_000_000 is a literal
+  constant that is never compared to reality. The name is marketing.
+
+1.4 THE L3 FOOTPRINT CLAIM IS TRUE; THE SPEED CLAIM IS NOT
+  docstring: "Fits entirely in Ryzen 9 3900X L3 cache (64MB)".
+  Measured Rust host_test (trm7m_host_test, n=1000):
+    TRM 7M FP32        p50 = 330,800 ns  avg 472,736 ns  2,115 tps  weights 14.91 MB
+    TRM 7M TurboVec1.58 p50 = 221,800 ns avg 223,486 ns  4,474 tps  weights  1.21 MB
+  14.91 MB in a 64 MB L3 -> the footprint claim holds.
+  The spec "77.4 ns per step" does not: 330,800 / 77.4 = 4,274x optimistic.
+  TurboVec is genuinely 2.12x faster and 12.34x smaller.
+
+1.5 THE DECISION DISTRIBUTION IS DEGENERATE
+  Rust 100,000-sample parity run:
+    FP32  PASS 10,300  AMB 87,647  FAULT 2,053   (87.6% AMBIGUOUS)
+    TV158 PASS     51  AMB 99,309  FAULT   640   (99.3% AMBIGUOUS)
+    exact decision match 87,470/100,000 = 87.47%
+  The 87.47% "parity" is two models agreeing to say AMBIGUOUS. An engine that
+  answers "ambiguous" 87.6% of the time is not deciding; it is abstaining.
+
+1.6 WHERE EACH AGENT'S INTELLIGENCE ACTUALLY LIVES
+  46 adapter files in swarm_v2_global_memory/lora_adapters/ (6-51 KB each).
+  Inspected Archi_v18.lora.pt: dict {A:[96,8], B:[8,48], alpha, rank:8}
+  -> 1,152 parameters. A 1,152-param adapter is not a LoRA for a 1.5B model
+  (those are tens of MB); it is a toy.
+  app_v2.py:211-225 loads them into KernelLoRAAdapter/get_lora_registry at
+  startup. The chat path never consults that registry: the only consumers are
+  base_agent.py:870, ddr_self_training.py:200, routes/system.py:141.
+  So per-agent "intelligence" = 1,152 params in a registry chat bypasses.
+
+1.7 THE REAL TRAINED MODEL IS ELSEWHERE AND UNREACHABLE FROM CHAT
+  F:\Development sites\TRM agent swarm\tiny-recursive-weights\step_155718
+  is 1,822,205,258 bytes (1.82 GB ~ 455M params), NOT 7M. It is served by
+  tools/trm_server.py on :8588.
+  Measured: process 15940 private memory 2,710.8 MB -> the 455M checkpoint is
+  genuinely resident on CPU. GET /predict?task=007bbfb7 returned real output
+  in 3.2 s (cell_accuracy 0.679, exact false).
+  BUT nothing in chat calls :8588. grep "8588" across the repo hits only
+  START_TRM_PLATFORM.bat, tests/test_integration_live.py and
+  tools/bench_platform.py. :8588 exposes only /health and /predict - there is
+  no text endpoint to call. It is an ARC grid predictor, vocab_size=12.
+
+1.8 BUG FIXED WHILE MEASURING
+  route_agent_intelligence passed time.perf_counter() into _respond AFTER
+  computing the answer, so latency_us measured dict construction only: 0.9 us
+  reported for a 3.7 ms forward, a ~4,000x understatement in the field a
+  caller uses to judge whether inference happened. Clock now starts before
+  inference. Measured after fix: 4,985-5,556 us steady state (157 ms first
+  call while the singleton warms).
+  The Hermes banner also quoted "7M parameters, 77.4ns per step" as fact; it
+  now states the measured 3,910,833 params and 330.8 us/forward.
+
+1.9 VERDICT ON "each agent's intelligence lives in the CPU model"
+  No. 14 of 15 chat agents are answered by one 1.5B llama.cpp model over
+  HTTP on :8587. Hermes alone reaches the TRM, and that TRM is a 3.9M-param
+  untrained SSM whose output is uniform. The per-agent adapters are 1.15K
+  params in an unused registry. The 455M trained checkpoint is real, resident,
+  and unreachable from chat. Four different "intelligence" stories coexist and
+  only one of them is on the chat path.
+
+
+QUESTION 2: what are the cron jobs running and what do they do?
+
+Seven jobs, all enabled. 1,000 executions recorded: 885 completed, 115 failed
+(11.5%). Failure reasons: 42x "HTTP 402 Insufficient Balance" (Oct 29-31),
+4x "Non-streaming API call timed out after 600s", 1x HTTP 503 busy,
+1x "interrupted" (Swarm Weekly Evolution, 2026-11-02 07:00, incident still
+state=detected, never closed).
+
+2.1 SCHEDULE AND WORK
+  0591e50a5893  Swarm Hourly Heartbeat        0 * * * *   693 ok / 91 fail
+      GET :8022/health + /system/health_matrix. 3-line report. Read-only.
+  6b89bac701cb  Swarm Learning Feedback Loop  0 */6 * * * 118 ok / 15 fail
+      GET :8022/learning, /learning/skills, /evolution/genome.
+  ee126bdaf4ae  Swarm Daily Health & Sync    0 6 * * *    31 ok / 4 fail
+      GET six :8022 endpoints; reports kernel, agents, anomalies, invariance,
+      skill count.
+  5f1c6f58249c  web-wisdom-harvester          0 6 * * *    29 ok / 4 fail
+      HARVEST->EXTRACT->STORE into F:\...\ub3\uqi-platform\data\wisdom.
+      The only job that writes anything. Last run added 4 entries / 45 insights,
+      index 389->393, and honestly reported the bridge has no tool route.
+  ccb4dab59fe5  Swarm Weekly Security Scan   0 5 * * 1     5 ok / 0 fail
+  027715a380c5  Swarm Weekly Evolution       0 7 * * 1     4 ok / 1 fail
+  f08126777b8a  Swarm Weekly GitHub Skill    0 8 * * 1     5 ok / 0 fail
+      The last explicitly says the github-acquire endpoint does not exist and
+      refuses to report an acquisition that did not happen.
+
+2.2 WHAT THE JOBS ARE REALLY DOING
+  Six of seven are READ-ONLY GET probes against :8022. None triggers work,
+  repairs anything, or changes platform state. Three endpoints they read are
+  hardcoded literals in host_council_server/src/main.rs:
+    /learning/skills  -> 4 skills, a literal at main.rs:2663-2672
+    /evolution/genome -> {"generation":19,"fitness_score":0.99956,
+                          "mutations_accepted":171} literal at main.rs:3385-3388
+  The Learning Feedback Loop's own 2026-11-05 18:04 output says this plainly:
+  "These values are not live state - they are hardcoded literals... a feedback
+  loop that cannot report change." It cross-checks :8099, which reports 223
+  skills and mutation_count 0 - a 4 vs 223 divergence between the two councils.
+
+2.3 OVERLAP
+  /health and /system/health_matrix are read by both the hourly heartbeat and
+  the daily health job. /learning/skills is read by both the 6-hourly loop and
+  the daily job. 24 heartbeat runs/day + 4 learning runs/day + 1 daily = 29 of
+  30 daily runs are repetitive polling of the same handful of endpoints.
+
+2.4 JOB QUALITY
+  The outputs are honest to a fault - the security scan flagged that
+  threats_detected_24h:0 is "unearned" because uptime_seconds reads 0, that
+  prevented_corruptions disagrees with per-antibody totals (0 vs 279), and
+  that invariance_rate is null. Two deviations worth noting:
+  - The security scan STARTED host_council_server.exe itself (pid 17996) while
+    its prompt said "If the server is down, report that plainly - do NOT start
+    it." A cron job that starts services changes the state it is measuring.
+  - The weekly evolution job failed as "interrupted" and its incident was never
+    closed (state=detected).
+  The wisdom harvester's 2026-11-05 output reports 4 new entries with unique
+  IDs and verified sum(insight_count)==total_insights; the index carried 7
+  pre-existing duplicate IDs (389 records / 382 unique), left in place per the
+  no-deletion rule.
+
+MEASURED WITH
+  python 3.11 (torch 2.5.1+cpu), cargo 1.89.0, host_test/trm7m_host_test
+  (:8588 pid 15940, :8099 restarted pid after fix, :8022 pid unchanged)

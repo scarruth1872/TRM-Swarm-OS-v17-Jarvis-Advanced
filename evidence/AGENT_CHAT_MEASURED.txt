@@ -1,0 +1,132 @@
+AGENT CHAT INTELLIGENCE - MEASURED 2026-11-04
+=============================================
+Endpoint under test: POST http://127.0.0.1:8099/swarm/chat
+Body: {"role": "<AgentName>", "message": "..."}
+Roster source: GET /swarm/experts and GET /mailbox/agents (15 agents).
+
+Tools written (none existed before):
+  tools/test_agent_chat.py        reachability + templating detector
+  tools/test_agent_chat_attrib.py engine attribution per agent
+  tools/test_agent_identity.py    same question to all agents, similarity
+  tools/test_agent_battery.py     distinctness + template proof + correctness
+Artifacts:
+  evidence/AGENT_CHAT_MEASURED.json
+  evidence/AGENT_CHAT_ATTRIB.json
+  evidence/AGENT_IDENTITY_MEASURED.json
+  evidence/AGENT_INTELLIGENCE_MEASURED.json
+
+1. REACHABILITY
+   15/15 agents answered. Zero transport failures. The chat path works.
+
+2. WHERE THE INTELLIGENCE LANDS
+   engine field, per agent, all 15:
+     14 agents -> "llama.cpp-vulkan@8587-qwen1.5b"
+      1 agent  -> "TRM_7M"  (Hermes only)
+
+   So 14 of 15 agents are the SAME 1.5B model on :8587. There is no
+   per-agent model, no per-agent fine-tune, and no per-agent engine.
+   "Agent intelligence" is one model wearing 15 name badges.
+
+3. ROLE DIFFERENTIATION IS COSMETIC (measured)
+   The same neutral question to all 14 LLM agents:
+     "Explain in one sentence why a distributed system needs a quorum."
+     agents answered   14
+     unique replies     7
+     byte-identical groups:
+       6x  Logic | Verify | Archi | Bridge | Orchestra | EventLedger
+       2x  Shield | Pulse
+       2x  Seeker | Jarvis
+     agents producing a unique reply: 4  (Devo, Flow, LogicMaster, THzGateway)
+
+   Cause, read from source: swarm_v2/core/voice.py SYSTEM prompt is
+       "You are {agent}, one agent in a technical swarm. Answer factually and
+        concisely. If you do not know, say so plainly. Never invent numeric
+        results, IC50 values, CVE status, or clinical findings."
+   Only the NAME is substituted. Role, background, specialties and skills from
+   /swarm/experts are NEVER sent to the model. The roster's metadata is not
+   part of the prompt, so it cannot influence the answer.
+   The residual variation is decoding nondeterminism at temperature 0.2, not
+   specialisation. Verify and Pulse answered "No" to "Is 91 prime?" where 12
+   others said "Yes" - same model, same prompt shape, different sample.
+
+4. HERMES IS A CANNED TEMPLATE (falsified, not asserted)
+   4 different questions, 0.6-0.9 us each (no inference possible at that cost):
+     "why does a distributed system need a quorum"
+     "what is 17 multiplied by 23"
+     "name three primes between 10 and 20"
+     "what colour is the sky"
+   After stripping the echoed question, distinct frames = 1. VERDICT: CANNED.
+   The frame is fixed text:
+     "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through
+      the TRM 7M Mamba-3 SSM - 7M parameters, 77.4ns per step, O(1) memory.
+      14 agents, 688 datasets, 345M steps.\n\nDecision: +TRUE on '<Q>'"
+   The trit reads +TRUE and confidence reads 0.33 for every input tested,
+   including "what colour is the sky". Hermes answered 2/6 on the correctness
+   battery - and both passes are accidental: its reply is unrelated to the
+   question. It "passes" only where the expected number happens to appear in
+   the boilerplate text. That is the route_agent_intelligence() failure mode:
+   a template whose only variable is the question echo.
+
+5. CORRECTNESS BATTERY (6 deterministic questions x 15 agents)
+   question                     correct/15
+   17*23=391                     14/15   (Hermes failed)
+   144/12=12                     15/15
+   2/3 of 9 = 6                  15/15
+   2^10=1024                     14/15   (Hermes failed)
+   7th prime = 17                 0/15   ALL WRONG - every agent said "13"
+   91 is not prime                2/15   only Verify and Pulse said "No"
+
+   Per agent: 4/6 typical (Verify and Pulse 5/6, Hermes 2/6).
+   The 7th-prime result is the sharpest finding in this file: 14 independent
+   agents, one shared model, all confidently wrong with the same wrong number.
+   A system with genuine per-agent diversity would not fail 15/15 identically.
+
+6. MEMORY IS NOT REACHED FROM CHAT (defect found and fixed)
+   Every response reported memories_used = 0, while each agent advertises
+   memory {"total": 103363} in /swarm/experts and the store reports
+   104,473 entries.
+
+   Root cause: swarm_v2/core/global_memory.py query() guarded on
+       if not CHROMA_AVAILABLE:
+   but TurboVec initialises first and returns early, leaving self.client and
+   self.collection as None while CHROMA_AVAILABLE is True. The guard passed and
+   called self.collection.query() on None ->
+       AttributeError: 'NoneType' object has no attribute 'query'
+   agent_intelligence_bridge._intelligent_respond catches bare Exception and
+   sets mem = [], so the failure was invisible and every agent reported 0.
+
+   Fixed: guard now tests this instance's binding -
+       if not CHROMA_AVAILABLE or self.client is None or self.collection is None:
+   Verified after restart: get_context_for_agent returns 1,042 chars; live chat
+   now reports memories_used = 1 (was 0).
+
+   HONEST LIMIT: retrieval works but is not semantic. Three different queries
+   (CVE identifier / quorum consensus / python list tuple) all returned the SAME
+   context: "Problem: Swarm autonomous task: Develop automated deployment
+   pipeline for synthesized tools..." That is the keyword-overlap fallback
+   matching generic boilerplate. The plumbing is connected; the retrieval quality
+   is not useful yet. Wiring TurboVec's own vector search in place of the
+   keyword fallback is the real fix and is NOT done.
+
+7. THE DEEP TIER IS A PHANTOM (defect found and fixed)
+   voice.py routed any message containing a DEEP_WORD (explain, why, design,
+   prove, analyze, optimi...) or longer than 220 chars to DEEP_URL :8591,
+   advertised as "Bonsai-27B-Q1_0". Measured: :8591 returns 000 - nothing is
+   listening. The code caught the failure and fell back to :8587, so answers
+   were correct, but every deep question paid 2.04s for a connection that cannot
+   succeed, and the provenance label could name a model that is not running.
+
+   Fixed with a cached _deep_available() probe: the deep tier is used only when
+   :8591 actually serves. Verified 3 consecutive deep-word calls: 1.95s -> 1.40s
+   -> 1.21s (probe cached after the first). Engine label is honestly
+   8587-qwen1.5b throughout.
+
+   NOT FIXED: the deep tier therefore does nothing. There is no 27B path at all.
+   Either start a real deep model on :8591 or delete the tier and say so.
+
+8. WHAT THIS MEANS
+   The chat surface is reachable and its answers are real model output for 14 of
+   15 agents - that part is genuine, not templated. But the "swarm" is one 1.5B
+   model with 15 labels, a canned Hermes, no memory in the prompt, no live deep
+   tier, and a 15/15 identical failure on a simple prime question. Intelligence
+   lands in exactly one place: qwen2.5-1.5b on :8587.

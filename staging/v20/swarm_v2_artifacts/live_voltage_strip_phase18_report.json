@@ -1,0 +1,48 @@
+{
+  "phase": 18,
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": 1788812565.724156,
+  "average_speedup": 89.4,
+  "results": [
+    {
+      "module": "swarm_v2/core/radix_trie_matcher.py",
+      "speedup": 152.3,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_radix_trie.dll",
+      "technique": "Zero-allocation SIMD prefix trie character filter & direct branchless opcode jump"
+    },
+    {
+      "module": "swarm_v2/core/gpu_infinity_computer.py",
+      "speedup": 7.5,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_gpu_infinity.dll",
+      "technique": "Zero-allocation 128-byte Infinity Cache line pattern modulator & SIMD hasher"
+    },
+    {
+      "module": "swarm_v2/skills/neoantigen_predictor.py",
+      "speedup": 60.2,
+      "diff": 0.00048828125,
+      "status": "PASS",
+      "dll": "strip_neoantigen_scorer.dll",
+      "technique": "AVX2 SIMD HLA anchor matching & non-linear IC50 / immunogenicity solver"
+    },
+    {
+      "module": "swarm_v2/skills/self_evolving_antibody_generator.py",
+      "speedup": 107.1,
+      "diff": 5.960464477539063e-08,
+      "status": "PASS",
+      "dll": "strip_antibody_generator.dll",
+      "technique": "Zero-allocation byte-slice antibody fitness evaluator & K3 trit classifier"
+    },
+    {
+      "module": "swarm_v2/core/dram_pattern_computer.py",
+      "speedup": 119.7,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_dram_computer.dll",
+      "technique": "Zero-allocation 64-byte DRAM row buffer pattern modulator & FNV-1a hasher"
+    }
+  ]
+}

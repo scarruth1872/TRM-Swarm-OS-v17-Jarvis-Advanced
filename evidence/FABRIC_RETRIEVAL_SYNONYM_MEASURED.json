@@ -1,0 +1,223 @@
+{
+  "summary": {
+    "probes": 20,
+    "ks": [
+      1,
+      5,
+      10
+    ],
+    "corpus_rows": 42805,
+    "knowledge_rows": 199,
+    "mean_word_overlap": 0.551,
+    "substring_recall@1": 0.0,
+    "substring_recall@5": 0.1,
+    "substring_recall@10": 0.2,
+    "semantic_recall@1": 0.0,
+    "semantic_recall@5": 0.1,
+    "semantic_recall@10": 0.2,
+    "baseline_ms_median": 124.0,
+    "semantic_ms_median": 125.3
+  },
+  "results": [
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution: I'm sorry, my neur | Result: DISAGREE The reviewed text is not a consensus solution. It is a",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution:\nI'm sorry, my neur | Result: DISAGREE\n\nThe reviewed text is not a consensus solution. It is a resource-exhaustion error message emit",
+      "word_overlap_vs_source": 0.576,
+      "baseline_ms": 1332.3,
+      "semantic_ms": 146.0,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team: | Result: # SYNTHESIS REPORT \u2014 Self-Healing Mechanisms for Failed worker T",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team:\n | Result: # SYNTHESIS REPORT \u2014 Self-Healing Mechanisms for Failed Agent Tasks\n\n## 1. Ground Truth Assessment (Wha",
+      "word_overlap_vs_source": 0.611,
+      "baseline_ms": 125.9,
+      "semantic_ms": 164.7,
+      "substring": [
+        10
+      ],
+      "semantic": [
+        10
+      ]
+    },
+    {
+      "probe": "What happened with Research Finding [AI code generation research]: \ud83d\udca1 **AI Answer:** The sources indicate that AI-generated code research has seen significant advancements in 2024, particularly in the",
+      "source": "Research Finding [AI code generation research]: \ud83d\udca1 **AI Answer:** The sources indicate that AI-generated code research has seen significant advancements in 2024, particularly in the areas of reliability and security. SynC",
+      "word_overlap_vs_source": 0.294,
+      "baseline_ms": 131.3,
+      "semantic_ms": 127.0,
+      "substring": [
+        5,
+        10
+      ],
+      "semantic": [
+        5,
+        10
+      ]
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution: I'm sorry, my neur | Result: DISAGREE The submitted text is not a consensus solution. It is",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution:\nI'm sorry, my neur | Result: DISAGREE\n\nThe submitted text is not a consensus solution. It is a runtime failure/error message (\"neura",
+      "word_overlap_vs_source": 0.543,
+      "baseline_ms": 170.5,
+      "semantic_ms": 133.3,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Research Finding [AI code generation research]: \ud83d\udca1 **AI Answer:** The sources indicate that AI-generated code research in 2024 has focused on improving reliability and security thro",
+      "source": "Research Finding [AI code generation research]: \ud83d\udca1 **AI Answer:** The sources indicate that AI-generated code research in 2024 has focused on improving reliability and security through techniques like SynCode, type-constr",
+      "word_overlap_vs_source": 0.315,
+      "baseline_ms": 165.5,
+      "semantic_ms": 134.5,
+      "substring": [
+        10
+      ],
+      "semantic": [
+        10
+      ]
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team: | Result: [Instella-MoE Ollama (deepseek-r1:1.5b)] The task requires the d",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team:\n | Result: [Instella-MoE Ollama (deepseek-r1:1.5b)] The task requires the development of self-healing mechanisms f",
+      "word_overlap_vs_source": 0.529,
+      "baseline_ms": 155.7,
+      "semantic_ms": 129.9,
+      "substring": [
+        5,
+        10
+      ],
+      "semantic": [
+        5,
+        10
+      ]
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team: | Result: # SYNTHESIS REPORT \u2014 Self-Healing Mechanisms for Failed worker T",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team:\n | Result: # SYNTHESIS REPORT \u2014 Self-Healing Mechanisms for Failed Agent Tasks\n\n## 1. Ground-Truth Assessment of t",
+      "word_overlap_vs_source": 0.636,
+      "baseline_ms": 139.6,
+      "semantic_ms": 168.6,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution: I'm sorry, my neur | Result: [Instella-MoE Ollama (deepseek-r1:1.5b)] The system is function",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution:\nI'm sorry, my neur | Result: [Instella-MoE Ollama (deepseek-r1:1.5b)] The system is functioning correctly and is running smoothly wi",
+      "word_overlap_vs_source": 0.571,
+      "baseline_ms": 202.1,
+      "semantic_ms": 171.6,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team: | Result: [Instella-MoE Ollama (deepseek-r1:1.5b)] To develop self-healing",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team:\n | Result: [Instella-MoE Ollama (deepseek-r1:1.5b)] To develop self-healing mechanisms for failed agent tasks in t",
+      "word_overlap_vs_source": 0.556,
+      "baseline_ms": 159.8,
+      "semantic_ms": 124.0,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team: | Result: # SYNTHESIS REPORT \u2014 Self-Healing Mechanisms for Failed worker T",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team:\n | Result: # SYNTHESIS REPORT \u2014 Self-Healing Mechanisms for Failed Agent Tasks\n\n## 1. Critical Observation on Inpu",
+      "word_overlap_vs_source": 0.618,
+      "baseline_ms": 114.9,
+      "semantic_ms": 114.1,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team: | Result: The shared states contain no substantive research findings. All",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team:\n | Result: The shared states contain no substantive research findings. All three agents report routing or intercep",
+      "word_overlap_vs_source": 0.559,
+      "baseline_ms": 123.1,
+      "semantic_ms": 140.3,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution: [Instella-MoE Olla | Result: [Instella-MoE Ollama (deepseek-r1:1.5b)] To address the shutdow",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution:\n[Instella-MoE Olla | Result: [Instella-MoE Ollama (deepseek-r1:1.5b)] To address the shutdown caused by the 'agent_spawn' action, th",
+      "word_overlap_vs_source": 0.545,
+      "baseline_ms": 124.0,
+      "semantic_ms": 122.8,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team: | Result: The shared states contain no substantive research findings: ever",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team:\n | Result: The shared states contain no substantive research findings: every agent was intercepted before producin",
+      "word_overlap_vs_source": 0.545,
+      "baseline_ms": 110.8,
+      "semantic_ms": 104.8,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team: | Result: # SYNTHESIS: Self-Healing Mechanisms for Failed worker Tasks ##",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team:\n | Result: # SYNTHESIS: Self-Healing Mechanisms for Failed Agent Tasks\n\n## 1. Diagnostic Finding \u2014 The Intermediat",
+      "word_overlap_vs_source": 0.677,
+      "baseline_ms": 108.5,
+      "semantic_ms": 99.8,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution: I'm sorry, my neur | Result: REFINE The submitted \"consensus solution\" is not a solution \u2014 i",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution:\nI'm sorry, my neur | Result: REFINE\n\nThe submitted \"consensus solution\" is not a solution \u2014 it is a resource-exhaustion error string",
+      "word_overlap_vs_source": 0.529,
+      "baseline_ms": 117.7,
+      "semantic_ms": 101.4,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution: I'm sorry, my neur | Result: DISAGREE The submitted string is not a consensus solution. It i",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution:\nI'm sorry, my neur | Result: DISAGREE\n\nThe submitted string is not a consensus solution. It is a capacity-failure error message (\"ne",
+      "word_overlap_vs_source": 0.543,
+      "baseline_ms": 117.1,
+      "semantic_ms": 100.2,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution: # SYNTHESIS REPORT | Result: [Instella-MoE Ollama (deepseek-r1:1.5b)] <REFINE> The task need",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution:\n# SYNTHESIS REPORT | Result: [Instella-MoE Ollama (deepseek-r1:1.5b)] <REFINE> The task needs to be redefined to focus on self-heali",
+      "word_overlap_vs_source": 0.581,
+      "baseline_ms": 120.7,
+      "semantic_ms": 100.3,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team: | Result: ## SYNTHESIS: Self-Healing Mechanisms for Failed worker Tasks \u2014",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review the shared reasoning states from the team:\n | Result: ## SYNTHESIS: Self-Healing Mechanisms for Failed Agent Tasks \u2014 Consensus Analysis\n\n### 1. Ground Truth ",
+      "word_overlap_vs_source": 0.629,
+      "baseline_ms": 114.6,
+      "semantic_ms": 101.0,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution: I'm sorry, my neur | Result: DISAGREE The reviewed text is not a consensus solution. It is a",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution:\nI'm sorry, my neur | Result: DISAGREE\n\nThe reviewed text is not a consensus solution. It is a resource-exhaustion error message emit",
+      "word_overlap_vs_source": 0.613,
+      "baseline_ms": 104.8,
+      "semantic_ms": 125.3,
+      "substring": [],
+      "semantic": []
+    },
+    {
+      "probe": "What happened with Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution: I'm sorry, my neur | Result: DISAGREE The submitted string is not a consensus solution. It i",
+      "source": "Task: [INSTELLA_DOMAIN: Code Engineering & Refactoring] Review this consensus solution:\nI'm sorry, my neur | Result: DISAGREE\n\nThe submitted string is not a consensus solution. It is a capacity-failure error message (\"ne",
+      "word_overlap_vs_source": 0.543,
+      "baseline_ms": 111.5,
+      "semantic_ms": 101.1,
+      "substring": [],
+      "semantic": []
+    }
+  ]
+}

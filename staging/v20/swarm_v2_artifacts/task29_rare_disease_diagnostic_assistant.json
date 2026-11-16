@@ -1,0 +1,32 @@
+{
+  "task_id": "TASK-29",
+  "name": "Rare Disease Diagnostic Assistant",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-10-20 14:42:07 UTC",
+  "humanistic_impact": "Ends the diagnostic odyssey for children and families affected by ultra-rare genetic diseases through multi-modal pattern recognition.",
+  "queried_hpo_terms": [
+    "HP:0001250",
+    "HP:0001249",
+    "HP:0002140"
+  ],
+  "top_differential_diagnoses": [
+    {
+      "disease": "Niemann-Pick Disease Type C1 (NPC1)",
+      "omim_id": "257220",
+      "gene": "NPC1",
+      "phenotype_match_score": 0.94,
+      "biochemical_marker": "Oxysterols / Cholestane-3beta,5alpha,6beta-triol",
+      "therapeutic_lead": "Cyclodextrin derivative + Lipid A modulator"
+    },
+    {
+      "disease": "Gaucher Disease Type 1",
+      "omim_id": "230800",
+      "gene": "GBA1",
+      "phenotype_match_score": 0.82,
+      "biochemical_marker": "Glucosylsphingosine (Lyso-Gb1)",
+      "therapeutic_lead": "Chaperone small-molecule stabilizer"
+    }
+  ],
+  "recommended_confirmatory_test": "Exome Target Sequencing + Lyso-Gb1 Biomarker Quantification",
+  "k3_verdict": "DIAGNOSIS_ALIGNED (+1)"
+}

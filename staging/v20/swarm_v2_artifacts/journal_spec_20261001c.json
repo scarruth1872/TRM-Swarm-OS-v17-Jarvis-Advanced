@@ -1,0 +1,33 @@
+[
+ {
+  "kind": "boot_chain_static_check",
+  "fact": "A reviewer's hypothesis for the earlier exec failure -- a missing dynamic loader -- was tested against the images themselves rather than argued about, and cannot hold: /init (872,752 B), /trm_wifi (702,376 B) and all 22 kernel modules in the RAM image are static ELF files with no PT_INTERP, and host_council_server (19,396,056 B) and host_supervisor (744,264 B) in the platform image are likewise static. 26 ELF files checked, 0 problems. The same measurement closed the artifact/source gap for what the drive boots: trm_chainload/dist/trm_chainload.efi is 5db0e5617b9bc22f and it is byte-identical to EFI/BOOT/BOOTX64.EFI on the drive, and the QEMU harness's ESP carries the same chainloader, vmlinuz, initrd and rootfs.squashfs as the drive, so those boots exercise the artifacts the stick carries. Also re-measured for the source document: the metal boot was the 16-module image (its own log names usb-common through e1000e, no radio module, no WIFI line), papers/ holds 124 files numbered 1..162 against the index's stale 'Total Published Papers: 100', and the boot's '19 of the routes asked answered' reconciles exactly with 19 probes (18 GET, one POST /parsers/fastq) over 7 distinct paths, all answered.",
+  "not_claimed": "Static linkage is a property of these artifacts, not a guarantee about future builds. The measurement says no loader is required anywhere in this chain; it does not say the radio will bind, and CONNECT has still never reached an access point.",
+  "commit": "7215e6b",
+  "rederive": {
+   "files": [
+    {
+     "path": "docs/NOTEBOOKLM_SOURCE_TRM_SWARM_OS_20261001.md",
+     "sha256": "d97a887a2be1bf9bcbb5f795ce020ff41edfaf1dc7a98793d7b95f5e36dbfff2"
+    },
+    {
+     "path": "swarm_v2/core/check_boot_chain_static.py",
+     "sha256": "68ffea4e81934f9e88036d290daed2b5a57d0c986cea658c83e3f2181937714a"
+    },
+    {
+     "path": "trm_chainload/dist/trm_chainload.efi",
+     "sha256": "5db0e5617b9bc22f4e1c00ede61220669e870e7ffb57d90b91e9dbb7ddf7c3fe"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "swarm_v2/core/check_boot_chain_static.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 problem(s)"
+     ]
+    }
+   ]
+  }
+ }
+]

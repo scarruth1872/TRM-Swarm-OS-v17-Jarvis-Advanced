@@ -1,0 +1,62 @@
+{
+ "phase": "P3",
+ "acceptance": "the n=11 redocking result is reproduced from a scripted path with the swarm-docking crate, with the 4 failing complexes recorded",
+ "protocol": {
+  "box_A": 24.0,
+  "exhaustiveness": 16,
+  "num_modes": 9,
+  "seed": 7,
+  "cpu": null,
+  "engine": "AutoDock Vina 1.2.7 (/usr/bin/vina, WSL)",
+  "rmsd_tool": "obrms (symmetry-aware)",
+  "center": "crystal ligand centroid"
+ },
+ "result": {
+  "n": 11,
+  "passed_under_2A": 7,
+  "median_rmsd_A": 1.40553,
+  "mean_rmsd_A": 2.7983,
+  "failing_complexes": [
+   "6M2N",
+   "6W63",
+   "7AP6",
+   "7KX5"
+  ]
+ },
+ "record_reproduction": {
+  "complexes_matching_record": 11,
+  "complexes_checked": 11,
+  "tolerance_A": 0.0001
+ },
+ "crate_scoring": {
+  "engine": "swarm-docking dock_conformer (Rust)",
+  "poses_scored": 11,
+  "poses_missing": [],
+  "complexes_not_matching_record": [],
+  "mean_crate_minus_vina_kcal_mol": -2.3217,
+  "min_crate_minus_vina_kcal_mol": -3.4486,
+  "max_crate_minus_vina_kcal_mol": -0.6609
+ },
+ "fidelity_to_vina": {
+  "n": 11,
+  "mean_abs_gap_heavy_atom_only": 2.3217,
+  "mean_abs_gap_with_hydrogens": 3.5947,
+  "hydrogen_policy_explains_the_gap": false
+ },
+ "oracle_pair_cases": [
+  19,
+  19
+ ],
+ "oracle_whole_pose": [
+  "-7.970908",
+  "-7.970907"
+ ],
+ "crate_source": {
+  "bytes": 7505,
+  "sha256_16": "a9bcbc53dc13024f"
+ },
+ "scoring_example": {
+  "bytes": 4147,
+  "sha256_16": "d090c780352664f3"
+ }
+}

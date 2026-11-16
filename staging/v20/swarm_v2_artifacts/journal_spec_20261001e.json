@@ -1,0 +1,62 @@
+[
+ {
+  "kind": "metal_boot_radio_binds_and_the_walk_panics",
+  "fact": "The stick was booted on the machine that has the AX200, and the boot log it wrote reports three things this campaign could not measure before. (1) The 22-module image binds: '22 loaded, 0 not shipped' -- the earlier metal boot was the 16-module image, so this is the first time the radio stack met a physical controller, and every module loads on the first attempt. (2) The radio binds and the firmware is accepted: 'NET: wlan0 up (mac c8:cb:9e:5f:0e:0b)' and the launcher's own line 'WIFI: wlan0 present (iwlwifi, mac c8:cb:9e:5f:0e:0b, link down) -- the driver bound and the firmware was accepted'. 'link down' is a link state and the log says so; no access point was in range. (3) The same boot raised 'WIFI PROBE: exited 101' -- a Rust panic, the first this code has ever taken. The cause was in nl80211's attribute walk: parse_attrs bounds-checked an attribute's own length and then advanced by its ALIGNED length, and a kernel message does not always carry the trailing padding of its last attribute, so the advance landed past the buffer and the slice index panicked ('range start index 12 out of range for slice of length 9'). Nothing emulated could reach it: MAC80211_HWSIM is unset, so with no wiphy there is no dump reply, and with no reply the loop walked an empty vector in every WSL, QEMU and metal run before this one. The fix treats an aligned advance past the end as the end of the message. The unit test added beside the code is the case that failed and it is red on the code the stick carried: on that code it panics with the line above, off it. The boot's own content check passes on the metal: '19 of the routes asked answered -- the platform is up; 9 of them returned the content they exist to return.' Also fixed in the same round: run_supplicant now pipes the child's stdout and stderr back through say(), so a child's reason reaches /trm_boot.log -- the panic message reached the screen and never the log, which is the one thing a boot log exists to prevent. The image on the stick is 8bbe1164919a6934, 3,906,900 B.",
+  "not_claimed": "Not an association. The driver bound and the firmware was accepted, which is the precondition for NL80211_CMD_CONNECT and not the command: no wifi.conf was on the stick, so the boot attempted none and said so. The fix for the panic is proven by the unit test reproducing the machine's own panic and by the crate's other self-tests, not yet by a second metal boot -- the stick now carries the fixed image, and the next boot there is what would show the probe completing.",
+  "commit": "ea7293e",
+  "rederive": {
+   "files": [
+    {
+     "path": "trm_uefi_kernel/trm_wifi/src/netlink.rs",
+     "sha256": "29ac49043e32b973c70ab4a99a94ef9ce0fdc594fdc4338fdaa572e023bcd3bc"
+    },
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "c4d1e835ea004d12720400d048e3f58ecb8555975e55fe4a30f107d7a7ee256a"
+    },
+    {
+     "path": "trm_chainload/scripts/check_attr_walk.py",
+     "sha256": "ee8f9c3cc74321c92ceb775a032d48f42f8c4ee9f28bba5e4cd42eb1a4535a22"
+    },
+    {
+     "path": "backups/bare_metal_first_boot_20260930/metal_boot_2_20261001.txt",
+     "sha256": "a4a09e67d0c5523b3d320aab597f70f0467d191fb849438c53b5b9715be07f1e"
+    },
+    {
+     "path": "docs/BARE_METAL_LINUX_PATHWAY_20260930.md",
+     "sha256": "91ad388151b52850552c78e288e12dd2b916a8b5613cdc84d5d1986d846a0b58"
+    },
+    {
+     "path": "docs/NOTEBOOKLM_SOURCE_TRM_SWARM_OS_20261001.md",
+     "sha256": "6cd72426a20d8c5a984b602d794483195f0a34235f93cb9f544c5e582646431d"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "trm_chainload/scripts/check_attr_walk.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "the padding-less trailing attribute is walked without panicking"
+     ]
+    },
+    {
+     "script": "swarm_v2/core/check_boot_chain_static.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 problem(s)"
+     ]
+    },
+    {
+     "script": "trm_chainload/scripts/verify_wifi_harness.py",
+     "args": [
+      "backups/bare_metal_first_boot_20260930/harness_output.txt"
+     ],
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 disagreed"
+     ]
+    }
+   ]
+  }
+ }
+]

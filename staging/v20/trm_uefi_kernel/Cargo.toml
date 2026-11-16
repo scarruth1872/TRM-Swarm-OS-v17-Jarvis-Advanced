@@ -1,0 +1,20 @@
+[package]
+name = "trm_uefi_kernel"
+version = "20.0.0"
+edition = "2021"
+authors = ["TRM Swarm OS Platform <monad@trm-swarm-os.org>"]
+description = "Pure Rust Bare-Metal Native UEFI Kernel & LCARS Compositor for TRM Swarm OS"
+
+[dependencies]
+r-efi = "4.5"
+
+[profile.release]
+opt-level = 3
+lto = true
+panic = "abort"
+
+# no_std/UEFI cannot unwind. Without this, `cargo check` (dev profile) fails with
+# "unwinding panics are not supported without std" and the kernel is unbuildable
+# outside --release.
+[profile.dev]
+panic = "abort"

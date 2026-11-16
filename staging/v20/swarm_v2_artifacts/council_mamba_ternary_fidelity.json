@@ -1,0 +1,69 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-21T21:48:08.842490+00:00",
+  "finding": "The in-kernel mamba-3b forward pass is arithmetically correct (matches llama.cpp Q4 via a Python reference), but 2-bit ternary quantization flattens the logits: argmax 3003 vs llama's 7785 (' Paris'), Paris at rank 594. The gap is quantization, not code.",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "ModelFidelity",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Keep the SSM-critical small tensors (ssm_a 5120x16, ssm_x 192x5120, ssm_dt 5120x160, ssm_conv1d 5120x4) at fp16 passthrough instead of 2-bit "
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Keep the SSM-critical small tensors (ssm_a 5120x16, ssm_x 192x5120, ssm_dt 5120x160, ssm_conv1d 5120x4) at fp16 passthrough instead "
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Keep the SSM-critical small tensors (ssm_a 5120x16, ssm_x 192x5120, ssm_dt 5120x160, ssm_conv1d 5120x4) at fp16 passthrough instead of 2-bit ternar"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Keep the SSM-critical small tensors (ssm_a 5120x16, ssm_x 192x5120, ssm_dt 5120x160, ssm_conv1d 5120x4) at fp16 passthrough instead of 2-bit ternary, "
+        }
+      ],
+      "monad_seal": "e1e3f93733a37e940d44c68f996674d3f814dfdab11d67c2c8d15e1ed84d6e15",
+      "motion": "MOTION-M1",
+      "phase": "consensus",
+      "proposal_id": "CP-69030C44",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "Keep the SSM-critical small tensors (ssm_a 5120x16, ssm_x 192x5120, ssm_dt 5120x160, ssm_conv1d 5120x4) at fp16 passthrough instead of 2-bit ternary, then re-run the parity check and REQUIRE the argmax to recover toward 7785 before the model is presented as a faithful generator. Rationale: these four tensor classes are the recurrent state machinery where a 2-bit error compounds each scan step; ssm_a and ssm_x are ALREADY fp16 (below the cosine gate), so this extends fp16 to ssm_dt and ssm_conv1d and closes the highest-error recurrent weights at a modest size cost (~122M params total across 64 blocks -> ~244MB fp16 vs ~30MB 2-bit, still well under the 6.5GB VRAM cap). The large projections (ssm_in, ssm_out, token_embd) stay ternary for the size win. The TEST is explicit: re-ingest mamba-3b with these four tensor classes forced fp16, re-run the same llama.cpp Q4 parity check, and report the measured argmax/rank-of-7785 before and after; the model is NOT presented as faithful unless the argmax recovers to 7785 (or 7785 enters the top-5). MEASURED (this host, parity check against llama.cpp Q4 on 'The capital of France is' -> ' Paris' token 7785): (1) a Python forward pass over the gguf-dequantized Q4 weights returns argmax 7785, matching llama.cpp exactly, so the algorithm is correct; (2) the in-kernel Rust forward pass over the 2-bit ternary .trm matches a Python ternary reference to the last decimal on top-5 logits, so the implementation is correct; (3) but the ternary logits predict argmax 3003, with ' Paris' (7785) at rank 594 \u2014 the 2-bit quantization compounds across 64 blocks and flattens the logits. Three arithmetic bugs (ssm_a stored as actual A not the log, gate y*silu(z), reversed conv1d) and one decode bug (f16 subnormal missing 2^-14) were found and fixed during the check. The remaining gap is quantization, not code. REJECT AS PREMATURE if the fp16 re-ingest cannot be measured against the same llama.cpp reference (the recovery must be proven with the exact parity harness, never asserted from the size argument alone), or if forcing fp16 for only these four classes does not materially move the argmax \u2014 in which case the honest position is that 2-bit ternary is unsuitable for faithful generation and the platform must either keep fp16 for the whole model or accept the model as an approximate co-processor with its fidelity ceiling stated plainly.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 9,
+  "record": "MAMBA-3B TERNARY FIDELITY -- council decision",
+  "sha256": "181ffbd503036dfffe90d55527555787b8ff262f107f1f2e8b11578142290414"
+}

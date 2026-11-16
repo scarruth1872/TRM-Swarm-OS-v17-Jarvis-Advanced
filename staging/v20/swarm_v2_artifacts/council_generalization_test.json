@@ -1,0 +1,39 @@
+{
+  "autonomy_note": "council votes on soundness; after the seal the platform executes and checkpoints.",
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T22:46:49.381803+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "ee599356a4478e751a694da25e5dfa435b0b77a67e7d2fac169b2949bba3332e",
+      "motion": "MOTION-C1",
+      "phase": "consensus",
+      "proposal_id": "CP-7170EBE5",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "GENERALIZATION TEST (Option B): determine whether the paratope-density ranking identifies a GENERAL motif or a TEMPLATE-specific artifact, purely structurally, no structure prediction. Measure: (a) density (contacts/residue) vs antigen atom count across the 7,786 scored complexes -- if density is independent of antigen size it is an antibody property (a motif), if it rises with antigen size it is partly an antigen artifact; (b) cross-antigen transfer -- take the top-density paratope and score it against a DIFFERENT corpus antigen (coordinate-translated to the same frame) and report whether the density holds. REJECT AS PREMATURE: any design step that scores a seeded sequence with the same contacts/residue metric (a fixed point, not a loop); claiming generalization without the cross-antigen measurement. MEASURED: 7,786 antibody-antigen complexes scored (contacts/residue density, mean 84.2 contacts, 12.24 residues). The scorer counts contacts between ATOMS in resolved crystal structures. A designed antibody is a SEQUENCE; scoring it needs structure prediction (AlphaFold/ESMFold + complex docking), none of which is in-tree. The density ranking is ordered by contacts-per-residue; scoring a template-seeded design with the SAME metric is high by construction. The + placeholder finding means single-domain (VHH) and paired-chain antibodies are distinct classes."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "f2a510828832ce98424b589b5ac194d313850bf0f574d19d499850aedc9206dd",
+      "motion": "MOTION-C2",
+      "phase": "consensus",
+      "proposal_id": "CP-77D4F668",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "CONTACT-MODEL RUNG (Option A): build a sequence-to-density predictor trained on the 7,786 verified complexes (sequence -> paratope contact count), held-out test. This is the honest rung between 'count contacts in crystals' and 'score designed sequences' -- it uses existing data and produces a measurably testable evaluator. REJECT AS PREMATURE: claiming sequence-level scoring without a held-out tolerance; conflating VHH (single-chain) with paired-chain antibodies in the training set (keep the classes separate). MEASURED: 7,786 antibody-antigen complexes scored (contacts/residue density, mean 84.2 contacts, 12.24 residues). The scorer counts contacts between ATOMS in resolved crystal structures. A designed antibody is a SEQUENCE; scoring it needs structure prediction (AlphaFold/ESMFold + complex docking), none of which is in-tree. The density ranking is ordered by contacts-per-residue; scoring a template-seeded design with the SAME metric is high by construction. The + placeholder finding means single-domain (VHH) and paired-chain antibodies are distinct classes."
+    }
+  ],
+  "prior_state": "paratope baseline re-derivable; density ranking verified; structure prediction not in-tree.",
+  "quorum": 9,
+  "record": "GENERALIZATION TEST + CONTACT MODEL (non-circular rungs) -- council-voted",
+  "rejected_as_circular": "scoring a template-seeded design with the same contacts/residue metric (a fixed point).",
+  "sha256": "d5a88f0edac2f08584f4387cc01ca2ea39ffb2155402cc8569c3aa1ea8d9b170"
+}

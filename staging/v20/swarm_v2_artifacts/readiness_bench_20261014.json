@@ -1,0 +1,94 @@
+{
+ "measured_on_host": "AMD Ryzen 9 5900HX / RTX 3070 Laptop 8GB (Windows)",
+ "generated": "2026-10-14T12:58:09",
+ "kernel": "Native Rust Sovereign Kernel v20.0.0",
+ "memory_kb": 299072,
+ "monad_anchor": "0x4D4F4E4144000001",
+ "gpu_dispatch": {
+  "bindings": [
+   {
+    "basis": "deterministic device-binding table (MOTION-017/018); GPU arm gated on toolchain, CPU is the fail-closed default",
+    "bound_device": "gpu",
+    "fail_closed": true,
+    "gpu_present": true,
+    "gpu_toolchain": true,
+    "gpu_toolchain_basis": "present: wgpu + naga (pure-Rust; WGSL compiled to SPIR-V at runtime; no CUDA/Vulkan SDK needed)",
+    "kind": "hdc_encode",
+    "parity": "verified: gpu_compute::tests::gpu_matches_cpu_reference / gpu_batch_matches_cpu \u2014 GPU reproduces the CPU reference",
+    "profile": "single and batch -> gpu"
+   },
+   {
+    "basis": "deterministic device-binding table (MOTION-017/018); GPU arm gated on toolchain, CPU is the fail-closed default",
+    "bound_device": "gpu",
+    "fail_closed": true,
+    "gpu_present": true,
+    "gpu_toolchain": true,
+    "gpu_toolchain_basis": "present: wgpu + naga (pure-Rust; WGSL compiled to SPIR-V at runtime; no CUDA/Vulkan SDK needed)",
+    "kind": "packed_scan",
+    "parity": "verified: gpu_compute::tests::gpu_scan_matches_cpu \u2014 top-K matches CPU packed_ternary::search",
+    "profile": "single and batch -> gpu"
+   },
+   {
+    "basis": "deterministic device-binding table (MOTION-017/018); GPU arm gated on toolchain, CPU is the fail-closed default",
+    "bound_device": "gpu",
+    "fail_closed": true,
+    "gpu_present": true,
+    "gpu_toolchain": true,
+    "gpu_toolchain_basis": "present: wgpu + naga (pure-Rust; WGSL compiled to SPIR-V at runtime; no CUDA/Vulkan SDK needed)",
+    "kind": "trm7m",
+    "parity": "verified: gpu_compute::tests::gpu_trm7m_matches_cpu \u2014 GPU forward reproduces the CPU forward (trit + confidence, 6 texts)",
+    "profile": "batch -> gpu (gpu_trm7m_batch); single-eval (evaluate_proposal) -> cpu Trm7m::forward (2.82 ms/call measured)"
+   },
+   {
+    "basis": "deterministic device-binding table (MOTION-017/018); GPU arm gated on toolchain, CPU is the fail-closed default",
+    "bound_device": "cpu",
+    "fail_closed": true,
+    "gpu_present": true,
+    "gpu_toolchain": true,
+    "gpu_toolchain_basis": "present: wgpu + naga (pure-Rust; WGSL compiled to SPIR-V at runtime; no CUDA/Vulkan SDK needed)",
+    "kind": "sram_compute",
+    "parity": "cpu-native: sram_pattern_computer serves the 15 topologies + Hopfield relaxation from the kernel's own source (bit-exact vs its Python oracles)",
+    "profile": "cpu: Hopfield relaxation + 15 topologies (sram_pattern_computer), no literal SRAM hardware"
+   }
+  ],
+  "compute_toolchain": "present: wgpu + naga (pure-Rust; WGSL compiled to SPIR-V at runtime; no CUDA/Vulkan SDK needed)",
+  "dispatcher": "voltage binder compute dispatcher (council MOTION-017)",
+  "host_gpu": "present: NVIDIA RTX 3070 Laptop + AMD Radeon (Vulkan runtime enumerates both)",
+  "rule": "gpu iff (toolchain present AND gpu present) else cpu; deterministic table, fail-closed"
+ },
+ "k3_retrieve_ms": [
+  [
+   "protein binding affinity",
+   121.7,
+   3
+  ],
+  [
+   "voltage doctrine",
+   38.4,
+   3
+  ],
+  [
+   "sovereign kernel",
+   17.5,
+   3
+  ]
+ ],
+ "trm7m_batch": {
+  "backend": "gpu",
+  "n": 200,
+  "results": 200,
+  "seconds": 1.45,
+  "docs_per_sec": 137.9,
+  "per_doc_ms": 7.25
+ },
+ "ledger_blocks": 351,
+ "council_motions": 18,
+ "council_verdict": {
+  "consensus_summary": "Council deliberated 18 motions; 18 reached PBFT quorum (>= 9/15). Ranked by weighted K3 score over the agents that actually voted. Abstentions in this chamber are binding conditions, not neutrality.",
+  "motions_deliberated": 18,
+  "motions_enacted": 18,
+  "recommended_primary_direction": "MOTION-003: Pause & Consolidate: Engage Wet-Lab Partners & Collaborators (Score: +0.841 - 14/15 Approve, 1 Abstain, 0 Reject)",
+  "secondary_direction": "MOTION-002: External Distribution: Public Daily Cognitive Briefs (Score: +0.805 - 14/15 Approve, 1 Abstain, 0 Reject)",
+  "tertiary_direction": "MOTION-001: Live Muon Entropy: Real DRAM Bit-Flip Sampling (Score: +0.731 - 13/15 Approve, 2 Abstain, 0 Reject)"
+ }
+}

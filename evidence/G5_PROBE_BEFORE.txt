@@ -1,0 +1,65 @@
+====================================================================================================
+G5 IMPORT-BINDING PROBE — duplicate module stems
+repo: F:\Development sites\TRM-Swarm-OS-v2
+entrypoints: swarm_v2.app_v2, app, microkernel_proxy, swarm_manager
+duplicate stems on disk (measured surface): 10
+====================================================================================================
+
+[known] stem: bridge
+    bound   <not imported by any entrypoint>
+    bare    import bridge                       -> <no top-level module>
+    other   infrastructure/bridge/__init__.py
+    other   swarm_v2/mcp/bridge.py
+
+[known] stem: common
+    bound   models.common                                 models/common.py   [ok]
+    bare    import common                       -> <no top-level module>
+    other   dataset/common.py
+
+[known] stem: core
+    bound   swarm_v2.core                                 swarm_v2/core/__init__.py   [ok]
+    bare    import core                         -> <no top-level module>
+    other   Jarvis-Advanced-main/core.py
+
+[known] stem: finetune_gemma
+    bound   <not imported by any entrypoint>
+    bare    import finetune_gemma               -> finetune_gemma.py
+    other   Jarvis-Advanced-main/finetune_gemma.py
+    other   finetune_gemma.py
+
+[known] stem: memory
+    bound   swarm_v2.core.memory                          swarm_v2/core/memory.py   [ok]
+    bound   swarm_v2.routes.memory                        swarm_v2/routes/memory.py   [ok]
+    bare    import memory                       -> <no top-level module>
+    other   infrastructure/memory/__init__.py
+
+[known] stem: models
+    bound   models                                        models/__init__.py   [ok]
+    bound   swarm_v2.routes.models                        swarm_v2/routes/models.py   [ok]
+    bare    import models                       -> models/__init__.py
+
+[known] stem: mutation_engine
+    bound   <not imported by any entrypoint>
+    bare    import mutation_engine              -> <no top-level module>
+    other   infrastructure/architect/me/mutation_engine.py
+    other   swarm_v2/core/mutation_engine.py
+
+[known] stem: remediation
+    bound   swarm_v2.routes.remediation                   swarm_v2/routes/remediation.py   [ok]
+    bare    import remediation                  -> <no top-level module>
+    other   infrastructure/remediation/__init__.py
+
+[known] stem: remediation_engine
+    bound   swarm_v2.core.remediation_engine              swarm_v2/core/remediation_engine.py   [ok]
+    bare    import remediation_engine           -> <no top-level module>
+    other   infrastructure/remediation/remediation_engine.py
+
+[known] stem: telemetry
+    bound   infrastructure.telemetry                      infrastructure/telemetry/__init__.py   [ok]
+    bound   swarm_v2.core.telemetry                       swarm_v2/core/telemetry.py   [ok]
+    bare    import telemetry                    -> <no top-level module>
+
+----------------------------------------------------------------------------------------------------
+duplicate stems: 10   new since baseline: 0
+baseline: evidence\duplicate_stems_baseline.json (10 stems)
+PASS: no new duplicate stems

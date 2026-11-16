@@ -1,0 +1,41 @@
+GAP CLOSURE VERIFICATION - live on port 8022
+host binary 5a819da17013e095
+
+GAP 1 - VOLTAGE RAILS: DECLARED -> READ
+  rails  : {v_core: 1.1, v_ddr: 1.2}     (were const 1.25 / 1.35, equal to their
+                                           own divisors, so both terms were 1.0)
+  phi_v  : 0.3969                        (was 0.5764 - the rails now count)
+  measured: True
+  source : wmic CurrentClockSpeed + OS memory; Win32_Processor.CurrentVoltage;
+           Win32_PhysicalMemory.ConfiguredVoltage
+
+  The 3900X runs V_core at 1.10 V against a 1.25 V nominal and V_ddr at 1.20 V
+  against 1.35 V, so the substrate sits at 68.8% of nominal rail voltage. phi_v
+  now expresses that; before, the two rail terms cancelled identically and the
+  value carried memory load alone.
+
+GAP 2 - FEDERATION: GENERATED -> PROBED
+  /federation/stats:
+    configured_nodes   100      (the tier table - a real, checkable config count)
+    verified_nodes       0      (MEASURED: none answered a TCP connect)
+    unreachable_nodes  100
+    active_nodes         0      (alias for the measured count)
+    offline_nodes      100
+    probe_method         TCP connect to council port, 150 ms timeout, one thread per peer
+  REMOVED: byzantine_quorum, fault_tolerance, merkle_root, data_integrity - no
+  consensus protocol or replicated store exists behind them, so any figure would
+  be invented.
+
+  Per-peer: status=CONFIGURED_UNREACHABLE, is_active=false, latency=null,
+  port_quic=null (8021 is retired). Previously every one of the 100 was served
+  is_active:true with a synthetic latency and a status of PRIMARY_ONLINE.
+
+  THE 100-vs-2 CONTRADICTION IS RESOLVED: /federation/stats now reports what it
+  measured (0 of 100 configured peers reachable); /swarm/telemetry reports 2, a
+  different quantity (mesh nodes). Each is now honest about what it counts,
+  whereas before one asserted 100 against a set it had never contacted.
+
+  THE HONEST ANSWER TO 'HOW BIG IS THE FEDERATION': 0 verified. The 100-node,
+  100%-integrity, zero-offline cluster does not exist as a live cluster. It is a
+  declared topology. That was always the truth; the API simply reported the
+  declaration as though it were an observation.

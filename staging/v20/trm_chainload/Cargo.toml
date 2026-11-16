@@ -1,0 +1,17 @@
+[package]
+name = "trm_chainload"
+version = "19.1.0"
+edition = "2021"
+authors = ["TRM Swarm OS Platform <monad@trm-swarm-os.org>"]
+description = "UEFI chainloader: hands the machine from the firmware to a Linux kernel so the full stack, and every filesystem the kernel carries a driver for, runs on bare metal"
+
+[dependencies]
+r-efi = "4.5"
+
+[profile.release]
+opt-level = 3
+lto = true
+panic = "abort"
+
+[profile.dev]
+panic = "abort"

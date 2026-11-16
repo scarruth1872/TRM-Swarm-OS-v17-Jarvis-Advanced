@@ -1,0 +1,87 @@
+{
+  "benchmark": "kernel_intelligence",
+  "root": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main",
+  "started_at": "2026-09-28T16:22:05Z",
+  "kernel_identity": {
+    "dll": "swarm_v2_rust_kernel\\target\\release\\swarm_rust_kernel.dll",
+    "dll_bytes": 727552,
+    "monad_truth_anchor": "0x4d4f4e4144000001",
+    "anchor_matches": true
+  },
+  "kleene": {
+    "laws_checked": 21,
+    "laws_obeyed": 21,
+    "kleene_exact": true
+  },
+  "council": {
+    "available": true,
+    "consensus_reached": true,
+    "rc": 1,
+    "weighted_score": 0.840325,
+    "monad_seal": "0x4c5e5f50551141b7"
+  },
+  "corpus": {
+    "source": "swarm_v2_artifacts\\kernel_knowledge_index.json",
+    "documents": 2180,
+    "dim": 768,
+    "model": "native-turbovec-hdc"
+  },
+  "quantization": {
+    "vectors": 2180,
+    "dim": 768,
+    "trits_written": 1674240,
+    "multiplier": 1.0,
+    "fidelity_mean": 0.889572,
+    "fidelity_min": 0.837919,
+    "fidelity_max": 0.906345,
+    "nonzero_trit_fraction": 0.423838,
+    "compression_bytes_per_vector": {
+      "float32": 3072,
+      "ternary_i8": 768
+    },
+    "compression_ratio": 4.0
+  },
+  "search_correctness": {
+    "queries": 2180,
+    "top_k": 5,
+    "rank1_self_hits": 2180,
+    "precision_at_1": 1.0,
+    "indistinguishable_pairs": 0,
+    "rank1_hits_allowing_twin": 2180,
+    "precision_at_1_allowing_twin": 1.0,
+    "kernel_vs_oracle_matches": 2180,
+    "kernel_vs_oracle_mismatches": [],
+    "search_is_correct": true
+  },
+  "latency": {
+    "iters": 1000,
+    "corpus_vectors": 2180,
+    "dim": 768,
+    "top_k": 5,
+    "ternary_ns": {
+      "p50": 1380700,
+      "p95": 1563000,
+      "min": 1140400,
+      "max": 2391200
+    },
+    "ternary_us": {
+      "p50": 1380.7,
+      "p95": 1563.0
+    },
+    "float_cosine_search_us": {
+      "p50": 338290.1,
+      "p95": 358505.9
+    },
+    "comparisons_per_query": 2180,
+    "ternary_throughput_comparisons_per_s": 1578909
+  },
+  "live_path": {
+    "embed_model": "native-turbovec-hdc",
+    "attempted": 0,
+    "answered": 0,
+    "rank1_correct": 0,
+    "space_match_cosines": [],
+    "cases": []
+  },
+  "finished_at": "2026-09-28T16:26:06Z"
+}

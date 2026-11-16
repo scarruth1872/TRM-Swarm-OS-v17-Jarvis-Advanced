@@ -1,0 +1,69 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-20T22:53:58.205891+00:00",
+  "finding": "The packed 2-bit turbovec store's cosine scores are compressed into 0.17-0.40, so a fixed threshold cannot separate a real match (monad 0.20) from noise (zxqwpvy 0.176). The chat answer path surfaces any readable hit as 'the answer', so gibberish returns a random document.",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Architecture",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Fuse a lexical-overlap gate with the packed cosine in the retrieval answer path: surface a hit as 'the answer' only when (a) its packed cosin"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Cognitive & interface evaluation of Fuse a lexical-overlap gate with the packed cosine in the retrieval answer path: surface a hit as 'the answer' only when (a) its packe"
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Fuse a lexical-overlap gate with the packed cosine in the retrieval answer path: surface a hit as 'the answer' only when (a) its pac"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Fuse a lexical-overlap gate with the packed cosine in the retrieval answer path: surface a hit as 'the answer' only when (a) its packed cosine exce"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Architectural logic review: verifying structural coherence, dependency graphs, and design pattern correctness."
+        }
+      ],
+      "monad_seal": "db86f40ff5ba35941753bb48629e3d739f1fce9b3a49949e09d40ab58baa36de",
+      "motion": "MOTION-R1",
+      "phase": "consensus",
+      "proposal_id": "CP-D959AA73",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9838,
+      "topic": "Fuse a lexical-overlap gate with the packed cosine in the retrieval answer path: surface a hit as 'the answer' only when (a) its packed cosine exceeds a calibrated threshold, OR (b) the query's content terms literally appear in the document key/text (filename terms, not the opaque fragment index). Otherwise report 'no confident match' and fall through to the co-processor verdict \u2014 never a merely-similar document for a query whose terms appear nowhere. MEASURED (live, this host): /k3/retrieve packed cosine scores are compressed into 0.17-0.40; real matches and noise overlap \u2014 'turbovec'->0.373 (task_card, real), 'monad'->0.20 (paper_18_monad_philosophy.md, real), 'voltage doctrine'->0.245 (task_card, real), vs 'capabilities'->0.25 (enwikiquote fragment, no match), 'engines'->0.24 (fragment, no match), 'zxqwpvy nonsense'->0.176 (random task_card, no match). A fixed threshold cannot separate the 0.20 real 'monad' from the 0.176 noise. The chat answer path currently surfaces ANY readable hit as 'the answer' regardless of score, so gibberish returns a random document at cosine ~0.18 (observed after the fragment fix). REJECT AS PREMATURE if the document keys are opaque (hash-only, no readable filename terms), in which case the lexical signal is unreliable and the honest fallback is to label every surfaced doc with its score and 'low-confidence' instead of claiming a match.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 9,
+  "record": "PACKED-STORE RETRIEVAL SCORING -- council decision",
+  "sha256": "d5784369bf15385f61e63ed9d9090f86cbbe854f8d559fc8f0615fb79381ce65"
+}

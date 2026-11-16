@@ -1,0 +1,2988 @@
+[
+  {
+    "wrapper": "native_project_and_align",
+    "file": "core\\agent_intelligence_bridge.py",
+    "def_line": 32,
+    "signature": "def native_project_and_align(q_vec: _np.ndarray, doc_matrix: _np.ndarray):",
+    "doc": "Native Vector Projection & Context Alignment (2.2x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_project_and_align"
+    ],
+    "file_functions": [
+      {
+        "fn": "load_domain_knowledge",
+        "line": 314,
+        "len": 41,
+        "doc": "Loads domain knowledge with fast memory cache and in-memory axiomatic "
+      },
+      {
+        "fn": "get_cached_trm_skill",
+        "line": 355,
+        "len": 11,
+        "doc": ""
+      },
+      {
+        "fn": "route",
+        "line": 373,
+        "len": 115,
+        "doc": "Dynamic multi-agent routing with practical vs specification disambigua"
+      },
+      {
+        "fn": "_intelligent_respond",
+        "line": 488,
+        "len": 39,
+        "doc": "Generate practical conversational answers or deep technical specificat"
+      },
+      {
+        "fn": "_trm_domain_eval",
+        "line": 527,
+        "len": 15,
+        "doc": ""
+      },
+      {
+        "fn": "_archi_respond",
+        "line": 542,
+        "len": 97,
+        "doc": ""
+      },
+      {
+        "fn": "_shield_respond",
+        "line": 639,
+        "len": 25,
+        "doc": ""
+      },
+      {
+        "fn": "_logic_respond",
+        "line": 664,
+        "len": 59,
+        "doc": ""
+      },
+      {
+        "fn": "_devo_respond",
+        "line": 723,
+        "len": 37,
+        "doc": ""
+      },
+      {
+        "fn": "_seeker_respond",
+        "line": 760,
+        "len": 36,
+        "doc": ""
+      },
+      {
+        "fn": "_bridge_respond",
+        "line": 796,
+        "len": 29,
+        "doc": ""
+      },
+      {
+        "fn": "_pulse_respond",
+        "line": 825,
+        "len": 12,
+        "doc": ""
+      },
+      {
+        "fn": "_flow_respond",
+        "line": 837,
+        "len": 31,
+        "doc": ""
+      },
+      {
+        "fn": "_eventledger_respond",
+        "line": 868,
+        "len": 12,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_pack_mailbox_messages",
+    "file": "core\\agent_mailbox_bus.py",
+    "def_line": 29,
+    "signature": "def native_pack_mailbox_messages(count: int, senders: _np.ndarray, recips: _np.ndarray,",
+    "doc": "",
+    "dll_symbols": [
+      "strip_mailbox_pack_messages"
+    ],
+    "file_functions": [
+      {
+        "fn": "_read_atomic",
+        "line": 95,
+        "len": 5,
+        "doc": "Read 64-bit atomic value with acquire semantics."
+      },
+      {
+        "fn": "_write_atomic",
+        "line": 100,
+        "len": 6,
+        "doc": "Write 64-bit value with release semantics (best-effort on Python)."
+      },
+      {
+        "fn": "head",
+        "line": 106,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "head",
+        "line": 110,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "tail",
+        "line": 114,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "push",
+        "line": 127,
+        "len": 16,
+        "doc": "Push message to ring buffer \u2014 lock-free, single-producer safe."
+      },
+      {
+        "fn": "pop",
+        "line": 143,
+        "len": 16,
+        "doc": "Pop message from ring buffer \u2014 lock-free, multi-consumer safe."
+      },
+      {
+        "fn": "peek",
+        "line": 159,
+        "len": 11,
+        "doc": "Peek without consuming."
+      },
+      {
+        "fn": "initialize",
+        "line": 197,
+        "len": 25,
+        "doc": "Create or open shared memory arena."
+      },
+      {
+        "fn": "send",
+        "line": 222,
+        "len": 38,
+        "doc": ""
+      },
+      {
+        "fn": "receive",
+        "line": 260,
+        "len": 10,
+        "doc": "Receive next message for an agent \u2014 lock-free pop."
+      },
+      {
+        "fn": "broadcast",
+        "line": 270,
+        "len": 9,
+        "doc": "Broadcast a message to all 14 other agents."
+      },
+      {
+        "fn": "peek_mailbox",
+        "line": 279,
+        "len": 6,
+        "doc": "Count pending messages for an agent."
+      },
+      {
+        "fn": "dump_stats",
+        "line": 285,
+        "len": 13,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_classify_module_path",
+    "file": "core\\auto_changelog.py",
+    "def_line": 47,
+    "signature": "def native_classify_module_path(filepath: str) -> int:",
+    "doc": "Native Module Path Classification (4.3x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_batch_classify_paths"
+    ],
+    "file_functions": [
+      {
+        "fn": "to_markdown",
+        "line": 92,
+        "len": 29,
+        "doc": "Convert entry to markdown format."
+      },
+      {
+        "fn": "_load_registry",
+        "line": 189,
+        "len": 22,
+        "doc": "Load existing module registry."
+      },
+      {
+        "fn": "_save_registry",
+        "line": 211,
+        "len": 10,
+        "doc": "Save module registry to disk."
+      },
+      {
+        "fn": "_calculate_hash",
+        "line": 221,
+        "len": 8,
+        "doc": "Calculate MD5 hash of file content."
+      },
+      {
+        "fn": "_classify_module",
+        "line": 229,
+        "len": 29,
+        "doc": "Classify module based on path and content."
+      },
+      {
+        "fn": "_extract_description",
+        "line": 258,
+        "len": 16,
+        "doc": "Extract module description from docstring or comments."
+      },
+      {
+        "fn": "_extract_exports",
+        "line": 274,
+        "len": 18,
+        "doc": "Extract exported functions/classes from module."
+      },
+      {
+        "fn": "_analyze_python_module",
+        "line": 292,
+        "len": 15,
+        "doc": "Analyze a Python module file."
+      },
+      {
+        "fn": "_analyze_markdown_module",
+        "line": 307,
+        "len": 18,
+        "doc": "Analyze a Markdown documentation file."
+      },
+      {
+        "fn": "_analyze_json_module",
+        "line": 325,
+        "len": 15,
+        "doc": "Analyze a JSON configuration file."
+      },
+      {
+        "fn": "_analyze_yaml_module",
+        "line": 340,
+        "len": 14,
+        "doc": "Analyze a YAML configuration file."
+      },
+      {
+        "fn": "scan_directory",
+        "line": 354,
+        "len": 86,
+        "doc": "Scan watch directory for new/modified modules."
+      },
+      {
+        "fn": "generate_changelog_entry",
+        "line": 440,
+        "len": 20,
+        "doc": "Generate a changelog entry from detected changes."
+      },
+      {
+        "fn": "update_changelog",
+        "line": 460,
+        "len": 71,
+        "doc": "Update CHANGELOG.md with new entry."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_score_cove_text",
+    "file": "core\\chain_of_verification.py",
+    "def_line": 36,
+    "signature": "def native_score_cove_text(text: str) -> float:",
+    "doc": "Native CoVe Fallacy & Reasoning Coherence Scorer (2.0x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_batch_score_cove"
+    ],
+    "file_functions": [
+      {
+        "fn": "verify",
+        "line": 194,
+        "len": 45,
+        "doc": ""
+      },
+      {
+        "fn": "_extract_reasoning_steps",
+        "line": 239,
+        "len": 50,
+        "doc": "Extract individual reasoning steps from the text."
+      },
+      {
+        "fn": "_extract_premises",
+        "line": 289,
+        "len": 13,
+        "doc": "Extract premises from a reasoning step."
+      },
+      {
+        "fn": "_extract_conclusion",
+        "line": 302,
+        "len": 17,
+        "doc": "Extract the conclusion from a reasoning step."
+      },
+      {
+        "fn": "_detect_fallacies",
+        "line": 319,
+        "len": 25,
+        "doc": "Detect logical fallacies in the reasoning."
+      },
+      {
+        "fn": "_determine_severity",
+        "line": 344,
+        "len": 14,
+        "doc": "Determine the severity of a detected fallacy."
+      },
+      {
+        "fn": "_find_step_for_text",
+        "line": 358,
+        "len": 8,
+        "doc": "Find which reasoning step contains the given text."
+      },
+      {
+        "fn": "_get_fallacy_suggestion",
+        "line": 366,
+        "len": 21,
+        "doc": "Get a suggestion for fixing the fallacy."
+      },
+      {
+        "fn": "_calculate_score",
+        "line": 387,
+        "len": 22,
+        "doc": "Calculate a verification score based on reasoning quality."
+      },
+      {
+        "fn": "_generate_suggestions",
+        "line": 409,
+        "len": 19,
+        "doc": "Generate actionable suggestions for improving reasoning."
+      },
+      {
+        "fn": "_generate_corrected_reasoning",
+        "line": 428,
+        "len": 9,
+        "doc": "Generate a corrected version of the reasoning (placeholder for LLM int"
+      },
+      {
+        "fn": "get_verification_stats",
+        "line": 437,
+        "len": 31,
+        "doc": "Get statistics about verification history."
+      },
+      {
+        "fn": "get_chain_of_verification",
+        "line": 468,
+        "len": 10,
+        "doc": "Get the singleton ChainOfVerification instance."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_harmonize_metrics",
+    "file": "core\\cross_node_voltage_harmonizer.py",
+    "def_line": 37,
+    "signature": "def native_harmonize_metrics(clocks: list, phis: list, rails: list):",
+    "doc": "Native Multi-Machine Rail Drift & Balancer (8.3x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_harmonize_metrics"
+    ],
+    "file_functions": [
+      {
+        "fn": "get_harmonizer",
+        "line": 449,
+        "len": 5,
+        "doc": ""
+      },
+      {
+        "fn": "scan_all_nodes",
+        "line": 454,
+        "len": 67,
+        "doc": "Scan voltage rails from all 10 federation nodes (Existing + Shard Kern"
+      },
+      {
+        "fn": "harmonize",
+        "line": 521,
+        "len": 87,
+        "doc": ""
+      },
+      {
+        "fn": "start_continuous_monitor",
+        "line": 608,
+        "len": 9,
+        "doc": "6. Deploy continuous harmonization monitor."
+      },
+      {
+        "fn": "_monitor_loop",
+        "line": 617,
+        "len": 8,
+        "doc": ""
+      },
+      {
+        "fn": "stop_continuous_monitor",
+        "line": 625,
+        "len": 5,
+        "doc": ""
+      },
+      {
+        "fn": "get_voltage_harmonizer",
+        "line": 630,
+        "len": 8,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_gene_drift",
+    "file": "core\\digital_dna_loop.py",
+    "def_line": 37,
+    "signature": "def native_gene_drift(history_matrix: _np.ndarray, preset_vec: _np.ndarray):",
+    "doc": "Native 4-D Cognitive Gene Running Average & Drift Scorer (104.0x speedup, K3: +1",
+    "dll_symbols": [
+      "strip_cognitive_gene_drift_evaluator"
+    ],
+    "file_functions": [
+      {
+        "fn": "__post_init__",
+        "line": 75,
+        "len": 8,
+        "doc": ""
+      },
+      {
+        "fn": "to_vector",
+        "line": 83,
+        "len": 5,
+        "doc": "Return the gene as a flat list [\u03c1, \u03b4, \u03b5, \u03c3]."
+      },
+      {
+        "fn": "from_vector",
+        "line": 88,
+        "len": 13,
+        "doc": "Construct a CognitiveGene from a 4-element list."
+      },
+      {
+        "fn": "distance",
+        "line": 101,
+        "len": 27,
+        "doc": "Euclidean distance between two CognitiveGene vectors."
+      },
+      {
+        "fn": "record",
+        "line": 159,
+        "len": 5,
+        "doc": "Append a gene snapshot and recalculate the running average."
+      },
+      {
+        "fn": "get_refraction_context",
+        "line": 164,
+        "len": 9,
+        "doc": "Return a summary dict of the current cache state."
+      },
+      {
+        "fn": "detect_drift",
+        "line": 173,
+        "len": 12,
+        "doc": "Return True if the average gene has drifted beyond *threshold* from co"
+      },
+      {
+        "fn": "_recalculate_average",
+        "line": 185,
+        "len": 17,
+        "doc": "Compute \u1e20 from the current history window."
+      },
+      {
+        "fn": "bind",
+        "line": 220,
+        "len": 11,
+        "doc": "Store references to external orchestrators / repositories."
+      },
+      {
+        "fn": "initialize_agent_genes",
+        "line": 231,
+        "len": 22,
+        "doc": ""
+      },
+      {
+        "fn": "get_agent_gene",
+        "line": 253,
+        "len": 11,
+        "doc": "Return the current gene for *role* (defaults to continuum preset)."
+      },
+      {
+        "fn": "_next_proposal_id",
+        "line": 264,
+        "len": 5,
+        "doc": ""
+      },
+      {
+        "fn": "evaluate_performance",
+        "line": 272,
+        "len": 73,
+        "doc": ""
+      },
+      {
+        "fn": "apply_mutation",
+        "line": 345,
+        "len": 32,
+        "doc": "Find a proposal by ID, apply the mutated gene, and mark as 'applied'."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_batch_seal",
+    "file": "core\\epistemology_verification.py",
+    "def_line": 51,
+    "signature": "def native_batch_seal(tasks: list, decisions: list) -> list:",
+    "doc": "Phase 17 native accelerated Monad proof sealing (17.9x).",
+    "dll_symbols": [
+      "strip_batch_monad_seal"
+    ],
+    "file_functions": [
+      {
+        "fn": "seal",
+        "line": 45,
+        "len": 6,
+        "doc": "Monad seal: anchor XOR rotate-by-trit-length of decision hash + conf."
+      },
+      {
+        "fn": "record",
+        "line": 76,
+        "len": 8,
+        "doc": ""
+      },
+      {
+        "fn": "find_benchmark",
+        "line": 84,
+        "len": 9,
+        "doc": ""
+      },
+      {
+        "fn": "suite1",
+        "line": 93,
+        "len": 48,
+        "doc": ""
+      },
+      {
+        "fn": "suite2",
+        "line": 141,
+        "len": 44,
+        "doc": ""
+      },
+      {
+        "fn": "suite3",
+        "line": 185,
+        "len": 20,
+        "doc": ""
+      },
+      {
+        "fn": "suite4",
+        "line": 205,
+        "len": 44,
+        "doc": ""
+      },
+      {
+        "fn": "kleene_fixed_point",
+        "line": 249,
+        "len": 10,
+        "doc": "Iterate fn until fixed point (Kleene least fixed point)."
+      },
+      {
+        "fn": "suite5",
+        "line": 259,
+        "len": 8,
+        "doc": ""
+      },
+      {
+        "fn": "h_fn",
+        "line": 267,
+        "len": 19,
+        "doc": ""
+      },
+      {
+        "fn": "seal_fn",
+        "line": 286,
+        "len": 17,
+        "doc": ""
+      },
+      {
+        "fn": "mix",
+        "line": 303,
+        "len": 12,
+        "doc": ""
+      },
+      {
+        "fn": "godel_machine",
+        "line": 315,
+        "len": 23,
+        "doc": "Only accept rewrite if proof verifies (the kernel's own seal is the pr"
+      },
+      {
+        "fn": "main",
+        "line": 338,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_audit_code_security",
+    "file": "core\\evolutionary_sandbox.py",
+    "def_line": 35,
+    "signature": "def native_audit_code_security(code: str) -> bool:",
+    "doc": "Native Mutation AST Security & Banned Identifier Verifier (1.5x speedup, K3: +1 ",
+    "dll_symbols": [
+      "strip_batch_audit_security"
+    ],
+    "file_functions": [
+      {
+        "fn": "_extract_public_api",
+        "line": 94,
+        "len": 26,
+        "doc": "Parse python code and extract public classes, methods, and functions w"
+      },
+      {
+        "fn": "verify_api_backwards_compatibility",
+        "line": 120,
+        "len": 10,
+        "doc": "Verify that every public API contract element is preserved in mutated_"
+      },
+      {
+        "fn": "get_evolutionary_sandbox",
+        "line": 310,
+        "len": 5,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_vram_transpose",
+    "file": "core\\gpu_unlock_architecture.py",
+    "def_line": 29,
+    "signature": "def native_vram_transpose(matrix: _np.ndarray) -> _np.ndarray:",
+    "doc": "Cache-aligned 16x16 tiled matrix transposition (187.7x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_vram_cache_transposer"
+    ],
+    "file_functions": [
+      {
+        "fn": "push",
+        "line": 84,
+        "len": 8,
+        "doc": "Push task to ring buffer. Returns True if buffer full (needs flush)."
+      },
+      {
+        "fn": "flush_batch",
+        "line": 92,
+        "len": 24,
+        "doc": "Flush accumulated batch for GPU kernel launch. Returns batch or None."
+      },
+      {
+        "fn": "route",
+        "line": 138,
+        "len": 10,
+        "doc": "Route task based on batch size to optimal engine."
+      },
+      {
+        "fn": "cpu_execute",
+        "line": 148,
+        "len": 14,
+        "doc": "CPU AVX2 fast-path: Mamba-3 SSM + LoRA inference in L3 cache."
+      },
+      {
+        "fn": "gpu_execute_batch",
+        "line": 162,
+        "len": 16,
+        "doc": "GPU ROCm batch execution: 4,096 Mamba-3 steps in one kernel launch."
+      },
+      {
+        "fn": "start",
+        "line": 178,
+        "len": 28,
+        "doc": "Start hybrid pipeline threads."
+      },
+      {
+        "fn": "stop",
+        "line": 206,
+        "len": 7,
+        "doc": ""
+      },
+      {
+        "fn": "stats_report",
+        "line": 213,
+        "len": 11,
+        "doc": ""
+      },
+      {
+        "fn": "offload_routing_matrix",
+        "line": 250,
+        "len": 29,
+        "doc": "Offload Instella MoE expert routing to GPU."
+      },
+      {
+        "fn": "benchmark_optimized_architecture",
+        "line": 279,
+        "len": 10,
+        "doc": "Run the 3-action optimized architecture against 50K tasks."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_evaluate_phi_v",
+    "file": "core\\hardware_voltage_microkernel_binder.py",
+    "def_line": 37,
+    "signature": "def native_evaluate_phi_v(vc_arr: _np.ndarray, freq_arr: _np.ndarray,",
+    "doc": "",
+    "dll_symbols": [
+      "strip_voltage_multiplier_evaluator"
+    ],
+    "file_functions": [
+      {
+        "fn": "get_cpu_utilization",
+        "line": 78,
+        "len": 5,
+        "doc": ""
+      },
+      {
+        "fn": "get_memory_pressure",
+        "line": 83,
+        "len": 4,
+        "doc": "Current memory usage percentage."
+      },
+      {
+        "fn": "get_memory_free_gb",
+        "line": 87,
+        "len": 4,
+        "doc": "Free memory in GB."
+      },
+      {
+        "fn": "get_clock_speed_mhz",
+        "line": 91,
+        "len": 21,
+        "doc": "Read actual CPU clock speed via WMIC. Cached for 1 second."
+      },
+      {
+        "fn": "get_cpu_temp",
+        "line": 112,
+        "len": 13,
+        "doc": "Try to read CPU temperature via psutil sensors."
+      },
+      {
+        "fn": "get_all_telemetry",
+        "line": 125,
+        "len": 26,
+        "doc": "Bulk telemetry snapshot \u2014 cached, refreshes every 100ms."
+      },
+      {
+        "fn": "get_cache_stats",
+        "line": 151,
+        "len": 10,
+        "doc": ""
+      },
+      {
+        "fn": "f_cpu_mhz",
+        "line": 189,
+        "len": 4,
+        "doc": "Read actual CPU clock speed from hardware."
+      },
+      {
+        "fn": "compute_dynamic_voltage_multiplier",
+        "line": 193,
+        "len": 16,
+        "doc": ""
+      },
+      {
+        "fn": "get_telemetry_snapshot",
+        "line": 209,
+        "len": 24,
+        "doc": "Full hardware telemetry + voltage binding status."
+      },
+      {
+        "fn": "execute_voltage_bound_state_scan",
+        "line": 233,
+        "len": 30,
+        "doc": "Execute voltage-bound Mamba-3 SSM state scan with real telemetry."
+      },
+      {
+        "fn": "start_heartbeat",
+        "line": 263,
+        "len": 9,
+        "doc": "Start sub-microsecond HVBE heartbeat in background thread."
+      },
+      {
+        "fn": "_heartbeat_loop",
+        "line": 272,
+        "len": 8,
+        "doc": "Background loop pulsing HVBE tick at ~350ns intervals."
+      },
+      {
+        "fn": "stop_heartbeat",
+        "line": 280,
+        "len": 11,
+        "doc": "Stop the HVBE heartbeat thread."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_k3_sram_pack_and",
+    "file": "core\\k3_ternary_sram.py",
+    "def_line": 35,
+    "signature": "def native_k3_sram_pack_and(trits_a: _np.ndarray, trits_b: _np.ndarray) -> _np.ndarray:",
+    "doc": "Native 2-bit packed K3 SRAM gate evaluator (1665.9x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_k3_sram_pack_and"
+    ],
+    "file_functions": [
+      {
+        "fn": "value",
+        "line": 89,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "__repr__",
+        "line": 99,
+        "len": 5,
+        "doc": ""
+      },
+      {
+        "fn": "from_bytes",
+        "line": 112,
+        "len": 13,
+        "doc": "Decode bytes \u2192 trits (2 bits per trit)."
+      },
+      {
+        "fn": "to_bytes",
+        "line": 125,
+        "len": 10,
+        "doc": "Encode trits \u2192 bytes."
+      },
+      {
+        "fn": "apply",
+        "line": 135,
+        "len": 6,
+        "doc": "Set all trits to specified values (must be same length)."
+      },
+      {
+        "fn": "count",
+        "line": 174,
+        "len": 7,
+        "doc": "Count TRUE, UNKNOWN, FALSE."
+      },
+      {
+        "fn": "collapse",
+        "line": 181,
+        "len": 15,
+        "doc": "K3 wavefunction collapse: UNKNOWN \u2192 TRUE or FALSE with bias."
+      },
+      {
+        "fn": "truth_density",
+        "line": 196,
+        "len": 5,
+        "doc": "Ratio of TRUE to total."
+      },
+      {
+        "fn": "__repr__",
+        "line": 201,
+        "len": 9,
+        "doc": ""
+      },
+      {
+        "fn": "load_program",
+        "line": 218,
+        "len": 13,
+        "doc": "Load a ternary program as a K3 vector."
+      },
+      {
+        "fn": "benchmark_ops",
+        "line": 231,
+        "len": 37,
+        "doc": "Benchmark K3 operators."
+      },
+      {
+        "fn": "summary",
+        "line": 268,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_lora_apply",
+    "file": "core\\kernel_lora_adapter.py",
+    "def_line": 43,
+    "signature": "def native_lora_apply(mat_a: _np.ndarray, mat_b: _np.ndarray, vec_x: _np.ndarray, scaling: float) ->",
+    "doc": "Native LoRA low-rank delta projector (44.5x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_kernel_lora_apply"
+    ],
+    "file_functions": [
+      {
+        "fn": "pack",
+        "line": 90,
+        "len": 20,
+        "doc": ""
+      },
+      {
+        "fn": "unpack",
+        "line": 110,
+        "len": 13,
+        "doc": ""
+      },
+      {
+        "fn": "pack_to_binary",
+        "line": 158,
+        "len": 32,
+        "doc": "Serialize adapter to binary C-ABI format for mmap storage."
+      },
+      {
+        "fn": "unpack_from_binary",
+        "line": 190,
+        "len": 30,
+        "doc": "Deserialize from binary C-ABI format."
+      },
+      {
+        "fn": "allocate_in_arena",
+        "line": 220,
+        "len": 22,
+        "doc": ""
+      },
+      {
+        "fn": "hot_swap_from",
+        "line": 242,
+        "len": 25,
+        "doc": ""
+      },
+      {
+        "fn": "apply",
+        "line": 267,
+        "len": 11,
+        "doc": ""
+      },
+      {
+        "fn": "load_from_pytorch",
+        "line": 278,
+        "len": 22,
+        "doc": "Ingest a PyTorch .pt adapter into kernel-native format."
+      },
+      {
+        "fn": "register",
+        "line": 311,
+        "len": 5,
+        "doc": ""
+      },
+      {
+        "fn": "swap_to",
+        "line": 316,
+        "len": 11,
+        "doc": "Atomic hot-swap to a different agent's adapter."
+      },
+      {
+        "fn": "apply_active",
+        "line": 330,
+        "len": 10,
+        "doc": "Apply the currently active adapter to input."
+      },
+      {
+        "fn": "get_lora_registry",
+        "line": 340,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_estimate_prompt_cost",
+    "file": "core\\llm_router.py",
+    "def_line": 38,
+    "signature": "def native_estimate_prompt_cost(prompt_len: int, max_tokens: int = 4096, temperature: float = 0.3):",
+    "doc": "Native Token Estimation & Quota Slicing (321.5x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_estimate_and_slice_prompts"
+    ],
+    "file_functions": [
+      {
+        "fn": "get_session",
+        "line": 64,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_lora_linear_forward",
+    "file": "core\\local_lora_trainer.py",
+    "def_line": 46,
+    "signature": "def native_lora_linear_forward(x: _np.ndarray, w0: _np.ndarray, a: _np.ndarray, b: _np.ndarray, scal",
+    "doc": "Native LoRA linear forward projection (55.7x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_lora_linear_forward"
+    ],
+    "file_functions": [
+      {
+        "fn": "forward",
+        "line": 112,
+        "len": 5,
+        "doc": ""
+      },
+      {
+        "fn": "get_delta_weights",
+        "line": 117,
+        "len": 4,
+        "doc": "Return \u0394W = B @ A for mmap ingestion."
+      },
+      {
+        "fn": "export_lora",
+        "line": 121,
+        "len": 10,
+        "doc": "Export LoRA matrices for microkernel ingestion."
+      },
+      {
+        "fn": "_load_from_ddr",
+        "line": 149,
+        "len": 22,
+        "doc": "Load training pairs from DDR event ledger."
+      },
+      {
+        "fn": "_generate_synthetic",
+        "line": 171,
+        "len": 32,
+        "doc": ""
+      },
+      {
+        "fn": "__getitem__",
+        "line": 206,
+        "len": 5,
+        "doc": ""
+      },
+      {
+        "fn": "build_model",
+        "line": 239,
+        "len": 21,
+        "doc": ""
+      },
+      {
+        "fn": "train",
+        "line": 260,
+        "len": 42,
+        "doc": "Run LoRA training loop locally."
+      },
+      {
+        "fn": "export_adapter",
+        "line": 302,
+        "len": 16,
+        "doc": "Export LoRA adapter weights to disk for microkernel ingestion."
+      },
+      {
+        "fn": "load_adapter",
+        "line": 318,
+        "len": 74,
+        "doc": "Load a previously trained LoRA adapter into a model."
+      },
+      {
+        "fn": "train_agent_adapter",
+        "line": 392,
+        "len": 15,
+        "doc": "Train a single agent's LoRA adapter locally."
+      },
+      {
+        "fn": "train_all_agents",
+        "line": 407,
+        "len": 10,
+        "doc": "Train LoRA adapters for all 12 agents."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_validate_tool_schemas",
+    "file": "core\\mcp_tool_evolver.py",
+    "def_line": 51,
+    "signature": "def native_validate_tool_schemas(schemas_arr: _np.ndarray):",
+    "doc": "Native Dynamic Schema Parser & Parameter Contract Validator (56.1x speedup, K3: ",
+    "dll_symbols": [
+      "strip_validate_tool_schemas"
+    ],
+    "file_functions": [
+      {
+        "fn": "_load_versions",
+        "line": 182,
+        "len": 24,
+        "doc": "Load existing tool versions from disk."
+      },
+      {
+        "fn": "_save_versions",
+        "line": 206,
+        "len": 13,
+        "doc": "Save tool versions to disk."
+      },
+      {
+        "fn": "_calculate_checksum",
+        "line": 219,
+        "len": 5,
+        "doc": "Calculate checksum for code."
+      },
+      {
+        "fn": "_get_current_tools",
+        "line": 224,
+        "len": 20,
+        "doc": "Get all current synthesized tools and their code."
+      },
+      {
+        "fn": "_get_current_version",
+        "line": 244,
+        "len": 6,
+        "doc": "Get current version number for a tool."
+      },
+      {
+        "fn": "_increment_version",
+        "line": 250,
+        "len": 10,
+        "doc": "Increment version number."
+      },
+      {
+        "fn": "rollback_tool",
+        "line": 426,
+        "len": 107,
+        "doc": "Rollback a tool to a previous version."
+      },
+      {
+        "fn": "stop",
+        "line": 533,
+        "len": 5,
+        "doc": "Stop the evolution monitor loop."
+      },
+      {
+        "fn": "get_status",
+        "line": 538,
+        "len": 13,
+        "doc": "Get evolver status."
+      },
+      {
+        "fn": "get_tool_history",
+        "line": 551,
+        "len": 6,
+        "doc": "Get version history for a tool."
+      },
+      {
+        "fn": "get_available_knowledge",
+        "line": 557,
+        "len": 27,
+        "doc": "Get available knowledge for evolution."
+      },
+      {
+        "fn": "get_tool_evolver",
+        "line": 584,
+        "len": 10,
+        "doc": "Get or create the tool evolver singleton."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_aggregate_telemetry",
+    "file": "core\\microkernel_spawner.py",
+    "def_line": 37,
+    "signature": "def native_aggregate_telemetry(lats: _np.ndarray, mems: _np.ndarray, res: _np.ndarray) -> tuple:",
+    "doc": "Native Fractal Telemetry & Resonance Aggregator (31.0x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_aggregate_telemetry"
+    ],
+    "file_functions": [
+      {
+        "fn": "emit",
+        "line": 58,
+        "len": 17,
+        "doc": ""
+      },
+      {
+        "fn": "get_fractal_telemetry_bus",
+        "line": 75,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "execute",
+        "line": 111,
+        "len": 10,
+        "doc": "Execute the sub-agent task within strict memory/time bounds with Conti"
+      },
+      {
+        "fn": "spawn_subagent",
+        "line": 463,
+        "len": 50,
+        "doc": ""
+      },
+      {
+        "fn": "terminate_subagent",
+        "line": 513,
+        "len": 15,
+        "doc": "Syscall: SYSCALL_TERMINATE_SUBAGENT"
+      },
+      {
+        "fn": "get_process_table",
+        "line": 528,
+        "len": 35,
+        "doc": "Syscall: SYSCALL_GET_SUBAGENT_METRICS"
+      },
+      {
+        "fn": "classify_deterministic",
+        "line": 563,
+        "len": 20,
+        "doc": "Classify task as deterministic op type using Radix-Trie O(len) lookup."
+      },
+      {
+        "fn": "intercept_deterministic",
+        "line": 583,
+        "len": 72,
+        "doc": ""
+      },
+      {
+        "fn": "get_microkernel_spawner",
+        "line": 655,
+        "len": 5,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_merkle_reduction",
+    "file": "core\\monad.py",
+    "def_line": 27,
+    "signature": "def native_merkle_reduction(leaves: _np.ndarray) -> _np.ndarray:",
+    "doc": "Fast Merkle leaf reduction & attestation accumulator (279.5x speedup, K3: +1 TRU",
+    "dll_symbols": [
+      "strip_monad_merkle_reduction"
+    ],
+    "file_functions": [
+      {
+        "fn": "bind",
+        "line": 79,
+        "len": 4,
+        "doc": "Monadic bind (>>=) \u2014 chain operations over experiences."
+      },
+      {
+        "fn": "fmap",
+        "line": 83,
+        "len": 4,
+        "doc": "Functor map \u2014 transform each experience."
+      },
+      {
+        "fn": "filter",
+        "line": 87,
+        "len": 4,
+        "doc": "Filter experiences by predicate."
+      },
+      {
+        "fn": "reduce",
+        "line": 98,
+        "len": 7,
+        "doc": "Fold/reduce over experiences."
+      },
+      {
+        "fn": "pure",
+        "line": 105,
+        "len": 9,
+        "doc": "Lift a value into the Monad."
+      },
+      {
+        "fn": "gather_training",
+        "line": 114,
+        "len": 71,
+        "doc": "Gather all training experiences."
+      },
+      {
+        "fn": "gather_benchmarks",
+        "line": 185,
+        "len": 23,
+        "doc": "Gather all benchmark results."
+      },
+      {
+        "fn": "gather_models",
+        "line": 208,
+        "len": 28,
+        "doc": "Gather all model details."
+      },
+      {
+        "fn": "gather_commits",
+        "line": 236,
+        "len": 23,
+        "doc": "Gather git commit history."
+      },
+      {
+        "fn": "gather_global_memory",
+        "line": 259,
+        "len": 22,
+        "doc": "Gather all experiences from Global Memory matrix."
+      },
+      {
+        "fn": "gather_voltage_hardware",
+        "line": 281,
+        "len": 18,
+        "doc": "Gather physical voltage rails and silicon telemetry."
+      },
+      {
+        "fn": "gather_council_deliberations",
+        "line": 299,
+        "len": 18,
+        "doc": "Gather 14-agent Swarm Council deliberation states and enacted proposal"
+      },
+      {
+        "fn": "gather_all",
+        "line": 317,
+        "len": 13,
+        "doc": "Gather all platform experiences across all dimensions and memory store"
+      },
+      {
+        "fn": "summarize",
+        "line": 330,
+        "len": 27,
+        "doc": "Produce a summary of all gathered experiences."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_spsc_batch_advance",
+    "file": "core\\native_ipc_bus.py",
+    "def_line": 60,
+    "signature": "def native_spsc_batch_advance(payload_lens: list, capacity: int = 1024):",
+    "doc": "Native SPSC Ring Buffer Pointer Advancement & Cache Alignment (88.3x speedup, K3",
+    "dll_symbols": [
+      "strip_spsc_batch_advance"
+    ],
+    "file_functions": [
+      {
+        "fn": "push",
+        "line": 105,
+        "len": 9,
+        "doc": "Push an item into the ring buffer. Sub-microsecond execution."
+      },
+      {
+        "fn": "pop",
+        "line": 114,
+        "len": 10,
+        "doc": "Pop an item from the ring buffer. Sub-microsecond execution."
+      },
+      {
+        "fn": "is_empty",
+        "line": 124,
+        "len": 8,
+        "doc": ""
+      },
+      {
+        "fn": "write_payload",
+        "line": 155,
+        "len": 13,
+        "doc": "Write raw payload to mmap arena, returns (offset, length)."
+      },
+      {
+        "fn": "read_payload",
+        "line": 168,
+        "len": 4,
+        "doc": "Zero-copy slice read from memory mapped buffer."
+      },
+      {
+        "fn": "close",
+        "line": 172,
+        "len": 13,
+        "doc": ""
+      },
+      {
+        "fn": "register",
+        "line": 206,
+        "len": 7,
+        "doc": "Register a handler for an internal IPC channel."
+      },
+      {
+        "fn": "_init_core_module_bindings",
+        "line": 213,
+        "len": 101,
+        "doc": "Pre-bind the essential core discovery, wetlab, sensory, and ledger han"
+      },
+      {
+        "fn": "call",
+        "line": 314,
+        "len": 61,
+        "doc": ""
+      },
+      {
+        "fn": "get_ipc_telemetry",
+        "line": 375,
+        "len": 42,
+        "doc": "Audit telemetry of Native IPC performance vs HTTP."
+      },
+      {
+        "fn": "get_native_ipc",
+        "line": 417,
+        "len": 6,
+        "doc": "Global singleton accessor for Native IPC bus."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_scan_security_packet",
+    "file": "core\\neural_wall.py",
+    "def_line": 43,
+    "signature": "def native_scan_security_packet(text: str) -> int:",
+    "doc": "Native Security Packet Threat Level Scanner (1.5x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_scan_security_packets"
+    ],
+    "file_functions": [
+      {
+        "fn": "_get_small_model",
+        "line": 206,
+        "len": 17,
+        "doc": "Lazy-load the small model for LLM classification."
+      },
+      {
+        "fn": "analyze",
+        "line": 223,
+        "len": 82,
+        "doc": ""
+      },
+      {
+        "fn": "_pattern_analysis",
+        "line": 305,
+        "len": 43,
+        "doc": "Fast pattern-based analysis."
+      },
+      {
+        "fn": "_llm_analysis",
+        "line": 348,
+        "len": 76,
+        "doc": "Deep LLM-based analysis for ambiguous cases."
+      },
+      {
+        "fn": "get_stats",
+        "line": 424,
+        "len": 10,
+        "doc": "Get detection statistics."
+      },
+      {
+        "fn": "get_recent_threats",
+        "line": 434,
+        "len": 14,
+        "doc": "Get recent threat detections."
+      },
+      {
+        "fn": "mark_false_positive",
+        "line": 448,
+        "len": 10,
+        "doc": "Mark a detection as false positive."
+      },
+      {
+        "fn": "get_neural_wall",
+        "line": 458,
+        "len": 17,
+        "doc": "Get or create the NeuralWall singleton."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_classify_intent",
+    "file": "core\\openclaw_gateway.py",
+    "def_line": 50,
+    "signature": "def native_classify_intent(text: str):",
+    "doc": "Native Intent Keyword Gating & Scoring (1.8x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_batch_classify_intents"
+    ],
+    "file_functions": [
+      {
+        "fn": "normalize",
+        "line": 194,
+        "len": 11,
+        "doc": "Convert raw channel message to InboundMessage."
+      },
+      {
+        "fn": "_load_offset",
+        "line": 244,
+        "len": 8,
+        "doc": "Load last update ID from file so we don't re-process old messages."
+      },
+      {
+        "fn": "_save_offset",
+        "line": 252,
+        "len": 103,
+        "doc": "Save last update ID to file."
+      },
+      {
+        "fn": "normalize",
+        "line": 355,
+        "len": 21,
+        "doc": "Convert raw Telegram message to InboundMessage."
+      },
+      {
+        "fn": "classify_intent",
+        "line": 421,
+        "len": 119,
+        "doc": ""
+      },
+      {
+        "fn": "get_stats",
+        "line": 540,
+        "len": 10,
+        "doc": "Get gateway statistics."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_evaluate_pbft_quorum",
+    "file": "core\\pbft_consensus.py",
+    "def_line": 52,
+    "signature": "def native_evaluate_pbft_quorum(votes_matrix: _np.ndarray, commits_matrix: _np.ndarray, req_prep: in",
+    "doc": "Native PBFT 3-Phase State Machine & Quorum Evaluator (231.2x speedup, K3: +1 TRU",
+    "dll_symbols": [
+      "strip_pbft_batch_quorum"
+    ],
+    "file_functions": [
+      {
+        "fn": "bind",
+        "line": 161,
+        "len": 21,
+        "doc": ""
+      },
+      {
+        "fn": "propose",
+        "line": 182,
+        "len": 39,
+        "doc": ""
+      },
+      {
+        "fn": "pre_prepare",
+        "line": 221,
+        "len": 47,
+        "doc": ""
+      },
+      {
+        "fn": "prepare",
+        "line": 268,
+        "len": 50,
+        "doc": ""
+      },
+      {
+        "fn": "commit",
+        "line": 318,
+        "len": 66,
+        "doc": ""
+      },
+      {
+        "fn": "reject",
+        "line": 384,
+        "len": 32,
+        "doc": ""
+      },
+      {
+        "fn": "run_full_cycle",
+        "line": 416,
+        "len": 54,
+        "doc": ""
+      },
+      {
+        "fn": "audit_ledger",
+        "line": 470,
+        "len": 4,
+        "doc": "Return the full committed-proposals ledger."
+      },
+      {
+        "fn": "get_proposal",
+        "line": 474,
+        "len": 15,
+        "doc": "Return a dict snapshot of the given proposal, or ``None``."
+      },
+      {
+        "fn": "get_status",
+        "line": 489,
+        "len": 53,
+        "doc": ""
+      },
+      {
+        "fn": "get_pbft_consensus",
+        "line": 542,
+        "len": 6,
+        "doc": "Return the singleton :class:`PBFTConsensusLayer` instance."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_verify_and_checksum_header",
+    "file": "core\\persistent_mmap_allocator.py",
+    "def_line": 85,
+    "signature": "def native_verify_and_checksum_header(header_bytes: bytes):",
+    "doc": "Native Arena Header CRC32 Checksum & Resumption State (23.8x speedup, K3: +1 TRU",
+    "dll_symbols": [
+      "strip_verify_and_checksum_headers"
+    ],
+    "file_functions": [
+      {
+        "fn": "print_comparison",
+        "line": 50,
+        "len": 35,
+        "doc": ""
+      },
+      {
+        "fn": "pack",
+        "line": 123,
+        "len": 6,
+        "doc": ""
+      },
+      {
+        "fn": "unpack",
+        "line": 129,
+        "len": 6,
+        "doc": ""
+      },
+      {
+        "fn": "_open_or_create",
+        "line": 159,
+        "len": 59,
+        "doc": "Open existing mmap file or create new one."
+      },
+      {
+        "fn": "checkpoint",
+        "line": 218,
+        "len": 5,
+        "doc": "Force sync to NVMe (msync equivalent)."
+      },
+      {
+        "fn": "write_at",
+        "line": 223,
+        "len": 6,
+        "doc": "Write data at offset in the arena."
+      },
+      {
+        "fn": "read_at",
+        "line": 229,
+        "len": 8,
+        "doc": "Read data from arena."
+      },
+      {
+        "fn": "is_persistent",
+        "line": 237,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "get_status",
+        "line": 244,
+        "len": 10,
+        "doc": ""
+      },
+      {
+        "fn": "close",
+        "line": 254,
+        "len": 20,
+        "doc": "Close the mmap and backing file descriptor."
+      },
+      {
+        "fn": "get_persistent_arena",
+        "line": 274,
+        "len": 10,
+        "doc": ""
+      },
+      {
+        "fn": "start",
+        "line": 297,
+        "len": 8,
+        "doc": ""
+      },
+      {
+        "fn": "_loop",
+        "line": 305,
+        "len": 27,
+        "doc": ""
+      },
+      {
+        "fn": "stop",
+        "line": 332,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_translate_type",
+    "file": "core\\porting_engine.py",
+    "def_line": 55,
+    "signature": "def native_translate_type(type_ann: str) -> str:",
+    "doc": "Native AST Type Translation (3.9x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_batch_translate_types"
+    ],
+    "file_functions": [
+      {
+        "fn": "rust_type",
+        "line": 91,
+        "len": 16,
+        "doc": ""
+      },
+      {
+        "fn": "rust_literal",
+        "line": 107,
+        "len": 21,
+        "doc": ""
+      },
+      {
+        "fn": "emit_header",
+        "line": 128,
+        "len": 12,
+        "doc": "return f\"\"\"//! TRM Swarm OS \u2014 {modname} (mechanical no_std port, TRM p"
+      },
+      {
+        "fn": "port_module",
+        "line": 140,
+        "len": 110,
+        "doc": ""
+      },
+      {
+        "fn": "main",
+        "line": 250,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_cron_matches_batch",
+    "file": "core\\proactive_loop.py",
+    "def_line": 33,
+    "signature": "def native_cron_matches_batch(packed_rules: _np.ndarray, num_rules: int, minute: int, hour: int, day",
+    "doc": "Native High-Frequency Cron Scheduler & Priority Matcher (93.2x speedup, K3: +1 T",
+    "dll_symbols": [
+      "strip_batch_cron_matches"
+    ],
+    "file_functions": [
+      {
+        "fn": "_cron_matches",
+        "line": 63,
+        "len": 31,
+        "doc": ""
+      },
+      {
+        "fn": "register_scheduled_task",
+        "line": 152,
+        "len": 14,
+        "doc": ""
+      },
+      {
+        "fn": "register_webhook",
+        "line": 166,
+        "len": 10,
+        "doc": "Register a webhook trigger."
+      },
+      {
+        "fn": "get_stats",
+        "line": 592,
+        "len": 10,
+        "doc": ""
+      },
+      {
+        "fn": "get_proactive_loop",
+        "line": 602,
+        "len": 5,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_evaluate_ast_metrics",
+    "file": "core\\python_voltage_stripper.py",
+    "def_line": 55,
+    "signature": "def native_evaluate_ast_metrics(loops: int, dynamic_lookups: int, boxing_events: int, total_ops: int",
+    "doc": "Native AST Opcode Metric & Voltage Dissipation Calculator (35.9x speedup, K3: +1",
+    "dll_symbols": [],
+    "file_functions": [
+      {
+        "fn": "analyze_source",
+        "line": 121,
+        "len": 25,
+        "doc": "Parse source code via AST and quantify voltage inefficiency."
+      },
+      {
+        "fn": "apply_turbovec_quantization",
+        "line": 146,
+        "len": 30,
+        "doc": ""
+      },
+      {
+        "fn": "synthesize_rust_turbovec_dot",
+        "line": 176,
+        "len": 33,
+        "doc": ""
+      },
+      {
+        "fn": "synthesize_rust_vector_dot",
+        "line": 209,
+        "len": 16,
+        "doc": "Instella Code Synthesis: Vectorized 128-dim SIMD Dot Product (FP32 bas"
+      },
+      {
+        "fn": "synthesize_rust_seir_sim",
+        "line": 225,
+        "len": 33,
+        "doc": "Instella Code Synthesis: 60-Step SEIR Pandemic Model."
+      },
+      {
+        "fn": "synthesize_rust_k3_quorum",
+        "line": 258,
+        "len": 32,
+        "doc": "Instella Code Synthesis: K3 Three-Valued Logic Quorum Evaluator."
+      },
+      {
+        "fn": "compile_rust_module",
+        "line": 290,
+        "len": 15,
+        "doc": "Compile synthesized Rust code to native DLL via rustc -O."
+      },
+      {
+        "fn": "verify_k3_invariant",
+        "line": 305,
+        "len": 20,
+        "doc": "Verify mathematical invariant equality under Kleene K3 logic."
+      },
+      {
+        "fn": "benchmark_workload",
+        "line": 325,
+        "len": 52,
+        "doc": ""
+      },
+      {
+        "fn": "run_full_stripper_suite",
+        "line": 377,
+        "len": 11,
+        "doc": "Execute the complete Python Voltage Stripper pipeline with TurboVec qu"
+      },
+      {
+        "fn": "py_vector_dot",
+        "line": 388,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_qaoa_ising_energy",
+    "file": "core\\quantum_drug_protocol.py",
+    "def_line": 45,
+    "signature": "def native_qaoa_ising_energy(spins: _np.ndarray, j_mat: _np.ndarray, h_vec: _np.ndarray) -> float:",
+    "doc": "Native QAOA Ising Hamiltonian energy evaluator (293.1x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_qaoa_ising_energy"
+    ],
+    "file_functions": [
+      {
+        "fn": "seal",
+        "line": 71,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "record",
+        "line": 75,
+        "len": 14,
+        "doc": "status: IMPLEMENTED (real math executed) / HYPOTHESIS (computational"
+      },
+      {
+        "fn": "grover_iterations",
+        "line": 89,
+        "len": 4,
+        "doc": "Grover's search: optimal iterations = floor(pi/4 * sqrt(N))."
+      },
+      {
+        "fn": "shor_factor",
+        "line": 93,
+        "len": 8,
+        "doc": "Shor-style period finding on small semiprimes (classical demo of the"
+      },
+      {
+        "fn": "qft_amplitudes",
+        "line": 101,
+        "len": 5,
+        "doc": "QFT on n qubits: amplitude matrix (real, classical)."
+      },
+      {
+        "fn": "vqe_h2_ground_state",
+        "line": 106,
+        "len": 4,
+        "doc": "VQE H2 ground state energy (STO-3G): -1.1173 Ha (known result)."
+      },
+      {
+        "fn": "qaoa_cost",
+        "line": 110,
+        "len": 5,
+        "doc": "QAOA cost function: max-cut style. problem = list of (i, j) edges."
+      },
+      {
+        "fn": "teleport_qubit",
+        "line": 115,
+        "len": 5,
+        "doc": "Teleportation: |psi> = alpha|0> + beta|1>; Bell measurement + correcti"
+      },
+      {
+        "fn": "surface_code_error",
+        "line": 120,
+        "len": 4,
+        "doc": "Surface code threshold: logical error ~ (p/p_th)^((d+1)/2), p_th\u22480.01."
+      },
+      {
+        "fn": "quantum_walk_mixing",
+        "line": 124,
+        "len": 20,
+        "doc": "Quantum walk mixing time O(sqrt(N)) vs classical O(N)."
+      },
+      {
+        "fn": "suite1",
+        "line": 144,
+        "len": 35,
+        "doc": ""
+      },
+      {
+        "fn": "suite2",
+        "line": 179,
+        "len": 59,
+        "doc": ""
+      },
+      {
+        "fn": "ddr_antibody",
+        "line": 238,
+        "len": 5,
+        "doc": "Deterministic DDR antibody signature from seed i (security-threat patt"
+      },
+      {
+        "fn": "pattern_similarity",
+        "line": 243,
+        "len": 4,
+        "doc": "K3 pattern similarity: mean of ternary-matched signs."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_quantum_entropy_projection",
+    "file": "core\\secrets_vault.py",
+    "def_line": 59,
+    "signature": "def native_quantum_entropy_projection(probabilities: list):",
+    "doc": "Native Quantum Amplitude Entropy Projection & Key Derivation (7.4x speedup, K3: ",
+    "dll_symbols": [
+      "strip_quantum_entropy_projection"
+    ],
+    "file_functions": [
+      {
+        "fn": "_ensure_gitignore",
+        "line": 122,
+        "len": 11,
+        "doc": "Add .swarm/ to .gitignore if not present."
+      },
+      {
+        "fn": "_load_or_create_key",
+        "line": 133,
+        "len": 18,
+        "doc": "Load master key from disk or generate a new one."
+      },
+      {
+        "fn": "_encrypt",
+        "line": 151,
+        "len": 10,
+        "doc": "Encrypt a string value."
+      },
+      {
+        "fn": "_decrypt",
+        "line": 161,
+        "len": 8,
+        "doc": "Decrypt a string value."
+      },
+      {
+        "fn": "_load_vault",
+        "line": 169,
+        "len": 10,
+        "doc": "Load encrypted vault from disk."
+      },
+      {
+        "fn": "_save_vault",
+        "line": 179,
+        "len": 5,
+        "doc": "Save vault to disk."
+      },
+      {
+        "fn": "set_secret",
+        "line": 184,
+        "len": 6,
+        "doc": "Store an encrypted secret."
+      },
+      {
+        "fn": "get_secret",
+        "line": 190,
+        "len": 11,
+        "doc": "Retrieve and decrypt a secret."
+      },
+      {
+        "fn": "delete_secret",
+        "line": 201,
+        "len": 8,
+        "doc": "Delete a secret."
+      },
+      {
+        "fn": "list_keys",
+        "line": 209,
+        "len": 4,
+        "doc": "List stored secret key names (not values)."
+      },
+      {
+        "fn": "rotate_key",
+        "line": 213,
+        "len": 29,
+        "doc": ""
+      },
+      {
+        "fn": "get_stats",
+        "line": 242,
+        "len": 14,
+        "doc": ""
+      },
+      {
+        "fn": "_harvest_quantum_entropy",
+        "line": 256,
+        "len": 23,
+        "doc": ""
+      },
+      {
+        "fn": "generate_quantum_key",
+        "line": 279,
+        "len": 12,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_evaluate_services_health",
+    "file": "core\\self_healing_infra.py",
+    "def_line": 46,
+    "signature": "def native_evaluate_services_health(hb, to, fails, lrst, cd, max_att, rst_cnt, now) -> tuple:",
+    "doc": "Native Infrastructure Service Health Correlator (13.6x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_eval_service_health"
+    ],
+    "file_functions": [
+      {
+        "fn": "_register_default_services",
+        "line": 135,
+        "len": 37,
+        "doc": "Register the default Swarm OS services."
+      },
+      {
+        "fn": "register_service",
+        "line": 172,
+        "len": 109,
+        "doc": "Register a service to monitor."
+      },
+      {
+        "fn": "_find_process_on_port",
+        "line": 281,
+        "len": 117,
+        "doc": "Find the PID of the process listening on a port."
+      },
+      {
+        "fn": "_kill_process_on_port",
+        "line": 398,
+        "len": 15,
+        "doc": "Kill any process listening on the specified port."
+      },
+      {
+        "fn": "_log_health_summary",
+        "line": 413,
+        "len": 21,
+        "doc": "Log a summary of all service health."
+      },
+      {
+        "fn": "get_status",
+        "line": 434,
+        "len": 20,
+        "doc": "Get the current status of all services."
+      },
+      {
+        "fn": "force_restart",
+        "line": 454,
+        "len": 17,
+        "doc": "Force a restart of a specific service."
+      },
+      {
+        "fn": "reset_restart_count",
+        "line": 471,
+        "len": 13,
+        "doc": "Reset the restart counter for a service."
+      },
+      {
+        "fn": "get_self_healing_infra",
+        "line": 484,
+        "len": 10,
+        "doc": "Get or create the SelfHealingInfra singleton."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_batch_scan_security",
+    "file": "core\\sentinel.py",
+    "def_line": 157,
+    "signature": "def native_batch_scan_security(self, payloads: list) -> list:",
+    "doc": "Phase 16 native accelerated zero-copy DFA security scanning (22.8x).",
+    "dll_symbols": [
+      "strip_batch_sentinel_scan"
+    ],
+    "file_functions": [
+      {
+        "fn": "_sanitize_request",
+        "line": 328,
+        "len": 31,
+        "doc": "Check path and query parameters for attack patterns."
+      },
+      {
+        "fn": "_inspect_request_body",
+        "line": 359,
+        "len": 26,
+        "doc": "Inspect request body for attack patterns. Handles JSON and plain text."
+      },
+      {
+        "fn": "_scan_json_values",
+        "line": 385,
+        "len": 27,
+        "doc": "Recursively scan JSON values for attack patterns."
+      },
+      {
+        "fn": "create_sentinel_middleware",
+        "line": 412,
+        "len": 8,
+        "doc": "Factory function to create SentinelMiddleware with Redis."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_wavefront_denoise",
+    "file": "core\\small_diffusion_engine.py",
+    "def_line": 38,
+    "signature": "def native_wavefront_denoise(latents: _np.ndarray, D_H: float) -> _np.ndarray:",
+    "doc": "Native Wavefront fast 1-step denoising kernel (65.7x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_diffusion_wavefront_denoiser"
+    ],
+    "file_functions": [
+      {
+        "fn": "predict_velocity",
+        "line": 100,
+        "len": 33,
+        "doc": ""
+      },
+      {
+        "fn": "denoise",
+        "line": 160,
+        "len": 73,
+        "doc": ""
+      },
+      {
+        "fn": "get_stats",
+        "line": 233,
+        "len": 13,
+        "doc": ""
+      },
+      {
+        "fn": "hip_fast_diffusion_kernel",
+        "line": 246,
+        "len": 23,
+        "doc": ""
+      },
+      {
+        "fn": "get_diffusion_engine",
+        "line": 269,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_gravitational_resonance_matrix",
+    "file": "core\\star_matrix.py",
+    "def_line": 37,
+    "signature": "def native_gravitational_resonance_matrix(positions: _np.ndarray, masses: _np.ndarray,",
+    "doc": "",
+    "dll_symbols": [
+      "strip_star_matrix_resonance"
+    ],
+    "file_functions": [
+      {
+        "fn": "__repr__",
+        "line": 123,
+        "len": 11,
+        "doc": ""
+      },
+      {
+        "fn": "_init_default_nodes",
+        "line": 173,
+        "len": 39,
+        "doc": "Populate the lattice with the four canonical celestial nodes."
+      },
+      {
+        "fn": "bind",
+        "line": 212,
+        "len": 16,
+        "doc": ""
+      },
+      {
+        "fn": "_cosine_similarity",
+        "line": 228,
+        "len": 12,
+        "doc": "Compute cosine similarity between two vectors."
+      },
+      {
+        "fn": "_euclidean_distance",
+        "line": 240,
+        "len": 9,
+        "doc": ""
+      },
+      {
+        "fn": "compute_gravitational_resonance",
+        "line": 249,
+        "len": 35,
+        "doc": ""
+      },
+      {
+        "fn": "compute_all_connections",
+        "line": 284,
+        "len": 28,
+        "doc": "Compute resonance for every unique pair and cache the result."
+      },
+      {
+        "fn": "sync_with_resonance_cache",
+        "line": 312,
+        "len": 65,
+        "doc": "Pull active dreams from a bound ResonanceEngine and refresh scores."
+      },
+      {
+        "fn": "get_lattice",
+        "line": 377,
+        "len": 8,
+        "doc": "Return the full lattice state as a serialisable dict."
+      },
+      {
+        "fn": "get_d3_overlay",
+        "line": 385,
+        "len": 41,
+        "doc": ""
+      },
+      {
+        "fn": "get_star_matrix",
+        "line": 426,
+        "len": 6,
+        "doc": "Return the singleton :class:`StarMatrix` instance (lazy-initialised)."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_batch_collapse",
+    "file": "core\\sub_atomic_kernel.py",
+    "def_line": 28,
+    "signature": "def native_batch_collapse(wavefunctions: _np.ndarray, epsilon: float = 0.15):",
+    "doc": "Native Batch Wavefunction Collapse & Energy Discharge (62.2x speedup, K3: +1 TRU",
+    "dll_symbols": [
+      "strip_batch_wavefunction_collapse"
+    ],
+    "file_functions": [
+      {
+        "fn": "__post_init__",
+        "line": 67,
+        "len": 5,
+        "doc": ""
+      },
+      {
+        "fn": "recalibrate",
+        "line": 72,
+        "len": 14,
+        "doc": "Recalibrate voltage multiplier from physical measurements."
+      },
+      {
+        "fn": "collapse",
+        "line": 102,
+        "len": 26,
+        "doc": "Collapse continuous wavefunction to discrete K3 state."
+      },
+      {
+        "fn": "energy_discharge",
+        "line": 128,
+        "len": 16,
+        "doc": "Discharge energy from collapsed state."
+      },
+      {
+        "fn": "step",
+        "line": 171,
+        "len": 10,
+        "doc": "Single Mamba-3 SSM step at silicon clock rate."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_tally_council_round",
+    "file": "core\\swarm_council.py",
+    "def_line": 44,
+    "signature": "def native_tally_council_round(votes: _np.ndarray, weights: _np.ndarray, confs: _np.ndarray) -> tupl",
+    "doc": "Native Council Vote Tally, Weighted Score & PBFT Validator (140.5x speedup, K3: ",
+    "dll_symbols": [
+      "strip_tally_council_votes"
+    ],
+    "file_functions": [
+      {
+        "fn": "_generate_deliberation",
+        "line": 340,
+        "len": 28,
+        "doc": "Generate a domain-expert deliberation for a council member."
+      },
+      {
+        "fn": "_generate_vote",
+        "line": 368,
+        "len": 32,
+        "doc": "Generate a K3 ternary vote for a council member based on domain expert"
+      },
+      {
+        "fn": "propose",
+        "line": 431,
+        "len": 32,
+        "doc": ""
+      },
+      {
+        "fn": "deliberate",
+        "line": 463,
+        "len": 26,
+        "doc": "Run deliberation round \u2014 all 14 agents provide their domain-expert rea"
+      },
+      {
+        "fn": "vote",
+        "line": 489,
+        "len": 90,
+        "doc": "Run K3 ternary voting \u2014 all 14 agents cast weighted votes."
+      },
+      {
+        "fn": "enact",
+        "line": 579,
+        "len": 50,
+        "doc": "Enact a consensus-reached proposal, sealing with Monad truth anchor."
+      },
+      {
+        "fn": "run_full_cycle",
+        "line": 629,
+        "len": 33,
+        "doc": ""
+      },
+      {
+        "fn": "get_proposal",
+        "line": 662,
+        "len": 25,
+        "doc": "Get full proposal details including deliberations and votes."
+      },
+      {
+        "fn": "list_proposals",
+        "line": 687,
+        "len": 23,
+        "doc": "List all proposals with summary info."
+      },
+      {
+        "fn": "get_members",
+        "line": 710,
+        "len": 13,
+        "doc": "Return all 14 council members with their expertise weights."
+      },
+      {
+        "fn": "get_council_status",
+        "line": 723,
+        "len": 31,
+        "doc": "Return overall council status."
+      },
+      {
+        "fn": "get_enacted_ledger",
+        "line": 754,
+        "len": 12,
+        "doc": "Return the full enacted-proposals ledger."
+      },
+      {
+        "fn": "get_council",
+        "line": 766,
+        "len": 6,
+        "doc": "Return the singleton SwarmCouncil instance."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_base3_pack",
+    "file": "core\\ternary_kleene_engine.py",
+    "def_line": 41,
+    "signature": "def native_base3_pack(trits: _np.ndarray) -> _np.ndarray:",
+    "doc": "Base-3 radix 5-trit/byte codec (282.1x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_base3_trit_pack"
+    ],
+    "file_functions": [
+      {
+        "fn": "is_bypassable",
+        "line": 71,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "kleene_and",
+        "line": 101,
+        "len": 5,
+        "doc": "x \u2227 y = min(x, y) \u2014 True only if both are True."
+      },
+      {
+        "fn": "kleene_or",
+        "line": 106,
+        "len": 5,
+        "doc": "x \u2228 y = max(x, y) \u2014 False only if both are False."
+      },
+      {
+        "fn": "kleene_not",
+        "line": 111,
+        "len": 5,
+        "doc": "\u00acx = -x"
+      },
+      {
+        "fn": "kleene_imply",
+        "line": 116,
+        "len": 5,
+        "doc": "x \u2192 y = \u00acx \u2228 y = max(-x, y)"
+      },
+      {
+        "fn": "kleene_equiv",
+        "line": 121,
+        "len": 6,
+        "doc": "x \u2194 y = (x \u2192 y) \u2227 (y \u2192 x)"
+      },
+      {
+        "fn": "state_reduction",
+        "line": 127,
+        "len": 31,
+        "doc": ""
+      },
+      {
+        "fn": "quick_reduction",
+        "line": 158,
+        "len": 14,
+        "doc": "Fast reduction without projection matrix \u2014 threshold each value direct"
+      },
+      {
+        "fn": "bypass_decision",
+        "line": 172,
+        "len": 40,
+        "doc": ""
+      },
+      {
+        "fn": "vectorized_and",
+        "line": 212,
+        "len": 5,
+        "doc": "Element-wise Kleene AND for two trit vectors."
+      },
+      {
+        "fn": "vectorized_or",
+        "line": 217,
+        "len": 5,
+        "doc": "Element-wise Kleene OR for two trit vectors."
+      },
+      {
+        "fn": "vectorized_not",
+        "line": 222,
+        "len": 7,
+        "doc": "Element-wise Kleene NOT."
+      },
+      {
+        "fn": "pack_5_trits",
+        "line": 229,
+        "len": 10,
+        "doc": ""
+      },
+      {
+        "fn": "unpack_5_trits",
+        "line": 239,
+        "len": 13,
+        "doc": "Decode one byte (0-242) back into 5 trits {-1, 0, +1}."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_thz_fourier_encode",
+    "file": "core\\thz_wave_gateway.py",
+    "def_line": 71,
+    "signature": "def native_thz_fourier_encode(raw_bytes: bytes):",
+    "doc": "Native Fourier Optical Phase Encoding & Trit Quantizer (2.3x speedup, K3: +1 TRU",
+    "dll_symbols": [
+      "strip_thz_fourier_encode"
+    ],
+    "file_functions": [
+      {
+        "fn": "encode",
+        "line": 101,
+        "len": 12,
+        "doc": ""
+      },
+      {
+        "fn": "step",
+        "line": 127,
+        "len": 17,
+        "doc": ""
+      },
+      {
+        "fn": "process",
+        "line": 149,
+        "len": 26,
+        "doc": ""
+      },
+      {
+        "fn": "decode",
+        "line": 180,
+        "len": 24,
+        "doc": ""
+      },
+      {
+        "fn": "process_request",
+        "line": 213,
+        "len": 12,
+        "doc": ""
+      },
+      {
+        "fn": "get_gateway_stats",
+        "line": 225,
+        "len": 14,
+        "doc": ""
+      },
+      {
+        "fn": "get_thz_gateway",
+        "line": 239,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_quantize_2bit",
+    "file": "core\\trm_7m_full.py",
+    "def_line": 40,
+    "signature": "def native_quantize_2bit(flat_weights: _np.ndarray) -> bytes:",
+    "doc": "Native 2-bit quantization & trit packing (115.9x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_trm7m_quantize_2bit"
+    ],
+    "file_functions": [
+      {
+        "fn": "forward",
+        "line": 104,
+        "len": 10,
+        "doc": "Mamba-3 SSM step: h' = exp(A\u00b7dt)\u00b7h + B\u00b7x \u2192 y = C\u00b7h' + D\u00b7x"
+      },
+      {
+        "fn": "forward",
+        "line": 150,
+        "len": 19,
+        "doc": "Full forward pass: embed \u2192 3\u00d7Mamba \u2192 output \u2192 Kleene trit."
+      },
+      {
+        "fn": "forward_fast",
+        "line": 169,
+        "len": 13,
+        "doc": "Optimized: precomputed expA, fused ops."
+      },
+      {
+        "fn": "quantize_2bit",
+        "line": 182,
+        "len": 23,
+        "doc": "2-bit quantization: fits 6.8MB in L1/L2/Infinity Cache."
+      },
+      {
+        "fn": "param_count",
+        "line": 205,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "get_status",
+        "line": 212,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_mamba_step",
+    "file": "core\\trm_7m_model.py",
+    "def_line": 49,
+    "signature": "def native_mamba_step(conv_buf: _np.ndarray, weights: _np.ndarray, decay: _np.ndarray,",
+    "doc": "",
+    "dll_symbols": [
+      "strip_mamba_conv_decay_step"
+    ],
+    "file_functions": [
+      {
+        "fn": "param_count",
+        "line": 165,
+        "len": 7,
+        "doc": ""
+      },
+      {
+        "fn": "forward",
+        "line": 172,
+        "len": 30,
+        "doc": "Single Mamba-3 forward step. x shape: (dim,). Returns y shape: (dim,)."
+      },
+      {
+        "fn": "_count_params",
+        "line": 245,
+        "len": 7,
+        "doc": ""
+      },
+      {
+        "fn": "forward",
+        "line": 255,
+        "len": 51,
+        "doc": ""
+      },
+      {
+        "fn": "get_stats",
+        "line": 306,
+        "len": 16,
+        "doc": ""
+      },
+      {
+        "fn": "_quantize_tensor",
+        "line": 338,
+        "len": 10,
+        "doc": "Quantize to 2-bit: stores min/max for dequantization."
+      },
+      {
+        "fn": "_dequantize_tensor",
+        "line": 348,
+        "len": 4,
+        "doc": "Decompress back to float32 for inference."
+      },
+      {
+        "fn": "_quantize_all",
+        "line": 352,
+        "len": 10,
+        "doc": "Quantize all model weights to 2-bit."
+      },
+      {
+        "fn": "get_size_info",
+        "line": 362,
+        "len": 20,
+        "doc": ""
+      },
+      {
+        "fn": "get_trm_7m",
+        "line": 382,
+        "len": 10,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_mamba_ssm_step",
+    "file": "core\\trm_council_models.py",
+    "def_line": 278,
+    "signature": "def native_mamba_ssm_step(a_vec: _np.ndarray, b_mat: _np.ndarray, x_vec: _np.ndarray, phi_v: float =",
+    "doc": "Native Mamba-3 SSM Recurrence Step (K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_mamba_ssm_step"
+    ],
+    "file_functions": [
+      {
+        "fn": "phase_resonance_lock",
+        "line": 209,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "voltage_doctrine",
+        "line": 213,
+        "len": 13,
+        "doc": ""
+      },
+      {
+        "fn": "get_voltage_telemetry",
+        "line": 348,
+        "len": 26,
+        "doc": "Fetches live hardware telemetry and calculates the Voltage Doctrine fa"
+      },
+      {
+        "fn": "_encode_objective",
+        "line": 374,
+        "len": 12,
+        "doc": "Converts an objective string into a 128-dim TurboVec normalized embedd"
+      },
+      {
+        "fn": "forward_agent",
+        "line": 386,
+        "len": 89,
+        "doc": ""
+      },
+      {
+        "fn": "evaluate_council_quorum",
+        "line": 475,
+        "len": 73,
+        "doc": ""
+      },
+      {
+        "fn": "get_council_engine",
+        "line": 548,
+        "len": 5,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_turbovec_score",
+    "file": "core\\turbovec_memory.py",
+    "def_line": 30,
+    "signature": "def native_turbovec_score(matrix: _np.ndarray, q_vec: _np.ndarray, recency: _np.ndarray) -> _np.ndar",
+    "doc": "Native TurboVec cosine & recency batch scorer (312.0x speedup, K3: +1 TRUE).",
+    "dll_symbols": [
+      "strip_turbovec_cosine_recency_scorer"
+    ],
+    "file_functions": [
+      {
+        "fn": "_rebuild_index",
+        "line": 130,
+        "len": 8,
+        "doc": "Rebuild in-memory index from cache."
+      },
+      {
+        "fn": "_atomic_append",
+        "line": 138,
+        "len": 20,
+        "doc": "Atomic append to compressed JSONL \u2014 never corrupts."
+      },
+      {
+        "fn": "total_memories",
+        "line": 158,
+        "len": 4,
+        "doc": ""
+      },
+      {
+        "fn": "add",
+        "line": 165,
+        "len": 21,
+        "doc": "Add a memory entry. Returns entry ID."
+      },
+      {
+        "fn": "get",
+        "line": 186,
+        "len": 7,
+        "doc": "Get a memory entry by ID. O(1) lookup."
+      },
+      {
+        "fn": "query",
+        "line": 193,
+        "len": 37,
+        "doc": ""
+      },
+      {
+        "fn": "query_by_agent",
+        "line": 230,
+        "len": 9,
+        "doc": "Get recent entries for a specific agent."
+      },
+      {
+        "fn": "log_event",
+        "line": 239,
+        "len": 16,
+        "doc": "Log a system event (replaces ChromaDB event ledger)."
+      },
+      {
+        "fn": "get_stats",
+        "line": 255,
+        "len": 36,
+        "doc": "Get memory statistics formatted for Swarm OS Dashboard."
+      },
+      {
+        "fn": "compact",
+        "line": 291,
+        "len": 16,
+        "doc": "Compact and clean old entries."
+      },
+      {
+        "fn": "get_turbovec_memory",
+        "line": 307,
+        "len": 10,
+        "doc": "Get or create the shared TurboVec memory instance."
+      }
+    ]
+  },
+  {
+    "wrapper": "native_evaluate_mission_steps",
+    "file": "core\\ultrawork_loop.py",
+    "def_line": 45,
+    "signature": "def native_evaluate_mission_steps(statuses: _np.ndarray, attempts: _np.ndarray) -> tuple:",
+    "doc": "Native Ultrawork task velocity & K3 gate evaluation (293.1x speedup, K3: +1 TRUE",
+    "dll_symbols": [
+      "strip_evaluate_missions"
+    ],
+    "file_functions": [
+      {
+        "fn": "_get_binder",
+        "line": 79,
+        "len": 10,
+        "doc": ""
+      },
+      {
+        "fn": "_get_gpu",
+        "line": 89,
+        "len": 8,
+        "doc": ""
+      },
+      {
+        "fn": "_get_twin",
+        "line": 97,
+        "len": 8,
+        "doc": ""
+      },
+      {
+        "fn": "k3_gate",
+        "line": 171,
+        "len": 10,
+        "doc": ""
+      },
+      {
+        "fn": "create_mission",
+        "line": 392,
+        "len": 10,
+        "doc": ""
+      },
+      {
+        "fn": "resume_mission",
+        "line": 571,
+        "len": 14,
+        "doc": "Resume a persisted mission from disk."
+      },
+      {
+        "fn": "_parse_plan",
+        "line": 585,
+        "len": 19,
+        "doc": "Parse a plan text into structured steps."
+      },
+      {
+        "fn": "_log",
+        "line": 604,
+        "len": 6,
+        "doc": "Append to mission progress log."
+      },
+      {
+        "fn": "_persist",
+        "line": 610,
+        "len": 6,
+        "doc": "Save mission state to disk."
+      },
+      {
+        "fn": "list_missions",
+        "line": 616,
+        "len": 10,
+        "doc": "List all missions."
+      },
+      {
+        "fn": "get_stats",
+        "line": 626,
+        "len": 11,
+        "doc": ""
+      },
+      {
+        "fn": "get_ultrawork_loop",
+        "line": 637,
+        "len": 5,
+        "doc": ""
+      }
+    ]
+  },
+  {
+    "wrapper": "native_synthesize_permutations",
+    "file": "core\\zero_human_test_gen.py",
+    "def_line": 43,
+    "signature": "def native_synthesize_permutations(cardinalities: list):",
+    "doc": "Native Endpoint Matrix & Parameter Permutation Synthesizer (39.1x speedup, K3: +",
+    "dll_symbols": [
+      "strip_synthesize_permutations"
+    ],
+    "file_functions": [
+      {
+        "fn": "generate_all_tests",
+        "line": 134,
+        "len": 32,
+        "doc": ""
+      },
+      {
+        "fn": "_generate_pytest_api_tests",
+        "line": 166,
+        "len": 20,
+        "doc": "Generate Pytest API tests for all endpoints."
+      },
+      {
+        "fn": "test_health_endpoint",
+        "line": 211,
+        "len": 16,
+        "doc": "Test tool health endpoint"
+      },
+      {
+        "fn": "test_mcp_manifest",
+        "line": 227,
+        "len": 33,
+        "doc": "Test MCP manifest endpoint"
+      },
+      {
+        "fn": "client",
+        "line": 260,
+        "len": 6,
+        "doc": "HTTP client fixture for API testing."
+      },
+      {
+        "fn": "tool_available",
+        "line": 266,
+        "len": 10,
+        "doc": "Check if tool is running before tests."
+      },
+      {
+        "fn": "test_tool_online",
+        "line": 279,
+        "len": 4,
+        "doc": "Verify tool is online and responding."
+      },
+      {
+        "fn": "test_health_check",
+        "line": 283,
+        "len": 8,
+        "doc": "Test health endpoint returns correct structure."
+      },
+      {
+        "fn": "test_manifest_valid",
+        "line": 291,
+        "len": 31,
+        "doc": "Test MCP manifest is valid JSON."
+      },
+      {
+        "fn": "_generate_pytest_unit_tests",
+        "line": 322,
+        "len": 18,
+        "doc": "Generate Pytest unit tests for tool logic."
+      },
+      {
+        "fn": "test_unit_mock_response",
+        "line": 369,
+        "len": 14,
+        "doc": "Test mock response generation"
+      },
+      {
+        "fn": "test_unit_endpoint_parsing",
+        "line": 383,
+        "len": 23,
+        "doc": "Test that endpoints are correctly parsed"
+      },
+      {
+        "fn": "test_module_importable",
+        "line": 409,
+        "len": 5,
+        "doc": "Test that the tool module can be imported."
+      },
+      {
+        "fn": "test_module_has_fastapi_app",
+        "line": 414,
+        "len": 34,
+        "doc": "Test that module has FastAPI app instance."
+      }
+    ]
+  }
+]

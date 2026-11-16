@@ -1,0 +1,78 @@
+{
+ "checks": [
+  {
+   "name": "GET /verification/fabrication returns 200",
+   "ok": true,
+   "detail": "status 200"
+  },
+  {
+   "name": "the verdict tally equals an independent recount of the rows",
+   "ok": true,
+   "detail": "route {'ARTIFACT_UNVERIFIED_NO_CONTRACT': 10, 'BLOCKED_NO_ARTIFACT': 167, 'FABRICATED_BY_A_SEEDED_RNG_PRODUCER': 61, 'FABRICATED_RESULTS_FOR_A_GATED_TASK': 74, 'UNUSED_CAPACITY_NO_ARTIFACT': 155} vs recount {'FABRICATED_RESULTS_FOR_A_GATED_TASK': 74, 'BLOCKED_NO_ARTIFACT': 167, 'UNUSED_CAPACITY_NO_ARTIFACT': 155, 'FABRICATED_BY_A_SEEDED_RNG_PRODUCER': 61, 'ARTIFACT_UNVERIFIED_NO_CONTRACT': 10}"
+  },
+  {
+   "name": "checked == the number of rows in the artifact",
+   "ok": true,
+   "detail": "467 vs 467"
+  },
+  {
+   "name": "fabricated_count == the rows whose verdict starts with FABRICATED",
+   "ok": true,
+   "detail": "135 vs 135"
+  },
+  {
+   "name": "every listed row really is a fabrication",
+   "ok": true,
+   "detail": "135 listed"
+  },
+  {
+   "name": "every listed row carries its evidence",
+   "ok": true,
+   "detail": "an entry without evidence is an assertion"
+  },
+  {
+   "name": "tasks_with_artifacts equals the recount",
+   "ok": true,
+   "detail": "145 vs 145"
+  },
+  {
+   "name": "?limit=1 truncates the list but not the count",
+   "ok": true,
+   "detail": "1 shown"
+  },
+  {
+   "name": "?verdict= filters the list to that verdict",
+   "ok": true,
+   "detail": "61"
+  },
+  {
+   "name": "POST is answered 405, not by the catch-all",
+   "ok": true,
+   "detail": "status 405"
+  },
+  {
+   "name": "with the artifact absent the route answers 501 quarantine_absent",
+   "ok": true,
+   "detail": "status 501 error quarantine_absent"
+  },
+  {
+   "name": "...and names the command that produces it",
+   "ok": true,
+   "detail": "no fabrication quarantine on disk (swarm_v2_artifacts/fabric"
+  },
+  {
+   "name": "the artifact was restored byte-identical",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "and the route works again after the restore",
+   "ok": true,
+   "detail": ""
+  }
+ ],
+ "passed": 14,
+ "failed": 0,
+ "route": "/verification/fabrication",
+ "artifact": "fabrication_quarantine.json"
+}

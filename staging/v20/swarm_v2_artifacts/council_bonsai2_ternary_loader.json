@@ -1,0 +1,127 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-20T20:24:37.822714+00:00",
+  "finding": "Swift Bonsai 2 (ternary 27B, qwen35) needs the PrismML-Eng llama.cpp fork because stock llama.cpp rejects its PTQ1_0/PQ2_0 tensor types; the tier-2 :8587 runs stock llama.cpp and cannot serve it. The kernel already owns a multiply-free ternary GEMM but no GGUF PQ2_0/PTQ1_0 reader.",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Platform Capability",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Add a native PQ2_0/PTQ1_0 GGUF tensor reader + ternary dequant to ternary_engine.rs so the kernel parses and loads the Swift Bonsai 2 ternary"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Add a native PQ2_0/PTQ1_0 GGUF tensor reader + ternary dequant to ternary_engine.rs so the kernel parses and loads the Swift Bonsai "
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Add a native PQ2_0/PTQ1_0 GGUF tensor reader + ternary dequant to ternary_engine.rs so the kernel parses and loads the Swift Bonsai 2 ternary packs"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Add a native PQ2_0/PTQ1_0 GGUF tensor reader + ternary dequant to ternary_engine.rs so the kernel parses and loads the Swift Bonsai 2 ternary packs it"
+        }
+      ],
+      "monad_seal": "6d6bc3db5f4501556698df269cba75077fa76054a820e8d8cd5a326ccd47f3e3",
+      "motion": "MOTION-B1",
+      "phase": "consensus",
+      "proposal_id": "CP-972903D3",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "Add a native PQ2_0/PTQ1_0 GGUF tensor reader + ternary dequant to ternary_engine.rs so the kernel parses and loads the Swift Bonsai 2 ternary packs itself (integrity-gated, in-process), replacing the dependency on the PrismML-Eng llama.cpp fork. MEASURED (not inferred): the kernel already runs ternary_engine.rs (load_verified CRC gate + multiply-free 2-bit GEMM, AVX2, 3.2-4.6x vs fp32) over .trm bundles, but its reader accepts only the platform's TRM1 safetensors-derived bundles; GGUF metadata of D:/trm-models/ternary-bonsai2/Ternary-Bonsai-2-27B-PQ2_0.gguf shows arch qwen35, 64 blocks, embedding 5120, full_attention_interval 4, ssm.state_size 128, context 262144; the Swift-Bonsai-2-PTQ1_0 pack is 5.947 GB (1-bit) and PQ2_0 7.206 GB (2-bit), Prism ternary tensor types that stock llama.cpp rejects (HF: 'Stock llama.cpp does not support these tensor types'); the tier-2 server :8587 runs stock llama.cpp and cannot serve them; the sparse gate activates 1 agent at a time. REJECT AS PREMATURE if the Prism PQ2_0/PTQ1_0 tensor layouts are not documented in-tree and must be reverse-engineered from the fork's source, i.e. if a reader cannot be written from spec.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Architecture",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Scope the kernel's role honestly: a native WEIGHT LOADER + per-layer ternary GEMM (the platform's own strength) is the deliverable; a full 27"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Cognitive & interface evaluation of Scope the kernel's role honestly: a native WEIGHT LOADER + per-layer ternary GEMM (the platform's own strength) is the deliverable; a "
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Scope the kernel's role honestly: a native WEIGHT LOADER + per-layer ternary GEMM (the platform's own strength) is the deliverable; "
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Scope the kernel's role honestly: a native WEIGHT LOADER + per-layer ternary GEMM (the platform's own strength) is the deliverable; a full 27B qwen"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Architectural logic review: verifying structural coherence, dependency graphs, and design pattern correctness."
+        }
+      ],
+      "monad_seal": "fdc9ae0504e15f60bc1cd974a08dbaa45711ad94c426df54a80a8492cef75f75",
+      "motion": "MOTION-B2",
+      "phase": "consensus",
+      "proposal_id": "CP-9536729C",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9838,
+      "topic": "Scope the kernel's role honestly: a native WEIGHT LOADER + per-layer ternary GEMM (the platform's own strength) is the deliverable; a full 27B qwen35 hybrid (SSM recurrence + attention + 64 layers) forward pass is a separate, larger port and is NOT claimed by this motion. MEASURED (not inferred): the kernel already runs ternary_engine.rs (load_verified CRC gate + multiply-free 2-bit GEMM, AVX2, 3.2-4.6x vs fp32) over .trm bundles, but its reader accepts only the platform's TRM1 safetensors-derived bundles; GGUF metadata of D:/trm-models/ternary-bonsai2/Ternary-Bonsai-2-27B-PQ2_0.gguf shows arch qwen35, 64 blocks, embedding 5120, full_attention_interval 4, ssm.state_size 128, context 262144; the Swift-Bonsai-2-PTQ1_0 pack is 5.947 GB (1-bit) and PQ2_0 7.206 GB (2-bit), Prism ternary tensor types that stock llama.cpp rejects (HF: 'Stock llama.cpp does not support these tensor types'); the tier-2 server :8587 runs stock llama.cpp and cannot serve them; the sparse gate activates 1 agent at a time. REJECT if the motion over-claims a full text generator when only the loader+GEMM layer is built.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 9,
+  "record": "NATIVE PQ2_0/PTQ1_0 TERNARY LOADER -- council decision",
+  "sha256": "17628d2fdd069a95400a3758839b121e0e602106534786fed1844b302e59bb3d"
+}

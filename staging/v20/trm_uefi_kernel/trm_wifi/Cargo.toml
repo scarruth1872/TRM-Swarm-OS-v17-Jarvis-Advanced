@@ -1,0 +1,14 @@
+[package]
+name = "trm_wifi"
+version = "0.1.0"
+edition = "2021"
+
+# Dependency-free by design, like the supervisor: a supplicant that needs no crate graph is a supplicant
+# that can be built with a single rustc invocation on any host and dropped into a RAM image. That costs
+# one thing std does not offer -- a socket that is neither Unix-domain nor TCP -- so the netlink and
+# AF_PACKET syscalls are issued directly (see src/syscall.rs).
+[dependencies]
+
+[[bin]]
+name = "trm_wifi"
+path = "src/main.rs"

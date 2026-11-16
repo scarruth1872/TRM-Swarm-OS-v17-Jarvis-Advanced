@@ -1,0 +1,49 @@
+{
+  "phase": 15,
+  "monad_anchor": "0x4D4F4E4144000001",
+  "turbovec_step": "ENFORCED",
+  "timestamp": 1788810710.0288324,
+  "average_speedup": 233.4,
+  "results": [
+    {
+      "module": "swarm_v2/core/global_knowledge_fabric.py",
+      "speedup": 119.1,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_knowledge_fabric.dll",
+      "technique": "SIMD base-3 trit expansion and branchless zero-copy ASCII token matcher"
+    },
+    {
+      "module": "swarm_v2/core/skill_matrix_sync.py",
+      "speedup": 1031.7,
+      "diff": 0.0010004043579101562,
+      "status": "PASS",
+      "dll": "strip_skill_sync.dll",
+      "technique": "AVX2 vectorized log2 proficiency heuristic with ternary synapse trit classification"
+    },
+    {
+      "module": "swarm_v2/core/self_healing.py",
+      "speedup": 9.8,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_self_healing.dll",
+      "technique": "Zero-allocation byte-level streaming DFA for SQLi/XSS/Path security sanitization"
+    },
+    {
+      "module": "swarm_v2/core/memory.py",
+      "speedup": 3.5,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_memory_compactor.dll",
+      "technique": "Zero-copy byte slice action parser & sub-nanosecond prompt poison filter"
+    },
+    {
+      "module": "swarm_v2/core/intent_buffer.py",
+      "speedup": 3.1,
+      "diff": 0.0,
+      "status": "PASS",
+      "dll": "strip_intent_buffer.dll",
+      "technique": "Zero-allocation token set intersection & AVX2 speculative intent classification"
+    }
+  ]
+}

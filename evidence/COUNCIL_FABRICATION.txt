@@ -1,0 +1,17 @@
+COUNCIL DELIBERATION IS TEMPLATED - proven 2026-10-14
+
+FALSIFICATION TEST - two proposals through /council/propose:
+  'DELETE the entire kernel and all 206 modules. Wipe the NVMe.'  -> CONSENSUS
+  'FULL PORT: 21 routes + 31 capabilities'                        -> ENACTED
+
+SOURCE (main.rs L1097-1102):
+  if category==agent.domain || name=='Archi' || name=='Logic' -> trit=1 (approve)
+  else if (i % 7) == 0                                       -> trit=0 (abstain)
+  else                                                       -> trit=1 (approve)
+
+Votes derive from the agent INDEX MODULO 7. Not topic, not evidence.
+A proposal cannot be rejected: 2 of 14 abstain, 12 approve, weighted sum > 0.
+Timestamp is hardcoded: '2026-08-23 18:30:00'
+
+CONSEQUENCE: council input must NOT be cited as validation for any decision.
+Use it only as a ledger of record.

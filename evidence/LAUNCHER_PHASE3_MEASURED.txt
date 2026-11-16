@@ -1,0 +1,294 @@
+LAUNCHER PHASE 3 - MEASURED EVIDENCE
+====================================
+Date measured : 2026-11-03 (Tue), ~10:11-10:25 local
+Host          : Windows 11, bash/MSYS shell, launcher run through cmd.exe
+File in scope : F:\Development sites\TRM-Swarm-OS-v2\START_TRM_PLATFORM.bat
+Backup        : F:\Development sites\TRM-Swarm-OS-v2\START_TRM_PLATFORM.bat.bak_20261103
+                (copy of the pre-change file, md5 cfa3da1fa49eab3a21ebbba0f655cfff, 247 lines, 9112 bytes)
+Patched file  : md5 7961e137d1bbb4ad2f6de1b9152bdd99, 325 lines, 12204 bytes
+
+No service was started or stopped during this work. No git command was run.
+No file other than START_TRM_PLATFORM.bat (+ its .bak_20261103) was written in the repo.
+Test harness files live outside the repo in
+C:\Users\shawn\AppData\Local\hermes\cache\scratch\ (run_check.cmd, run_direct.cmd,
+t_unlocked.bat, t_fail.bat, t_main.bat).
+
+
+BEFORE (measured on the backup copy)
+------------------------------------
+$ grep -c 8593 START_TRM_PLATFORM.bat.bak_20261103
+0
+
+Steps were [1/7] .. [7/7]; there was no embeddings step.
+Log wrapper (lines 12-19 of the original):
+
+    if not "%TRM_LOGGED%"=="1" (
+        set TRM_LOGGED=1
+        if not exist "%ROOT_DIR%\logs" mkdir "%ROOT_DIR%\logs" 2>nul
+        echo ==== launch %DATE% %TIME% ==== >> "%LOG%"
+        "%COMSPEC%" /c "%~f0" 1>> "%LOG%" 2>&1
+        echo ==== done   %DATE% %TIME% ==== >> "%LOG%"
+        exit /b 0
+    )
+
+Two independent success-leaks there: the child's exit code was discarded
+(unconditional "exit /b 0"), and a failed ">> %LOG%" redirect meant the child
+line never executed at all while the script still returned 0.
+:check_only also ended with an unconditional "exit /b 0".
+
+
+AFTER (measured on the patched file)
+------------------------------------
+$ grep -c 8593 START_TRM_PLATFORM.bat
+7
+
+$ grep -n 8593 START_TRM_PLATFORM.bat
+194:echo [8/8] Embeddings Server (8593)
+197:call :verify 8593 llama-server.exe "Embeddings"
+202:        start "TRM-Embeddings" /min "%LLAMA_EXE%" --model "%EMB_MODEL%" --host 127.0.0.1 --port 8593 --embeddings --ctx-size 2048 --threads 6
+203:        call :confirm 8593 "Embeddings"
+213:echo  Embeddings http://localhost:8593
+258:call :verify 8593 llama-server.exe "Embeddings"
+260:call :verify_http 8593 /health "ok" "Embeddings"
+
+
+DEFECT 1 - MISSING EMBEDDING SERVER (8593)
+------------------------------------------
+Added as step 8, same shape as the other steps: :verify on the port, start only
+if down, :confirm to wait for the bind, FAILED=1 if it never binds.
+
+New variable (line 10), so the long blob path is not repeated inline:
+
+    set "EMB_MODEL=C:/Users/shawn/.ollama/models/blobs/sha256-970aa74c0a90ef7482477cf803618e776e173c007bf957f635f1015bfcfef0e6"
+
+Launch line (line 202):
+
+    start "TRM-Embeddings" /min "%LLAMA_EXE%" --model "%EMB_MODEL%" --host 127.0.0.1 --port 8593 --embeddings --ctx-size 2048 --threads 6
+
+%LLAMA_EXE% is F:\Development sites\ub3\llama-vulkan-win\llama-server.exe - the
+same binary the 8587 step uses, and the same one measured live on 8593. The path
+contains a space, so it stays quoted; "start" takes the first quoted token as the
+window title and the second as the executable, which is the pattern already used
+by steps 1-7. The model path is quoted too even though it has no space.
+
+Also added to :check_only (lines 258-261): :verify 8593 llama-server.exe and
+:verify_http 8593 /health "ok", so a degraded router is visible in the check run.
+
+Live proof the port is real and serving (read-only curl, no service touched):
+$ curl.exe -s -m 6 -w "\nHTTP=%{http_code}\n" http://127.0.0.1:8593/health
+{"status":"ok"}
+HTTP=200
+$ tasklist /FI "PID eq 35656" /FO CSV /NH
+"llama-server.exe","35656","Console","1","257,204 K"
+
+
+DEFECT 2 - LOCKED LOG ABORTED THE LAUNCH
+----------------------------------------
+The wrapper no longer redirects blindly. It probes writability by appending the
+launch banner, and on failure falls back to %TEMP%\trm_platform_launch.log:
+
+    if "%TRM_LOGGED%"=="1" goto :dispatch
+    set TRM_LOGGED=1
+    if not exist "%ROOT_DIR%\logs" mkdir "%ROOT_DIR%\logs" 2>nul
+    call :log_probe
+    if errorlevel 1 goto :log_fallback
+    "%COMSPEC%" /c "%~f0" 1>> "%LOG%" 2>&1
+    set "RC=%ERRORLEVEL%"
+    if not defined RC set "RC=1"
+    2>nul (>>"%LOG%" echo ==== done   %DATE% %TIME% ====)
+    exit /b %RC%
+
+    :log_fallback
+    set "LOG=%TEMP%\trm_platform_launch.log"
+    echo [WARN] primary log locked by another process - logging to %LOG%
+    "%COMSPEC%" /c "%~f0" 1>> "%LOG%" 2>&1
+    set "RC=%ERRORLEVEL%"
+    if not defined RC set "RC=1"
+    2>nul (>>"%LOG%" echo ==== done   %DATE% %TIME% ====)
+    exit /b %RC%
+
+    :log_probe
+    2>nul (>>"%LOG%" echo ==== launch %DATE% %TIME% ====) && exit /b 0
+    exit /b 1
+
+    :dispatch
+    if "%TRM_SELFTEST%"=="1" goto :selftest
+    if "%TRM_CHECK_ONLY%"=="1" goto :check_only
+    goto :main
+
+Notes on why it is written this way:
+- The append itself is the probe. Opening and closing the file would race another
+  writer and could report "writable" for a file that is locked a millisecond later.
+- A failed redirect does NOT set ERRORLEVEL (measured: errorlevel stayed 0), so the
+  probe uses "&& exit /b 0" rather than "if errorlevel 1".
+- The wrapper is deliberately flat (goto, no parenthesised block). Measured: with
+  the probe nested inside the original "if not ... (" block, cmd printed a bogus
+  "The system cannot find the drive specified." on every locked-log run. Flattening
+  removed it; the only output on a locked log is now the single [WARN] line.
+
+This was not simulated. During the test window the real log was held by another
+process, so the fallback path ran for real:
+
+$ powershell -NoProfile -Command "try { $f=[IO.File]::Open('F:\Development sites\TRM-Swarm-OS-v2\logs\platform_launch.log','Open','ReadWrite','None'); 'NOT LOCKED'; $f.Close() } catch { 'LOCKED' }"
+LOCKED
+
+$ echo "probe" >> logs/platform_launch.log
+/usr/bin/bash: line 7: logs/platform_launch.log: Device or resource busy
+
+Under the old code that condition produced
+"The process cannot access the file because it is being used by another process."
+and the child launcher never ran. Under the new code the launch completes and the
+output lands in C:\Users\shawn\AppData\Local\Temp\trm_platform_launch.log.
+
+
+DEFECT 3 - ABORT RETURNED SUCCESS
+---------------------------------
+Three changes:
+1. Wrapper propagates the child's exit code: "set "RC=%ERRORLEVEL%"" then
+   "exit /b %RC%" (was "exit /b 0").
+2. :main sets FAILED=1 whenever a step was started but :confirm never saw the port
+   bind, and ends with:
+
+       if "%FAILED%"=="1" (
+           echo === LAUNCH INCOMPLETE - one or more services failed to bind ===
+           echo === see %LOG% ===
+           exit /b 1
+       )
+       start http://localhost:5183
+       ping -n 5 127.0.0.1 >nul 2>&1
+       exit /b 0
+
+   The browser is no longer opened on a failed launch.
+3. :check_only aggregates every check into CHK_FAIL and exits 1 on any failure,
+   printing "--- RESULT: PASS ---" or "--- RESULT: FAIL - one or more checks failed ---".
+
+
+TEST 1 - CHECK-ONLY RUN OF THE REAL FILE, THROUGH THE LOG WRAPPER
+-----------------------------------------------------------------
+Harness (outside the repo), so the guard is set before the launcher starts:
+
+    @echo off
+    set TRM_CHECK_ONLY=1
+    set TRM_NO_KILL=1
+    call "F:\Development sites\TRM-Swarm-OS-v2\START_TRM_PLATFORM.bat"
+    echo LAUNCHER_RC=%ERRORLEVEL%
+
+$ cmd.exe /c "C:\Users\shawn\AppData\Local\hermes\cache\scratch\run_check.cmd"
+[WARN] primary log locked by another process - logging to C:\Users\shawn\AppData\Local\Temp\trm_platform_launch.log
+LAUNCHER_RC=0
+
+(TRM_NO_KILL=1 is set so a stale-port verdict can never kill a process during a
+check run. Nothing was killed.)
+
+
+TEST 2 - SAME FILE, TRM_LOGGED=1 SO THE CHECK OUTPUT REACHES THE CONSOLE
+-----------------------------------------------------------------------
+$ cmd.exe /c "C:\Users\shawn\AppData\Local\hermes\cache\scratch\run_direct.cmd"
+--- CHECK ONLY ---
+      [OK]    Council - pid 21224 (host_council_server.exe)
+      [OK]    Council - port 8022 /arc/pool served 'unified_transistor_fabric'
+      [OK]    Council - port 8022 /arc/status served 'arc/status'
+      [OK]    Bridge - pid 38796 (trm_companion_bridge.exe)
+      [OK]    Proxy - pid 14712 (matches 'trm_companion_proxy')
+      [OK]    Proxy - port 3001 /health served 'companion/status'
+      [OK]    Inference - pid 3168 (llama-server.exe)
+      [OK]    Inference - port 8587 /health served 'ok'
+      [OK]    TRM Svc - pid 29232 (matches 'trm_server')
+      [OK]    TRM Svc - port 8588 /health served 'trm7m'
+      [OK]    Dashboard - pid 36804 (matches 'vite')
+      [OK]    Dashboard - port 5183 / served 'doctype'
+      [OK]    Jarvis - pid 16984 (matches 'server.ts')
+      [OK]    Jarvis - port 3000 /health served 'doctype'
+      [OK]    Council API - pid 15948 (matches 'app_v2')
+      [OK]    Council API - port 8099 /council/status served 'rust_kernel_bound'
+      [OK]    Embeddings - pid 35656 (llama-server.exe)
+      [OK]    Embeddings - port 8593 /health served 'ok'
+--- RESULT: PASS ---
+DIRECT_RC=0
+
+18 checks, all OK, including the two new 8593 checks. Clean check run returns 0.
+
+
+TEST 3 - A FAILING CHECK NOW RETURNS NON-ZERO (observed, not staged)
+--------------------------------------------------------------------
+An earlier check run in the same window caught the dashboard mid-restart:
+
+      [DOWN]  Dashboard - port 5183 free
+      [DOWN]  Dashboard - port 5183 free
+--- RESULT: FAIL - one or more checks failed ---
+
+$ cmd.exe /c "...\run_check.cmd"
+[WARN] primary log locked by another process - logging to C:\Users\shawn\AppData\Local\Temp\trm_platform_launch.log
+LAUNCHER_RC=1
+
+Same file, same guard, one service down: exit code 1 instead of 0.
+
+
+TEST 4 - :main ABORT PATH (copy of the file, every "start" neutralised)
+----------------------------------------------------------------------
+To exercise the launch path without launching anything, a copy in the scratch dir
+had every "start" line commented out and step 1 pointed at a dead port (9999).
+No service could be started by that copy; the log confirms no [UP] line.
+
+$ cmd.exe /c "...\run_main.cmd"
+MAIN_RC=1
+
+log:
+[1/8] Council Server (8022)
+      [DOWN]  Council Server - port 9999 free
+      [FAIL]  Council Server - port 9999 did NOT come up after 12s
+      [FAIL]  the started process failed to bind. Check ...\t_log_main.log
+[2/8] Companion Bridge (3002)
+      [OK]    Companion Bridge - pid 38796 (trm_companion_bridge.exe)
+...
+[8/8] Embeddings Server (8593)
+      [OK]    Embeddings - pid 35656 (llama-server.exe)
+
+=== PLATFORM SERVICES INITIALIZED ===
+ Dashboard  http://localhost:5183
+ Council    http://localhost:8022
+ Companion  http://localhost:3001
+ TRM svc    http://localhost:8588
+ Embeddings http://localhost:8593
+=== LAUNCH INCOMPLETE - one or more services failed to bind ===
+=== see ...\t_log_main.log ===
+
+TEST 5 - UNLOCKED LOG STILL LOGS NORMALLY (copy pointed at a scratch log)
+------------------------------------------------------------------------
+$ cmd.exe /c "...\run_unlocked.cmd"
+RC=0
+$ tail -4 t_log_unlocked.log
+      [OK]    Embeddings - pid 35656 (llama-server.exe)
+      [OK]    Embeddings - port 8593 /health served 'ok'
+--- RESULT: PASS ---
+==== done   Tue 11/03/2026 10:23:16.86 ====
+
+So the fallback did not replace normal logging: when the primary log is writable
+it is still used, banner and trailer included.
+
+
+LINE ENDINGS
+------------
+$ file START_TRM_PLATFORM.bat
+START_TRM_PLATFORM.bat: DOS batch file, ASCII text, with CRLF line terminators
+
+$ od -c START_TRM_PLATFORM.bat | head -2
+0000000   @   e   c   h   o       o   f   f  \r  \n   s   e   t   l   o
+0000020   c   a   l       e   n   a   b   l   e   d   e   l   a   y   e
+
+$ python -c "d=open('START_TRM_PLATFORM.bat','rb').read(); print('CRLF',d.count(b'\r\n'),'bare LF',d.count(b'\n')-d.count(b'\r\n'))"
+CRLF 325 bare LF 0
+
+325 CRLF line terminators, zero bare LF, file ends with CRLF. The file is pure
+ASCII; no BOM was introduced.
+
+
+WHAT WAS NOT DONE
+-----------------
+- No service was started, stopped, killed or restarted. TRM_NO_KILL=1 was set for
+  every run; the only "start" statements executed were in a scratch copy where
+  they had been commented out.
+- No git command was run.
+- No file in the repo was modified except START_TRM_PLATFORM.bat and the new
+  START_TRM_PLATFORM.bat.bak_20261103 backup.
+- swarm_v2/core/ and the Rust kernel were not touched.

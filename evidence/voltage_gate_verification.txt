@@ -1,0 +1,18 @@
+VOLTAGE GATE - both states proven live on port 8022  (binary 8b7560f4b674ef19)
+
+STATE 1 - default floor 0.30:
+  gate.open True | threshold 0.3 | phi_v 0.415
+  reason: phi_v 0.4150 at or above the floor 0.30; substrate has headroom
+  /k3/bench -> ns_per_op 0.8781, voltage_gate {open: True, phi_v: 0.415}
+
+STATE 2 - floor raised to 0.99 via TRM_VOLTAGE_GATE_THRESHOLD:
+  gate.open False | threshold 0.99
+  reason: phi_v 0.4150 is below the floor 0.99: substrate headroom is short
+  /k3/bench -> status REFUSED_VOLTAGE_GATE
+  ns_per_op ABSENT  <- refuses rather than reporting a figure it cannot vouch for
+
+NON-GATED endpoints unaffected: /health HEALTHY, /journal/status 96 papers.
+
+Doctrine: the floor is read per evaluation from the environment so no recompile is
+needed, and no REQUEST can change it. A non-finite or <=0 value falls back to the
+default, so the gate cannot be disabled by config error.

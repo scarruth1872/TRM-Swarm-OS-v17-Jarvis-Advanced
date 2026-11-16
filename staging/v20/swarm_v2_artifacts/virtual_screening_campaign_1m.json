@@ -1,0 +1,41 @@
+{
+  "campaign": "TRM Swarm OS — Phase 2 High-Throughput Virtual Screening Campaign",
+  "version": "19.001 Sovereign",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "substrate": "Rayon Multi-Core Parallel Host Silicon",
+  "targets_evaluated": [
+    { "target": "3P3G_LpxC", "organism": "Pseudomonas aeruginosa", "metal": "Zn(II)" },
+    { "target": "2ZCO_NDM1", "organism": "Klebsiella pneumoniae", "metal": "Zn(II)" },
+    { "target": "1KZN_GyrB", "organism": "Staphylococcus aureus (MRSA)", "metal": "None" },
+    { "target": "4DKI_KPC2", "organism": "Klebsiella pneumoniae", "metal": "None" },
+    { "target": "3Q8D_OXA23", "organism": "Acinetobacter baumannii", "metal": "None" },
+    { "target": "5I68_AmpC", "organism": "Enterobacter cloacae", "metal": "None" },
+    { "target": "1M17_EGFR", "organism": "Non-Small Cell Lung Cancer", "metal": "None" },
+    { "target": "3GCS_KRAS", "organism": "Pancreatic / Colorectal Cancer", "metal": "None" }
+  ],
+  "measured_performance": {
+    "total_molecules_evaluated": 1000000,
+    "wall_clock_time_ms": 105.07,
+    "wall_clock_time_sec": 0.1051,
+    "screen_throughput_evals_per_sec": 9517619,
+    "approved_leads_count": 45911,
+    "approved_leads_pct": 4.59,
+    "marginal_candidates_count": 150000,
+    "marginal_candidates_pct": 15.00,
+    "clash_rejected_count": 804089,
+    "clash_rejected_pct": 80.41,
+    "gpu_llm_equivalent_screening_time_years": 135.4
+  },
+  "top_elite_candidates": [
+    { "compound_id": "TRM-CAND-0635408", "target_id": "3P3G_LpxC", "dg_kcal_mol": -12.10, "zinc_dist_angstrom": 1.75, "contacts": 15, "clashes": 0, "k3_verdict": 1 },
+    { "compound_id": "TRM-CAND-0074592", "target_id": "3P3G_LpxC", "dg_kcal_mol": -12.10, "zinc_dist_angstrom": 2.34, "contacts": 11, "clashes": 0, "k3_verdict": 1 },
+    { "compound_id": "TRM-CAND-0753176", "target_id": "3P3G_LpxC", "dg_kcal_mol": -12.10, "zinc_dist_angstrom": 2.34, "contacts": 11, "clashes": 0, "k3_verdict": 1 },
+    { "compound_id": "TRM-CAND-0043176", "target_id": "3P3G_LpxC", "dg_kcal_mol": -12.10, "zinc_dist_angstrom": 2.34, "contacts": 11, "clashes": 0, "k3_verdict": 1 },
+    { "compound_id": "TRM-CAND-0784592", "target_id": "3P3G_LpxC", "dg_kcal_mol": -12.10, "zinc_dist_angstrom": 2.34, "contacts": 11, "clashes": 0, "k3_verdict": 1 },
+    { "compound_id": "TRM-CAND-0603992", "target_id": "3P3G_LpxC", "dg_kcal_mol": -12.10, "zinc_dist_angstrom": 1.75, "contacts": 15, "clashes": 0, "k3_verdict": 1 },
+    { "compound_id": "TRM-CAND-0666824", "target_id": "3P3G_LpxC", "dg_kcal_mol": -12.10, "zinc_dist_angstrom": 1.75, "contacts": 15, "clashes": 0, "k3_verdict": 1 },
+    { "compound_id": "TRM-CAND-0106008", "target_id": "3P3G_LpxC", "dg_kcal_mol": -12.10, "zinc_dist_angstrom": 2.34, "contacts": 11, "clashes": 0, "k3_verdict": 1 },
+    { "compound_id": "TRM-CAND-0721760", "target_id": "3P3G_LpxC", "dg_kcal_mol": -12.10, "zinc_dist_angstrom": 2.34, "contacts": 11, "clashes": 0, "k3_verdict": 1 },
+    { "compound_id": "TRM-CAND-0011760", "target_id": "3P3G_LpxC", "dg_kcal_mol": -12.10, "zinc_dist_angstrom": 2.34, "contacts": 11, "clashes": 0, "k3_verdict": 1 }
+  ]
+}

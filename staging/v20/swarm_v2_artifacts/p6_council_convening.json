@@ -1,0 +1,831 @@
+{
+ "label": "p6",
+ "convened_via": "POST /crate/council/vote",
+ "timestamp": "2026-09-25T15:58:16Z",
+ "roster_size": 15,
+ "motions": {
+  "motion 1": {
+   "motion": [
+    "verify",
+    "test",
+    "audit",
+    "compliance",
+    "governance",
+    "formal",
+    "proof",
+    "qa"
+   ],
+   "http": 200,
+   "kernel": {
+    "abstainers": 12,
+    "agents": 15,
+    "engine": "swarm-council",
+    "eps": 0.3499999940395355,
+    "gate": "verify_council: byte-identical to libswarm_kernel_ops.so on all council vote vectors and the 1M sweep",
+    "motion": [
+     "verify",
+     "test",
+     "audit",
+     "compliance",
+     "governance",
+     "formal",
+     "proof",
+     "qa"
+    ],
+    "route": "/crate/council/vote",
+    "status": "ONLINE",
+    "trit_sum": 9,
+    "verdict": "PROCEED",
+    "verdict_trit": 1,
+    "voters": 3,
+    "votes": [
+     {
+      "agent": "Archi",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Shield",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Logic",
+      "confidence": 0.7760000228881836,
+      "overlap": 3,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7760000228881836,
+       0.7760000228881836
+      ]
+     },
+     {
+      "agent": "Devo",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Seeker",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Jarvis",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Pulse",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Flow",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "EventLedger",
+      "confidence": 0.7630000114440918,
+      "overlap": 3,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7630000114440918,
+       0.7630000114440918
+      ]
+     },
+     {
+      "agent": "Orchestra",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "THzGateway",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Verify",
+      "confidence": 0.7839999794960022,
+      "overlap": 3,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7839999794960022,
+       0.7839999794960022
+      ]
+     },
+     {
+      "agent": "Bridge",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Hermes",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "LogicMaster",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     }
+    ]
+   },
+   "oracle_verdict": "PROCEED",
+   "oracle_trit_sum": 9,
+   "agree": true,
+   "abstaining": [
+    "Archi",
+    "Bridge",
+    "Devo",
+    "Flow",
+    "Hermes",
+    "Jarvis",
+    "LogicMaster",
+    "Orchestra",
+    "Pulse",
+    "Seeker",
+    "Shield",
+    "THzGateway"
+   ]
+  },
+  "motion 2": {
+   "motion": [
+    "truth",
+    "static analysis",
+    "fuzz",
+    "coverage",
+    "mutation",
+    "qa"
+   ],
+   "http": 200,
+   "kernel": {
+    "abstainers": 13,
+    "agents": 15,
+    "engine": "swarm-council",
+    "eps": 0.3499999940395355,
+    "gate": "verify_council: byte-identical to libswarm_kernel_ops.so on all council vote vectors and the 1M sweep",
+    "motion": [
+     "truth",
+     "static analysis",
+     "fuzz",
+     "coverage",
+     "mutation",
+     "qa"
+    ],
+    "route": "/crate/council/vote",
+    "status": "ONLINE",
+    "trit_sum": 6,
+    "verdict": "PROCEED",
+    "verdict_trit": 1,
+    "voters": 2,
+    "votes": [
+     {
+      "agent": "Archi",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Shield",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Logic",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Devo",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Seeker",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Jarvis",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Pulse",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Flow",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "EventLedger",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Orchestra",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "THzGateway",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Verify",
+      "confidence": 0.7839999794960022,
+      "overlap": 6,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7839999794960022,
+       0.7839999794960022
+      ]
+     },
+     {
+      "agent": "Bridge",
+      "confidence": 0.7599999904632568,
+      "overlap": 1,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       1.0,
+       0.7599999904632568,
+       0.7599999904632568
+      ]
+     },
+     {
+      "agent": "Hermes",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "LogicMaster",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     }
+    ]
+   },
+   "oracle_verdict": "PROCEED",
+   "oracle_trit_sum": 6,
+   "agree": true,
+   "abstaining": [
+    "Archi",
+    "Devo",
+    "EventLedger",
+    "Flow",
+    "Hermes",
+    "Jarvis",
+    "Logic",
+    "LogicMaster",
+    "Orchestra",
+    "Pulse",
+    "Seeker",
+    "Shield",
+    "THzGateway"
+   ]
+  },
+  "motion 3": {
+   "motion": [
+    "verify",
+    "test",
+    "kernel",
+    "code",
+    "engineering",
+    "compiler",
+    "pipeline",
+    "nand",
+    "sram",
+    "retrieval"
+   ],
+   "http": 200,
+   "kernel": {
+    "abstainers": 9,
+    "agents": 15,
+    "engine": "swarm-council",
+    "eps": 0.3499999940395355,
+    "gate": "verify_council: byte-identical to libswarm_kernel_ops.so on all council vote vectors and the 1M sweep",
+    "motion": [
+     "verify",
+     "test",
+     "kernel",
+     "code",
+     "engineering",
+     "compiler",
+     "pipeline",
+     "nand",
+     "sram",
+     "retrieval"
+    ],
+    "route": "/crate/council/vote",
+    "status": "ONLINE",
+    "trit_sum": 18,
+    "verdict": "PROCEED",
+    "verdict_trit": 1,
+    "voters": 6,
+    "votes": [
+     {
+      "agent": "Archi",
+      "confidence": 0.7350000143051147,
+      "overlap": 1,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       1.0,
+       0.7350000143051147,
+       0.7350000143051147
+      ]
+     },
+     {
+      "agent": "Shield",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Logic",
+      "confidence": 0.7760000228881836,
+      "overlap": 1,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       1.0,
+       0.7760000228881836,
+       0.7760000228881836
+      ]
+     },
+     {
+      "agent": "Devo",
+      "confidence": 0.7940000295639038,
+      "overlap": 4,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7940000295639038,
+       0.7940000295639038
+      ]
+     },
+     {
+      "agent": "Seeker",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Jarvis",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Pulse",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Flow",
+      "confidence": 0.7820000052452087,
+      "overlap": 2,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7820000052452087,
+       0.7820000052452087
+      ]
+     },
+     {
+      "agent": "EventLedger",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Orchestra",
+      "confidence": 0.7310000061988831,
+      "overlap": 1,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       1.0,
+       0.7310000061988831,
+       0.7310000061988831
+      ]
+     },
+     {
+      "agent": "THzGateway",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Verify",
+      "confidence": 0.7839999794960022,
+      "overlap": 2,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7839999794960022,
+       0.7839999794960022
+      ]
+     },
+     {
+      "agent": "Bridge",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Hermes",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "LogicMaster",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     }
+    ]
+   },
+   "oracle_verdict": "PROCEED",
+   "oracle_trit_sum": 18,
+   "agree": true,
+   "abstaining": [
+    "Bridge",
+    "EventLedger",
+    "Hermes",
+    "Jarvis",
+    "LogicMaster",
+    "Pulse",
+    "Seeker",
+    "Shield",
+    "THzGateway"
+   ]
+  },
+  "motion 4": {
+   "motion": [
+    "clinical",
+    "trial",
+    "regulatory",
+    "patient",
+    "monitor",
+    "compliance",
+    "governance"
+   ],
+   "http": 200,
+   "kernel": {
+    "abstainers": 13,
+    "agents": 15,
+    "engine": "swarm-council",
+    "eps": 0.3499999940395355,
+    "gate": "verify_council: byte-identical to libswarm_kernel_ops.so on all council vote vectors and the 1M sweep",
+    "motion": [
+     "clinical",
+     "trial",
+     "regulatory",
+     "patient",
+     "monitor",
+     "compliance",
+     "governance"
+    ],
+    "route": "/crate/council/vote",
+    "status": "ONLINE",
+    "trit_sum": 6,
+    "verdict": "PROCEED",
+    "verdict_trit": 1,
+    "voters": 2,
+    "votes": [
+     {
+      "agent": "Archi",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Shield",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Logic",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Devo",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Seeker",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Jarvis",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Pulse",
+      "confidence": 0.7799999713897705,
+      "overlap": 3,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7799999713897705,
+       0.7799999713897705
+      ]
+     },
+     {
+      "agent": "Flow",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "EventLedger",
+      "confidence": 0.7630000114440918,
+      "overlap": 5,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7630000114440918,
+       0.7630000114440918
+      ]
+     },
+     {
+      "agent": "Orchestra",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "THzGateway",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Verify",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Bridge",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Hermes",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "LogicMaster",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     }
+    ]
+   },
+   "oracle_verdict": "PROCEED",
+   "oracle_trit_sum": 6,
+   "agree": true,
+   "abstaining": [
+    "Archi",
+    "Bridge",
+    "Devo",
+    "Flow",
+    "Hermes",
+    "Jarvis",
+    "Logic",
+    "LogicMaster",
+    "Orchestra",
+    "Seeker",
+    "Shield",
+    "THzGateway",
+    "Verify"
+   ]
+  },
+  "CONTROL documented MOTION_A": {
+   "motion": [
+    "code",
+    "engineering",
+    "software",
+    "compiler",
+    "test",
+    "verify",
+    "kernel"
+   ],
+   "http": 200,
+   "kernel": {
+    "abstainers": 12,
+    "agents": 15,
+    "engine": "swarm-council",
+    "eps": 0.3499999940395355,
+    "gate": "verify_council: byte-identical to libswarm_kernel_ops.so on all council vote vectors and the 1M sweep",
+    "motion": [
+     "code",
+     "engineering",
+     "software",
+     "compiler",
+     "test",
+     "verify",
+     "kernel"
+    ],
+    "route": "/crate/council/vote",
+    "status": "ONLINE",
+    "trit_sum": 9,
+    "verdict": "PROCEED",
+    "verdict_trit": 1,
+    "voters": 3,
+    "votes": [
+     {
+      "agent": "Archi",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Shield",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Logic",
+      "confidence": 0.7760000228881836,
+      "overlap": 1,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       1.0,
+       0.7760000228881836,
+       0.7760000228881836
+      ]
+     },
+     {
+      "agent": "Devo",
+      "confidence": 0.7940000295639038,
+      "overlap": 5,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7940000295639038,
+       0.7940000295639038
+      ]
+     },
+     {
+      "agent": "Seeker",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Jarvis",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Pulse",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Flow",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "EventLedger",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Orchestra",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "THzGateway",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Verify",
+      "confidence": 0.7839999794960022,
+      "overlap": 2,
+      "sum": 3,
+      "trits": [
+       1,
+       1,
+       1
+      ],
+      "vote_vector": [
+       2.0,
+       0.7839999794960022,
+       0.7839999794960022
+      ]
+     },
+     {
+      "agent": "Bridge",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "Hermes",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     },
+     {
+      "agent": "LogicMaster",
+      "overlap": 0,
+      "vote": "ABSTAIN"
+     }
+    ]
+   },
+   "oracle_verdict": "PROCEED",
+   "oracle_trit_sum": 9,
+   "agree": true,
+   "abstaining": [
+    "Archi",
+    "Bridge",
+    "EventLedger",
+    "Flow",
+    "Hermes",
+    "Jarvis",
+    "LogicMaster",
+    "Orchestra",
+    "Pulse",
+    "Seeker",
+    "Shield",
+    "THzGateway"
+   ]
+  }
+ },
+ "all_agree_with_oracle": true,
+ "note": "the tally is weakly discriminating (every voter contributes +1 trits); read participation (voters / trit_sum), and record the terms verbatim -- a verdict is a deterministic function of the motion, not evidence for a conclusion."
+}

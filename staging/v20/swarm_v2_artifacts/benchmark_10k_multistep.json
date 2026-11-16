@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-09-18T09:40:00",
+  "total_tasks": 115,
+  "bimodal_separation_ratio": 226.39,
+  "verification_result": "PASS",
+  "fast_path_cluster": {
+    "count": 100,
+    "min_ms": 2.65,
+    "p50_ms": 6.7,
+    "mean_ms": 21.89,
+    "p95_ms": 30.11,
+    "max_ms": 990.11
+  },
+  "deep_llm_cluster": {
+    "count": 15,
+    "min_ms": 4.68,
+    "p50_ms": 1517.58,
+    "mean_ms": 1631.18,
+    "p95_ms": 3438.99,
+    "max_ms": 3504.41
+  },
+  "engines": {
+    "conversation": 66,
+    "shield_intelligence": 9,
+    "seeker_intelligence": 9,
+    "verify_intelligence": 8,
+    "pulse_intelligence": 8,
+    "aura_domain_intelligence": 2,
+    "seeker_sovereign_intel": 2,
+    "logic_sovereign_intel": 4,
+    "bridge_sovereign_intel": 2,
+    "verify_sovereign_intel": 2,
+    "archi_sovereign_intel": 2,
+    "devo_sovereign_intel": 1
+  },
+  "sample_llm_outputs": [
+    {
+      "engine": "aura_domain_intelligence",
+      "response_len": 1422,
+      "preview": "[Jarvis + Subagents: Archi, Logic | Aura Domain Knowledge Ingested] \ud83d\udcda Domain Microkernel: Aura (Quantum_resonance)  [CON"
+    },
+    {
+      "engine": "seeker_sovereign_intel",
+      "response_len": 879,
+      "preview": "[Seeker | Autonomous Scientific Researcher | Sovereign Intelligence]  The cochlea\u2019s outer hair cells (OHCs) amplify soun"
+    },
+    {
+      "engine": "logic_sovereign_intel",
+      "response_len": 822,
+      "preview": "[Logic | Truth-Guarantor & Mathematical Proof Engine | Sovereign Intelligence]  Kleene K3 balanced ternary logic, with f"
+    },
+    {
+      "engine": "bridge_sovereign_intel",
+      "response_len": 695,
+      "preview": "[Devo \u2192 Consulting Bridge (Molecular Target Mediator & P2P Mesh Router)] \ud83d\udca1 Cross-Agent Delegation: Your query relates to"
+    },
+    {
+      "engine": "verify_sovereign_intel",
+      "response_len": 703,
+      "preview": "[Verify | Epistemic QA & Mutation Testing Engine | Sovereign Intelligence]  Triple Modular Redundancy (TMR) failover res"
+    }
+  ]
+}

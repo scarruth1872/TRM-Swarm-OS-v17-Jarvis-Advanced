@@ -1,0 +1,28 @@
+{
+  "ts": "2026-08-06T04:18:16",
+  "pipeline": {
+    "thz_classify": {
+      "tps": 17602,
+      "latency_us": 57,
+      "status": "measured"
+    },
+    "gpu_k3_route": {
+      "tps": 1302000000,
+      "latency_ns": 0.77,
+      "status": "projected"
+    },
+    "cpu_mamba3step": {
+      "tps": 13899050,
+      "latency_ns": 72,
+      "status": "measured"
+    }
+  },
+  "bottleneck": "THz Bonsai K3 classify at 17.6K/s \u2014 needs GPU acceleration",
+  "with_gpu_thz": {
+    "time_s": 719
+  },
+  "cost": {
+    "local": 600.0,
+    "gpt4o": 300000000
+  }
+}

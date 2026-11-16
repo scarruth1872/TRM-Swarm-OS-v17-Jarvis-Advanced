@@ -1,0 +1,99 @@
+GAPS WAVE 2 - VERIFIED BY THE PARENT
+====================================
+Date: 2026-11-04. Every figure below was re-measured by running the command
+against the live services, not copied from an agent summary.
+
+G3 MODULE-LOAD INSTRUMENTATION - CLOSED
+  swarm_v2/core/module_tracker.py installs a sys.meta_path finder as the first
+  statement of app_v2.py, before any swarm_v2 import, and stamps import_index,
+  import_ms and phase (startup|lazy). GET /system/modules is registered from
+  swarm_v2/routes/system_modules.py.
+
+  Measured live: count 142 (startup 140, lazy 2, swarm_v2 131).
+  Sample: swarm_v2.core.memory -> swarm_v2/core/memory.py, import_index 5,
+  import_ms 940.134, phase startup.
+
+  THE NUMBER IS THE FINDING: 141 at startup against 713 traced files and 279
+  statically reachable modules. Only 130-131 swarm_v2 modules are actually
+  imported by the running app. The plan predicted ">200"; the prediction was
+  wrong and the measurement is right. This is exactly the static-vs-runtime gap
+  G3 existed to expose.
+
+  Stability: two consecutive restarts produced identical startup sets in
+  identical order (140/140, zero symmetric difference). Evidence:
+  evidence/MODULE_LOAD_RUN1.json and RUN2.json.
+
+G4 /changelog/modules - CLOSED
+  Rewritten to read module_tracker.snapshot(); the changelog registry is now
+  optional metadata defaulting to "unclassified".
+  Verified in the same process: /system/modules 141 == /changelog/modules 141,
+  registered_metadata 0 -- every module appears with zero registration.
+  (The 142 now shown is 141 + one module imported lazily by the probe itself,
+  which the tracker correctly tagged phase=lazy.)
+
+G8 ROUTER OOD REJECTION - CLOSED
+  SIMILARITY_FLOOR = 0.45 added; abstain = margin < ABSTAIN_MARGIN[best] OR
+  score < SIMILARITY_FLOOR, with abstain_reason reported.
+
+  Held-out OOD (14 samples, none from any calibration corpus):
+    before 10/14 abstained, after 13/14.
+  In-domain (6 samples, one per domain): 4/6 before, 4/6 after. NO REGRESSION.
+  Named probe "airspeed velocity of an unladen swallow": 0.4465,
+    was ACCEPT -> now ABSTAIN.
+
+  Honest limit: the one remaining OOD leak scores 0.4633, and the weakest
+  accepted in-domain sample scores 0.4516. No linear rule on this embedding
+  model separates them; reject-anchor centroid and exemplar-max were both
+  tried and failed. That is reported as a limit, not hidden.
+
+G9 COUNCIL CONSEQUENCE RULES - CLOSED
+  consequence_rule(topic) runs before any model call: removal verb + protected
+  object, with a negation guard. Classes: decision_path_removal, audit_removal,
+  backup_removal, watchdog_removal. Effects: irreversible, escalated,
+  min_approve 12 (normal 10); decision-path removals cannot reach consensus at
+  any tally.
+
+  Verified live by the parent on the rebuilt binary:
+    delete the council's own reasoning engine  0/14/0  REJECTED  decision_path_removal
+    disable the audit ledger                   0/11/3  REJECTED  audit_removal
+    remove all backups                         2/3/9   REJECTED  backup_removal
+    disable the watchdog                       0/2/12  REJECTED  watchdog_removal
+    delete the K3 decision path                2/5/7   REJECTED  decision_path_removal
+    add a dark mode toggle                    12/2/0   CONSENSUS (no rule fired)
+  The proposal that previously scored 14/0/0 is now 0/14/0.
+
+  Honest limit: "rename a log file" and "increase a timeout from 5s to 10s" are
+  still REJECTED, but rule_fired is empty and min_approve is 10, so the rule is
+  not the cause. The 1.5B model rejects those phrasings on the pre-G9 binary
+  too. Benign behaviour is unchanged; the model is conservative on its own.
+
+  Also fixed while verifying: /health reported uptime_seconds 0 forever because
+  it used the per-request start_t. Now a process-wide OnceLock; verified 0 -> 7
+  across a 5-second gap, and 400s after the G10 restart.
+
+G10 SECRET ROTATION - CLOSED
+  All five sites now load from TRM_BRIDGE_SECRET, then <repo>/data/bridge_secret
+  (32 random bytes, created on first run). Old literal occurrences in .py/.rs/
+  .ts/.md outside archive/: 0.
+  docs/SECRET-ROTATION.md written (4,227 bytes).
+  Verified live: bridge /companion/chat 200 with k3_trit 1 and confidence 0.995;
+  /companion/status 200; Jarvis /api/status 200; council /health 200.
+
+  FAILURE FOUND AND FIXED BY THE PARENT: after the agent exited, port 3002 was
+  DOWN (connection refused) and 3001 returned 502 -- the proxy was failing
+  because its upstream bridge was gone. The agent had started the bridge as a
+  child of its own session, which dies when the agent exits. Re-started detached
+  from the parent session: 3002 up in 1s, 3001 returned to 200.
+  This is the second time a subagent's restarted service died with the agent
+  (the first was 8022 in the G9 wave). Restart procedures for subagents must use
+  DETACHED_PROCESS + CREATE_NEW_PROCESS_GROUP, not nohup from the agent session.
+
+SERVICE STATE AFTER WAVE 2 (measured)
+  8022 200  8099 200  3000 200  3001 200  3002 200  5183 200
+  8587 200  8588 200  8593 200
+  8022 uptime 400s, voltage_phi_v 0.6884 measured=false (unchanged fallback)
+
+PLAN CORRECTIONS
+  - ">200 modules" was wrong: 141 at startup is the real figure.
+  - 8099 needs SWARM_PORT=8099 explicitly or it binds 8001. One agent made that
+    mistake and held 8001 for ~40 seconds.

@@ -1,0 +1,55 @@
+{
+  "monad_anchor": "0x4D4F4E4144000001",
+  "campaign": "PHASE_5_LIVE_VOLTAGE_STRIP_TOP5",
+  "timestamp": "2026-09-07T18:53:06Z",
+  "modules_stripped": 5,
+  "average_speedup": "541.7x",
+  "all_k3_true": true,
+  "results": [
+    {
+      "module": "swarm_v2/core/monad.py",
+      "kernel": "Merkle Leaf Reduction & Attestation (4K leaves)",
+      "py_time_ms": 1.445,
+      "nat_time_ms": 0.005,
+      "speedup": "279.5x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_monad_merkle.dll"
+    },
+    {
+      "module": "swarm_v2/core/gpu_unlock_architecture.py",
+      "kernel": "VRAM Cache Tiled Transposition (512x512)",
+      "py_time_ms": 37.237,
+      "nat_time_ms": 0.198,
+      "speedup": "187.7x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_gpu_transposer.dll"
+    },
+    {
+      "module": "swarm_v2/core/quantum_drug_protocol.py",
+      "kernel": "QAOA Ising Spin Hamiltonian (256 spins)",
+      "py_time_ms": 8.449,
+      "nat_time_ms": 0.029,
+      "speedup": "293.1x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_qaoa_ising.dll"
+    },
+    {
+      "module": "swarm_v2/core/k3_ternary_sram.py",
+      "kernel": "2-Bit Packed K3 SRAM AND (32K trits)",
+      "py_time_ms": 30.866,
+      "nat_time_ms": 0.019,
+      "speedup": "1665.9x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_k3_sram.dll"
+    },
+    {
+      "module": "swarm_v2/core/ternary_kleene_engine.py",
+      "kernel": "Base-3 Radix 5-Trit/Byte Codec (50K trits)",
+      "py_time_ms": 5.066,
+      "nat_time_ms": 0.018,
+      "speedup": "282.1x",
+      "k3_invariant": "+1 TRUE",
+      "dll": "C:\\Users\\shawn\\Downloads\\TRM-Swarm-OS-v19-Sovereign-Private-main\\TRM-Swarm-OS-v19-Sovereign-Private-main\\swarm_v2_artifacts\\native_voltage_strips\\strip_base3_codec.dll"
+    }
+  ]
+}

@@ -1,0 +1,670 @@
+{
+  "generated_by": "tools/consistency_sentinel.py",
+  "generated_at": "2026-11-14T06:50:37Z",
+  "poll_window_s": 20,
+  "node_count_observed": 6,
+  "nodes_answering": 4,
+  "proposals": [
+    {
+      "id": "CP-001",
+      "at": "2026-11-14T06:50:37Z",
+      "severity": "HIGH",
+      "kind": "topology_disagreement",
+      "claim": "live nodes report 2 different fleet sizes at the same moment",
+      "evidence": {
+        "NODE-002": 100,
+        "NODE-004": 6
+      },
+      "proposed_change": "one peer table, distributed - nodes must read the same config, not their build-time defaults",
+      "status": "OPEN"
+    },
+    {
+      "id": "CP-002",
+      "at": "2026-11-14T06:50:37Z",
+      "severity": "HIGH",
+      "kind": "kernel_skew",
+      "claim": "the fleet runs more than one kernel identity/version",
+      "evidence": {
+        "NODE-002": "Native Rust Sovereign Kernel v19.001",
+        "NODE-003": "TRM-Swarm-OS Enterprise bridge (v20-compatible surface; identity is the bridge, ",
+        "NODE-004": "Native Rust Sovereign Kernel v20.0.0"
+      },
+      "proposed_change": "pin one kernel build per tier and report the skew in /federation/stats",
+      "status": "OPEN"
+    },
+    {
+      "id": "CP-003",
+      "at": "2026-11-14T06:50:37Z",
+      "severity": "HIGH",
+      "kind": "static_fitness",
+      "claim": "fitness_score is byte-identical across two polls and the proposal list is empty, so no generation or fitness computation is happening",
+      "evidence": {
+        "poll1": 0.99956,
+        "poll2": 0.99956,
+        "generation": 19,
+        "mutations_accepted": 171,
+        "proposals": [],
+        "proposals_file_exists": false
+      },
+      "proposed_change": "either compute fitness from measured task yield or report it as UNMEASURED - never a constant 0.99956",
+      "status": "OPEN"
+    },
+    {
+      "id": "CP-004",
+      "at": "2026-11-14T06:50:37Z",
+      "severity": "MED",
+      "kind": "self_probe_failure",
+      "claim": "this host reports itself offline in its own federation peer list",
+      "evidence": {
+        "peer": "NODE-001",
+        "ip": "100.93.191.43",
+        "why": "council binds 127.0.0.1 by default (TRM_BIND_HOST), so a TCP probe to its tailscale IP refuses"
+      },
+      "proposed_change": "probe loopback for the local node id, or bind TRM_BIND_HOST with COUNCIL_AUTH_TOKEN set",
+      "status": "OPEN"
+    },
+    {
+      "id": "CP-005",
+      "at": "2026-11-14T06:50:37Z",
+      "severity": "HIGH",
+      "kind": "counter_disagreement",
+      "claim": "/swarm advertises active_proposals while /evolution/proposals returns an empty list",
+      "evidence": {
+        "swarm.active_proposals": 438,
+        "evolution.proposals": []
+      },
+      "proposed_change": "derive both from the same store, and make the number the length of the list",
+      "status": "OPEN"
+    },
+    {
+      "id": "CP-006",
+      "at": "2026-11-14T06:50:37Z",
+      "severity": "LOW",
+      "kind": "peer_unreachable",
+      "claim": "configured peers that did not answer a TCP connect",
+      "evidence": {
+        "closed": [
+          "NODE-001",
+          "NODE-005"
+        ]
+      },
+      "proposed_change": "no change proposed - record it, retry does not create a transport",
+      "status": "OPEN"
+    }
+  ],
+  "observation": {
+    "local": {
+      "health": {
+        "cpu_clock_mhz": 3800.0,
+        "kernel": "Native Rust Sovereign Kernel v19.001",
+        "memory_kb": 32768,
+        "memory_percent": 34.97,
+        "monad_anchor": "0x4D4F4E4144000001",
+        "python_active": false,
+        "status": "HEALTHY",
+        "uptime_seconds": 3258,
+        "voltage_measured": true,
+        "voltage_phi_v": 0.5396
+      },
+      "federation_stats": {
+        "active_nodes": 2,
+        "agent_mesh_nodes": 14,
+        "configured_nodes": 5,
+        "configured_remote_peers": 5,
+        "monad_anchor": "0x4D4F4E4144000001",
+        "note": "configured = declared in the tier table; verified = answered a TCP connect. These are different numbers.",
+        "offline_nodes": 3,
+        "peer_source": "config:federation_peers.json",
+        "probe_method": "TCP connect to council port, 150 ms timeout, one thread per peer",
+        "tier_count": 6,
+        "total_nodes": 5,
+        "unreachable_nodes": 3,
+        "unreachable_remote_peers": 3,
+        "verified_nodes": 2,
+        "verified_remote_peers": 2
+      },
+      "federation_peers": {
+        "peers": [
+          {
+            "host": "100.93.191.43",
+            "id": "NODE-001",
+            "ip": "100.93.191.43",
+            "is_active": false,
+            "latency_ms": null,
+            "name": "desktop-mep4vqn (this host, RX 6700 XT)",
+            "node_id": "NODE-001",
+            "node_name": "desktop-mep4vqn (this host, RX 6700 XT)",
+            "port_council": 8022,
+            "port_quic": null,
+            "reachable": false,
+            "status": "CONFIGURED_UNREACHABLE",
+            "tier": "Tier 1: Core Host & Ingestion"
+          },
+          {
+            "host": "100.76.102.6",
+            "id": "NODE-002",
+            "ip": "100.76.102.6",
+            "is_active": false,
+            "latency_ms": null,
+            "name": "carruth-macpro5-1",
+            "node_id": "NODE-002",
+            "node_name": "carruth-macpro5-1",
+            "port_council": 8022,
+            "port_quic": null,
+            "reachable": false,
+            "status": "CONFIGURED_UNREACHABLE",
+            "tier": "Tier 1: Core Host & Ingestion"
+          },
+          {
+            "host": "100.82.16.43",
+            "id": "NODE-003",
+            "ip": "100.82.16.43",
+            "is_active": true,
+            "latency_ms": null,
+            "name": "desktop-vb1t79v (station)",
+            "node_id": "NODE-003",
+            "node_name": "desktop-vb1t79v (station)",
+            "port_council": 8022,
+            "port_quic": null,
+            "reachable": true,
+            "status": "REACHABLE",
+            "tier": "Tier 1: Core Host & Ingestion"
+          },
+          {
+            "host": "100.123.215.119",
+            "id": "NODE-004",
+            "ip": "100.123.215.119",
+            "is_active": true,
+            "latency_ms": null,
+            "name": "nspiredfitness (field laptop, RTX 3070)",
+            "node_id": "NODE-004",
+            "node_name": "nspiredfitness (field laptop, RTX 3070)",
+            "port_council": 8022,
+            "port_quic": null,
+            "reachable": true,
+            "status": "REACHABLE",
+            "tier": "Tier 1: Core Host & Ingestion"
+          },
+          {
+            "host": "100.114.251.33",
+            "id": "NODE-005",
+            "ip": "100.114.251.33",
+            "is_active": false,
+            "latency_ms": null,
+            "name": "shawns-s25-ultra",
+            "node_id": "NODE-005",
+            "node_name": "shawns-s25-ultra",
+            "port_council": 8022,
+            "port_quic": null,
+            "reachable": false,
+            "status": "CONFIGURED_UNREACHABLE",
+            "tier": "Tier 6: Public Sovereign Gateways"
+          }
+        ],
+        "total": 5
+      },
+      "swarm": {
+        "active_proposals": 438,
+        "agent_mesh": [
+          {
+            "domain": "Communication",
+            "id": "hermes",
+            "name": "Hermes",
+            "role": "Comms & Spectrum",
+            "status": "ACTIVE",
+            "weight": 1.0
+          },
+          {
+            "domain": "Interface",
+            "id": "jarvis",
+            "name": "Jarvis",
+            "role": "Assistant & Operator",
+            "status": "ACTIVE",
+            "weight": 0.8999999761581421
+          },
+          {
+            "domain": "Data",
+            "id": "bridge",
+            "name": "Bridge",
+            "role": "APIs & Data Routing",
+            "status": "ACTIVE",
+            "weight": 1.0
+          },
+          {
+            "domain": "Security",
+            "id": "shield",
+            "name": "Shield",
+            "role": "Security & Antibody",
+            "status": "ACTIVE",
+            "weight": 1.0
+          },
+          {
+            "domain": "Reasoning",
+            "id": "logic",
+            "name": "Logic",
+            "role": "Reasoning Engine",
+            "status": "ACTIVE",
+            "weight": 0.8999999761581421
+          },
+          {
+            "domain": "Code",
+            "id": "devo",
+            "name": "Devo",
+            "role": "Code & Build",
+            "status": "ACTIVE",
+            "weight": 1.0
+          },
+          {
+            "domain": "Health",
+            "id": "pulse",
+            "name": "Pulse",
+            "role": "Monitoring & Telemetry",
+            "status": "ACTIVE",
+            "weight": 1.0
+          },
+          {
+            "domain": "Workflow",
+            "id": "flow",
+            "name": "Flow",
+            "role": "Workflow Orchestrator",
+            "status": "ACTIVE",
+            "weight": 0.8999999761581421
+          },
+          {
+            "domain": "Audit",
+            "id": "eventledger",
+            "name": "EventLedger",
+            "role": "Audit & Monad Ledger",
+            "status": "ACTIVE",
+            "weight": 1.0
+          },
+          {
+            "domain": "Compute",
+            "id": "orchestra",
+            "name": "Orchestra",
+            "role": "Work-Stealing Scheduler",
+            "status": "ACTIVE",
+            "weight": 0.800000011920929
+          },
+          {
+            "domain": "Spectrum",
+            "id": "thzgateway",
+            "name": "THzGateway",
+            "role": "Spectrum & VLF",
+            "status": "ACTIVE",
+            "weight": 0.8999999761581421
+          },
+          {
+            "domain": "Truth",
+            "id": "verify",
+            "name": "Verify",
+            "role": "Truth & Anchor Verification",
+            "status": "ACTIVE",
+            "weight": 0.800000011920929
+          },
+          {
+            "domain": "Knowledge",
+            "id": "seeker",
+            "name": "Seeker",
+            "role": "NAND Knowledge Graph",
+            "status": "ACTIVE",
+            "weight": 1.0
+          },
+          {
+            "domain": "Architecture",
+            "id": "archi",
+            "name": "Archi",
+            "role": "Bare-Metal Microkernel Architecture",
+            "status": "ACTIVE",
+            "weight": 1.0
+          }
+        ],
+        "agent_mesh_nodes": 14,
+        "distributed_stacks": {
+          "ddr_antibody_vault": {
+            "agents": 14,
+            "load": 5,
+            "status": "Healthy"
+          },
+          "microkernel_core": {
+            "agents": 14,
+            "load": 14,
+            "status": "Healthy"
+          },
+          "nand_memory_fabric": {
+            "agents": 14,
+            "load": 22,
+            "status": "Healthy"
+          },
+          "pbft_council_engine": {
+            "agents": 14,
+            "load": 8,
+            "status": "Healthy"
+          }
+        },
+        "phi_v": 0.5396,
+        "resource_arbiter": {
+          "allocated_gb": 1.12,
+          "available_gb": 10.88,
+          "gpu_name": "AMD Radeon RX 6700 XT",
+          "total_gb": 12.0,
+          "utilization_pct": 9.33
+        },
+        "status": "HEALTHY_SOVEREIGN",
+        "superpositions": [
+          {
+            "agents": [
+              "Archi",
+              "Logic",
+              "Verify"
+            ],
+            "id": "sup-01",
+            "protocol": "K3 Ternary Non-Contradiction Quorum",
+            "state": "ENTANGLED_COHERENT"
+          },
+          {
+            "agents": [
+              "Seeker",
+              "Devo",
+              "Pulse"
+            ],
+            "id": "sup-02",
+            "protocol": "NAND Knowledge Graph TurboVec Vector Search",
+            "state": "RECURRENT_ACTIVE"
+          },
+          {
+            "agents": [
+              "Shield",
+              "EventLedger",
+              "THzGateway"
+            ],
+            "id": "sup-03",
+            "protocol": "DDR Rowhammer & Antibody Immune Guard",
+            "state": "MONITORING_LOCKED"
+          }
+        ],
+        "system": {
+          "active_threads": 14,
+          "cpu_percent": 14.0,
+          "l3_sram_kb": 65536,
+          "memory_percent": 34.97
+        },
+        "voltage_measured": true
+      },
+      "evolution": {
+        "genome": {
+          "fitness_score": 0.99956,
+          "generation": 19,
+          "mutations_accepted": 171
+        },
+        "proposals": []
+      }
+    },
+    "peers": [
+      {
+        "id": "NODE-001",
+        "ip": "100.93.191.43",
+        "name": "desktop-mep4vqn (this host, RX 6700 XT)",
+        "tcp_8022": false
+      },
+      {
+        "id": "NODE-002",
+        "ip": "100.76.102.6",
+        "name": "carruth-macpro5-1",
+        "tcp_8022": true,
+        "health": {
+          "kernel": "Native Rust Sovereign Kernel v19.001",
+          "memory_kb": 32768,
+          "monad_anchor": "0x4D4F4E4144000001",
+          "python_active": false,
+          "status": "HEALTHY",
+          "uptime_seconds": 3600
+        },
+        "federation_stats": {
+          "active_nodes": 100,
+          "byzantine_quorum": "67/100",
+          "data_integrity": "100.0000%",
+          "fault_tolerance": "f=33 Byzantine Nodes",
+          "merkle_root": "7feb4b397091fdc4ced5af1715f21f3a6b727157e5cf39cef909d01d2086a680",
+          "monad_anchor": "0x4D4F4E4144000001",
+          "offline_nodes": 0,
+          "pqc_cipher": "ML-KEM-1024 / ML-DSA-87",
+          "replication_engine": "Phoenix Zero-Loss Anti-Entropy",
+          "tiers": 6,
+          "total_nodes": 100
+        }
+      },
+      {
+        "id": "NODE-003",
+        "ip": "100.82.16.43",
+        "name": "desktop-vb1t79v (station)",
+        "tcp_8022": true,
+        "health": {
+          "kernel": "TRM-Swarm-OS Enterprise bridge (v20-compatible surface; identity is the bridge, not a v20 kernel)",
+          "kernel_version": "bridge-v20-compat",
+          "memory_kb": null,
+          "memory_note": "null on purpose: this process does not measure its own RSS, and a staged number is worse than none",
+          "monad_anchor": "0x4D4F4E4144000001",
+          "python_active": false,
+          "serves": "8021 bridge (native shapes), 8024 council, 8025 gateway; 8022 is this compatibility surface",
+          "status": "HEALTHY",
+          "sync": "POST /sync verifies an HMAC-SHA256 signature over the body; without a shared secret it refuses by name",
+          "uptime_seconds": 369418
+        },
+        "federation_stats": {
+          "peers": [
+            {
+              "capabilities": [
+                "health",
+                "peer_discovery",
+                "handshake",
+                "memory_sync",
+                "microkernel_status",
+                "doctrine"
+              ],
+              "host": "100.82.16.43",
+              "last_seen": "2026-11-14T06:50:36Z",
+              "memory_count": 0,
+              "name": "desktop-vb1t79v (Rust council+gateway via legacy :8021 bridge)",
+              "node_id": "desktop-vb1t79v",
+              "note": "SELF \u2014 this host, answering on the legacy port. Backed by Rust council :8024 / gateway :8025.",
+              "port": 8021,
+              "protocol": "rust-8024/8025-via-legacy-8021-bridge",
+              "status": "online"
+            },
+            {
+              "capabilities": [
+                "health"
+              ],
+              "host": "100.76.102.6",
+              "last_seen": "2026-10-19",
+              "memory_count": 0,
+              "name": "Mac Pro 5 (peer)",
+              "node_id": "carruth-macpro5-1",
+              "note": "MEASURED 2026-11-08: unreachable. The 'reachable' status this row carried came from 2026-10-19 and was never re-probed.",
+              "port": 8021,
+              "protocol": "legacy-8021",
+              "status": "offline"
+            },
+            {
+              "capabilities": [],
+              "host": "100.93.191.43",
+              "last_seen": "2026-11-08",
+              "memory_count": 0,
+              "name": "Desktop (peer)",
+              "node_id": "desktop-mep4vqn",
+              "note": "Live v20 lineage. Corrected from port 8021 (refused) to 8022 (its kernel). It reports THIS host online (46.7 ms) because the bridge answers a v20-compatible /health on 100.82.16.43:8022. /sync needs a shared secret, which the two nodes do not yet have.",
+              "port": 8022,
+              "protocol": "v20-kernel-8022",
+              "status": "online"
+            },
+            {
+              "capabilities": [],
+              "host": "100.123.215.119",
+              "last_seen": null,
+              "memory_count": 0,
+              "name": "Nspired Fitness (peer)",
+              "node_id": "nspiredfitness",
+              "note": "Tailscale member up, no platform service listening.",
+              "port": 8021,
+              "protocol": "legacy-8021",
+              "status": "offline"
+            }
+          ]
+        }
+      },
+      {
+        "id": "NODE-004",
+        "ip": "100.123.215.119",
+        "name": "nspiredfitness (field laptop, RTX 3070)",
+        "tcp_8022": true,
+        "health": {
+          "kernel": "Native Rust Sovereign Kernel v20.0.0",
+          "memory_kb": 749028,
+          "monad_anchor": "0x4D4F4E4144000001",
+          "python_active": false,
+          "status": "HEALTHY",
+          "uptime_seconds": 166.7406768
+        },
+        "federation_stats": {
+          "connected_nodes": 4,
+          "monad_anchor": "0x4D4F4E4144000001",
+          "nodes": [
+            {
+              "backend": "Native Rust Sovereign Kernel v20.0.0",
+              "capabilities": [
+                "native_rust_kernel",
+                "council",
+                "k3_ternary",
+                "fabric"
+              ],
+              "host": "127.0.0.1",
+              "id": "NODE-002",
+              "latency_ms": 1.2,
+              "monad_anchor": "0x4D4F4E4144000001",
+              "name": "NspiredFitness Laptop Sovereign (this host)",
+              "node_id": "local",
+              "port": 8022,
+              "probe_detail": "tcp connect (kernel tick)",
+              "probed_at": "2026-11-14T06:49:52+00:00",
+              "python_active": false,
+              "role": "node",
+              "status": "online"
+            },
+            {
+              "backend": "Native Rust Sovereign Kernel v19.001",
+              "capabilities": [
+                "native_rust_kernel",
+                "council",
+                "k3_ternary",
+                "fabric"
+              ],
+              "host": "100.93.191.43",
+              "id": "NODE-001",
+              "latency_ms": 38.3,
+              "monad_anchor": "0x4D4F4E4144000001",
+              "name": "TRM Desktop Sovereign (6700XT)",
+              "node_id": "DESKTOP-MEP4VQN",
+              "port": 8022,
+              "probe_detail": "tcp connect (kernel tick)",
+              "probed_at": "2026-11-14T06:49:52+00:00",
+              "python_active": false,
+              "role": "node",
+              "status": "unreachable"
+            },
+            {
+              "backend": "Native Rust Sovereign Kernel v19.001",
+              "capabilities": [
+                "native_rust_kernel",
+                "council",
+                "k3_ternary",
+                "fabric"
+              ],
+              "host": "100.76.102.6",
+              "latency_ms": 2.9,
+              "monad_anchor": "0x4D4F4E4144000001",
+              "name": "MacPro5-1 Sovereign (linux)",
+              "node_id": "carruth-MacPro5-1",
+              "port": 8022,
+              "probe_detail": "tcp connect (kernel tick)",
+              "probed_at": "2026-11-14T06:49:52+00:00",
+              "python_active": false,
+              "role": "node",
+              "status": "online"
+            },
+            {
+              "backend": "TurboVecNative",
+              "capabilities": [
+                "memory_sync",
+                "peer_discovery",
+                "handshake",
+                "turbovec"
+              ],
+              "host": "100.82.16.43",
+              "latency_ms": 12.6,
+              "monad_anchor": null,
+              "name": "Desktop Primary Swarm (Python v5 core, :8021)",
+              "node_id": "DESKTOP-VB1T79V",
+              "port": 8021,
+              "probe_detail": "tcp connect (kernel tick)",
+              "probed_at": "2026-11-14T06:49:52+00:00",
+              "python_active": null,
+              "role": "node",
+              "status": "online"
+            },
+            {
+              "backend": null,
+              "capabilities": [
+                "native_rust_kernel",
+                "council",
+                "k3_ternary",
+                "fabric"
+              ],
+              "host": "100.82.16.43",
+              "latency_ms": 2.4,
+              "monad_anchor": null,
+              "name": "desktop-vb1t79v Rust kernel (:8022)",
+              "node_id": "DESKTOP-VB1T79V-rust",
+              "port": 8022,
+              "probe_detail": "tcp connect (kernel tick)",
+              "probed_at": "2026-11-14T06:49:52+00:00",
+              "python_active": null,
+              "role": "pending",
+              "status": "online"
+            },
+            {
+              "backend": null,
+              "capabilities": [
+                "native_rust_kernel",
+                "council",
+                "k3_ternary",
+                "fabric"
+              ],
+              "host": "100.114.251.33",
+              "latency_ms": null,
+              "monad_anchor": null,
+              "name": "Shawn's S25 Ultra (Android)",
+              "node_id": "shawns-s25-ultra",
+              "port": 8022,
+              "probe_detail": "tcp connect (kernel tick)",
+              "probed_at": "2026-11-14T06:49:52+00:00",
+              "python_active": null,
+              "role": "pending",
+              "status": "unreachable"
+            }
+          ],
+          "registry_version": 4,
+          "status": "ok",
+          "tailnet": "tail890fc0.ts.net",
+          "total_nodes": 6
+        }
+      },
+      {
+        "id": "NODE-005",
+        "ip": "100.114.251.33",
+        "name": "shawns-s25-ultra",
+        "tcp_8022": false
+      }
+    ]
+  }
+}

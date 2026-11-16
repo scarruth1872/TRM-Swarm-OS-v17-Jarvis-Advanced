@@ -1,0 +1,40 @@
+[
+ {
+  "kind": "the_cable_a_link_is_a_negotiation_and_a_client_that_reports",
+  "fact": "With a cable in the machine's Ethernet port the boot had two things to learn. (1) The carrier is a negotiation, not a property of the interface: read in the same breath as IFF_UP it can say 0 on a cable that is live. Measured head-on -- one run of one binary in the same harness read carrier 1, another read 0 and then 1 after waiting, printing `[the link came up while it was waited for]`. This is also what \u00a726 could not explain: the metal boot that printed `no carrier` in its own NET line and `(eth0 is linked)` thirty seconds later was not contradicting itself, it was reading a link that came up in between. The boot now waits for the link, bounded at 3 s, and says when it had to. (2) A machine with a link and no configuration should ask the router, and there was no DHCP at all -- nothing in network.conf meant an address derived from the MAC (169.254/16), reaching a directly-cabled machine and nothing on a routed LAN. There is now a client: four UDP datagrams, no library, three attempts, 1.5 s per bounded receive, the limited broadcast given a host route because a machine with no address has no route and the DISCOVER otherwise fails before leaving. It reports its own failure: the route's fate, the sendto result or its strerror, the kernel's count of UDP datagrams delivered to sockets across the wait, and the interface's transmitted/received counters. Verdict on the test network -- `[dhcp] eth0: 300 bytes of DISCOVER were sent and nothing came back. The kernel delivered 0 UDP datagram(s) to sockets during the wait (0 -> 0), so nothing arrived at all and the answer was never sent to this machine` and `[dhcp] eth0 counters across the attempts: transmitted +10 packet(s), received +11`: the DISCOVERs reached the wire and packets came back, but no UDP datagram was ever delivered to a socket, so QEMU's user-mode DHCP server did not answer this client. THE CLIENT IS UNPROVEN AGAINST A REAL DHCP SERVER. What is proven is that it builds a correct BOOTREQUEST, gets it onto the wire, waits bounded, and reports honestly when nothing comes; the fallback is the same derived 169.254/16 as before and the line says no router answered. (3) The harness that runs these boots printed `qemu up` because pgrep matched a QEMU left over from an earlier run that still held the forwarded ports -- the new one died on `Could not set up host forwarding rule` while the script reported a machine running, and a boot that never happened was measured for four minutes. It now reaps what it left behind before starting, checks its own sockets rather than whether some QEMU exists anywhere, and cleans up on exit. Two smaller lessons from the same seam: the kernel truncates a process name to 15 characters, so `qemu-system-x86_64` is `qemu-system-x86` to `pkill -x` (which is why `-x` reported zero matches), and a Python rewrite of a shell script on Windows writes CRLF -- the `\\r` that broke the script's own `sleep` and `for`.",
+  "not_claimed": "The DHCP client has never been answered by a real server; its success on a network with a real router is untested and the reboot is the test. The DHCP path is exercised only as far as 'sent, waited bounded, reported honestly'. Nothing here changes the association: still no access point has been joined.",
+  "commit": "2bf18e3",
+  "rederive": {
+   "files": [
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "a39bab71f7709d821cf0ebb472b8a256fb0ab2fb80b85148ad4af0fa9ce50999"
+    },
+    {
+     "path": "backups/bare_metal_first_boot_20260930/qemu_dhcp_client_probe_20261001.txt",
+     "sha256": "8571fd6935df665287da3135ec2079695b67cf6f0b9c816bccc75247c6841257"
+    },
+    {
+     "path": "docs/BARE_METAL_LINUX_PATHWAY_20260930.md",
+     "sha256": "8f10475caf52e5558650b22705d462e181f9fe7a59bf9e0b18fa2c493018327a"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "swarm_v2/core/check_boot_chain_static.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 problem(s)"
+     ]
+    },
+    {
+     "script": "trm_chainload/scripts/check_attr_walk.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 failed"
+     ]
+    }
+   ]
+  }
+ }
+]

@@ -1,0 +1,51 @@
+feat(aura+voltage): express the doctrine in AURA; audit what phi_v actually measures
+
+VOLTAGE DOCTRINE + AURA, per request.
+
+AURA - the platform's expressive language, in Agent-Q
+  agents/skills/aura_native/voltage_ddr_tools.py - the COMPUTE:
+    measure_voltage()        reads the live binder
+    ddr_scan(code)           calls the kernel scanner over HTTP
+    voltage_bound_verdict()  the doctrine in one call - a scan verdict is only
+                             admissible bound to the substrate state at scan time
+  Registered in the interpreter's aura_methods alongside the existing
+  sign_beacon/verify_beacon tools. Ran through the REAL AuraInterpreter:
+    3716 events; all 4 tool calls resolved with real values;
+    ZERO unknown-tool stubs (the skill warns a missing tool silently returns
+    {status: native_execution} and looks like success - verified it did not).
+  Policy expressed declaratively, with the tool doing the measurement:
+    substrate := Concept { wavefunction: 'voltage', 'measured' }
+    doctrine  := Sacred_Operator { 'phi_v_measured', 'never_constant' }
+    substrate ~> doctrine
+    phi := @measure_voltage()
+    suspicious := @voltage_verdict('eval ("1+1")')
+  Division of labour held: the semantic field expresses policy, never computes
+  the number. Results: phi_v=0.5758 measured=True; SUSPECT / CLEAR_AT_MEASURED_
+  VOLTAGE / SUSPECT for eval / benign / getattr-obfuscation respectively.
+
+THE REFUSAL GUARD is real, and I tested it rather than assuming:
+  pointing the reader at a binder reporting measured=False produced
+    RuntimeError: voltage doctrine: the binder reports measured=False; refusing
+    to substitute a constant for phi_v
+  So the doctrine is enforced in code, not asserted in a comment.
+
+AUDIT - WHAT phi_v ACTUALLY MEASURES
+  POSITIVE: it is genuinely derived, not constant. 3 distinct values over 30s
+  (0.5755 / 0.577 / 0.5773) tracking memory_percent 84.89 -> 84.54; and 0.5771 ->
+  0.5751 across the session. My first 8-call test showed 1 distinct value and I
+  nearly reported a doctrine violation - the window was simply too short, since
+  memory usage is the only live input and it moves over minutes.
+
+  FINDING: it carries no voltage measurement. In voltage.rs,
+      const V_CORE = 1.25   and the formula divides by 1.25
+      const V_DDR  = 1.35   and the formula divides by 1.35
+      const F_BASE = 4000   and the clock reads 4000
+  so phi_core = (1.25/1.25)^2 = 1.0, phi_mem = 1.35/1.35 = 1.0 and
+  phi_freq = 4000/4000 = 1.0 - each IDENTICALLY. phi_v reduces to 1 - mem%/200.
+  Verified: mem 84.72 -> computed 0.576400, reported 0.5764.
+  A constant equal to its own divisor can never be anything but 1.0, so the rail
+  terms are structurally inert. The endpoint names its inputs honestly ('wmic
+  CurrentClockSpeed + OS memory' - no rail read is claimed), but the field is
+  named voltage_phi_v and voltage_rails is served as {v_core: 1.25, v_ddr: 1.35},
+  which reads as measurement rather than nominal constants.
+  TO FULLY SATISFY THE DOCTRINE: read the rails instead of declaring them.

@@ -1,0 +1,18 @@
+{
+ "basis": "measured by re-deriving every vector from the packed codes and comparing to the source corpus",
+ "bits": 2,
+ "compression_vs_f32": 16.0,
+ "corpus_built_at": "2026-09-20T15:04:20Z",
+ "corpus_sha256": "cb1473553352c406cd12be896a0bb74936967aa9f57f0f8defa492dd0cd2adb5",
+ "cosine_mean": 0.8571662540738536,
+ "cosine_min": 0.7678982988471396,
+ "dim": 768,
+ "measured_at_utc": "2026-10-11T16:38:24Z",
+ "note": "the floor is scoped to one corpus; a refresh re-baselines it and reports the delta",
+ "rebaselined_from": {
+  "corpus_sha256": "583e76b7f2e83015573e172054415e85c9040692603e168f0eb862bf182e167d",
+  "cosine_min": 0.8055,
+  "reason": "relational tier text fixed (1994 records) + 10 drifted docs re-embedded; floor stable at 0.7679"
+ },
+ "vectors": 2180
+}

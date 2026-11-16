@@ -1,0 +1,29 @@
+TURBOVEC 1.58-BIT: THE RETRIEVAL CEILING, AND THE FIX
+scenario: tools/proof_suite/turbovec_retrieval (107 real docs x 2153 dims, chance 0.93%)
+
+MEASURED
+  full precision  recall@1  99.1%   recall@3 100.0%
+  1.58-bit alone  recall@1  18.7%   recall@3  39.3%      loss 80.4 points
+  compression     16.0x EXACT (921484 -> 57673 bytes)
+
+TWO-STAGE (1.58-bit shortlist, then fp32 rerank of the shortlist)
+  K=5    candidate coverage  54.2%  ->  recall@1  54.2%
+  K=10   candidate coverage  84.1%  ->  recall@1  83.2%
+  K=20   candidate coverage 100.0%  ->  recall@1  99.1%   == fp32 parity
+  K=40   candidate coverage 100.0%  ->  recall@1  99.1%
+
+WHAT THIS SETTLES
+  1.58-bit is EXACT as a compression ratio and LOSSY as a ranking.
+  As a pure store (no rerank): 16x smaller, recall@1 18.7% - a real,
+  large loss, not a threshold artefact.
+  As an ANN INDEX with an fp32 rerank at K=20: recall@1 99.1%, i.e.
+  indistinguishable from full precision on this corpus.
+
+  The 16x therefore buys SEARCH TIME (the coarse pass scans 16x less
+  memory), NOT storage - if fp32-parity recall is required, the fp32
+  vectors must still be retained for the shortlist. Storing ONLY
+  1.58-bit is a valid choice only if 18.7% recall@1 is acceptable.
+
+  Retry conclusion: the honest fix is a rerank stage, not a wider
+  quantiser - a wider quantiser trades the compression away, whereas
+  the two-stage keeps it for the coarse pass and recovers the ranking.

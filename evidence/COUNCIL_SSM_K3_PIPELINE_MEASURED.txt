@@ -1,0 +1,95 @@
+COUNCIL SSM + K3 DECISION PIPELINE — MEASURED
+Date 2026-11-02. Live :8022 (host_council_server) and :8099.
+
+WHAT WAS ACTUALLY MISSING
+  The pieces existed and were not connected to the council:
+    k3_logic.rs                 K3 Kleene engine (AND/OR/NOT/IMPLY, state_reduction,
+                                bypass_decision, trit packing). The council called it
+                                ONLY as an offline fallback when the model was down.
+    mamba3_turbovec_ssm.rs      Mamba-3 recurrence, exported by the kernel crate and
+                                declared in lib.rs. The council NEVER called it.
+    /council/status             advertised "mamba3_ssm ... ACTIVE" as a static JSON
+                                string. That was a claim with no wiring behind it.
+  Before this change the decision path was: prompt a 1.5B model, regex "VOTE:" out of
+  its text, use that character as a trit. Neither the SSM nor the ternary algebra was
+  in the decision loop. That is the missing pipeline this work builds.
+
+WHAT WAS BUILT
+  src/council_ssm_pipeline.rs   new module
+    ssm_decision(text)          tokenise -> 96 token vectors, 128-dim each (4 salted
+                                32-dim K3 hash vectors) -> Mamba3StateSpaceScanner
+                                step per token -> K3 state_reduction -> trit
+    fuse(llm, ssm, gate)        Kleene-3 fusion of the model read and the SSM read
+  main.rs                       module wired into the per-agent loop; every vote now
+                                carries decision_path, llm_trit, ssm_trit, ssm_mean,
+                                ssm_ambiguity, ssm_steps
+  GET /council/ssm?text=        audit endpoint: run the read-out on arbitrary text and
+                                return the raw numbers without 14 model calls
+  Proposal.fused_agree/disagree/ssm_only and a "fusion" block in the propose response
+
+THREE DEFECTS FOUND BY MEASURING, NOT BY READING THE CODE
+
+  1. THE SSM WAS SILENT. First live run: all 14 agents "llm only (ssm undecided)",
+     ssm_trit=0, mean=+0.0000, ambiguity=1.00. Every one of the 128 reduced trits was
+     UNKNOWN. Cause: a_bar = 1 + da + da^2/2 with da = 0.01*a_diag stays near 1 (slow
+     decay) while b_bar = delta = 0.01, so the state settles near 0.15-0.2 -- about
+     half the tau = 0.35 band. Fix: normalise the state to RMS 1 before reduction, so
+     the read-out is scale-free and the K3 defaults are left alone.
+
+  2. THE READ-OUT IS BIASED. Over 45 texts (5 topics + 40 document chunks):
+       mean trit centre = -0.0415     sd = 0.0820
+       range            = -0.2109 .. +0.1328
+     The centre is NEGATIVE because the fixed A/B/C projection is asymmetric. It leans
+     FALSE regardless of content. Band choice follows from this, measured:
+       band 0.15  ->  3/45 texts decide  (7%)  : effectively silent
+       band 0.08  -> 18/45              (40%)
+       band 0.05  -> 24/45              (53%)  : chosen, so it participates at all
+       band 0.03  -> 33/45              (73%)
+     The band is calibrated so the read-out is not silent. It is NOT calibrated to be
+     accurate, and no band makes a biased projection accurate.
+
+  3. IT AGREES WITH THE MODEL AT CHANCE. 70 agent-topic pairs from 5 proposals:
+       llm_trit == ssm_trit   24/70 = 34%   (chance for three classes is 33%)
+       ssm decided            46/70
+       when decided: FALSE 45, TRUE 1
+     So the SSM is not a second opinion. It is a near-constant NO vote that lands on
+     the model's answer one time in three by coincidence.
+
+CONSEQUENCE FOR THE DESIGN — MEASURED BOTH WAYS
+  Hard gate (Kleene-3 fusion where disagreement -> UNKNOWN):
+    dark mode     13/0/1  ->  4/9/1     consensus LOST
+    QUIC          14/0/0  ->  7/7/0     consensus LOST
+    checkpoint     5/1/8  ->  1/5/8     already split
+    cite-verdicts  4/0/10 ->  3/1/10    rejected either way
+    cheese         0/0/14 ->  0/0/14    unchanged
+  Advisory (default): the model decides, the SSM trit and its dissent are recorded.
+    Tallies identical to the pre-pipeline run on all 5 topics:
+      dark mode 13/0/1, cite-verdicts 4/0/10, cheese 0/0/14, QUIC 14/0/0, checkpoint 5/1/8.
+    Python surface parity 3/3 on the delegated path.
+
+  Shipped default is ADVISORY. A hard gate would have quietly destroyed the council's
+  ability to reach consensus on 2 of 5 topics, and the reason would have been a random
+  projection rather than the proposal's merits. The gate remains available per request
+  (body "ssm_gate": true) or per process (COUNCIL_SSM_GATE=hard) so the behaviour is
+  reproducible and the measurement can be re-run.
+
+WHAT THIS PIPELINE IS AND IS NOT
+  IS   : deterministic arithmetic on the proposal text. Every verdict is reproducible,
+         traceable to ssm_mean, and costs microseconds. K3 ternary algebra genuinely
+         carries the fusion and the abstention semantics.
+  IS NOT: comprehension. The SSM weights are initialised (a_diag = -0.5*(i+1)), never
+         trained. The token vectors are K3 hashes, not learned embeddings. Nothing
+         here knows what "dark mode" or "QUIC" means. The 34% agreement rate is the
+         measurement of that gap, not a flaw in the wiring.
+
+  To make this pipeline carry real signal the read-out must be trained on labelled
+  verdicts -- fit a read-out direction on the 128-dim state against the council's own
+  historical decisions -- and re-measure agreement. Until then the honest status of
+  the SSM is "wired, deterministic, advisory, measured at chance".
+
+VERDICT
+  The pipeline the user asked for now exists: agents run Mamba-3 over their own text,
+  the K3 engine reduces the state to trits, and the fusion is ternary. It is wired,
+  measured, and it is honest about being a biased coin: 34% agreement with the model,
+  FALSE 45/46 when it commits. Shipped as advisory, gate available and documented.
+  The static "mamba3_ssm ACTIVE" status string is no longer a lie.

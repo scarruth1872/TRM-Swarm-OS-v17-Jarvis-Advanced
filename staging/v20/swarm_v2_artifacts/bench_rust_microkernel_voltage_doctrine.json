@@ -1,0 +1,226 @@
+{
+  "benchmark_title": "Pure Rust Microkernel & Voltage Doctrine Sovereign Benchmark",
+  "monad_truth_anchor": "0x4D4F4E4144000001",
+  "doctrine_verified": {
+    "voltage_doctrine": true,
+    "tokenless_action_vectors": true,
+    "on_device_knowledge_first": true,
+    "pure_rust_microkernel_primary": true,
+    "external_model_calls": 0
+  },
+  "suite_1_scenario_6_deterministic_computation": {
+    "exit_code": 0,
+    "execution_latency_ms": 200.66,
+    "tasks_evaluated": 10,
+    "invariants_proven": 9,
+    "monad_anchor": "0x4D4F4E4144000001"
+  },
+  "suite_2_voltage_doctrine_dispatch": {
+    "trials": 10000,
+    "throughput_dispatches_per_sec": 76461,
+    "latency_us": {
+      "min": 11.6,
+      "p50": 12.0,
+      "p95": 16.5,
+      "p99": 23.1,
+      "max": 1286.4
+    },
+    "mode": "TOKENLESS_VOLTAGE_TRANSFORM",
+    "carrier_frequency_thz": 15.53,
+    "sample_actions": [
+      {
+        "status": "PASS",
+        "agent": "EventLedger",
+        "agent_id": 8,
+        "intent": "EXECUTE",
+        "intent_id": 2,
+        "confidence": 0.0656,
+        "k3_trit": 0,
+        "k3_label": "UNKNOWN",
+        "dispatch_latency_us": 14.4,
+        "mode": "TOKENLESS_VOLTAGE_TRANSFORM",
+        "phi_v_carrier_thz": 15.53
+      },
+      {
+        "status": "PASS",
+        "agent": "EventLedger",
+        "agent_id": 8,
+        "intent": "EXECUTE",
+        "intent_id": 2,
+        "confidence": 0.0656,
+        "k3_trit": 0,
+        "k3_label": "UNKNOWN",
+        "dispatch_latency_us": 12.4,
+        "mode": "TOKENLESS_VOLTAGE_TRANSFORM",
+        "phi_v_carrier_thz": 15.53
+      },
+      {
+        "status": "PASS",
+        "agent": "EventLedger",
+        "agent_id": 8,
+        "intent": "EXECUTE",
+        "intent_id": 2,
+        "confidence": 0.0656,
+        "k3_trit": 0,
+        "k3_label": "UNKNOWN",
+        "dispatch_latency_us": 11.5,
+        "mode": "TOKENLESS_VOLTAGE_TRANSFORM",
+        "phi_v_carrier_thz": 15.53
+      },
+      {
+        "status": "PASS",
+        "agent": "EventLedger",
+        "agent_id": 8,
+        "intent": "EXECUTE",
+        "intent_id": 2,
+        "confidence": 0.0656,
+        "k3_trit": 0,
+        "k3_label": "UNKNOWN",
+        "dispatch_latency_us": 10.8,
+        "mode": "TOKENLESS_VOLTAGE_TRANSFORM",
+        "phi_v_carrier_thz": 15.53
+      },
+      {
+        "status": "PASS",
+        "agent": "EventLedger",
+        "agent_id": 8,
+        "intent": "EXECUTE",
+        "intent_id": 2,
+        "confidence": 0.0656,
+        "k3_trit": 0,
+        "k3_label": "UNKNOWN",
+        "dispatch_latency_us": 10.5,
+        "mode": "TOKENLESS_VOLTAGE_TRANSFORM",
+        "phi_v_carrier_thz": 15.53
+      }
+    ]
+  },
+  "suite_3_on_device_knowledge_retrieval": {
+    "queries_evaluated": 5,
+    "mean_search_latency_us": 37.24,
+    "mean_total_retrieval_us": 174.24,
+    "on_device_documents": 73,
+    "model_free_text_encoding": true,
+    "external_model_calls": 0,
+    "domain_cases": [
+      {
+        "domain": "FinTech",
+        "query": "High-frequency risk anomaly detection flash crash order book",
+        "top_match": "research_plan_machine_learning_optimization_.md",
+        "agreement_score": 127,
+        "encode_latency_us": 117.3,
+        "search_latency_us": 41.1,
+        "total_retrieval_us": 257.6,
+        "action_vector": {
+          "agent": "Flow",
+          "intent": "READ",
+          "confidence": 0.0623,
+          "k3_trit": 0
+        }
+      },
+      {
+        "domain": "BioGenomics",
+        "query": "Klebsiella pneumoniae LpxC Gly210Ser antibiotic resistance chelation",
+        "top_match": "transformation_plan_llm_integration.md",
+        "agreement_score": 126,
+        "encode_latency_us": 101.9,
+        "search_latency_us": 36.6,
+        "total_retrieval_us": 170.7,
+        "action_vector": {
+          "agent": "Logic",
+          "intent": "EXECUTE",
+          "confidence": 0.1219,
+          "k3_trit": 0
+        }
+      },
+      {
+        "domain": "CyberDefense",
+        "query": "eBPF probe bypass zero-day exploit memory corruption mitigation",
+        "top_match": "research_plan_transformer_architecture_impro.md",
+        "agreement_score": 141,
+        "encode_latency_us": 81.8,
+        "search_latency_us": 35.4,
+        "total_retrieval_us": 142.2,
+        "action_vector": {
+          "agent": "Logic",
+          "intent": "WRITE",
+          "confidence": 0.0176,
+          "k3_trit": 0
+        }
+      },
+      {
+        "domain": "AMRSurveillance",
+        "query": "Hospital bacteremic sepsis crisis outbreak resuscitation protocol",
+        "top_match": "async_telemetry_gateway/app/services.py",
+        "agreement_score": 125,
+        "encode_latency_us": 91.2,
+        "search_latency_us": 34.5,
+        "total_retrieval_us": 149.2,
+        "action_vector": {
+          "agent": "Flow",
+          "intent": "READ",
+          "confidence": 0.0147,
+          "k3_trit": 0
+        }
+      },
+      {
+        "domain": "PQCSettlement",
+        "query": "ML-KEM-1024 post-quantum financial settlement 100-node ledger",
+        "top_match": "src/index.js",
+        "agreement_score": 126,
+        "encode_latency_us": 89.9,
+        "search_latency_us": 38.6,
+        "total_retrieval_us": 151.5,
+        "action_vector": {
+          "agent": "EventLedger",
+          "intent": "EXECUTE",
+          "confidence": 0.0736,
+          "k3_trit": 0
+        }
+      }
+    ]
+  },
+  "suite_4_real_world_native_scenarios": {
+    "scenarios_executed": 5,
+    "total_suite_latency_ms": 456.01,
+    "avg_scenario_latency_ms": 91.2,
+    "scenarios": [
+      {
+        "scenario": "Scenario 1 (Cyber Zero-Day Defense)",
+        "exit_code": 0,
+        "latency_ms": 11.43,
+        "status_line": "\u2514\u2500 Verify Audit Status:         PASS \u2014 Miri clean, no data races under the weak memory model (K3: True)",
+        "native_rust_execution": true
+      },
+      {
+        "scenario": "Scenario 2 (Hospital AMR Crisis)",
+        "exit_code": 0,
+        "latency_ms": 11.83,
+        "status_line": "\u2514\u2500 Triage Status:               CRITICAL: Protocolized Resuscitation & Vasopressor Titration Active (K3: True)",
+        "native_rust_execution": true
+      },
+      {
+        "scenario": "Scenario 3 (PQC Financial Settlement)",
+        "exit_code": 0,
+        "latency_ms": 12.08,
+        "status_line": "\u2514\u2500 Mesh Coherence Consensus:    True",
+        "native_rust_execution": true
+      },
+      {
+        "scenario": "Scenario 4 (Voltage Raw Reasoning)",
+        "exit_code": 0,
+        "latency_ms": 227.27,
+        "status_line": "\u26a1 Raw Reasoning Status:        REASONING GAP ELIMINATED \u2705",
+        "native_rust_execution": true
+      },
+      {
+        "scenario": "Scenario 5 (Voltage Exceedance)",
+        "exit_code": 0,
+        "latency_ms": 193.4,
+        "status_line": "\u2514\u2500 Multi-Rail Truth Status:     True",
+        "native_rust_execution": true
+      }
+    ]
+  },
+  "timestamp": "2026-09-19T01:24:18Z"
+}

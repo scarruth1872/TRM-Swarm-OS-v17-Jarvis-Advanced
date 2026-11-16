@@ -1,0 +1,37 @@
+1000-TASK VERIFIABLE BENCHMARK (NATIVE RUST) - 2026-10-09
+harness: tools/production_bench_rs/bench1000.rs
+model: qwen2.5-1.5b-instruct-q4_k_m (llama.cpp Vulkan, RX 6700 XT)
+
+  tasks             1000
+  CORRECT           644  (64.4%)
+  transport errors  0
+  templated         0    (every answer from the real model)
+  wall              28.8s   34.71 tasks/s
+  latency           p50 0.10s  p95 0.19s  max 1.53s
+    arith        178/250 = 71%
+    capitals     156/250 = 62%
+    lettercount  163/250 = 65%
+    reverse      147/250 = 59%
+
+ROOT CAUSE OF THE EARLIER SLOWNESS (corrects an earlier wrong claim):
+
+TWO llama-server processes were bound to 127.0.0.1:8587:
+  PID  3048  started 9/22/2026 11:29  Bonsai-27B-Q1_0.gguf      STALE
+  PID 51800  started 10/9/2026  8:08  qwen2.5-1.5b-instruct     mine
+
+Windows allowed both to bind. The 27B answered, so every latency
+figure measured before this point (5.5s, 16.6s) was the WRONG MODEL,
+and its 'reasoning template' produced the <think> rambling.
+
+Killing PID 3048 fixed it. True Qwen2.5-1.5B numbers:
+  chat p50 0.07s, ~200 tok/s, clean answers
+
+CORRECTION: an earlier claim of a '28x speedup from removing the
+system prompt' was MIS-ATTRIBUTED - it was derived from a run on the
+stale 27B with a throwaway placeholder question. The system-prompt
+change is harmless but was NOT the cause. The cause was the squatter.
+
+MODEL CAPABILITY (the real limit now):
+  64.4% on verifiable tasks. Misses are genuine model errors
+  (counted 7 instead of 6; scrambled a reversal). 1.5B is the ceiling,
+  not the pipeline.

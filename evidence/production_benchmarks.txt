@@ -1,0 +1,62 @@
+PRODUCTION READINESS BENCHMARKS - host 9c08bfc419d092e7
+council server 8022, persistent connections (keep-alive)
+
+=== 1. LOAD ===
+/health          conc=1  6473/s  p50 0.14ms  p95 0.18ms  err=0
+                 conc=8  6945/s  p50 1.06ms  p95 2.10ms  err=0
+                 conc=32 6327/s  p50 4.72ms  p95 9.88ms  err=0
+   -> PRODUCTION GRADE: 7k req/s, sub-ms, zero errors, scales to conc=32
+
+/system/health_matrix  conc=1   436/s  p50  1.22ms  err=0
+                       conc=8   384/s  p50 17.42ms  err=0
+                       conc=16  376/s  p50 38.26ms  err=171
+   -> NOT PRODUCTION GRADE: 16x concurrency = ZERO throughput gain,
+      p50 up 31x. SERIALISED.
+
+/k3/bench        conc=1   864/s  p50 1.05ms
+                 conc=8  5153/s  p50 1.12ms  p95 1.40ms
+   -> fast; conc=16 unmeasurable (client port exhaustion)
+
+=== 2. SOAK (180s, conc=8, /health) ===
+RSS 9.9 MB CONSTANT over 180s (delta +0.0 MB) - zero leak
+p50 stable 1.89-2.31ms, no drift; 1,341,571 requests; ~7450 req/s
+   -> PRODUCTION GRADE endurance
+
+=== 3. DEFECTS FOUND ===
+a) health_matrix probes 3002/3001/5183 on EVERY request, 3 BLOCKING TCP
+   connects, 200ms timeout each, never cached. Throughput is capped by the
+   SLOWEST PROBED SERVICE, not by this server. SAME CLASS as the federation
+   probe bug. FIX BUILT (probe_cached, TTL 5s) - NOT DEPLOYED.
+b) Fabricated literals in the same handler:
+     council_lat = 0.15    <- the server hardcodes its OWN latency
+     cognitive_lat = 0.005 <- literal
+     pbft_quorum = 14/14   <- literal (council votes are templated)
+     k3_invariant = +1_GOLD <- literal
+c) HTTP headers emit \r\r\n (double CR) - malformed, non-compliant,
+   tolerated by lenient clients.
+
+=== 4. METHOD NOTES (measurement artefacts, NOT server faults) ===
+- First run showed 'errors under concurrency'. CAUSE WAS THE GENERATOR:
+  a new TCP connection per request exhausted ephemeral ports
+  (WinError 10048). Fixed with keep-alive + backoff on error.
+- k3/bench conc=16 still client-limited; treat that cell as UNMEASURED.
+- report any 'errors' count only after checking 10048 vs real 5xx.
+
+=== VERDICT ===
+/health: PRODUCTION READY (7k req/s, sub-ms, 0 err, flat 9.9MB, 1.34M reqs)
+k3/bench: PRODUCTION READY for throughput; retest at high conc needed
+health_matrix: NOT production ready under concurrency - fix built
+=== 1000-TASK VERIFIABLE BENCHMARK (genuine chat path) ===
+harness: tools/production_bench/tasks1000.py
+4 task classes, all machine-verifiable: arithmetic, capitals,
+letter-count, string-reverse.  Answers compared to ground truth.
+
+SMOKE TEST (8 tasks, W=4) - host d8ace26ecc9227fa:
+  correct 5/8 = 62.5%   templated 0   errors 0
+  arith 2/2 | capitals 2/2 | lettercount 1/2 | reverse 0/2
+  latency p50 16.62s  max 39.34s   throughput 0.20 tasks/s
+
+NOTE: latency is high because the model emits a long thinking
+trace before answering.  templated=0 confirms EVERY answer came
+from the real model - this is the genuine-path benchmark.
+

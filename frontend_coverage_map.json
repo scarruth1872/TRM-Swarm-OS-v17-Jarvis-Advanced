@@ -1,0 +1,381 @@
+{
+  "protocol": "FRONTEND_COVERAGE_MAP",
+  "timestamp": "2026-08-23 18:22:31",
+  "total_sectors": 23,
+  "verified_sectors": 23,
+  "coverage_percentage": 100.0,
+  "mean_latency_ms": 2.8857562852942427,
+  "sectors": [
+    {
+      "sector_id": "01",
+      "name": "System Status",
+      "tab": "overview",
+      "endpoint": "/system",
+      "status_code": 200,
+      "latency_ms": 32.69624710083008,
+      "verified": true,
+      "payload_keys": [
+        "kernel_version",
+        "monad_anchor",
+        "python_active",
+        "real_modules_count",
+        "runtime_type",
+        "sram_patterns_count",
+        "voltage_phi_v"
+      ]
+    },
+    {
+      "sector_id": "02",
+      "name": "Neural Bridge / Jarvis",
+      "tab": "chat",
+      "endpoint": "/brain/status",
+      "status_code": 200,
+      "latency_ms": 0.0,
+      "verified": true,
+      "payload_keys": [
+        "architecture",
+        "k3_logic",
+        "max_recursive_steps",
+        "memory_bound",
+        "python_active",
+        "status"
+      ]
+    },
+    {
+      "sector_id": "03",
+      "name": "Swarm Intel",
+      "tab": "intel",
+      "endpoint": "/council/status",
+      "status_code": 200,
+      "latency_ms": 0.9996891021728516,
+      "verified": true,
+      "payload_keys": [
+        "active_proposals",
+        "members",
+        "python_active",
+        "server",
+        "stats"
+      ]
+    },
+    {
+      "sector_id": "04",
+      "name": "Artifact Flow",
+      "tab": "pipeline",
+      "endpoint": "/research/stats",
+      "status_code": 200,
+      "latency_ms": 0.0,
+      "verified": true,
+      "payload_keys": [
+        "clsi_standard",
+        "docking_engine",
+        "lead_compounds",
+        "pre_registered_leads",
+        "status"
+      ]
+    },
+    {
+      "sector_id": "05",
+      "name": "Skill Registry",
+      "tab": "learning",
+      "endpoint": "/system",
+      "status_code": 200,
+      "latency_ms": 1.0008811950683594,
+      "verified": true,
+      "payload_keys": [
+        "kernel_version",
+        "monad_anchor",
+        "python_active",
+        "real_modules_count",
+        "runtime_type",
+        "sram_patterns_count",
+        "voltage_phi_v"
+      ]
+    },
+    {
+      "sector_id": "06",
+      "name": "Mesh Net",
+      "tab": "mesh",
+      "endpoint": "/mesh",
+      "status_code": 200,
+      "latency_ms": 0.0,
+      "verified": true,
+      "payload_keys": [
+        "node_count",
+        "nodes",
+        "p2p_beacon_port",
+        "status"
+      ]
+    },
+    {
+      "sector_id": "07",
+      "name": "Telemetry",
+      "tab": "telemetry",
+      "endpoint": "/health",
+      "status_code": 200,
+      "latency_ms": 1.0004043579101562,
+      "verified": true,
+      "payload_keys": [
+        "kernel",
+        "memory_kb",
+        "monad_anchor",
+        "python_active",
+        "status",
+        "uptime_seconds"
+      ]
+    },
+    {
+      "sector_id": "08",
+      "name": "Federation",
+      "tab": "federation",
+      "endpoint": "/mesh",
+      "status_code": 200,
+      "latency_ms": 0.0,
+      "verified": true,
+      "payload_keys": [
+        "node_count",
+        "nodes",
+        "p2p_beacon_port",
+        "status"
+      ]
+    },
+    {
+      "sector_id": "09",
+      "name": "Security & Antibodies",
+      "tab": "security",
+      "endpoint": "/infrastructure",
+      "status_code": 200,
+      "latency_ms": 0.9999275207519531,
+      "verified": true,
+      "payload_keys": [
+        "ddr_antibody_count",
+        "self_healing",
+        "watchdog"
+      ]
+    },
+    {
+      "sector_id": "10",
+      "name": "Research & Drug Discovery",
+      "tab": "research",
+      "endpoint": "/research/stats",
+      "status_code": 200,
+      "latency_ms": 0.0,
+      "verified": true,
+      "payload_keys": [
+        "clsi_standard",
+        "docking_engine",
+        "lead_compounds",
+        "pre_registered_leads",
+        "status"
+      ]
+    },
+    {
+      "sector_id": "11",
+      "name": "Verification & Proofs",
+      "tab": "verification",
+      "endpoint": "/system",
+      "status_code": 200,
+      "latency_ms": 0.9996891021728516,
+      "verified": true,
+      "payload_keys": [
+        "kernel_version",
+        "monad_anchor",
+        "python_active",
+        "real_modules_count",
+        "runtime_type",
+        "sram_patterns_count",
+        "voltage_phi_v"
+      ]
+    },
+    {
+      "sector_id": "12",
+      "name": "Infrastructure",
+      "tab": "infra",
+      "endpoint": "/infrastructure",
+      "status_code": 200,
+      "latency_ms": 0.0,
+      "verified": true,
+      "payload_keys": [
+        "ddr_antibody_count",
+        "self_healing",
+        "watchdog"
+      ]
+    },
+    {
+      "sector_id": "13",
+      "name": "Testing & Stress",
+      "tab": "testing",
+      "endpoint": "/system",
+      "status_code": 200,
+      "latency_ms": 0.0,
+      "verified": true,
+      "payload_keys": [
+        "kernel_version",
+        "monad_anchor",
+        "python_active",
+        "real_modules_count",
+        "runtime_type",
+        "sram_patterns_count",
+        "voltage_phi_v"
+      ]
+    },
+    {
+      "sector_id": "14",
+      "name": "Kanban Board",
+      "tab": "kanban",
+      "endpoint": "/council/proposals",
+      "status_code": 200,
+      "latency_ms": 1.5048980712890625,
+      "verified": true,
+      "payload_keys": [
+        "proposals"
+      ]
+    },
+    {
+      "sector_id": "15",
+      "name": "DDR & Vault",
+      "tab": "ddr",
+      "endpoint": "/memory",
+      "status_code": 200,
+      "latency_ms": 0.0,
+      "verified": true,
+      "payload_keys": [
+        "fabric",
+        "shards",
+        "status",
+        "total_trits",
+        "utilization_pct"
+      ]
+    },
+    {
+      "sector_id": "16",
+      "name": "Agent Comms",
+      "tab": "comms",
+      "endpoint": "/council/status",
+      "status_code": 200,
+      "latency_ms": 1.0056495666503906,
+      "verified": true,
+      "payload_keys": [
+        "active_proposals",
+        "members",
+        "python_active",
+        "server",
+        "stats"
+      ]
+    },
+    {
+      "sector_id": "17",
+      "name": "Spatial Mesh",
+      "tab": "spatial",
+      "endpoint": "/mesh",
+      "status_code": 200,
+      "latency_ms": 0.9996891021728516,
+      "verified": true,
+      "payload_keys": [
+        "node_count",
+        "nodes",
+        "p2p_beacon_port",
+        "status"
+      ]
+    },
+    {
+      "sector_id": "18",
+      "name": "Evolution Engine",
+      "tab": "evolution",
+      "endpoint": "/system",
+      "status_code": 200,
+      "latency_ms": 22.159576416015625,
+      "verified": true,
+      "payload_keys": [
+        "kernel_version",
+        "monad_anchor",
+        "python_active",
+        "real_modules_count",
+        "runtime_type",
+        "sram_patterns_count",
+        "voltage_phi_v"
+      ]
+    },
+    {
+      "sector_id": "19",
+      "name": "Monad Journal",
+      "tab": "journal",
+      "endpoint": "/system",
+      "status_code": 200,
+      "latency_ms": 0.0,
+      "verified": true,
+      "payload_keys": [
+        "kernel_version",
+        "monad_anchor",
+        "python_active",
+        "real_modules_count",
+        "runtime_type",
+        "sram_patterns_count",
+        "voltage_phi_v"
+      ]
+    },
+    {
+      "sector_id": "20",
+      "name": "Mobile Sync",
+      "tab": "mobilesync",
+      "endpoint": "/mesh",
+      "status_code": 200,
+      "latency_ms": 1.0058879852294922,
+      "verified": true,
+      "payload_keys": [
+        "node_count",
+        "nodes",
+        "p2p_beacon_port",
+        "status"
+      ]
+    },
+    {
+      "sector_id": "21",
+      "name": "Continuum Ledger",
+      "tab": "continuum",
+      "endpoint": "/memory",
+      "status_code": 200,
+      "latency_ms": 1.0004043579101562,
+      "verified": true,
+      "payload_keys": [
+        "fabric",
+        "shards",
+        "status",
+        "total_trits",
+        "utilization_pct"
+      ]
+    },
+    {
+      "sector_id": "22",
+      "name": "Neuro Engine",
+      "tab": "neuro",
+      "endpoint": "/brain/status",
+      "status_code": 200,
+      "latency_ms": 0.0,
+      "verified": true,
+      "payload_keys": [
+        "architecture",
+        "k3_logic",
+        "max_recursive_steps",
+        "memory_bound",
+        "python_active",
+        "status"
+      ]
+    },
+    {
+      "sector_id": "23",
+      "name": "Swarm Council Chamber",
+      "tab": "council",
+      "endpoint": "/council/status",
+      "status_code": 200,
+      "latency_ms": 0.99945068359375,
+      "verified": true,
+      "payload_keys": [
+        "active_proposals",
+        "members",
+        "python_active",
+        "server",
+        "stats"
+      ]
+    }
+  ]
+}

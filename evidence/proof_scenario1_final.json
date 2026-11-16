@@ -1,0 +1,29 @@
+{
+  "scenario": "PROOF-1 security gate vs a REAL codebase",
+  "corpus": {
+    "negative": "the platform's own 1657 deployed Python files",
+    "positive": "12 planted files, one danger class each, labelled by construction"
+  },
+  "recall": {
+    "caught": 12,
+    "total": 12,
+    "pct": 100.0,
+    "note": "unambiguous - each plant contains exactly one danger class"
+  },
+  "before_fix": {
+    "flagged": 571,
+    "pct": 34.46
+  },
+  "after_fix": {
+    "flagged": 324,
+    "pct": 19.55
+  },
+  "improvement": {
+    "fewer_flags": 247,
+    "pct_fewer": 43.3,
+    "obfuscation_flags": "225 -> 23",
+    "cause": "has_call matched '.compile(' etc; re.compile is not compile"
+  },
+  "remaining_flags_are": "genuine uses of subprocess/os.system/SQL string building in a dev repo, NOT injected vulnerabilities. A lexical scanner cannot separate 'app shells out on purpose' from 'user input reaches a shell' - that needs taint analysis.",
+  "verdict": "PROVEN: 12/12 recall on labelled danger, and the precision defects found by running against real code were real bugs that are now fixed (43% fewer flags). NOT PROVEN: that this is a usable automatic CI gate. At 19.6% flag rate a human cannot read every flag. The defensible use is review-highlighting - 'show me every place that shells out / deserialises / builds SQL' - which is a real question, not an automatic pass/fail."
+}

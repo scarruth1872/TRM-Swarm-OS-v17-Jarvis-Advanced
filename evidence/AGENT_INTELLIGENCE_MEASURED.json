@@ -1,0 +1,588 @@
+{
+ "generated": "2026-11-05T17:28:47",
+ "distinctness": {
+  "neutral_question": "Explain in one sentence why a distributed system needs a quorum.",
+  "agents": 14,
+  "unique": 7,
+  "identical_groups": {
+   "Shield | Pulse": "A quorum ensures that a distributed system can make decisions when a majority of its components are available, enhancing reliability and fault tolerance.",
+   "Logic | Verify | Archi | Bridge | Orchestra | EventLedger": "A distributed system needs a quorum to ensure that decisions are made by a majority of nodes, preventing single points of failure and maintaining system integrity.",
+   "Seeker | Jarvis": "A quorum is needed in a distributed system to ensure that decisions are made by a majority of nodes, preventing single points of failure and maintaining system integrity."
+  },
+  "unique_agents": [
+   "Devo",
+   "Flow",
+   "LogicMaster",
+   "THzGateway"
+  ]
+ },
+ "hermes": {
+  "distinct_frames": 1,
+  "canned": true,
+  "frame": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per step, O(1) memory. 14 agents, 688 datasets, 345M steps.\n\nDecision: +TRUE on '<Q>'",
+  "probes": [
+   {
+    "q": "Explain in one sentence why a distributed system needs a quorum.",
+    "text": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per step, O(1) memory. 14 agents, 688 datasets, 345M steps.\n\nDecision: +TRUE on 'Explain in one sentence why a distributed system needs a quo'",
+    "lat_us": 1.2
+   },
+   {
+    "q": "What is 17 multiplied by 23? Reply with the number only.",
+    "text": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per step, O(1) memory. 14 agents, 688 datasets, 345M steps.\n\nDecision: +TRUE on 'What is 17 multiplied by 23? Reply with the number only.'",
+    "lat_us": 1.0
+   },
+   {
+    "q": "Name three prime numbers between 10 and 20.",
+    "text": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per step, O(1) memory. 14 agents, 688 datasets, 345M steps.\n\nDecision: +TRUE on 'Name three prime numbers between 10 and 20.'",
+    "lat_us": 0.9
+   },
+   {
+    "q": "What colour is the sky on a clear day?",
+    "text": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per step, O(1) memory. 14 agents, 688 datasets, 345M steps.\n\nDecision: +TRUE on 'What colour is the sky on a clear day?'",
+    "lat_us": 0.7
+   }
+  ]
+ },
+ "battery": {
+  "Shield": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Logic": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Devo": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Seeker": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Verify": {
+   "correct": 5,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": true,
+     "answer": "No."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Archi": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Flow": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Bridge": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Orchestra": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "EventLedger": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "LogicMaster": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Pulse": {
+   "correct": 5,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": true,
+     "answer": "No."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "THzGateway": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12. As 144 divided by 12 equals 12."
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Jarvis": {
+   "correct": 4,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": true,
+     "answer": "391"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "12"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "6 nodes."
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "13"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "Yes."
+    },
+    {
+     "label": "2^10=1024",
+     "ok": true,
+     "answer": "1024"
+    }
+   ]
+  },
+  "Hermes": {
+   "correct": 2,
+   "of": 6,
+   "detail": [
+    {
+     "label": "17*23=391",
+     "ok": false,
+     "answer": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per"
+    },
+    {
+     "label": "144/12=12",
+     "ok": true,
+     "answer": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per"
+    },
+    {
+     "label": "2/3 of 9=6",
+     "ok": true,
+     "answer": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per"
+    },
+    {
+     "label": "7th prime=17",
+     "ok": false,
+     "answer": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per"
+    },
+    {
+     "label": "91 not prime",
+     "ok": false,
+     "answer": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per"
+    },
+    {
+     "label": "2^10=1024",
+     "ok": false,
+     "answer": "[Hermes | TRM 7M | +TRUE | conf=0.33]\n\nI coordinate the swarm through the TRM 7M Mamba-3 SSM \u2014 7M parameters, 77.4ns per"
+    }
+   ]
+  }
+ }
+}

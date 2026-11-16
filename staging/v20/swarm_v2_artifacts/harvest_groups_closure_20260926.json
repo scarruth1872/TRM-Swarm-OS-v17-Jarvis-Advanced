@@ -1,0 +1,235 @@
+{
+  "both_close": true,
+  "built": "closure of the last two harvest groups (step 3)",
+  "groups": {
+    "models": {
+      "closes": true,
+      "members": [
+        {
+          "byte_identical_source": [],
+          "bytes": 3803452480,
+          "file": "bonsai-27b-q1_0.gguf",
+          "gguf_identity": {
+            "general.architecture": "qwen35",
+            "general.file_type": 40,
+            "general.name": "Bonsai-27B",
+            "general.quantization_version": 2,
+            "general.size_label": "27B",
+            "tokenizer.ggml.model": "gpt2"
+          },
+          "has_another_copy": true,
+          "hf_term": "Bonsai-27B",
+          "public_base_model": [
+            "prism-ml/Ternary-Bonsai-27B-gguf"
+          ],
+          "quant": "q1_0",
+          "sha256": "17ef842e47450caeb8eaa3ebfbbab5d2f2278b62b79be107985fb69a2f819aa0",
+          "verdict": "superseded-by-public-base-model (the quant is reproducible from a public model)",
+          "verified_repos": [
+            {
+              "artifact_matches": [],
+              "files_listed": 12,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'bonsai27b' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-1.7B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 16,
+              "identity_in_repo_id": true,
+              "repo": "prism-ml/Ternary-Bonsai-27B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 12,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'bonsai27b' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-4B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 12,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'bonsai27b' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-8B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 11,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'bonsai27b' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-2-27B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 25,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'bonsai27b' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-2-27B-mlx-2bit"
+            }
+          ]
+        },
+        {
+          "byte_identical_source": [],
+          "bytes": 964652928,
+          "file": "qwen-moe-2.4b-q4_k_m.gguf",
+          "gguf_identity": {
+            "general.architecture": "qwen3moe",
+            "general.basename": "Qwen3-MOE",
+            "general.file_type": 15,
+            "general.license": "apache-2.0",
+            "general.name": "Qwen3 MOE 4x0.6B 2.4B Writing Thunder V1.2",
+            "general.quantization_version": 2,
+            "general.size_label": "4x0.6B-2.4B",
+            "general.source.url": "https://huggingface.co/DavidAU/Qwen3-MOE-4x0.6B-2.4B-Writing-Thunder-V1.2",
+            "general.url": "https://huggingface.co/mradermacher/Qwen3-MOE-4x0.6B-2.4B-Writing-Thunder-V1.2-GGUF",
+            "tokenizer.ggml.model": "gpt2"
+          },
+          "has_another_copy": true,
+          "hf_term": "Qwen3-MOE",
+          "public_base_model": [
+            "EschaLabs/escha-runtime-qwen3moe"
+          ],
+          "quant": "q4_k_m",
+          "sha256": "518b01713cee47629c7ebe7967ea8367217036b9117456caa421ca5a1036fc1f",
+          "verdict": "superseded-by-public-base-model (the quant is reproducible from a public model)",
+          "verified_repos": [
+            {
+              "artifact_matches": [],
+              "files_listed": 12,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'qwen3moe' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-1.7B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 16,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'qwen3moe' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-27B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 12,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'qwen3moe' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-4B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 12,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'qwen3moe' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-8B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 87,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'qwen3moe' nor a size/digest match for this weight",
+              "repo": "logic65/Qwen3.8-Whittle-MoE-27B-A17.8B"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 11,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'qwen3moe' nor a size/digest match for this weight",
+              "repo": "logic65/Qwen3.8-Whittle-MoE-27B-A17.8B-GGUF"
+            }
+          ]
+        },
+        {
+          "byte_identical_source": [],
+          "bytes": 6514704512,
+          "file": "amd.Instella-MoE-16B-A3B-Think.f16.gguf.Q2_K.gguf",
+          "gguf_identity": {
+            "general.architecture": "instella-moe",
+            "general.basename": "amd.Instella-MoE",
+            "general.file_type": 10,
+            "general.license": "other",
+            "general.name": "amd.Instella MoE 16B A3B Think",
+            "general.quantization_version": 2,
+            "general.size_label": "16B-A3B",
+            "tokenizer.ggml.model": "gpt2"
+          },
+          "has_another_copy": true,
+          "hf_term": "amd.Instella-MoE",
+          "public_base_model": [
+            "amd/Instella-MoE-16B-A3B-Think",
+            "amd/Instella-MoE-16B-A3B-SFT-w4a16-llmcompressor",
+            "amd/Instella-MoE-16B-A3B-Base"
+          ],
+          "quant": "q2_k",
+          "sha256": "ba208940c2d8c66c850b4da86804fcc23c1abeb5db79c098ccf01f222d793dbd",
+          "verdict": "superseded-by-public-base-model (the quant is reproducible from a public model)",
+          "verified_repos": [
+            {
+              "artifact_matches": [],
+              "files_listed": 12,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'amdinstellamoe' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-1.7B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 16,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'amdinstellamoe' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-27B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 12,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'amdinstellamoe' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-4B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 12,
+              "identity_in_repo_id": false,
+              "rejected_because": "carries .gguf files but neither the identity key 'amdinstellamoe' nor a size/digest match for this weight",
+              "repo": "prism-ml/Ternary-Bonsai-8B-gguf"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 23,
+              "identity_in_repo_id": true,
+              "repo": "amd/Instella-MoE-16B-A3B-Think"
+            },
+            {
+              "artifact_matches": [],
+              "files_listed": 16,
+              "identity_in_repo_id": true,
+              "repo": "amd/Instella-MoE-16B-A3B-SFT-w4a16-llmcompressor"
+            }
+          ]
+        }
+      ],
+      "recorded_hf_sources": [
+        "prism-ml/Ternary-Bonsai-1.7B-gguf",
+        "prism-ml/Ternary-Bonsai-27B-gguf",
+        "prism-ml/Ternary-Bonsai-4B-gguf",
+        "prism-ml/Ternary-Bonsai-8B-gguf"
+      ]
+    },
+    "prism-ml-llama.cpp": {
+      "basis": "the fork's code is a public GitHub repository (re-obtainable; GitHub's API reports it as a standalone public repo, fork:false parent:null); its ONLY unique content is the four example instruments, whose sources the block-166 harvest holds byte-for-byte -- so nothing unique remains outside the span",
+      "closes": true,
+      "harvested_set": {
+        "dir": "swarm_v2/tools/voltage_instruments",
+        "files": 16
+      },
+      "head": "0115aada44792169feaa29a9a13fcb687b7f9d80",
+      "origin": "https://github.com/froodx/prism-ml-llama.cpp",
+      "size": null,
+      "source_files_byte_identical": {
+        "fork_sources_absent_from_harvest": [],
+        "matched": 4,
+        "mismatched": [],
+        "of": 4
+      },
+      "unique_files": 4
+    }
+  }
+}

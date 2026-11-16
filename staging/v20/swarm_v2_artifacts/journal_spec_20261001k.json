@@ -1,0 +1,22 @@
+[
+ {
+  "kind": "native_framebuffer_dashboard_on_the_machines_own_screen",
+  "fact": "The dashboard the bare-metal boot points at was React/HTML served at /ui/, reachable only from a browser the machine does not carry -- and a search of the tree found no framebuffer renderer, no Rust GUI crate, and no browser/kiosk anywhere (the one dashboard component is the Vite build index-KPxoxwO0.js). The kernel the boot runs has CONFIG_FB_EFI=y, CONFIG_SYSFB=y, CONFIG_FRAMEBUFFER_CONSOLE=y, CONFIG_VT=y and console=tty0, so /dev/fb0 exists on the machine; the gap was exactly one native renderer. That is now trm_fb_dashboard: a dependency-free Rust crate mirroring trm_wifi's raw-syscall pattern (inline asm!, no libc, no crate graph). It opens /dev/fb0, reads its geometry via FBIOGET_VSCREENINFO/FSCREENINFO rather than assuming a pixel layout, mmaps it, and draws an LCARS layout from an embedded 5x7 font, fetching the same /infrastructure/status and /k3/status JSON the web UI reads over a bounded loopback client (2 s SO_RCVTIMEO; a failed fetch leaves the last good frame up). It is staged by make_rootfs.py --dashboard at /opt/trm/trm_fb_dashboard (mode 755) in the persistent root -- never the RAM image, because it runs after the handover and a RAM-image program cannot run post-handover -- and platform_init fork+execs it after the platform answers, with fd 1/2 on the display and the derived network form as argv[1]. Verified in QEMU: the boot mounted the 16,719,872 B squashfs, the platform answered 19 routes, the launcher printed `DASHBOARD RENDERER: launched as pid 183`, the renderer opened `framebuffer 1280x800 32bpp line 5120` (1280 x 4 = 5120 checks out), and the boot log carried `frame N experts=15 engine=native-ternary fabric=76761697B` ticking every 2 s -- the experts count, engine string and fabric bytes all matching the platform's live JSON. A screendump of the framebuffer is 1280x800 with 11 colors that are exactly the LCARS palette in sensible proportions: (17,24,35) dark background 83.1%, (0,212,255) cyan 4.4%, (255,176,0) amber 1.6%, (0,255,136) green 0.2%, (123,97,255) violet 0.2%, (200,214,229) near-white text 0.2% -- not a blank screen and not a grayscale console.",
+  "not_claimed": "The screendump was verified as a pixel histogram (11 LCARS-palette colors in the expected proportions), not visually -- no image-capable model was available this session, so individual glyph legibility has not been confirmed by eye. The renderer has only drawn on QEMU's 1280x800x32 OVMF GOP surface; it has never run against the laptop's real framebuffer, whose geometry it reads rather than assumes -- the bare-metal reboot is that test. The harness's outside-the-guest curl still returned HTTP 000 (the known slirp DHCP no-answer leaves the guest without a routable address); that is unchanged by and unrelated to this work, because the renderer fetches the platform over the guest's own loopback, which answered.",
+  "commit": "fb8dce4",
+  "rederive": {
+   "files": [
+    {"path": "trm_uefi_kernel/trm_fb_dashboard/src/main.rs", "sha256": "5c013468ed5d1e7038c722a50985e133032826306bc48d33815025b089d4068c"},
+    {"path": "trm_uefi_kernel/trm_fb_dashboard/src/fb.rs", "sha256": "aa6a6b49788206398f0f96c8c7689cbe562036290c09f018ffef369dd899b708"},
+    {"path": "trm_uefi_kernel/trm_fb_dashboard/src/render.rs", "sha256": "5577b1cfcec54c761c02f78f40225c052f01144c7e115c50a438a61e3fbe5e46"},
+    {"path": "trm_chainload/init/platform_init.c", "sha256": "4219ae605eacf57e62df44857385a1ace9ce84fb9d452e5978bdf328cb56214d"},
+    {"path": "trm_chainload/scripts/make_rootfs.py", "sha256": "6521856509712be8c01b51e2420de326e941254b95a478721db25c6914526d35"},
+    {"path": "backups/bare_metal_first_boot_20260930/framebuffer_dashboard_screendump_20261001.png", "sha256": "7a98fd9ce5b6406c545f67ce0482b5af1cd89c1464b09429b231af247ddf127f"}
+   ],
+   "oracles": [
+    {"script": "swarm_v2/core/check_boot_chain_static.py", "expect_exit": 0, "expect_stdout_contains": ["0 problem(s)"]},
+    {"script": "trm_chainload/scripts/check_attr_walk.py", "expect_exit": 0, "expect_stdout_contains": ["0 failed"]}
+   ]
+  }
+ }
+]

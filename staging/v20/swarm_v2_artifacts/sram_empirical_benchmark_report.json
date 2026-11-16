@@ -1,0 +1,174 @@
+{
+  "task_1": {
+    "L3_SIZE": 33554432,
+    "L3_CELLS": 268435456,
+    "L3_TRANSISTORS_PER_CELL": 6,
+    "L3_SLICES": 4,
+    "L3_WAYS": 16,
+    "L3_SETS": 8192
+  },
+  "task_2": {
+    "claimed_cpu": "Ryzen 9 3900X",
+    "actual_cpu": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "matches": false
+  },
+  "task_3": {
+    "iterations": 1000,
+    "elapsed_ms": 5.51,
+    "per_reconfig_us": 5.51,
+    "rss_before_mb": 38.13,
+    "rss_after_mb": 38.17,
+    "rss_delta_mb": 0.0328
+  },
+  "task_4": {
+    "hopfield_resp_len": 2568,
+    "ising_resp_len": 2568,
+    "neural_resp_len": 2568,
+    "identical_responses": false,
+    "r1_trace_sram": [
+      "\u2022 SRAM PATTERN FABRIC: Hopfield Attractor Network (hopfield) | L3 Cache Reconfig: 31.2\u00b5s | Hash: 17df76635b4e | Paradigm: Auto-Associative Basin Pattern Completion & Denoising"
+    ],
+    "r2_trace_sram": [
+      "\u2022 SRAM PATTERN FABRIC: Hopfield Attractor Network (hopfield) | L3 Cache Reconfig: 13.0\u00b5s | Hash: 17df76635b4e | Paradigm: Auto-Associative Basin Pattern Completion & Denoising"
+    ],
+    "r3_trace_sram": [
+      "\u2022 SRAM PATTERN FABRIC: Hopfield Attractor Network (hopfield) | L3 Cache Reconfig: 12.8\u00b5s | Hash: 17df76635b4e | Paradigm: Auto-Associative Basin Pattern Completion & Denoising"
+    ]
+  },
+  "task_5": {
+    "total_hashes": 1000000,
+    "elapsed_ms": 4.21,
+    "per_hash_ns": 4.21,
+    "hashes_per_sec": 237411267.51,
+    "sample_output": [
+      "0x4566e285",
+      "0x4566e285",
+      "0x4566e285",
+      "0x4566e285",
+      "0x4566e285"
+    ]
+  },
+  "task_6": {
+    "total_patterns": 15,
+    "unique_hashes": 15,
+    "all_unique": true,
+    "hashes": {
+      "fpga": "693e5f0f347a",
+      "cellular": "7c8975e1e60a",
+      "neural": "d8b359416230",
+      "cam": "bba91ca85dc9",
+      "quantum": "6da83a8c0125",
+      "ising": "c543851a41d5",
+      "hopfield": "17df76635b4e",
+      "boltzmann": "fffe06980bba",
+      "gnn": "5d85718ec594",
+      "tcam": "bd3c81ec08ae",
+      "systolic": "96c153c0614f",
+      "sparse_attention": "f1a342e02d8b",
+      "hdc": "ef8549fcb66f",
+      "holographic": "8d17f110e8e9",
+      "onn": "f82127890042"
+    }
+  },
+  "task_7": {
+    "distinct_roots": 1,
+    "all_branches_identical": true,
+    "pattern_affects_reasoning": false,
+    "trees": {
+      "hopfield": {
+        "root": "Equilibrium",
+        "branches": [
+          "EntropyBalance",
+          "SyntheticHomeostasis",
+          "Coherence"
+        ],
+        "trits": [
+          null,
+          null,
+          null
+        ]
+      },
+      "ising": {
+        "root": "Equilibrium",
+        "branches": [
+          "EntropyBalance",
+          "SyntheticHomeostasis",
+          "Coherence"
+        ],
+        "trits": [
+          null,
+          null,
+          null
+        ]
+      },
+      "neural": {
+        "root": "Equilibrium",
+        "branches": [
+          "EntropyBalance",
+          "SyntheticHomeostasis",
+          "Coherence"
+        ],
+        "trits": [
+          null,
+          null,
+          null
+        ]
+      },
+      "cellular": {
+        "root": "Equilibrium",
+        "branches": [
+          "EntropyBalance",
+          "SyntheticHomeostasis",
+          "Coherence"
+        ],
+        "trits": [
+          null,
+          null,
+          null
+        ]
+      }
+    }
+  },
+  "task_8": {
+    "load_nonexistent": {
+      "error": "Unknown architecture: nonexistent_pattern_xyz",
+      "available": [
+        "fpga",
+        "cellular",
+        "neural",
+        "cam",
+        "quantum",
+        "ising",
+        "hopfield",
+        "boltzmann",
+        "gnn",
+        "tcam",
+        "systolic",
+        "sparse_attention",
+        "hdc",
+        "holographic",
+        "onn"
+      ]
+    },
+    "reconfig_empty": {
+      "status": "L3_SRAM_UTILIZED",
+      "architecture": "FPGA-Lite",
+      "arch_key": "fpga",
+      "paradigm": "Reconfigurable Logic & K3 Truth Tables",
+      "pattern_hash": "693e5f0f347a",
+      "cells_used": 512,
+      "cells_total": 268435456,
+      "latency_us": 10.5,
+      "native_fnv_hash": "0x59cabbc5"
+    }
+  },
+  "provenance": {
+    "note": "task_1 and task_8.cells_total report the module's DECLARED constants, not a host measurement. They are left exactly as the run produced them; this block annotates rather than rewrites.",
+    "l3_size_as_recorded": 33554432,
+    "l3_size_source_as_recorded": "the module literal L3_SIZE = 32 * 1024 * 1024 (declared)",
+    "host_l3_measured_bytes": 16777216,
+    "host_l3_basis": "measured: host_probe.rs -- served by /system as l3_sram_kb 16384",
+    "annotated": "2026-09-30",
+    "resolution": "the served geometry is now derived from the host probe: host_council_server/src/sram_handlers.rs l3_block() reports l3_basis and host_l3_matches_design_target beside size_bytes/cells/sets/transistors, and /sram/architectures serves 16777216 = 134217728 cells = 4096 sets = 805306368 transistors on this host"
+  }
+}

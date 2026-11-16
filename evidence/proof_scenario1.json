@@ -1,0 +1,3575 @@
+{
+  "scenario": "security_gate_real_codebase",
+  "positive_corpus_size": 12,
+  "recall_caught": 12,
+  "recall_pct": 100.0,
+  "missed": [],
+  "repo_python_files_scanned": 1657,
+  "scan_duration_s": 17.38,
+  "files_per_second": 95.4,
+  "flagged": 571,
+  "flagged_pct": 34.46,
+  "flagged_detail": [
+    {
+      "file": "audit_runtime_dispatch.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "batch1_ref_driver.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "bridge_status.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "check_archi.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "classify_port_stubs.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "council_parity_decision.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "create_sovereign_portal_repo.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "debug_import.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "debug_nn_buffer.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "debug_prune.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "enable_gpu_acceleration.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "execute_debian_structure_absorption.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "execute_federation_sync.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "execute_monad_interdimensional_protocol.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "execute_voltage_bound_harmony_protocol.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "find_real_stubs.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "finetune_gemma.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "fix_arch_line.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "fix_directml_install.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "ingest_sovereign_datasets.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "initialize_all_modules.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "inspect_routes.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "integration_test.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "launcher.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "ollama_offline_test.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "pretrain.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "probe_jarvis.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "puzzle_dataset.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "render_all_sectors.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "render_and_verify_framebuffer.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "render_and_verify_setup.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "render_terminal_screenshot.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "restart_companion_proxy.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "run_federation_realworld_benchmark.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "setup_github_remote.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "setup_private_github_repo.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "setup_self_hosting_environment.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "startup.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "start_tools.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "stop_host_servers.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "stress_test_api_comprehensive.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_manager.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "sweep_bad_hashes.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "sync_clean_private_repo.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "sync_private_repository.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "system_verify.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "telegram_microkernel_bot.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "temp_app_v2_swarm3.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "test_cra.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "test_partition_fix.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "test_security_patterns.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "test_symbiosis.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "test_uefi_render_output.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "update_swarm.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "validate_15_sram_capability_map.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "verify_nexus_module.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "verify_trm_system.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "dashboard\\src\\audit_hooks.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "dashboard\\src\\audit_hooks2.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "dashboard\\src\\remove_framer_v2.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "infrastructure\\economy\\market_engine.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "infrastructure\\healing\\biomimetic_matrix.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\add_proxy_routes.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\build_gap_dataset.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\build_jarvis_dataset.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\build_jarvis_modules.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\build_reasoning_dataset.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\computer_control.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\expand_qwen_dataset.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\finetune_gemma.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\fix_final_gaps.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\train_qwen_jarvis.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "Jarvis-Advanced-main\\wire_prism.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "models\\recursive_reasoning\\hrm.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "models\\recursive_reasoning\\transformers_baseline.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "models\\recursive_reasoning\\trm.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "models\\recursive_reasoning\\trm_hier6.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "models\\recursive_reasoning\\trm_singlez.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "openfang\\test_vertex_e2e.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "preserved_sources\\openfang_original\\test_vertex_e2e.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\archi_training.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\asic_silicon_horizon.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\benchmark_10k_multistep.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\bench_10B_final.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\bench_1B_hybrid.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\bench_photonic.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\complete_actions.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\convert_assets_to_md.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\dedupe_proper.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\deep_dive_audit.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\evolution_execute.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\evolution_mycelium.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\fix_all_gaps.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\functional_audit.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "scratch\\generate_full_papers.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\generate_nobel_papers.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\generate_planetary_world_model_v5.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\glp1r_peptide_fix.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\intelligent_routing.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\logic_theorem_proving.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\mamba3step_gpu_port.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\one_trillion.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\path_to_372us.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\ram_analysis.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\remove_hidden.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\rerun_and_train.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\restart_survival_audit.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\run_1000_scenarios.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\run_1000_train.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\run_1200_agent_tasks.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\run_agent_training_microkernel.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\run_all_tests.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\silicon_path_actions.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\stress_test_50k.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\tau_calibration.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\thz_train_100.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\train_bonsai_ternary.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\train_parallel_10k.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\train_per_agent_trm7m.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\trinity_mapping.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "scratch\\update_all_assets.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\validate_dark_valley.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\validate_fractal_spawn.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "scratch\\validate_gpu_binding.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\validate_hardware_integration.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "scratch\\verify_tasks.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\check_archi.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\debug_prune.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\pretrain.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\puzzle_dataset.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\start_tools.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_manager.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\verify_nexus_module.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\models\\recursive_reasoning\\hrm.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\models\\recursive_reasoning\\transformers_baseline.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\models\\recursive_reasoning\\trm.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\models\\recursive_reasoning\\trm_hier6.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\models\\recursive_reasoning\\trm_singlez.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\artifact_pipeline.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\auto_changelog.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\base_agent.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\chain_of_verification.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\federation.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\global_memory.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\lobster_shell.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\manus_engine.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\mcp_tool_evolver.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\neural_wall.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\resource_arbiter.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\self_healing_infra.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\sentinel.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\swarm_performance_insights.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\task_arbiter.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\trm_brain.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\core\\zero_human_test_gen.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\skills\\doc_ingestion_skill.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\swarm_v2\\skills\\file_skill.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "SwarmOS_v6_Snapshot_extracted\\utils\\functions.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\app_v2.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\agent_intelligence_bridge.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\agent_mailbox_bus.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\agent_mesh.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\artifact_pipeline.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\attempt_sampler.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\auto_changelog.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\base_agent.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\brain_ai_microkernel_bridge.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\build_module_registry.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\capability_test.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\chain_of_verification.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\cognitive_load_balancer.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\cold_start_recovery.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\complete_singletons.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\cosmos_moe_instella_shunter.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\daemon_discovery.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\daily_evolution_engine.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\ddr_antibody.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\ddr_self_training.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\digital_dna_loop.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\epistemology_verification.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\expert_registry.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\export_trm7m_turbovec_158.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\export_trm7m_weights.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\federation.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\final_porting_pass.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\final_porting_pass2.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\hardware_voltage_microkernel_binder.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\heartbeat_scheduler.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\hf_brain.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\ipc.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\jarvis_symbiosis.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\k3_ternary_sram.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\kernel_lora_adapter.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\llm_brain.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\lobster_shell.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\manual_clearing_engine.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\manual_repair_pass.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\manual_repair_pass2.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\manus_engine.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\mcp_tool_evolver.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\microkernel_chat_bridge.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\moltbook.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\monad.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\mpu.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\native_federation_bridge.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\native_mailbox_bridge.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\native_ops_bridge.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\neural_wall.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\openclaw_gateway.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\persistent_mmap_allocator.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\porting_fixpass5.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\predictive_watchdog.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\reconnaissance_daemon.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\resource_arbiter.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\rust_kernel_binder.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\secrets_vault.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\security_scanner.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\self_fuzzing_engine.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\self_healing.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\self_healing_infra.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\self_healing_orchestrator.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\semantic_cache.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\semantic_knowledge_graph.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\sentinel.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\simd_accelerator.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\skill_loader.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\skill_matrix_sync.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\sparse_moe_router.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\sram_pattern_computer.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\star_matrix.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\sub_atomic_kernel.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\swarm_council.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\swarm_orchestrator.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\swarm_performance_insights.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\task_arbiter.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\thz_bonsai_gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\thz_wave_gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\trm_7m_model.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\trm_7m_optimized.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\trm_brain.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\trm_integration.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\trm_orchestrator.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\ultrawork_tranche.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\voltage_node_engine.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\worktree_manager.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\core\\zero_human_test_gen.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\routes\\kanban.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\routes\\learning.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\routes\\mesh.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\routes\\orchestrator.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\routes\\swarm.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\scripts\\swarm_total_exercise.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\scripts\\tri_scenario_247_exercise.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2\\scripts\\verify_phase_12.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2\\skills\\doc_ingestion_skill.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2\\skills\\file_skill.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "swarm_v2\\skills\\github_acquisition.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\conftest.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\feature_engineering.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\fix_and_run_tests.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\output_validator_skill.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\quantum_key_gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\research_pipeline.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\simulation_harness.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_AsyncHighFrequencyTelemetryGateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_async_high_frequency_telemetry_gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_async_telemetry_gateway_app_init.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_babel_config.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_config.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_conftest.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_devo_operational_parameters.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_feature_pipeline.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_file_mock.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_fuzz_engine.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_hello.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_hello_world.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_input_sanitizer.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_jest_config.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_logic_prover.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_math_solver.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_math_solver_exceptions.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_models.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_multimodal_fusion_engine.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_paper_analyzer.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_port_allocations.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_postcss_config.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_predictive_analytics.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_services.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_style_mock.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_tailwind_config.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_training_pipeline.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_ttf_palm_stop_fusion.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\training_pipeline.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\ttf_palm_stop_fusion.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\async_telemetry_gateway\\tests\\test_app_init.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\async_telemetry_gateway\\tests\\test_init.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\dashboard\\build.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\math_solver\\test_exceptions.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\qkd_gateway\\gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\qkd_gateway\\kyber_ctypes_interface.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\qkd_gateway\\test_kyber_ctypes_interface.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\qkd_gateway\\fve_proofs\\invariant_001.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\qkd_gateway\\fve_proofs\\invariant_002.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\qkd_gateway\\src\\python\\qkd_ffi.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\qkd_gateway\\tests\\test_invariant_002.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\qkd_gateway\\tests\\test_qkd_core.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\qkd_gateway\\tests\\test_qkd_ffi.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\runtime\\podman_adapter.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\services\\telemetry_gateway\\AsyncHighFrequencyTelemetryGateway.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\skills\\input_validation_skill.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\swarm_security\\audit.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\swarm_testkit\\generators\\mesh.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\swarm_v2\\core\\artifact_pipeline.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\swarm_v2\\core\\chain_of_verification.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\swarm_v2\\core\\coherence_thresholds.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\swarm_v2\\core\\global_memory.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\swarm_v2\\core\\self_healing_infra.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\swarm_v2\\indexer\\codebase_indexer.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\swarm_v2\\skills\\input_validation_skill.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_acee_unit.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_agent_mesh.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_App.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_app_module_css.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_artifact_pipeline.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_AsyncHighFrequencyTelemetryGateway.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_build.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_coherence_thresholds.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_config.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_conftest.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_conftest_runner.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_consensus_generators.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_core_skills_models.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_DashboardOverview.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_dashboard_build.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_dashboard_overview.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_dashboard_overview_css.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_diagram_skill_templates.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_feature_pipeline_init.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_file_mock.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_generate_hbtf_report.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_global_memory.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_holt_winters.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_index_css.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_invariant_001.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_jest_config.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_js_harness_validation.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_k8s_provider.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_kyber_ctypes_interface.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_llm_registry.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_main.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_makefile.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_makefile_validation.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_mocks_init.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_multi_query_attention.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_network_mock.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_package_integrity.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_parsers.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_predictive_analytics.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_qkd_config.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_qkd_core.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_qkd_gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_qkd_gateway_blueprint.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_resource_utilization_chart_css.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_resource_utilization_chart_module.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_run_test_suite.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_sidebar_integration.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_sidebar_qa.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_skill_manager.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_sparse_moe.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_storage_mock.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_style_mock.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_style_mock_contract.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_suite_runner.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_swarm_security.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_templates.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_test_generator_strategies.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_test_main_meta.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_test_mocks_init.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\test_test_test_main_meta.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\identity_lock\\test_ownership.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\memory_store\\test_basic_ops.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\memory_store\\test_concurrency.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\memory_store\\test_crash_recovery.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\memory_store\\test_ttl_eviction.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\mocks\\network_mock.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\mocks\\storage_mock.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\tier0\\test_conftest_validation.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\tests\\tier0\\test_mesh_smoke.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_math_solver\\engine.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_math_solver\\exceptions.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_src\\diagram_skill\\templates.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_swarm_security\\audit.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_swarm_security\\auth.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_swarm_security\\validator.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_swarm_security\\__init__.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_swarm_v2\\indexer\\codebase_indexer.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_tests\\conftest.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_tests\\test_acee_unit.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_tests\\test_PROPOSAL_test_research_plan_AI_safety_and_alignment_resear.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_tests\\__init__.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_artifacts\\test_vuln_scanner\\plugins\\base.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\conftest.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\output_validator_skill.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\conftest.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\feature_engineering.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\fix_and_run_tests.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\output_validator_skill.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\quantum_key_gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\research_pipeline.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\simulation_harness.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_AsyncHighFrequencyTelemetryGateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_async_high_frequency_telemetry_gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_async_telemetry_gateway_app_init.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_babel_config.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_config.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_conftest.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_devo_operational_parameters.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_feature_pipeline.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_file_mock.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_fuzz_engine.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_hello.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_hello_world.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_input_sanitizer.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_jest_config.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_logic_prover.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_math_solver.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_math_solver_exceptions.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_models.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_multimodal_fusion_engine.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_paper_analyzer.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_port_allocations.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_postcss_config.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_predictive_analytics.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_services.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_style_mock.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_tailwind_config.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_training_pipeline.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_ttf_palm_stop_fusion.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\training_pipeline.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\ttf_palm_stop_fusion.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\async_telemetry_gateway\\tests\\test_app_init.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\async_telemetry_gateway\\tests\\test_init.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\dashboard\\build.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\math_solver\\test_exceptions.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\qkd_gateway\\gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\qkd_gateway\\kyber_ctypes_interface.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\qkd_gateway\\test_kyber_ctypes_interface.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\qkd_gateway\\fve_proofs\\invariant_001.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\qkd_gateway\\fve_proofs\\invariant_002.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\qkd_gateway\\src\\python\\qkd_ffi.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\qkd_gateway\\tests\\test_invariant_002.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\qkd_gateway\\tests\\test_qkd_core.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\qkd_gateway\\tests\\test_qkd_ffi.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\runtime\\podman_adapter.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\services\\telemetry_gateway\\AsyncHighFrequencyTelemetryGateway.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\skills\\input_validation_skill.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\swarm_security\\audit.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\swarm_testkit\\generators\\mesh.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\swarm_v2\\core\\artifact_pipeline.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\swarm_v2\\core\\chain_of_verification.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\swarm_v2\\core\\coherence_thresholds.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\swarm_v2\\core\\global_memory.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\swarm_v2\\core\\self_healing_infra.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\swarm_v2\\indexer\\codebase_indexer.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\swarm_v2\\skills\\input_validation_skill.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_acee_unit.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_agent_mesh.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_App.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_app_module_css.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_artifact_pipeline.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_AsyncHighFrequencyTelemetryGateway.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_build.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_coherence_thresholds.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_config.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_conftest.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_conftest_runner.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_consensus_generators.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_core_skills_models.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_DashboardOverview.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_dashboard_build.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_dashboard_overview.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_dashboard_overview_css.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_diagram_skill_templates.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_feature_pipeline_init.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_file_mock.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_generate_hbtf_report.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_global_memory.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_holt_winters.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_index_css.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_invariant_001.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_jest_config.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_js_harness_validation.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_k8s_provider.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_kyber_ctypes_interface.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_llm_registry.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_main.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_makefile.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_makefile_validation.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_mocks_init.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_multi_query_attention.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_network_mock.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_package_integrity.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_parsers.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_predictive_analytics.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_qkd_config.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_qkd_core.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_qkd_gateway.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_qkd_gateway_blueprint.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_resource_utilization_chart_css.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_resource_utilization_chart_module.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_run_test_suite.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_sidebar_integration.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_sidebar_qa.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_skill_manager.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_sparse_moe.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_storage_mock.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_style_mock.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_style_mock_contract.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_suite_runner.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_swarm_security.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_templates.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_test_generator_strategies.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_test_main_meta.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_test_mocks_init.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\test_test_test_main_meta.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\identity_lock\\test_ownership.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\memory_store\\test_basic_ops.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\memory_store\\test_concurrency.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\memory_store\\test_crash_recovery.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\memory_store\\test_ttl_eviction.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\mocks\\network_mock.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\mocks\\storage_mock.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\tier0\\test_conftest_validation.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\tests\\tier0\\test_mesh_smoke.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_math_solver\\engine.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_math_solver\\exceptions.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_src\\diagram_skill\\templates.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_swarm_security\\audit.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_swarm_security\\auth.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_swarm_security\\validator.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_swarm_security\\__init__.py",
+      "kinds": [
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_swarm_v2\\indexer\\codebase_indexer.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_tests\\conftest.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_tests\\test_acee_unit.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_tests\\test_PROPOSAL_test_research_plan_AI_safety_and_alignment_resear.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_tests\\__init__.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\code\\test_vuln_scanner\\plugins\\base.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\evolution_sandbox\\test_mutation_3388.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\runtime\\podman_adapter.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\swarm_security\\audit.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\swarm_v2\\core\\agent_mesh.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\swarm_v2\\core\\coherence_thresholds.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\swarm_v2\\core\\self_healing_infra.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\swarm_v2\\indexer\\codebase_indexer.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "swarm_v2_integrated\\tests\\test_PROPOSAL_test_research_plan_AI_safety_and_alignment_resear.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "tests\\test_phoenix_protocol_honesty.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "tools\\phoenix_roc_prep.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "tools\\phoenix_vina_pipeline.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "tools\\platform_stress_suite.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "tools\\run_platform_tests.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "tools\\security_differential_test.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "tools\\_prep_roc_tiers.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "tools\\_select_roc_tiers.py",
+      "kinds": [
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "trm-sovereign-portal\\push_to_github.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "trmboot\\install.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "shell_injection"
+      ]
+    },
+    {
+      "file": "trm_uefi_kernel\\host_batchA\\ref_part1.py",
+      "kinds": [
+        "dangerous_execution_primitive"
+      ]
+    },
+    {
+      "file": "trm_uefi_kernel\\host_batchA\\ref_part2.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators",
+        "sql_injection_defense"
+      ]
+    },
+    {
+      "file": "trm_uefi_kernel\\host_batchA\\ref_part3.py",
+      "kinds": [
+        "obfuscation_evasion_indicators"
+      ]
+    },
+    {
+      "file": "utils\\functions.py",
+      "kinds": [
+        "dangerous_execution_primitive",
+        "obfuscation_evasion_indicators"
+      ]
+    }
+  ],
+  "verdict_note": "Recall is unambiguous: each plant contains exactly one danger class. Flagged repo files are NOT labelled negatives - they require human adjudication, so the honest precision statement is 'N files need review', not 'N false positives'."
+}

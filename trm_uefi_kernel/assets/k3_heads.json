@@ -1,0 +1,311 @@
+{
+ "magic": "K3HD",
+ "version": 2,
+ "n_agents": 15,
+ "bytes": 31322002,
+ "sha256": "0afe4e61dbffdf787b83339fbf62ed24a6d5589cc93d0ea36a8a15ffa14c2b04",
+ "featuriser": "hashed BoW, crc32_iso_hdlc, dim=96, unigrams+bigrams, sign=bit16, L2",
+ "class_order": "0=BLOCK 1=ANALYZE 2=PROCEED",
+ "agents": [
+  {
+   "agent": "Shield",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 77555,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.3901,
+   "loss": 6.375371386873199e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088132
+  },
+  {
+   "agent": "Logic",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 78926,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.3794,
+   "loss": 6.536605635632534e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 402,
+    "2": 3316
+   },
+   "record_bytes": 2088131
+  },
+  {
+   "agent": "Devo",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 78975,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.379,
+   "loss": 6.53425149488239e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 402,
+    "2": 3316
+   },
+   "record_bytes": 2088130
+  },
+  {
+   "agent": "Seeker",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 78647,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.3816,
+   "loss": 6.349939670139075e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088132
+  },
+  {
+   "agent": "Verify",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 79101,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.378,
+   "loss": 6.361998769311404e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088132
+  },
+  {
+   "agent": "Archi",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 78457,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.383,
+   "loss": 7.275164460275442e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 646,
+    "2": 3072
+   },
+   "record_bytes": 2088131
+  },
+  {
+   "agent": "Flow",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 78527,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.3825,
+   "loss": 5.595928401915248e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088130
+  },
+  {
+   "agent": "Bridge",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 78805,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.3803,
+   "loss": 7.572231708742082e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088132
+  },
+  {
+   "agent": "Orchestra",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 77528,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.3903,
+   "loss": 6.917263872201366e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088135
+  },
+  {
+   "agent": "EventLedger",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 78211,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.385,
+   "loss": 6.185551626662847e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088137
+  },
+  {
+   "agent": "LogicMaster",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 79226,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.377,
+   "loss": 5.739580255510354e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 402,
+    "2": 3316
+   },
+   "record_bytes": 2088137
+  },
+  {
+   "agent": "Pulse",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 77889,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.3875,
+   "loss": 5.554369686333139e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088131
+  },
+  {
+   "agent": "THzGateway",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 78162,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.3854,
+   "loss": 5.1704282559730494e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088136
+  },
+  {
+   "agent": "Jarvis",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 79156,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.3775,
+   "loss": 6.780953101075218e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088132
+  },
+  {
+   "agent": "Hermes",
+   "dim": 96,
+   "state_dim": 16,
+   "n_experts": 8,
+   "params": 522027,
+   "buckets": 4096,
+   "qat_factor": 0.7,
+   "qat_block_factor": 0.7,
+   "ternary_nonzero": 78065,
+   "ternary_weights": 127168,
+   "ternary_sparsity": 0.3861,
+   "loss": 5.7410879988114564e-05,
+   "label_counts": {
+    "0": 805,
+    "1": 158,
+    "2": 3560
+   },
+   "record_bytes": 2088132
+  }
+ ]
+}

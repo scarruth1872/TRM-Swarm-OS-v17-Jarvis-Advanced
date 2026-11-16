@@ -1,0 +1,22 @@
+verify(gaps): rails read (phi_v 0.5764 -> 0.3969); federation verified 0 of 100
+
+Live on port 8022, binary 5a819da17013e095.
+
+GAP 1 - rails are now READ: {v_core: 1.1, v_ddr: 1.2} rather than the consts
+1.25/1.35 that equalled their own divisors. phi_v moved 0.5764 -> 0.3969, i.e.
+the substrate sits at 68.8% of nominal rail voltage and the formula can now say
+so. measured:True, with the three real WMI reads named in `source`.
+
+GAP 2 - the federation is now PROBED. configured_nodes 100, verified_nodes 0,
+unreachable_nodes 100, active_nodes 0. Each peer is
+status=CONFIGURED_UNREACHABLE, is_active=false, latency=null, port_quic=null.
+Removed rather than guessed: byzantine_quorum, fault_tolerance, merkle_root and
+data_integrity - there is no consensus protocol or replicated store behind them.
+
+The 100-vs-2 contradiction is resolved by definition rather than by fudging a
+number: stats reports the MEASURED count, telemetry reports a different quantity,
+and each says what it counts.
+
+HONEST ANSWER TO 'HOW BIG IS THE FEDERATION': 0 verified. The 100-node,
+100%-integrity cluster is a declared topology, not a live cluster. That was
+always true; the API was reporting the declaration as an observation.

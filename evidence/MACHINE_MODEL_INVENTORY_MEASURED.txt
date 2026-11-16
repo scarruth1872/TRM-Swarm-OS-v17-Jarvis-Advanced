@@ -1,0 +1,163 @@
+MACHINE MODEL INVENTORY - MEASURED 2026-11-05
+=============================================
+Scope: every model artifact found on F:, C:\Users\shawn and G: that this
+platform could use. Sizes are bytes on disk. Load tests used the same binary
+the platform runs: F:/Development sites/ub3/llama-vulkan-win/llama-server.exe
+
+=== 1. "TRAINED BONSAI 2" - WHAT THAT ACTUALLY REFERS TO ===
+
+There are TWO distinct Bonsai families on this machine, and they are different
+things with different verdicts.
+
+1A. BONSAI-27B (upstream trained GGUF, loadable)
+  F:/Development sites/TRM-Swarm-OS-v2/Jarvis-Advanced-main/models/Bonsai-27B-Q1_0.gguf
+    3,803,452,480 bytes  magic 47475546 (GGUF)   LOADS
+  Duplicate copy:
+  F:/Development sites/Jarvis-Advanced-main/Jarvis-Advanced-main/models/Bonsai-27B-Q1_0.gguf
+    same size, same magic
+  Ollama registry entry bonsai-27b:latest -> digest 17ef842e..., size 3,803,452,480
+    i.e. the ollama model IS this same Q1_0 blob. It is registered and usable.
+  Measured load: "model loaded" / "listening on http://127.0.0.1:8595" in 5.28 s,
+    --n-gpu-layers 99 on the RX 6700 XT.
+  NOT WIRED: no launch line in START_TRM_PLATFORM.bat, no port in the nine-service
+  set. :8591 was meant to be its port and is dead (000).
+
+  Bonsai-27B-Q2_K.gguf 10,992,704 bytes  magic 00000000  CORRUPT (truncated)
+  present twice, both corrupt.
+
+1B. TERNARY-BONSAI 1.7B / 4B / 8B (headers valid, tensor tables broken)
+  Ternary-Bonsai-1.7B-Q2_0.gguf    463,290,464  magic 47475546  FAIL
+    "tensor 'blk.0.attn_k.weight' has offset 82516128, expected 87369536"
+  Ternary-Bonsai-4B-Q2_0.gguf    1,074,969,344  magic 47475546  FAIL
+    "tensor 'blk.0.attn_k.weight' has offset 103145184, expected 109211936"
+  Ternary-Bonsai-8B-Q2_0.gguf    2,182,184,672  magic 47475546  FAIL
+    "tensor 'output_norm.weight' has offset 165015872, expected 174722688"
+  The GGUF header parses; the tensor offset table does not match the data
+  layout. These were repacked/truncated under a different ggml version. They
+  are NOT usable, contrary to DISTILLED_MODELS_INVENTORY.txt's "4 ARE USABLE".
+  Copies exist in three trees (TRM-Swarm-OS-v2, Jarvis-Advanced-main,
+  ub3/models) - same sizes, same failure.
+
+1C. PER-AGENT "Bonsai-K3 + Instella-MoE" CHECKPOINTS (locally trained)
+  swarm_v2_global_memory/trm_7m_agents/*_bonsai_instella.pt
+  15 files, 531 KB each. Dict keys: model_state (46 tensors), architecture
+  "Bonsai-K3 + Instella-MoE", dim 96, state_dim 16, num_experts 8, loss, params
+  128,811, agent.  Measured losses 0.0500-0.0578.
+  These ARE trained and they ARE distinct per agent. BUT the training script
+  sets every target to one class:
+      scratch/train_bonsai_instella.py:121
+      k3_targets = torch.ones(len(data), dtype=torch.long) * 2  # Default PROCEED
+  So the model learned "always PROCEED". Measured on 5 prompts including
+  "Delete the council reasoning engine" and "Patient BP 60/30 lactate 6.2":
+      Archi  argmax=2 PROCEED conf 0.999  logits [-2.89 -3.39 4.10]
+      all 15 agents argmax=2 PROCEED, conf 0.998-0.999
+  A decision model that says PROCEED to every input, including a request to
+  delete its own reasoning engine, is a constant function with 128,811 params.
+  Loss 0.05 is the cost of fitting "always 2".
+
+=== 2. THE OTHER TRAINED PER-AGENT CHECKPOINTS (same directory, 45 files) ===
+  15x <Agent>_trm7m.pt   7.49 MB each, 1,872,387 params
+     OrderedDict of raw weights: embed.weight (768,128), mamba.{0,2,4}.weight
+     (768,768)+bias, out.weight (3,768), out.bias. No loss, no metadata.
+     Wired at swarm_v2/core/llm_router.py:489 as the PRIMARY path of
+     generate_with_instella. Measured: it produces DIFFERENT logits per agent.
+       "Is 91 prime?" -> 13/15 say 0 (ANALYZE), 2 say -1 (BLOCK: Bridge,
+       Orchestra), conf 0.46-0.97. But the function then returns a canned
+       banner string ("Processed via microkernel Mamba-3 SSM ... tau=2.82us")
+       rather than the model's text, so the trained weights only pick a trit.
+     NOT on the chat path: /swarm/chat -> agent_intelligence_bridge -> voice.py.
+  15x <Agent>_50k.pt     110 KB each, 26,912 params, loss ~0.0050. No loader
+     found outside its trainer.
+
+=== 3. OLLAMA REGISTRY - 39 entries, 32 with local weights ===
+  Local (size from ollama list):
+    gemma4:12b                                  7.6 GB
+    hf.co/yuxinlu1/gemma-4-12B-coder...:Q4_K_M   7.4 GB
+    deepseek-r1:latest                          5.2 GB
+    hf.co/TeichAI/Qwen3-8B-Gemini-...:Q4_K_M     5.0 GB
+    qwen2.5-coder:latest                        4.7 GB
+    llava:latest                                4.7 GB
+    olmo-3:latest                               4.5 GB
+    bonsai-27b:latest                           3.8 GB   <- loadable, unwired
+    qwen3-embedding:4b                          2.5 GB
+    llama3.2:latest                             2.0 GB
+    architect_agent_production_baseline...      2.0 GB
+    test-model-1773069374:latest                2.0 GB
+    qwen2.5-coder / starcoder2:3b / gemma2:2b / deepseek-r1:8b / deepseek-coder ...
+    bitnet-b1.58-2B-4T:latest                   1.2 GB   <- UNLOADABLE type 36
+    deepseek-r1:1.5b                            1.1 GB
+    gemma3:1b 815 MB | mxbai 669 MB | qwen3-embedding:0.6b 639 MB |
+    tinyllama 637 MB | embeddinggemma 621 MB | functiongemma:270m 300 MB |
+    gemma3:270m 291 MB | nomic-embed-text 274 MB
+  Cloud-only stubs (no local weights): deepseek-v4-pro, deepseek-v3.2,
+  deepseek-v3.1:671b, glm-4.6, glm-4.7, kimi-k2.5, minimax-m2, gpt-oss:20b,
+  gpt-oss:120b, qwen3-coder:480b, qwen3-vl:235b, nemotron-3-nano:30b,
+  gemini-3-flash-preview.
+
+=== 4. HUGGINGFACE CACHE - F:/Development sites/huggingface_cache/hub ===
+  REAL WEIGHTS:
+    models--amd--Instella-MoE-16B-A3B-Think         30,266 MB  22 blobs
+    models--Qwen--Qwen3-4B                          15,375 MB  10 blobs
+    models--Qwen--Qwen3-1.7B                         3,891 MB   9 blobs
+    models--HuggingFaceTB--SmolLM2-1.7B-Instruct     3,268 MB   9 blobs
+    models--Qwen--Qwen2.5-1.5B-Instruct              2,956 MB   7 blobs
+    models--openai--clip-vit-base-patch32            1,162 MB   8 blobs
+    models--livekit--turn-detector                     912 MB  16 blobs
+    models--google--gemma-3-270m-it                    545 MB   8 blobs
+    models--gpt2                                       526 MB   7 blobs
+    models--microsoft--mpnet-base                      509 MB   5 blobs
+    models--google--flan-t5-small                      297 MB   7 blobs
+    models--Systran--faster-whisper-base               142 MB   4 blobs
+    models--sentence-transformers--all-MiniLM-L6-v2     88 MB  11 blobs
+    models--sentence-transformers--all-mpnet-base-v2   419 MB   6 blobs
+  EMPTY / BROKEN REFS:
+    models--prism-ml--Ternary-Bonsai-4B-gguf            1 MB  1 blob (6,796 B)
+      -> a ref pointer, not a model. The HF copy of Ternary-Bonsai-4B is absent.
+    models--nvidia--Cosmos3-Edge                        1 MB  0 blobs
+    models--Qwen--Qwen1.5-MoE-A2.7B                     1 MB  0 blobs
+    models--optimum-intel...--tiny-random-qwen1.5-moe   1 MB  0 blobs
+
+=== 5. LOOSE SAFETENSORS ===
+  F:/models/instella-moe-think  6 shards, ~30.9 GB total
+  model-00001..00006-of-00006.safetensors + index. This is the same 16B-A3B
+  model as the HF cache entry, unpacked. Loadable by transformers, not by
+  llama.cpp (needs conversion).
+
+=== 6. GGUF ON DISK (unique files, duplicates collapsed) ===
+  Meta-Llama-3-8B-Instruct.Q4_0.gguf   4,661,724,384
+    F:/Development sites/Workspace/quantum_cerebral_agent_platform/models/
+  Bonsai-27B-Q1_0.gguf                 3,803,452,480   x2 copies  LOADS
+  Ternary-Bonsai-8B-Q2_0.gguf          2,182,184,672   x2 copies  corrupt offsets
+  Ternary-Bonsai-4B-Q2_0.gguf          1,074,969,344   x3 copies  corrupt offsets
+  qwen2.5-1.5b-instruct-q4_k_m.gguf    1,117,320,736   <- the one serving :8587
+  Ternary-Bonsai-1.7B-Q2_0.gguf          463,290,464   x2 copies  corrupt offsets
+  Bonsai-27B-Q2_K.gguf                    10,992,704   x2 copies  magic 00000000
+  (ggml-vocab-*.gguf files in ub3/llama.cpp/models are tokenizer vocab blobs,
+   not models - largest 15.8 MB)
+
+=== 7. DISTILLED TRITS BLOBS ===
+  16 files gguf_*_trits.bin in the repo root, ~12 GB. Two are zero bytes
+  (gguf_llama3.2_trits.bin, gguf_olmo-3_trits.bin). Still NO READER: grep for
+  "_trits.bin" across .py/.rs hits only quantize_gguf.py:268, the writer.
+
+=== 8. SUMMARY VERDICTS ===
+  Loadable and usable today:
+    Bonsai-27B-Q1_0 (3.80 GB, GPU, 5.28 s load) - the single best unused asset
+    qwen2.5-1.5b (1.12 GB) - currently serving :8587
+    Meta-Llama-3-8B Q4_0 (4.66 GB) - never mentioned in any inventory doc
+    ollama: gemma4:12b, gemma-4-12B-coder, deepseek-r1, Qwen3-8B distill,
+      qwen2.5-coder, olmo-3, llava, llama3.2, starcoder2, gemma2, etc.
+  Present but UNLOADABLE:
+    bitnet-b1.58-2B (type 36 IQ4_NL_4_4 removed)
+    Ternary-Bonsai 1.7B / 4B / 8B (tensor offset mismatch)
+    Bonsai-27B-Q2_K (not GGUF)
+  Present as WEIGHTS but with no inference path:
+    16 _trits.bin (~12 GB), 45 per-agent .pt checkpoints
+  Present as real weights but only loadable via transformers:
+    Instella-MoE-16B-A3B (30.3 GB HF cache + 30.9 GB loose safetensors),
+    Qwen3-4B, Qwen3-1.7B, SmolLM2, clip, whisper, embedders
+
+  The "trained Bonsai 2" answer: the upstream-trained Bonsai-27B Q1_0 loads and
+  is unwired; the locally-trained "Bonsai-K3 + Instella-MoE" per-agent models
+  are trained but degenerate (constant PROCEED target). Neither is on the chat
+  path. The chat path still answers from qwen2.5-1.5b on :8587.

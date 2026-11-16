@@ -1,0 +1,35 @@
+feat(phoenix): real 10-target dock complete; recalibrate the K3 band
+
+REAL DOCKING RESULTS (vina 1.2.5, 10 AlphaFold receptors, TRM-ABX-219,
+exhaustiveness 4, seed 42). Affinity range -0.50 to -9.06 kcal/mol:
+  BLK -9.057 | IFIH1 -8.610 | TYK2 -8.579 | STAT4 -8.239 | TNFAIP3 -8.110
+  PTPN22 -7.830 | IRF5 -7.739 | TLR7 -6.472 | C1QA -5.256 | ITGAM -0.501
+Ligand efficiencies 0.016-0.292 kcal/mol/atom. The SPREAD is the finding: the
+asserted table claimed 0.97-0.99 affinity for ALL ten, a 2% band. Real
+computation produces an 18x range.
+
+Against the validation anchor (CHIR-090, a potent known inhibitor in its own
+site, -10.13), the best result here (-9.06 vs BLK) is WEAKER than a real drug
+acting on its real target, and ITGAM at -0.50 is no binding at all. TRM-ABX-219
+is a bacterial LpxC inhibitor; it does not behave like a drug against these
+lupus proteins.
+
+I CAUGHT MY OWN FLAW IN THE K3 LAYER. First mapping was norm = -affinity/12.0,
+which returned BIND for 9 of 10 - including -5.26, barely above vina's decoy
+range. A classifier that says BIND for 90% of inputs is not discriminating; it
+is the same defect as the 87% parity figure, which measured agreement between
+two models that both declined to decide. Recalibrated onto a stated basis
+(BIND <= -8.5, REJECT >= -5.5, anchored by the -10.13 validation result), which
+populates all three states: BIND=3 UNKNOWN=5 REJECT=2.
+
+VOLTAGE DOCTRINE: phi_v = 0.651 measured live (4000 MHz, REAL_HARDWARE_BOUND),
+supplied as a required argument. With no argument the program refuses:
+"REFUSING: no measured phi_v supplied. The voltage doctrine forbids a constant."
+
+TURBOVEC 1.58-BIT: each [affinity, lig_efficiency] vector packs to 1 byte (16x),
+round-trip cosine 0.93-1.00.
+
+Also fixed: the dock runner needed explicit LF endings (a CRLF script made bash
+read the cwd as '$HOME/phoenix\r' and die at line 2), and processes launched via
+`setsid nohup &` from wsl.exe are killed when wsl.exe returns - they now run as
+tracked background processes.

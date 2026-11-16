@@ -1,0 +1,20 @@
+{
+  "record": "joint 5-property encoding specificity (MOTION-JOINT1)",
+  "cutoff_angstrom": 4.5,
+  "hbond_cutoff": 3.5,
+  "complexes": 77,
+  "cognate_mean_mahalanobis": 2.6361,
+  "random_mean_mahalanobis": 2.0481,
+  "cognate_minus_random_mahalanobis": 0.5881,
+  "lda_cv_accuracy": 0.9157,
+  "chance_accuracy": 0.5,
+  "prediction_recorded": "joint may separate even though no single property does",
+  "properties": [
+    "contact_count",
+    "mean_contact_distance",
+    "electrostatics",
+    "hydrophobic",
+    "hbond"
+  ],
+  "basis": "Mahalanobis distance of cognate 5-vector from the random distribution's mean/covariance; LDA cross-validated accuracy (chance 0.5). A joint signal shows as cognate MD > random MD and/or LDA accuracy > 0.5."
+}

@@ -1,0 +1,67 @@
+DEEP TIER WIRED - MEASURED 2026-11-05
+=====================================
+Goal: give :8591 a real model so "deep" questions are answered by a 27B ternary
+model instead of a dead port, and remove the phantom.
+
+BEFORE
+  voice.py routed any message containing a deep word (explain, why, design,
+  prove, analyze, diagnose, compare, optimi...) or longer than 220 chars to
+  DEEP_URL :8591, advertised as "Bonsai-27B-Q1_0".
+  Nothing listened on :8591 (measured 000), so every deep question paid a 2.04s
+  failed connection, then fell back to :8587 and reported itself honestly as
+  8587-qwen1.5b. The tier did nothing but waste 2s.
+
+MODEL
+  F:/Development sites/TRM-Swarm-OS-v2/Jarvis-Advanced-main/models/Bonsai-27B-Q1_0.gguf
+  3,803,452,480 bytes, magic 47475546 (valid GGUF), Q1_0 ternary.
+  Measured load: "model loaded" + "listening on http://127.0.0.1:8591" in 6.1s
+  with --n-gpu-layers 99 on the RX 6700 XT, --ctx-size 2048, --threads 8.
+  (This is the same blob ollama registers as bonsai-27b:latest.)
+
+WIRING
+  START_TRM_PLATFORM.bat
+    new var DEEP_MODEL
+    new stage [5b/9] "Deep Tier - Bonsai 27B Q1_0 ternary (8591)" right after the
+      8587 stage: verify port -> if absent and model present, start detached ->
+      :confirm 8591 45 rounds -> :await_http /health "ok" 30
+    check-only block verifies process + /health for 8591
+  tools/smoke_test_platform.py
+    added ("Deep Tier (Bonsai 27B)", 8591, "/health", "ok", True) - JSON contract
+  tests/test_integration_live.py
+    added test_deep_tier_health() asserting 8591 /health status=ok
+  swarm_v2/core/voice.py
+    _deep_available() probe already cached the reachability answer, so the cost
+    of a missing deep model is one 1s probe per process, not 2.04s per question.
+
+DEFECT FOUND WHILE WIRING: the deep answer was truncated before it existed
+  Bonsai is a reasoning model: it emits a </think> block BEFORE the answer.
+  At n_predict=192 the reply ended mid-thought and the caller never saw an
+  answer at all:
+      '</think>\nHere's a thinking process:\n\n1. **Analyze User Input:** ...'
+  Deep calls now use max(n_predict, 640) so the reasoning plus the answer fit.
+
+VERIFIED LIVE
+  POST :8099/swarm/chat {"role":"Logic","message":"Explain why a distributed
+  system needs a quorum."}
+    wall 45.9s, engine llama.cpp-vulkan@8591-bonsai27b, memories_used 1,
+    answer present after the </think> block ("A quorum is a required subset of
+    nodes that must agree on ...").
+  POST {"message":"What is 91 prime?"}
+    wall 0.9s, engine llama.cpp-vulkan@8587-qwen1.5b - shallow question stays on
+    the fast tier, which is the routing behaving as designed.
+  smoke_test_platform.py -> 10/10 healthy, RESULT PASS, exit 0
+  START_TRM_PLATFORM.bat TRM_CHECK_ONLY=1 -> rc 0
+
+COST / TRADE-OFF (measured, not estimated)
+  Deep questions now take ~45s instead of ~18.5s of truncated output or ~1.5s of
+  1.5B output. That is the honest price of a 27B reasoning model on a 6700 XT at
+  Q1_0 with a 640-token budget. It is a DEEP tier: slow, deliberate, and only on
+  explicit deep-word or long-question routing. If latency matters more than depth,
+  the knob is the budget and the tier, not the wiring.
+
+STILL OPEN
+  Bonsai-27B uses ~4 GB of the 12 GB VRAM alongside the 1.5B on 8587. Fits, but
+  there is no headroom check: if another GPU consumer starts, the deep tier is
+  the first thing to fail, and voice.py will silently fall back to 8587.
+  Ternary-Bonsai 1.7B/4B/8B remain unloadable (tensor offset mismatch), so 27B is
+  the only ternary model available for this tier.

@@ -1,0 +1,12 @@
+{
+ "checks": 19,
+ "failed": 0,
+ "failures": [],
+ "modules_count": 13,
+ "basis": "oracle transcribed from the crate's source: both PRNGs with u64 wrapping by masking, the sparse firing selection, K3 collapse, CA rule 30, the Ising release and the NAND pass-through, compared trit-for-trit and note-for-note",
+ "findings": [
+  "neuron_collapse CAN return 0 (a tie), unlike council_vote's unreachable branches -- the verdict space is the crate's, not a constant",
+  "the sparse firing rate over HTTP equals the crate's ~1% rule (100/10,000 measured)",
+  "the four-architecture switch is the same field interpreted four ways: measured, not a fan-out of the same output (CA and Ising differ from the collapse)"
+ ]
+}

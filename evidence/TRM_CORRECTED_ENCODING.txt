@@ -1,0 +1,30 @@
+TRM 7M - CORRECTED TEST (training-format encoding)  2026-10-24
+
+RETRACTED: earlier 'TRM fails at 0-5%' was MY encoding bug, not the model.
+
+The real encoding, read from dataset/build_arc_dataset.py:
+  ARCMaxGridSize = 30  -> 900 tokens (not 1024)
+  PAD=0, EOS=1, colors=2..11   (colors shifted +2)
+  input grid at top-left; EOS row below + EOS col right
+
+RESULTS with correct encoding (arc-agi_training, test pair 0):
+  007bbfb7   9x9    pid0  48/81  (59%)   pid1  53/81  (65%)
+  00d62c1b  20x20   pid0 289/400 (72%)   pid1 367/400 (92%)
+  017c7c7b   9x3    pid0  12/27  (44%)   pid1  10/27  (37%)
+  025d127b  10x10   pid0  88/100 (88%)   pid1  88/100 (88%)
+  045e512c  21x21   pid0 365/441 (83%)   pid1 396/441 (90%)
+
+0-5% -> 37-92% purely from encoding the input as the model was trained.
+
+MODEL IS REAL. My measurement instrument was wrong.
+
+PUZZLE_ID SWEEP - task 00d62c1b (20x20, 400 cells), 16 ids:
+  pid 0: 72.2%   pid 1: 91.8% <- BEST   pid 2: 76.0%   pid 3: 86.0%
+  pid 4: 81.0%   pid 5: 84.8%   pid 6: 87.8%   pid 7: 82.2%
+  pid 8: 91.8%   pid 9: 82.0%   pid10: 88.8%   pid11: 91.2%
+  pid12: 73.2%   pid13: 91.5%   pid14: 87.2%   pid15: 85.5%
+  BEST: 367/400 = 91.8%
+
+VERDICT: TRM computes real ARC predictions. Even a WRONG puzzle_id
+yields 72-76%; the embedding shifts quality to 91.8%.
+CAVEAT: cell accuracy != exact grid match. ARC scores exact-match only.

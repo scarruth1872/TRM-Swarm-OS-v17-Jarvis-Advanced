@@ -1,0 +1,1141 @@
+{
+  "protocol": "LOAD_FUZZ_PARITY_RULER",
+  "measured_at": "2026-09-26T09:26:30",
+  "passed": 65,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "fresh total_agents",
+      "passed": true,
+      "got": 12,
+      "want": 12
+    },
+    {
+      "check": "fresh active_agents",
+      "passed": true,
+      "got": 0,
+      "want": 0
+    },
+    {
+      "check": "fresh total_pending_tasks",
+      "passed": true,
+      "got": 0,
+      "want": 0
+    },
+    {
+      "check": "fresh utilization_pct",
+      "passed": true,
+      "got": 0.0,
+      "want": 0.0
+    },
+    {
+      "check": "fresh roster_order",
+      "passed": true,
+      "got": [
+        "Logic",
+        "Archi",
+        "Devo",
+        "Shield",
+        "Seeker",
+        "Bridge",
+        "Flow",
+        "Scribe",
+        "Verify",
+        "Pulse",
+        "Vision",
+        "Orchestra"
+      ],
+      "want": [
+        "Logic",
+        "Archi",
+        "Devo",
+        "Shield",
+        "Seeker",
+        "Bridge",
+        "Flow",
+        "Scribe",
+        "Verify",
+        "Pulse",
+        "Vision",
+        "Orchestra"
+      ]
+    },
+    {
+      "check": "fresh first_view",
+      "passed": true,
+      "got": {
+        "task_count": 0,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 0.0
+      },
+      "want": {
+        "task_count": 0,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 0.0
+      }
+    },
+    {
+      "check": "fresh get_agent_load(Logic)",
+      "passed": true,
+      "got": {
+        "task_count": 0,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 0.0
+      },
+      "want": {
+        "task_count": 0,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 0.0
+      }
+    },
+    {
+      "check": "after 4 starts total_agents",
+      "passed": true,
+      "got": 12,
+      "want": 12
+    },
+    {
+      "check": "after 4 starts active_agents",
+      "passed": true,
+      "got": 2,
+      "want": 2
+    },
+    {
+      "check": "after 4 starts total_pending_tasks",
+      "passed": true,
+      "got": 4,
+      "want": 4
+    },
+    {
+      "check": "after 4 starts utilization_pct",
+      "passed": true,
+      "got": 16.7,
+      "want": 16.7
+    },
+    {
+      "check": "after 4 starts roster_order",
+      "passed": true,
+      "got": [
+        "Logic",
+        "Archi",
+        "Devo",
+        "Shield",
+        "Seeker",
+        "Bridge",
+        "Flow",
+        "Scribe",
+        "Verify",
+        "Pulse",
+        "Vision",
+        "Orchestra"
+      ],
+      "want": [
+        "Logic",
+        "Archi",
+        "Devo",
+        "Shield",
+        "Seeker",
+        "Bridge",
+        "Flow",
+        "Scribe",
+        "Verify",
+        "Pulse",
+        "Vision",
+        "Orchestra"
+      ]
+    },
+    {
+      "check": "after 4 starts first_view",
+      "passed": true,
+      "got": {
+        "task_count": 3,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      },
+      "want": {
+        "task_count": 3,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      }
+    },
+    {
+      "check": "Logic view after 3 starts",
+      "passed": true,
+      "got": {
+        "task_count": 3,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      },
+      "want": {
+        "task_count": 3,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      }
+    },
+    {
+      "check": "Logic view after 2 ends",
+      "passed": true,
+      "got": {
+        "task_count": 1,
+        "avg_completion_time": 3.75,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      },
+      "want": {
+        "task_count": 1,
+        "avg_completion_time": 3.75,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      }
+    },
+    {
+      "check": "after 2 ends total_agents",
+      "passed": true,
+      "got": 12,
+      "want": 12
+    },
+    {
+      "check": "after 2 ends active_agents",
+      "passed": true,
+      "got": 2,
+      "want": 2
+    },
+    {
+      "check": "after 2 ends total_pending_tasks",
+      "passed": true,
+      "got": 2,
+      "want": 2
+    },
+    {
+      "check": "after 2 ends utilization_pct",
+      "passed": true,
+      "got": 16.7,
+      "want": 16.7
+    },
+    {
+      "check": "after 2 ends roster_order",
+      "passed": true,
+      "got": [
+        "Logic",
+        "Archi",
+        "Devo",
+        "Shield",
+        "Seeker",
+        "Bridge",
+        "Flow",
+        "Scribe",
+        "Verify",
+        "Pulse",
+        "Vision",
+        "Orchestra"
+      ],
+      "want": [
+        "Logic",
+        "Archi",
+        "Devo",
+        "Shield",
+        "Seeker",
+        "Bridge",
+        "Flow",
+        "Scribe",
+        "Verify",
+        "Pulse",
+        "Vision",
+        "Orchestra"
+      ]
+    },
+    {
+      "check": "after 2 ends first_view",
+      "passed": true,
+      "got": {
+        "task_count": 1,
+        "avg_completion_time": 3.75,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      },
+      "want": {
+        "task_count": 1,
+        "avg_completion_time": 3.75,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      }
+    },
+    {
+      "check": "Pulse view after 55 ends (cap 50)",
+      "passed": true,
+      "got": {
+        "task_count": 0,
+        "avg_completion_time": 29.5,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      },
+      "want": {
+        "task_count": 0,
+        "avg_completion_time": 29.5,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      }
+    },
+    {
+      "check": "capable(reasoning)",
+      "passed": true,
+      "got": [
+        "Logic"
+      ],
+      "want": [
+        "Logic"
+      ]
+    },
+    {
+      "check": "capable(design)",
+      "passed": true,
+      "got": [
+        "Archi",
+        "Vision"
+      ],
+      "want": [
+        "Archi",
+        "Vision"
+      ]
+    },
+    {
+      "check": "capable(testing)",
+      "passed": true,
+      "got": [
+        "Verify"
+      ],
+      "want": [
+        "Verify"
+      ]
+    },
+    {
+      "check": "capable(monitoring)",
+      "passed": true,
+      "got": [
+        "Pulse"
+      ],
+      "want": [
+        "Pulse"
+      ]
+    },
+    {
+      "check": "capable(ui)",
+      "passed": true,
+      "got": [
+        "Vision"
+      ],
+      "want": [
+        "Vision"
+      ]
+    },
+    {
+      "check": "capable(management)",
+      "passed": true,
+      "got": [
+        "Orchestra"
+      ],
+      "want": [
+        "Orchestra"
+      ]
+    },
+    {
+      "check": "capable(qa)",
+      "passed": true,
+      "got": [
+        "Verify"
+      ],
+      "want": [
+        "Verify"
+      ]
+    },
+    {
+      "check": "capable(intel)",
+      "passed": true,
+      "got": [
+        "Seeker"
+      ],
+      "want": [
+        "Seeker"
+      ]
+    },
+    {
+      "check": "capable(unknown_capability)",
+      "passed": true,
+      "got": [],
+      "want": []
+    },
+    {
+      "check": "redistribute([])",
+      "passed": true,
+      "got": "Archi",
+      "want": "Archi"
+    },
+    {
+      "check": "redistribute(['Logic', 'Pulse'])",
+      "passed": true,
+      "got": "Pulse",
+      "want": "Pulse"
+    },
+    {
+      "check": "redistribute(['NotARole'])",
+      "passed": true,
+      "got": null,
+      "want": null
+    },
+    {
+      "check": "redistribute(['Pulse', 'Logic'])",
+      "passed": true,
+      "got": "Pulse",
+      "want": "Pulse"
+    },
+    {
+      "check": "redistribute(['Flow'])",
+      "passed": true,
+      "got": "Flow",
+      "want": "Flow"
+    },
+    {
+      "check": "redistribute(['Scribe', 'Vision'])",
+      "passed": true,
+      "got": "Scribe",
+      "want": "Scribe"
+    },
+    {
+      "check": "ghost role view",
+      "passed": true,
+      "got": {
+        "task_count": 1,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      },
+      "want": {
+        "task_count": 1,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      }
+    },
+    {
+      "check": "with a role created later total_agents",
+      "passed": true,
+      "got": 12,
+      "want": 12
+    },
+    {
+      "check": "with a role created later active_agents",
+      "passed": true,
+      "got": 1,
+      "want": 1
+    },
+    {
+      "check": "with a role created later total_pending_tasks",
+      "passed": true,
+      "got": 1,
+      "want": 1
+    },
+    {
+      "check": "with a role created later utilization_pct",
+      "passed": true,
+      "got": 8.3,
+      "want": 8.3
+    },
+    {
+      "check": "with a role created later roster_order",
+      "passed": true,
+      "got": [
+        "Logic",
+        "Archi",
+        "Devo",
+        "Shield",
+        "Seeker",
+        "Bridge",
+        "Flow",
+        "Scribe",
+        "Verify",
+        "Pulse",
+        "Vision",
+        "Orchestra"
+      ],
+      "want": [
+        "Logic",
+        "Archi",
+        "Devo",
+        "Shield",
+        "Seeker",
+        "Bridge",
+        "Flow",
+        "Scribe",
+        "Verify",
+        "Pulse",
+        "Vision",
+        "Orchestra"
+      ]
+    },
+    {
+      "check": "with a role created later first_view",
+      "passed": true,
+      "got": {
+        "task_count": 1,
+        "avg_completion_time": 3.75,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      },
+      "want": {
+        "task_count": 1,
+        "avg_completion_time": 3.75,
+        "current_complexity": 0.0,
+        "last_active": 1700000000.0
+      }
+    },
+    {
+      "check": "ghost is not a redistribute candidate",
+      "passed": true,
+      "got": null,
+      "want": null
+    },
+    {
+      "check": "unknown role end is a no-op",
+      "passed": true,
+      "got": {
+        "task_count": 0,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 0.0
+      },
+      "want": {
+        "task_count": 0,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 0.0
+      }
+    },
+    {
+      "check": "utilization 1 of 12 total_agents",
+      "passed": true,
+      "got": 12,
+      "want": 12
+    },
+    {
+      "check": "utilization 1 of 12 active_agents",
+      "passed": true,
+      "got": 1,
+      "want": 1
+    },
+    {
+      "check": "utilization 1 of 12 total_pending_tasks",
+      "passed": true,
+      "got": 1,
+      "want": 1
+    },
+    {
+      "check": "utilization 1 of 12 utilization_pct",
+      "passed": true,
+      "got": 8.3,
+      "want": 8.3
+    },
+    {
+      "check": "utilization 1 of 12 roster_order",
+      "passed": true,
+      "got": [
+        "Logic",
+        "Archi",
+        "Devo",
+        "Shield",
+        "Seeker",
+        "Bridge",
+        "Flow",
+        "Scribe",
+        "Verify",
+        "Pulse",
+        "Vision",
+        "Orchestra"
+      ],
+      "want": [
+        "Logic",
+        "Archi",
+        "Devo",
+        "Shield",
+        "Seeker",
+        "Bridge",
+        "Flow",
+        "Scribe",
+        "Verify",
+        "Pulse",
+        "Vision",
+        "Orchestra"
+      ]
+    },
+    {
+      "check": "utilization 1 of 12 first_view",
+      "passed": true,
+      "got": {
+        "task_count": 0,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 0.0
+      },
+      "want": {
+        "task_count": 0,
+        "avg_completion_time": 0.0,
+        "current_complexity": 0.0,
+        "last_active": 0.0
+      }
+    },
+    {
+      "check": "summary timestamp echoes the pinned clock",
+      "passed": true,
+      "got": 1700000000.0,
+      "want": 1700000000.0
+    },
+    {
+      "check": "route adds only the declared extras to the source's dict",
+      "passed": true,
+      "got": [
+        "cognitive_load",
+        "instance",
+        "load_score",
+        "role"
+      ],
+      "want": [
+        "cognitive_load",
+        "instance",
+        "load_score",
+        "role"
+      ]
+    },
+    {
+      "check": "scan_lines_native codes, line for line",
+      "passed": true,
+      "got": [
+        1,
+        1,
+        1,
+        0,
+        2,
+        2,
+        2,
+        0,
+        0,
+        0,
+        0,
+        3,
+        3,
+        0,
+        4,
+        4,
+        5,
+        5,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      "want": [
+        1,
+        1,
+        1,
+        0,
+        2,
+        2,
+        2,
+        0,
+        0,
+        0,
+        0,
+        3,
+        3,
+        0,
+        4,
+        4,
+        5,
+        5,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        2,
+        0,
+        0
+      ]
+    },
+    {
+      "check": "scan_file findings (line, type, snippet, fingerprint)",
+      "passed": true,
+      "got": [
+        [
+          1,
+          "SQL_INJECTION",
+          "cur.execute('SELECT %s' % u)",
+          "_ruler_scan_subject.py:1:SQL_INJECTION"
+        ],
+        [
+          2,
+          "SQL_INJECTION",
+          "q.format(a).execute()",
+          "_ruler_scan_subject.py:2:SQL_INJECTION"
+        ],
+        [
+          3,
+          "COMMAND_INJECTION",
+          "os.system('rm -rf /')",
+          "_ruler_scan_subject.py:3:COMMAND_INJECTION"
+        ],
+        [
+          4,
+          "COMMAND_INJECTION",
+          "subprocess.run(c, shell=True)",
+          "_ruler_scan_subject.py:4:COMMAND_INJECTION"
+        ],
+        [
+          5,
+          "PATH_TRAVERSAL",
+          "open(base + '../etc')",
+          "_ruler_scan_subject.py:5:PATH_TRAVERSAL"
+        ],
+        [
+          5,
+          "RESOURCE_LEAK",
+          "open(base + '../etc')",
+          "_ruler_scan_subject.py:5:RESOURCE_LEAK"
+        ],
+        [
+          6,
+          "PATH_TRAVERSAL",
+          "open(os.path.join(d, user_input))",
+          "_ruler_scan_subject.py:6:PATH_TRAVERSAL"
+        ],
+        [
+          7,
+          "PATH_TRAVERSAL",
+          "p = Path(user_input)",
+          "_ruler_scan_subject.py:7:PATH_TRAVERSAL"
+        ],
+        [
+          8,
+          "HARDCODED_SECRET",
+          "api_key = 'abcdefgh'",
+          "_ruler_scan_subject.py:8:HARDCODED_SECRET"
+        ],
+        [
+          9,
+          "HARDCODED_SECRET",
+          "github_token = 'abcdefghij'",
+          "_ruler_scan_subject.py:9:HARDCODED_SECRET"
+        ],
+        [
+          9,
+          "HARDCODED_TOKEN",
+          "github_token = 'abcdefghij'",
+          "_ruler_scan_subject.py:9:HARDCODED_TOKEN"
+        ],
+        [
+          10,
+          "INSECURE_DESERIALIZATION",
+          "pickle.loads(b)",
+          "_ruler_scan_subject.py:10:INSECURE_DESERIALIZATION"
+        ],
+        [
+          11,
+          "DEBUG_PRINT",
+          "print('token', t)",
+          "_ruler_scan_subject.py:11:DEBUG_PRINT"
+        ],
+        [
+          12,
+          "BARE_EXCEPT",
+          "except:",
+          "_ruler_scan_subject.py:12:BARE_EXCEPT"
+        ],
+        [
+          13,
+          "WEAK_CRYPTO",
+          "hashlib.sha1(b)",
+          "_ruler_scan_subject.py:13:WEAK_CRYPTO"
+        ],
+        [
+          14,
+          "WEAK_CRYPTO",
+          "random.random()  # crypto",
+          "_ruler_scan_subject.py:14:WEAK_CRYPTO"
+        ],
+        [
+          15,
+          "HTTP_NO_VERIFY",
+          "requests.get(u, verify=False)",
+          "_ruler_scan_subject.py:15:HTTP_NO_VERIFY"
+        ],
+        [
+          16,
+          "UNSAFE_REDIRECT",
+          "return redirect(request.form['n'])",
+          "_ruler_scan_subject.py:16:UNSAFE_REDIRECT"
+        ],
+        [
+          17,
+          "BUFFER_OVERFLOW",
+          "ctypes.memset(p, 0, n)",
+          "_ruler_scan_subject.py:17:BUFFER_OVERFLOW"
+        ],
+        [
+          18,
+          "RESOURCE_LEAK",
+          "f = open(path)",
+          "_ruler_scan_subject.py:18:RESOURCE_LEAK"
+        ],
+        [
+          22,
+          "BARE_EXCEPT",
+          "except:",
+          "_ruler_scan_subject.py:22:BARE_EXCEPT"
+        ],
+        [
+          23,
+          "COMMAND_INJECTION",
+          "print(password); os.system('x')",
+          "_ruler_scan_subject.py:23:COMMAND_INJECTION"
+        ],
+        [
+          23,
+          "DEBUG_PRINT",
+          "print(password); os.system('x')",
+          "_ruler_scan_subject.py:23:DEBUG_PRINT"
+        ]
+      ],
+      "want": [
+        [
+          1,
+          "SQL_INJECTION",
+          "cur.execute('SELECT %s' % u)",
+          "_ruler_scan_subject.py:1:SQL_INJECTION"
+        ],
+        [
+          2,
+          "SQL_INJECTION",
+          "q.format(a).execute()",
+          "_ruler_scan_subject.py:2:SQL_INJECTION"
+        ],
+        [
+          3,
+          "COMMAND_INJECTION",
+          "os.system('rm -rf /')",
+          "_ruler_scan_subject.py:3:COMMAND_INJECTION"
+        ],
+        [
+          4,
+          "COMMAND_INJECTION",
+          "subprocess.run(c, shell=True)",
+          "_ruler_scan_subject.py:4:COMMAND_INJECTION"
+        ],
+        [
+          5,
+          "PATH_TRAVERSAL",
+          "open(base + '../etc')",
+          "_ruler_scan_subject.py:5:PATH_TRAVERSAL"
+        ],
+        [
+          5,
+          "RESOURCE_LEAK",
+          "open(base + '../etc')",
+          "_ruler_scan_subject.py:5:RESOURCE_LEAK"
+        ],
+        [
+          6,
+          "PATH_TRAVERSAL",
+          "open(os.path.join(d, user_input))",
+          "_ruler_scan_subject.py:6:PATH_TRAVERSAL"
+        ],
+        [
+          7,
+          "PATH_TRAVERSAL",
+          "p = Path(user_input)",
+          "_ruler_scan_subject.py:7:PATH_TRAVERSAL"
+        ],
+        [
+          8,
+          "HARDCODED_SECRET",
+          "api_key = 'abcdefgh'",
+          "_ruler_scan_subject.py:8:HARDCODED_SECRET"
+        ],
+        [
+          9,
+          "HARDCODED_SECRET",
+          "github_token = 'abcdefghij'",
+          "_ruler_scan_subject.py:9:HARDCODED_SECRET"
+        ],
+        [
+          9,
+          "HARDCODED_TOKEN",
+          "github_token = 'abcdefghij'",
+          "_ruler_scan_subject.py:9:HARDCODED_TOKEN"
+        ],
+        [
+          10,
+          "INSECURE_DESERIALIZATION",
+          "pickle.loads(b)",
+          "_ruler_scan_subject.py:10:INSECURE_DESERIALIZATION"
+        ],
+        [
+          11,
+          "DEBUG_PRINT",
+          "print('token', t)",
+          "_ruler_scan_subject.py:11:DEBUG_PRINT"
+        ],
+        [
+          12,
+          "BARE_EXCEPT",
+          "except:",
+          "_ruler_scan_subject.py:12:BARE_EXCEPT"
+        ],
+        [
+          13,
+          "WEAK_CRYPTO",
+          "hashlib.sha1(b)",
+          "_ruler_scan_subject.py:13:WEAK_CRYPTO"
+        ],
+        [
+          14,
+          "WEAK_CRYPTO",
+          "random.random()  # crypto",
+          "_ruler_scan_subject.py:14:WEAK_CRYPTO"
+        ],
+        [
+          15,
+          "HTTP_NO_VERIFY",
+          "requests.get(u, verify=False)",
+          "_ruler_scan_subject.py:15:HTTP_NO_VERIFY"
+        ],
+        [
+          16,
+          "UNSAFE_REDIRECT",
+          "return redirect(request.form['n'])",
+          "_ruler_scan_subject.py:16:UNSAFE_REDIRECT"
+        ],
+        [
+          17,
+          "BUFFER_OVERFLOW",
+          "ctypes.memset(p, 0, n)",
+          "_ruler_scan_subject.py:17:BUFFER_OVERFLOW"
+        ],
+        [
+          18,
+          "RESOURCE_LEAK",
+          "f = open(path)",
+          "_ruler_scan_subject.py:18:RESOURCE_LEAK"
+        ],
+        [
+          22,
+          "BARE_EXCEPT",
+          "except:",
+          "_ruler_scan_subject.py:22:BARE_EXCEPT"
+        ],
+        [
+          23,
+          "COMMAND_INJECTION",
+          "print(password); os.system('x')",
+          "_ruler_scan_subject.py:23:COMMAND_INJECTION"
+        ],
+        [
+          23,
+          "DEBUG_PRINT",
+          "print(password); os.system('x')",
+          "_ruler_scan_subject.py:23:DEBUG_PRINT"
+        ]
+      ]
+    },
+    {
+      "check": "scan_file finding count",
+      "passed": true,
+      "got": 23,
+      "want": 23
+    },
+    {
+      "check": "save plan previous/new/total",
+      "passed": true,
+      "got": [
+        2,
+        22,
+        24
+      ],
+      "want": [
+        2,
+        22,
+        24
+      ]
+    },
+    {
+      "check": "save plan new-antibody fingerprints",
+      "passed": true,
+      "got": [
+        "_ruler_scan_subject.py:10:INSECURE_DESERIALIZATION",
+        "_ruler_scan_subject.py:11:DEBUG_PRINT",
+        "_ruler_scan_subject.py:12:BARE_EXCEPT",
+        "_ruler_scan_subject.py:13:WEAK_CRYPTO",
+        "_ruler_scan_subject.py:14:WEAK_CRYPTO",
+        "_ruler_scan_subject.py:15:HTTP_NO_VERIFY",
+        "_ruler_scan_subject.py:16:UNSAFE_REDIRECT",
+        "_ruler_scan_subject.py:17:BUFFER_OVERFLOW",
+        "_ruler_scan_subject.py:18:RESOURCE_LEAK",
+        "_ruler_scan_subject.py:22:BARE_EXCEPT",
+        "_ruler_scan_subject.py:23:COMMAND_INJECTION",
+        "_ruler_scan_subject.py:23:DEBUG_PRINT",
+        "_ruler_scan_subject.py:2:SQL_INJECTION",
+        "_ruler_scan_subject.py:3:COMMAND_INJECTION",
+        "_ruler_scan_subject.py:4:COMMAND_INJECTION",
+        "_ruler_scan_subject.py:5:PATH_TRAVERSAL",
+        "_ruler_scan_subject.py:5:RESOURCE_LEAK",
+        "_ruler_scan_subject.py:6:PATH_TRAVERSAL",
+        "_ruler_scan_subject.py:7:PATH_TRAVERSAL",
+        "_ruler_scan_subject.py:8:HARDCODED_SECRET",
+        "_ruler_scan_subject.py:9:HARDCODED_SECRET",
+        "_ruler_scan_subject.py:9:HARDCODED_TOKEN"
+      ],
+      "want": [
+        "_ruler_scan_subject.py:10:INSECURE_DESERIALIZATION",
+        "_ruler_scan_subject.py:11:DEBUG_PRINT",
+        "_ruler_scan_subject.py:12:BARE_EXCEPT",
+        "_ruler_scan_subject.py:13:WEAK_CRYPTO",
+        "_ruler_scan_subject.py:14:WEAK_CRYPTO",
+        "_ruler_scan_subject.py:15:HTTP_NO_VERIFY",
+        "_ruler_scan_subject.py:16:UNSAFE_REDIRECT",
+        "_ruler_scan_subject.py:17:BUFFER_OVERFLOW",
+        "_ruler_scan_subject.py:18:RESOURCE_LEAK",
+        "_ruler_scan_subject.py:22:BARE_EXCEPT",
+        "_ruler_scan_subject.py:23:COMMAND_INJECTION",
+        "_ruler_scan_subject.py:23:DEBUG_PRINT",
+        "_ruler_scan_subject.py:2:SQL_INJECTION",
+        "_ruler_scan_subject.py:3:COMMAND_INJECTION",
+        "_ruler_scan_subject.py:4:COMMAND_INJECTION",
+        "_ruler_scan_subject.py:5:PATH_TRAVERSAL",
+        "_ruler_scan_subject.py:5:RESOURCE_LEAK",
+        "_ruler_scan_subject.py:6:PATH_TRAVERSAL",
+        "_ruler_scan_subject.py:7:PATH_TRAVERSAL",
+        "_ruler_scan_subject.py:8:HARDCODED_SECRET",
+        "_ruler_scan_subject.py:9:HARDCODED_SECRET",
+        "_ruler_scan_subject.py:9:HARDCODED_TOKEN"
+      ]
+    },
+    {
+      "check": "save plan list and count agree",
+      "passed": true,
+      "got": [
+        22,
+        22
+      ],
+      "want": [
+        22,
+        22
+      ]
+    },
+    {
+      "check": "the source's antibody_id is process-salted (so only its shape is comparable)",
+      "passed": true,
+      "got": false,
+      "want": false
+    },
+    {
+      "check": "scan_all files_scanned",
+      "passed": true,
+      "got": 2,
+      "want": 2
+    },
+    {
+      "check": "scan_all vulnerabilities",
+      "passed": true,
+      "got": 26,
+      "want": 26
+    },
+    {
+      "check": "scan_all by_severity",
+      "passed": true,
+      "got": {
+        "CRITICAL": 10,
+        "HIGH": 8,
+        "LOW": 5,
+        "MEDIUM": 3
+      },
+      "want": {
+        "CRITICAL": 10,
+        "HIGH": 8,
+        "LOW": 5,
+        "MEDIUM": 3
+      }
+    },
+    {
+      "check": "scan_all by_type",
+      "passed": true,
+      "got": {
+        "BARE_EXCEPT": 3,
+        "BUFFER_OVERFLOW": 2,
+        "COMMAND_INJECTION": 3,
+        "DEBUG_PRINT": 3,
+        "HARDCODED_SECRET": 2,
+        "HARDCODED_TOKEN": 1,
+        "HTTP_NO_VERIFY": 1,
+        "INSECURE_DESERIALIZATION": 1,
+        "PATH_TRAVERSAL": 3,
+        "RESOURCE_LEAK": 2,
+        "SQL_INJECTION": 2,
+        "UNSAFE_REDIRECT": 1,
+        "WEAK_CRYPTO": 2
+      },
+      "want": {
+        "SQL_INJECTION": 2,
+        "COMMAND_INJECTION": 3,
+        "PATH_TRAVERSAL": 3,
+        "RESOURCE_LEAK": 2,
+        "HARDCODED_SECRET": 2,
+        "HARDCODED_TOKEN": 1,
+        "INSECURE_DESERIALIZATION": 1,
+        "DEBUG_PRINT": 3,
+        "BARE_EXCEPT": 3,
+        "WEAK_CRYPTO": 2,
+        "HTTP_NO_VERIFY": 1,
+        "UNSAFE_REDIRECT": 1,
+        "BUFFER_OVERFLOW": 2
+      }
+    }
+  ],
+  "modules": {
+    "cognitive_load_balancer": "trm_uefi_kernel/src/cognitive_load_balancer.rs vs swarm_v2/core/cognitive_load_balancer.py",
+    "self_fuzzing_engine": "trm_uefi_kernel/src/self_fuzzing_engine.rs vs swarm_v2/core/self_fuzzing_engine.py"
+  },
+  "basis": "Both sides answer from the same rules: the routes call the files the kernel compiles, and the python side is the module itself. The clock is pinned to one epoch on both sides. The strip scanner the python loads (strip_fuzzing_scanner.dll) is compared against the port's own copy of its rule; strip basis for this run: the python side's own strip call through strip_fuzzing_scanner.dll",
+  "subjects": {
+    "scan_lines": 31,
+    "scan_file_lines": 23,
+    "scan_all_files": 2
+  },
+  "limits": [
+    "line splitting: the route splits on \\n / \\r\\n (str::lines), the source on the full Unicode line set (splitlines).",
+    "case folding: the 15-pattern path uses to_lowercase() (Unicode, matching re.IGNORECASE on str patterns); the strip's 6-code path uses to_ascii_lowercase(), matching the strip's own contains_ci.",
+    "\\w in the source's [\\w\\-\\.]{8,} is Unicode word characters; the port uses char::is_alphanumeric() plus _ - .",
+    "scan_all time_s and throughput are MEASURED by the source and are not produced by the route: no clock in the module.",
+    "the source's antibody_id is built from Python's process-salted hash(), so it is not reproducible even between two runs of the source; the route's id is stable. The vault's dedup key (the fingerprint) is compared.",
+    "RACE_CONDITION and USE_AFTER_FREE contain a newline and can never match in the source's per-line loop; the port carries them as explicit false predicates so their names and severities still resolve.",
+    "the route's agent view carries three keys the source's dict does not (cognitive_load, instance, load_score); checked explicitly."
+  ]
+}

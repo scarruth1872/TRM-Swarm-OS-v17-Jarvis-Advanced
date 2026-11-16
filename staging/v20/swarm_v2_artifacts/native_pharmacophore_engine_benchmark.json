@@ -1,0 +1,25 @@
+{
+  "engine": "TRM Swarm OS Native Pharmacophore Engine",
+  "version": "19.001 Sovereign",
+  "substrate": "Pure Compiled Rust (x86_64-pc-windows-msvc)",
+  "dll_path": "swarm_v2_rust_kernel/target/release/swarm_rust_kernel.dll",
+  "binary_path": "swarm_v2_rust_kernel/target/release/trm_swarm_boot.exe",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "measured_benchmarks": {
+    "c_abi_evaluations_count": 100000,
+    "total_time_ms": 76.74,
+    "per_evaluation_ns": 767.45,
+    "per_evaluation_us": 0.77,
+    "throughput_evaluations_per_sec": 1303023,
+    "verdict": "+1 [VALID PHARMACOPHORE]",
+    "llm_baseline_ms": 4270.0,
+    "measured_speedup_vs_llm": "5,563,000x faster than GPU LLM forward pass"
+  },
+  "modules_implemented": [
+    "Zinc coordination distance & bidentate chelation geometry",
+    "Catalytic pocket contact counter (H-bonds, hydrophobic, electrostatic)",
+    "Steric clash detector (< 1.4 A physical clash threshold)",
+    "Kleene K3 balanced ternary conjunction (LEM=0)",
+    "Deterministic non-hallucinatory summary template generator"
+  ]
+}

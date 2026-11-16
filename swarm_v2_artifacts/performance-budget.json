@@ -1,0 +1,187 @@
+{
+  "schema_version": "1.0.0",
+  "generated_by": "Archi/SwarmOS-v12",
+  "generated_at": "2026-08-01T06:53:08Z",
+  "budget_currency": "ms",
+  "global_defaults": {
+    "latency_quantiles": ["p50", "p95", "p99"],
+    "error_budget_window": "30d",
+    "burn_rate_alert_threshold": 2.0,
+    "availability_measure": "monthly_uptime_percentage"
+  },
+  "components": {
+    "pbft_consensus": {
+      "description": "PBFT consensus engine for state machine replication",
+      "slo": {
+        "latency_ms": { "p50": 50, "p95": 120, "p99": 250 },
+        "throughput_tps": { "min": 5000, "target": 10000, "max_burst": 15000 },
+        "availability_percent": 99.99,
+        "durability": "no_committed_slot_loss",
+        "error_budget_per_30d_ms": 432000,
+        "resource_ceiling": {
+          "cpu_cores": 8,
+          "memory_mb": 16384,
+          "network_mbps": 1000
+        },
+        "test_hooks": ["fault_injection", "partition_sim", "byzantine_node_sim"]
+      }
+    },
+    "semantic_knowledge_graph": {
+      "description": "SKG for entity resolution, relationship traversal, and semantic queries",
+      "slo": {
+        "latency_ms": {
+          "point_lookup": { "p50": 5, "p95": 15, "p99": 30 },
+          "traversal_depth_3": { "p50": 20, "p95": 60, "p99": 120 },
+          "semantic_query": { "p50": 100, "p95": 300, "p99": 600 }
+        },
+        "throughput_queries_per_sec": { "min": 20000, "target": 50000 },
+        "availability_percent": 99.95,
+        "consistency": "eventual_within_500ms",
+        "error_budget_per_30d_ms": 2160000,
+        "resource_ceiling": {
+          "cpu_cores": 16,
+          "memory_mb": 65536,
+          "disk_iops": 5000
+        },
+        "test_hooks": ["index_corruption", "concurrent_write_contention", "schema_evolution"]
+      }
+    },
+    "telemetry_fabric_hbtf": {
+      "description": "High-bandwidth telemetry ingestion, aggregation, and streaming",
+      "slo": {
+        "latency_ms": {
+          "ingest_ack": { "p50": 2, "p95": 5, "p99": 10 },
+          "end_to_end_query": { "p50": 50, "p95": 150, "p99": 300 }
+        },
+        "throughput_events_per_sec": { "min": 1000000, "target": 5000000, "max_burst": 10000000 },
+        "availability_percent": 99.99,
+        "durability": "at_least_once_delivery",
+        "error_budget_per_30d_ms": 432000,
+        "resource_ceiling": {
+          "cpu_cores": 32,
+          "memory_mb": 131072,
+          "network_mbps": 10000
+        },
+        "test_hooks": ["backpressure_sim", "consumer_lag_injection", "broker_failover"]
+      }
+    },
+    "formal_verification_engine_fve": {
+      "description": "Model checking, symbolic execution, and invariant verification",
+      "slo": {
+        "latency_ms": {
+          "small_proof": { "p50": 500, "p95": 2000, "p99": 5000 },
+          "medium_proof": { "p50": 5000, "p95": 20000, "p99": 60000 },
+          "large_proof": { "p50": 60000, "p95": 300000, "p99": 900000 }
+        },
+        "throughput_proofs_per_min": { "min": 10, "target": 60 },
+        "availability_percent": 99.9,
+        "soundness": "no_false_negatives",
+        "error_budget_per_30d_ms": 4320000,
+        "resource_ceiling": {
+          "cpu_cores": 64,
+          "memory_mb": 262144,
+          "gpu_cores": 4
+        },
+        "test_hooks": ["timeout_injection", "counterexample_generation", "state_space_explosion"]
+      }
+    },
+    "self_modification_api_edsma": {
+      "description": "Event-driven self-modification API for hot-swapping components",
+      "slo": {
+        "latency_ms": {
+          "proposal_submission": { "p50": 10, "p95": 30, "p99": 60 },
+          "approval_roundtrip": { "p50": 100, "p95": 300, "p99": 600 },
+          "hot_swap_activation": { "p50": 500, "p95": 2000, "p99": 5000 }
+        },
+        "throughput_swaps_per_min": { "min": 5, "target": 20 },
+        "availability_percent": 99.99,
+        "safety": "no_unsafe_activation",
+        "error_budget_per_30d_ms": 432000,
+        "resource_ceiling": {
+          "cpu_cores": 4,
+          "memory_mb": 8192
+        },
+        "test_hooks": ["rollback_trigger", "partial_activation", "version_conflict"]
+      }
+    },
+    "p2p_mesh_router": {
+      "description": "Peer-to-peer mesh routing and message relay",
+      "slo": {
+        "latency_ms": {
+          "hop_1": { "p50": 5, "p95": 15, "p99": 30 },
+          "hop_5": { "p50": 25, "p95": 75, "p99": 150 },
+          "route_convergence": { "p50": 1000, "p95": 3000, "p99": 10000 }
+        },
+        "throughput_messages_per_sec": { "min": 100000, "target": 500000 },
+        "availability_percent": 99.99,
+        "durability": "no_message_loss_on_healthy_links",
+        "error_budget_per_30d_ms": 432000,
+        "resource_ceiling": {
+          "cpu_cores": 8,
+          "memory_mb": 16384,
+          "network_mbps": 5000
+        },
+        "test_hooks": ["churn_sim", "link_flap", "blackhole_node"]
+      }
+    },
+    "identity_key_management": {
+      "description": "Key generation, rotation, and identity verification",
+      "slo": {
+        "latency_ms": {
+          "key_generation": { "p50": 50, "p95": 150, "p99": 300 },
+          "sign_verify": { "p50": 1, "p95": 3, "p99": 5 },
+          "rotation_roundtrip": { "p50": 500, "p95": 1500, "p99": 3000 }
+        },
+        "throughput_ops_per_sec": { "min": 50000, "target": 200000 },
+        "availability_percent": 99.999,
+        "security": "no_private_key_exposure",
+        "error_budget_per_30d_ms": 43200,
+        "resource_ceiling": {
+          "cpu_cores": 4,
+          "memory_mb": 4096,
+          "hsm_slots": 2
+        },
+        "test_hooks": ["key_expiry", "hsm_failure", "replay_attack"]
+      }
+    },
+    "orchestrator_scheduler": {
+      "description": "Distributed task scheduling and resource orchestration",
+      "slo": {
+        "latency_ms": {
+          "task_submission": { "p50": 10, "p95": 30, "p99": 60 },
+          "task_start": { "p50": 100, "p95": 300, "p99": 600 },
+          "reschedule_on_failure": { "p50": 500, "p95": 1500, "p99": 3000 }
+        },
+        "throughput_tasks_per_sec": { "min": 1000, "target": 5000 },
+        "availability_percent": 99.99,
+        "durability": "no_task_loss_on_scheduler_failover",
+        "error_budget_per_30d_ms": 432000,
+        "resource_ceiling": {
+          "cpu_cores": 8,
+          "memory_mb": 16384
+        },
+        "test_hooks": ["node_drain", "priority_inversion", "deadlock_injection"]
+      }
+    }
+  },
+  "cross_cutting_constraints": {
+    "end_to_end_pipeline_latency_ms": { "p95": 1000, "p99": 3000 },
+    "global_error_budget_consumption_alert_percent": 80,
+    "dependency_chain_max_depth": 5,
+    "circuit_breaker_thresholds": {
+      "failure_rate_percent": 5,
+      "consecutive_failures": 10,
+      "cooldown_ms": 30000
+    }
+  },
+  "validation": {
+    "schema_ref": "https://swarm.internal/schemas/performance-budget-v1.json",
+    "check_frequency": "continuous",
+    "alert_channels": ["pagerduty_critical", "slack_perf", "prometheus_alertmanager"],
+    "burn_rate_alerts": [
+      { "window": "1h", "threshold_multiplier": 14.4 },
+      { "window": "6h", "threshold_multiplier": 6.0 },
+      { "window": "30d", "threshold_multiplier": 1.0 }
+    ]
+  }
+}

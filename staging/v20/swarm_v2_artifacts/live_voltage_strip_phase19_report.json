@@ -1,0 +1,58 @@
+{
+  "phase": 19,
+  "ranks": "86-90",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "avg_speedup": 66.6,
+  "results": [
+    {
+      "rank": 86,
+      "module": "swarm_v2/core/ionosphere_protocol.py",
+      "cdylib": "strip_ionosphere.dll",
+      "py_ms": 0.365,
+      "rust_ms": 0.024,
+      "speedup": 15.4,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 87,
+      "module": "swarm_v2/parsers/netcdf_parser.py",
+      "cdylib": "strip_netcdf.dll",
+      "py_ms": 0.0034,
+      "rust_ms": 0.0009,
+      "speedup": 3.8,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 88,
+      "module": "swarm_v2/core/digital_twin_singleton.py",
+      "cdylib": "strip_digital_twin.dll",
+      "py_ms": 4.189,
+      "rust_ms": 0.021,
+      "speedup": 198.3,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 89,
+      "module": "swarm_v2/core/microkernel_chat_bridge.py",
+      "cdylib": "strip_chat_bridge.dll",
+      "py_ms": 2.516,
+      "rust_ms": 0.142,
+      "speedup": 17.7,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    },
+    {
+      "rank": 90,
+      "module": "swarm_v2/core/cold_start_recovery.py",
+      "cdylib": "strip_cold_start.dll",
+      "py_ms": 0.379,
+      "rust_ms": 0.004,
+      "speedup": 97.9,
+      "k3_delta": 0.0,
+      "turbovec_verified": true
+    }
+  ]
+}

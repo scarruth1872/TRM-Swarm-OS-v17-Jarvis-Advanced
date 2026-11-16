@@ -1,0 +1,236 @@
+{
+ "benchmark": "100_parsers_crucible",
+ "started_at": "2026-09-28T21:33:37.649207+00:00",
+ "producer": "scratch/bench_100_parsers_real.py",
+ "note": "Inputs are GENERATED in-harness; the original artifact's inputs do not exist on disk.",
+ "registry_parse_signature": "(payload: Any, format_hint: Optional[str] = None, filename: Optional[str] = None, **kwargs) -> Dict[str, Any]",
+ "inventory_keys": [
+  "active_parsers",
+  "active_registered_parsers_count",
+  "all_parsers_active",
+  "status",
+  "total_target_parsers",
+  "truth_anchor"
+ ],
+ "measured": [
+  {
+   "format": "vcf",
+   "input_bytes": 2051,
+   "expected_units": 50,
+   "ns": 151800,
+   "us": 151.8,
+   "ms": 0.1518,
+   "output_size": 15,
+   "ok": true,
+   "verdict": "PRODUCED OUTPUT",
+   "output_keys": [
+    "format",
+    "vcf_version",
+    "parser",
+    "header_lines_count",
+    "info_definitions_count",
+    "filter_definitions_count",
+    "format_definitions_count",
+    "sample_columns"
+   ]
+  },
+  {
+   "format": "fastq",
+   "input_bytes": 21190,
+   "expected_units": 100,
+   "ns": 1655300,
+   "us": 1655.3,
+   "ms": 1.6553,
+   "output_size": 15,
+   "ok": true,
+   "verdict": "PRODUCED OUTPUT",
+   "output_keys": [
+    "format",
+    "parser",
+    "total_reads_parsed",
+    "total_bases",
+    "mean_read_length",
+    "mean_q_score",
+    "q20_percentage",
+    "q30_percentage"
+   ]
+  },
+  {
+   "format": "pdb",
+   "input_bytes": 15800,
+   "expected_units": 200,
+   "ns": 359900,
+   "us": 359.9,
+   "ms": 0.3599,
+   "output_size": 10,
+   "ok": true,
+   "verdict": "PRODUCED OUTPUT",
+   "output_keys": [
+    "format",
+    "parser",
+    "total_atoms",
+    "chains_count",
+    "residues_count",
+    "atoms_sample",
+    "parse_time_ms",
+    "status"
+   ]
+  },
+  {
+   "format": "smiles",
+   "input_bytes": 1520,
+   "expected_units": 160,
+   "ns": 68200,
+   "us": 68.2,
+   "ms": 0.0682,
+   "output_size": 10,
+   "ok": true,
+   "verdict": "PRODUCED OUTPUT",
+   "output_keys": [
+    "format",
+    "parser",
+    "smiles",
+    "length",
+    "atom_counts",
+    "estimated_rings",
+    "parse_time_ms",
+    "status"
+   ]
+  },
+  {
+   "format": "mzml",
+   "input_bytes": 32825,
+   "expected_units": 60,
+   "ns": 577100,
+   "us": 577.1,
+   "ms": 0.5771,
+   "output_size": 11,
+   "ok": true,
+   "verdict": "PRODUCED OUTPUT",
+   "output_keys": [
+    "format",
+    "parser",
+    "total_spectra_parsed",
+    "ms1_spectra_count",
+    "ms2_spectra_count",
+    "total_peaks_detected",
+    "spectra_sample",
+    "parse_time_ms"
+   ]
+  },
+  {
+   "format": "mmcif",
+   "input_bytes": 14034,
+   "expected_units": 200,
+   "ns": 65400,
+   "us": 65.4,
+   "ms": 0.0654,
+   "output_size": 13,
+   "ok": true,
+   "verdict": "PRODUCED OUTPUT",
+   "output_keys": [
+    "format",
+    "parser",
+    "entry_id",
+    "unit_cell",
+    "symmetry",
+    "total_atoms_parsed",
+    "unique_chains_count",
+    "unique_residues_count"
+   ]
+  },
+  {
+   "format": "ontology",
+   "input_bytes": 3264,
+   "expected_units": 60,
+   "ns": 67000,
+   "us": 67.0,
+   "ms": 0.067,
+   "output_size": 8,
+   "ok": true,
+   "verdict": "PRODUCED OUTPUT",
+   "output_keys": [
+    "format",
+    "parser",
+    "terms_count",
+    "terms_sample",
+    "parse_time_ms",
+    "status",
+    "truth_anchor",
+    "_detected"
+   ]
+  },
+  {
+   "format": "fhir",
+   "input_bytes": 4289,
+   "expected_units": 50,
+   "ns": 105200,
+   "us": 105.2,
+   "ms": 0.1052,
+   "output_size": 16,
+   "ok": true,
+   "verdict": "PRODUCED OUTPUT",
+   "output_keys": [
+    "format",
+    "parser",
+    "root_resource_type",
+    "total_resources_parsed",
+    "patient_demographics",
+    "observations_count",
+    "observations",
+    "conditions_count"
+   ]
+  },
+  {
+   "format": "netcdf",
+   "input_bytes": 4004,
+   "expected_units": 0,
+   "ns": 16100,
+   "us": 16.1,
+   "ms": 0.0161,
+   "output_size": 13,
+   "ok": true,
+   "verdict": "PRODUCED OUTPUT",
+   "output_keys": [
+    "format",
+    "netcdf_version",
+    "parser",
+    "is_valid_netcdf",
+    "dimensions",
+    "global_attributes",
+    "variables_count",
+    "variables"
+   ]
+  }
+ ],
+ "unmeasured": [
+  {
+   "format": "dicom",
+   "why": "no generator in this harness -- binary or science-library dependent",
+   "declared_in_old_artifact": true
+  },
+  {
+   "format": "abif",
+   "why": "no generator in this harness -- binary or science-library dependent",
+   "declared_in_old_artifact": true
+  },
+  {
+   "format": "hdf5",
+   "why": "no generator in this harness -- binary or science-library dependent",
+   "declared_in_old_artifact": true
+  },
+  {
+   "format": "zarr",
+   "why": "no generator in this harness -- binary or science-library dependent",
+   "declared_in_old_artifact": true
+  }
+ ],
+ "summary": {
+  "formats_measured": 9,
+  "produced_output": 9,
+  "empty_or_raised": 0,
+  "total_us_measured": 3066.0,
+  "median_us": 105.2,
+  "total_input_bytes": 98977
+ }
+}

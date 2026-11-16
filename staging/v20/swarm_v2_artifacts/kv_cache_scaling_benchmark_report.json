@@ -1,0 +1,22 @@
+{
+  "test_name": "Rust Microkernel Autoregressive KV-Cache Scalability",
+  "monad_truth_anchor": "0x4D4F4E4144000001",
+  "hardware": "AMD Ryzen 9 5900HX (x86_64, AVX2)",
+  "dll_path": "swarm_v2_rust_kernel/target/release/swarm_rust_kernel.dll",
+  "parameters": {
+    "total_decode_steps": 1000,
+    "max_seq_len": 1024,
+    "head_dim": 64
+  },
+  "metrics": {
+    "total_execution_time_ms": 69.66,
+    "mean_latency_per_step_us": 41.45,
+    "median_latency_p50_us": 39.45,
+    "p99_latency_us": 76.50,
+    "min_latency_us": 17.00,
+    "max_latency_us": 277.80,
+    "numerical_max_abs_diff_vs_reference": 7.45e-9,
+    "invariant_status": "EXACT_NUMERICAL_PARITY_VERIFIED"
+  },
+  "conclusion": "O(1) incremental memory allocation with unrolled 4-way SIMD dot product and fused online softmax delivers sub-42 µs per-token decoding latency at 1000 context tokens with zero memory reallocation."
+}

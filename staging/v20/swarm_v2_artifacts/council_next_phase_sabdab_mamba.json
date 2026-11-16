@@ -1,0 +1,38 @@
+{
+  "autonomy_note": "council votes on soundness; after the seal the platform executes and checkpoints without per-step user approval.",
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T21:42:15.651375+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "ae842fbba1b0fd8db34545f372c098b3d7df09fa212c47cab9fe066854c3239b",
+      "motion": "MOTION-S1",
+      "phase": "consensus",
+      "proposal_id": "CP-4A5B1792",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "Next phase = SAbDab structural scorer for the retired antibody stage: wire a native structural scorer from the SAbDab antibody structures (Zenodo 10.5281/zenodo.20083994, downloaded offline), scoring a candidate antibody's complementarity-determining-region against a target antigen structure, with every score labeled measured. REJECT AS PREMATURE: fabricating a structural score without the real SAbDab structure data; shipping a scorer that echoes the retired numeric Kd/TI path (that was anti-correlated, r=-0.197, and must stay retired). MEASURED: the antibody stage (SAbDab/SKEMPI) is retired; the DeepDTA in-domain predictor is wired (held-out r=0.4304). SKEMPI2 van't Hoff r=0.9837 already proven. Mamba-3B fp16 parity was proven to recover argmax 7785 but the full ~5.5 GB fp16 re-ingestion was deferred (RAM-bound). The co-processor question is whether the recall engine reduces the LLM workload enough to justify the small model. Audio extension is blocked (no corpus + mmproj unloadable), named as a boundary, so it is not a candidate this phase."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "6602d8683e62342b2dca500f154505cc13b1c33a1fea8d9b8876c55a4ddde451",
+      "motion": "MOTION-M1",
+      "phase": "consensus",
+      "proposal_id": "CP-2C742360",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "Next phase = Mamba-3B text-generation parity: complete the full fp16 re-ingestion (~5.5 GB, RAM-bound) and prove the co-processor reduces the recall engine's LLM workload, or name the boundary if the small model cannot meet parity. REJECT AS PREMATURE: claiming parity without the full fp16 model loaded and an argmax/next-token parity test against the reference. MEASURED: the antibody stage (SAbDab/SKEMPI) is retired; the DeepDTA in-domain predictor is wired (held-out r=0.4304). SKEMPI2 van't Hoff r=0.9837 already proven. Mamba-3B fp16 parity was proven to recover argmax 7785 but the full ~5.5 GB fp16 re-ingestion was deferred (RAM-bound). The co-processor question is whether the recall engine reduces the LLM workload enough to justify the small model. Audio extension is blocked (no corpus + mmproj unloadable), named as a boundary, so it is not a candidate this phase."
+    }
+  ],
+  "prior_state": "MOTION-E1 hybrid doctrine done (f0ce1c5); MOTION-N1 audio boundary named; MOTION-D1 six gaps closed; 24/25 pass, 1 stale.",
+  "quorum": 9,
+  "record": "NEXT PHASE (SAbDab vs Mamba-3B) -- council-voted; platform self-directs",
+  "sha256": "35fa2170d8f4345002d08cf81c94d3c50fcb33b5c5393ffbc2ca37db709674af"
+}

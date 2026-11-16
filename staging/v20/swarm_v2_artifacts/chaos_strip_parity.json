@@ -1,0 +1,78 @@
+{
+ "checks": [
+  {
+   "check": "fresh profile: rust == oracle",
+   "ok": true,
+   "detail": "rust (False, 0.0, 0.0) vs oracle (False, 0.0, 0.0)"
+  },
+  {
+   "check": "enable: profile matches",
+   "ok": true,
+   "detail": "rust (True, 0.0, 0.0) vs oracle (True, 0.0, 0.0)"
+  },
+  {
+   "check": "set_dropout_rate(-0.3) clamps to 0.0",
+   "ok": true,
+   "detail": "rust 0.000000000000 vs oracle 0.000000000000"
+  },
+  {
+   "check": "set_dropout_rate(0.0) clamps to 0.0",
+   "ok": true,
+   "detail": "rust 0.000000000000 vs oracle 0.000000000000"
+  },
+  {
+   "check": "set_dropout_rate(0.25) clamps to 0.25",
+   "ok": true,
+   "detail": "rust 0.250000000000 vs oracle 0.250000000000"
+  },
+  {
+   "check": "set_dropout_rate(1.0) clamps to 1.0",
+   "ok": true,
+   "detail": "rust 1.000000000000 vs oracle 1.000000000000"
+  },
+  {
+   "check": "set_dropout_rate(1.5) clamps to 1.0",
+   "ok": true,
+   "detail": "rust 1.000000000000 vs oracle 1.000000000000"
+  },
+  {
+   "check": "set_latency(0.25): profile matches",
+   "ok": true,
+   "detail": "rust (True, 0.25, 1.0) vs oracle (True, 0.25, 1.0)"
+  },
+  {
+   "check": "drop decision matches on 28 (rate, draw) pairs",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "check": "the WIRED module answers identically to the pure path on 28 pairs",
+   "ok": true,
+   "detail": "[] (reason=PE CDYLIB loaded)"
+  },
+  {
+   "check": "the stateless export agrees too (no stale-state hazard)",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "check": "disable() zeroes latency and rate, both sides",
+   "ok": true,
+   "detail": "rust (False, 0.0, 0.0) vs oracle (False, 0.0, 0.0)"
+  },
+  {
+   "check": "disabled engine never drops, even at rate 1.0 with draw 0.0",
+   "ok": true,
+   "detail": "oracle False, rust False"
+  },
+  {
+   "check": "null out-pointer refused with -1 (honest failure)",
+   "ok": true,
+   "detail": ""
+  }
+ ],
+ "passed": 14,
+ "failed": 0,
+ "native_loaded_flag_in_oracle": true,
+ "dll_bytes": 122368
+}

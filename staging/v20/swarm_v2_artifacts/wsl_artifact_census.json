@@ -1,0 +1,835 @@
+{
+ "protocol": "WSL_ARTIFACT_CENSUS",
+ "scope": "wsl_crates/trm-rust (the vendored workspace in this repo)",
+ "counts": {
+  "LIVE": 10,
+  "HARVEST": 22,
+  "BIN_HARVEST": 4
+ },
+ "crates": [
+  {
+   "crate": "swarm-council",
+   "package": "swarm-council",
+   "verdict": "LIVE",
+   "rs_files": 2,
+   "rs_bytes": 21738,
+   "pub_fns": 6,
+   "covered_fns": 6,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": null,
+   "live_consumers": [
+    "trm_uefi_kernel/host_council_server"
+   ],
+   "internal_deps": [
+    "swarm-k3",
+    "swarm-paths"
+   ],
+   "evidence": "a path dependency of trm_uefi_kernel/host_council_server"
+  },
+  {
+   "crate": "swarm-gguf",
+   "package": "swarm-gguf",
+   "verdict": "LIVE",
+   "rs_files": 4,
+   "rs_bytes": 12048,
+   "pub_fns": 3,
+   "covered_fns": 3,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": null,
+   "live_consumers": [
+    "trm_uefi_kernel/host_council_server"
+   ],
+   "internal_deps": [
+    "swarm-paths"
+   ],
+   "evidence": "a path dependency of trm_uefi_kernel/host_council_server"
+  },
+  {
+   "crate": "swarm-git",
+   "package": "swarm-git",
+   "verdict": "LIVE",
+   "rs_files": 3,
+   "rs_bytes": 8099,
+   "pub_fns": 7,
+   "covered_fns": 7,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": null,
+   "live_consumers": [
+    "trm_uefi_kernel/host_council_server"
+   ],
+   "internal_deps": [
+    "swarm-paths"
+   ],
+   "evidence": "a path dependency of trm_uefi_kernel/host_council_server"
+  },
+  {
+   "crate": "swarm-instella",
+   "package": "swarm-instella",
+   "verdict": "LIVE",
+   "rs_files": 2,
+   "rs_bytes": 6130,
+   "pub_fns": 2,
+   "covered_fns": 2,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": null,
+   "live_consumers": [
+    "trm_uefi_kernel/host_council_server"
+   ],
+   "internal_deps": [
+    "swarm-paths"
+   ],
+   "evidence": "a path dependency of trm_uefi_kernel/host_council_server"
+  },
+  {
+   "crate": "swarm-k3",
+   "package": "swarm-k3",
+   "verdict": "LIVE",
+   "rs_files": 2,
+   "rs_bytes": 6649,
+   "pub_fns": 6,
+   "covered_fns": 6,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": null,
+   "live_consumers": [
+    "trm_uefi_kernel/host_council_server"
+   ],
+   "internal_deps": [
+    "swarm-paths"
+   ],
+   "evidence": "a path dependency of trm_uefi_kernel/host_council_server"
+  },
+  {
+   "crate": "swarm-nand",
+   "package": "swarm-nand",
+   "verdict": "LIVE",
+   "rs_files": 3,
+   "rs_bytes": 17379,
+   "pub_fns": 16,
+   "covered_fns": 16,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": null,
+   "live_consumers": [
+    "trm_uefi_kernel/host_council_server"
+   ],
+   "internal_deps": [
+    "swarm-paths"
+   ],
+   "evidence": "a path dependency of trm_uefi_kernel/host_council_server"
+  },
+  {
+   "crate": "swarm-paths",
+   "package": "swarm-paths",
+   "verdict": "LIVE",
+   "rs_files": 1,
+   "rs_bytes": 10676,
+   "pub_fns": 11,
+   "covered_fns": 11,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": null,
+   "live_consumers": [
+    "trm_uefi_kernel/host_council_server"
+   ],
+   "internal_deps": [],
+   "evidence": "a path dependency of trm_uefi_kernel/host_council_server"
+  },
+  {
+   "crate": "swarm-proof",
+   "package": "swarm-proof",
+   "verdict": "LIVE",
+   "rs_files": 1,
+   "rs_bytes": 4542,
+   "pub_fns": 3,
+   "covered_fns": 3,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": null,
+   "live_consumers": [
+    "trm_uefi_kernel/host_council_server"
+   ],
+   "internal_deps": [],
+   "evidence": "a path dependency of trm_uefi_kernel/host_council_server"
+  },
+  {
+   "crate": "swarm-ssm",
+   "package": "swarm-ssm",
+   "verdict": "LIVE",
+   "rs_files": 3,
+   "rs_bytes": 16638,
+   "pub_fns": 10,
+   "covered_fns": 10,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": null,
+   "live_consumers": [
+    "trm_uefi_kernel/host_council_server"
+   ],
+   "internal_deps": [
+    "swarm-paths"
+   ],
+   "evidence": "a path dependency of trm_uefi_kernel/host_council_server"
+  },
+  {
+   "crate": "swarm-turbovec",
+   "package": "swarm-turbovec",
+   "verdict": "LIVE",
+   "rs_files": 2,
+   "rs_bytes": 8730,
+   "pub_fns": 3,
+   "covered_fns": 3,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": null,
+   "live_consumers": [
+    "trm_uefi_kernel/host_council_server"
+   ],
+   "internal_deps": [
+    "swarm-paths"
+   ],
+   "evidence": "a path dependency of trm_uefi_kernel/host_council_server"
+  },
+  {
+   "crate": "swarm-agent",
+   "package": "swarm-agent",
+   "verdict": "HARVEST",
+   "rs_files": 9,
+   "rs_bytes": 25513,
+   "pub_fns": 5,
+   "covered_fns": 1,
+   "unique_fns": 4,
+   "unique_examples": [
+    "agent_loop",
+    "collapse_to_verdict",
+    "decide",
+    "fabric_report"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-nand",
+    "swarm-paths",
+    "swarm-proof"
+   ],
+   "evidence": "1/5 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-backend",
+   "package": "swarm-backend",
+   "verdict": "HARVEST",
+   "rs_files": 1,
+   "rs_bytes": 5839,
+   "pub_fns": 1,
+   "covered_fns": 0,
+   "unique_fns": 1,
+   "unique_examples": [
+    "serve"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-nand",
+    "swarm-paths"
+   ],
+   "evidence": "0/1 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-brain",
+   "package": "swarm-brain",
+   "verdict": "HARVEST",
+   "rs_files": 8,
+   "rs_bytes": 28319,
+   "pub_fns": 10,
+   "covered_fns": 2,
+   "unique_fns": 8,
+   "unique_examples": [
+    "active_neurons",
+    "build_connectome",
+    "build_neural",
+    "compute",
+    "firing_rate",
+    "neuron_collapse"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-intel",
+    "swarm-k3",
+    "swarm-paths",
+    "swarm-turbovec"
+   ],
+   "evidence": "2/10 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-chat",
+   "package": "swarm-chat",
+   "verdict": "HARVEST",
+   "rs_files": 1,
+   "rs_bytes": 3532,
+   "pub_fns": 1,
+   "covered_fns": 0,
+   "unique_fns": 1,
+   "unique_examples": [
+    "respond"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-intel",
+    "swarm-nand"
+   ],
+   "evidence": "0/1 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-conductor",
+   "package": "swarm-conductor",
+   "verdict": "HARVEST",
+   "rs_files": 3,
+   "rs_bytes": 7323,
+   "pub_fns": 2,
+   "covered_fns": 0,
+   "unique_fns": 2,
+   "unique_examples": [
+    "conduct",
+    "ensemble_verdict"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-mesh",
+    "swarm-paths"
+   ],
+   "evidence": "0/2 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-cosmos",
+   "package": "swarm-cosmos",
+   "verdict": "HARVEST",
+   "rs_files": 1,
+   "rs_bytes": 2806,
+   "pub_fns": 2,
+   "covered_fns": 0,
+   "unique_fns": 2,
+   "unique_examples": [
+    "parse_manifest",
+    "to_k3"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-paths"
+   ],
+   "evidence": "0/2 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-docking",
+   "package": "swarm-docking",
+   "verdict": "HARVEST",
+   "rs_files": 2,
+   "rs_bytes": 11652,
+   "pub_fns": 8,
+   "covered_fns": 1,
+   "unique_fns": 7,
+   "unique_examples": [
+    "distance_squared",
+    "dock_conformer",
+    "is_hbond_acceptor",
+    "is_hbond_donor",
+    "is_hydrophobic",
+    "score_pair"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [],
+   "evidence": "1/8 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-drug",
+   "package": "swarm-drug",
+   "verdict": "HARVEST",
+   "rs_files": 2,
+   "rs_bytes": 7617,
+   "pub_fns": 2,
+   "covered_fns": 0,
+   "unique_fns": 2,
+   "unique_examples": [
+    "parse_sdf",
+    "triage"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-paths"
+   ],
+   "evidence": "0/2 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-fit",
+   "package": "swarm-fit",
+   "verdict": "HARVEST",
+   "rs_files": 3,
+   "rs_bytes": 13246,
+   "pub_fns": 4,
+   "covered_fns": 3,
+   "unique_fns": 1,
+   "unique_examples": [
+    "serve"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-k3",
+    "swarm-nand",
+    "swarm-paths"
+   ],
+   "evidence": "3/4 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-health",
+   "package": "swarm-health",
+   "verdict": "HARVEST",
+   "rs_files": 2,
+   "rs_bytes": 5976,
+   "pub_fns": 2,
+   "covered_fns": 0,
+   "unique_fns": 2,
+   "unique_examples": [
+    "health_verdict",
+    "parse_ledger"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-cosmos",
+    "swarm-mesh",
+    "swarm-paths"
+   ],
+   "evidence": "0/2 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-intel",
+   "package": "swarm-intel",
+   "verdict": "HARVEST",
+   "rs_files": 4,
+   "rs_bytes": 13076,
+   "pub_fns": 7,
+   "covered_fns": 3,
+   "unique_fns": 4,
+   "unique_examples": [
+    "council_vote",
+    "decide",
+    "ensemble_vote",
+    "signal"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-k3"
+   ],
+   "evidence": "3/7 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-jarvis",
+   "package": "swarm-jarvis",
+   "verdict": "HARVEST",
+   "rs_files": 2,
+   "rs_bytes": 5044,
+   "pub_fns": 4,
+   "covered_fns": 1,
+   "unique_fns": 3,
+   "unique_examples": [
+    "encode_hand",
+    "hand_verdict",
+    "record_hand"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-k3",
+    "swarm-nand",
+    "swarm-paths"
+   ],
+   "evidence": "1/4 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-kvstore",
+   "package": "swarm-kvstore",
+   "verdict": "HARVEST",
+   "rs_files": 2,
+   "rs_bytes": 4108,
+   "pub_fns": 9,
+   "covered_fns": 5,
+   "unique_fns": 4,
+   "unique_examples": [
+    "delete",
+    "key_trits",
+    "log_len",
+    "pack_value"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-proto"
+   ],
+   "evidence": "5/9 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-mesh",
+   "package": "swarm-mesh",
+   "verdict": "HARVEST",
+   "rs_files": 1,
+   "rs_bytes": 2786,
+   "pub_fns": 2,
+   "covered_fns": 1,
+   "unique_fns": 1,
+   "unique_examples": [
+    "mesh_round"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [],
+   "evidence": "1/2 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-proto",
+   "package": "swarm-proto",
+   "verdict": "HARVEST",
+   "rs_files": 1,
+   "rs_bytes": 5331,
+   "pub_fns": 7,
+   "covered_fns": 3,
+   "unique_fns": 4,
+   "unique_examples": [
+    "pack_trits",
+    "text_to_trits",
+    "trits_to_text",
+    "unpack_trits"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [],
+   "evidence": "3/7 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-router",
+   "package": "swarm-router",
+   "verdict": "HARVEST",
+   "rs_files": 2,
+   "rs_bytes": 6652,
+   "pub_fns": 2,
+   "covered_fns": 1,
+   "unique_fns": 1,
+   "unique_examples": [
+    "sparse_decision"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-instella",
+    "swarm-k3",
+    "swarm-paths",
+    "swarm-turbovec"
+   ],
+   "evidence": "1/2 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-services",
+   "package": "swarm-services",
+   "verdict": "HARVEST",
+   "rs_files": 1,
+   "rs_bytes": 4531,
+   "pub_fns": 4,
+   "covered_fns": 3,
+   "unique_fns": 1,
+   "unique_examples": [
+    "serve"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-k3",
+    "swarm-nand",
+    "swarm-paths"
+   ],
+   "evidence": "3/4 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-shard",
+   "package": "swarm-shard",
+   "verdict": "HARVEST",
+   "rs_files": 6,
+   "rs_bytes": 27180,
+   "pub_fns": 11,
+   "covered_fns": 3,
+   "unique_fns": 8,
+   "unique_examples": [
+    "active_shard",
+    "corpus_block",
+    "ingest_dir",
+    "load_or_create",
+    "manifest",
+    "save"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-nand",
+    "swarm-paths"
+   ],
+   "evidence": "3/11 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-sovereign",
+   "package": "swarm-sovereign",
+   "verdict": "HARVEST",
+   "rs_files": 2,
+   "rs_bytes": 4348,
+   "pub_fns": 2,
+   "covered_fns": 0,
+   "unique_fns": 2,
+   "unique_examples": [
+    "blockade_verdict",
+    "scan_for_external"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [],
+   "evidence": "0/2 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-thsm",
+   "package": "swarm-thsm",
+   "verdict": "HARVEST",
+   "rs_files": 1,
+   "rs_bytes": 3714,
+   "pub_fns": 4,
+   "covered_fns": 1,
+   "unique_fns": 3,
+   "unique_examples": [
+    "challenge",
+    "from_boot_entropy",
+    "prove"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [],
+   "evidence": "1/4 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-vitals",
+   "package": "swarm-vitals",
+   "verdict": "HARVEST",
+   "rs_files": 2,
+   "rs_bytes": 6480,
+   "pub_fns": 5,
+   "covered_fns": 0,
+   "unique_fns": 5,
+   "unique_examples": [
+    "family_status",
+    "fused_view",
+    "helix_view",
+    "probe",
+    "vitals"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-nand",
+    "swarm-paths"
+   ],
+   "evidence": "0/5 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-voltage",
+   "package": "swarm-voltage",
+   "verdict": "HARVEST",
+   "rs_files": 6,
+   "rs_bytes": 26956,
+   "pub_fns": 11,
+   "covered_fns": 0,
+   "unique_fns": 11,
+   "unique_examples": [
+    "block",
+    "dequant_q6k_tensor",
+    "dequant_tensor",
+    "dequant_typed",
+    "dequantize_q4k_block",
+    "dequantize_q6k_block"
+   ],
+   "bin_detail": null,
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-gguf",
+    "swarm-paths"
+   ],
+   "evidence": "0/11 pub fn names already exist in the live tree"
+  },
+  {
+   "crate": "swarm-boot",
+   "package": "swarm-boot",
+   "verdict": "BIN_HARVEST",
+   "rs_files": 2,
+   "rs_bytes": 9983,
+   "pub_fns": 0,
+   "covered_fns": 0,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": {
+    "all_symbols": 10,
+    "unique_all": 9,
+    "unique_examples": [
+     "FONT8X8",
+     "K3_FALSE",
+     "K3_TRUE",
+     "K3_UNKNOWN",
+     "MARKER",
+     "TEXT_BG"
+    ]
+   },
+   "live_consumers": [],
+   "internal_deps": [],
+   "evidence": "1/10 fn+type+const names already exist in the live tree (binary crate, compared by full symbol surface)"
+  },
+  {
+   "crate": "swarm-kernel",
+   "package": "swarm-kernel",
+   "verdict": "BIN_HARVEST",
+   "rs_files": 8,
+   "rs_bytes": 45270,
+   "pub_fns": 0,
+   "covered_fns": 0,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": {
+    "all_symbols": 46,
+    "unique_all": 39,
+    "unique_examples": [
+     "BatchFn",
+     "EXPERTS",
+     "FIT",
+     "MAMBA_DIM",
+     "N_DOMAINS",
+     "batch"
+    ]
+   },
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-k3",
+    "swarm-nand",
+    "swarm-paths",
+    "swarm-shard",
+    "swarm-ssm",
+    "swarm-turbovec"
+   ],
+   "evidence": "7/46 fn+type+const names already exist in the live tree (binary crate, compared by full symbol surface)"
+  },
+  {
+   "crate": "swarm-runtime",
+   "package": "swarm-runtime",
+   "verdict": "BIN_HARVEST",
+   "rs_files": 1,
+   "rs_bytes": 5496,
+   "pub_fns": 0,
+   "covered_fns": 0,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": {
+    "all_symbols": 3,
+    "unique_all": 2,
+    "unique_examples": [
+     "FABRIC",
+     "MODEL"
+    ]
+   },
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-gguf",
+    "swarm-instella",
+    "swarm-k3",
+    "swarm-nand",
+    "swarm-paths",
+    "swarm-ssm",
+    "swarm-turbovec"
+   ],
+   "evidence": "1/3 fn+type+const names already exist in the live tree (binary crate, compared by full symbol surface)"
+  },
+  {
+   "crate": "swarm-server",
+   "package": "swarm-server",
+   "verdict": "BIN_HARVEST",
+   "rs_files": 5,
+   "rs_bytes": 29797,
+   "pub_fns": 0,
+   "covered_fns": 0,
+   "unique_fns": 0,
+   "unique_examples": [],
+   "bin_detail": {
+    "all_symbols": 23,
+    "unique_all": 21,
+    "unique_examples": [
+     "ABX_K3",
+     "CHAT_K3",
+     "FIT_K3",
+     "JARVIS_K3",
+     "NoVerify",
+     "SVC_K3"
+    ]
+   },
+   "live_consumers": [],
+   "internal_deps": [
+    "swarm-backend",
+    "swarm-chat",
+    "swarm-fit",
+    "swarm-proto",
+    "swarm-services",
+    "swarm-vitals"
+   ],
+   "evidence": "2/23 fn+type+const names already exist in the live tree (binary crate, compared by full symbol surface)"
+  }
+ ],
+ "live_direct_deps": {
+  "swarm-proof": [
+   "trm_uefi_kernel/host_council_server"
+  ],
+  "swarm-k3": [
+   "trm_uefi_kernel/host_council_server"
+  ],
+  "swarm-instella": [
+   "trm_uefi_kernel/host_council_server"
+  ],
+  "swarm-turbovec": [
+   "trm_uefi_kernel/host_council_server"
+  ],
+  "swarm-ssm": [
+   "trm_uefi_kernel/host_council_server"
+  ],
+  "swarm-council": [
+   "trm_uefi_kernel/host_council_server"
+  ],
+  "swarm-nand": [
+   "trm_uefi_kernel/host_council_server"
+  ],
+  "swarm-gguf": [
+   "trm_uefi_kernel/host_council_server"
+  ],
+  "swarm-git": [
+   "trm_uefi_kernel/host_council_server"
+  ],
+  "swarm-paths": [
+   "trm_uefi_kernel/host_council_server"
+  ]
+ },
+ "live_symbol_count": 1725,
+ "rule": "LIVE = reachable from host_council_server transitively; HARVEST = defines symbols absent live; SUPERSEDED = every symbol already exists live",
+ "wsl_side_probe": {
+  "ok": true,
+  "stdout": "/home/shawn/Agent-Q-master-old/\n/home/shawn/Agent-Q-master/\n/home/shawn/Downloads/\n/home/shawn/JarvisShawn/\n/home/shawn/__pycache__/\n/home/shawn/aipro2/\n/home/shawn/anythingllm/\n/home/shawn/backups/\n/home/shawn/clinical/\n/home/shawn/datasets/\n/home/shawn/docking/\n/home/shawn/docking_work/\n/home/shawn/drugs/\n/home/shawn/hermes-archive/\n/home/shawn/hw_kb/\n/home/shawn/jarvis_vector_db/\n/home/shawn/llama.cpp/\n/home/shawn/logs/\n/home/shawn/mamba-server/\n/home/shawn/models/\n---\n/home/shawn/trm-rust/swarm-proto/Cargo.toml\n/home/shawn/trm-rust/swarm-nand/Cargo.toml\n/home/shawn/trm-rust/swarm-cosmos/Cargo.toml\n/home/shawn/trm-rust/swarm-instella/Cargo.toml\n/home/shawn/trm-rust/swarm-runtime/Cargo.toml\n/home/shawn/trm-rust/swarm-vitals/Cargo.toml\n/home/shawn/trm-rust/swarm-proof/Cargo.toml\n/home/shawn/trm-rust/swarm-council/Cargo.toml\n/home/shawn/trm-rust/swarm-gguf/Cargo.toml\n/home/shawn/trm-rust/swarm-kvstore/Cargo.toml",
+  "stderr": "/home/shawn/.profile: line 30: /home/shawn/.cargo/env: No such file or directory",
+  "basis": "wsl.exe -e bash -lc, read-only listing"
+ }
+}

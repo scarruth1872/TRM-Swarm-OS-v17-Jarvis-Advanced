@@ -1,0 +1,25 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T23:27:07.988524+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "f66a40047c65235a73e19baf4e65cfafb1d49019b506c9f2295aa5d7b5da1265",
+      "motion": "MOTION-HDCFAB",
+      "phase": "consensus",
+      "proposal_id": "CP-0F8B50EB",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "ENCODE THE CONFIRMED PROPERTY AS HDC HYPERVECTORS: compute the clash-filtered contact count + H-bond count for the cognate interface vs a random pairing, encode each pair's property as a hypervector via the native encoder (encode_f32 faithful reimplementation), and test the same cognate-vs-random specificity (LDA on the hypervector space + the cognate dot product above random mean + 2sigma). PREDICTION: the HDC encoding preserves the ~2x separation. If it does, the fabric's search is a dot product over the property hypervector. MEASURED: the arc closed with a CONFIRMED positive (54 complexes): the binding specificity is the clash-filtered vdW-optimal contact count + H-bond count (cognate ~2x random, joint LDA 0.721). The fabric is NOT built yet. This motion: encode the confirmed property as HDC hypervectors and test the same specificity. PREDICTION: the HDC encoding preserves the ~2x separation (the cognate hypervector sits above random mean + 2sigma), because the native encoder (FNV-1a + SplitMix64 sign projection) preserves the distinctness of the inputs."
+    }
+  ],
+  "prediction_recorded": "HDC encoding preserves the ~2x separation (cognate above random mean + 2sigma)",
+  "prior_state": "arc closed; binding specificity = clash-filtered contact + H-bond count (confirmed)",
+  "quorum": 9,
+  "record": "HDC FABRIC ENCODING (confirmed property) -- council-voted; platform self-directs",
+  "sha256": "4f59d3dde8f35a53e1954c5f35e72abeaf9da3e356d25d8b1b22c1d01b7def37"
+}

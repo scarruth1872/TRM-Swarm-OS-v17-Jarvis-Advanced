@@ -1,0 +1,38 @@
+{
+ "bonsai_27b": "no weights on this host; tier-2 endpoint is coded (127.0.0.1:8587 /completion). Jarvis-Advanced/scripts/bonsai_router.py (:8585) + Dockerfile.bonsai is the container path.",
+ "consequence": "with tiers 2 and 3 down, an uncovered query cannot be generated for; the honest answer is no_tier_available.",
+ "generated_at_utc": "2026-09-20T15:26:27Z",
+ "instella_moe": "present as the ROUTING table (TEAMS <- instella_single_expert_router.py; single-team keyword activation). No 16B weights on this host \u2014 paper_138 / peer-only.",
+ "local_weights": {
+  "trm7m_source.safetensors": 15656632,
+  "trm7m_source.trm": 985147
+ },
+ "pick_model_would_choose": "gemma4:12b",
+ "preferred_installed_by_name": [
+  "gemma4:12b",
+  "deepseek-r1:8b",
+  "gemma3:4b",
+  "deepseek-r1:1.5b",
+  "llama3.2:latest",
+  "gemma3:1b",
+  "gemma3:270m"
+ ],
+ "preferred_models": [
+  "gemma4:12b",
+  "deepseek-r1:8b",
+  "gemma3n:latest",
+  "gemma3:4b",
+  "deepseek-r1:1.5b",
+  "llama3.2:latest",
+  "gemma2:2b",
+  "phi3:latest",
+  "gemma3:1b",
+  "deepseek-coder:1.3b-instruct",
+  "gemma3:270m"
+ ],
+ "tiers": {
+  "Bonsai-27B Vulkan (:8587)": "down \u2014 nothing serves /completion",
+  "Ollama (:11434)": "down by decision (removed from the runtime)",
+  "fabric (kernel :8022)": "UP"
+ }
+}

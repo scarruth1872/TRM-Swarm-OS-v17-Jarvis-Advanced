@@ -1,0 +1,853 @@
+{
+  "protocol": "SWARM_COUNCIL_DELIBERATION_SESSION",
+  "session_name": "MULTISTORE_RECALL_DESIGN",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-10-11 16:31:40 UTC",
+  "total_agents": 15,
+  "byzantine_tolerance": 4,
+  "pbft_threshold": 11,
+  "rust_kernel_bound": true,
+  "vote_codes": {
+    "1": "APPROVE",
+    "0": "ABSTAIN",
+    "-1": "REJECT"
+  },
+  "how_to_read_this_record": "Grounded in the measured inventory: main fabric 2,180 docs (124 papers + 1,994 relational + 62 markdown), structured SQL ~3.9M rows across 10 tables, ChEMBL co-processor 2,897,805 compounds. The relational tier's 1,994 sidecar stubs were empty and are now fixed (real-text 180 -> 2,174). ChEMBL is ONE domain, not the platform's total knowledge; recall must route by query kind across the three stores.",
+  "council_verdict": {
+    "consensus_summary": "Council deliberated 3 motions; 3 reached PBFT quorum (>= 11/15).",
+    "motions_deliberated": 3,
+    "motions_enacted": 3,
+    "recommended_primary_direction": "MOTION-050: Re-embed the 10 drifted documents (edited after the Sep 20 index build) (Score: +0.985)",
+    "secondary_direction": "MOTION-049: Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor (Score: +0.984)"
+  },
+  "motions": [
+    {
+      "motion_id": "MOTION-049",
+      "title": "Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor",
+      "category": "sovereignty",
+      "description": "The platform's knowledge is THREE tiers, not one: (1) the main fabric -- 2,180 documents (124 papers + 1,994 relational records + 62 markdown) encoded as .k3 trits + 2-bit turbovec + sidecar; (2) the structured SQL store -- ~3.9M rows across 10 tables (molecule 2.9M ChEMBL, tox21 578K, clinical 201K, ethics 96K, binding 19K, prose 1.6K); (3) the ChEMBL co-processor fabric -- 2,897,805 compounds (2-bit turbovec + K3 ternary + sidecar, just completed). The relational tier's 1,994 sidecar stubs were empty ('source is not a file on disk') and are now fixed to carry real text (sidecar real-text records 180 -> 2,174; sha256 verified). Recall must route a query BY KIND -- general/prose -> fabric_recall, molecule/semantic -> ChEMBL co-processor, structured fact -> SQL -- rather than dumping everything into one index. A single fabric_recall over ChEMBL would have replaced the 2,180-doc sovereign knowledge base with one molecule domain; that framing is rejected.",
+      "engine_proposal_id": "CP-F25675E1",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "d8ebf3f852eaf138d9812a3b98ce5a907f49c9d3de8078b1b839c75d00f166d1",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.836211"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837502"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837559"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837586"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837599"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837613"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837624"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837635"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837645"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837654"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837664"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837673"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837683"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837896"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.837923"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T16:31:40.836120"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T16:31:40.836131"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.836138"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.836143"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.836147"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.836152"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.836156"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.836160"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.836163"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.836170"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.836174"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.836178"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.836181"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T16:31:40.836185"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Adopt a multi-store recall architecture: fabric + structured SQL + ChEMBL co-processor from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.836189"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-050",
+      "title": "Re-embed the 10 drifted documents (edited after the Sep 20 index build)",
+      "category": "truth",
+      "description": "verify_nand_fabric_index.py reports 10 sidecar records whose text no longer matches their source files on disk: README.md, CHANGELOG.md, HEARTBEAT.md, ARCHITECTURE.md, COMPONENT_INVENTORY.md, DRUG_DISCOVERY_AND_SECURITY_ADVANCEMENTS.md, GETTING_STARTED.md, LIMITATIONS.md, SELF_HOSTING_GUIDE.md, docs/observability_spec.md. These were edited after the 2026-09-20 index build (README v20.0.0, CHANGELOG entries, HEARTBEAT resonance task), so their sidecar text AND packed vectors are stale -- recall returns outdated content for the platform's own primary docs. They must be re-embedded so text + vector match the current files.",
+      "engine_proposal_id": "CP-67DE49DE",
+      "phase": "enacted",
+      "weighted_score": 0.9847,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "6000e73f38c980be4af1a5335f527b58eb4b44f127b4138613084ccff6903672",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838366"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838382"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838395"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838405"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838413"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838421"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838429"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838437"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838444"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838743"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838752"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838761"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838770"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838778"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.838785"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Re-embed the 10 drifted documents (edited after the Sep 20 index build): evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.838291"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Cognitive & interface evaluation of Re-embed the 10 drifted documents (edited after the Sep 20 index build): assessing interaction ergonomics, user scaffolding, and Paideia didactic clarity.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.838305"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Re-embed the 10 drifted documents (edited after the Sep 20 index build): verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.838309"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Re-embed the 10 drifted documents (edited after the Sep 20 index build): analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T16:31:40.838316"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Truth verification: validating formal axioms under Monad Truth Anchor 0x4D4F4E4144000001.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T16:31:40.838320"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Re-embed the 10 drifted documents (edited after the Sep 20 index build): implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.838323"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Re-embed the 10 drifted documents (edited after the Sep 20 index build): monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.838326"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Re-embed the 10 drifted documents (edited after the Sep 20 index build): evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.838330"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Re-embed the 10 drifted documents (edited after the Sep 20 index build): verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T16:31:40.838333"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Re-embed the 10 drifted documents (edited after the Sep 20 index build): balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.838338"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Re-embed the 10 drifted documents (edited after the Sep 20 index build): measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.838343"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "PRIORITY: Truth verification. Proving zero hallucination, empirical validation, and Kleene K3 consensus truth.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T16:31:40.838346"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Re-embed the 10 drifted documents (edited after the Sep 20 index build): surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.838350"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Re-embed the 10 drifted documents (edited after the Sep 20 index build): evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.838353"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Re-embed the 10 drifted documents (edited after the Sep 20 index build) from my reasoning perspective.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.838356"
+        }
+      ]
+    },
+    {
+      "motion_id": "MOTION-051",
+      "title": "Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side",
+      "category": "sovereignty",
+      "description": "On-device recall (the boot volume) should carry the fabric (2,180 docs, ~77 MB .k3 + ~2 MB sidecar + turbovec family) plus the ChEMBL co-processor (turbovec 648 MB + ternary 625 MB + sidecar 810 MB = ~2.1 GB). The structured SQL store (~3.9M rows) is a structured-query surface (filters, joins, property lookups), not a semantic-recall store, and is best served host-side from structured_index.db. The 2.1 GB ChEMBL fabric must be confirmed to fit the boot volume before it is copied on-device -- a size check, not an assumption.",
+      "engine_proposal_id": "CP-F9869DA6",
+      "phase": "enacted",
+      "weighted_score": 0.9836,
+      "tally": {
+        "approve": 15,
+        "abstain": 0,
+        "reject": 0
+      },
+      "pbft_consensus": true,
+      "monad_seal": "6dc2f6b06fb6ca802d20537ca1f824bd4ba797b9113ba804aa95ddeb5f4090a7",
+      "rejection_reason": null,
+      "votes": {
+        "Hermes": {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839055"
+        },
+        "Jarvis": {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "vote": 1,
+          "confidence": 0.978,
+          "weight": 1.0,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839069"
+        },
+        "Bridge": {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839079"
+        },
+        "Shield": {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "vote": 1,
+          "confidence": 0.99,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839087"
+        },
+        "Logic": {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839094"
+        },
+        "Devo": {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839101"
+        },
+        "Pulse": {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "vote": 1,
+          "confidence": 0.992,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839109"
+        },
+        "Flow": {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "vote": 1,
+          "confidence": 0.985,
+          "weight": 0.6,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839116"
+        },
+        "EventLedger": {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839123"
+        },
+        "Orchestra": {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839130"
+        },
+        "THzGateway": {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839137"
+        },
+        "Verify": {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "vote": 1,
+          "confidence": 0.995,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839144"
+        },
+        "Seeker": {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.7,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839151"
+        },
+        "Archi": {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.8,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839158"
+        },
+        "LogicMaster": {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "vote": 1,
+          "confidence": 0.98,
+          "weight": 0.5,
+          "reasoning": "",
+          "timestamp": "2026-10-11T16:31:40.839165"
+        }
+      },
+      "deliberations": [
+        {
+          "agent_name": "Hermes",
+          "agent_id": 0,
+          "position": "support",
+          "reasoning": "Executive dispatch review of Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: evaluating message routing clarity, sovereign protocol compliance, and inter-agent coordination impact.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T16:31:40.839005"
+        },
+        {
+          "agent_name": "Jarvis",
+          "agent_id": 1,
+          "position": "support",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives.",
+          "domain_relevance": 1.0,
+          "timestamp": "2026-10-11T16:31:40.839009"
+        },
+        {
+          "agent_name": "Bridge",
+          "agent_id": 2,
+          "position": "support",
+          "reasoning": "Integration & data routing review for Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: verifying zero-copy boundaries, P2P mesh coherence, and protocol translation.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.839012"
+        },
+        {
+          "agent_name": "Shield",
+          "agent_id": 3,
+          "position": "support",
+          "reasoning": "Security assessment of Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: analyzing threat surface, vulnerability exposure, and DDR antibody coverage.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.839015"
+        },
+        {
+          "agent_name": "Logic",
+          "agent_id": 4,
+          "position": "support",
+          "reasoning": "Logical analysis of Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: checking for internal consistency, Kleene K3 completeness, and formal reasoning soundness.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.839018"
+        },
+        {
+          "agent_name": "Devo",
+          "agent_id": 5,
+          "position": "support",
+          "reasoning": "Engineering assessment of Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: implementation feasibility, technical debt impact, and zero-GC code quality.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.839021"
+        },
+        {
+          "agent_name": "Pulse",
+          "agent_id": 6,
+          "position": "support",
+          "reasoning": "Substrate & telemetry health review of Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: monitoring thermal dissipation, phonon resonance, and system vitals.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.839024"
+        },
+        {
+          "agent_name": "Flow",
+          "agent_id": 7,
+          "position": "support",
+          "reasoning": "Pipeline workflow analysis for Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: evaluating concurrency safety, asynchronous throughput, and lockless streaming.",
+          "domain_relevance": 0.6,
+          "timestamp": "2026-10-11T16:31:40.839027"
+        },
+        {
+          "agent_name": "EventLedger",
+          "agent_id": 8,
+          "position": "support",
+          "reasoning": "Chrono-audit & compliance review of Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: verifying cryptographic ledger integrity and SHA-256 state anchoring.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.839030"
+        },
+        {
+          "agent_name": "Orchestra",
+          "agent_id": 9,
+          "position": "support",
+          "reasoning": "Meta-orchestration analysis for Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: balancing compute topology, work-stealing queues, and SRAM pattern alignment.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.839032"
+        },
+        {
+          "agent_name": "THzGateway",
+          "agent_id": 10,
+          "position": "support",
+          "reasoning": "Quantum resonance & spectrum assessment of Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: measuring wave transformations, Fourier frequency bounds, and hardware signals.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.839035"
+        },
+        {
+          "agent_name": "Verify",
+          "agent_id": 11,
+          "position": "support",
+          "reasoning": "Epistemic QA verification for Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: cross-referencing claims against Monad anchor, known invariants, and mutation tests.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.839038"
+        },
+        {
+          "agent_name": "Seeker",
+          "agent_id": 12,
+          "position": "support",
+          "reasoning": "Research perspective on Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: surveying prior art, identifying knowledge gaps, and evidence quality.",
+          "domain_relevance": 0.7,
+          "timestamp": "2026-10-11T16:31:40.839041"
+        },
+        {
+          "agent_name": "Archi",
+          "agent_id": 13,
+          "position": "support",
+          "reasoning": "Architectural review of Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side: evaluating system impact, scalability, and bare-metal design alignment.",
+          "domain_relevance": 0.8,
+          "timestamp": "2026-10-11T16:31:40.839043"
+        },
+        {
+          "agent_name": "LogicMaster",
+          "agent_id": 14,
+          "position": "support",
+          "reasoning": "As Formal Logic & SMT Solver, I evaluate Split on-device vs host-side stores; ChEMBL + fabric on-device, SQL host-side from my reasoning perspective.",
+          "domain_relevance": 0.5,
+          "timestamp": "2026-10-11T16:31:40.839048"
+        }
+      ]
+    }
+  ]
+}

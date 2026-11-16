@@ -1,0 +1,170 @@
+{
+ "phase": "P5",
+ "convened_via": "POST /crate/council/vote (route wired in P2j)",
+ "roster_size": 15,
+ "motions": {
+  "CONTROL: documented MOTION_A": {
+   "motion": [
+    "code",
+    "engineering",
+    "software",
+    "compiler",
+    "test",
+    "verify",
+    "kernel"
+   ],
+   "http": 200,
+   "kernel": {
+    "verdict": "PROCEED",
+    "trit_sum": 9,
+    "voters": 3,
+    "abstainers": 12,
+    "agents": 15,
+    "eps": 0.3499999940395355,
+    "gate": "verify_council: byte-identical to libswarm_kernel_ops.so on all council vote vectors and the 1M sweep"
+   },
+   "oracle": {
+    "verdict": "PROCEED",
+    "trit_sum": 9,
+    "abstaining": [
+     "Archi",
+     "Bridge",
+     "EventLedger",
+     "Flow",
+     "Hermes",
+     "Jarvis",
+     "LogicMaster",
+     "Orchestra",
+     "Pulse",
+     "Seeker",
+     "Shield",
+     "THzGateway"
+    ]
+   },
+   "agree": true
+  },
+  "CONTROL: documented MOTION_E": {
+   "motion": [
+    "research",
+    "literature",
+    "drug",
+    "chemistry",
+    "biology",
+    "discovery",
+    "clinical"
+   ],
+   "http": 200,
+   "kernel": {
+    "verdict": "PROCEED",
+    "trit_sum": 15,
+    "voters": 5,
+    "abstainers": 10,
+    "agents": 15,
+    "eps": 0.3499999940395355,
+    "gate": "verify_council: byte-identical to libswarm_kernel_ops.so on all council vote vectors and the 1M sweep"
+   },
+   "oracle": {
+    "verdict": "PROCEED",
+    "trit_sum": 15,
+    "abstaining": [
+     "Archi",
+     "Devo",
+     "Hermes",
+     "Jarvis",
+     "Logic",
+     "LogicMaster",
+     "Orchestra",
+     "Shield",
+     "THzGateway",
+     "Verify"
+    ]
+   },
+   "agree": true
+  },
+  "P5 frame 1 -- ACQUIRE external info": {
+   "motion": [
+    "research",
+    "paper",
+    "literature",
+    "knowledge",
+    "discovery",
+    "pubmed",
+    "patent",
+    "data"
+   ],
+   "http": 200,
+   "kernel": {
+    "verdict": "PROCEED",
+    "trit_sum": 3,
+    "voters": 1,
+    "abstainers": 14,
+    "agents": 15,
+    "eps": 0.3499999940395355,
+    "gate": "verify_council: byte-identical to libswarm_kernel_ops.so on all council vote vectors and the 1M sweep"
+   },
+   "oracle": {
+    "verdict": "PROCEED",
+    "trit_sum": 3,
+    "abstaining": [
+     "Archi",
+     "Bridge",
+     "Devo",
+     "EventLedger",
+     "Flow",
+     "Hermes",
+     "Jarvis",
+     "Logic",
+     "LogicMaster",
+     "Orchestra",
+     "Pulse",
+     "Shield",
+     "THzGateway",
+     "Verify"
+    ]
+   },
+   "agree": true
+  },
+  "P5 frame 2 -- WIRE what is already here": {
+   "motion": [
+    "kernel",
+    "code",
+    "engineering",
+    "compiler",
+    "pipeline",
+    "verify",
+    "test",
+    "nand",
+    "sram",
+    "retrieval"
+   ],
+   "http": 200,
+   "kernel": {
+    "verdict": "PROCEED",
+    "trit_sum": 18,
+    "voters": 6,
+    "abstainers": 9,
+    "agents": 15,
+    "eps": 0.3499999940395355,
+    "gate": "verify_council: byte-identical to libswarm_kernel_ops.so on all council vote vectors and the 1M sweep"
+   },
+   "oracle": {
+    "verdict": "PROCEED",
+    "trit_sum": 18,
+    "abstaining": [
+     "Bridge",
+     "EventLedger",
+     "Hermes",
+     "Jarvis",
+     "LogicMaster",
+     "Pulse",
+     "Seeker",
+     "Shield",
+     "THzGateway"
+    ]
+   },
+   "agree": true
+  }
+ },
+ "all_agree_with_oracle": true,
+ "note": "A verdict is a deterministic function of the motion's terms, so both term lists are recorded verbatim. The two P5 frames are framings of one question, drawn from the platform's own domain vocabulary -- they are inputs to the tally, not evidence for a conclusion. Controls are the crate's own documented motions."
+}

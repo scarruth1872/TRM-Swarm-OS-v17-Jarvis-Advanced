@@ -1,0 +1,267 @@
+{
+  "protocol": "STRUCTURED_INDEX_SPAN",
+  "measured_at": "2026-09-26",
+  "store": {
+    "path": "swarm_v2_artifacts/structured_index.db",
+    "bytes": 1125068800,
+    "sha256_16": "c347a05036d66b8d",
+    "integrity_check": "ok",
+    "tables": {
+      "provenance": 435,
+      "ethics": 95847,
+      "clinical": 201572,
+      "structure": 20,
+      "prose": 1633,
+      "molecule": 2897819,
+      "binding": 19443,
+      "molecule_features": 2897818,
+      "span": 11
+    },
+    "backup": "backups\\structured_index_pre_span_20260926\\structured_index.db",
+    "backup_sha256_16": "212b0b1b5f937a42",
+    "bytes_before": 1099448320,
+    "bytes_after": 1125068800,
+    "delta_bytes": 25620480
+  },
+  "layout": {
+    "dbstat_molecule_features_MB": {
+      "live": 146.1,
+      "backup": 495.9
+    },
+    "dbstat_molecule_MB": {
+      "live": 730.7,
+      "backup": 385.7
+    },
+    "freelist_pages": "0 in both files: the delta is B-tree fill, not free space",
+    "row_bytes_identical": "sum(length(formula)) = 31,304,959 B in both files"
+  },
+  "identity": {
+    "structure_rows": 20,
+    "by_kind": {
+      "derived": 3,
+      "entry": 6,
+      "ligand": 6,
+      "receptor": 5
+    },
+    "duplicate_pdb_id": 0,
+    "duplicate_path": 0,
+    "was": "pdb_id = name[:4].upper(): receptor_clean.pdb -> RECE; 1M17_prot.pdb collided with 1M17"
+  },
+  "provenance": {
+    "spans": {
+      "full": 435
+    },
+    "chembl_sha256": "2cdf4d33c5f426130c610b8627c3702804e6f10d149d76b8a1bea674fa605a77",
+    "was": "the builder hashed a 200 MB prefix (348d9f31...) and called it the source's identity"
+  },
+  "binding": {
+    "rows": 19443,
+    "source": "datasets/LP-PDBBind/dataset/LP_PDBBind.csv",
+    "source_lines": 19444,
+    "source_data_rows": 19443,
+    "source_sha256": "7bb4e54e66c0c58ab74263edb8c2a2d677c2474cfc4ae4dec1eb31a231b10f8a",
+    "verbatim_payload_rows": 19443,
+    "column_reading": "by index -- 2=smiles, 5=resolution, 13=kd/ki, 14=value; the source header is shifted one cell against its own data"
+  },
+  "features": {
+    "rows": 2897818,
+    "source_lines": 2897819,
+    "published_columns": 8,
+    "source_columns": 12,
+    "not_published": "hba (an N+O count, verified on 4,000 molecules) and hbd (matched RDKit on 91.7%) are not published under Lipinski names (P5's decision, kept)"
+  },
+  "span": {
+    "declared": 11,
+    "dispositions": {
+      "INGESTED": 6,
+      "OUT-OF-SPAN": 5
+    }
+  },
+  "structures_pass": {
+    "receipt": {
+      "phase": "P4",
+      "source": "drugs/chembl_37.sdf.gz",
+      "records_read": 2897819,
+      "structures_derived": 2897805,
+      "unparsable": 14,
+      "molecule_rows_in_store": 2897819,
+      "fraction_of_store": 0.999995,
+      "seconds": 2430.65,
+      "records_per_s": 1192.2,
+      "method": "RDKit MolFromMolBlock(sanitize=True, removeHs=True) -> MolToSmiles; props = MolWt, MolLogP (Crippen), NumHBD, NumHBA, heavy atoms",
+      "note": "a stated prefix sample of the SDF, not a random one: the stream is read from the start and stopped at the limit, so the covered set is the file's first N records."
+    },
+    "smiles_present": 2897805,
+    "molecule_rows": 2897819,
+    "coverage": 0.999995,
+    "written_by": "the build's --structures input: one writer, no post-hoc UPDATE",
+    "filler_ids_not_found": null,
+    "chemistry_query": {
+      "filter": "mw 300-350, logp 1-3, hbd <= 3",
+      "matches": 194201,
+      "examples": [
+        [
+          "CHEMBL444024",
+          "COC(=O)c1cc(CCc2ccc(OC)cc2OC)ccc1O",
+          316.353,
+          2.981
+        ],
+        [
+          "CHEMBL444145",
+          "C=C(CO)[C@]12C=C3C(=O)C[C@@H](C(C)C)[C@]3(C)C[C@",
+          348.439,
+          2.169
+        ],
+        [
+          "CHEMBL444434",
+          "CC(=O)O[C@H]1c2c(ccc3ccc(=O)oc23)OC(C)(C)[C@H]1O",
+          346.335,
+          2.5
+        ],
+        [
+          "CHEMBL386654",
+          "C#C[C@H]1CC[C@@H](C#N)N1C(=O)CNC12CC3CC(CC(O)(C3",
+          327.428,
+          1.176
+        ],
+        [
+          "CHEMBL439267",
+          "Cc1ccc(C(N)=O)cc1Nc1ncnc2c1cnn2-c1ccccc1",
+          344.378,
+          2.966
+        ]
+      ]
+    },
+    "receipt_keys": [
+      "fraction_of_store",
+      "method",
+      "molecule_rows_in_store",
+      "note",
+      "phase",
+      "records_per_s",
+      "records_read",
+      "seconds",
+      "source",
+      "structures_derived",
+      "unparsable"
+    ]
+  },
+  "council": {
+    "roster_of_record": 15,
+    "pbft_threshold": 9,
+    "byzantine_tolerance": 4,
+    "motions": [
+      {
+        "motion_id": "MOTION-001",
+        "tally": [
+          13,
+          2,
+          0
+        ],
+        "score": 0.731
+      },
+      {
+        "motion_id": "MOTION-002",
+        "tally": [
+          14,
+          1,
+          0
+        ],
+        "score": 0.805
+      },
+      {
+        "motion_id": "MOTION-003",
+        "tally": [
+          14,
+          1,
+          0
+        ],
+        "score": 0.841
+      },
+      {
+        "motion_id": "MOTION-004",
+        "tally": [
+          12,
+          3,
+          0
+        ],
+        "score": 0.701
+      },
+      {
+        "motion_id": "MOTION-005",
+        "tally": [
+          12,
+          3,
+          0
+        ],
+        "score": 0.7
+      },
+      {
+        "motion_id": "MOTION-006",
+        "tally": [
+          12,
+          3,
+          0
+        ],
+        "score": 0.699
+      },
+      {
+        "motion_id": "MOTION-007",
+        "tally": [
+          12,
+          3,
+          0
+        ],
+        "score": 0.694
+      },
+      {
+        "motion_id": "MOTION-008",
+        "tally": [
+          12,
+          3,
+          0
+        ],
+        "score": 0.679
+      },
+      {
+        "motion_id": "MOTION-009",
+        "tally": [
+          13,
+          2,
+          0
+        ],
+        "score": 0.718
+      },
+      {
+        "motion_id": "MOTION-010",
+        "tally": [
+          13,
+          2,
+          0
+        ],
+        "score": 0.687
+      }
+    ],
+    "engine": "trm_uefi_kernel/host_council_deliberation (roster, quorum and labels now DERIVED)"
+  },
+  "defect_class_fixed": "a value DECLARED where it should be MEASURED: a 200 MB prefix hash presented as an artifact's identity; a filename fragment presented as a pdb_id; 507 MB repeated for a 1,099,448,320 B file",
+  "reachability": {
+    "decision": "offline tooling -- no kernel surface, no kernel dependency",
+    "consumers": [
+      "swarm_v2/core/build_structured_index.py",
+      "scratch/fill_structures_full.py",
+      "scratch/p4_fill_structures.py",
+      "scratch/p5_wire_features.py",
+      "scratch/p5_hba_definition.py",
+      "scratch/validate_platform_capabilities.py",
+      "docs/STRUCTURED_INDEX_20260923.md"
+    ]
+  },
+  "limits": [
+    "no fingerprint or substructure index: the store answers column filters, not SMILES search",
+    "the structures are RDKit-derived (rdkit 2026.03.6 under py -3.13), not taken from the release",
+    "records the parser could not read stay without structures and are counted in the receipt",
+    "tox21full, hw_kb, rust_kb and the LP-PDBBind archives are declared OUT-OF-SPAN with reasons",
+    "LP-PDBBind columns are read by index because the source header is shifted; each row is kept verbatim"
+  ]
+}

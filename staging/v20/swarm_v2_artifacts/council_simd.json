@@ -1,0 +1,22 @@
+{
+  "date_utc": "2026-10-28T13:33:56.722619+00:00",
+  "failure_mode": "SIMD implementation wrong, not architecture; fallback GPU path",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "consensus_reached": true,
+      "monad_seal": "f9e72381caaa7f8169f792abd4f3a6ca1f29395ce47dce768fd2a4d542f9015e",
+      "motion": "MOTION-SIMD",
+      "phase": "consensus",
+      "proposal_id": "CP-13E18BEF",
+      "reject": 0,
+      "score": 0.984
+    }
+  ],
+  "prediction_recorded": ">=1G MACs/s (>=5x), ~2.4 s/token; parity within fp noise floor",
+  "prior_state": "11.9 s/token; 218M MACs/s scalar; cache+thread both reverted as regressions",
+  "record": "SIMD matmul (AVX2/FMA) -- fix the 7% scalar-matmul bottleneck",
+  "sha256": "b1cbb0d4bd2a4f1d8b5159958f4b5dae6181dd1803e1aed56f987bfe48e46b14"
+}

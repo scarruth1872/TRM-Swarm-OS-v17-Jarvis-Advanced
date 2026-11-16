@@ -1,0 +1,121 @@
+{
+  "task_id": "TASK-22",
+  "name": "Personalized Cancer Vaccine Design Pipeline",
+  "patient_id": "PT-ONC-2026-098",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-10-20 14:42:07 UTC",
+  "humanistic_impact": "Custom autologous mRNA immunotherapies targeting patient-specific driver mutations with zero off-target autoimmunity.",
+  "top_neoantigens": [
+    {
+      "candidate_id": "NEO-KRAS-0009",
+      "gene": "KRAS",
+      "mutation": "G12D",
+      "peptide_sequence": "LVVVGADGV",
+      "wildtype_sequence": "LVVVGAGGV",
+      "length": 9,
+      "hla_allele": "HLA-A*02:01",
+      "binding_ic50_nm": 1019.92,
+      "percentile_rank": 1.632,
+      "tap_transport_score": 0.85,
+      "proteasomal_cleavage_score": 0.88,
+      "tcr_recognition_score": 0.85,
+      "immunogenicity_index": 0.632,
+      "cancer_types": [
+        "Pancreatic Ductal Adenocarcinoma",
+        "Colorectal Adenocarcinoma",
+        "Non-Small Cell Lung Cancer"
+      ],
+      "k3_status": "-1"
+    },
+    {
+      "candidate_id": "NEO-KRAS-0085",
+      "gene": "KRAS",
+      "mutation": "G12V",
+      "peptide_sequence": "LVVVGAVGV",
+      "wildtype_sequence": "LVVVGAGGV",
+      "length": 9,
+      "hla_allele": "HLA-A*02:01",
+      "binding_ic50_nm": 1019.92,
+      "percentile_rank": 1.632,
+      "tap_transport_score": 0.85,
+      "proteasomal_cleavage_score": 0.88,
+      "tcr_recognition_score": 0.85,
+      "immunogenicity_index": 0.632,
+      "cancer_types": [
+        "Colorectal Adenocarcinoma",
+        "Non-Small Cell Lung Cancer",
+        "Pancreatic Cancer"
+      ],
+      "k3_status": "-1"
+    },
+    {
+      "candidate_id": "NEO-PIK3CA-0353",
+      "gene": "PIK3CA",
+      "mutation": "E545K",
+      "peptide_sequence": "TVKTEEKISI",
+      "wildtype_sequence": "TVKTEEEISI",
+      "length": 10,
+      "hla_allele": "HLA-A*02:01",
+      "binding_ic50_nm": 1019.92,
+      "percentile_rank": 1.632,
+      "tap_transport_score": 0.85,
+      "proteasomal_cleavage_score": 0.52,
+      "tcr_recognition_score": 0.85,
+      "immunogenicity_index": 0.596,
+      "cancer_types": [
+        "ER+/HER2- Breast Cancer",
+        "Endometrial Carcinoma",
+        "Cervical Squamous Cell"
+      ],
+      "k3_status": "-1"
+    },
+    {
+      "candidate_id": "NEO-KRAS-0017",
+      "gene": "KRAS",
+      "mutation": "G12D",
+      "peptide_sequence": "VVGADGVGK",
+      "wildtype_sequence": "VVGAGGVGK",
+      "length": 9,
+      "hla_allele": "HLA-A*02:01",
+      "binding_ic50_nm": 3572.59,
+      "percentile_rank": 5.716,
+      "tap_transport_score": 0.85,
+      "proteasomal_cleavage_score": 0.88,
+      "tcr_recognition_score": 0.85,
+      "immunogenicity_index": 0.58,
+      "cancer_types": [
+        "Pancreatic Ductal Adenocarcinoma",
+        "Colorectal Adenocarcinoma",
+        "Non-Small Cell Lung Cancer"
+      ],
+      "k3_status": "-1"
+    },
+    {
+      "candidate_id": "NEO-KRAS-0053",
+      "gene": "KRAS",
+      "mutation": "G12D",
+      "peptide_sequence": "VVVGADGVGK",
+      "wildtype_sequence": "VVVGAGGVGK",
+      "length": 10,
+      "hla_allele": "HLA-A*02:01",
+      "binding_ic50_nm": 3572.59,
+      "percentile_rank": 5.716,
+      "tap_transport_score": 0.85,
+      "proteasomal_cleavage_score": 0.88,
+      "tcr_recognition_score": 0.85,
+      "immunogenicity_index": 0.58,
+      "cancer_types": [
+        "Pancreatic Ductal Adenocarcinoma",
+        "Colorectal Adenocarcinoma",
+        "Non-Small Cell Lung Cancer"
+      ],
+      "k3_status": "-1"
+    }
+  ],
+  "mrna_vaccine_construct": "5'-m7G-Cap_1-[5'UTR_alpha_globin]-AUG-LVVVGADGVAAYLVVVGAVGVAAYTVKTEEKISIAAYVVGADGVGKAAYVVVGADGVGKAAY-[3'UTR_AES_mtRNR1]-[PolyA_120nt]-3'",
+  "antigen_presentation_circuit_id": "SYN-CIRC-001",
+  "preclinical_safety_window": 2.4,
+  "dili_risk_tier": "LOW_DILI_RISK",
+  "regulatory_readiness": 0.94,
+  "k3_verdict": "VACCINE_CONSTRUCT_VERIFIED (+1)"
+}

@@ -1,0 +1,179 @@
+{
+  "benchmark": "TRM Swarm OS \u2014 real measurements through the native microkernel",
+  "date": "2026-09-22 11:24:33",
+  "hardware": {
+    "cpu": "AMD Ryzen 9 3900X",
+    "gpu": "AMD Radeon RX 6700 XT 12GB (Vulkan backend, OLLAMA_VULKAN=1)",
+    "ram": "32GB DDR4",
+    "measured_phi_v_at_benchmark_time": 0.7145,
+    "phi_v_measured": true,
+    "phi_v_source": "wmic CurrentClockSpeed + OS memory"
+  },
+  "part_a_microkernel_domains": {
+    "path": "all requests HTTP -> 127.0.0.1:8022 (native Rust council, tiny_http)",
+    "domains": 11,
+    "endpoints": 19,
+    "requests": 5700,
+    "success_rate_pct": 100.0,
+    "all_endpoints_populated": true,
+    "steady_state_p50_ms_median": 0.506,
+    "sequential_throughput_req_s": 1037,
+    "concurrent_saturation_req_s": 3400,
+    "saturation_concurrency": 4,
+    "per_domain": {
+      "Council Governance": {
+        "endpoints": 1,
+        "requests": 300,
+        "ok": 300,
+        "success_rate_pct": 100.0,
+        "p50_ms": 0.537,
+        "p95_ms": 15.338,
+        "p99_ms": 22.65
+      },
+      "Swarm Orchestration": {
+        "endpoints": 3,
+        "requests": 900,
+        "ok": 900,
+        "success_rate_pct": 100.0,
+        "p50_ms": 0.54,
+        "p95_ms": 15.841,
+        "p99_ms": 23.543
+      },
+      "Memory Fabric": {
+        "endpoints": 2,
+        "requests": 600,
+        "ok": 600,
+        "success_rate_pct": 100.0,
+        "p50_ms": 0.524,
+        "p95_ms": 15.975,
+        "p99_ms": 24.353
+      },
+      "Verification K3": {
+        "endpoints": 1,
+        "requests": 300,
+        "ok": 300,
+        "success_rate_pct": 100.0,
+        "p50_ms": 0.495,
+        "p95_ms": 16.039,
+        "p99_ms": 25.239
+      },
+      "DDR Antibodies": {
+        "endpoints": 2,
+        "requests": 600,
+        "ok": 600,
+        "success_rate_pct": 100.0,
+        "p50_ms": 0.513,
+        "p95_ms": 15.51,
+        "p99_ms": 23.266
+      },
+      "Evolution Genome": {
+        "endpoints": 2,
+        "requests": 600,
+        "ok": 600,
+        "success_rate_pct": 100.0,
+        "p50_ms": 0.492,
+        "p95_ms": 15.779,
+        "p99_ms": 23.588
+      },
+      "Federation": {
+        "endpoints": 2,
+        "requests": 600,
+        "ok": 600,
+        "success_rate_pct": 100.0,
+        "p50_ms": 1.088,
+        "p95_ms": 19.591,
+        "p99_ms": 25.805
+      },
+      "Infrastructure": {
+        "endpoints": 2,
+        "requests": 600,
+        "ok": 600,
+        "success_rate_pct": 100.0,
+        "p50_ms": 0.498,
+        "p95_ms": 15.48,
+        "p99_ms": 23.975
+      },
+      "Learning Skills": {
+        "endpoints": 2,
+        "requests": 600,
+        "ok": 600,
+        "success_rate_pct": 100.0,
+        "p50_ms": 0.491,
+        "p95_ms": 15.51,
+        "p99_ms": 23.945
+      },
+      "System Health": {
+        "endpoints": 1,
+        "requests": 300,
+        "ok": 300,
+        "success_rate_pct": 100.0,
+        "p50_ms": 1.529,
+        "p95_ms": 21.063,
+        "p99_ms": 27.043
+      },
+      "Voltage Doctrine": {
+        "endpoints": 1,
+        "requests": 300,
+        "ok": 300,
+        "success_rate_pct": 100.0,
+        "p50_ms": 0.506,
+        "p95_ms": 17.308,
+        "p99_ms": 25.142
+      }
+    },
+    "outlier_analysis": {
+      "rate_pct": 3.35,
+      "latency_ms": 15.6,
+      "distribution": "uniform over time (14-18 per 0.5s bucket) - NOT periodic",
+      "cause": "matches the Windows default timer tick (15.625ms); an OS scheduler quantum, not microkernel service time",
+      "client_gc_ruled_out": "disabling client GC changed outlier rate 7.33% -> 8.33% (no effect)"
+    },
+    "notable_costs": {
+      "/system/voltage max_ms": 347.991,
+      "note": "cache-miss path spawns WMIC to read the real clock; this is the cost of the voltage doctrine being measured rather than hardcoded",
+      "/system/health_matrix p50_ms": 1.529,
+      "/federation/peers p50_ms": 1.162
+    }
+  },
+  "part_b_gpu_fabric": {
+    "path": "NOT the microkernel - Ollama on 11434 with the Vulkan backend; the council server exposes no GPU endpoint at all",
+    "models": [
+      {
+        "model": "gemma3:1b",
+        "processor": "GB 100%",
+        "tok_per_s": 139.51,
+        "eval_tokens": 38
+      },
+      {
+        "model": "deepseek-r1:1.5b",
+        "processor": "GB 100%",
+        "tok_per_s": 182.33,
+        "eval_tokens": 48
+      },
+      {
+        "model": "llama3.2:latest",
+        "processor": "GB 70%/30%",
+        "tok_per_s": 19.83,
+        "eval_tokens": 21
+      },
+      {
+        "model": "gemma4:12b",
+        "processor": "GB 22%/78%",
+        "tok_per_s": 11.69,
+        "eval_tokens": 48
+      }
+    ],
+    "finding": "FULL GPU acceleration (100%) is limited to <=1.5B models. Larger models spill to CPU because 12GB VRAM cannot hold weights + KV cache; the measured rates fall sharply once offload is partial.",
+    "services_down": {
+      "8587": "Vulkan llama-server (Bonsai-27B) - connection refused",
+      "5115": "LoRA inference - connection refused"
+    }
+  },
+  "honesty_notes": [
+    "All domain numbers are real wall-clock measurements from this host.",
+    "GPU numbers come from a DIFFERENT path than the microkernel; they are not microkernel latency.",
+    "The microkernel exposes no GPU/accelerator route - GPU work cannot be measured through it.",
+    "/federation/stats reports active_nodes=100 and data_integrity=100.0000%; a TCP probe finds 0 of 56 reachable. Declared, not measured.",
+    "An earlier run of this benchmark attributed p95 spikes to warm-up. That was wrong - the spikes recur uniformly at ~3.35% and are OS scheduler quanta."
+  ]
+}

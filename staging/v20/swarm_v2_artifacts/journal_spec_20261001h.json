@@ -1,0 +1,43 @@
+[
+ {
+  "kind": "the_boot_ends_where_to_look",
+  "fact": "The boot's last line is now the dashboard URL, after the counts. Before this the URL printed before the verdict, so the final thing an operator standing at the machine read was a number rather than a destination -- the doctrine said end the boot with a URL line and the implementation had stopped doing it. The line reads `DASHBOARD: http://127.0.0.1:5183/ui/ -- open this on this machine; it answered the LCARS page on loopback during this boot`, and the loopback claim is the content probe's own measurement made four lines earlier (`/ui/` is one of the nine routes asked for a specific string and counted). The network form is printed only when the interface reports carrier, and with no carrier the line says the cable is what is missing rather than implying the platform is. Verified by booting: the serial log's final lines are the two dashboard lines above; the dashboard answered `HTTP 200` from outside the guest and the run reports `19 of the routes asked answered`. Image on the stick: a84a106701ea70e4, 13,291,564 B, chain check 26 ELFs and 0 problems.",
+  "not_claimed": "This changes what the machine SAYS, not what it can reach: with no cable on the board's Ethernet there is still no network route to the dashboard, and the loopback line exists precisely for that case. The association remains unproven -- no access point has been joined -- and the attribute-walk fix, proven by its unit test, has still to run on the metal; the next boot of this stick is where that happens.",
+  "commit": "pending",
+  "rederive": {
+   "files": [
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "9702f81fd70d7a1a11e1d078165f7b4d9a02ad1e19b35d201d45fbbfbb9bf5a2"
+    },
+    {
+     "path": "docs/BARE_METAL_LINUX_PATHWAY_20260930.md",
+     "sha256": "1ad3569ac932436d8d3c225e59a6d8d5b4ff8b67f9454f37daa4d1e150b4f63b"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "swarm_v2/core/check_boot_chain_static.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 problem(s)"
+     ]
+    },
+    {
+     "script": "trm_chainload/scripts/check_attr_walk.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 failed"
+     ]
+    },
+    {
+     "script": "trm_chainload/scripts/check_reproducible.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "3 of 3 stage(s) reproducible"
+     ]
+    }
+   ]
+  }
+ }
+]

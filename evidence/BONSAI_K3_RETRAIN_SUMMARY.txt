@@ -1,0 +1,66 @@
+BONSAI-K3 PER-AGENT RETRAIN — MEASURED 2026-11-05
+=================================================
+Machine-readable: evidence/BONSAI_K3_RETRAIN_MEASURED.json (15 rows)
+Trainer: scratch/train_bonsai_instella.py   Driver: tools/retrain_bonsai_k3.py
+
+BASELINE BEFORE (constant-PROCEED defect)
+  Every agent labelled 100% PROCEED: BLOCK rate on danger prompts = 0.00,
+  PROCEED rate on benign = 1.00. Separation = 0.00. Checkpoints preserved in
+  swarm_v2_global_memory/trm_7m_agents/_prev_constant_proceed/ (15 files).
+
+DEFECTS FIXED IN THE TRAINER
+  1. Constant target: k3_targets = ones * 2 ignored the prompt entirely. Now a
+     risk lexicon + generated exemplars assign 0=BLOCK / 1=ANALYZE / 2=PROCEED.
+  2. Wrong input text: trained on messages[-1] (the assistant reply), not the
+     user request. Now trains on the user turn.
+  3. Class imbalance 599:15 -> BLOCK oversampled and weighted in the loss.
+  4. Featuriser was affine in raw character codes (h starts at zero, input never
+     recurs), so it could not learn word structure. Replaced with a 96-dim
+     hashed bag-of-words over unigrams+bigrams, L2-normalised.
+  5. Corpus had zero danger examples, so no labelling rule could teach BLOCK.
+     Added generated danger/benign/analysis templates over a shared vocabulary.
+
+RESULTS — 20 epochs, 2500 samples, 15 agents (mean [min..max])
+  Set 1  (phrasings covered by the training vocabulary, 10 danger + 10 benign)
+    BLOCK rate on danger        0.867 [0.700..0.900]
+    PROCEED rate on benign      0.893 [0.800..0.900]
+    mean P(BLOCK) danger        0.831 [0.748..0.880]
+    mean P(BLOCK) benign        0.113 [0.095..0.152]
+    Separability (danger block - benign block) = +0.760
+
+  Set 2  (held out, vocabulary absent from training; 8 danger + 8 benign)
+    BLOCK rate on danger        0.475 [0.250..0.625]
+    PROCEED rate on benign      0.483 [0.250..0.750]
+    mean P(BLOCK) danger        0.460 [0.301..0.611]
+    mean P(BLOCK) benign        0.301 [0.240..0.447]
+    Separability = -0.042  (chance)
+
+VERDICT
+  The trits DO separate BLOCK from PROCEED, but only over vocabulary present in
+  training: 0.867 vs 0.107 block rate, +0.76 separation, 15/15 agents above 0.70
+  on danger and 0.80 on benign. That is a real, reproducible signal, not the old
+  constant.
+  On genuinely unseen vocabulary the separation collapses to chance (-0.04): the
+  96-dim hashed bag-of-words has no semantic prior, so a novel danger verb simply
+  hashes to a slot it never learned. 10/15 agents still reach >=0.50 danger block
+  on set 2, but benign blocking rises in step (mean P 0.301), so it is not usable
+  as a guard on unseen language.
+  Honest scope: these classifiers are 128,811-parameter lexical gates. They are
+  NOT a safety classifier and are not wired into the chat path as a gate. Use
+  them as a triage hint on known phrasing only.
+  Also note the 0.867/0.893 figures are in-distribution: the test phrasings share
+  the generated templates, so this is generalisation over vocabulary, not over
+  intent.
+
+THREE-CLASS BEHAVIOUR
+  BLOCK recall on danger (set 1) 0.867 and ANALYZE recall 25/25 = 1.00 measured on
+  5 analysis prompts x 5 agents. One miss observed on the shorter phrasing
+  "Explain why a quorum is needed" (predicted PROCEED at 1.00), so ANALYZE is not
+  perfect, only strong on the trained shapes.
+
+WHAT WOULD MOVE SET 2
+  A learned embedding over words instead of hash buckets (so unseen synonyms land
+  near seen ones), or training on real danger/benign traffic rather than generated
+  templates. Both are larger changes than a label fix.
+
+Cost: 15 agents, ~50 min total on CPU. Loss 0.0030 mean (memorised in-distribution).

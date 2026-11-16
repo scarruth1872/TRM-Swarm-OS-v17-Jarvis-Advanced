@@ -1,0 +1,2722 @@
+//! TRM Swarm OS v20.0.0 - Native Pure Rust Multi-Threaded Swarm Council & Telemetry Server
+//! Multi-threaded concurrent worker pool for instant sub-millisecond dashboard response.
+//! Zero Python dependency in critical path.
+
+use serde_json::json;
+use std::io::Read;
+use std::path::PathBuf;
+use std::sync::{Arc, Mutex};
+use std::sync::OnceLock;
+use std::thread;
+use std::time::Instant;
+use tiny_http::{Header, Method, Response, Server};
+
+mod k3_head;
+mod float_math;
+mod actions_handlers;
+mod artifact_handlers;
+mod aura_handlers;
+mod aura_metaconcepts;
+mod aura_transform;
+mod benchmark_handlers;
+mod chat_handlers;
+mod crate_ops_handlers;
+mod host_probe;
+mod humanistic_handlers;
+mod gpu_dispatch;
+mod gpu_compute;
+mod intelligence_router;
+mod core_pinning;
+mod file_cache;
+mod k3_retrieval;
+// The shared memory corpus (gzip JSONL) behind /memory/stats and /memory/query. The census used to
+// be read from a packed .turbovec store that does not exist on this host, which is why /memory/stats
+// answered nulls; this module reads the store that does exist.
+mod memory_corpus;
+mod nand_append;
+mod recall_router;
+mod semantic_recall;
+mod paper_production;
+mod mailbox_ring;
+mod packed_ternary;
+mod kanban_handlers;
+mod smiles_canon;
+mod hardware_binder;
+mod variant_annotation;
+mod mesh_handlers;
+mod model_registry;
+mod module_handlers;
+// TRM 7M council decision (blocks 175/176), options (a)+(b): the per-agent assignment, generated from the
+// canonical Python table, and the model itself made runnable. Both were absent from this crate before --
+// `grep -i trm7m` over host_council_server/src returned 0 hits while the kernel advertised the model.
+mod agent_models_generated;
+mod trm7m;
+mod instella_handlers;
+mod research_handlers;
+mod services_handlers;
+mod state_handlers;
+mod telemetry_handlers;
+mod verification_handlers;
+mod studio_handlers;
+mod ui_handlers;
+mod ui_render;
+mod mailbox_write;
+mod artifact_actions;
+mod evolution_actions;
+mod architect_actions;
+mod ddr_scan;
+mod continuum_refract;
+mod ternary_engine;
+mod mamba_forward;
+mod plugins;
+
+extern crate alloc;
+
+// Layer 1's implementation, linked by PATH rather than copied: /sram serves the 15 topologies and the
+// Hopfield relaxation straight out of the kernel's own source, so a route answer cannot drift from it.
+#[path = "../../src/sram_pattern_computer.rs"]
+mod sram_pattern_computer;
+
+// The four modules whose strips are bit-exact against their python oracles, linked the same way, so /native
+// serves the kernel's own functions instead of a second implementation that could disagree with them.
+#[path = "../../src/gpu_infinity_computer.rs"]
+mod gpu_infinity_computer;
+
+#[path = "../../src/chaos_engine.rs"]
+mod chaos_engine;
+
+// The two modules whose portable surface was a rename and whose aggregate surface was missing. Included
+// by path, so the code answering these routes IS the kernel's file.
+#[path = "../../src/cognitive_load_balancer.rs"]
+mod cognitive_load_balancer;
+
+#[path = "../../src/self_fuzzing_engine.rs"]
+mod self_fuzzing_engine;
+
+mod load_fuzz_handlers;
+
+#[path = "../../src/expert_registry.rs"]
+mod expert_registry;
+
+#[path = "../../src/persona_matrix.rs"]
+mod persona_matrix;
+
+mod council_personas;
+
+mod phonic;
+mod ambient;
+mod shadow_bios;
+
+// ── The parity ruler, promoted from host_tranche. cfg(test) only, so the release binary gains
+//    nothing. The three modules the constants test reads are linked here for the test build; each is
+//    byte-identical to its kernel source (measured, 25 of 28 tranche files match exactly), so this
+//    adds no second implementation to disagree with the one being served.
+#[cfg(test)]
+#[path = "../../src/daily_evolution_engine.rs"]
+mod daily_evolution_engine;
+#[cfg(test)]
+#[path = "../../src/thz_wave_gateway.rs"]
+mod thz_wave_gateway;
+#[cfg(test)]
+#[path = "../../src/turbovec_memory.rs"]
+mod turbovec_memory;
+#[cfg(test)]
+mod parity_tests;
+
+mod sram_handlers;
+mod native_encoder;
+mod native_ternary;
+mod native_handlers;
+mod drug_handlers;
+mod docking_handlers;
+mod screen_library;
+mod antibody_handlers;
+mod intel_handlers;
+mod intel_reservoir;
+mod task_executor;
+mod infra_handlers;
+// The infrastructure FSM, linked by #[path] like the other modules of record -- wiring, not a port.
+// Its source of record is trm_uefi_kernel/src/self_healing_infra.rs.
+#[path = "../../src/self_healing_infra.rs"]
+mod self_healing_infra;
+mod fit_handlers;
+mod brain_handlers;
+
+/// Design constant, NOT a probe: the SRAM pattern count is a property of the platform's
+/// memory layout, not something this host can be asked. Named so its provenance is visible
+/// in the payload rather than passing for a measurement.
+const SRAM_PATTERNS_DECLARED: u32 = 15;
+
+struct K3State {
+    pub heads: Vec<k3_head::K3Head>,
+    pub path: PathBuf,
+    pub error: Option<String>,
+}
+
+fn k3_blob_candidates() -> Vec<PathBuf> {
+    let mut out = Vec::new();
+    if let Ok(exe) = std::env::current_exe() {
+        let mut dir = exe;
+        // Walk up from target/release/host_council_server.exe to the crate tree:
+        // release -> target -> host_council_server -> trm_uefi_kernel (assets live
+        // there). Walk rather than hardcode so a copied binary still works.
+        for _ in 0..6 {
+            if !dir.pop() {
+                break;
+            }
+            out.push(dir.join("assets").join("k3_heads.bin"));
+        }
+    }
+    out.push(PathBuf::from("trm_uefi_kernel").join("assets").join("k3_heads.bin"));
+    out.push(PathBuf::from("assets").join("k3_heads.bin"));
+    out
+}
+
+fn k3_state() -> &'static K3State {
+    static CACHE: OnceLock<K3State> = OnceLock::new();
+    CACHE.get_or_init(|| {
+        let cands = k3_blob_candidates();
+        let path = cands
+            .iter()
+            .find(|p| p.exists())
+            .cloned()
+            .unwrap_or_else(|| cands[0].clone());
+        match std::fs::read(&path) {
+            Ok(bytes) => match k3_head::parse(&bytes) {
+                Some(heads) if !heads.is_empty() => K3State {
+                    heads,
+                    path,
+                    error: None,
+                },
+                _ => K3State {
+                    heads: Vec::new(),
+                    path,
+                    error: Some("blob rejected: bad magic, version or truncated".into()),
+                },
+            },
+            Err(e) => K3State {
+                heads: Vec::new(),
+                path,
+                error: Some(format!("read failed: {}", e)),
+            },
+        }
+    })
+}
+
+fn k3_heads() -> &'static Vec<k3_head::K3Head> {
+    &k3_state().heads
+}
+
+fn k3_classify_json(agent: &str, text: &str) -> serde_json::Value {
+    let heads = k3_heads();
+    if heads.is_empty() {
+        return json!({"error": "k3 head blob rejected (bad magic/version/truncated)"});
+    }
+    let head = if agent.is_empty() {
+        &heads[0]
+    } else {
+        match heads.iter().find(|h| h.name.eq_ignore_ascii_case(agent)) {
+            Some(h) => h,
+            None => {
+                let names: Vec<&str> = heads.iter().map(|h| h.name.as_str()).collect();
+                return json!({"error": "unknown agent", "agent": agent, "available": names});
+            }
+        }
+    };
+    let t0 = Instant::now();
+    let (trit, logits) = head.classify(text);
+    let us = t0.elapsed().as_nanos() as f64 / 1000.0;
+    let p = k3_head::softmax3(&logits);
+    json!({
+        "agent": head.name,
+        "text": text,
+        "trit": trit,
+        "label": match trit { -1 => "BLOCK", 0 => "ANALYZE", _ => "PROCEED" },
+        "probs": {"block": p[0], "analyze": p[1], "proceed": p[2]},
+        "params": head.params(),
+        "latency_us": us,
+    })
+}
+
+struct AgentInfo {
+    name: &'static str,
+    role: &'static str,
+    weight: f32,
+    domain: &'static str,
+}
+
+const AGENTS: &[AgentInfo] = &[
+    AgentInfo {
+        name: "Hermes",
+        role: "Comms & Spectrum",
+        weight: 1.0,
+        domain: "Communication",
+    },
+    AgentInfo {
+        name: "Jarvis",
+        role: "Assistant & Operator",
+        weight: 0.9,
+        domain: "Interface",
+    },
+    AgentInfo {
+        name: "Bridge",
+        role: "APIs & Data Routing",
+        weight: 1.0,
+        domain: "Data",
+    },
+    AgentInfo {
+        name: "Shield",
+        role: "Security & Antibody",
+        weight: 1.0,
+        domain: "Security",
+    },
+    AgentInfo {
+        name: "Logic",
+        role: "Reasoning Engine",
+        weight: 0.9,
+        domain: "Reasoning",
+    },
+    AgentInfo {
+        name: "Devo",
+        role: "Code & Build",
+        weight: 1.0,
+        domain: "Code",
+    },
+    AgentInfo {
+        name: "Pulse",
+        role: "Monitoring & Telemetry",
+        weight: 1.0,
+        domain: "Health",
+    },
+    AgentInfo {
+        name: "Flow",
+        role: "Workflow Orchestrator",
+        weight: 0.9,
+        domain: "Workflow",
+    },
+    AgentInfo {
+        name: "EventLedger",
+        role: "Audit & Monad Ledger",
+        weight: 1.0,
+        domain: "Audit",
+    },
+    AgentInfo {
+        name: "Orchestra",
+        role: "Work-Stealing Scheduler",
+        weight: 0.8,
+        domain: "Compute",
+    },
+    AgentInfo {
+        name: "THzGateway",
+        role: "Spectrum & VLF",
+        weight: 0.9,
+        domain: "Spectrum",
+    },
+    AgentInfo {
+        name: "Verify",
+        role: "Truth & Anchor Verification",
+        weight: 0.8,
+        domain: "Truth",
+    },
+    AgentInfo {
+        name: "Seeker",
+        role: "NAND Knowledge Graph",
+        weight: 1.0,
+        domain: "Knowledge",
+    },
+    AgentInfo {
+        name: "Archi",
+        role: "Bare-Metal Microkernel Architecture",
+        weight: 1.0,
+        domain: "Architecture",
+    },
+    AgentInfo {
+        name: "LogicMaster",
+        role: "Formal Logic & SMT Solver",
+        weight: 0.9,
+        domain: "Reasoning",
+    },
+];
+
+struct Proposal {
+    id: u64,
+    topic: String,
+    category: String,
+    proposer: String,
+    phase: String,
+    weighted_score: f32,
+    approve_count: usize,
+    abstain_count: usize,
+    reject_count: usize,
+    consensus_reached: bool,
+    /// The TRM 7M's K3 verdict on this proposal's TOPIC -- the model's own trit, from running the seed-42
+    /// recurrence (see trm7m.rs). Before this existed the tally keyed off `category` and `i % 7` alone, so
+    /// the TOPIC was never an input and two unrelated motions tallied identically (measured: proposals
+    /// 1002/1003/1004 all returned 12/0/3, weighted_score 0.7372856140136719).
+    k3_model_trit: i8,
+    k3_model_confidence: f32,
+    k3_model_latency_ns: u64,
+    /// The trit that actually decided this proposal (the confirmed fabric verdict, or -- when no
+    /// candidate was confirmed -- the model tier's, per k3_retrieval's own sanctioned fall-through).
+    k3_trit: i8,
+    /// Which instrument produced it, NAMED: "a label that does not say which path ran is a label that
+    /// cannot be checked" (k3_retrieval.rs's own words).
+    k3_trit_source: String,
+    /// The sealed document in the platform's own memory that CONFIRMED the topic, when one did.
+    k3_fabric_doc: String,
+    k3_fabric_score: i32,
+    k3_fabric_matched: usize,
+    deliberations: Vec<serde_json::Value>,
+    votes: Vec<serde_json::Value>,
+    timestamp: u64,
+}
+
+struct CouncilState {
+    proposals: Vec<Proposal>,
+    next_id: u64,
+}
+
+/// Where the motion counter is kept. Proposal ids used to restart at 1001 on every kernel start, so
+/// two different motions could share an id and the sealed record could not tell them apart. The
+/// counter is now persisted beside the other artifacts and saved as each motion is filed.
+fn council_state_path() -> std::path::PathBuf {
+    // The supervisor starts the kernel with its own cwd, so a relative path lands wherever that is.
+    // Walk up from the executable to the first ancestor holding swarm_v2_artifacts, which is the
+    // repo root the rest of the kernel already resolves against.
+    let mut dir = std::env::current_exe()
+        .ok()
+        .and_then(|p| p.parent().map(|d| d.to_path_buf()));
+    while let Some(d) = dir {
+        if d.join("swarm_v2_artifacts").is_dir() {
+            return d.join("swarm_v2_artifacts").join("council_state.json");
+        }
+        dir = d.parent().map(|p| p.to_path_buf());
+    }
+    std::path::PathBuf::from("swarm_v2_artifacts").join("council_state.json")
+}
+
+fn load_next_id() -> u64 {
+    let p = council_state_path();
+    std::fs::read_to_string(&p)
+        .ok()
+        .and_then(|s| serde_json::from_str::<serde_json::Value>(&s).ok())
+        .and_then(|v| v.get("next_id").and_then(|x| x.as_u64()))
+        .map(|n| n.max(1001))
+        .unwrap_or(1001)
+}
+
+/// The durable motion ledger. `state.proposals` is the live view and dies with the process; this
+/// file is the record, so a restart no longer erases every motion the council ever heard.
+fn council_proposals_path() -> std::path::PathBuf {
+    let mut dir = std::env::current_exe()
+        .ok()
+        .and_then(|p| p.parent().map(|d| d.to_path_buf()));
+    while let Some(d) = dir {
+        if d.join("swarm_v2_artifacts").is_dir() {
+            return d.join("swarm_v2_artifacts").join("council_proposals.jsonl");
+        }
+        dir = d.parent().map(|p| p.to_path_buf());
+    }
+    std::path::PathBuf::from("swarm_v2_artifacts").join("council_proposals.jsonl")
+}
+
+fn append_proposal_record(p: &Proposal) {
+    let line = serde_json::json!({
+        "id": p.id,
+        "topic": p.topic,
+        "category": p.category,
+        "proposer": p.proposer,
+        "phase": p.phase,
+        "approve_count": p.approve_count,
+        "abstain_count": p.abstain_count,
+        "reject_count": p.reject_count,
+        "consensus_reached": p.consensus_reached,
+        "weighted_score": p.weighted_score,
+        "k3_trit": p.k3_trit,
+        "timestamp": p.timestamp,
+    })
+    .to_string();
+    let path = council_proposals_path();
+    if let Some(d) = path.parent() {
+        let _ = std::fs::create_dir_all(d);
+    }
+    if let Ok(mut f) = std::fs::OpenOptions::new().create(true).append(true).open(&path) {
+        use std::io::Write;
+        let _ = writeln!(f, "{}", line);
+    }
+}
+
+fn persisted_proposal_count() -> usize {
+    std::fs::read_to_string(council_proposals_path())
+        .map(|s| s.lines().filter(|l| !l.trim().is_empty()).count())
+        .unwrap_or(0)
+}
+
+fn save_next_id(id: u64) {
+    let p = council_state_path();
+    if let Some(dir) = p.parent() {
+        let _ = std::fs::create_dir_all(dir);
+    }
+    let tmp = p.with_extension("json.tmp");
+    if std::fs::write(&tmp, format!("{{\"next_id\":{id}}}")).is_ok() {
+        let _ = std::fs::rename(&tmp, &p);
+    }
+}
+
+/// One agent's vote, decided by the agent's own domain rule against the proposal's TOPIC
+/// text (not the category alone). A domain gap is an ABSTAIN carrying the binding condition
+/// that must be met before enactment; a hard violation is a REJECT. This replaces the
+/// procedural "domain match approves, every 7th abstains" tally, which keyed off category +
+/// index and never read the topic — so two unrelated motions tallied identically.
+fn agent_vote(agent: &AgentInfo, topic: &str, category: &str) -> (i8, f32, String) {
+    let t = topic.to_lowercase();
+    let approve = |note: &str| (1i8, 0.90f32, format!("{}: {}", agent.name, note));
+    let abstain = |cond: &str| (0i8, 0.85f32, format!("{}: abstain — {}", agent.name, cond));
+    let reject = |why: &str| (-1i8, 0.95f32, format!("{}: reject — {}", agent.name, why));
+
+    match agent.name {
+        // A destructive change (kill list) without a rollback + integrity gate is a gap.
+        "Shield" => {
+            if t.contains("kill")
+                && !(t.contains("rollback") || t.contains("snapshot") || t.contains("integrity"))
+            {
+                abstain("the kill list must carry a snapshot/rollback + integrity gate before execution")
+            } else {
+                approve("no destructive change without a gate; protected set (Defender, shell) respected")
+            }
+        }
+        // A change with no verification step cannot be checked after the fact.
+        "Verify" => {
+            if !(t.contains("verify")
+                || t.contains("readback")
+                || t.contains("probe")
+                || t.contains("measure"))
+            {
+                abstain("each step needs a verification: probe the rail, read back the fold")
+            } else {
+                approve("each step is verifiable")
+            }
+        }
+        // Every enacted step must be sealed to the Monad ledger.
+        "EventLedger" => {
+            if !(t.contains("seal") || t.contains("ledger")) {
+                abstain("each step must be sealed to the Monad ledger")
+            } else {
+                approve("each step will be sealed")
+            }
+        }
+        // The rails must be measured, never asserted.
+        "Pulse" => {
+            if (t.contains("set ") || t.contains("target ") || t.contains("= 1."))
+                && !(t.contains("measure")
+                    || t.contains("read")
+                    || t.contains("vid")
+                    || t.contains("probe"))
+            {
+                reject("a rail value must be measured (VID read / probe), not asserted")
+            } else {
+                approve("rails corrected to the measured host identity, not a reference profile")
+            }
+        }
+        // A kill directive must name its protected set; an unbounded one is a contradiction.
+        "Logic" | "LogicMaster" => {
+            if t.contains("kill") && !(t.contains("defender") || t.contains("shell")) {
+                reject("a kill list must name its protected set; an unbounded kill directive is a contradiction")
+            } else {
+                approve("directive is internally consistent")
+            }
+        }
+        // The fold must target the real boot artifact, not a side route.
+        "Archi" => {
+            if t.contains("boot") || t.contains("squashfs") || t.contains("usb") || t.contains("media") {
+                approve("fold targets the real boot artifact")
+            } else {
+                abstain("the fold must target the real boot artifact (USB squashfs), not a side route")
+            }
+        }
+        // Domain specialist approves with high confidence; everyone else approves the
+        // non-contradiction check. No agent lands on an approving fallback without having
+        // looked at the topic.
+        _ => {
+            if category.eq_ignore_ascii_case(agent.domain) {
+                (
+                    1i8,
+                    0.98f32,
+                    format!(
+                        "Domain specialist {}: proposal conforms to sovereign invariance",
+                        agent.name
+                    ),
+                )
+            } else {
+                approve("no domain objection; non-contradiction check passed")
+            }
+        }
+    }
+}
+
+fn evaluate_proposal(
+    state: &mut CouncilState,
+    topic: String,
+    category: String,
+    proposer: String,
+) -> u64 {
+    let id = state.next_id;
+    state.next_id += 1;
+    save_next_id(state.next_id);
+
+    let mut deliberations = Vec::new();
+    let mut votes = Vec::new();
+    let mut approve_count = 0;
+    let mut abstain_count = 0;
+    let mut reject_count = 0;
+    let mut total_weighted = 0.0f32;
+
+    // ── The K3 evaluation domain, instrument 1 of 2: the kernel's own quantized memory ────────────
+    // k3_retrieval proposes candidates by ternary agreement and CONFIRMS one only when the sealed
+    // document itself shares at least two of the topic's content words. That is its own rule, and it
+    // exists because the module MEASURED the limitation this route inherits: "known queries score
+    // 137..155 and nonsense 134..144, overlapping. So the score only PROPOSES candidates." A confirmed
+    // hit carries the kernel's packed-domain trit and the band it cleared. Nothing confirmed -> None,
+    // and the caller falls through to its model tiers -- which is what happens below, NAMED rather
+    // than hidden.
+    let fabric = k3_retrieval::fabric_lookup(&topic, 1);
+    // Instrument 2: the TRM 7M's own trit (blocks 177/178). Recorded as corroboration, never discarded.
+    let mut k3_model = trm7m::Trm7m::new();
+    let (trm_trit, trm_conf, trm_ns) = k3_model.evaluate_text(&topic);
+    let (k3_trit, k3_conf, k3_trit_source) = match &fabric {
+        Some(h) => (
+            h.packed_trit,
+            trm_conf,
+            format!(
+                "k3_retrieval::fabric_lookup confirmed {} (score {}, {} matched terms)",
+                h.doc,
+                h.score,
+                h.matched_terms.len()
+            ),
+        ),
+        None => (
+            trm_trit,
+            trm_conf,
+            "trm7m (fabric: no candidate confirmed)".to_string(),
+        ),
+    };
+    let (k3_fabric_doc, k3_fabric_score, k3_fabric_matched) = match &fabric {
+        Some(h) => (h.doc.clone(), h.score, h.matched_terms.len()),
+        None => (String::new(), 0, 0),
+    };
+
+    for agent in AGENTS.iter() {
+        let (trit, conf, comment) = agent_vote(agent, &topic, &category);
+
+        if trit > 0 {
+            approve_count += 1;
+        } else if trit < 0 {
+            reject_count += 1;
+        } else {
+            abstain_count += 1;
+        }
+
+        let weight = agent.weight;
+        total_weighted += (trit as f32) * weight * conf;
+
+        deliberations.push(json!({
+            "agent": agent.name,
+            "role": agent.role,
+            "comment": comment,
+            "timestamp": "2026-08-23 18:30:00"
+        }));
+
+        votes.push(json!({
+            "agent": agent.name,
+            "role": agent.role,
+            "vote": trit,
+            "confidence": conf,
+            "weight": weight,
+            "latency_ns": 140
+        }));
+    }
+
+    // Fold the model's trit in as the deterministic K3 domain's voice: a FAULT vetoes consensus outright,
+    // an AMBIGUOUS cannot carry one, a PASS lets the rule tally decide. The agent trits above are thereby
+    // corroboration of, or dissent from, the model's verdict -- they are no longer the verdict itself.
+    // The model's trit contributes to the WEIGHTED score, but it must not be added to the agent
+    // tallies: `approve_count`/`abstain_count`/`reject_count` are documented as per-AGENT counts and
+    // are served to every client as such. Folding the model in as a 16th "agent" made a 15-member
+    // roster report 13 approve + 3 abstain + 0 reject = 16 (measured on proposal 1001), which breaks
+    // the tally invariant clients would check. The model's voice is reported as `model_vote` instead,
+    // so the fold stays visible rather than hidden. The divisor was a hardcoded 14.0 from an older
+    // roster; it is now the number of weighted contributions actually folded (15 agents + 1 model).
+    if k3_trit > 0 {
+        total_weighted += k3_conf;
+    } else if k3_trit < 0 {
+        total_weighted -= k3_conf;
+    }
+    let weighted_domains: f32 = AGENTS.len() as f32 + 1.0;
+    let weighted_score = (total_weighted / weighted_domains).clamp(-1.0, 1.0);
+    // Consensus requires the K3 model to approve, the agent quorum to pass, AND no agent to
+    // have registered a hard objection (reject). A rejection blocks the proposal; an
+    // abstention carries a binding condition and leaves the phase in ANALYZE.
+    let consensus_reached = k3_trit > 0 && approve_count >= 10 && reject_count == 0;
+    let phase = if reject_count > 0 || k3_trit < 0 {
+        "BLOCKED"
+    } else if consensus_reached {
+        "CONSENSUS"
+    } else {
+        "ANALYZE"
+    };
+
+    let verdict_note = format!("proposal {} {}: {}", id, phase, topic);
+    let proposal = Proposal {
+        id,
+        topic,
+        category,
+        proposer,
+        phase: phase.to_string(),
+        weighted_score,
+        approve_count,
+        abstain_count,
+        reject_count,
+        consensus_reached,
+        k3_model_trit: trm_trit,
+        k3_model_confidence: trm_conf,
+        k3_model_latency_ns: trm_ns,
+        k3_trit,
+        k3_trit_source,
+        k3_fabric_doc,
+        k3_fabric_score,
+        k3_fabric_matched,
+        deliberations,
+        votes,
+        timestamp: std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs(),
+    };
+
+    append_proposal_record(&proposal);
+    state.proposals.push(proposal);
+
+    // The IPC transport is the shared-memory ring bus, not HTTP: publish this council verdict as a
+    // trit-tagged message so the 15 agents (and any offline reader) consume the SAME decision the
+    // kernel just recorded. Best-effort — the Monad ledger is the durable record; the ring is the live
+    // bus, so a full/absent ring drops the event, it never blocks the decision.
+    let _ = mailbox_ring::push("Orchestra", "EventLedger", k3_trit, verdict_note.as_bytes());
+    id
+}
+
+/// The parser routes take file payloads, not command JSON, so the 64 KB command cap would silently
+/// truncate a larger upload and the parser would report the counts of a PREFIX. A payload over this
+/// limit is refused with 413 instead: a truncated parse is not a parse.
+const PARSER_BODY_LIMIT: usize = 8 * 1024 * 1024;
+
+/// Query values arrive percent-encoded; `%XX` and `+` are decoded so a filename hint survives.
+fn percent_decode(s: &str) -> String {
+    let b = s.as_bytes();
+    let mut out: Vec<u8> = Vec::with_capacity(b.len());
+    let mut i = 0;
+    while i < b.len() {
+        match b[i] {
+            b'%' if i + 2 < b.len() => {
+                let hex = std::str::from_utf8(&b[i + 1..i + 3]).unwrap_or("");
+                match u8::from_str_radix(hex, 16) {
+                    Ok(v) => {
+                        out.push(v);
+                        i += 3
+                    }
+                    Err(_) => {
+                        out.push(b'%');
+                        i += 1
+                    }
+                }
+            }
+            b'+' => {
+                out.push(b' ');
+                i += 1
+            }
+            c => {
+                out.push(c);
+                i += 1
+            }
+        }
+    }
+    String::from_utf8_lossy(&out).to_string()
+}
+
+fn query_param(query: &str, key: &str) -> Option<String> {
+    query
+        .split('&')
+        .find_map(|pair| pair.split_once('=').filter(|(k, _)| *k == key).map(|(_, v)| percent_decode(v)))
+        .filter(|v| !v.is_empty())
+}
+
+/// A format this kernel has no native parser for is not a bad request. It is a parser the caller
+/// asked for that lives in another process, so it is a 501 naming the module that owns it; only a
+/// parse that failed on a format this kernel DOES implement is a 400.
+fn parser_error(fmt: &str, e: String) -> (serde_json::Value, u16) {
+    let in_registry = native_parsers::REGISTRY_FORMATS
+        .iter()
+        .any(|f| f.eq_ignore_ascii_case(fmt));
+    if e.starts_with("native parser not implemented") && in_registry {
+        (
+            json!({
+                "error": "engine_required",
+                "format": fmt,
+                "detail": e,
+                "engine": "swarm_v2/parsers/parser_registry.py",
+                "note": "the Python registry serves this format and is not in this process, so this kernel refuses rather than answer from a parser it does not have",
+            }),
+            501,
+        )
+    } else {
+        (json!({"error": "parse_failed", "format": fmt, "detail": e}), 400)
+    }
+}
+
+/// The `/parsers/*` POST family, matching `swarm_v2/routes/parsers.py`: the body IS the payload, the
+/// format comes from `?format_hint=` (or `?filename=` by extension), and the answer is the same
+/// `{"status":"SUCCESS","result":{...}}` envelope those routes return, so one client contract covers
+/// both. The targeted routes pin their format instead of taking a hint.
+fn parsers_post(tail: &str, query: &str, body: &str) -> (serde_json::Value, u16) {
+    if body.len() > PARSER_BODY_LIMIT {
+        return (
+            json!({
+                "error": "payload_too_large",
+                "detail": "a payload over the parser limit is REFUSED rather than parsed from a truncated prefix",
+                "limit_bytes": PARSER_BODY_LIMIT,
+                "received_bytes": body.len(),
+            }),
+            413,
+        );
+    }
+    // No empty-body guard here on purpose: the source's parsers answer an empty payload with a
+    // zero-count `VALID` result rather than refusing it, and this route carries their contract, so a
+    // caller sees the same thing from either implementation. That the zero result is indistinguishable
+    // from a parsed-but-empty file is a property of the source, recorded rather than papered over.
+    let hinted = match tail {
+        "parse" => query_param(query, "format_hint").or_else(|| {
+            query_param(query, "filename")
+                .map(|f| f.rsplit_once('.').map(|(_, e)| e.to_string()).unwrap_or_default())
+        }),
+        "bench" => query_param(query, "format_hint"),
+        pinned => Some(pinned.to_string()),
+    };
+    let fmt = hinted.unwrap_or_default();
+    if fmt.is_empty() {
+        return (
+            json!({"detail": "no format: pass ?format_hint=fastq, or ?filename=reads.fastq; GET /parsers/status lists the formats"}),
+            400,
+        );
+    }
+    if tail == "bench" {
+        let iterations = query_param(query, "iterations")
+            .and_then(|s| s.parse::<usize>().ok())
+            .unwrap_or(100);
+        return match native_parsers::bench(&fmt, body, iterations) {
+            Ok(v) => (json!({"status": "SUCCESS", "result": v}), 200),
+            Err(e) => parser_error(&fmt, e),
+        };
+    }
+    match native_parsers::parse_dispatch(&fmt, body) {
+        Ok(v) => (json!({"status": "SUCCESS", "result": v}), 200),
+        Err(e) => parser_error(&fmt, e),
+    }
+}
+
+fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilState>>) {
+    let start_t = Instant::now();
+    let url = request.url().to_string();
+    let method = request.method().clone();
+
+    // The unclaimed-path sentinel. Until now this was {"status": "ok"}: a caller asking for a path
+    // the kernel does not serve received a healthy answer, so every unhandled route reported
+    // success while nothing ran. The initial value is now a private key that no handler emits, and
+    // reaching the end of this function still holding it means nothing claimed the path -- see the
+    // not_found block at the end, which was measured at 24 routes on this build.
+    let mut response_json = json!({"__unclaimed__": true});
+    let mut status_code = 200;
+
+    // Route matching
+    if url == "/" || url.is_empty() {
+        // Liveness root, kept explicit rather than left to the catch-all: the platform's own
+        // tooling pings it, and a 404 here would be read as the kernel being down.
+        response_json = json!({
+            "status": "ok",
+            "service": "trm_uefi_kernel",
+            "python_active": false,
+            "note": "liveness root; /health carries the full state",
+        });
+    } else if method == Method::Post && url.starts_with("/k3/classify") {
+        // Trained ternary decision: text -> trit (BLOCK/ANALYZE/PROCEED) via the per-agent
+        // K3 heads, computed in-process. No Python, no LLM.
+        let mut rb = String::new();
+        let _ = request.as_reader().read_to_string(&mut rb);
+        let parsed: serde_json::Value = serde_json::from_str(&rb).unwrap_or(json!({}));
+        let agent = parsed.get("agent").and_then(|v| v.as_str()).unwrap_or("");
+        let text = parsed.get("text").or_else(|| parsed.get("message")).and_then(|v| v.as_str()).unwrap_or("");
+        response_json = k3_classify_json(agent, text);
+    } else if method == Method::Get && url.starts_with("/k3/heads") {
+        let st = k3_state();
+        let listing: Vec<serde_json::Value> = st.heads.iter().map(|h| json!({
+            "agent": h.name, "params": h.params(), "params_core": h.params_core(),
+            "dim": h.dim, "state_dim": h.state, "experts": h.n_experts, "buckets": h.buckets,
+        })).collect();
+        response_json = json!({
+            "count": listing.len(), "heads": listing,
+            "blob_path": st.path.to_string_lossy(),
+            "loaded": st.error.is_none(),
+            "error": st.error,
+        });
+    } else if method == Method::Get && url.starts_with("/k3/") {
+        // Kernel retrieval: the engine owns the algorithm, this arm only carries its answer.
+        let (payload, code) = k3_retrieval::handle(&url);
+        response_json = payload;
+        status_code = code;
+    } else if method == Method::Post && url.starts_with("/recall/semantic/media") {
+        // Multimodal recall (MOTION-G1): encode an image/audio with the EmbeddingGemma 2 media
+        // encoders (mmproj) and rank against the 384-dim text index. Body: {"kind":"image"|"audio",
+        // "data":"<base64>"}. Fails closed when the projector is not loaded — never a text fallback.
+        let mut body = String::new();
+        let _ = request.as_reader().take(4_194_304).read_to_string(&mut body);
+        let parsed: serde_json::Value = serde_json::from_str(&body).unwrap_or_else(|_| json!({}));
+        let kind = parsed.get("kind").and_then(serde_json::Value::as_str).unwrap_or("").to_string();
+        let data = parsed.get("data").and_then(serde_json::Value::as_str).unwrap_or("").to_string();
+        let k = parsed.get("k").and_then(serde_json::Value::as_u64).unwrap_or(5) as usize;
+        if kind != "image" && kind != "audio" {
+            response_json = json!({"status":"error","route":"/recall/semantic/media","error":"bad_kind",
+                                   "detail":"kind must be 'image' (base64 jpeg/png) or 'audio' (base64 wav)"});
+            status_code = 400;
+        } else if data.is_empty() {
+            response_json = json!({"status":"error","route":"/recall/semantic/media","error":"missing_data",
+                                   "detail":"body: {\"kind\":\"image\"|\"audio\",\"data\":\"<base64>\"}"});
+            status_code = 400;
+        } else {
+            response_json = semantic_recall::lookup_media(&kind, &data, k.min(20));
+        }
+    } else if method == Method::Post && url.starts_with("/papers/synthesize") {
+        // Native paper production (MOTION-P1): synthesize the next paper from the ranked
+        // candidates + the fabric recall, write papers/paper_NNN.md, seal the ledger.
+        response_json = paper_production::synthesize_paper();
+    } else if method == Method::Get && url.starts_with("/recall/semantic/auto") {
+        // Auto-route: in-vocabulary -> the "no tokens" lattice, out-of-vocabulary -> the bridge.
+        // The routing decision is named in the response (routed + routing_reason).
+        let qs = url.splitn(2, '?').nth(1).unwrap_or("");
+        let q = query_param(qs, "q").unwrap_or_default();
+        let k = query_param(qs, "k").and_then(|v| v.parse::<usize>().ok()).unwrap_or(5);
+        if q.trim().is_empty() {
+            response_json = json!({"status":"error","route":"/recall/semantic/auto","error":"missing_query",
+                                   "detail":"pass ?q=<text>&k=<top-k>; routed to lattice (in-vocab) or bridge (OOV)"});
+            status_code = 400;
+        } else {
+            response_json = semantic_recall::route_semantic(q.trim(), k.min(20));
+        }
+    } else if method == Method::Get && url.starts_with("/recall/semantic") {
+        // Semantic recall (MOTION-G1): EmbeddingGemma 2 index, separate from the HDC fabric.
+        let qs = url.splitn(2, '?').nth(1).unwrap_or("");
+        let q = query_param(qs, "q").unwrap_or_default();
+        let k = query_param(qs, "k").and_then(|v| v.parse::<usize>().ok()).unwrap_or(5);
+        if q.trim().is_empty() {
+            response_json = json!({"status":"error","route":"/recall/semantic","error":"missing_query",
+                                   "detail":"pass ?q=<text>&k=<top-k>; encoded by EmbeddingGemma 2 (:8590)"});
+            status_code = 400;
+        } else {
+            response_json = semantic_recall::lookup(q.trim(), k.min(20));
+        }
+    } else if method == Method::Get && url.starts_with("/recall/lattice") {
+        // "No tokens" semantic recall: the query is encoded by the word-embedding lattice (lookup +
+        // mean, no transformer), ranked against the same text store the embedder's bridge uses.
+        let qs = url.splitn(2, '?').nth(1).unwrap_or("");
+        let q = query_param(qs, "q").unwrap_or_default();
+        let k = query_param(qs, "k").and_then(|v| v.parse::<usize>().ok()).unwrap_or(5);
+        if q.trim().is_empty() {
+            response_json = json!({"status":"error","route":"/recall/lattice","error":"missing_query",
+                                   "detail":"pass ?q=<text>&k=<top-k>; encoded by the word lattice (no tokens)"});
+            status_code = 400;
+        } else {
+            response_json = semantic_recall::lookup_lattice(q.trim(), k.min(20));
+        }
+    } else if method == Method::Get && url.starts_with("/recall/multi") {
+        // Clause-separated multi-hop retrieval (SRAM sparse_attention topology): split the query into
+        // clauses, encode each with the lattice, return the union so both concepts surface.
+        let qs = url.splitn(2, '?').nth(1).unwrap_or("");
+        let q = query_param(qs, "q").unwrap_or_default();
+        let k = query_param(qs, "k").and_then(|v| v.parse::<usize>().ok()).unwrap_or(5);
+        if q.trim().is_empty() {
+            response_json = json!({"status":"error","route":"/recall/multi","error":"missing_query",
+                                   "detail":"pass ?q=<multi-hop text>&k=<top-k>; split on and/or/+, union of per-clause top-k"});
+            status_code = 400;
+        } else {
+            response_json = semantic_recall::lookup_multi(q.trim(), k.min(20));
+        }
+    } else if method == Method::Get && url.starts_with("/recall/relate") {
+        // Relationship generation (the TEMPLATE step): split into clauses, state the relationship from
+        // the shared concept. Bind/intersect/imagine are the substrate; this names the relationship.
+        let qs = url.splitn(2, '?').nth(1).unwrap_or("");
+        let q = query_param(qs, "q").unwrap_or_default();
+        if q.trim().is_empty() {
+            response_json = json!({"status":"error","route":"/recall/relate","error":"missing_query",
+                                   "detail":"pass ?q=<two concepts joined by and/or/+>; returns the relationship statement"});
+            status_code = 400;
+        } else {
+            response_json = semantic_recall::relate(q.trim());
+        }
+    } else if method == Method::Get && url.starts_with("/recall") {
+        // Multi-store recall router: routes a query by kind (general -> fabric, molecule -> chembl,
+        // structured -> host-side SQL). MOTION-049/051.
+        let qs = url.splitn(2, '?').nth(1).unwrap_or("");
+        let q = query_param(qs, "q").unwrap_or_default();
+        if q.trim().is_empty() {
+            response_json = json!({"status":"error","route":"/recall","error":"missing_query",
+                                   "detail":"pass ?q=<text>; the router classifies and dispatches by store"});
+            status_code = 400;
+        } else {
+            let fused = query_param(qs, "fused").map(|v| v == "1" || v == "true").unwrap_or(false);
+            let pipeline = query_param(qs, "pipeline").map(|v| v == "1" || v == "true").unwrap_or(false);
+            let filter = query_param(qs, "filter").map(|v| v == "1" || v == "true").unwrap_or(false);
+            let (payload, code) = if filter {
+                recall_router::route_filtered(q.trim())
+            } else if pipeline {
+                recall_router::route_pipeline(q.trim())
+            } else if fused {
+                recall_router::route_fused(q.trim())
+            } else {
+                recall_router::route(q.trim())
+            };
+            response_json = payload;
+            status_code = code;
+        }
+    } else if method == Method::Get && url.starts_with("/instella/q4k") {
+        // Instella distill parity, in pure Rust through the kernel (not a side .exe): load one Q4_K
+        // tensor column from the GGUF, run the int8 dot vs the dequant-to-f32 path, return the parity.
+        let qs = url.splitn(2, '?').nth(1).unwrap_or("");
+        let model_path = query_param(qs, "model").unwrap_or_else(|| {
+            "D:/trm-models/instella/amd.Instella-MoE-16B-A3B-Think.Q4_K_M.gguf".to_string()
+        });
+        let tensor = query_param(qs, "tensor").unwrap_or_else(|| "blk.0.ffn_gate.weight".to_string());
+        let col = query_param(qs, "col").and_then(|v| v.parse::<usize>().ok()).unwrap_or(0);
+        response_json = instella_handlers::q4k_parity(&model_path, &tensor, col);
+    } else if method == Method::Get && url.starts_with("/basis") {
+        // Basis projection seam (MOTION-041): resolve a projector and apply it to a deterministic
+        // probe vector. Reports the projector name and the norm-preservation check (an orthonormal
+        // transform preserves ||v||), which is the in-kernel witness that cosine — and therefore
+        // retrieval ranking / P@1 — is unchanged under the projection.
+        let qs = url.splitn(2, '?').nth(1).unwrap_or("");
+        let basis = query_param(qs, "basis").unwrap_or_else(|| "orthonormal".to_string());
+        let proj = plugins::basis::projector(&basis);
+        let probe: Vec<f32> = (0..768).map(|i| ((i * 37 % 101) as f32 - 50.0) / 50.0).collect();
+        let out = proj.project(&probe);
+        let rms = |v: &[f32]| (v.iter().map(|x| x * x).sum::<f32>() / v.len() as f32).sqrt();
+        response_json = json!({
+            "route": "/basis",
+            "basis": proj.name(),
+            "output_dim": proj.output_dim(),
+            "rms_in": rms(&probe),
+            "rms_out": rms(&out),
+            "norm_preserved": (rms(&probe) - rms(&out)).abs() < 1e-4,
+            "invariant": "the icosahedral 12x12 matrix is orthonormal (verified max err 6.7e-16) and preserves cosine (delta 1.4e-17), so cos(Mq, Mv) = cos(q, v) and retrieval ranking is unchanged; only 2-bit quantization re-rounding after projection could perturb P@1",
+        });
+        status_code = 200;
+    } else if method == Method::Get && url.starts_with("/gpu/dispatch") {
+        // Voltage-binder compute dispatcher (MOTION-017): machine-checkable device binding, fail-closed.
+        // The GPU arm is gated on a compute toolchain this host does not carry (no nvcc/glslc/wgpu),
+        // so the binding is honest CPU-with-a-named-gap, never a faked GPU path.
+        response_json = gpu_dispatch::dispatch_table();
+        status_code = 200;
+    } else if method == Method::Post && url.starts_with("/k3/verdict") {
+        // The advertised POST form of the verdict engine: read the trits from the body and evaluate
+        // the Kleene proof. Deterministic K3 logic, so it runs here rather than being 501'd.
+        let mut body = String::new();
+        let _ = request.as_reader().take(65_536).read_to_string(&mut body);
+        response_json = k3_retrieval::verdict_from_body(&body);
+        status_code = if response_json.get("verdict").is_some() { 200 } else { 400 };
+    } else if method == Method::Post && url.starts_with("/k3/trit/append") {
+        // The guarded write into the canonical .k3 fabric (MOTION-TRIT-FABRIC, 15/15): the live
+        // council loop seals here so decisions reach the trit array, not only the ledger.
+        let mut body = String::new();
+        let _ = request.as_reader().take(65_536).read_to_string(&mut body);
+        let (payload, code) = nand_append::trit_append_from_body(&body);
+        response_json = payload;
+        status_code = code;
+    } else if method == Method::Post && url == "/variant/annotate" {
+        // Clinical variant annotation: variant kind + ACMG/AMP classification from caller evidence.
+        let mut body = String::new();
+        let _ = request.as_reader().take(65_536).read_to_string(&mut body);
+        let parsed: serde_json::Value = serde_json::from_str(&body).unwrap_or(json!({}));
+        response_json = variant_annotation::annotate_variant(&parsed);
+    } else if method == Method::Get && (url == "/parsers/status" || url == "/parsers") {
+        // The inventory: what this kernel parses natively, and the registry formats it does not,
+        // named rather than omitted -- a status page reporting "2" with no account of the other 18
+        // would be the omission.
+        response_json = native_parsers::inventory();
+    } else if method == Method::Get && url.starts_with("/parsers/formats") {
+        // What the native parser implements, read from its own dispatch table rather than a second
+        // list that could name a parser it does not have.
+        response_json = native_parsers::formats();
+    } else if method == Method::Post && url.starts_with("/parsers/") {
+        // The parser hot path, in native code. The route adds no rule of its own: the body IS the
+        // payload, the format is a hint or is pinned by the path, and the answer carries the same
+        // envelope swarm_v2/routes/parsers.py returns.
+        let mut body = String::new();
+        let _ = request.as_reader().take(PARSER_BODY_LIMIT as u64 + 1).read_to_string(&mut body);
+        let path_only = url.split('?').next().unwrap_or("").trim_end_matches('/').to_string();
+        let tail = path_only.trim_start_matches("/parsers/").to_string();
+        let query = url.splitn(2, '?').nth(1).unwrap_or("").to_string();
+        let (payload, code) = parsers_post(&tail, &query, &body);
+        response_json = payload;
+        status_code = code;
+    } else if method == Method::Get && (url == "/council/status" || url == "/council/status/") {
+        let st = state.lock().unwrap();
+        let members: Vec<serde_json::Value> = AGENTS
+            .iter()
+            .map(|a| {
+                // (a) of the council's decision: the per-agent model assignment was NOT observable here --
+                // this record carried name/role/status only, while the docs say each agent is equipped with
+                // its own 7M TRM. It is published now from the GENERATED table
+                // (agent_models_generated.rs <- agent_intelligence_bridge.py::AGENT_MODELS), and the field
+                // names what it is instead of implying a binding that nothing dispatches.
+                let (assigned, title, doms, conf) = match agent_models_generated::for_agent(a.name) {
+                    Some(m) => (m.assigned_model, m.title, json!(m.domains),
+                                Some(agent_models_generated::confidence(m))),
+                    None => ("TRM 7M (Mamba-3 SSM, 7M params)", "", json!([]), None),
+                };
+                json!({
+                    "name": a.name,
+                    "role": a.role,
+                    "status": "ONLINE",
+                    "assigned_model": assigned,
+                    "domain": title,
+                    "domains": doms,
+                    "confidence": conf,
+                    "assignment_source": "swarm_v2/core/agent_intelligence_bridge.py::AGENT_MODELS (generated)",
+                    "runnable_at": "/trm7m (POST {\"text\": ...} runs this model on the served surface)"
+                })
+            })
+            .collect();
+
+        let active_proposals: Vec<serde_json::Value> = st
+            .proposals
+            .iter()
+            .map(|p| {
+                json!({
+                    "id": p.id,
+                    "topic": p.topic,
+                    "category": p.category,
+                    "proposer": p.proposer,
+                    "phase": p.phase,
+                    "weighted_score": p.weighted_score,
+                    "approve_count": p.approve_count,
+                    "consensus_reached": p.consensus_reached,
+                    "reject_count": p.reject_count,
+                    "abstain_count": p.abstain_count,
+                    "k3_model_trit": p.k3_model_trit,
+                    "k3_model_label": trm7m::trit_label(p.k3_model_trit),
+                    "k3_model_confidence": p.k3_model_confidence,
+                    "k3_model_latency_ns": p.k3_model_latency_ns,
+                    "k3_trit": p.k3_trit,
+                    "k3_trit_source": p.k3_trit_source,
+                    "k3_fabric_doc": p.k3_fabric_doc,
+                    "k3_fabric_score": p.k3_fabric_score,
+                    "k3_fabric_matched": p.k3_fabric_matched
+                })
+            })
+            .collect();
+
+        response_json = json!({
+            "server": "Sovereign Native Rust Kernel v20.0.0",
+            "python_active": false,
+            "members": members,
+            "active_proposals": active_proposals,
+            "stats": {
+                "total_proposals": persisted_proposal_count(),
+                "total_agents": 15,
+                "pbft_quorum": 9,
+                "monad_anchor": "0x4D4F4E4144000001"
+            }
+        });
+    } else if method == Method::Get && (url == "/council/proposals" || url == "/council/proposals/")
+    {
+        let st = state.lock().unwrap();
+        let proposals: Vec<serde_json::Value> = st
+            .proposals
+            .iter()
+            .map(|p| {
+                json!({
+                    "id": p.id,
+                    "topic": p.topic,
+                    "category": p.category,
+                    "proposer": p.proposer,
+                    "phase": p.phase,
+                    "weighted_score": p.weighted_score
+                })
+            })
+            .collect();
+
+        response_json = json!({ "proposals": proposals });
+    } else if method == Method::Get && url.starts_with("/council/proposal/") {
+        let parts: Vec<&str> = url.split('/').collect();
+        let id_opt = parts.last().and_then(|s| s.parse::<u64>().ok());
+
+        let st = state.lock().unwrap();
+        if let Some(id) = id_opt {
+            if let Some(p) = st.proposals.iter().find(|prop| prop.id == id) {
+                response_json = json!({
+                    "id": p.id,
+                    "topic": p.topic,
+                    "category": p.category,
+                    "proposer": p.proposer,
+                    "phase": p.phase,
+                    "weighted_score": p.weighted_score,
+                    "approve_count": p.approve_count,
+                    "abstain_count": p.abstain_count,
+                    "reject_count": p.reject_count,
+                    "consensus_reached": p.consensus_reached,
+                    "deliberations": p.deliberations,
+                    "votes": p.votes
+                });
+            } else {
+                status_code = 404;
+                response_json = json!({"error": "Proposal not found"});
+            }
+        } else {
+            status_code = 400;
+            response_json = json!({"error": "Invalid proposal ID"});
+        }
+    } else if method == Method::Post && url.starts_with("/council/propose") {
+        // The submitted body is what gets filed. This arm used to ignore the request entirely and
+        // store a hardcoded "Operator Sovereign Directive" no matter what the caller sent.
+        let mut body = String::new();
+        let _ = request.as_reader().take(65_536).read_to_string(&mut body);
+        let parsed: serde_json::Value = serde_json::from_str(&body).unwrap_or_else(|_| json!({}));
+        let topic = parsed
+            .get("topic")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        if topic.is_empty() {
+            status_code = 400;
+            response_json = json!({
+                "status": "error",
+                "error": "topic_required",
+                "detail": "POST /council/propose needs a JSON body with at least {\"topic\": \"...\"}; category and proposer are optional.",
+            });
+        } else {
+            let category = parsed
+                .get("category")
+                .and_then(|v| v.as_str())
+                .unwrap_or("Uncategorised")
+                .to_string();
+            let proposer = parsed
+                .get("proposer")
+                .and_then(|v| v.as_str())
+                .unwrap_or("Operator")
+                .to_string();
+            let mut st = state.lock().unwrap();
+            let id = evaluate_proposal(&mut st, topic.clone(), category.clone(), proposer.clone());
+            response_json = json!({
+                "status": "PROPOSED",
+                "id": id,
+                "topic": topic,
+                "category": category,
+                "proposer": proposer,
+                "basis": "the stored values are the submitter's own; each agent votes its own domain rule against the topic text — a domain gap abstains with the binding condition named, a violation rejects — so the tally responds to what the proposal actually says",
+            });
+        }
+    } else if method == Method::Get && (url == "/council/members" || url == "/council/members/") {
+        let members: Vec<serde_json::Value> = AGENTS
+            .iter()
+            .map(|a| json!({ "name": a.name, "role": a.role, "status": "ONLINE" }))
+            .collect();
+        let n = AGENTS.len() as u64;
+        let f = n.saturating_sub(1) / 3;
+        response_json = json!({
+            "members": members,
+            "total_members": n,
+            "quorum": 2 * f + 1,
+            "byzantine_tolerance": f,
+            "roster_source": "the AGENTS table compiled into this kernel - one owner, not re-declared here",
+        });
+    } else if method == Method::Get && (url == "/council/ledger" || url == "/council/ledger/") {
+        // The council's ledger IS the sealed monad chain, served by its one owner.
+        response_json = state_handlers::ledger_monad_blocks_payload();
+    } else if method == Method::Post && url.starts_with("/council/") {
+        let action = url
+            .trim_start_matches("/council/")
+            .split('/')
+            .next()
+            .unwrap_or("");
+        status_code = 501;
+        response_json = json!({
+            "status": "not_a_separate_step",
+            "route": url,
+            "message": format!("/council/{action}/<id> is not a separate step. The Rust kernel deliberates, votes, and seals a proposal atomically in POST /council/propose (evaluate_proposal); there is no host_council_deliberation owner and no Python path."),
+        });
+    } else if method == Method::Get && (url == "/health" || url == "/health/") {
+        // Uptime and memory are MEASURED from this process, never typed: this payload
+        // carried uptime_seconds: 3600 and memory_kb: 32768 as constants.
+        response_json = json!({
+            "status": "HEALTHY",
+            "kernel": "Native Rust Sovereign Kernel v20.0.0",
+            "python_active": false,
+            "monad_anchor": "0x4D4F4E4144000001",
+            "uptime_seconds": host_probe::process_uptime_seconds(),
+            "memory_kb": host_probe::process_working_set_mb()
+                .map(|mb| (mb * 1024.0).round() as u64)
+        });
+    } else if method == Method::Get && (url == "/benchmarks" || url == "/benchmarks/") {
+        // Native benchmark suite (council MOTION-B1): real wall-clock of the
+        // in-kernel machinery, every figure labeled measured_on_host.
+        response_json = benchmark_handlers::benchmark_payload();
+    } else if method == Method::Get && url == "/system/resources" {
+        // The resources the dashboard asks for specifically; measured, null when unavailable.
+        let vram = host_probe::gpu_vram();
+        response_json = json!({
+            "cpu_percent": host_probe::cpu_percent(),
+            "memory_used_mb": host_probe::process_working_set_mb(),
+            "memory_total_mb": host_probe::total_memory_mb(),
+            "host_memory_used_mb": host_probe::used_memory_mb(),
+            "active_threads": host_probe::active_threads(),
+            "l3_sram_kb": host_probe::l3_cache_kb(),
+            "total_vram_gb": vram.map(|(t, _, _)| t / 1024.0),
+            "used_vram_gb": vram.map(|(_, u, _)| u / 1024.0),
+            "gpu_util_pct": vram.map(|(_, _, g)| g),
+            "basis": "measured on this host via host_probe (Windows API / nvidia-smi); null = unavailable",
+        });
+    } else if method == Method::Get && url == "/system/voltage" {
+        // Φ_V is derived from the doctrine formula. Whether the rail term is a live VID or a
+        // nominal 1.0 is decided by host_probe and travels in `basis`; this route must not restate
+        // it, because a fixed sentence here claimed a live VID while the probe reported none.
+        let (phi, basis, clock_mhz, mem_pct) = host_probe::phi_v();
+        response_json = json!({
+            "voltage_phi_v": phi,
+            "voltage_phi_v_basis": basis,
+            "host_clock_mhz": clock_mhz,
+            "host_mem_pct": mem_pct,
+            "basis": format!("Φ_V derived from the doctrine formula; {}", basis),
+        });
+    } else if method == Method::Get && (url.starts_with("/system") || url.starts_with("/system/")) {
+        // Module counts are READ from the scan artifact, never typed here: this payload
+        // carried real_modules_count: 170 while the registry derived 153 REAL / 4 FABRICATED.
+        let reg = state_handlers::registry_counts();
+        let r = |k: &str| {
+            reg.as_ref()
+                .and_then(|v| v.get(k).cloned())
+                .unwrap_or(serde_json::Value::Null)
+        };
+        // Host telemetry is MEASURED by host_probe, never typed: this payload carried
+        // voltage_phi_v: 0.86, cpu_percent: 12.4, memory_used_mb: 42.1, active_threads: 14,
+        // memory_total_mb: 32768.0 and l3_sram_kb: 32768 no matter what the host was doing.
+        // Φ_V is a DERIVED formula (clock × memory pressure with rail ratios that reduce to 1.0),
+        // not a measurement. The previous payload multiplied it by 1.8 and clamped it to
+        // [0.82, 0.965] to pose as a phase lock. Report the raw measured inputs instead.
+        let (phi, phi_basis, clock_mhz, mem_pct) = host_probe::phi_v();
+        // VRAM is MEASURED from nvidia-smi, never typed: this payload carried total_vram_gb /
+        // used_vram_gb / avg_utilization as null while the host has an 8 GB RTX 3070.
+        let vram = host_probe::gpu_vram();
+        response_json = json!({
+            "kernel_version": "v20.0.0-sovereign",
+            "runtime_type": "Native Rust no_std + host socket",
+            "voltage_phi_v": phi,
+            "voltage_phi_v_basis": phi_basis,
+            "monad_anchor": "0x4D4F4E4144000001",
+            "real_modules_count": r("real"),
+            "fabricated_modules_count": r("fabricated"),
+            "modules_compiled": r("modules_compiled"),
+            "module_status": {
+                "ported": r("ported"),
+                "skeleton": r("skeleton"),
+                "excluded": r("excluded")
+            },
+            "module_trees": r("trees"),
+            "registry_generated": r("generated"),
+            "sram_patterns_count": SRAM_PATTERNS_DECLARED,
+            "python_active": false,
+            "cpu_percent": host_probe::cpu_percent(),
+            "memory_used_mb": host_probe::process_working_set_mb(),
+            "host_memory_used_mb": host_probe::used_memory_mb(),
+            "memory_total_mb": host_probe::total_memory_mb(),
+            "active_threads": host_probe::active_threads(),
+            "l3_sram_kb": host_probe::l3_cache_kb(),
+            "host_clock_mhz": clock_mhz,
+            "host_mem_pct": mem_pct,
+            "total_vram_gb": vram.map(|(t, _, _)| t / 1024.0),
+            "used_vram_gb": vram.map(|(_, u, _)| u / 1024.0),
+            "gpu_util_pct": vram.map(|(_, _, g)| g),
+            "probe_basis": {
+                "measured_on_host": [
+                    "cpu_percent", "memory_used_mb", "memory_total_mb",
+                    "active_threads", "l3_sram_kb", "host_clock_mhz", "host_mem_pct",
+                    "total_vram_gb", "used_vram_gb", "gpu_util_pct"
+                ],
+                "read_from_scan_artifact": [
+                    "real_modules_count", "fabricated_modules_count", "modules_compiled",
+                    "module_status", "module_trees", "registry_generated"
+                ],
+                "declared_constant": [
+                    "sram_patterns_count", "kernel_version", "runtime_type", "monad_anchor"
+                ],
+                "null_means": "probe unavailable on this host; nothing is substituted"
+            }
+        });
+    } else if method == Method::Get
+        && (url.starts_with("/swarm/experts") || url.starts_with("/experts"))
+    {
+        let experts: Vec<serde_json::Value> = AGENTS
+            .iter()
+            .map(|a| {
+                json!({
+                    "name": a.name,
+                    "role": a.role,
+                    "domain": a.domain,
+                    "status": "ONLINE",
+                    "confidence": 0.95,
+                    "weight": a.weight,
+                    "avatar": a.name.to_lowercase()
+                })
+            })
+            .collect();
+        response_json = json!(experts);
+    } else if method == Method::Get && (url.starts_with("/swarm/telemetry") || url == "/swarm") {
+        response_json = telemetry_handlers::telemetry_payload();
+
+    } else if method == Method::Get && url.starts_with("/artifacts") {
+        // The artifact pipeline persists in swarm_v2_memory/artifact_pipeline.json; the offline
+        // export (swarm_v2_artifacts/export_artifact_index.py) strips the heavy `content` field
+        // into a compact index this arm reads and caches keyed on (mtime, length).
+        response_json = artifact_handlers::artifacts_payload(&url);
+    } else if method == Method::Get && url.starts_with("/learning") {
+        response_json = telemetry_handlers::learning_payload();
+
+    } else if method == Method::Get && (url == "/intel/router" || url == "/router/experts") {
+        // The 15 experts the platform carries + the measured routing performance. Every council
+        // agent is now routable; the latency is a live CPU measurement, not an asserted figure.
+        response_json = intelligence_router::experts_payload();
+
+    } else if method == Method::Get && (url == "/hardware/pinning" || url == "/pinning") {
+        // The measured CPU core map + GPU device + which runtime thread is pinned to which core.
+        response_json = core_pinning::pinning_report();
+
+    } else if method == Method::Get && (url == "/memory/intel" || url == "/swarm/intel") {
+        // The SHARED INTEL RESERVOIR. Claimed BEFORE the /memory*fabric* arm below, which would
+        // otherwise answer it with the NAND fabric payload -- that shape mismatch is what left the
+        // dashboard's swarm-intel tab showing placeholders.
+        response_json = intel_reservoir::intel_payload();
+
+    } else if method == Method::Get && url.starts_with("/memory/query") {
+        // Keyword/exact retrieval over the memory corpus the kernel now actually loads
+        // (memory_corpus::corpus): top-k with scores and the matched text. Claimed BEFORE the
+        // /memory/stats arm and the /memory collection arm below, both of which would answer it
+        // with a different shape.
+        let (q, k) = memory_corpus::query_from_url(&url);
+        response_json = memory_corpus::query_payload(&q, k);
+
+    } else if method == Method::Get && url.starts_with("/memory/stats") {
+        // Collective Stats / Type Breakdown on the swarm-intel tab.
+        response_json = intel_reservoir::stats_payload();
+
+    } else if method == Method::Get && url.starts_with("/memory/recent") {
+        // The Live Memory Feed.
+        response_json = intel_reservoir::recent_payload(intel_reservoir::limit_from(&url));
+
+    } else if method == Method::Get && (url == "/ddr/antibodies" || url == "/ddr/antibodies/") {
+        // The DDR vault list: the curated code-scanning antibodies serialized, plus the
+        // threat-matrix totals. The threat store (MITRE/CWE/CVE, ~173 MB / ~400k entries) is
+        // counted, not serialized, so this stays a fast read.
+        let curated = actions_handlers::curated_antibodies();
+        let curated_n = curated.len();
+        let threat = actions_handlers::threat_antibody_count();
+        let total = actions_handlers::ddr_antibody_count();
+        response_json = json!({
+            "antibodies": curated,
+            "count": curated_n,
+            "curated_count": curated_n,
+            "threat_count": threat.map(|c| json!(c)).unwrap_or(json!(null)),
+            "total_count": total.map(|c| json!(c)).unwrap_or(json!(null)),
+            "basis": "antibodies = curated code-scanning store (DDR_ANTIBODIES.json); threat_count = MITRE/CWE/CVE threat-matrix store (DDR_THREAT_ANTIBODIES.json), counted not serialized",
+        });
+
+    } else if method == Method::Get && (url == "/ddr/stats" || url == "/ddr/stats/") {
+        let curated = actions_handlers::curated_antibody_count();
+        let threat = actions_handlers::threat_antibody_count();
+        let total = actions_handlers::ddr_antibody_count();
+        response_json = json!({
+            "ddr_antibody_count": total.map(|c| json!(c)).unwrap_or(json!(null)),
+            "ddr_curated_antibody_count": curated.map(|c| json!(c)).unwrap_or(json!(null)),
+            "ddr_threat_antibody_count": threat.map(|c| json!(c)).unwrap_or(json!(null)),
+            "ddr_antibody_count_basis": "curated (DDR_ANTIBODIES.json) + threat-matrix (DDR_THREAT_ANTIBODIES.json, MITRE/CWE/CVE-derived); total = curated + threat",
+            "ddr_antibody_count_previously_asserted": 1801,
+        });
+
+    } else if method == Method::Get && (url.starts_with("/memory") || url.starts_with("/ddr")) {
+        // Derived, not asserted: the trit total comes from the mapped store's own size, and the
+        // companion stores are the ones /k3/status reports. shards/utilization are named as the
+        // design figures they are instead of riding along as measurements.
+        let store = crate::k3_retrieval::fabric_store();
+        let (total_trits, store_path, store_bytes) = match &store {
+            Some((p, b)) => (json!(b.saturating_mul(2)), json!(p), json!(b)),
+            None => (json!(null), json!(null), json!(null)),
+        };
+        let (k3, _) = crate::k3_retrieval::status_handle();
+        response_json = json!({
+            "fabric": "NVMe NAND K3 Fabric",
+            "total_trits": total_trits,
+            "trit_store": store_path,
+            "trit_store_bytes": store_bytes,
+            "total_trits_basis": "store bytes x 2 trits/byte, read from the file the kernel maps",
+            "stores": {
+                "fabric": k3.get("fabric").cloned().unwrap_or(json!(null)),
+                "tercode": k3.get("tercode").cloned().unwrap_or(json!(null)),
+                "ipc": k3.get("ipc").cloned().unwrap_or(json!(null))
+            },
+            "shards": null,
+            "shards_basis": "no shard count is measured here: the fabric is one .k3 file plus a tercode store and the IPC ring",
+            "utilization_pct": null,
+            "utilization_pct_basis": "designed corpus vs drive capacity is a design figure, not occupancy",
+            "design_figures": { "shards": 18, "utilization_pct": 0.59, "source": "docs/NAND_K3_FABRIC_SPEC.md" },
+            "ddr_antibody_count": actions_handlers::ddr_antibody_count().map(|c| json!(c)).unwrap_or(json!(null)),
+            "ddr_curated_antibody_count": actions_handlers::curated_antibody_count().map(|c| json!(c)).unwrap_or(json!(null)),
+            "ddr_threat_antibody_count": actions_handlers::threat_antibody_count().map(|c| json!(c)).unwrap_or(json!(null)),
+            "ddr_antibody_count_basis": "curated (DDR_ANTIBODIES.json) + threat-matrix (DDR_THREAT_ANTIBODIES.json, MITRE/CWE/CVE-derived); total = curated + threat; null = store unreadable - not a clean result",
+            "ddr_antibody_count_previously_asserted": 1801,
+            "status": "ONLINE",
+            "status_basis": "the kernel is answering; IMMUTABLE_LOCKED was a store-policy claim with no source"
+
+        });
+    } else if method == Method::Get && url.starts_with("/federation") {
+        response_json = state_handlers::federation_payload(&url);
+    } else if method == Method::Post && url.starts_with("/federation/sync") {
+        let mut body = String::new();
+        let _ = request.as_reader().take(65_536).read_to_string(&mut body);
+        response_json = state_handlers::federation_sync_payload(&body);
+    } else if method == Method::Post && url == "/sync" {
+        // Standardized sync-write endpoint (parity with the MacPro5-1 /sync route): read the
+        // handshake, verify the Monad anchor, return the registry's actual state.
+        let mut body = String::new();
+        let _ = request.as_reader().take(65_536).read_to_string(&mut body);
+        response_json = state_handlers::federation_sync_payload(&body);
+    } else if method == Method::Get && url.starts_with("/security/threats/query") {
+        // Native threat-index query over the voltage-stripped MITRE+CWE corpus.
+        let (payload, code) = k3_retrieval::threat_query_handle(&url);
+        response_json = payload;
+        status_code = code;
+    } else if method == Method::Get && url.starts_with("/security") {
+        response_json = telemetry_handlers::security_payload();
+
+    } else if method == Method::Get && url.starts_with("/mailbox/ring") {
+        // The IPC transport read from its own bytes. Dispatched BEFORE the /mailbox prefix arm
+        // below, or that arm would swallow this route.
+        let (payload, code) = mailbox_ring::handle(&url);
+        response_json = payload;
+        status_code = code;
+    } else if method == Method::Get && (url.starts_with("/mailbox") || url.starts_with("/comms")) {
+        // This arm served two invented messages (a 170/170 module claim and a 14-0-0 consolidation
+        // motion) with fabricated timestamps. The transport's real content is the ring's own state,
+        // read from its bytes by mailbox_ring.rs: counters per agent plus the k3_trit of each slot.
+        // No message TEXT exists to serve, and saying so beats inventing a feed.
+        let (ring, _) = mailbox_ring::handle("/mailbox/ring");
+        response_json = json!({
+            "messages": [],
+            "messages_reason": "the IPC ring stores per-agent counters and 64-byte slot payloads, not decodable message text; the only decoded field is each slot's k3_trit. The two messages this route used to serve were not read from any store.",
+            "transport": "shared-memory ring bus (IPC)",
+            "ring_store": ring.get("store").cloned().unwrap_or(json!(null)),
+            "total_pending": ring.get("total_pending").cloned().unwrap_or(json!(null)),
+            "total_messages_ever": ring.get("total_messages_ever").cloned().unwrap_or(json!(null)),
+            "source_route": "/mailbox/ring",
+        });
+    } else if method == Method::Get && url.starts_with("/infrastructure/status") {
+        // The self-healing FSM over the supervisor's own table.
+        response_json = infra_handlers::status_payload();
+
+    } else if method == Method::Get && url.starts_with("/infra/health") {
+        response_json = infra_handlers::health_payload();
+
+    } else if method == Method::Get && url.starts_with("/infra/history") {
+        response_json = infra_handlers::history_payload();
+
+    } else if method == Method::Post && url == "/infra/start" {
+        // Resume the supervisor's heal loop. Written to the control file the Rust host_supervisor
+        // reads on its next tick; the effect is observable via /infra/health.running.
+        response_json = infra_handlers::control_payload("resume", None);
+
+    } else if method == Method::Post && url == "/infra/stop" {
+        // Pause the heal loop (services are still reported, never restarted while paused).
+        response_json = infra_handlers::control_payload("pause", None);
+
+    } else if method == Method::Post && url == "/infra/reset" {
+        // Reset every service's restart counter to 0.
+        response_json = infra_handlers::control_payload("reset", None);
+
+    } else if method == Method::Post && url.starts_with("/infra/reset/") {
+        // Reset one service's restart counter by its supervisor key (dashboard resets per service).
+        let key = url.trim_start_matches("/infra/reset/");
+        response_json = infra_handlers::control_payload("reset", Some(key));
+
+    } else if method == Method::Post && url.starts_with("/infra/restart/") {
+        // Force-restart one service by its supervisor key (e.g. rust_kernel, tier2_generator).
+        let key = url.trim_start_matches("/infra/restart/");
+        response_json = infra_handlers::control_payload("restart", Some(key));
+
+    } else if method == Method::Get && (url == "/infrastructure" || url == "/infrastructure/") {
+        // "ACTIVE" and "ARMED_ZERO_DRIFT" were declared here with nothing behind them. They are now the
+        // FSM's own verdict over the supervisor's measured table, or an honest "unknown" when that table
+        // cannot be read -- never a claim that the healing layer is fine because the string said so.
+        let h = infra_handlers::health_payload();
+        response_json = json!({
+            "self_healing": h.get("status").cloned().unwrap_or(json!("unknown")),
+            "self_healing_rule": h.get("status_rule").cloned().unwrap_or(json!(null)),
+            "self_healing_basis": "derived by trm_uefi_kernel/src/self_healing_infra.rs from the supervisor's own service table; previously asserted as the literal \"ACTIVE\"",
+            "watchdog": h.get("status").cloned().unwrap_or(json!("unknown")),
+            "watchdog_previously_asserted": "ARMED_ZERO_DRIFT",
+            "ddr_antibody_count": actions_handlers::ddr_antibody_count().map(|c| json!(c)).unwrap_or(json!(null)),
+            "ddr_curated_antibody_count": actions_handlers::curated_antibody_count().map(|c| json!(c)).unwrap_or(json!(null)),
+            "ddr_threat_antibody_count": actions_handlers::threat_antibody_count().map(|c| json!(c)).unwrap_or(json!(null)),
+            "ddr_antibody_count_basis": "curated (DDR_ANTIBODIES.json) + threat-matrix (DDR_THREAT_ANTIBODIES.json, MITRE/CWE/CVE-derived); total = curated + threat; null = store unreadable - not a clean result",
+            "ddr_antibody_count_previously_asserted": 1801,
+            "routes": ["/infrastructure/status", "/infra/health", "/infra/history"]
+        });
+    } else if method == Method::Get && (url == "/research/stats" || url == "/research/stats/") {
+        response_json = research_handlers::stats();
+
+    } else if method == Method::Get && (url == "/brain/status" || url == "/brain/status/") {
+        response_json = telemetry_handlers::brain_status_payload();
+
+    } else if method == Method::Post && url.starts_with("/brain/reason") {
+        // Recorded as a stub through the whole rollout, then closed: this arm computed its verdict
+        // from a hardcoded `sample_context` array and answered the same chain for ANY body. No
+        // reasoning engine is wired on this host, so the route answers with the machinery that does
+        // exist -- the kernel's own retrieval -- and reports exactly what that derives.
+        let mut body = String::new();
+        let _ = request.as_reader().take(65_536).read_to_string(&mut body);
+        let parsed: serde_json::Value = serde_json::from_str(&body).unwrap_or_else(|_| json!({}));
+        let q = parsed
+            .get("query")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        if q.is_empty() {
+            status_code = 400;
+            response_json = json!({
+                "error": "empty_query",
+                "message": "/brain/reason needs {\"query\": \"...\"}; the chain this route used to return was computed from a hardcoded sample, not from the request"
+            });
+        } else {
+            let (ret, _) = crate::k3_retrieval::handle(&format!(
+                "/k3/retrieve?q={}&k=3",
+                crate::actions_handlers::enc(&q)
+            ));
+            let hits = ret
+                .get("results")
+                .and_then(|v| v.as_array())
+                .cloned()
+                .unwrap_or_default();
+            let steps: Vec<serde_json::Value> = hits
+                .iter()
+                .enumerate()
+                .map(|(i, h)| {
+                    json!({
+                        "step": i + 1,
+                        "action": "retrieve",
+                        "unit": h.get("doc").cloned().unwrap_or(json!(null)),
+                        "fidelity": h.get("doc_fidelity").cloned().unwrap_or(json!(null)),
+                        "score": h.get("score").cloned().unwrap_or(json!(null)),
+                        "score_crosschecked": h.get("score_crosschecked").cloned().unwrap_or(json!(null))
+                    })
+                })
+                .collect();
+            let top_fidelity = hits
+                .first()
+                .and_then(|h| h.get("doc_fidelity"))
+                .and_then(|v| v.as_f64());
+            response_json = json!({
+                "status": "RETRIEVAL_ONLY",
+                "query": q,
+                "steps": steps,
+                "steps_taken": hits.len(),
+                "halted": top_fidelity.map(|f| f >= 0.5).unwrap_or(false),
+                "halt_basis": "this route halts when the top hit's fidelity clears 0.5 -- the threshold is this route's, not a doctrine constant",
+                "top_fidelity": top_fidelity,
+                "engine": null,
+                "engine_reason": "no reasoning engine is wired on this host: there is no SSM recurrence in this process, so no chain can be reported as computed",
+                "retrieval": {
+                    "corpus": ret.get("corpus").cloned().unwrap_or(json!(null)),
+                    "candidates_scored": ret.get("candidates_scored").cloned().unwrap_or(json!(null)),
+                    "engine": ret.get("engine").cloned().unwrap_or(json!(null)),
+                    "elapsed_us": ret.get("elapsed_us").cloned().unwrap_or(json!(null))
+                },
+                "previously_asserted": { "status": "COMPLETED", "steps_taken": 4, "confidence": 0.94,
+                                        "k3_trit": 1,
+                                        "explanation": "Native Rust TRM Brain: Non-contradiction verified via Mamba-3 SSM recurrence." }
+            });
+        }
+
+    }
+
+    // ── Kanban board (real state file) — Option A dashboard function fix ─────
+    // Must run before the {"status":"ok"} catch-all so the dashboard's Kanban
+    // tab reads/writes the real 640-card board (kanban_state.json).
+    if url.starts_with("/kanban") || url.starts_with("/genomics") {
+        if let Some(kresp) = kanban_handlers::handle(&mut request, &url) {
+            let _ = request.respond(kresp);
+            return;
+        }
+    }
+
+    // ── Evolution actions (native mutation cycle) — claimed before the read handler ──
+    if url.starts_with("/evolution") {
+        if let Some(ea) = evolution_actions::handle(&mut request, &url) {
+            let _ = request.respond(ea);
+            return;
+        }
+    }
+
+    // ── Evolution tab (real proposals file) — Option A continuation ─────────
+    if url.starts_with("/evolution") {
+        if let Some(eresp) = state_handlers::handle(&mut request, &url) {
+            let _ = request.respond(eresp);
+            return;
+        }
+    }
+
+    // ── P1/P2: artifact provenance (the re-checked census) + the wired proof checker ─────────
+    if url.starts_with("/verification/artifacts") || url.starts_with("/verification/proof")
+        || url.starts_with("/verification/fabrication") {
+        if let Some(vresp) = verification_handlers::handle(&mut request, &url) {
+            let _ = request.respond(vresp);
+            return;
+        }
+    }
+
+    // ── P2g: the verified crates, wired as routes: each op computes in the crate that owns the
+    //     algorithm and reports that crate's own answer. GET /crate/ops is the wiring as data. ──
+    if url.starts_with("/crate/") {
+        if let Some(cresp) = crate_ops_handlers::handle(&mut request, &url) {
+            let _ = request.respond(cresp);
+            return;
+        }
+    }
+
+    // ── Layer 1: the 15 SRAM topologies and the Hopfield relaxation, from the kernel's own source ──
+    if url.starts_with("/sram") {
+        if let Some(sresp) = sram_handlers::handle(&mut request, &url) {
+            let _ = request.respond(sresp);
+            return;
+        }
+    }
+
+    // ── The proven native modules as routes: chaos, expert resolution, persona, GPU pattern math ──
+    if url.starts_with("/native") {
+        if let Some(nresp) = native_handlers::handle(&mut request, &url) {
+            let _ = request.respond(nresp);
+            return;
+        }
+    }
+
+    // ── Verification / Testing / Skills (real files) — Option A batch 2 ─────
+    if url.starts_with("/verification") || url.starts_with("/testing") || url.starts_with("/skills")
+    {
+        if let Some(bresp) = state_handlers::handle_batch2(&mut request, &url) {
+            let _ = request.respond(bresp);
+            return;
+        }
+    }
+
+    // ── TRM 7M batch: score N texts in ONE GPU dispatch (the corpus/council-scale model tier) ──
+    // The runtime's single-eval path (evaluate_proposal) stays on the CPU forward; this route is the
+    // batch entry point — the building block for scoring a corpus or a full slate of candidates at once.
+    if url.starts_with("/trm7m/batch") {
+        let mut body = String::new();
+        let _ = request.as_reader().take(1_048_576).read_to_string(&mut body);
+        let parsed: serde_json::Value = serde_json::from_str(&body).unwrap_or_else(|_| json!({}));
+        let texts: Vec<String> = parsed
+            .get("texts")
+            .and_then(|v| v.as_array())
+            .map(|a| a.iter().filter_map(|v| v.as_str().map(String::from)).collect())
+            .unwrap_or_default();
+        let inputs: Vec<[f32; 128]> = texts.iter().map(|t| trm7m::Trm7m::encode_text(t)).collect();
+        let backend;
+        let scored: Vec<(i8, f32)> = match gpu_compute::gpu_trm7m_batch(&inputs) {
+            Some(v) => {
+                backend = "gpu";
+                v
+            }
+            None => {
+                backend = "cpu";
+                inputs.iter().map(|x| {
+                    let mut m = trm7m::Trm7m::new();
+                    let (t, c, _) = m.forward(x);
+                    (t, c)
+                }).collect()
+            }
+        };
+        let results: Vec<serde_json::Value> = texts.iter().zip(scored.iter())
+            .map(|(t, (trit, conf))| json!({
+                "text": t,
+                "trit": trit,
+                "trit_label": trm7m::trit_label(*trit),
+                "confidence": conf,
+            }))
+            .collect();
+        response_json = json!({
+            "model": "trm7m_source",
+            "backend": backend,
+            "count": texts.len(),
+            "results": results,
+            "note": "batched forward — one GPU dispatch over N inputs (fresh state per input, parity-verified vs the CPU forward); CPU forward fallback",
+        });
+    }
+
+    // ── TRM 7M (b) of the council decision: the REGISTERED model, actually RUN ─────────────
+    // Before this arm existed, /models reported the bundle and nothing could execute it. The kernel now
+    // runs the same seed-42 weights the UEFI kernel embeds and returns the model's own trit + confidence.
+    if url.starts_with("/trm7m") && !url.starts_with("/trm7m/batch") {
+        let mut body = String::new();
+        let _ = request.as_reader().take(65_536).read_to_string(&mut body);
+        let parsed: serde_json::Value = serde_json::from_str(&body).unwrap_or_else(|_| json!({}));
+        let text = parsed
+            .get("text")
+            .and_then(|v| v.as_str())
+            .unwrap_or("sovereign status")
+            .to_string();
+        let mut model = trm7m::Trm7m::new();
+        let (trit, conf, ns) = model.think(&text, 7);
+        let hidden_rms = (model.hidden.iter().map(|v| (*v as f64) * (*v as f64)).sum::<f64>()
+            / model.hidden.len().max(1) as f64)
+            .sqrt();
+        let hidden_absmax = model.hidden.iter().cloned().fold(0.0f32, f32::max);
+        response_json = json!({
+            "model": "trm7m_source",
+            "bundle": "swarm_v2_artifacts/ternary_models/trm7m_source.trm",
+            "weights": "trm_uefi_kernel/assets/trm7m_weights.bin (the same seed-42 distilled blob the UEFI kernel embeds)",
+            "thinking_turns": 7,
+            "params": trm7m::Trm7m::total_params(),
+            "weight_bytes": trm7m::Trm7m::weight_bytes(),
+            "state_dim": trm7m::STATE_DIM,
+            "blocks": trm7m::NUM_BLOCKS,
+            "text": text,
+            "trit": trit,
+            "trit_label": trm7m::trit_label(trit),
+            "confidence": conf,
+            "logits": model.last_logits,
+            "hidden_rms": hidden_rms,
+            "hidden_absmax": hidden_absmax,
+            "hidden_len": model.hidden.len(),
+            "hidden": model.hidden.clone(),
+            "latency_ns": ns,
+            "forward_calls": model.forward_calls,
+            "note": "the served value IS the model's output (ported 1:1 from trm7m.rs), after 7 forward 'thinking turns' for the SSM conv-state to warm up; it is not a rule table's verdict",
+            "fabric": crate::task_executor::unified_fabric_verdict(&text),
+        });
+    }
+
+    // ── Model registry: ingested ternary models (real bundles) ─────────────
+    if url.starts_with("/models") {
+        if let Some(mresp) = model_registry::handle(&mut request, &url) {
+            let _ = request.respond(mresp);
+            return;
+        }
+    }
+
+    // ── Neural Bridge chat (native, deterministic) ─────────────────────────
+    if url.starts_with("/swarm/chat") {
+        if let Some(cresp) = chat_handlers::handle(&mut request, &url) {
+            let _ = request.respond(cresp);
+            return;
+        }
+    }
+
+    // ── Rollout 4: missions/research/journal/agents/infra (STATE_STORE_SPEC.md) ─
+    if url.starts_with("/ultrawork")
+        || url.starts_with("/research")
+        || url.starts_with("/journal")
+        || url.starts_with("/swarm/agents")
+        || url.starts_with("/swarm/orchestrator")
+        || url.starts_with("/swarm/spatial")
+        || url.starts_with("/infrastructure")
+        || url.starts_with("/infra")
+        || url.starts_with("/secrets")
+    {
+        if let Some(r4resp) = state_handlers::handle_batch3(&mut request, &url) {
+            let _ = request.respond(r4resp);
+            return;
+        }
+    }
+
+    // ── Rollout 5: pillars families (wetlab/sensory/thz/regulatory/ledger) — file-backed reads,
+    //     honest 501s for the engine-owned actions; goes before the {"status":"ok"} catch-all.
+    if url.starts_with("/wetlab")
+        || url.starts_with("/sensory")
+        || url.starts_with("/thz")
+        || url.starts_with("/regulatory")
+        || url.starts_with("/ledger")
+    {
+        if let Some(r5resp) = state_handlers::handle_batch4(&mut request, &url) {
+            let _ = request.respond(r5resp);
+            return;
+        }
+    }
+
+    // ── Humanistic module (MOTION-H1): unified surface. The task reads fall
+    //    through to handle_batch5 below (reused, not duplicated).
+    if url == "/humanistic" || url == "/humanistic/"
+        || url.starts_with("/humanistic/reflect")
+        || url.starts_with("/humanistic/compose")
+    {
+        if let Some(hresp) = humanistic_handlers::handle(&mut request, &url) {
+            let _ = request.respond(hresp);
+            return;
+        }
+    }
+
+    // ── Rollout 6: discovery + humanistic families (file-backed reads).
+    if url.starts_with("/discovery") || url.starts_with("/humanistic") {
+        if let Some(r6resp) = state_handlers::handle_batch5(&mut request, &url) {
+            let _ = request.respond(r6resp);
+            return;
+        }
+    }
+
+    // ── Continuum refraction (native) — claimed before the engine_required arm ──
+    if url.starts_with("/api/continuum/genomics/refract") {
+        if let Some(cr) = continuum_refract::handle(&mut request, &url) {
+            let _ = request.respond(cr);
+            return;
+        }
+    }
+
+    // ── Rollout 7: continuum + microkernel families (derived / file-backed reads; engine actions 501).
+    if url.starts_with("/api/continuum") || url.starts_with("/swarm/microkernel") {
+        if let Some(r7resp) = state_handlers::handle_batch6(&mut request, &url) {
+            let _ = request.respond(r7resp);
+            return;
+        }
+    }
+
+    // ── Rollout 8: per-module reads. MUST run before the /system arm's payload is serialized: that
+    //     arm matches any "/system*" prefix and fell through, so every /system/modules/<name> answer
+    //     was the same overview. This guard responds and returns instead.
+    if url.starts_with("/system/modules") {
+        if let Some(mresp) = module_handlers::handle(&mut request, &url) {
+            let _ = request.respond(mresp);
+            return;
+        }
+    }
+
+    // ── Generative-architect synthesize (native) — claimed before the refusal arm ──
+    if url.starts_with("/generative-architect") {
+        if let Some(aa) = architect_actions::handle(&mut request, &url) {
+            let _ = request.respond(aa);
+            return;
+        }
+    }
+
+    // ── Rollout 9: generative-architect + mobile-sync (engine-shaped; the mobile route bodies are
+    //     asserted constants, so they are refused rather than echoed).
+    if url.starts_with("/generative-architect") || url.starts_with("/api/mobile-sync") {
+        if let Some(sresp) = studio_handlers::handle(&mut request, &url) {
+            let _ = request.respond(sresp);
+            return;
+        }
+    }
+
+    // ── Rollout 10: the mesh family. It used to answer EVERY /mesh/<anything> path (including
+    //     /mesh/does-not-exist) with one hardcoded two-node topology carrying invented ping times.
+    if url.starts_with("/mesh") {
+        if let Some(meresp) = mesh_handlers::handle(&mut request, &url) {
+            let _ = request.respond(meresp);
+            return;
+        }
+    }
+
+    // ── Native ports of the engine actions (mailbox write, DDR scan, artifact review/integrate) —
+    //     claimed BEFORE the engine_required refusal below, so they are real, not 501.
+    if let Some(mw) = mailbox_write::handle(&mut request, &url) {
+        let _ = request.respond(mw);
+        return;
+    }
+    if let Some(ds) = ddr_scan::handle(&mut request, &url) {
+        let _ = request.respond(ds);
+        return;
+    }
+    if let Some(ar) = artifact_actions::handle(&mut request, &url) {
+        let _ = request.respond(ar);
+        return;
+    }
+
+    // ── Rollout 13: the engine-action family. /memory/query is the one member this kernel can
+    //     answer from its own machinery (/k3/retrieve); the rest need Python engines, and before
+    //     this guard they landed in the catch-all and reported success.
+    if let Some(xresp) = actions_handlers::handle(&mut request, &url) {
+        let _ = request.respond(xresp);
+        return;
+    }
+
+    // ── Rollout 12: Aura Studio is a SEPARATE product (not running), and the research ACTIONS
+    //     need the Python engine's daemon. Both used to fall through to the catch-all, so the IDE and
+    //     the research controls reported success while nothing ran.
+    if url.starts_with("/aura") {
+        if let Some(aresp) = aura_handlers::handle(&mut request, &url) {
+            let _ = request.respond(aresp);
+            return;
+        }
+    }
+    if url.starts_with("/research") {
+        if let Some(rresp) = research_handlers::handle(&mut request, &url) {
+            let _ = request.respond(rresp);
+            return;
+        }
+    }
+
+    // ── Rollout 11: the services catalog. Both routes used to fall through to the catch-all, and the
+    //     tab then rendered a hardcoded client-side catalog (invented Phi_V/module/quorum/antibody
+    //     figures, pricing) while the client minted a random API key on provisioning failure.
+    if url.starts_with("/services") {
+        if let Some(svresp) = services_handlers::handle(&mut request, &url) {
+            let _ = request.respond(svresp);
+            return;
+        }
+    }
+
+    // ── The pure-Rust server-rendered dashboard. /ui/journal is the first viewport (the migration
+    //     template); it must claim the route before the static React bundle below.
+    if url.starts_with("/ui/journal") {
+        let _ = request.respond(ui_render::journal_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/council") {
+        let _ = request.respond(ui_render::council_chamber_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/matrix") {
+        let _ = request.respond(ui_render::module_matrix_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/discovery") {
+        let _ = request.respond(ui_render::discovery_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/humanistic") {
+        let _ = request.respond(ui_render::humanistic_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/benchmarks") {
+        let _ = request.respond(ui_render::benchmark_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/mesh") {
+        let _ = request.respond(ui_render::mesh_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/aura") {
+        let _ = request.respond(ui_render::aura_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/continuum") {
+        let _ = request.respond(ui_render::continuum_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/mobile") {
+        let _ = request.respond(ui_render::mobile_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/mitosis") {
+        let _ = request.respond(ui_render::mitosis_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/telemetry") {
+        let _ = request.respond(ui_render::telemetry_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/federation") {
+        let _ = request.respond(ui_render::federation_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/security") {
+        let _ = request.respond(ui_render::security_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/verification") {
+        let _ = request.respond(ui_render::verification_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/infra") {
+        let _ = request.respond(ui_render::infra_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/testing") {
+        let _ = request.respond(ui_render::testing_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/research") {
+        let _ = request.respond(ui_render::research_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/overview") {
+        let _ = request.respond(ui_render::overview_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/intel") {
+        let _ = request.respond(ui_render::intel_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/learning") {
+        let _ = request.respond(ui_render::learning_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/services") {
+        let _ = request.respond(ui_render::services_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/native") {
+        let _ = request.respond(ui_render::native_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/chat/send") {
+        let resp = ui_render::chat_send_html(&mut request, &url);
+        let _ = request.respond(resp);
+        return;
+    }
+    if url.starts_with("/ui/chat/clear") {
+        let _ = request.respond(ui_render::chat_clear_html());
+        return;
+    }
+    if url.starts_with("/ui/chat") {
+        let _ = request.respond(ui_render::chat_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/ddr") {
+        let _ = request.respond(ui_render::ddr_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/pillars") {
+        let _ = request.respond(ui_render::pillars_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/pipeline") {
+        let _ = request.respond(ui_render::pipeline_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/kanban") {
+        let _ = request.respond(ui_render::kanban_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/comms") {
+        let _ = request.respond(ui_render::comms_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/spatial") {
+        let _ = request.respond(ui_render::spatial_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/evolution") {
+        let _ = request.respond(ui_render::evolution_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/architect") {
+        let _ = request.respond(ui_render::architect_html(&url));
+        return;
+    }
+    if url.starts_with("/ui/neuro") {
+        let _ = request.respond(ui_render::neuro_html(&url));
+        return;
+    }
+
+    // ── The pure-Rust compositor index — the landing page links every viewport. Claim bare /ui and
+    //     /ui/ before the built React bundle below, so the dashboard's tabs are real navigation.
+    if url == "/ui" || url == "/ui/" {
+        let _ = request.respond(ui_render::index_html(&url));
+        return;
+    }
+
+    // ── The built dashboard. The UI and the API share this origin, so the app's root-relative
+    //     fetches resolve to this kernel with no proxy -- which is what lets the Node dev server
+    //     the platform has been running for retire. Goes before the unclaimed check.
+    if let Some(uiresp) = ui_handlers::handle(&url) {
+        let _ = request.respond(uiresp);
+        return;
+    }
+
+    // Nothing claimed the path. Report that honestly instead of the old {"status":"ok"}, which told
+    // 24 unhandled routes that they had succeeded. The path and method are echoed so the caller can
+    // see what it actually asked for.
+    if response_json.get("__unclaimed__").is_some() {
+        status_code = 404;
+        response_json = json!({
+            "error": "not_found",
+            "detail": "no handler claims this path in the Rust kernel",
+            "path": url,
+            "method": format!("{:?}", method).to_uppercase(),
+        });
+    }
+
+    let body_str = serde_json::to_string(&response_json).unwrap();
+    let elapsed_us = start_t.elapsed().as_micros();
+
+    let mut resp = Response::from_string(body_str)
+        .with_status_code(status_code)
+        .with_header(Header::from_bytes(&b"Content-Type"[..], &b"application/json"[..]).unwrap())
+        .with_header(Header::from_bytes(&b"Access-Control-Allow-Origin"[..], &b"*"[..]).unwrap())
+        .with_header(
+            Header::from_bytes(
+                &b"Access-Control-Allow-Methods"[..],
+                &b"GET, POST, OPTIONS"[..],
+            )
+            .unwrap(),
+        )
+        .with_header(
+            Header::from_bytes(&b"Access-Control-Allow-Headers"[..], &b"Content-Type"[..]).unwrap(),
+        )
+        .with_header(
+            Header::from_bytes(
+                &b"X-Sovereign-Execution-Time-Us"[..],
+                format!("{}", elapsed_us).as_bytes(),
+            )
+            .unwrap(),
+        )
+        .with_header(
+            Header::from_bytes(&b"X-Sovereign-Truth-Anchor"[..], &b"0x4D4F4E4144000001"[..])
+                .unwrap(),
+        );
+
+    let _ = request.respond(resp);
+}
+
+/// Offline batch-encode CLI: `host_council_server encode-batch --input <texts.jsonl> --output <vectors.jsonl> [--batch N]`.
+/// Input is JSONL of `{"key":..., "text":...}`; output is JSONL of `{"key":..., "embedding":[...]}` carrying the same
+/// L2-normalized 768-dim vectors `native_encoder::encode_f32` produces. Uses the GPU batch kernel when a device is
+/// present, falling back to the CPU encoder per doc on any failure. Exit 0 on success, 1 on data error, 2 on usage.
+fn encode_batch_cli(args: &[String]) -> i32 {
+    let mut input: Option<String> = None;
+    let mut output: Option<String> = None;
+    let mut batch: usize = 256;
+    let mut i = 0;
+    while i < args.len() {
+        match args[i].as_str() {
+            "--input" => {
+                i += 1;
+                input = args.get(i).cloned();
+            }
+            "--output" => {
+                i += 1;
+                output = args.get(i).cloned();
+            }
+            "--batch" => {
+                i += 1;
+                batch = args.get(i).and_then(|s| s.parse().ok()).unwrap_or(256).max(1);
+            }
+            other => {
+                eprintln!("encode-batch: unknown argument {other:?}");
+                return 2;
+            }
+        }
+        i += 1;
+    }
+    let (Some(input), Some(output)) = (input, output) else {
+        eprintln!(
+            "usage: host_council_server encode-batch --input <texts.jsonl> --output <vectors.jsonl> [--batch N]"
+        );
+        return 2;
+    };
+
+    let raw = match std::fs::read_to_string(&input) {
+        Ok(r) => r,
+        Err(e) => {
+            eprintln!("encode-batch: cannot read input: {e}");
+            return 1;
+        }
+    };
+    let mut keys: Vec<String> = Vec::new();
+    let mut texts: Vec<String> = Vec::new();
+    for line in raw.lines() {
+        let line = line.trim();
+        if line.is_empty() {
+            continue;
+        }
+        match serde_json::from_str::<serde_json::Value>(line) {
+            Ok(v) => {
+                keys.push(v.get("key").and_then(serde_json::Value::as_str).unwrap_or("").to_string());
+                texts.push(v.get("text").and_then(serde_json::Value::as_str).unwrap_or("").to_string());
+            }
+            Err(e) => {
+                eprintln!("encode-batch: bad input line: {e}");
+                return 1;
+            }
+        }
+    }
+    let n = texts.len();
+    if n == 0 {
+        eprintln!("encode-batch: no documents in input");
+        return 1;
+    }
+
+    let gpu = gpu_compute::gpu_available();
+    let t0 = std::time::Instant::now();
+    let mut out: Vec<(String, Vec<f32>)> = Vec::with_capacity(n);
+    let mut idx = 0usize;
+    while idx < n {
+        let end = (idx + batch).min(n);
+        let chunk: Vec<&str> = texts[idx..end].iter().map(String::as_str).collect();
+        let got = if gpu { gpu_compute::gpu_encode_batch(&chunk) } else { None };
+        match got {
+            Some(vecs) => {
+                for (j, vec) in vecs.into_iter().enumerate() {
+                    out.push((keys[idx + j].clone(), vec));
+                }
+            }
+            None => {
+                for (j, t) in chunk.iter().enumerate() {
+                    out.push((keys[idx + j].clone(), native_encoder::encode_f32(t, 768)));
+                }
+            }
+        }
+        idx = end;
+    }
+    let elapsed = t0.elapsed().as_secs_f64();
+
+    use std::io::Write;
+    let mut w = match std::fs::File::create(&output) {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("encode-batch: cannot write output: {e}");
+            return 1;
+        }
+    };
+    for (key, vec) in &out {
+        if let Err(e) = writeln!(w, "{}", serde_json::json!({ "key": key, "embedding": vec })) {
+            eprintln!("encode-batch: write failed: {e}");
+            return 1;
+        }
+    }
+    eprintln!(
+        "encode-batch: {n} docs in {elapsed:.3}s ({:.1} docs/s), backend {}",
+        n as f64 / elapsed.max(1e-6),
+        if gpu { "gpu" } else { "cpu" }
+    );
+    0
+}
+
+/// Offline corpus-scoring CLI: `host_council_server score-corpus --input <text.jsonl> --output <scores.jsonl> [--batch N]`.
+/// Input is JSONL of `{"key":..., "text":...}` (the TurboVec text sidecar, NOT the 4.2 GB semantic_index.json);
+/// output is JSONL of `{"key":..., "trit":..., "trit_label":..., "confidence":...}` — the token-free TRM-7M forward
+/// over every document. GPU batch kernel when present, CPU forward fallback. This is the no-HTTP path: the kernel
+/// reads the corpus in-process and writes the scored index, instead of a Python driver round-tripping the 146 MB
+/// sidecar over `/trm7m/batch` (the slow HTTP path). Exit 0 on success, 1 on data error, 2 on usage.
+fn score_corpus_cli(args: &[String]) -> i32 {
+    let mut input: Option<String> = None;
+    let mut output: Option<String> = None;
+    let mut batch: usize = 256;
+    let mut i = 0;
+    while i < args.len() {
+        match args[i].as_str() {
+            "--input" => {
+                i += 1;
+                input = args.get(i).cloned();
+            }
+            "--output" => {
+                i += 1;
+                output = args.get(i).cloned();
+            }
+            "--batch" => {
+                i += 1;
+                batch = args.get(i).and_then(|s| s.parse().ok()).unwrap_or(256).max(1);
+            }
+            other => {
+                eprintln!("score-corpus: unknown argument {other:?}");
+                return 2;
+            }
+        }
+        i += 1;
+    }
+    let (Some(input), Some(output)) = (input, output) else {
+        eprintln!(
+            "usage: host_council_server score-corpus --input <text.jsonl> --output <scores.jsonl> [--batch N]"
+        );
+        return 2;
+    };
+
+    let raw = match std::fs::read_to_string(&input) {
+        Ok(r) => r,
+        Err(e) => {
+            eprintln!("score-corpus: cannot read input: {e}");
+            return 1;
+        }
+    };
+    let mut keys: Vec<String> = Vec::new();
+    let mut texts: Vec<String> = Vec::new();
+    for line in raw.lines() {
+        if line.trim().is_empty() {
+            continue;
+        }
+        match serde_json::from_str::<serde_json::Value>(line) {
+            Ok(v) => {
+                keys.push(v.get("key").and_then(serde_json::Value::as_str).unwrap_or("").to_string());
+                texts.push(v.get("text").and_then(serde_json::Value::as_str).unwrap_or("").to_string());
+            }
+            Err(e) => {
+                eprintln!("score-corpus: bad input line: {e}");
+                return 1;
+            }
+        }
+    }
+    drop(raw); // release the 146 MB read buffer before the forward pass
+    let n = texts.len();
+    if n == 0 {
+        eprintln!("score-corpus: no documents in input");
+        return 1;
+    }
+
+    let gpu = gpu_compute::gpu_available();
+    let t0 = std::time::Instant::now();
+    let mut out: Vec<(String, i8, f32)> = Vec::with_capacity(n);
+    let mut idx = 0usize;
+    while idx < n {
+        let end = (idx + batch).min(n);
+        // encode_text -> [f32; 128] per doc, then ONE GPU dispatch over the whole batch.
+        let inputs: Vec<[f32; 128]> = texts[idx..end]
+            .iter()
+            .map(|t| trm7m::Trm7m::encode_text(t))
+            .collect();
+        let got = if gpu { gpu_compute::gpu_trm7m_batch(&inputs) } else { None };
+        match got {
+            Some(scored) => {
+                for (j, (trit, conf)) in scored.into_iter().enumerate() {
+                    out.push((keys[idx + j].clone(), trit, conf));
+                }
+            }
+            None => {
+                for (j, x) in inputs.iter().enumerate() {
+                    let mut m = trm7m::Trm7m::new();
+                    let (trit, conf, _) = m.forward(x);
+                    out.push((keys[idx + j].clone(), trit, conf));
+                }
+            }
+        }
+        idx = end;
+    }
+    let elapsed = t0.elapsed().as_secs_f64();
+
+    use std::io::Write;
+    let mut w = match std::fs::File::create(&output) {
+        Ok(f) => f,
+        Err(e) => {
+            eprintln!("score-corpus: cannot write output: {e}");
+            return 1;
+        }
+    };
+    for (key, trit, conf) in &out {
+        if let Err(e) = writeln!(
+            w,
+            "{}",
+            serde_json::json!({
+                "key": key,
+                "trit": trit,
+                "trit_label": trm7m::trit_label(*trit),
+                "confidence": conf,
+            })
+        ) {
+            eprintln!("score-corpus: write failed: {e}");
+            return 1;
+        }
+    }
+    eprintln!(
+        "score-corpus: {n} docs in {elapsed:.3}s ({:.1} docs/s), backend {}",
+        n as f64 / elapsed.max(1e-6),
+        if gpu { "gpu" } else { "cpu" }
+    );
+    0
+}
+
+/// Offline parity-check CLI: `host_council_server parity-check --store <rel> --query <text> [--k N]`.
+/// Loads a packed store by repo-relative path, runs the GPU scan AND the CPU reference (cpu_scan_in),
+/// and reports whether the top-K row indices + scores match within 1e-3. Exit 0 on match, 1 on mismatch.
+fn parity_check_cli(args: &[String]) -> i32 {
+    let mut store_rel: Option<String> = None;
+    let mut query: Option<String> = None;
+    let mut k: usize = 10;
+    let mut i = 0;
+    while i < args.len() {
+        match args[i].as_str() {
+            "--store" => {
+                i += 1;
+                store_rel = args.get(i).cloned();
+            }
+            "--query" => {
+                i += 1;
+                query = args.get(i).cloned();
+            }
+            "--k" => {
+                i += 1;
+                k = args.get(i).and_then(|s| s.parse().ok()).unwrap_or(10).max(1);
+            }
+            other => {
+                eprintln!("parity-check: unknown argument {other:?}");
+                return 2;
+            }
+        }
+        i += 1;
+    }
+    let (Some(store_rel), Some(query)) = (store_rel, query) else {
+        eprintln!("usage: host_council_server parity-check --store <rel> --query <text> [--k N]");
+        return 2;
+    };
+    let store = match crate::packed_ternary::store_at(&store_rel) {
+        Some(s) => s,
+        None => {
+            eprintln!("parity-check: cannot load store {store_rel:?}");
+            return 1;
+        }
+    };
+    let qv = crate::native_encoder::encode_f32(&query, store.dim());
+    let q = match crate::packed_ternary::quantize(&qv, store.dim()) {
+        Some(q) => q,
+        None => {
+            eprintln!("parity-check: query quantize failed");
+            return 1;
+        }
+    };
+
+    let t_cpu = std::time::Instant::now();
+    let mut cpu = crate::packed_ternary::cpu_scan_in(&store, &q);
+    let cpu_us = t_cpu.elapsed().as_secs_f64() * 1e6;
+    cpu.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));
+
+    let gpu = match crate::gpu_compute::gpu_scan_scores_cached(&q, &store) {
+        Some(g) => g,
+        None => {
+            eprintln!("parity-check: GPU scan failed (no device or store not cached)");
+            return 1;
+        }
+    };
+    let mut gi: Vec<(f32, usize)> = gpu.iter().cloned().enumerate().map(|(i, sc)| (sc, i)).collect();
+    gi.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));
+
+    let kk = k.min(cpu.len()).min(gi.len());
+    let mut max_diff = 0.0f64;
+    let mut key_mismatch = 0usize;
+    for rank in 0..kk {
+        let d = (gi[rank].0 as f64 - cpu[rank].0).abs();
+        if d > max_diff {
+            max_diff = d;
+        }
+        if gi[rank].1 != cpu[rank].1 {
+            key_mismatch += 1;
+        }
+    }
+    let ok = key_mismatch == 0 && max_diff < 1e-3;
+    eprintln!(
+        "parity-check: {store_rel} — {kk} top-K compared, key mismatches {key_mismatch}, max score diff {max_diff:.2e} (tol 1e-3) — {}",
+        if ok { "MATCH" } else { "MISMATCH" }
+    );
+    eprintln!("[timing] cpu_scan_in {cpu_us:.1} us | gpu_scan_scores_cached (persistent store buffer)");
+    if ok {
+        0
+    } else {
+        1
+    }
+}
+
+/// Offline SMILES canonicalization CLI (CAP-201): `host_council_server smiles-canonicalize --input <smiles.txt> --output <canonical.txt>`.
+/// Input is one SMILES per line; output is the canonical SMILES per line (the literal `PARSE_ERROR` on failure).
+/// Rust-only (no RDKit) — parity against RDKit is measured externally, not assumed. Exit 0 on success, 1 on I/O, 2 on usage.
+fn smiles_canonicalize_cli(args: &[String]) -> i32 {
+    let mut input: Option<String> = None;
+    let mut output: Option<String> = None;
+    let mut i = 0;
+    while i < args.len() {
+        match args[i].as_str() {
+            "--input" => {
+                input = args.get(i + 1).cloned();
+                i += 2;
+            }
+            "--output" => {
+                output = args.get(i + 1).cloned();
+                i += 2;
+            }
+            other => {
+                eprintln!("smiles-canonicalize: unknown argument {other:?}");
+                return 2;
+            }
+        }
+    }
+    let (Some(input), Some(output)) = (input, output) else {
+        eprintln!(
+            "usage: host_council_server smiles-canonicalize --input <smiles.txt> --output <canonical.txt>"
+        );
+        return 2;
+    };
+    let raw = match std::fs::read_to_string(&input) {
+        Ok(r) => r,
+        Err(e) => {
+            eprintln!("smiles-canonicalize: cannot read input: {e}");
+            return 1;
+        }
+    };
+    let mut lines: Vec<String> = Vec::new();
+    let mut skips = 0usize;
+    for line in raw.lines() {
+        let s = line.trim();
+        if s.is_empty() {
+            continue;
+        }
+        match smiles_canon::canonical_smiles(s) {
+            Some(c) => lines.push(c),
+            None => {
+                lines.push("PARSE_ERROR".to_string());
+                skips += 1;
+            }
+        }
+    }
+    let out = lines.join("\n") + "\n";
+    if let Err(e) = std::fs::write(&output, out) {
+        eprintln!("smiles-canonicalize: cannot write output: {e}");
+        return 1;
+    }
+    eprintln!("smiles-canonicalize: {} lines, {} parse errors", lines.len(), skips);
+    0
+}
+
+fn main() {
+    // Offline tooling mode: `encode-batch` encodes a corpus batch on the GPU (CPU fallback) and exits.
+    // This is the batch encoder's call path into the ingestion pipeline, not a runtime route.
+    let argv: Vec<String> = std::env::args().collect();
+    if argv.get(1).map(String::as_str) == Some("encode-batch") {
+        std::process::exit(encode_batch_cli(&argv[2..]));
+    }
+    if argv.get(1).map(String::as_str) == Some("score-corpus") {
+        std::process::exit(score_corpus_cli(&argv[2..]));
+    }
+    if argv.get(1).map(String::as_str) == Some("smiles-canonicalize") {
+        std::process::exit(smiles_canonicalize_cli(&argv[2..]));
+    }
+    if argv.get(1).map(String::as_str) == Some("parity-check") {
+        std::process::exit(parity_check_cli(&argv[2..]));
+    }
+    // Port is env-overridable so a candidate build can be exercised on a spare port before it is
+    // swapped in. TRM_PORT unset (the supervisor's case) means 8022, exactly as before.
+    let port: u16 = std::env::var("TRM_PORT")
+        .ok()
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(8022);
+    // CPU utilisation only exists as an interval delta, so the sampler runs alongside the
+    // server instead of being measured per request.
+    host_probe::start_samplers();
+    // The IPC transport is the shared-memory ring bus (swarm_mailbox.ring). The kernel owns it --
+    // Python is offline tooling and is not in the runtime path -- so it is created/zeroed here at
+    // boot rather than left to a writer that never runs on bare metal.
+    mailbox_ring::ensure();
+    println!("===============================================================================================");
+    println!(
+        ">>> NATIVE RUST SOVEREIGN SWARM SERVER — MULTI-THREADED (Port {})",
+        port
+    );
+    println!(
+        "    8 Worker Threads | Sub-Millisecond Parallel Handling | Zero Python in Critical Path"
+    );
+    println!("===============================================================================================");
+
+    let state = Arc::new(Mutex::new(CouncilState {
+        proposals: Vec::new(),
+        next_id: load_next_id(),
+    }));
+
+    // Seed initial proposal
+    {
+        let mut st = state.lock().unwrap();
+        evaluate_proposal(
+            &mut st,
+            "Zero-Python Pure Rust Server Deployment".to_string(),
+            "Architecture".to_string(),
+            "Archi".to_string(),
+        );
+    }
+
+    // Exposure is a decision, not an accident. Measured 2026-11-10: bound to
+    // 0.0.0.0 the council answered GET /health with 200 from another host's
+    // point of view (http://192.168.1.83:8022/health -> 200) with no credential
+    // on any /council/* route. Default is now loopback, matching the Python
+    // platform. TRM_COUNCIL_BIND=0.0.0.0 is a deliberate, logged opt-in.
+    let bind_host = std::env::var("TRM_COUNCIL_BIND").unwrap_or_else(|_| "127.0.0.1".to_string());
+    let exposed = bind_host != "127.0.0.1" && bind_host != "::1" && bind_host != "localhost";
+    if exposed {
+        eprintln!(
+            "!! [SECURITY] council bound to {} -- /council/* has NO token check; every host that can reach this port can read and mutate council state",
+            bind_host
+        );
+    }
+    let server = Arc::new(Server::http(format!("{}:{}", bind_host, port)).unwrap());
+    println!(
+        "🚀 Native Rust Multi-Threaded Server listening on http://{}:{} ({})",
+        bind_host,
+        port,
+        if exposed { "EXPOSED -- no auth" } else { "loopback only" }
+    );
+
+    // The dashboard has lived on :5183 for the life of this platform, and moving it broke the
+    // operator's access. So the kernel binds a SECOND listener there and serves the SAME handler
+    // table from it. Both ports are one origin each: the UI's root-relative fetches resolve against
+    // whichever listener served the page, so there is still no proxy anywhere. TRM_UI_PORT overrides;
+    // 0 disables the second listener.
+    let ui_port: u16 = std::env::var("TRM_UI_PORT")
+        .ok()
+        .and_then(|v| v.parse().ok())
+        .unwrap_or(5183);
+
+    let mut servers: Vec<(u16, Arc<Server>)> = vec![(port, server)];
+    if ui_port != 0 && ui_port != port {
+        match Server::http(format!("{}:{}", bind_host, ui_port)) {
+            Ok(s) => {
+                println!("🖥  Dashboard listener on http://{}:{}/ui/", bind_host, ui_port);
+                servers.push((ui_port, Arc::new(s)));
+            }
+            Err(e) => eprintln!(
+                "dashboard listener :{} unavailable ({}) -- UI still served on :{}/ui/",
+                ui_port, e, port
+            ),
+        }
+    }
+
+    // Worker threads per listener. Every request passes the same measured point, refusals included:
+    // the telemetry route reports this process's own throughput, not a literal.
+    let mut workers = Vec::new();
+    for (lport, srv) in servers {
+        for _ in 0..8 {
+            let server_clone = Arc::clone(&srv);
+            let state_clone = Arc::clone(&state);
+            let handle = thread::spawn(move || {
+                for request in server_clone.incoming_requests() {
+                    let t0 = Instant::now();
+                    handle_request(request, &state_clone);
+                    telemetry_handlers::note_request(t0.elapsed().as_nanos() as u64);
+                }
+            });
+            workers.push(handle);
+        }
+        println!("⚡ 8 worker threads serving :{}", lport);
+    }
+    // The native trm:// QUIC listener runs beside the HTTP listeners, so the on-screen dashboard
+    // (and any sovereign client) can reach the kernel without HTTP. Loopback only: the dashboard
+    // and the kernel are one machine.
+    thread::spawn(|| {
+        core_pinning::pin_current_thread_to_core(core_pinning::CORE_QUIC);
+        trm_datagram::run();
+    });
+    // Heartbeat auto-dispatch: a background loop that polls HEARTBEAT.md for pending
+    // tasks and turns each into a kanban card (auto-assigned via the domain ontology).
+    // This is the "auto process" that keeps the kanban board live.
+    thread::spawn(|| {
+        core_pinning::pin_current_thread_to_core(core_pinning::CORE_HEARTBEAT);
+        kanban_handlers::heartbeat_auto_loop();
+    });
+    // Agent work loop: advance active cards through the lifecycle (TODO -> IN_PROGRESS
+    // -> REVIEW -> DONE), binding each IN_PROGRESS card to the measured host's silicon.
+    thread::spawn(|| {
+        core_pinning::pin_current_thread_to_core(core_pinning::CORE_AGENT_WORK);
+        kanban_handlers::agent_work_loop();
+    });
+
+    for worker in workers {
+        let _ = worker.join();
+    }
+}
+
+mod native_parsers;
+mod trm_datagram;

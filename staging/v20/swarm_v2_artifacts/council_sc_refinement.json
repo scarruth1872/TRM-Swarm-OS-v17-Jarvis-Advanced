@@ -1,0 +1,25 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T22:57:47.852822+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "7c4b4f73c1e033045009ee8a3d5d5af91dcf74b182fa53cfa4bdf6cca134fad6",
+      "motion": "MOTION-SC3",
+      "phase": "consensus",
+      "proposal_id": "CP-711FF44B",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "REFINE SURFACE-NORMAL Sc: compute proper SAS normals (Shrake-Rupley, 1.4A probe, per-atom vdW radii) for the antibody contact atoms and re-run the same cognate-vs-random Sc test on the same sample. PREDICTION: mean separation tightens past 2sigma and the 25% excess holds or grows. If it does NOT tighten, the approximation was not the issue and the finding is 'Sc carries a signal at the approximation level only' \u2014 a different boundary. MEASURED: SC2 (neighbor-centroid normal) gave the FIRST POSITIVE \u2014 cognate Sc 0.563 vs random 0.119 (+0.444), mean separation 1.78sigma (short of the 2sigma bar), 25% of cognates above random mean+2sigma (vs 2.3% noise). The normal was a neighbor-centroid approximation (6A). REFINEMENT: compute proper solvent-accessible-surface (SAS) normals (Shrake-Rupley probe, 1.4A) and re-run the same test. PREDICTION (recorded): the mean separation tightens past 2sigma, because the approximation is a noisy version of the proper computation and noise attenuates signal."
+    }
+  ],
+  "prediction_recorded": "mean separation tightens past 2sigma; 25% excess holds or grows",
+  "prior_state": "SC2 first positive at 1.78sigma (neighbor-centroid normal); refine to SAS normals",
+  "quorum": 9,
+  "record": "SC REFINEMENT (proper molecular-surface normals) -- council-voted; platform self-directs",
+  "sha256": "d06d46f4df5a095db739e7fa180580f1eb5d18a9826071ce6dae661bd7499469"
+}

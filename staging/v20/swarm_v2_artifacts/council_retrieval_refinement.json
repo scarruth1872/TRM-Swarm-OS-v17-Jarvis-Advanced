@@ -1,0 +1,25 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-27T11:35:29.867226+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "f3e9df0bf6cff5ac7d444192aae55f7ab6551add78a066285207de7998492728",
+      "motion": "MOTION-RETR",
+      "phase": "consensus",
+      "proposal_id": "CP-74EC4681",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "REFINE THE FABRIC'S HDC RETRIEVAL: reuse the encoded angle hypervectors (surrogate_confirm results) and measure the retrieval accuracy of (a) the raw mean-cosine (baseline, 5.3%) vs (b) a nearest-centroid (two class centroids, nearest-wins) vs (c) a learned LDA boundary. PREDICTION: the nearest-centroid / learned boundary retrieval exceeds the mean-cosine, because the two class centroids are distinct (LDA 0.979). If the nearest-centroid retrieval ranks the cognate correctly > 85%, the fabric's search is a viable dot-product (to a centroid, not a single mean). MEASURED: the HDC retry on the CORRECT property (donor-acceptor angle, 3,233 complexes) gave LDA 0.979 in the hypervector space (the encoding preserves the signal) but a WEAK dot-product retrieval (cognate 0.7556 vs random 0.7458, 5.3% above random mean + 2sigma). The mean-cosine is a blurred prototype; the LDA shows a learned boundary separates at 0.979. NEXT MOTION: replace the raw mean-cosine with a proper retrieval (nearest-centroid over both class centroids, or a learned boundary) and measure the retrieval accuracy. PREDICTION: the nearest-centroid / learned boundary retrieval exceeds the mean-cosine (cognate correctly classified well above 5.3%)."
+    }
+  ],
+  "prediction_recorded": "nearest-centroid / learned-boundary retrieval exceeds the mean-cosine",
+  "prior_state": "HDC retry: LDA 0.979 (separable) but mean-cosine retrieval weak (5.3%)",
+  "quorum": 9,
+  "record": "FABRIC RETRIEVAL REFINEMENT -- council-voted; platform self-directs",
+  "sha256": "d1ed081b2af37ac7aab73671f4b0cf7b34643efd282876c9b06837058364c0d6"
+}

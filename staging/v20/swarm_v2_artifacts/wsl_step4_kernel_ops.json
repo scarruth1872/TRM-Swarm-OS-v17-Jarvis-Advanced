@@ -1,0 +1,55 @@
+{
+  "protocol": "WSL_STEP4_KERNEL_OPS",
+  "measured_at": "2026-09-26",
+  "so": {
+    "path": "swarm_v2/core/libswarm_kernel_ops.so",
+    "bytes": 21632,
+    "sha256": "7aff4be98f8889c1d3545cbea3ded7b55f3b63709a707468774f558f3117bf40",
+    "exports": [
+      "c_instella_gate_topk",
+      "c_mamba3_create_state",
+      "c_mamba3_destroy_state",
+      "c_mamba3_step",
+      "c_mamba3_step_persistent",
+      "c_nvme_mamba_bind_slot",
+      "c_nvme_mamba_flush",
+      "c_nvme_mamba_init"
+    ],
+    "built_by": "swarm_v2/core/build_kernel_ops.sh (g++ 15, -march=native)"
+  },
+  "dll_reference": {
+    "path": "swarm_v2/core/libswarm_kernel_ops.dll",
+    "bytes": 392192,
+    "exports": [
+      "c_mamba3_create_state",
+      "c_mamba3_destroy_state",
+      "c_mamba3_step",
+      "c_instella_gate_topk"
+    ]
+  },
+  "comparison": {
+    "checks": 29,
+    "failed": 0,
+    "mamba_max_abs_dev": 5.200000000038507e-08,
+    "gate_exact": true,
+    "flags_exact": true,
+    "steps": 100
+  },
+  "wsl_role": {
+    "cargo": "MISSING (measured)",
+    "g++": "present",
+    "nm": "present",
+    "python3": "present",
+    "free_gb_root": 808,
+    "windows_c_free_gb": 119,
+    "decided": "data/archive + Linux build host for .so artifacts; not a Rust host"
+  },
+  "defect_fixed": "swarm_kernel_ops.h used size_t without <cstddef>; GCC 15 rejects it (the Windows DLL predates that toolchain, so the .so build script could never have run)",
+  "consumer": "swarm_v2/core/native_ops_bridge.py (SO_PATH = libswarm_kernel_ops.so) raised FileNotFoundError before; it now constructs and returns mamba3 step 0.03200000151991844",
+  "limits": [
+    "-march=native: this host's CPU only",
+    "the DLL is untouched and remains what the kernel loads",
+    "the voltage-strip cdylib cannot load on Linux (invalid ELF header) and the bridge says so",
+    "c_kleene_quantize_avx2 exists in neither library: it belongs to c_k3_kleene_ops (0 files present)"
+  ]
+}

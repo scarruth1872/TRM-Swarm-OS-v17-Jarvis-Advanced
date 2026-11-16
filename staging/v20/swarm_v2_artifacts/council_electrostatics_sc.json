@@ -1,0 +1,38 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T22:51:58.238818+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "f06af3cb6917a8d451e3e87520c09f448104fae62c9df404879c35eef530197f",
+      "motion": "MOTION-EL1",
+      "phase": "consensus",
+      "proposal_id": "CP-0EAC1FA1",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "TEST ELECTROSTATIC COMPLEMENTARITY: assign residue-level partial charges (K/R +1, D/E -1, H +0.5), compute the charge-complementarity of the cognate interface (opposite charges on contact pairs = attractive = specific) vs a centroid-aligned random antigen, and run the same specificity test. PREDICTION: cognate electrostatically more complementary (attractive) than random by >2sigma, IF the specificity signal is in the charge. MEASURED: six negatives. (1) fp16 only, (2) parts not interface, (3) scorer not search, (4) sequence no signal, (5) contact count sticky, (6) contact distance sticky (closeness proxy confounded by clashes). The paratope is sticky at every geometric level. REFRAME: specificity may not be geometric at all \u2014 it may be in the CHARGE (electrostatic complementarity) or the BONDS (H-bond directionality). Two probes: EL1 electrostatic complementarity (the reframe test), SC2 true surface-normal Sc (geometric completion)."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "0be311f5cad27b7569d9587e137cf774ca8d93d6b1f77c8f83e68ec85f40af6e",
+      "motion": "MOTION-SC2",
+      "phase": "consensus",
+      "proposal_id": "CP-1FC6B1A8",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "COMPLETE THE GEOMETRIC SPACE: compute TRUE surface-normal complementarity (the dot product of the antibody atom's outward normal with its direction to the nearest antigen atom; a complementary interface has normals ALIGNED with contact directions) vs the centroid-aligned random baseline. PREDICTION: prior lowered by the two sticky results, but the computation is distinct and untested. MEASURED: six negatives. (1) fp16 only, (2) parts not interface, (3) scorer not search, (4) sequence no signal, (5) contact count sticky, (6) contact distance sticky (closeness proxy confounded by clashes). The paratope is sticky at every geometric level. REFRAME: specificity may not be geometric at all \u2014 it may be in the CHARGE (electrostatic complementarity) or the BONDS (H-bond directionality). Two probes: EL1 electrostatic complementarity (the reframe test), SC2 true surface-normal Sc (geometric completion)."
+    }
+  ],
+  "predictions_recorded": "EL1: cognate electrostatically more complementary than random by >2sigma; SC2: prior lowered but computation untested",
+  "prior_state": "six negatives reframe specificity from geometric to electrostatic/directional",
+  "quorum": 9,
+  "record": "ELECTROSTATIC COMPLEMENTARITY + TRUE Sc -- council-voted; platform self-directs",
+  "sha256": "68bff536a871bcd19d312326a81001749b7bc4147ad33d099ef66a9f7393b765"
+}

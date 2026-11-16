@@ -1,0 +1,122 @@
+[
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Chat system connect to the Memory system?"
+      },
+      {
+        "role": "assistant",
+        "content": "When a chat request arrives at POST /api/chat, runJarvisAgent first loads core memory (user profile + context) via loadCoreMemory(), then loads chat history from jarvis_chat_history.json. These are merged into the system prompt sent to Gemini. After the response, the chat is saved back to chat history AND the context in core memory is updated."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Skills system connect to the Swarm system?"
+      },
+      {
+        "role": "assistant",
+        "content": "GET /api/skills/matrix and GET /api/skills/matrix/topology proxy directly to TRM at 127.0.0.1:8021/skills/matrix and /skills/matrix/topology. Jarvis caches the results briefly. The TRM Swarm OS Mesh Controller skill is what enables this — when enabled, Jarvis periodically syncs the skill matrix from TRM."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Chat system use skills?"
+      },
+      {
+        "role": "assistant",
+        "content": "runJarvisAgent loads all enabled skills from jarvis_skills.json and injects them into the Gemini system prompt. Each skill's name, description, and category are formatted as available tools. Gemini then decides which skill to invoke based on the user's request. Skill invocations are handled by the calling function in server.ts."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the VibeThinker module interact with Ollama?"
+      },
+      {
+        "role": "assistant",
+        "content": "VibeThinker calls Ollama's API at localhost:11434/api/generate for each trajectory sample. It sends { model, prompt, options: { temperature: 0.8, top_p: 0.95, seed: random } } and collects responses. After all trajectories complete, it computes a consensus score. If Ollama is unreachable, VibeThinker returns an error — no fallback."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does DNA config affect the Chat system?"
+      },
+      {
+        "role": "assistant",
+        "content": "POST /config/dna stores temperature, stochasticity, emotionalVector, mood, and curiosity parameters in memory. When runJarvisAgent builds the Gemini request, it reads these DNA parameters and adjusts the generation config accordingly. Higher temperature = more creative responses. Higher stochasticity = more random outputs. The emotionalVector adds a mood bias to the system prompt."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Substrate Platform interact with the main server?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Substrate Agent Platform (substrate_agent_platform.py) runs as a background Python process that reads/writes the same JSON memory files as the main server (jarvis_core_memory.json, jarvis_episodic_memory.json, jarvis_semantic_graph.json). It runs autonomously on a timer, performing scheduled tasks like genome analysis and memory consolidation."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Telegram Uplink connect to the Chat system?"
+      },
+      {
+        "role": "assistant",
+        "content": "The Telegram polling daemon (background interval in server.ts) polls api.telegram.org for updates every 2 seconds. When a new message arrives, it's injected into the chat system as if the user sent it. The AI's response is then sent back to Telegram via the bot API. The Telegram skill must be enabled for this to work."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Web Analyzer store its results?"
+      },
+      {
+        "role": "assistant",
+        "content": "After POST /api/web-analyzer completes, the results can optionally be stored as an episodic memory via the memory system. The analysis (DNS, TLS, WHOIS, content) is returned as JSON to the caller. If the 'memorize' flag is set, the results are also persisted to episodic memory for future reference."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "How does the Semantic Graph get updated?"
+      },
+      {
+        "role": "assistant",
+        "content": "The semantic graph is updated via POST /api/memory/add-relation with { source, target, label }. This adds a directed edge between two concept nodes. The Resonant Memory Graph Sync skill also auto-prunes weak relationships and generates OKF exports. The graph is persisted to jarvis_semantic_graph.json and read by the chat system for context."
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "user",
+        "content": "What's the complete data flow when a user sends a chat message?"
+      },
+      {
+        "role": "assistant",
+        "content": "1. POST /api/chat receives { message, history, visualData, userId } 2. Load core memory (user profile) 3. Load chat history 4. Build system prompt with: identity, skills list, DNA parameters, memory context 5. Call Gemini API with fallback chain (gemini-3.5-flash → ... → Ollama gemma4:12b) 6. Extract response text 7. Save to chat history 8. Update core memory context 9. Return { reply } to user."
+      }
+    ]
+  }
+]

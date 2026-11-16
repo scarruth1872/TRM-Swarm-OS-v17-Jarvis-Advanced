@@ -1,0 +1,39 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-27T22:52:52.473985+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "7fa4896435e14ad4b76c05b4d3b679fcae2e0a6aa9bf671c80cd7876820c980f",
+      "motion": "MOTION-DISTILL",
+      "phase": "consensus",
+      "proposal_id": "CP-657960AF",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "DISTILL THE NATIVE SPARSE FORWARD: extract the Instella's 64 expert FFN weights from the GGUF (swarm-gguf), quantize into the native TurboVec/NAND fabric, and run gate_topk + only the 2 active experts in Rust \u2014 the platform owns the capability (no llama.cpp, no HTTP IPC). This matches the sparse nature: ~3B active, never the full 16B. PREDICTION: a native sparse forward runs the ~3B active fast on the GPU/CPU without loading the 10.47 GB. MEASURED: Instella-MoE is 16B total / ~2.8B active (2 experts per token of 64) \u2014 the full 16B forward loads 10.47 GB but fires only ~3B. The native sparse gate is already set up: swarm-instella::gate_topk (verified vs c_instella_gate_topk), instella_moe_inference.py route_expert (single-expert activation), /crate/moe/gate (live). No nvcc anywhere on the host; torch bundles the CUDA 12.x runtime (nvrtc64_120_0.dll) but not the compiler. swarm-gguf is a verified GGUF parser against the Instella file. expert_forward is a single-dot placeholder; route_expert is keyword-matched, not the real gate on a hidden state."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "289e6b8df0ccd93d9be74d7c03f59294b9a88d6c953e44e0b7846dcfcb8adf98",
+      "motion": "MOTION-CUDA-LIGHT",
+      "phase": "consensus",
+      "proposal_id": "CP-7321C533",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "LIGHT CUDA INTERMEDIATE: install the pip nvidia-cuda-nvcc-cu12 (~100 MB, not the 3.19 GB installer), rebuild the fork with GGML_CUDA=ON, serve the 16B with partial offload. A fast but borrowed forward (llama.cpp), as the intermediate while the native distill is built. PREDICTION: ~0.25 -> ~2-5 tok/s. MEASURED: Instella-MoE is 16B total / ~2.8B active (2 experts per token of 64) \u2014 the full 16B forward loads 10.47 GB but fires only ~3B. The native sparse gate is already set up: swarm-instella::gate_topk (verified vs c_instella_gate_topk), instella_moe_inference.py route_expert (single-expert activation), /crate/moe/gate (live). No nvcc anywhere on the host; torch bundles the CUDA 12.x runtime (nvrtc64_120_0.dll) but not the compiler. swarm-gguf is a verified GGUF parser against the Instella file. expert_forward is a single-dot placeholder; route_expert is keyword-matched, not the real gate on a hidden state."
+    }
+  ],
+  "prediction_cuda": "~0.25 -> ~2-5 tok/s (borrowed forward)",
+  "prediction_distill": "native sparse forward runs ~3B active without loading the 10.47 GB",
+  "prior_state": "Instella generates on CPU ~0.25 tok/s; native sparse gate exists; no nvcc; fork CPU-only",
+  "quorum": 9,
+  "record": "Instella capability direction -- distill native sparse forward vs light CUDA",
+  "sha256": "32bfd4c59b8af712bf7a3f9f0115e75940dc3655b9d494a9fce10a1d242ddaf1"
+}

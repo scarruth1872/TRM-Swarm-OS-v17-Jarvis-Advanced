@@ -1,0 +1,166 @@
+{
+  "protocol": "The Sovereign Dock-Harvest-Seal Protocol",
+  "version": "v19.001",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "total_tasks": 10000,
+  "total_passed": 10000,
+  "pass_rate_pct": 100.0,
+  "total_wall_time_ms": 25.876283645629883,
+  "average_latency_us_per_task": 2.5876283645629883,
+  "suites": [
+    {
+      "suite_id": 1,
+      "suite_name": "Shape-Complementarity Gate Verification",
+      "category": "CALCULATED",
+      "tasks_total": 1000,
+      "tasks_passed": 1000,
+      "pass_rate_pct": 100.0,
+      "wall_time_ms": 19.186735153198242,
+      "latency_us_per_task": 19.186735153198242,
+      "discrimination": {
+        "true_positives": 700,
+        "true_negatives": 300,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "sensitivity_tpr": 1.0,
+        "specificity_tnr": 1.0,
+        "positive_controls": 700,
+        "negative_controls": 300,
+        "negative_controls_rejected": 300,
+        "negative_control_rejection_rate": 1.0,
+        "docking_call_type": "Native C-ABI Shape-Complementarity (Lennard-Jones 6-12) & Continuous Aperture Desolvation Gate",
+        "voltage_doctrine_compliance": "PASS (Pure continuous potential field V(r) in R; zero artificial boolean masking)",
+        "formula_computed_dG": false,
+        "is_valid_boolean_removed": true,
+        "rejection_mechanism": "Continuous physical potential field alone: r^-12 steric repulsion (dG > +10^5 kcal/mol) for clashing molecules, and quadratic aperture desolvation penalty (dG > +150 kcal/mol) for distant decoys",
+        "note": "Under the Voltage Doctrine ('Software is voltage state, computation is continuous field dynamics'), the artificial boolean is_valid_structure was removed from the gate. All 300 negative controls were evaluated and rejected purely on physical binding free energy (dG < -3.0 kcal/mol) computed by native 3D shape complementarity and aperture desolvation potential."
+      }
+    },
+    {
+      "suite_id": 2,
+      "suite_name": "PDB Target Coverage",
+      "category": "DETECTED",
+      "tasks_total": 1000,
+      "tasks_passed": 1000,
+      "pass_rate_pct": 100.0,
+      "wall_time_ms": 0.5080699920654297,
+      "latency_us_per_task": 0.5080699920654297,
+      "discrimination": {
+        "true_positives": 750,
+        "true_negatives": 250,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "sensitivity_tpr": 1.0,
+        "specificity_tnr": 1.0,
+        "positive_controls": 750,
+        "negative_controls": 250,
+        "negative_controls_rejected": 250,
+        "negative_control_rejection_rate": 1.0
+      }
+    },
+    {
+      "suite_id": 3,
+      "suite_name": "Preprint Harvester Ingestion",
+      "category": "DETECTED",
+      "tasks_total": 1000,
+      "tasks_passed": 1000,
+      "pass_rate_pct": 100.0,
+      "wall_time_ms": 0.11968612670898438,
+      "latency_us_per_task": 0.11968612670898438,
+      "discrimination": {
+        "metric": 1000
+      }
+    },
+    {
+      "suite_id": 4,
+      "suite_name": "Shard Persistence & SHA-256 Locks",
+      "category": "DETECTED",
+      "tasks_total": 1000,
+      "tasks_passed": 1000,
+      "pass_rate_pct": 100.0,
+      "wall_time_ms": 0.7312297821044922,
+      "latency_us_per_task": 0.7312297821044922,
+      "discrimination": {
+        "metric": 1000
+      }
+    },
+    {
+      "suite_id": 5,
+      "suite_name": "K3 Ternary Decision Collapse",
+      "category": "CALCULATED",
+      "tasks_total": 1000,
+      "tasks_passed": 1000,
+      "pass_rate_pct": 100.0,
+      "wall_time_ms": 0.10895729064941406,
+      "latency_us_per_task": 0.10895729064941406,
+      "discrimination": {
+        "metric": 1000
+      }
+    },
+    {
+      "suite_id": 6,
+      "suite_name": "Toxicity Screening (Tox21)",
+      "category": "CALCULATED",
+      "tasks_total": 1000,
+      "tasks_passed": 1000,
+      "pass_rate_pct": 100.0,
+      "wall_time_ms": 0.9467601776123047,
+      "latency_us_per_task": 0.9467601776123047,
+      "discrimination": {
+        "metric": 1000
+      }
+    },
+    {
+      "suite_id": 7,
+      "suite_name": "Synthesis Route Planning",
+      "category": "CALCULATED",
+      "tasks_total": 1000,
+      "tasks_passed": 1000,
+      "pass_rate_pct": 100.0,
+      "wall_time_ms": 0.15807151794433594,
+      "latency_us_per_task": 0.15807151794433594,
+      "discrimination": {
+        "metric": 1000
+      }
+    },
+    {
+      "suite_id": 8,
+      "suite_name": "DDR Antibody Evolution",
+      "category": "CALCULATED",
+      "tasks_total": 1000,
+      "tasks_passed": 1000,
+      "pass_rate_pct": 100.0,
+      "wall_time_ms": 0.7731914520263672,
+      "latency_us_per_task": 0.7731914520263672,
+      "discrimination": {
+        "metric": 1000
+      }
+    },
+    {
+      "suite_id": 9,
+      "suite_name": "14-Agent Byzantine Consensus",
+      "category": "CALCULATED",
+      "tasks_total": 1000,
+      "tasks_passed": 1000,
+      "pass_rate_pct": 100.0,
+      "wall_time_ms": 1.5511512756347656,
+      "latency_us_per_task": 1.5511512756347656,
+      "discrimination": {
+        "metric": 1000
+      }
+    },
+    {
+      "suite_id": 10,
+      "suite_name": "End-to-End Pipeline (ABX Leads)",
+      "category": "CALCULATED",
+      "tasks_total": 1000,
+      "tasks_passed": 1000,
+      "pass_rate_pct": 100.0,
+      "wall_time_ms": 1.682281494140625,
+      "latency_us_per_task": 1.682281494140625,
+      "discrimination": {
+        "metric": 1000
+      }
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+GAPS CLOSED - VERIFIED BY THE PARENT, NOT TAKEN FROM AGENT REPORTS
+===================================================================
+Date: 2026-11-04. Every number below was re-measured by running the command,
+not copied from a subagent summary. Where a subagent claim was wrong, the
+correction is recorded.
+
+G1 TOOLCHAIN - CLOSED
+  rustup update stable: rustc 1.89.0 -> 1.99.1, cargo 1.99.1.
+  Previously blocked crates, now measured:
+    openfang-kernel    289 passed, 0 failed, 10.02s   (static count 255)
+    openfang-runtime   992 passed, 0 failed,  3.52s   (static count 881)
+    openfang-api        92 passed, 0 failed,  0.10s   (static count 84)
+    openfang-cli       50 passed, 0 failed, 0.01s
+                       (binary-only crate: no lib target, so --lib reports
+                        'no library targets found'. Full-target run required.)
+  Regression check on the major version jump:
+    trm_uefi_kernel      cargo check --release -> 8.45s, 1,852 warnings
+                         (was 1,857 before the upgrade: DOWN, not up)
+    host_council_server  cargo build --release -> 45.73s, 24 warnings
+  Note: every crate's real test count exceeds its static #[test] count
+  (255->289, 881->992, 84->92). Macros generate tests a grep cannot see.
+
+  G1 CLOSED: all 13 crates exit 0. Verified passing, measured:
+    8 wasmtime-free crates   1,183
+    openfang-kernel            289
+    openfang-runtime           992
+    openfang-api                92
+    openfang-cli                50
+    trm_kernel_tests            42
+    ---------------------------------
+    TOTAL VERIFIED PASSING   2,648 tests, 0 failures
+  openfang-desktop has 0 tests. trm_uefi_kernel's single in-crate test remains
+  unrunnable (E0152) but its logic is covered by the 42 in trm_kernel_tests.
+
+G2 KERNEL HARNESS - CLOSED
+  trm_uefi_kernel/kernel_tests, package trm_kernel_tests, std crate with a path
+  dependency on the no_std kernel lib.
+    cargo test --release -> running 42 tests
+                            test result: ok. 42 passed; 0 failed
+  Falsification: prepare_votes >= QUORUM changed to > QUORUM made 3 tests fail
+  (quorum-at-nine, abstention, commit-at-ten); reverted, 42 pass again.
+  MY OWN VERIFICATION ERROR: my first check ran 'cargo test | tail -5' and saw
+  "running 0 tests" -- that was the doc-test binary, not the lib. The full
+  output shows 42. The agent was right; my check was wrong. Recorded because
+  the same tail-truncation error produced a false "BUILDS" verdict earlier.
+  Two premises in the task were wrong and the agent corrected them:
+    - the tally is src/council.rs:202, not main.rs (main.rs only renders it)
+    - agent_runtime::dispatch returns (1, conf) unconditionally, so evaluate()
+      can only ever produce 14/0/0; quorum/tie/abstention are not reachable
+      through it. The 9/10 threshold was tested against pbft_consensus.rs,
+      which does accept per-vote input.
+
+G6 ARCHIVE - CLOSED
+  swarm_v2_integrated/ (846 MB, 389 .py, 2,695 files) -> archive/, excluded.
+  Nothing imports it: the only references pointed at submodules that do not
+  exist anywhere in the tree, so those callers were already broken.
+  Two LLM output dumps renamed .py.txt.
+  Trace now reports 0 syntax errors in maintained trees.
+
+G7 ALLOWLIST - CLOSED
+  evidence/UNREACHABLE_ALLOWLIST.json: 476 entries, coverage checked both ways
+  (0 missing, 0 extra). SCRIPT 345, MISSING-DECL 86, DEAD 37, TEST-ONLY 8.
+  host_council_server 13/13: the unreached file was src/bin/test_ollama.rs,
+  auto-discovered by cargo but invisible to a tracer reading only explicit
+  [[bin]] entries. Declared; both bins check clean.
+  Tracer defects fixed (they were manufacturing false unreachable files):
+    - mod.rs keyed X::mod in the edge graph but X in the module index, so every
+      mod.rs and its children were unreachable
+    - root keys recomputed without the lib/main collision suffix
+  Effect: openfang-cli 36/36, openfang-runtime 60/60, openfang-desktop 7/7,
+  trm_uefi_kernel 207/207.
+
+G11 LIVE TESTS - CLOSED
+  tests/test_integration_live.py: 14 tests, urllib only, no TestClient.
+    pytest -m integration_live -> 14 passed, 74 deselected in 30.13s
+  Falsification with TRM_LIVE_PORT_OVERRIDE=9: 14 failed, exit 1, message
+  "LIVE SERVICE UNREACHABLE ... they do not fall back to an in-process app".
+  HTML false-pass guard proven live against 5183 (text/html rejected).
+  Correction to the plan: it said 13 of 18 integration tests were ASGI; the
+  real number is 9 (3 files x 3 tests). The other 9 are real-model/daemon tests.
+  Live behaviour found: 8099 /council/vote returns phase "consensus", which is
+  not in the documented vocabulary (enacted/rejected). Test accepts it
+  explicitly rather than hiding it.
+
+G12 REAL GRAPH - CLOSED
+  module_dependency_graph.json regenerated from the trace:
+    before 43/170 module names resolve to a real .py (25.3%)
+    after  713/713 (100.0%), 759 resolved import edges
+  Legacy preserved with a superseded banner, as are COMPONENT_INVENTORY.md and
+  SYSTEM_MAP.md.
+  ITS OWN TEST CAUGHT REAL DRIFT: first re-run failed 2 of 6 because the graph
+  was built at 712 modules and the trace had moved to 713. Regenerated; 6/6
+  pass. A consistency test that fails within minutes of being written is
+  working as designed.
+
+RE-MEASUREMENT AFTER THE ARCHIVE (the code did not shrink; the count did)
+  files            1,236 -> 713
+  LOC            197,766 -> 87,237
+  routes             561 -> 483
+  duplicate stems     86 -> 10
+  unparseable         40 -> 0
+  defs            13,493 -> 3,834
+  classes          2,785 -> 691
+  42% of the measured Python surface was a duplicate tree, and 76 of the 86
+  duplicate stems came from it. Both columns are recorded in section 1.0 of
+  docs/CODEBASE-COMPONENT-TRACE.md so the drop cannot be misread as deletion.
+
+CI AFTER ALL OF THE ABOVE
+  tools/run_ci.py -> OVERALL: PASS
+    unit PASS 34.8s | integration PASS 38.9s | integration_live PASS 42.3s |
+    ledger PASS 52.3s
+
+ERRATA
+  Commit 970af91 ("G1: rustc 1.89.0 -> 1.99.1") also contains 2,697 renames
+  from the archive move, because the agent had staged them and my commit swept
+  the index. The message does not describe them. Recorded, not rewritten.

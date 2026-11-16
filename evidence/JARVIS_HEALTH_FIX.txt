@@ -1,0 +1,156 @@
+JARVIS HEALTH / STATUS FIX — MEASURED EVIDENCE
+==============================================
+Date:        2026-11-03
+Host:        Windows 11, bash/MSYS
+Repo:        F:\Development sites\TRM-Swarm-OS-v2
+Edited file: Jarvis-Advanced-main\server.ts  (only file changed)
+Live :3000   PID 16984 (tsx server.ts) — NOT stopped, NOT restarted, NOT touched
+Verify port: 3010 (second instance, started and verified below)
+
+------------------------------------------------------------------------------
+1. ROOT CAUSE — GET /health returned index.html
+------------------------------------------------------------------------------
+There was no `/health` route in server.ts at all. Verified by grep:
+
+    $ grep -n "health" server.ts     -> (no matches)
+    $ grep -c "app.get(" server.ts   -> 16  (none of them /health)
+
+Every unmatched GET therefore fell through Express into the full-stack
+middleware registered at the bottom of the file:
+
+    server.ts:6866   app.use(vite.middlewares);          // NODE_ENV != production
+    server.ts:6869   app.use(express.static(distPath)); // production
+    server.ts:6870   app.get("*", ... sendFile index.html)
+
+Vite is created with `appType: "spa"`, so it answers any unresolved GET with
+index.html. Result: /health was a 200 with HTML — a liveness probe that could
+never fail, because it was serving the UI shell, not health data.
+
+So: not a "catch-all registered before /health" — the catch-all is correctly
+last. The route itself was simply absent, and the SPA fallback masked it.
+
+------------------------------------------------------------------------------
+2. ROOT CAUSE — GET /api/status returned HTTP 500
+------------------------------------------------------------------------------
+`/api/status` did not exist either. It fell through to the same vite middleware,
+and vite.config.ts proxies every /api request away from Express:
+
+    vite.config.ts:
+      server.proxy['/api'] = { target: 'http://localhost:8021',
+                               changeOrigin: true,
+                               rewrite: p => p.replace(/^\/api/, '') }
+
+Nothing is listening on 8021, so vite's proxy errored and its error middleware
+emitted a bodyless plain-text 500. Confirmed from logs/jarvis3000.log:
+
+    10:55:27 AM [vite] http proxy error: /status
+    Error: connect ECONNREFUSED ::1:8021
+
+BEFORE (live :3000, captured 15:55:26Z, unmodified process):
+    GET /health
+      HTTP/1.1 200 OK
+      Content-Type: text/html
+      Content-Length: 591
+      <!doctype html>
+      <html lang="en">
+      <head><script type="module">import { injectIntoGlobalHook } from "/@react-refresh"; ...
+
+    GET /api/status
+      HTTP/1.1 500 Internal Server Error
+      Content-Type: text/plain
+      Transfer-Encoding: chunked
+      (empty body)
+
+VERDICT: two distinct faults, one shared symptom class.
+  * /health  — real defect: route missing, SPA fallback served the UI shell.
+  * /api/status — the 500 itself is a missing dependency (nothing on 8021),
+    but it only leaked through because the route was also missing. A real
+    handler makes the endpoint independent of that dead proxy, and the new
+    handler reports the dead dependency explicitly instead of hiding it.
+
+------------------------------------------------------------------------------
+3. THE FIX (server.ts only)
+------------------------------------------------------------------------------
+a) Port made overridable so a second instance can be verified in isolation
+   without touching the live :3000 process:
+
+       const PORT = Number(process.env.PORT) || 3000;   // was: const PORT = 3000;
+       const SERVER_BOOT_TS = Date.now();
+
+b) Real routes registered with the other API routes (line ~1642), i.e. before
+   the vite/static/SPA handlers at the bottom of the file:
+
+       app.get("/health", (req, res) => res.json({ status:"ok", service:"jarvis",
+         pid, port, node, startedAt, uptimeSeconds, timestamp }));
+
+       app.get("/api/status", async (req, res) => res.json({ success:true,
+         status:"ok", service:"jarvis", pid, port, node, startedAt,
+         uptimeSeconds, timestamp,
+         metrics: { cpuPercent, memoryUsedPercent, memoryTotalBytes, loadAverage },
+         dependencies: [ probeTcp("127.0.0.1", 8021) ] }));
+
+   `probeTcp()` is a small 400 ms TCP probe (new `net` import). It reports
+   {state:"up"|"down", latencyMs, error} — measured, never assumed. This is why
+   the 8021 outage now appears as data instead of an opaque 500.
+
+c) `TRM_DISABLE_BACKGROUND_ENGINES=1` skips startTelegramBot() and
+   startHeartbeat() only. Default behaviour is unchanged; it exists so a
+   short-lived verification instance does not drive the Telegram session or
+   heartbeat state files owned by the live process.
+
+No changes to vite.config.ts, START_TRM_PLATFORM.bat, or any other file.
+Type-check (`tsc --noEmit -p tsconfig.json`): 48 errors, all pre-existing Gemini
+SDK narrowing errors; zero errors in the added/modified lines.
+
+------------------------------------------------------------------------------
+4. VERIFICATION — second instance on :3010
+------------------------------------------------------------------------------
+Launched (dev mode, same code path as live :3000):
+
+    PORT=3010 TRM_DISABLE_BACKGROUND_ENGINES=1 TRM_BIND_HOST=127.0.0.1 \
+      ./node_modules/.bin/tsx server.ts
+
+    log: "Jarvis Server booting core successfully on http://127.0.0.1:3010"
+         "[Background Engines] Skipped (TRM_DISABLE_BACKGROUND_ENGINES=1)."
+
+AFTER — GET http://127.0.0.1:3010/health
+    HTTP/1.1 200 OK
+    Content-Type: application/json; charset=utf-8
+    Content-Length: 172
+
+    {"status":"ok","service":"jarvis","pid":16204,"port":3010,"node":"v23.1.0",
+     "startedAt":"2026-11-03T15:52:21.196Z","uptimeSeconds":33,
+     "timestamp":"2026-11-03T15:52:53.880Z"}
+
+AFTER — GET http://127.0.0.1:3010/api/status
+    HTTP/1.1 200 OK
+    Content-Type: application/json; charset=utf-8
+    Content-Length: 391
+
+    {"success":true,"status":"ok","service":"jarvis","pid":16204,"port":3010,
+     "node":"v23.1.0","startedAt":"2026-11-03T15:52:21.196Z","uptimeSeconds":33,
+     "timestamp":"2026-11-03T15:52:53.951Z",
+     "metrics":{"cpuPercent":38,"memoryUsedPercent":67,
+                "memoryTotalBytes":34264879104,"loadAverage":[0,0,0]},
+     "dependencies":[{"target":"127.0.0.1:8021","state":"down",
+                      "latencyMs":null,"error":"ECONNREFUSED"}]}
+
+Live :3000 re-checked after verification — untouched, still on the old code in
+memory (PID 16984 still listening, /health still text/html, /api/status still 500).
+A restart of :3000 is required to pick up the fix; that restart was deliberately
+not performed by this task.
+
+------------------------------------------------------------------------------
+5. OPEN ITEMS
+------------------------------------------------------------------------------
+* :3000 must be restarted (by whoever owns that process) to load the new routes.
+* The 3010 verification instance's tsx child (PID 16204) outlived its parent
+  shell and was still listening on 3010 when this file was written. Killing it
+  required an approval prompt that was not answered, so it was left alone rather
+  than forced. It has background engines disabled and owns no shared state.
+  To remove it:
+      powershell -NoProfile -Command "Stop-Process -Id 16204 -Force"
+* vite.config.ts still proxies /api -> localhost:8021 for any /api path that
+  has no Express route. 8021 is dead. Any future /api/* route that exists only
+  on that upstream will 500 the same way. Left unchanged (out of scope, and the
+  proxy may be intentional for an external service).

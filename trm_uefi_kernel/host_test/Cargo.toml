@@ -1,0 +1,26 @@
+[package]
+name = "trm7m_host_test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[[bin]]
+name = "trm7m_host_test"
+path = "src/main.rs"
+
+[[bin]]
+name = "fast_path_sram_bench"
+path = "src/fast_path_sram_bench.rs"
+
+[[bin]]
+name = "arc_object_sram"
+path = "src/arc_object_sram.rs"
+
+[[bin]]
+name = "harness_gate"
+path = "src/harness_gate.rs"
+
+[[bin]]
+name = "k3_head_bench"
+path = "src/k3_head_bench.rs"

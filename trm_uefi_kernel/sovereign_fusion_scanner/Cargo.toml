@@ -1,0 +1,13 @@
+[package]
+name = "sovereign_fusion_scanner"
+version = "19.1.0"
+edition = "2021"
+description = "TRM Swarm OS — Hardware Fusion Scanner & Vessel Optimization Engine"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[[bin]]
+name = "trm_fusion_scanner"
+path = "src/main.rs"

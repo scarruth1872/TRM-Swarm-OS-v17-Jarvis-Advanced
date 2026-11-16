@@ -1,0 +1,50 @@
+feat(testing): real test results; fix the starlette/httpx break that hid 3 errors
+
+NEXT STEP OF DEVELOPMENT: the two honest gaps left from the claim audit were the
+3 test ERRORS and the ~16,700 never-run test functions. Both are now addressed.
+
+1. THE 3 ERRORS WERE A REAL INTEGRATION BREAK, NOW FIXED
+   tests/test_neural_bridge_chat.py failed at CONSTRUCTION, not assertion:
+     TypeError: Client.__init__() got an unexpected keyword argument 'app'
+   ROOT CAUSE: httpx 0.28 REMOVED the `app` parameter that starlette's
+   TestClient passes up in `super().__init__(app=self.app, ...)`
+   (starlette/testclient.py:399). Verified directly:
+     httpx 0.27.2 -> inspect.signature(Client.__init__) contains 'app': True
+     httpx 0.28.1 -> False
+   Fixed by pinning httpx<0.28, recorded in requirements-test.txt with the
+   reasoning so it is not silently un-pinned later.
+
+   A TRAP WORTH RECORDING: my first attempt at the fix used
+   `uv pip install --system`, which targeted Python 3.12 while the tests run on
+   3.11 - so the pin landed in the wrong interpreter and the tests still failed,
+   making the fix look ineffective. The right form names the interpreter:
+     uv pip install --python <path-to-the-python-that-runs-the-tests> httpx==0.27.2
+   The suite went 28 passed / 3 errors -> 31 passed / 0 errors.
+
+2. /testing/stats NOW SERVES REAL RESULTS INSTEAD OF A FIXTURE
+   It served six run records - TIER-1-CONV..TIER-6-NATV - every one timestamped
+   2026-09-03T13:36:06Z with string-literal durations, and stats asserting
+   total_tests 60 / passed 60 / accuracy_percent 100.0 / coverage "100.0%". The
+   real suite is 31 tests, and no artefact for those 60 existed anywhere on disk.
+
+   Added tools/run_platform_tests.py, which runs the suite and writes what it
+   actually produced: counts, exit code, duration, the exact command, the Python
+   used, and the last lines of real output. /testing/stats reads that file.
+     total_tests 31 | passed 31 | failed 0 | errors 0 | status ALL_PASSED
+     run_at_utc 2026-09-28T13:26:06+00:00 | duration 8.067 s
+     command ... -m pytest tests/ -q --no-header -p no:cacheprovider
+
+   THE HONEST-FAILURE PATH IS TESTED, not assumed: with the results file moved
+   away the endpoint returns status NO_RUN_ON_RECORD with nulls and
+   "Run: python tools/run_platform_tests.py" - it does not invent a pass. It
+   reads per request, so it reflects disk truth with no caching.
+
+   REMOVED rather than guessed: coverage, success_rate_24h, k3_consensus and
+   pqc_seal. No coverage run is executed and no K3 or PQC gate is applied to the
+   suite, so those were labels with nothing behind them.
+
+STILL OPEN, stated plainly: the 16,749 test FUNCTIONS counted repo-wide are not
+what `pytest tests/` collects - that directory yields 31. Whether the other files
+are collectable, redundant, or broken is UNKNOWN, and this change does not claim
+otherwise. It makes the number the endpoint serves TRUE; widening collection is a
+separate piece of work with its own findings.

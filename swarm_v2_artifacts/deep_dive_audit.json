@@ -1,0 +1,755 @@
+{
+  "generated": "2026-08-04T21:41:27",
+  "platform": "TRM Swarm OS v18.67",
+  "trm": {
+    "modules": 10,
+    "total_lines": 46244,
+    "total_classes": 396,
+    "total_functions": 1251,
+    "modules_detail": {
+      "core": {
+        "files": 154,
+        "lines": 35439,
+        "classes": [
+          "AgentMailbox",
+          "ReportPeriod",
+          "MultimodalTimeSeriesPoint",
+          "ResourceArbiter",
+          "MCPBus",
+          "NeuralWallMiddleware",
+          "ArchitecturalRLAgent",
+          "InstellaSparseAgentTeams",
+          "PredictiveWatchdog",
+          "TokenRateMonitor",
+          "ArtifactStatus",
+          "Task",
+          "FemtosecondGenomicSSMScanner",
+          "ReasoningStep",
+          "ContinuumGenomicsEngine",
+          "ConsensusProposal",
+          "ToolVersion",
+          "ExecutableSwarmDirective",
+          "TrieNode",
+          "FederationRegistry",
+          "AgentPersona",
+          "CosmosActionStatus",
+          "ManusEngine",
+          "ChangelogEntry",
+          "CoordinationProtocol",
+          "RealHardwareTelemetrySource",
+          "LobsterStep",
+          "RestartPrediction",
+          "ComplianceMode",
+          "MetricType",
+          "SelfHealingInfra",
+          "TaskComplexity",
+          "HeartbeatScheduler",
+          "MonitorDaemon",
+          "FractalTelemetryBus",
+          "IdentityKernel",
+          "FederationProtocol",
+          "ArchitectStatus",
+          "ComplexSceneUnderstandingResult",
+          "TRMEnhancedAgent",
+          "KernelLoRAAdapter",
+          "QISAOptimizer",
+          "ArtifactPipeline",
+          "ChainOfVerification",
+          "ExternalSocketBridgeServer",
+          "PolicyState",
+          "TRM7MQuantized",
+          "KanbanCard",
+          "GeneticProposal",
+          "TestResearchAPI",
+          "ChangeType",
+          "TRMBrain",
+          "DigitalTwinCheckpointer",
+          "ExpertTeamHarnessManager",
+          "SemanticIndex",
+          "InputSanitizer",
+          "AudioDescriptor",
+          "AutoChangelogEngine",
+          "DiscoveryDaemon",
+          "BlueprintProposal",
+          "BoundingBox",
+          "StateSnapshot",
+          "MaintenanceTask",
+          "THzWavePacket",
+          "SemanticCache",
+          "PortManager",
+          "CosmosActionChunk",
+          "THzMicrokernelGateway",
+          "VerificationResult",
+          "HigherMind",
+          "FallacyType",
+          "Full64AgentOrchestrator",
+          "EmbassyOfTheFreeMindsEngine",
+          "LoRAHeader",
+          "ComplexSceneContext",
+          "ApprovalGate",
+          "AgentTrainingDataset",
+          "PonderomotiveDarkNodeTrap",
+          "PBFTNodeState",
+          "CQSService",
+          "MeshNodeSchema",
+          "FormalVerificationResult",
+          "QuantumDebugger",
+          "SIMDBenchmark",
+          "SkillValidator",
+          "WorktreeManager",
+          "AgentMemory",
+          "FeatureVector",
+          "DangerousNodeVisitor",
+          "ReconnaissanceDaemon",
+          "AgentHandshake",
+          "UsageWindow",
+          "KleeneTernaryEngine",
+          "SubAgentTask",
+          "TRMOrchestrator",
+          "GlobalMemorySync",
+          "ResearchFinding",
+          "KernelLoRARegistry",
+          "FlowMatchingVelocityField",
+          "TaskArbiter",
+          "TRM7MModel",
+          "FormalVerificationEngine",
+          "DigitalTwinSingleton",
+          "ExpertRegistry",
+          "LocalFileAdapter",
+          "ScheduledTask",
+          "CognitiveTokenEncoder",
+          "AnnealingResult",
+          "ServiceHealth",
+          "ResonantSemanticCache",
+          "UsageMetrics",
+          "ChannelAdapter",
+          "CognitiveLoadBalancer",
+          "UnifiedMetaOrchestrator",
+          "Cosmos3MoEInstellaShunter",
+          "StarMatrixNode",
+          "TurboVecMemory",
+          "MetricPoint",
+          "NeuralWall",
+          "UltraworkLoop",
+          "SwarmNode",
+          "EvolutionStatus",
+          "GANDesignSynthesizer",
+          "AgentMesh",
+          "GenerationResult",
+          "Test",
+          "PredictiveIntentBuffer",
+          "LobsterShell",
+          "KleeneState",
+          "VisualFrameData",
+          "Mamba3THzSSM",
+          "SystemEventLedger",
+          "ModuleCategory",
+          "CognitiveGene",
+          "ToolSchema",
+          "JarvisCognitiveFetcher",
+          "DGEEngine",
+          "TestSelfHealing",
+          "TestType",
+          "SentinelMiddleware",
+          "GenerationContext",
+          "TelemetryFabric",
+          "DigitalDNALoop",
+          "SelfModificationAPI",
+          "AgentTeam",
+          "GenerativeArchitect",
+          "Mamba3SSMBlock",
+          "ZeroHumanTestGen",
+          "TestSelfHealingInfraAPI",
+          "MissionState",
+          "AttemptSampler",
+          "AgentWorkload",
+          "PersonaState",
+          "MissionPhase",
+          "DynamicPriorityArbiter",
+          "SwarmPerformanceInsights",
+          "InverseFourierDecoder",
+          "MultimodalIngestionEngine",
+          "KleeneTrit",
+          "MemoryMappedIPC",
+          "TurboVecQuantizer",
+          "ArchitecturalBlueprint",
+          "ToolCallResult",
+          "DiffusionOutput",
+          "HumanSwarmInteractionEngine",
+          "GeneratedTestSuite",
+          "ChaosEngine",
+          "MultimodalFusionEngine",
+          "GraphEdge",
+          "CognitiveIngestionEngine",
+          "PersistentMmapArena",
+          "ServiceStatus",
+          "SensorTelemetryData",
+          "BlueprintScore",
+          "SelfHealingOrchestrator",
+          "TelemetryFrame",
+          "MCPToolEvolver",
+          "CoordinationResponder",
+          "EvolutionTrigger",
+          "CognitiveStack",
+          "RecoveryCoordinator",
+          "TelemetryManager",
+          "SwarmIntelligenceReport",
+          "MultimodalPredictiveAnalyticsEngine",
+          "ManusProtocol",
+          "ProactiveOrchestrationLoop",
+          "ContinuumPBFTLedger",
+          "GenerationStatus",
+          "ChaosSimulator",
+          "MalfunctionEvent",
+          "ChaosConfig",
+          "MeshNode",
+          "BrainAIMicrokernelBridge",
+          "QOperator",
+          "AnnealingConfig",
+          "ServiceConfig",
+          "ToolForge",
+          "TRM7MOutput",
+          "PhysicalFeedbackEngine",
+          "RemediationEngine",
+          "KanbanBoard",
+          "SuperpositionState",
+          "MissionStep",
+          "StarMatrixLatticeEngine",
+          "AdvancedSceneFusionEngine",
+          "CacheEntry",
+          "ThreatLevel",
+          "Cosmos3MicrokernelEntanglement",
+          "TestSecretsVaultAPI",
+          "QState",
+          "CardStatus",
+          "LocalLoRATrainer",
+          "DeterministicForge",
+          "MicrokernelSubAgent",
+          "OptimizedTRM7M",
+          "RadixTrieMatcher",
+          "SESEngine",
+          "SelfTrainingLoop",
+          "THzFourierEncoder",
+          "MoltbookQuery",
+          "StarMatrix",
+          "VerificationInvariant",
+          "TestPredictiveIntentBuffer",
+          "TestStatus",
+          "OptimizedMambaBlock",
+          "SwarmEngine",
+          "Message",
+          "JarvisSymbiosisEngine",
+          "SecretsVault",
+          "ModificationTransaction",
+          "FallacyDetection",
+          "OpenClawGateway",
+          "ComputeTarget",
+          "Cosmos3EdgeBridge",
+          "TestSkillValidator",
+          "SemanticKnowledgeGraph",
+          "TRM7M",
+          "HardwareVoltageMicrokernelBinder",
+          "SkillMatrixSync",
+          "HeuristicConsensusLayer",
+          "MemorySynchronizer",
+          "Cosmos3Bridge",
+          "AgentResponseModulator",
+          "DNAMutationProposal",
+          "PredictiveAnalyticsForecast",
+          "SwarmOrchestrator",
+          "MPUCore",
+          "CoherenceThresholds",
+          "Mamba3StateSpaceScanner",
+          "MutationEngine",
+          "DiscordAdapter",
+          "GpuHardwareMicrokernelBinder",
+          "BaseAgent",
+          "Antibody",
+          "ModuleInfo",
+          "FederationManager",
+          "HumanCommandInput",
+          "Mamba3TurboVecEngine",
+          "Cosmos3SparseMoETeams",
+          "LoRALinear",
+          "MicrokernelSpawner",
+          "ThreatDetection",
+          "PersistentRedisMock",
+          "AgentSlot",
+          "ContainerSecurityScanner",
+          "DDRTrainingCollector",
+          "ResonanceEngine",
+          "SkillLoader",
+          "MaintenanceTaskType",
+          "ArchitecturalAction",
+          "PBFTConsensusLayer",
+          "RateLimitExceeded",
+          "PhoenixProtocolEngine",
+          "MoltbookNetwork",
+          "TurboVec16xQuantizer",
+          "SkillDefinition",
+          "Mamba3Block",
+          "PrismFQMEngine",
+          "PersonaStateMachine",
+          "TelegramAdapter",
+          "OptimizationEngine",
+          "TestPhysicalFeedbackEngine",
+          "LLMOrchestrator",
+          "MMapHeader",
+          "SmallDiffusionEngine",
+          "LobsterPipeline",
+          "InboundMessage",
+          "GraphNode",
+          "MockDKG",
+          "CollaborativeReasoningEngine",
+          "EvolutionarySandbox",
+          "HigherMindPersona",
+          "ConsensusPhase",
+          "EvolutionResult",
+          "SwarmTelemetry",
+          "TestSkillMatrixSync",
+          "PerformanceMetric",
+          "HealthDashboardMonitor",
+          "DigitalDNARepository"
+        ],
+        "functions": [
+          "analyze_scene",
+          "get_advanced_scene_fusion",
+          "send",
+          "broadcast",
+          "receive",
+          "peek",
+          "count_pending",
+          "clear",
+          "get_stats",
+          "list_agents"
+        ],
+        "technologies": [
+          "GPU",
+          "THz",
+          "Mamba3",
+          "Trie",
+          "LoRA",
+          "Memory"
+        ],
+        "algorithms": [
+          "Transformer",
+          "Gan",
+          "Ssm",
+          "Kleene",
+          "K3",
+          "Gradient",
+          "Fourier",
+          "Sgd",
+          "Genetic",
+          "Reinforcement",
+          "Mamba",
+          "Diffusion",
+          "Ternary",
+          "Adam",
+          "Attention"
+        ]
+      },
+      "routes": {
+        "files": 21,
+        "lines": 4121,
+        "classes": [
+          "IntentRecordRequest",
+          "ConsensusRequest",
+          "CreateCardRequest",
+          "LearnTextRequest",
+          "ChatRequest",
+          "QISAOptimizeRequest",
+          "SpatialFeedRequest",
+          "CRERequest",
+          "PBFTVoteRequest",
+          "GlobalMemoryContributeRequest",
+          "GlobalMemoryQueryRequest",
+          "SignedRequest",
+          "MemorySyncRequest",
+          "IntegrateRequest",
+          "UseSkillRequest",
+          "IntentPredictRequest",
+          "DeployRequest",
+          "SpawnSubAgentRequest",
+          "UpdatePersonaPresetRequest",
+          "CognitiveIngestRequest",
+          "AnalyzePromptRequest",
+          "ChatWithVerificationRequest",
+          "BatchReviewRequest",
+          "ForceReassignRequest",
+          "MoveCardRequest",
+          "BatchIntegrateRequest",
+          "BroadcastRequest",
+          "LearnFileRequest",
+          "PMDelegationRequest",
+          "ReviewRequest",
+          "SpawnRequest",
+          "MeshAnnounceRequest",
+          "TestRequest",
+          "GitHubAcquisitionRequest",
+          "RunTestsRequest",
+          "AddStarMatrixNodeRequest",
+          "TaskPipelineRequest",
+          "JarvisMemorySyncRequest",
+          "AddStarMatrixEdgeRequest",
+          "SendMailboxMessage",
+          "SecretDecryptRequest",
+          "SecretSetRequest",
+          "GenerateTestsRequest",
+          "AntibodyAddRequest",
+          "MeshRouteRequest",
+          "ForgeBuildRequest",
+          "FederationMemorySyncRequest",
+          "HandshakeRequest",
+          "ManusSuperpositionRequest",
+          "ContinuumRefractionRequest",
+          "SynthesizeRequest",
+          "FederationHandshakeRequest",
+          "ManusCollapseRequest",
+          "DDRScanRequest",
+          "VerifyReasoningRequest"
+        ],
+        "functions": [
+          "list_artifacts",
+          "get_artifact_detail",
+          "review_artifact",
+          "batch_review_artifacts",
+          "batch_integrate_artifacts",
+          "batch_security_verify",
+          "test_artifact",
+          "integrate_artifact",
+          "remediate_rejected",
+          "deploy_integrated"
+        ],
+        "technologies": [
+          "GPU",
+          "THz",
+          "Mamba3",
+          "Trie",
+          "LoRA",
+          "Memory"
+        ],
+        "algorithms": [
+          "Kleene",
+          "Ssm",
+          "Gan",
+          "K3",
+          "Fourier",
+          "Genetic",
+          "Mamba",
+          "Diffusion",
+          "Ternary"
+        ]
+      },
+      "skills": {
+        "files": 18,
+        "lines": 2045,
+        "classes": [
+          "LearnedSkill",
+          "RelationshipReasoningSkill",
+          "RLMSkill",
+          "SpectralEmbeddingSkill",
+          "LearningEngine",
+          "FastEmbeddingSkill",
+          "CoCreatorSkill",
+          "HighQualityEmbeddingSkill",
+          "DocSkill",
+          "DataSkill",
+          "MCPToolSkill",
+          "TRMSkill",
+          "CodeAnalysisSkill",
+          "SkillSynthesisPipeline",
+          "WebSearchSkill",
+          "EmbeddingSkill",
+          "FileSkill",
+          "GitHubAcquisitionPipeline",
+          "CodebaseIndexer",
+          "FilesystemWatcher",
+          "CognitiveOrchestrator",
+          "HardenedShellSkill",
+          "DocIngestionSkill",
+          "ValidationGate",
+          "ShellSkill"
+        ],
+        "functions": [
+          "execute",
+          "get_law_of_one_perspective",
+          "scan_files",
+          "parse_source_file",
+          "on_file_changed",
+          "get_cognitive_orchestrator",
+          "ingest_file",
+          "ingest_text",
+          "scan_directory",
+          "list_learned"
+        ],
+        "technologies": [
+          "Mamba3",
+          "Memory"
+        ],
+        "algorithms": [
+          "Ssm"
+        ]
+      },
+      "scripts": {
+        "files": 23,
+        "lines": 1895,
+        "classes": [
+          "CollaborativeReasoningEngine",
+          "Colors",
+          "SwarmBenchmark"
+        ],
+        "functions": [
+          "run_entangled_pipeline",
+          "perform_inception_pulse",
+          "test_superposition_flow",
+          "propose_regional_managers",
+          "initiate_discussion",
+          "save_results",
+          "main",
+          "run_swarm_alignment_mission",
+          "log",
+          "test_system_cascade"
+        ],
+        "technologies": [
+          "Trie",
+          "Memory"
+        ],
+        "algorithms": [
+          "Gan"
+        ]
+      },
+      "scratch": {
+        "files": 23,
+        "lines": 1326,
+        "classes": [
+          "GeneratedMicroservice",
+          "MockTelemetryTracker",
+          "AsyncCacheRateLimiter"
+        ],
+        "functions": [
+          "audit_tasks",
+          "run_benchmarks",
+          "execute",
+          "complete_all_tasks",
+          "debug_endpoint",
+          "run_end_to_end_demo",
+          "demo_live_learning",
+          "extract_cpu_utilization",
+          "broadcast_evolution",
+          "register_transformation_plans"
+        ],
+        "technologies": [
+          "Memory"
+        ],
+        "algorithms": [
+          "Gan",
+          "Attention"
+        ]
+      },
+      "root": {
+        "files": 2,
+        "lines": 713,
+        "classes": [
+          "InputSanitizerMiddleware",
+          "TokenRateMonitorMiddleware"
+        ],
+        "functions": [
+          "sync_mesh_to_ipc",
+          "sync_mesh_to_ipc_async",
+          "optimize_system",
+          "lifespan",
+          "get_generative_architect_status",
+          "get_skg_snapshot",
+          "synthesize_architecture",
+          "propose_self_modification",
+          "get_telemetry_fabric_metrics",
+          "fuse_multimodal_event"
+        ],
+        "technologies": [
+          "GPU",
+          "Trie",
+          "LoRA",
+          "Memory"
+        ],
+        "algorithms": []
+      },
+      "mcp": {
+        "files": 3,
+        "lines": 446,
+        "classes": [
+          "SynthesizedTool",
+          "MCPBridge",
+          "MCPSynthesizer"
+        ],
+        "functions": [
+          "to_dict",
+          "generate_mcp_server",
+          "invoke",
+          "health",
+          "mcp_manifest",
+          "generate_skill_class",
+          "invoke",
+          "list_tools",
+          "get_synthesis_log",
+          "get_stats"
+        ],
+        "technologies": [
+          "Mamba3"
+        ],
+        "algorithms": [
+          "Ssm"
+        ]
+      },
+      "experts": {
+        "files": 2,
+        "lines": 159,
+        "classes": [],
+        "functions": [
+          "get_expert_team"
+        ],
+        "technologies": [
+          "Mamba3",
+          "LoRA"
+        ],
+        "algorithms": [
+          "Gan",
+          "Ssm"
+        ]
+      },
+      "cli": {
+        "files": 2,
+        "lines": 61,
+        "classes": [],
+        "functions": [
+          "interactive_cli"
+        ],
+        "technologies": [],
+        "algorithms": []
+      },
+      "generated": {
+        "files": 1,
+        "lines": 39,
+        "classes": [
+          "AsyncCacheRateLimiter"
+        ],
+        "functions": [],
+        "technologies": [],
+        "algorithms": []
+      }
+    }
+  },
+  "jarvis": {
+    "modules": 0,
+    "total_lines": 0,
+    "modules_detail": {}
+  },
+  "algorithm_inventory": {
+    "Transformer": {
+      "count": 1,
+      "modules": [
+        "core"
+      ]
+    },
+    "Gan": {
+      "count": 5,
+      "modules": [
+        "core",
+        "experts",
+        "routes",
+        "scratch",
+        "scripts"
+      ]
+    },
+    "Ssm": {
+      "count": 5,
+      "modules": [
+        "core",
+        "experts",
+        "mcp",
+        "routes",
+        "skills"
+      ]
+    },
+    "Kleene": {
+      "count": 2,
+      "modules": [
+        "core",
+        "routes"
+      ]
+    },
+    "K3": {
+      "count": 2,
+      "modules": [
+        "core",
+        "routes"
+      ]
+    },
+    "Gradient": {
+      "count": 1,
+      "modules": [
+        "core"
+      ]
+    },
+    "Fourier": {
+      "count": 2,
+      "modules": [
+        "core",
+        "routes"
+      ]
+    },
+    "Sgd": {
+      "count": 1,
+      "modules": [
+        "core"
+      ]
+    },
+    "Genetic": {
+      "count": 2,
+      "modules": [
+        "core",
+        "routes"
+      ]
+    },
+    "Reinforcement": {
+      "count": 1,
+      "modules": [
+        "core"
+      ]
+    },
+    "Mamba": {
+      "count": 2,
+      "modules": [
+        "core",
+        "routes"
+      ]
+    },
+    "Diffusion": {
+      "count": 2,
+      "modules": [
+        "core",
+        "routes"
+      ]
+    },
+    "Ternary": {
+      "count": 2,
+      "modules": [
+        "core",
+        "routes"
+      ]
+    },
+    "Adam": {
+      "count": 1,
+      "modules": [
+        "core"
+      ]
+    },
+    "Attention": {
+      "count": 2,
+      "modules": [
+        "core",
+        "scratch"
+      ]
+    }
+  }
+}

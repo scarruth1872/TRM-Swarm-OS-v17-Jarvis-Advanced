@@ -1,0 +1,41 @@
+TRM 50-TASK SWEEP - MEASURED 2026-10-29
+harness: tools/sweep50.py | :8588 /predict | dataset arc-agi_training2, pid=1
+first 50 task IDs alphabetically | 0.82 s per task | wall 38.6 s
+
+=== RESULT ===
+  TASKS OK        47/50   (3 HTTP 500)
+  EXACT SOLVES     1/47   = 2.1%
+  cell_accuracy    mean 0.6490   median 0.7031
+  fg_accuracy      mean 0.2938   median 0.2041
+                   min  0.0000   max 1.0000
+  fg == 0.0        11/47 tasks  (complete foreground failure)
+  fg == 1.0         1/47 tasks
+  GAP cell - fg   +0.3552    <- cell_accuracy overstates by 35.5 points
+  grid sizes       9 to 676 cells
+
+=== THE 3-TASK SAMPLE WAS WILDLY OPTIMISTIC ===
+  3-task mean fg accuracy  57.7%  (36.1 / 70.3 / 66.7)
+  47-task mean fg accuracy 29.4%
+  -> the sample was 2x too generous. Never quote n=3.
+
+=== A HARNESS BUG I MADE AND FIXED ===
+  First run reported 21/50 OK, 29 errors. That was NOT model failure:
+  I enumerated IDs from arc-agi_training2_challenges.json but /predict
+  defaults to split=training (a DIFFERENT dataset), so 29 IDs were absent.
+  KeyError -> HTTP 500. Fixed by passing split=training2 -> 47/50.
+
+=== WHAT THIS SAYS ABOUT THE PLATFORM ===
+  ARC exact solve rate        2.1%   (1 of 47)
+  Foreground cell accuracy   29.4%   (mean)
+  Background-inclusive cell  64.9%   (mean)  <- the number previously quoted
+
+  The gap is 35.5 points. cell_accuracy more than DOUBLES the real figure
+  because empty cells dominate. Any doc quoting '91.75% cell accuracy'
+  should read '70% of foreground cells, 0 exact'.
+
+  11 of 47 tasks score 0.0 on foreground - the model produces background
+  and never paints a single correct foreground cell.
+  4 of 47 have cell_accuracy > 0.80 while foreground < 0.20 - the exact
+  'looks great, does nothing' signature.
+
+  3 tasks still 500. Not investigated (05a7bcf2, 09c534e7, 0a1d4ef5).

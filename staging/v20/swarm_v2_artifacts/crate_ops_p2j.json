@@ -1,0 +1,71 @@
+{
+ "phase": "P2j",
+ "routes_added": [
+  "POST /crate/council/vote",
+  "POST /crate/nand/roundtrip",
+  "POST /crate/gguf/inspect",
+  "POST /crate/git/verify"
+ ],
+ "census_live": {
+  "wired": 8,
+  "ops": [
+   "k3/collapse",
+   "trit/pack",
+   "moe/gate",
+   "ssm/step",
+   "council/vote",
+   "nand/roundtrip",
+   "gguf/inspect",
+   "git/verify"
+  ]
+ },
+ "council_live": {
+  "agents": 15,
+  "rows": 15,
+  "verdict": "PROCEED",
+  "trit_sum": 9,
+  "names": [
+   "Archi",
+   "Shield",
+   "Logic",
+   "Devo",
+   "Seeker",
+   "Jarvis",
+   "Pulse",
+   "Flow",
+   "EventLedger",
+   "Orchestra",
+   "THzGateway",
+   "Verify",
+   "Bridge",
+   "Hermes",
+   "LogicMaster"
+  ],
+  "probe": "POST /crate/council/vote with MOTION_A; the first receipt probed it with a GET (405 by design) and recorded None, which is why this file was refilled"
+ },
+ "deployed_image": {
+  "size": 2752512,
+  "sha256_16": "9866df1614cb6b64"
+ },
+ "council_table_now": {
+  "agents": 15,
+  "domain_entries": 244,
+  "file_lines": 537,
+  "sha256_16": "17fde4ac3b76a68e"
+ },
+ "council_table_before_regeneration": {
+  "agents": 14,
+  "domain_entries": 128,
+  "file_lines": 370,
+  "sha256_16": "46fee5db651d6766"
+ },
+ "ruler_p2j": {
+  "passed": 33,
+  "total": 33
+ },
+ "ruler_p2g_regression": {
+  "passed": 23,
+  "total": 23
+ },
+ "crate_unit_tests": "see cargo output"
+}

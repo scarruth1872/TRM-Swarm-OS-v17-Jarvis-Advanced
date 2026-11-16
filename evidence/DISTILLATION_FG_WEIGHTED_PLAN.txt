@@ -1,0 +1,96 @@
+FOREGROUND-WEIGHTED DISTILLATION PLAN (2026-10-25)
+Supersedes the plain-KL plan in DISTILLATION_PLAN.txt.
+
+=== THE ROOT CAUSE, MEASURED ===
+
+1. Dataset pad token = 0. dataset/build_arc_dataset.py:300 -> ignore_label_id=0
+2. Loss ignore token = -100. models/losses.py:8 -> IGNORE_LABEL_ID = -100
+3. puzzle_dataset.py stores ignore_label_id=0 in metadata but NEVER converts
+   labels to -100.
+4. losses.py:66  mask = (labels != -100)
+   labels are uint8 with values 0..11, so this is ALWAYS TRUE.
+
+=== CONSEQUENCE, MEASURED ON 18,000,000 LABEL TOKENS ===
+  token  0 (PAD)        90.28%   16,250,280
+  token  1 (EOS)         1.77%      318,645
+  token  2 (colour 0)    5.47%      984,496     <- background
+  tokens 3-11 (colours)  0.27-0.29% each ~49,000
+
+  95.75% of the training signal is PAD + background. Only 4.25% is
+  foreground. The model is optimised to predict nothing.
+
+=== THE PROOF: ALL-ZEROS BASELINE ===
+  Across the 47-task sweep, 8,444 cells, 5,381 background = 63.73%.
+  An all-zeros predictor scores cell_accuracy 63.73%.
+  Measured TRM cell_accuracy                       64.90%
+  DIFFERENCE                                        1.17 points
+  16 of 47 tasks score AT OR BELOW that baseline.
+
+  The TRM is 1.17 points better than outputting nothing. That is the
+  honest capability statement for ARC today.
+
+=== WHY PLAIN KL DISTILLATION WOULD NOT FIX THIS ===
+  DISTILLATION_PLAN.txt proposed KL(student || teacher).
+  The teacher has the SAME bug. Cloning its distribution clones the bias:
+  a student trained to match a background-biased teacher learns to predict
+  background just as faithfully, only 30x faster.
+
+  Fix the MASK FIRST. Distillation on top of an unmasked loss just
+  compresses the bug into 1.38 MB.
+
+=== STEP 1 - THE ONE-LINE FIX (highest leverage in the repo) ===
+  Option A (preferred, no data rebuild):
+    in models/losses.py set IGNORE_LABEL_ID = 0 so it matches the dataset
+    metadata. PAD then masks correctly. WARNING: EOS=1 and colours 2..11
+    are unaffected, so this is safe. VERIFY on a batch before training.
+
+  Option B (no touching the loss): convert 0 -> -100 in the loader.
+    Safer conceptually but requires changing puzzle_dataset.py label prep
+    and risks uint8 underflow (-100 does not fit uint8) -> must cast int16.
+
+  DO NOT do both. Verify which after a smoke test on 100 batches.
+
+=== STEP 2 - FOREGROUND CLASS WEIGHTS (derived from measurement) ===
+  Counts per token over 18M labels:
+    PAD 0     90.28%   weight 0      (masked, not a target)
+    EOS 1      1.77%   weight 1.0    (structural, keep)
+    colour 0   5.47%   weight 0.25   (20x more common than any real colour)
+    colours 1-9 0.27%  weight 1.00   (the task itself)
+
+  Ratio foreground:background = 4:1. Derived, not guessed.
+  Implement as a class-weighted cross-entropy in stablemax_cross_entropy,
+  applied AFTER the mask so padded positions contribute nothing.
+
+=== STEP 3 - DISTILL WITH THE WEIGHTED LOSS ===
+  teacher  step_155718 FP (455M total, ~7M trunk) - loads, verified
+  student  same TRM arch, ternary weights, STE, ~1.38 MB
+  loss     L = mask * w_class * [ alpha*CE(student, truth)
+                                  + (1-alpha)*KL(student||teacher) ]
+           alpha = 0.5 to start; truth labels already exist in the data.
+
+  NOTE: keep the hard-label CE term. Pure KL would re-import the teacher's
+  bias. The ground truth is the antidote; the teacher is only a soft guide.
+
+=== STEP 4 - EVALUATE ON THE HONEST METRIC ===
+  Success is NOT cell_accuracy. Report all three:
+    foreground_accuracy   baseline today 29.4%   <- the target to beat
+    exact                 baseline today 2.1%
+    cell_accuracy         baseline today 64.9%  vs all-zeros 63.7%
+                          (report, but never as the headline)
+
+  CONTROL: an all-zeros predictor must be run alongside every result.
+  If the student scores within ~2 points of that baseline, it has not
+  learned to paint. That single control would have caught this bug at any
+  point in the model's life.
+
+=== FEASIBILITY (unchanged from the measured arithmetic) ===
+  teacher fwd 4.0e11 + student fwd/bwd 1.2e12 = ~1.6e12 FLOPs/step
+  1.6e12 / 2.571e12 measured TFLOPS = ~0.62 s/step
+  10,000 steps ~1.7 h    50,000 steps ~8.6 h
+  Class weights add no FLOPs - same cost, different objective.
+
+=== FIRST ACTION, BEFORE ANY TRAINING ===
+  1. Fix the mask (IGNORE_LABEL_ID 0 vs -100). One line.
+  2. Smoke test: confirm loss drops ~90% (padding no longer counted).
+     If the reported loss barely moves, the mask is still not applied.
+  3. Add class weights. Smoke test: confirm foreground loss weight > bg.

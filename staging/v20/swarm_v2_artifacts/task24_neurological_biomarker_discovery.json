@@ -1,0 +1,39 @@
+{
+  "task_id": "TASK-24",
+  "name": "Neurological Disorder Biomarker Discovery",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "timestamp": "2026-10-20 14:42:07 UTC",
+  "humanistic_impact": "Enables non-invasive early diagnosis of neurodegenerative disease 10-15 years prior to irreversible cognitive decline.",
+  "biomarkers_discovered": [
+    {
+      "marker": "p-Tau217 / p-Tau181",
+      "disorder": "Alzheimer's Disease (Early Asymptomatic Stage)",
+      "target_kd_pm": 120.0,
+      "specificity": 0.94,
+      "k3": "+1"
+    },
+    {
+      "marker": "Alpha-Synuclein Oligomeric Fibrils",
+      "disorder": "Parkinson's Disease / Lewy Body Dementia",
+      "target_kd_pm": 250.0,
+      "specificity": 0.91,
+      "k3": "+1"
+    },
+    {
+      "marker": "TDP-43 Cytoplasmic Aggregates",
+      "disorder": "Amyotrophic Lateral Sclerosis (ALS) / FTD",
+      "target_kd_pm": 340.0,
+      "specificity": 0.89,
+      "k3": "+1"
+    }
+  ],
+  "blood_brain_barrier_shuttle": {
+    "peptide_id": "BBB-SHUTTLE-09",
+    "sequence": "TFFYGGSRGKRNNFKTEEY",
+    "transcytosis_mechanism": "LRP1 Receptor-Mediated Transcytosis",
+    "permeability_papp_cm_s": 4.2e-06,
+    "brain_to_plasma_ratio": 0.18
+  },
+  "diagnostic_assay_type": "Digital Single-Molecule Immunoassay (Simoa-Analog)",
+  "k3_verdict": "BIOMARKERS_CONFIRMED (+1)"
+}

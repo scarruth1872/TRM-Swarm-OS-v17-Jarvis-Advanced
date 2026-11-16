@@ -1,0 +1,61 @@
+{
+ "motion": "MOTION-027",
+ "before": 80,
+ "after": 79,
+ "false_positive": "state_handlers.rs 'unsafe_target' is a JSON string literal, not an unsafe block",
+ "irreducible": 77,
+ "invariant_dependent": 2,
+ "replaceable": 0,
+ "verdict_per_file": {
+  "native_ternary.rs": {
+   "class": "irreducible",
+   "justification": "FFI: extern C exports + from_raw_parts + DLL oracle (GetProcAddress/LoadLibraryA/transmute_copy)",
+   "blocks": 38
+  },
+  "host_probe.rs": {
+   "class": "irreducible",
+   "justification": "Windows API syscalls (CreateToolhelp32Snapshot, GlobalMemoryStatusEx, Thread32First, ...)",
+   "blocks": 13
+  },
+  "k3_retrieval.rs": {
+   "class": "irreducible",
+   "justification": "FFI: unsafe extern C fn types + DLL calls (the Send/Sync impls are invariant-dependent)",
+   "blocks": 18
+  },
+  "native_encoder.rs": {
+   "class": "irreducible",
+   "justification": "FFI: unsafe extern C fn type + DLL call",
+   "blocks": 2
+  },
+  "core_pinning.rs": {
+   "class": "irreducible",
+   "justification": "syscall FFI: SetThreadAffinityMask / sched_setaffinity",
+   "blocks": 2
+  },
+  "shadow_bios.rs": {
+   "class": "irreducible",
+   "justification": "MMIO FFI: NtCreateFile + DeviceIoControl on the AMD MSR driver",
+   "blocks": 1
+  },
+  "ternary_engine.rs": {
+   "class": "irreducible",
+   "justification": "SIMD: AVX2 intrinsics (gemm_avx2, packed_dot64_avx2)",
+   "blocks": 4
+  },
+  "trm7m.rs": {
+   "class": "irreducible",
+   "justification": "unaligned read (read_unaligned) kept on purpose \u2014 the aligned-load alternative OOMs the optimizer",
+   "blocks": 1
+  },
+  "state_handlers.rs": {
+   "class": "false_positive",
+   "justification": "the string \"unsafe_target\" in a JSON literal, not an unsafe block",
+   "blocks": 0
+  }
+ },
+ "invariant_blocks": {
+  "k3_retrieval.rs:97": "unsafe impl Send for Engine \u2014 invariant: the native DLL's functions are reentrant/thread-safe (single-instance OnceLock, pure functions, no shared mutable state)",
+  "k3_retrieval.rs:98": "unsafe impl Sync for Engine \u2014 same invariant"
+ },
+ "honest_finding": "There is nothing replaceable to reduce: the kernel's unsafe surface is the FFI boundary (extern C, from_raw_parts, the DLL oracle), the SIMD intrinsics, the Windows/syscall API, and the unaligned weight read kept deliberately to avoid an LLVM optimizer OOM. The one count reduction is the false positive (a JSON string). A block that can be replaced is a defect; there are none \u2014 the unsafe is where Rust meets the C ABI and the hardware."
+}

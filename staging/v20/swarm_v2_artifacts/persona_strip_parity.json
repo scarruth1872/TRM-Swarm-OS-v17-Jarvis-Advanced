@@ -1,0 +1,48 @@
+{
+ "checks": [
+  {
+   "check": "decision (state, status, content) matches the oracle on 8 cases",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "check": "violation count matches the oracle's own violation_count",
+   "ok": true,
+   "detail": "[]"
+  },
+  {
+   "check": "the WIRED module answers identically to the pure state machine on 8 cases",
+   "ok": true,
+   "detail": "[] (reason=PE CDYLIB loaded)"
+  },
+  {
+   "check": "empty forbidden entry counts, exactly as `'' in text` does in python",
+   "ok": true,
+   "detail": "counted on both sides"
+  },
+  {
+   "check": "compiled prompt bytes identical to the oracle's",
+   "ok": true,
+   "detail": "rust 577 bytes vs oracle 577 bytes"
+  },
+  {
+   "check": "sha3_256 of the rust body equals the oracle's own signature",
+   "ok": true,
+   "detail": "digest 61c106fec4ce438f"
+  },
+  {
+   "check": "the WIRED build_compiled_prompt returns the same signed string (signature still one owner)",
+   "ok": true,
+   "detail": "661 vs 661 bytes"
+  },
+  {
+   "check": "required_lexicon is declared but does not affect enforce() (same decision with and without it)",
+   "ok": true,
+   "detail": "status SUCCESS either way -- absent required words are not a violation"
+  }
+ ],
+ "passed": 8,
+ "failed": 0,
+ "decision_cases": 8,
+ "dll_bytes": 144384
+}

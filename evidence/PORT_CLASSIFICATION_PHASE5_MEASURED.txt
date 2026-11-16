@@ -1,0 +1,433 @@
+PORT CLASSIFICATION — PHASE 5 — RAW MEASUREMENTS
+==============================================================================
+Generated: 2026-11-03
+Repo: F:\Development sites\TRM-Swarm-OS-v2
+Host: Windows 11, rustc 1.89.0 msvc, cargo C:\Users\shawn\.cargo\bin\cargo.exe
+Python: C:\Users\shawn\AppData\Local\Programs\Python\Python311\python.exe
+
+Each block below is the literal output of the command named above it, or a count
+computed from that output. Nothing is transcribed by hand.
+
+------------------------------------------------------------------------------
+1. LIVE SERVICES
+------------------------------------------------------------------------------
+$ netstat -ano | grep LISTENING   (then Win32_Process CommandLine per PID)
+
+8022  host_council_server.exe (Rust, links trm_uefi_kernel)      PID 31560
+8099  python -m swarm_v2.app_v2                                  PID 18816
+3000  node server.ts (Jarvis-Advanced-main)                      PID 34344
+3001  python trm_uefi_kernel/trm_companion_proxy.py               PID 37564
+3002  trm_companion_bridge.exe (Rust)                             PID 32928
+5183  vite (dashboard)                                            PID 33592
+8587  llama-server.exe (qwen2.5-1.5b, external)                   PID 3168
+8588  python tools/trm_server.py                                  PID 29232
+8593  llama-server.exe (embeddings, external)                     PID 35656
+
+Python services that can import swarm_v2.core: 8099, 8588, 3001.
+Import-closure sizes (AST walk; relative and absolute imports resolved to files):
+  swarm_v2/app_v2.py                     -> 166 local modules
+  tools/trm_server.py                    ->   6 local modules
+  trm_uefi_kernel/trm_companion_proxy.py ->   1 local module
+
+Of the 44 KERNEL-CANDIDATE modules, 34 are in the app_v2 closure, 0 in the other
+two.
+
+------------------------------------------------------------------------------
+2. tools/surface_diff.py — OUTPUT AFTER THE FIX (current)
+------------------------------------------------------------------------------
+$ python tools/surface_diff.py
+
+=== HOST-ONLY: 26 ===
+  local_lora_trainer                 py=  388 rs=  12  [torch]
+  llm_router                         py=  655 rs=  28  [torch]
+  ddr_self_training                  py=  296 rs=  23  [psutil,torch]
+  evolutionary_sandbox               py=  253 rs=  23  [ffi-shim(ctypes)]
+  daemon_discovery                   py=   95 rs=   9  [psutil]
+  native_ops_bridge                  py=  125 rs=  12  [ffi-shim(ctypes)]
+  task_arbiter                       py=  911 rs=  92  [psutil,requests]
+  resource_arbiter                   py=  184 rs=  19  [psutil,subprocess]
+  openclaw_gateway                   py=  503 rs=  58  [requests]
+  federation                         py=  476 rs=  57  [requests]
+  persistent_mmap_allocator          py=  320 rs=  40  [mmap]
+  cold_start_recovery                py=  234 rs=  37  [mmap]
+  rust_kernel_binder                 py=  163 rs=  26  [ffi-shim(ctypes)]
+  external_socket_bridge             py=  166 rs=  27  [socket]
+  neuro_continuum                    py=  172 rs=  30  [torch]
+  kernel_lora_adapter                py=  353 rs=  66  [ffi-shim(ctypes)]
+  predictive_watchdog                py=  289 rs=  58  [psutil]
+  hf_brain                           py=  124 rs=  25  [torch,transformers]
+  native_mailbox_bridge              py=  284 rs=  61  [ffi-shim(ctypes)]
+  simd_accelerator                   py=  272 rs=  59  [ffi-shim(ctypes)]
+  gpu_unlock_architecture            py=  393 rs= 105  [mmap,torch]
+  lobster_shell                      py=  203 rs=  58  [subprocess]
+  qisa_optimizer                     py=  244 rs=  75  [torch]
+  mpu                                py=   73 rs=  23  [requests]
+  hardware_voltage_microkernel_binder py=  284 rs=  92  [psutil,subprocess]
+  monad                              py=  330 rs= 132  [subprocess]
+
+=== NET-ONLY: 5 ===
+  cognitive_ingestion_engine         py=  894 rs=  32  [urllib]
+  proactive_loop                     py=  547 rs=  53  [aiohttp]
+  digital_dna_loop                   py=  540 rs=  69  [urllib]
+  memory_synchronizer                py=  129 rs=  23  [aiohttp]
+  sentinel                           py=  392 rs=  82  [urllib]
+
+=== KERNEL-CANDIDATE: 44 ===
+  -- SYNC-PORTABLE: 17
+  shrink   pyL   rsL  module                           missing-api
+     92%   357    28  secrets_vault                    SecretsVault, check_node_access, delete_secret
+     90%    87     9  redis_mock                       PersistentRedisMock, blpop, get
+     88%   224    28  brain_ai_microkernel_bridge      BrainAIMicrokernelBridge, get_swarm_health_for_brain_ai, process_brain_ai_data
+     87%   216    29  lora_response_modulator          AgentResponseModulator, get_modifier_summary, modulate
+     84%   161    26  cosmos_sparse_moe_teams          Cosmos3SparseMoETeams, execute_cosmos3_team_benchmark_suite, route_cosmos3_request_to_lead_team
+     81%   144    27  port_manager                     PortManager, acquire_port, get_agent_ports
+     81%   119    23  continuum_genomics               ContinuumGenomicsEngine, ResonantSemanticCache, add_state
+     80%   258    51  moltbook                         MoltbookNetwork, find_matching_queries, get_feed
+     79%   218    45  trm_7m_full                      TRM7M, forward, forward_fast
+     79%   235    49  cosmos3_edge_bridge              Cosmos3EdgeBridge, CosmosActionStatus, get_stats
+     79%   109    23  cosmos_bridge                    Cosmos3Bridge, execute_full_cosmos3_pipeline, generate_world_simulation
+     76%   219    53  daily_evolution_engine           run_daily_evolution
+     73%   104    28  cosmos_moe_instella_shunter      Cosmos3MoEInstellaShunter, execute_64_expert_benchmark_sweep, route_cosmos3_token_instella_style
+     73%    96    26  cosmos_microkernel_entanglement  Cosmos3MicrokernelEntanglement, entangle_agent_with_cosmos3, execute_full_12_agent_cosmos3_sweep
+     70%   493   148  pbft_consensus                   ConsensusPhase, ConsensusProposal, PBFTConsensusLayer
+     67%   336   110  intent_buffer                    predict_intent, prewarm_context, record_intent
+     62%    60    23  llm_orchestrator                 LLMOrchestrator, determine_routing, synthesize_context
+  -- ASYNC-OTHER: 23
+     base_agent, remediation_engine, monitor_daemon, self_healing_orchestrator, collaborative_reasoning, neural_wall, auto_changelog, cognitive_stack, reconnaissance_daemon, mcp_tool_evolver, ultrawork_loop, swarm_performance_insights, prism_fqm, meta_orchestrator, deterministic_forge, coordination_responder, chain_of_verification, optimization_engine, llm_brain, semantic_cache, mcp_bus, mutation_engine, resonance_engine
+  -- ASYNC-DAEMON: 2
+     background_tasks, swarm_orchestrator
+  -- NET: 2
+     microkernel_chat_bridge, thz_wave_gateway
+
+
+=== 157 ported modules compared ===
+    KERNEL-CANDIDATE (real backlog): 44
+    HOST-ONLY / NET-ONLY (correctly stubbed): 31
+
+=== NEVER-COMPILED FILES (no `mod` declaration): 0 ===
+    none - every .rs file is declared
+
+NOTE: this finds CANDIDATES, not proof. Each still needs a read.
+NOTE: asyncio-importing candidates need re-architecting, not transliteration -
+      the kernel has no executor (see the polling model in baremetal_transition.rs).
+
+------------------------------------------------------------------------------
+3. tools/surface_diff.py — OUTPUT BEFORE THE FIX (the false positive)
+------------------------------------------------------------------------------
+$ python tools/surface_diff.py     # pre-fix, same tree, same 44
+
+=== NEVER-COMPILED FILES (no `mod` declaration): 1 ===
+    lib                                129 lines  <- not type-checked by the compiler
+
+Why it was wrong: cargo metadata --no-deps reports two targets for this package:
+  trm_uefi_kernel [lib]  src\lib.rs
+  trm_uefi_kernel [bin]  src\main.rs
+A crate root is declared by Cargo, not by a `mod X;` line, so the orphan scan
+(which looks for `mod` declarations) can never see it. `main` was hardcoded as an
+exception; `lib` was not.
+
+THE FIX (tools/surface_diff.py — one function added, one line changed):
+
+  + def crate_roots():
+  +     """Stems of this crate's ROOT files, which are never modules. ..."""
+  +     roots = {"main", "lib"}        # Cargo defaults: src/main.rs, src/lib.rs
+  +     manifest = RSDIR.parent / "Cargo.toml"
+  +     try:
+  +         import tomllib
+  +         data = tomllib.loads(manifest.read_text(encoding="utf-8"))
+  +     except Exception:
+  +         return roots
+  +     for key in ("lib", "bin"):
+  +         targets = data.get(key)
+  +         if isinstance(targets, dict):
+  +             targets = [targets]
+  +         for target in targets or []:
+  +             path = target.get("path") if isinstance(target, dict) else None
+  +             if path:
+  +                 roots.add(pathlib.Path(path).stem)
+  +             else:
+  +                 roots.add("main" if key == "bin" else "lib")
+  +     return roots
+
+  - files.discard("main")          # crate root, correctly not a module
+  + files -= crate_roots()         # crate roots are targets, not modules
+
+No other logic in the tool was touched. The classification, shape, and surface
+comparison code is byte-identical.
+
+VERIFICATION
+  $ python tools/surface_diff.py | tail
+  === NEVER-COMPILED FILES (no `mod` declaration): 0 ===
+      none - every .rs file is declared
+
+  Negative control — the detector is still live, not disabled:
+    crate_roots()            = ['lib', 'main']
+    declared `mod` names     = 205
+    .rs files on disk        = 207
+    'lib' in declared set    = False
+    'main' in declared set   = False
+
+  205 declared + 2 crate roots = 207. Every file is accounted for, and any file
+  that is neither declared nor a crate root would still be reported.
+
+------------------------------------------------------------------------------
+4. CARGO CHECK — WARNING DEBT
+------------------------------------------------------------------------------
+$ CARGO_TARGET_DIR=C:/Users/shawn/AppData/Local/Temp/port_class_target \
+    cargo check --release --message-format=json
+
+  Checking r-efi v4.5.0
+  Checking trm_uefi_kernel v19.1.0 (F:\Development sites\TRM-Swarm-OS-v2\trm_uefi_kernel)
+  Finished `release` profile [optimized] target(s) in 11.34s
+
+  artifacts: [('r_efi', ['lib']), ('trm_uefi_kernel', ['lib']), ('trm_uefi_kernel', ['bin'])]
+  warnings:  1857
+  errors:    0
+
+  by lint code:
+      1577  dead_code
+       222  unused_imports
+        28  unused_variables
+        10  non_camel_case_types
+         9  unused_mut
+         4  static_mut_refs
+         4  non_snake_case
+         3  unused_unsafe
+
+  top 20 individual messages:
+        70  associated function `new` is never used
+        69  unused import: `alloc::vec::Vec`
+        66  unused import: `alloc::vec`
+        59  unused import: `alloc::string::String`
+        26  multiple associated items are never used
+        20  unused import: `alloc::format`
+        10  multiple fields are never read
+         9  variable does not need to be mutable
+         5  unused imports: `String` and `ToString`
+         5  function `floor_f64` is never used
+         4  constant `MONAD_TRUTH_ANCHOR` is never used
+         4  associated functions `current` and `optimized` are never used
+         4  trait `FloorF64` is never used
+         3  unnecessary `unsafe` block
+         3  unused variable: `size_mb`
+         3  function `round_f64` is never used
+         3  function `round1` is never used
+         3  constant `NUM_BLOCKS` is never used
+         3  struct `MemoryStats` is never constructed
+         3  function `trunc_chars` is never used
+
+  dead_code warnings: 1577 across 190 files
+  files with any warning: 197 of 207
+  modules with ZERO dead_code: 17 of 207
+    allocator, artifact_pipeline, background_tasks, daemon_discovery,
+    epistemology_core, font, hmac_sha256, lib, modmap_all, monitor_daemon,
+    platform, redis_mock, remediation_engine, time, trm_integration,
+    trm_orchestrator, zero_human_test_gen
+
+  top 12 files by warning count:
+        42  src\global_memory.rs
+        42  src\trm7m.rs
+        41  src\interrupt_stubs.rs
+        40  src\turbovec_memory.rs
+        37  src\self_fuzzing_engine.rs
+        37  src\self_healing.rs
+        32  src\kernel_instructions.rs
+        30  src\agent_mesh.rs
+        28  src\trm_brain.rs
+        27  src\small_diffusion_engine.rs
+        24  src\microkernel_spawner.rs
+        23  src\sram_pattern_computer.rs
+
+  STRUCTURAL NOTES (read from the source, not inferred):
+    src/lib.rs line 4:
+      #![allow(dead_code, unused_imports, unused_variables, non_snake_case)]
+    -> every one of the 1,857 warnings comes from the `bin` target. The lib target
+       is silent by construction.
+
+    src/main.rs contains no `use trm_uefi_kernel::` and no `extern crate
+    trm_uefi_kernel`. It re-declares its own mod tree (122 modules) and reaches
+    into `crate::modmap_all::*`.
+    -> the crate is compiled twice; the `lib` target is type-checked but never
+       linked into the UEFI image.
+
+------------------------------------------------------------------------------
+5. PER-MODULE MEASUREMENT (all 44 KERNEL-CANDIDATE)
+------------------------------------------------------------------------------
+rs_items = count of `pub fn|struct|enum|trait|const|static` in the Rust file.
+A file with <=2 is a shell: a header comment and imports, no logic.
+
+module                               pyL  rsL  shrink rs_items
+secrets_vault                        357   28     92%        4
+redis_mock                            87    9     90%        0
+brain_ai_microkernel_bridge          224   28     88%        4
+lora_response_modulator              216   29     87%        5
+cosmos_sparse_moe_teams              161   26     84%        2
+port_manager                         144   27     81%        3
+continuum_genomics                   119   23     81%        1
+moltbook                             258   51     80%        3
+trm_7m_full                          218   45     79%        8
+cosmos3_edge_bridge                  235   49     79%        3
+cosmos_bridge                        109   23     79%        1
+daily_evolution_engine               219   53     76%        4
+cosmos_moe_instella_shunter          104   28     73%        4
+cosmos_microkernel_entanglement       96   26     73%        2
+pbft_consensus                       493  148     70%       21
+intent_buffer                        336  110     67%        5
+llm_orchestrator                      60   23     62%        1
+base_agent                          1427   63     96%        4
+remediation_engine                   169    9     95%        0
+monitor_daemon                       139    9     94%        0
+self_healing_orchestrator            305   23     92%        1
+collaborative_reasoning              230   23     90%        1
+neural_wall                          505   54     89%        4
+auto_changelog                       587   69     88%        5
+cognitive_stack                      190   23     88%        7
+reconnaissance_daemon                309   38     88%        4
+mcp_tool_evolver                     560   77     86%        5
+ultrawork_loop                       544   82     85%        6
+swarm_performance_insights           641  107     83%        7
+prism_fqm                            136   23     83%        1
+meta_orchestrator                     87   15     83%        1
+deterministic_forge                  119   23     81%        1
+coordination_responder               109   23     79%        1
+chain_of_verification                450   98     78%        8
+optimization_engine                   86   23     73%        1
+llm_brain                            268   72     73%        5
+semantic_cache                       364   99     73%        9
+mcp_bus                              250   71     72%        5
+mutation_engine                      167   53     68%        3
+resonance_engine                     228   86     62%       11
+background_tasks                     253    9     96%        0
+swarm_orchestrator                   150   23     85%        1
+microkernel_chat_bridge              168   52     69%        5
+thz_wave_gateway                     220   71     68%       10
+
+  shells (<=2 pub items): 17
+    redis_mock, cosmos_sparse_moe_teams, continuum_genomics, cosmos_bridge,
+    cosmos_microkernel_entanglement, llm_orchestrator, remediation_engine,
+    monitor_daemon, self_healing_orchestrator, collaborative_reasoning,
+    prism_fqm, meta_orchestrator, deterministic_forge, coordination_responder,
+    optimization_engine, background_tasks, swarm_orchestrator
+
+  thin (3-9 pub items): 24
+
+  real surface (>=10 pub items): 3
+    pbft_consensus (21), resonance_engine (11), thz_wave_gateway (10)
+
+  Files containing nothing but a doc comment and imports (0 pub items):
+    redis_mock.rs, remediation_engine.rs, monitor_daemon.rs, background_tasks.rs
+
+  Example — remediation_engine.rs in full (9 lines):
+    //! TRM Swarm OS - remediation_engine (mechanical no_std port, TRM platform engine).
+    //! Constants and structure extracted 1:1 from swarm_v2/core/remediation_engine.py.
+    //! Functions marked // MANUAL need human verification of math semantics.
+    (blank)
+    extern crate alloc;
+    use alloc::string::String;
+    use alloc::vec;
+    use alloc::vec::Vec;
+    (blank)
+
+------------------------------------------------------------------------------
+6. CLASSIFICATION RESULT
+------------------------------------------------------------------------------
+ON-PATH      34   (16 CORE, 14 SUPPORTING, 4 TELEMETRY)
+HOST-TOOLING 10
+NET-BOUND     0
+TOTAL        44
+
+ON-PATH, ranked by importance:
+
+  CORE
+   1. base_agent                    1427->63   96%  4 items  agent runtime, 6 live importers
+   2. intent_buffer                  336->110  67%  5 items  kernel fast-path contract
+   3. chain_of_verification          450->98   78%  8 items  reasoning audit chain
+   4. neural_wall                    505->54   89%  4 items  prompt safety middleware
+   5. llm_brain                      268->72   73%  5 items  model call path
+   6. semantic_cache                 364->99   73%  9 items  response cache
+   7. cognitive_stack                190->23   88%  7 items  agent cognition
+   8. llm_orchestrator                60->23   62%  1 item   routing decision
+   9. secrets_vault                  357->28   92%  4 items  credential state (5 endpoints)
+  10. redis_mock                      87->9    90%  0 items  shared state store
+  11. remediation_engine             169->9    95%  0 items  self-repair
+  12. self_healing_orchestrator      305->23   92%  1 item   self-repair
+  13. monitor_daemon                 139->9    94%  0 items  health monitor
+  14. swarm_orchestrator             150->23   85%  1 item   task orchestration
+  15. background_tasks               253->9    96%  0 items  background loop
+  16. lora_response_modulator        216->29   87%  5 items  response shaping
+
+  SUPPORTING
+  17. pbft_consensus                 493->148  70% 21 items  consensus (largest real surface)
+  18. swarm_performance_insights     641->107  83%  7 items
+  19. ultrawork_loop                 544->82   85%  6 items
+  20. mcp_tool_evolver               560->77   86%  5 items
+  21. auto_changelog                 587->69   88%  5 items
+  22. resonance_engine               228->86   62% 11 items
+  23. mutation_engine                167->53   68%  3 items
+  24. moltbook                       258->51   80%  3 items
+  25. reconnaissance_daemon          309->38   88%  4 items
+  26. port_manager                   144->27   81%  3 items
+  27. continuum_genomics             119->23   81%  1 item
+  28. collaborative_reasoning        230->23   90%  1 item
+  29. deterministic_forge            119->23   81%  1 item
+  30. coordination_responder         109->23   79%  1 item
+
+  TELEMETRY (read-only status surface, droppable without behaviour change)
+  31. thz_wave_gateway               220->71   68% 10 items
+  32. cosmos3_edge_bridge            235->49   79%  3 items
+  33. prism_fqm                      136->23   83%  1 item
+  34. meta_orchestrator               87->15   83%  1 item
+
+HOST-TOOLING (10) — no importer in any live process:
+  brain_ai_microkernel_bridge, cosmos_sparse_moe_teams, trm_7m_full, cosmos_bridge,
+  daily_evolution_engine, cosmos_moe_instella_shunter,
+  cosmos_microkernel_entanglement, optimization_engine, mcp_bus,
+  microkernel_chat_bridge
+
+NET-BOUND (0) — the tool's NET bucket of 2 (microkernel_chat_bridge,
+thz_wave_gateway) is keyword-driven: it fires on the string "http" anywhere in
+the file, including docstrings. Neither imports
+socket/requests/httpx/aiohttp/urllib/websockets. The genuinely network-bound
+modules were already caught by the HOST-ONLY pass:
+  task_arbiter, federation, openclaw_gateway, mpu   (requests)
+  external_socket_bridge                            (socket)
+
+------------------------------------------------------------------------------
+7. EVIDENCE FOR THE 10 HOST-TOOLING CALLS
+------------------------------------------------------------------------------
+Import scan: 1,560 .py files under the repo, excluding backups/, node_modules/,
+train_venv/, tests/, __pycache__/, scratch/, preserved_sources/, artifacts/.
+Each file parsed with ast; every Import/ImportFrom name resolved to a file.
+
+  module                            importers anywhere              live importer
+  brain_ai_microkernel_bridge       0                               none
+  cosmos_sparse_moe_teams           0                               none
+  trm_7m_full                       0                               none
+  cosmos_bridge                     0                               none
+  daily_evolution_engine            0                               none
+  cosmos_moe_instella_shunter       0                               none
+  cosmos_microkernel_entanglement   0                               none
+  mcp_bus                           0                               none
+  microkernel_chat_bridge           0                               none
+  optimization_engine               1 (scripts/verify_phase_11.py)  none
+
+  No process is running any of them (Win32_Process scan for python.exe command
+  lines matching daily/evolution/optimization/mcp_bus: no matches).
+  The Rust kernel already contains a file for each of the 10.
+
+  Supersession notes:
+    trm_7m_full             superseded by trm_7m_model (imported by
+                            agent_intelligence_bridge.py) and trm_7m_optimized;
+                            the kernel also carries trm7m.rs and
+                            trm_7m_optimized.rs.
+    microkernel_chat_bridge its GREETINGS table and radix-trie dispatch are
+                            inlined in swarm_v2/routes/swarm.py; the module is a
+                            dead duplicate of the live chat path.
+    mcp_bus                 swarm_v2/mcp/ (synthesizer) is the live MCP surface.
+
+------------------------------------------------------------------------------
+8. WHAT WAS NOT DONE
+------------------------------------------------------------------------------
+No git command was run. No service was started or stopped. No .rs or .py source
+file was edited. `cargo fix` was NOT run (see docs/PORT-BOUNDARY.md section 5 for
+why). The only source change in this phase is tools/surface_diff.py.

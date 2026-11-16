@@ -1,0 +1,46 @@
+{
+ "phase": "P5",
+ "action": "label the columns for what they measure",
+ "verdict": {
+  "hba_is_the_N_plus_O_count": true,
+  "hbd_is_the_NH_OH_count": false,
+  "sampled": 4000,
+  "hba_matches_N_plus_O": 1.0,
+  "hbd_matches_NH_OH": 0.9313
+ },
+ "renamed": {
+  "hba": "n_plus_o",
+  "hbd": "nh_oh_implicit"
+ },
+ "columns_after": [
+  "chembl_id",
+  "n_heavy",
+  "formula",
+  "mw",
+  "n_bonds",
+  "n_rings",
+  "aromatic_bonds",
+  "n_components",
+  "hbd",
+  "n_plus_o",
+  "rotatable",
+  "fp",
+  "source_path",
+  "sha256"
+ ],
+ "data_preserved": {
+  "rows": 2897818,
+  "min_n_plus_o": 0,
+  "max_n_plus_o": 327
+ },
+ "unmodified": {
+  "lipinski_hba": "available from molecule.props (RDKit, 100% agreement)",
+  "molecule_features": "no numeric value changed; only two column names"
+ },
+ "producer_rule": {
+  "source": "scratch/extract_molecular_features.py:141-142",
+  "hbd": "sum(1 for i in heavy if atoms[i-1] in (N,O) and imph[i] > 0)",
+  "hba": "sum(1 for i in heavy if atoms[i-1] in (N,O))",
+  "reading": "the producer counts heteroatoms: hba is the N+O atom count (100% of the sample), hbd is the N/O atoms carrying an implicit H (93.1% of a naive NH/OH count, 91.7% of RDKit Lipinski HBD -- it differs where the molfile carries explicit H or a charged N/O). Both are near-descriptors whose names read as Lipinski; they are renamed so no query mistakes one for the other. Lipinski HBA/HBD stay available from molecule.props (RDKit, 100%)."
+ }
+}

@@ -1,0 +1,53 @@
+refactor(ddr): move the detector INTO the kernel - one implementation, both images
+
+Investigated after the user asked why this was not running through the kernel. It
+wasn't, and worse, the kernel had its OWN detector with the SAME defect:
+
+  trm_uefi_kernel/src/ddr_antibody.rs, check_antibodies():
+      let pat = strip_regex(&ab.line_pattern);
+      if !pat.is_empty() && code.contains(&pat) { ... }
+  with a comment admitting it: "no_std regex substitute ... python uses
+  re.search, we match the pattern string as a substring".
+
+So the platform had TWO substring scanners, both defeatable by a space, and
+nothing forcing them to agree. Fixing only the host would have left the kernel
+unfixed and the two able to drift.
+
+THE FIX: trm_uefi_kernel/src/ddr_scan.rs (no_std, zero dependencies, no_std
+string handling only). It is compiled into the bare-metal image AND included by
+the host service via #[path = "../../src/ddr_scan.rs"], so there is one source
+file. The host's duplicate copy was deleted. The host serialises Finding -> JSON
+at its own boundary so the kernel module keeps zero dependencies and both images
+run byte-identical detection logic.
+
+VERIFIED in the kernel namespace: 15/15 attacks, 0/5 false positives - identical
+to the earlier host run, as expected since it is now the same code. Kernel binary
+carries dangerous_execution_primitive, obfuscation_evasion_indicators and
+sql_injection_defense (long data strings - the reliable presence signal; short
+literals inline into mov immediates and false-negative, learned earlier).
+
+A live `ddrscan` console command gives it a caller so the linker cannot drop it,
+and prints the scanner's findings NEXT TO the old antibody-substring baseline for
+direct contrast.
+
+ALSO CORRECTED - I WAS WRONG ABOUT 1801. I earlier reported 1801/279/128 as
+fabricated and replaced the antibody count with abs.len() (3-4), a regression.
+swarm_v2_artifacts/DDR_ANTIBODIES.json holds EXACTLY 1801 records - the number
+was CORRECT, merely frozen as a literal so it could never change or be checked.
+It is now counted from the shipped file at startup (load_registry_count()).
+
+But the count is misleading and the code now says so: of 1801 records only 7 have
+a distinct (error_type, file_pattern, line_pattern) triple. 1795 are the SAME rule
+  instella_autonomic_threat_prevention / *.py / eval\(|exec\(|subprocess\.call
+differing only in a CoT trace appended to fix_description, and antibody_id is
+unique for only 1605 of 1801. So "1801 antibodies" is 7 patterns and 1794
+near-duplicates of one - and the replicated rule is the literal-alternation form
+that a single space defeats, while the one non-replicated entry (eval_usage) uses
+\beval\s*\( which handles whitespace correctly.
+
+279 is genuinely NOT derivable: sum(matches_prevented) over the registry is 0 and
+no category has 279 members, so it stays the live SCAN_DETECTIONS counter.
+128 rowhammer -> NOT_IMPLEMENTED, since nothing here mitigates rowhammer.
+
+DEPLOYED kernel 7d5e9212d7386d70 across all 5 EFI locations. Host staged at
+a59fb26d87620a97 - needs the restart that requires operator consent.

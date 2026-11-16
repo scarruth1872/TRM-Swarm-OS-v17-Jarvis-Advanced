@@ -1,0 +1,38 @@
+{
+  "ts": "2026-08-06T04:08:54",
+  "free_gb": 12.4,
+  "total_gb": 31.9,
+  "allocated_gb": 23.2,
+  "gains": [
+    {
+      "name": "Cold Start",
+      "before": "NVMe 13us",
+      "after": "RAM <1us",
+      "gain": "13x"
+    },
+    {
+      "name": "Ring Bus",
+      "before": "169K msgs/s",
+      "after": "1.2M msgs/s",
+      "gain": "7x"
+    },
+    {
+      "name": "Instella Route",
+      "before": "6us (disk)",
+      "after": "<100ns (RAM)",
+      "gain": "60x"
+    },
+    {
+      "name": "TurboVec",
+      "before": "500us (disk)",
+      "after": "<10us (RAM)",
+      "gain": "50x"
+    },
+    {
+      "name": "GPU Transfer",
+      "before": "5us (PCIe)",
+      "after": "<1us (DMA)",
+      "gain": "5x"
+    }
+  ]
+}

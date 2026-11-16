@@ -1,0 +1,106 @@
+LEDGER INTEGRITY — PHASE 1 MEASURED
+Date 2026-11-03. Target: system_event_ledger.jsonl, the PHOENIX hash-chained
+audit log. Plan reference: docs/PRODUCTION-READINESS-PLAN.md Phase 1.
+
+BEFORE
+  live ledger lines            10,004
+  first seq in file            13,641   (should be 1)
+  duplicate seq values            369
+  prev_hash chain breaks          368
+  manifest claimed audited     12,517
+  test result                  50 passed, 1 failed
+
+ROOT CAUSE — READ IN CODE, NOT INFERRED
+  swarm_v2/core/cognitive_ingestion_engine.py, SystemEventLedger.record():
+
+      self._last_seq += 1                                  in-memory, per process
+      with open(self.path, "a", encoding="utf-8") as f:    no lock, no atomic seq
+
+  Every process that instantiates the ledger recovers its own _last_seq from the
+  file tail at __init__ and then increments it privately. With more than one
+  writer, two processes allocate the same seq and each computes prev_hash from
+  its own _last_hash. Interleaved appends produce exactly the measured pattern.
+
+  A second defect in the same method: the disk write sat INSIDE the try block
+  that imports the microkernel spawner. If that import failed, the event was
+  silently dropped and only a warning was logged. Reproduced: running the module
+  without swarm_v2 on sys.path produced "Failed to offload/write event: No module
+  named 'swarm_v2'" and zero bytes written.
+
+  A third defect: prune() rewrote the file with mode "w" and no lock, so a
+  concurrent append between its read and its rewrite was lost, and every other
+  process was left holding a stale _last_seq.
+
+DATA WAS NOT LOST — ONLY THE NUMBERING WAS
+  The 2,422-event "shortfall" was rotation, not corruption. The raw pre-rotation
+  stream survived at system_event_ledger.unverified_backup.jsonl: 12,515 events,
+  2026-07-30 to 2026-09-03, with no seq/hash fields. The live file held 10,004
+  events, 2026-10-25 to 2026-11-03. The two ranges do not overlap.
+
+  Merged and deduplicated on (ts, event, source, category, data):
+      22,519 events, 22,519 distinct, 0 duplicates
+  So the 369 duplicate seqs were numbering collisions, not duplicated events.
+  Nothing was actually lost.
+
+FIXES
+  1. _ledger_file_lock(path) — exclusive cross-process lock on a sidecar .lock
+     file, msvcrt.locking on Windows and fcntl.flock elsewhere.
+  2. record() allocates seq and prev_hash by re-reading the file tail INSIDE the
+     lock, never from the in-memory counter. Append is flush + fsync.
+  3. The spawner offload hook moved outside the lock and outside the write path,
+     so a failed import can no longer drop an event.
+  4. prune() runs under the same lock, writes via temp file + os.replace, and
+     ARCHIVES the trimmed lines to system_event_ledger.jsonl.archive-<stamp>
+     instead of discarding them.
+  5. MAX_LEDGER_ENTRIES raised 10,000 -> 100,000. At 10,000 the ledger had already
+     dropped its first 13,588 events, which is what made the compliance test
+     unsatisfiable. 100,000 events is about 21 MB.
+
+REBUILD
+  Preserved before touching anything:
+      system_event_ledger.corrupt-20261103.jsonl    the damaged live file
+      system_event_ledger.raw-20260903.jsonl        the raw pre-rotation stream
+  Merged raw + live into the backup path the existing audit tool reads, then ran
+  swarm_v2.core.audit_legacy_event_stream, which renumbers from 1 and rebuilds the
+  chain. Reused the existing repair path rather than writing a parallel one.
+
+  Result:
+      events chained            22,521
+      seq contiguous 1..N       True
+      duplicate seqs            0
+      chain breaks              0
+      first prev_hash           genesis
+      manifest final hash       matches last record
+      status breakdown          CONFIRMED 13,232 / PARTIAL 9,289
+
+ACCEPTANCE TEST — AND PROOF IT CAN FAIL
+  tools/test_ledger_concurrency.py spawns 8 OS processes x 125 events against one
+  ledger file.
+
+  NEW CODE:  records 1000/1000, worker failures 0, duplicate seqs 0,
+             chain breaks 0, contiguous True            -> PASS
+
+  OLD CODE (git show HEAD:... loaded as a separate module, same 8x125):
+             total lines 998, unparseable 1 (torn write), parseable 996 of 1000,
+             duplicate seqs 125, chain breaks 115, contiguous False
+                                                          -> the test detects it
+
+  The old code lost 4 events outright and produced a line that is not valid JSON.
+  A test that cannot fail has no value; this one fails on the code it was written
+  to catch.
+
+SUITE
+  Before: 50 passed, 1 failed, 16 deselected
+  After:  51 passed, 0 failed, 16 deselected in 29.20s
+
+LIVE VERIFICATION
+  8099 restarted on the fixed writer. Ledger grew to 22,525 records with
+  contiguous seq, 0 duplicates, 0 chain breaks, and the new events are the
+  ingestion daemon's own startup records.
+
+WHAT THIS DOES NOT FIX
+  The ledger is still written by whichever process holds the lock, one event at a
+  time, with an fsync per event. That is correct but not fast; at high event rates
+  the fsync will dominate. A batched writer is the next optimisation, not a
+  correctness requirement.
+  The 16 integration tests remain deselected and unverified.

@@ -1,0 +1,38 @@
+name: Stage 4 - Production Deployment
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  DEPLOY_ENV: production
+  TOOL_ID: synthesized_tool_alpha
+
+jobs:
+  deploy_stage_4:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Environment
+        uses: ./.github/actions/setup-swarm-env
+        with:
+          context: production
+
+      - name: Run Stage 4 Deployment Script
+        run: |
+          chmod +x ./scripts/deploy_stage_4.sh
+          ./scripts/deploy_stage_4.sh
+        env:
+          TOOL_ID: ${{ vars.TOOL_ID }}
+          VERSION: ${{ github.sha }}
+          DEPLOY_ENV: production
+
+      - name: Notify Success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{\"status\":\"success\", \"tool\":\"${{ vars.TOOL_ID }}\", \"version\":\"${{ github.sha }}\"}" \
+          ${{ secrets.WEBHOOK_NOTIFICATION }}

@@ -1,0 +1,48 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# TRM SWARM OS v19.040 "Sovereign" — Self-Hosted Configuration Template
+# Truth Anchor: 0x4D4F4E4144000001 | Sovereign Offline Operation
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[node]
+node_id = "node-01"
+role = "coordinator"           # Options: "coordinator", "worker", "edge_sentinel", "clinical_monitor"
+environment = "production"     # Options: "production", "development", "air_gapped"
+truth_anchor = "0x4D4F4E4144000001"
+max_memory_mb = 4096           # Strict RAM ceiling (e.g. 3200 for RPi4, 16384 for Workstation)
+
+[storage]
+nand_fabric_path = "./nand_k3_fabric.dat"
+mmap_zero_copy = true
+direct_nvme_streaming = true
+phoenix_snapshot_interval_frames = 600
+
+[network]
+quic_port = 8021               # Native trm:// zero-RTT transport
+mesh_udp_port = 8022           # Sovereign P2P discovery & health broadcast
+http_rest_port = 8030          # Local intranet REST gateway
+dashboard_port = 8080          # Local LCARS dashboard web interface
+enable_mdns_discovery = true
+post_quantum_kem = "ML-KEM-1024"
+
+[federation]
+cluster_id = "sovereign-federation-alpha"
+peer_nodes = [
+  # "192.168.1.101:8021",
+  # "192.168.1.102:8021"
+]
+voltage_harmonization = true
+# Φ_V is DERIVED live from the CPU V_core rail (AMD P-state VID), not a fixed target. The
+# old 0.9115 was the asserted lock constant (retired); the fixed reference is the
+# resonance-lock threshold below.
+target_phi_v = 0.82
+
+[security]
+enforce_ddr_antibodies = true
+tpm_attestation = true
+air_gapped_mode = true          # Disables all external cloud/WAN connections
+usb_malware_waf = true
+
+[autonomy]
+enable_council_deliberation = true
+auto_research_cycle = true
+virtual_screening_threads = 0   # 0 = auto-detect CPU cores

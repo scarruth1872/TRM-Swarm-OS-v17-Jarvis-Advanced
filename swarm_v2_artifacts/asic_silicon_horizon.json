@@ -1,0 +1,105 @@
+{
+  "timestamp": "2026-08-06T01:20:00",
+  "asic_specs": {
+    "process": "3nm GAA (Gate-All-Around)",
+    "frequency_ghz": 4.0,
+    "total_cycles": 18,
+    "pipeline_latency_ns": 4.5,
+    "tasks_per_second": 222222222,
+    "power_watts": 307.8,
+    "die_area_mm2": 12.0,
+    "transistors_billions": 2.4
+  },
+  "pipeline": {
+    "K3CLASS": 1,
+    "MAMBA3STEP": 2,
+    "PONDEROMOTIVE": 2,
+    "LORA_FUSED": 3,
+    "RADIX_TRIE_WALK": 1,
+    "DDR_MATCH": 4,
+    "TURBOVEC_DOT": 3,
+    "INSTELLA_GATE": 2
+  },
+  "die_allocation": {
+    "K3 Classifier Array": {
+      "area_mm2": 1.2,
+      "mtx": 240.0
+    },
+    "Mamba-3 SSM Engine": {
+      "area_mm2": 2.0,
+      "mtx": 480.0
+    },
+    "Ponderomotive Trap Unit": {
+      "area_mm2": 1.0,
+      "mtx": 200.0
+    },
+    "LoRA Fused Matmul Array": {
+      "area_mm2": 2.5,
+      "mtx": 600.0
+    },
+    "Radix-Trie Walking Engine": {
+      "area_mm2": 0.8,
+      "mtx": 160.0
+    },
+    "DDR Content-Addressable Memory": {
+      "area_mm2": 1.8,
+      "mtx": 400.0
+    },
+    "TurboVec Dot Product Unit": {
+      "area_mm2": 1.2,
+      "mtx": 240.0
+    },
+    "Instella Expert Gate": {
+      "area_mm2": 0.5,
+      "mtx": 80.0
+    },
+    "Pipeline Control + Cache": {
+      "area_mm2": 1.0,
+      "mtx": 0.0
+    }
+  },
+  "comparison": {
+    "TRM Python (CPU)": {
+      "tps": 269510,
+      "power": 105
+    },
+    "TRM Optimized (AVX2)": {
+      "tps": 583300,
+      "power": 105
+    },
+    "GPU Offloaded (ROCm)": {
+      "tps": 1023924,
+      "power": 230
+    },
+    "TRM ASIC (3nm)": {
+      "tps": 222222222,
+      "power": 307.8
+    },
+    "GPT-4o API (Cloud)": {
+      "tps": 10,
+      "power": "N/A (cloud)"
+    }
+  },
+  "edge_scenarios": [
+    {
+      "chips": 1,
+      "tps": 222222222,
+      "power_w": 308
+    },
+    {
+      "chips": 4,
+      "tps": 888888889,
+      "power_w": 1231
+    },
+    {
+      "chips": 16,
+      "tps": 3555555556,
+      "power_w": 4925
+    },
+    {
+      "chips": 64,
+      "tps": 14222222222,
+      "power_w": 19699
+    }
+  ]
+}

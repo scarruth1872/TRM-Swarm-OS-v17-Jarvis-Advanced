@@ -1,0 +1,757 @@
+{
+ "schema": "artifact_contracts/v1",
+ "generated_at": "2026-09-24T23:56:53Z",
+ "producer": "scratch/verify_artifact_contracts.py",
+ "scope": {
+  "artifacts_from": "artifact_provenance.json classes STATIC + UNTRACED",
+  "artifacts_examined": 70
+ },
+ "tallies": {
+  "NO_CONTRACT": 50,
+  "CONTRACTS_PASS": 19,
+  "CONTRACTS_FAIL": 1
+ },
+ "entries": [
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_111_global_allele_frequencies.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "artifact >4 MB, not read"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_112_pgx_population_frequencies.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 22,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 198,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 198 values across 22 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_113_gnomad_5000_gene_constraints.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_FAIL",
+   "records": 5000,
+   "contracts": [
+    {
+     "name": "pli_loeuf_coupling",
+     "kind": "exact",
+     "relation": "pLI >= 0.9 with LOEUF >= 0.5 contradicts gnomAD's published coupling",
+     "n_checked": 5000,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 5000 rows with both fields",
+     "sample_failures": []
+    },
+    {
+     "name": "mis_z_tracks_inputs",
+     "kind": "correlation",
+     "relation": "mis_z recomputed as (obs_mis-exp_mis)/sqrt(exp_mis) must track the artifact's own mis_z (r near 1); independent draws give r near 0",
+     "n_checked": 5000,
+     "n_failed": 0,
+     "statistic": 0.016202,
+     "verdict": "FAIL",
+     "receipt": "pearson r over 5000 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_114_admixed_variant_interpretation.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_115_hardy_weinberg_5000_variants.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_116_ashkenazi_jewish_panel.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_117_carrier_frequency_200_disorders.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_118_dmet_selection_signals.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_119_population_stratification_pca.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_120_founder_mutations_100_genes.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_121_cyp2d6_500_patients.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_122_drug_response_200_medications.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_123_warfarin_dosing_recommendations.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_124_clopidogrel_cyp2c19_alternatives.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_125_psychiatric_100_medications_pgx.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_126_hla_scar_adverse_reactions.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_127_tpmt_nudt15_thiopurine_dosing.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_128_slco1b1_statin_myopathy_risk.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_129_pharmacogenomic_50_drug_gene_pairs.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_130_cpic_compliance_500_prescriptions.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_131_cnv_1000_array_samples.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 1000,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 1000,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 1000 values across 1000 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_132_breakpoint_analysis_100_svs.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_133_functional_impact_500_cnvs.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_134_cancer_genomes_chromosomal_rearrangements.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_135_sv_annotation_1000_events.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_136_fusion_gene_prediction_100_translocations.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_137_segmental_duplications_200_regions.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 200,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 200 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_138_sv_burden_analysis_500_patients.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_139_neurodevelopmental_pathogenic_svs.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_140_complex_sv_visualization_data.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_411_transformer_pure_rust.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_412_cnn_image_classification.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 400,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 400 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_413_gnn_protein_interaction_prediction.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_414_rnn_sequence_analysis.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 200,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 200 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_415_autoencoder_dimensionality_reduction.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_416_gan_molecular_generation.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 600,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 600 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_417_reinforcement_learning_agent_optimization.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_418_meta_learning_few_shot_adaptation.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 600,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 600 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_419_continual_learning_catastrophic_forgetting.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 800,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 800 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_420_complete_deep_learning_suite.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 600,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 600 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_431_semantic_segmentation_multiorgan_imaging.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_432_3d_volumetric_reconstruction_sparse_views.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_433_gigapixel_histopathology_nucleus_segmentation.json",
+   "provenance": "UNTRACED",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 200,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 200 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_434_self_supervised_vision_representation_dinov2.json",
+   "provenance": "UNTRACED",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 600,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 600 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_435_realtime_multiobject_tracking_surgery_microscopy.json",
+   "provenance": "UNTRACED",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 400,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 400 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_436_synthetic_histopathology_diffusion_generation.json",
+   "provenance": "UNTRACED",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 200,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 200 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_437_oct_retinal_layer_segmentation_lesion_quantification.json",
+   "provenance": "UNTRACED",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 200,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 200 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_438_multimodal_vision_language_zeroshot_diagnosis.json",
+   "provenance": "UNTRACED",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 600,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 600 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_439_super_resolution_lowdose_radiology_reconstruction.json",
+   "provenance": "UNTRACED",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 400,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 400 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_440_complete_computer_vision_benchmark_suite.json",
+   "provenance": "UNTRACED",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 400,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 400 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_441_gradient_descent_variants.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_442_genetic_algorithm_drug_optimization.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_443_simulated_annealing.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 200,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 200 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_444_particle_swarm_optimization.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_445_bayesian_optimization.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_446_multi_objective_optimization.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_447_constrained_optimization.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_448_convex_optimization.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_449_derivative_free_optimization.json",
+   "provenance": "STATIC",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no contract in the library applies to this record shape"
+  },
+  {
+   "artifact": "C:/Users/shawn/.gemini/antigravity/brain\\e019a966-cf04-414c-9303-9b0d419cf418\\task_450_complete_optimization_suite.json",
+   "provenance": "STATIC",
+   "verdict": "CONTRACTS_PASS",
+   "records": 200,
+   "contracts": [
+    {
+     "name": "frequency_range",
+     "kind": "exact",
+     "relation": "every *_freq/_frequency/_rate/_fraction lies in [0,1] and every *_pct/_percent in [0,100]",
+     "n_checked": 200,
+     "n_failed": 0,
+     "verdict": "PASS",
+     "receipt": "recomputed over 200 values across 200 rows",
+     "sample_failures": []
+    }
+   ],
+   "note": ""
+  },
+  {
+   "artifact": "swarm_v2_artifacts/1000_cross_node_execution_metrics.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no record array"
+  },
+  {
+   "artifact": "swarm_v2_artifacts/1000_voltage_evolution_metrics.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no record array"
+  },
+  {
+   "artifact": "swarm_v2_artifacts/100_parsers_tasks_crucible.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no record array"
+  },
+  {
+   "artifact": "swarm_v2_artifacts/absorbed_jarvis_metatron_matrix.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no record array"
+  },
+  {
+   "artifact": "swarm_v2_artifacts/adamas_engine_sovereign_test_report.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no record array"
+  },
+  {
+   "artifact": "swarm_v2_artifacts/adc_designs.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no record array"
+  },
+  {
+   "artifact": "swarm_v2_artifacts/agent_14k_test_results.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no record array"
+  },
+  {
+   "artifact": "swarm_v2_artifacts/agent_q_advanced_modules_report.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no record array"
+  },
+  {
+   "artifact": "swarm_v2_artifacts/all_actions_final.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no record array"
+  },
+  {
+   "artifact": "swarm_v2_artifacts/all_agents_final.json",
+   "provenance": "UNTRACED",
+   "verdict": "NO_CONTRACT",
+   "contracts": [],
+   "note": "no record array"
+  }
+ ]
+}

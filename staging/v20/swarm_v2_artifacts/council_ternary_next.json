@@ -1,0 +1,38 @@
+{
+  "autonomy_note": "council votes on soundness; after the seal the work lands in the agenda + kanban and the executor + council loop run it autonomously.",
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T23:50:28.301201+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "3a4ad0fa5c0c3d5cd2eb7e891646bcb8c1c25361b96ab54238694d23a1d29655",
+      "motion": "MOTION-T1",
+      "phase": "consensus",
+      "proposal_id": "CP-F9ADEE3B",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "TERNARY FOLDING MODEL: build a quantization path that packs a folding model (ESM-2 or ESMFold weights) to Q2_g64 2-bit ternary via the native ternary_engine/pack_q2_g64 machinery, then load the ~525 MB ternary model and re-run the RMSD validation against pdb_00009pzi_F_E. REJECT AS PREMATURE: loading full-precision again; claiming a folding result without measuring the quantization error (raw vs ternary parity) first. MEASURED: full-precision ESMFold (8.4 GB fp32) failed twice with 'memory allocation of 67 MB failed' (~2.3 GB free RAM); abandoned. The native ternary path exists: ternary_engine (Q2_g64 2-bit, GGML type 42, multiply-free GEMM) + packed_ternary/TurboVec (2-bit vectors). The kanban executor is idle (0 backlog/0 in-progress/3870 done); the council agenda is exhausted (CAP-201..206 done)."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "2c6b17be21f27e06be546717fa114e6bee420f08c4f6d95a7ff615b898eab4a4",
+      "motion": "MOTION-AU1",
+      "phase": "consensus",
+      "proposal_id": "CP-08D98AC3",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "AUDIO CORPUS (ternary): acquire a small real audio corpus and pack its embeddings with TurboVec (2-bit), then test cross-modal retrieval. The audio tower's full-precision embed is not loaded; the vectors are packed. REJECT AS PREMATURE: fabricating audio embeddings with no files; loading the full-precision audio encoder. MEASURED: full-precision ESMFold (8.4 GB fp32) failed twice with 'memory allocation of 67 MB failed' (~2.3 GB free RAM); abandoned. The native ternary path exists: ternary_engine (Q2_g64 2-bit, GGML type 42, multiply-free GEMM) + packed_ternary/TurboVec (2-bit vectors). The kanban executor is idle (0 backlog/0 in-progress/3870 done); the council agenda is exhausted (CAP-201..206 done)."
+    }
+  ],
+  "prior_state": "full-precision ESMFold abandoned; ternary path is the doctrine; agents idle.",
+  "quorum": 9,
+  "record": "TERNARY NEXT PHASE (folding quantization + audio TurboVec) -- council-voted",
+  "sha256": "eea7df83afde0726755d198a7480c9e23827b25f3531f2643ab7647d8b8740da"
+}

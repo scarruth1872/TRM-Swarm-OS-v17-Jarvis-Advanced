@@ -1,0 +1,24 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T22:39:39.254994+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "e9c673287e733d080de3994de1759cb57fda39280f3da62705e8dbcc29311e0d",
+      "motion": "MOTION-GC1",
+      "phase": "consensus",
+      "proposal_id": "CP-E909E3A5",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "ENCODE GEOMETRIC COMPLEMENTARITY: compute a shape-fit property from the crystal coordinates of sampled complexes \u2014 buried surface area (BSA) or a contact-distance-weighted complementarity score \u2014 for both the cognate pairing and a random pairing, and run the SAME specificity test (cognate an outlier above random mean+2sigma). REJECT AS PREMATURE: claiming complementarity from the contact COUNT (already measured sticky, not specific); claiming a geometric result without the random-antigen baseline. MEASURED: four negatives converge on one gap. (1) fold needs fp16; (2) single-chain fold gives parts not interface; (3) dock is a scorer not a search; (4) sequence-HDC carries no specificity signal (cognate 0.0127 vs random 0.0189). The binding property is 3D geometric complementarity, not yet encoded. The crystal corpus (16,415 CIF) has the atom coordinates to measure geometry. The antibody arc already found the CONTACT COUNT is sticky, not specific (cognate -2.5 sigma vs random). So the candidate is the SHAPE FIT (complementarity), not the contact number."
+    }
+  ],
+  "prior_state": "four negatives converge on geometric complementarity as the missing binding property",
+  "quorum": 9,
+  "record": "GEOMETRIC COMPLEMENTARITY (shape-fit property, same specificity test) -- council-voted; platform self-directs",
+  "sha256": "22b18c4bc03c26e1c8864ba4034c36f9a36344f0073c2a24fa9eac84563b8ac9"
+}

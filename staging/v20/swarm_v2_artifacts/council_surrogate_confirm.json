@@ -1,0 +1,26 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T23:58:27.625635+00:00",
+  "failure_modes": "gap < 10 deg = sample-dependent; pair-count flip = confounded with contact count",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "75158cc06d28840c747124f5bf49dff31bca3ceac08f26d44a4da7f6297a3789",
+      "motion": "MOTION-SURG2",
+      "phase": "consensus",
+      "proposal_id": "CP-A5741F10",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "FULL-CORPUS SURROGATE CONFIRMATION: run the heavy-atom donor-acceptor angle surrogate on the full corpus (parallel, 216-rotation baseline) and confirm the 30-deg gap, the tighter std, and the 2x near-linear fraction. PREDICTION: mean 115-125 vs 85-95, std 20-27 vs 35-42, near-linear 45-52% vs 22-27%. FAILURE: gap < 10 deg (sample-dependent) or pair-count flip (confounded with contact count). MEASURED: SURROG1 (27 complexes) found the heavy-atom donor-acceptor angle carries the signal: cognate 120.0 deg vs random 89.1 deg, std 23.4 vs 39.2, near-linear 48.9% vs 24.4% (2x). The surrogate is frame-invariant, the random has MORE pairs (18976 vs 748), and the three indicators agree. FULL-CORPUS CONFIRMATION (tractable, no new data). PREDICTION: mean angle cognate 115-125 vs random 85-95; std cognate 20-27 vs random 35-42; near-linear 45-52% vs 22-27%. MECHANISM: the cognate's donor-acceptor heavy atoms are pre-aligned for H-bonding; the random's are not. FAILURE: gap < 10 deg = sample-dependent; pair-count flip = confounded with contact count."
+    }
+  ],
+  "prediction_recorded": "mean 115-125 vs 85-95 deg; std 20-27 vs 35-42; near-linear 45-52% vs 22-27%; mechanism = cognate heavy atoms pre-aligned for H-bonding",
+  "prior_state": "SURROG1 positive at 27 complexes (heavy-atom donor-acceptor angle)",
+  "quorum": 9,
+  "record": "FULL-CORPUS SURROGATE CONFIRMATION -- council-voted; platform self-directs",
+  "sha256": "79010f9065e4f8e38b30d56070a1670e60a6cf94362b075f76695bee6d04793b"
+}

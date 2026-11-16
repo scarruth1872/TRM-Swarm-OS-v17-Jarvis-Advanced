@@ -1,0 +1,69 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-24T14:50:01.094811+00:00",
+  "finding": "The fused recall works but the top result for a molecule query is a structured/ethics doc because the RRF tie-break is not domain-aware. Prefer the query's own domain stores in the rank-1 tie-break, without dropping any result.",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Ranking",
+      "consensus_reached": true,
+      "deliberation_count": 15,
+      "deliberation_sample": [
+        {
+          "agent_name": "Hermes",
+          "reasoning": "Executive dispatch review of Make the fused ranking domain-aware: when a query classifies as molecule or bioassay, the chembl/bioassay stores are preferred in the fused t"
+        },
+        {
+          "agent_name": "Jarvis",
+          "reasoning": "Holistic system assessment: synthesizing cross-agent intent, cognitive scaffolding, and sovereign operational directives."
+        },
+        {
+          "agent_name": "Bridge",
+          "reasoning": "Integration & data routing review for Make the fused ranking domain-aware: when a query classifies as molecule or bioassay, the chembl/bioassay stores are preferred in th"
+        },
+        {
+          "agent_name": "Shield",
+          "reasoning": "Security assessment of Make the fused ranking domain-aware: when a query classifies as molecule or bioassay, the chembl/bioassay stores are preferred in the fused tie-bre"
+        },
+        {
+          "agent_name": "Logic",
+          "reasoning": "Logical analysis of Make the fused ranking domain-aware: when a query classifies as molecule or bioassay, the chembl/bioassay stores are preferred in the fused tie-break,"
+        }
+      ],
+      "monad_seal": "d642b94f173a47272b7b602624d5d0d49a2ae04dc225a0485309a09c9ac567f5",
+      "motion": "MOTION-C3",
+      "phase": "consensus",
+      "proposal_id": "CP-C704F349",
+      "raw_tally": {
+        "abstain": 0,
+        "approve": 15,
+        "reject": 0
+      },
+      "reject": 0,
+      "score": 0.9836,
+      "topic": "Make the fused ranking domain-aware: when a query classifies as molecule or bioassay, the chembl/bioassay stores are preferred in the fused tie-break, so a molecule query's top fused result comes from its own domain instead of a structured/ethics doc. The mechanism stays inside the existing RRF \u2014 a domain-preference term added to the rank-1 tie-break (the molecule/bioassay stores' rrf gain a small preference when the query is theirs), NOT a new scoring model and NOT a drop of any result (the fusion still returns every store; only the ORDER of the rank-1 tie changes). The TEST is pre-registered: 'toxicity of aspirin' -> top fused result store in {chembl, bioassay} (measured against the current structured/ethics/6492 top), and a general query like 'what is the monad anchor' keeps its fabric top (its own domain). Every existing answer is preserved \u2014 this is a re-order of tied rank-1s, not a filter. MEASURED (this host, MOTION-C1 result): 'toxicity of aspirin' -> fused-recall:multi-store, 5 stores (fabric, chembl, structured, bioassay, clinical), but the top fused result was structured/ethics/6492 (rrf 0.016), not chembl/bioassay. 'aspirin inhibitor kinase' -> top result bioassay/binding/6736. The cause: fused_lookup's RRF (k=60) gives every cross-store rank-1 the same rrf 1/61, and the tie-break is raw cosine \u2014 which the structured ethics store wins for the toxicity query. The tie-break is not domain-aware: a molecule/bioassay query should prefer its own domain's stores, not a prose doc. REJECT AS PREMATURE if the change would drop or replace results (a domain preference must re-order the tied rank-1s only, never remove a store), or if it cannot be measured against the current structured/ethics top result in the running kernel.",
+      "votes_by_agent": {
+        "Archi": 1,
+        "Bridge": 1,
+        "Devo": 1,
+        "EventLedger": 1,
+        "Flow": 1,
+        "Hermes": 1,
+        "Jarvis": 1,
+        "Logic": 1,
+        "LogicMaster": 1,
+        "Orchestra": 1,
+        "Pulse": 1,
+        "Seeker": 1,
+        "Shield": 1,
+        "THzGateway": 1,
+        "Verify": 1
+      }
+    }
+  ],
+  "quorum": 9,
+  "record": "DOMAIN-AWARE FUSED RANKING -- CAP-205 (MOTION-C1 follow-up)",
+  "sha256": "75671b48fd216e8cae4426193341eb15f674cb6ddec19433d9c43fe5403151b6"
+}

@@ -1,0 +1,38 @@
+{
+  "autonomy_note": "council votes on soundness; after the seal the work lands in the agenda and runs.",
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-25T14:42:31.609498+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "b21c475724dadfad99d53761f87d2ffa2fdf3f3a19b29d7c08e0280c95673262",
+      "motion": "MOTION-Q1",
+      "phase": "consensus",
+      "proposal_id": "CP-81C21B51",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "CLEAN ATTRIBUTION: fix the buffer handling (do NOT quantize integer/index buffers; load position_ids and af2_to_esm correctly from the original model), re-run the ternary fold test, and separate the ternary-quantization error from the buffer error. REJECT AS PREMATURE: claiming '2-bit destroys the fold' from a run with the buffers un-set; the clean run is the only attribution. MEASURED: the ternary fold test (CAP-209) ran 4035/4535 tensors but crashed in compute_tm (empty argmax = degenerate fold). Caveat named: 500 tensors (11%) are buffers (position_ids, af2_to_esm) that the quantizer wrongly treated as weights and the loader skipped, leaving them at random init. The 0.68 reconstruction error predicts fold degradation, but the buffer error is not yet separated from the ternary error."
+    },
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "29fc21035aa49f8db6ea6b4a3d1167f6c1263f494594c4d2dd1ede3f42af884c",
+      "motion": "MOTION-Q2",
+      "phase": "consensus",
+      "proposal_id": "CP-E030AA42",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "HIGHER-BIT QUANT: if Q1 confirms 2-bit is too lossy, quantize ESMFold to 4-bit (and measure the reconstruction error + fold) to find the bit-width that preserves the fold. REJECT AS PREMATURE: attempting 4-bit before the buffer fix; skipping the reconstruction-error measurement. MEASURED: the ternary fold test (CAP-209) ran 4035/4535 tensors but crashed in compute_tm (empty argmax = degenerate fold). Caveat named: 500 tensors (11%) are buffers (position_ids, af2_to_esm) that the quantizer wrongly treated as weights and the loader skipped, leaving them at random init. The 0.68 reconstruction error predicts fold degradation, but the buffer error is not yet separated from the ternary error."
+    }
+  ],
+  "prior_state": "CAP-207/208/209/210 done; ternary fold ended degenerate with a buffer caveat.",
+  "quorum": 9,
+  "record": "FOLD ATTRIBUTION (buffer fix) + HIGHER-BIT QUANT -- council-voted; platform self-directs",
+  "sha256": "c825ddd6b7a06b9f70f3b4884fb5bd910bd15ae4e1f80c66a4b4304070d7c737"
+}

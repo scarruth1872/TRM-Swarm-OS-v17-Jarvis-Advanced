@@ -1,0 +1,66 @@
+EXHAUSTIVE MODULE INVENTORY - ALL LOCATIONS (2026-10-25)
+
+SCOPE (measured, not assumed)
+  PLATFORM  F:\Development sites\TRM-Swarm-OS-v2      109,746 files
+  TRAIN     F:\Development sites\TRM agent swarm       77,831 files
+  UQI       F:\Development sites\ub3                   56,460 files
+  BRAIN     C:\Users\shawn\.gemini\antigravity\brain    5,224 files
+  AG-DATA   C:\Users\shawn\.antigravity                 8,493 files
+  WSL       ~/phoenix (17M)  ~/vina (4.0M)
+  TOTAL     257,754+ files
+
+=== WHERE COUNCIL/K3/SRAM MODULES ACTUALLY LIVE ===
+  PLATFORM  109 module files (largest relevant)
+    Jarvis-Advanced-main/src/components/TernarySynapseEngine.tsx   76,237 B
+    swarm_v2/core/swarm_council.py                                 34,679 B  <- calibrated
+    swarm_v2/core/full_64_agent_orchestrator.py                    11,174 B  <- 64 agents
+    swarm_v2/core/trm_orchestrator.py                              22,688 B
+    trm_uefi_kernel/src/k3_logic.rs                                (K3 engine)
+    host_council_server/src/k3_ternary_sram.rs                     (SRAM CAM, now wired)
+
+  TRAIN  1 module file - trm_orchestrator.py (duplicate of platform copy)
+
+  UQI  20 module files - LARGEST ORCHESTRATORS ANYWHERE
+    uqi-platform/uqi-agents/uqi_agents/orchestrator/orchestrator_agent.py  260,630 B
+    uqi-platform/uqi-interface/orchestrator_service.py                      57,684 B
+
+  BRAIN  24 files - PATCH SCRIPTS, NOT MODULES
+    These MUTATE main.rs historically; they are records of applied changes:
+    a418e593.../scratch/patch_council_server_chat.py            39,780 B
+    convene_autonomous_cadence_council.py                       35,918 B
+    patch_council_server_cadence.py                             15,737 B
+    update_council_routes_rich.py                               14,726 B  <- mostly /federation
+    voltage_era_industry_manifesto.md                            7,926 B  <- DOCTRINE
+
+  AG-DATA  0 module files (Antigravity IDE state only)
+  WSL      0 council/k3/sram/voltage files
+           ~/phoenix = docking (ligands/receptors/run_docks3.sh)
+
+=== VERDICT ON 'NOTHING IS WORKING' ===
+  The modules DO exist and most DO run. What was missing was WIRING:
+    - K3Sram declared at main.rs:25, never referenced -> now /council/sram
+    - full_64_agent_orchestrator exists; Rust council runs 14
+    - K3Vote.REJECT declared, never assigned (fixed)
+    - memory_mapped_ipc / unified_transistor_fabric unwired (now wired)
+
+  So the correct statement is NOT 'the modules are missing'.
+  The correct statement is: the modules exist, run, and were UNREFERENCED.
+
+=== DOCTRINE CLAIM THAT CANNOT BE SUBSTANTIATED ===
+  voltage_era_industry_manifesto.md asserts, 3 times, 'empirically validated':
+    154,573,935,494,973.1 ops/sec   (154.57 TRILLION)
+    30.91 TRILLION complex tasks/sec
+
+  NO derivation exists anywhere. grep for the numeral across all locations
+  returns only: tokenizer.json digit runs, inbox.json, chromadb snapshot.
+
+  CROSS-CHECK AGAINST MEASUREMENT (this session):
+    RX 6700 XT fp32 theoretical peak     ~9.8 TFLOPS
+    DirectML measured (unreliable)        2.5-6.4 TFLOPS
+    1000-task bench                       34.71 tasks/sec
+
+  154.57T ops/sec vs 9.8T fp32 peak      = 15.8x ABOVE theoretical silicon peak
+  30.91T tasks/sec vs 34.71 measured     = 8.9e11 x apart
+
+  STATUS: UNSUBSTANTIATED. Not called fabricated; no derivation found to
+  check. It must not be cited as measured until a benchmark produces it.

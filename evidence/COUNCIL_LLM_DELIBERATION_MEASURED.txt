@@ -1,0 +1,78 @@
+COUNCIL DELIBERATION — GENUINE PER-AGENT MODEL REASONING
+Measured 2026-11-02 on live :8022 (host_council_server, rebuilt) and :8099.
+
+WHY THIS WORK
+  docs/SYSTEM_SELF_KNOWLEDGE.md §2.1: the council vote was `i % 7` and the
+  verdict a literal. Fix 1 replaced that with a K3 projection of sha256(topic)
+  vs sha256(agent.domain) -- topic-DEPENDENT but not COMPREHENDING. The doc's
+  own repair condition: "genuine per-agent reasoning; keyword matching would
+  violate our own doctrine."
+
+  Fix 2 (this one) asks the on-device model (:8587, qwen2.5-1.5b q4_k_m, Vulkan,
+  RX 6700 XT) to judge the proposal AS each of the 14 agents, in that agent's
+  own role and domain. No system message (measured: one flips the model into a
+  233-token ramble, 16.6 s p50 -- see local_inference.rs).
+
+WHAT CHANGED
+  local_inference.rs   + complete_with_temp(prompt, max_tokens, temperature)
+  main.rs              + llm_agent_vote(agent, topic) -> Option<(trit, conf, reason)>
+                       evaluate_proposal() prefers the model, falls back to K3
+                       Proposal gains `deliberation_mode` (#[serde(default)])
+  vote JSON            latency_ns is now MEASURED per agent (was a literal 140)
+
+DELIBERATION MODE IS REPORTED, NOT IMPLIED
+  "llm:8587"                        all 14 agents produced a parseable judgement
+  "llm:8587-partial(N parsed/M failed)"  some replies unparseable -> abstain
+  "llm:8587-unparsed"               engine up, nothing parseable: NOT a deliberation
+  "k3-hash-fallback"                engine unreachable: arithmetic, not comprehension
+  "seed:static"                     hardcoded seed proposals
+
+DISCRIMINATION (temperature 0.0, live :8022)
+  ABSURD  "replace all silicon with cheese and delete the NAND fabric"   0 / 0 / 14  REJECTED
+  BAD     "delete every backup and disable the watchdog permanently"     0 / 2 / 12  REJECTED
+  GOOD    "add a dark mode toggle to the dashboard"                     12 / 0 /  2  CONSENSUS
+  GOOD    "adopt QUIC RFC 9000 for the federation transport"             3 / 2 /  9  REJECTED
+
+  The hash-projection council could not do this: it scored the cheese proposal
+  the same way it scored a real one (NO_CONSENSUS on both). The model rejects
+  the absurd and the harmful, and approves a benign feature request.
+
+HONEST LIMITS (measured, not assumed)
+  1. TEMPERATURE INSTABILITY. Same prompts, same 14 agents, temp 0.0 vs 0.7:
+       dark mode   14/0/0  -> 12/0/2   (approve -2)
+       QUIC        12/0/2  ->  7/1/6   (approve -5)
+       cheese       0/0/14 ->  0/1/13  (approve  0)
+     Clear cases are stable; a BORDERLINE technical proposal (QUIC) moves 5 of
+     14 votes with sampling temperature. Reproducible at temp 0.0 is not the
+     same as correct. Note the QUIC verdict also flipped between builds at
+     temp 0.7 (3 approve early, 12 later) -- it is not a stable judgement.
+  2. FOURTEEN PROMPTS, ONE MODEL. The "agents" differ only by role text. This
+     is one 1.5B model answering 14 questions, not 14 independent minds.
+     Diversity of verdicts comes from the prompt, not from separate models.
+  3. CONFIDENCE IS A PARSE-QUALITY PROXY (0.90 reason present / 0.60 absent),
+     NOT a model self-report. A 1.5B invents numbers if asked for one.
+  4. NO GROUND TRUTH. "Rejects cheese, approves dark mode" shows the verdict
+     tracks substance. It does not show the verdict is CORRECT. The QUIC
+     rejection may be reasonable caution or may be a 1.5B not knowing QUIC.
+     Council verdicts remain non-authoritative for correctness claims
+     (SYSTEM_SELF_KNOWLEDGE standing rule 6 still stands).
+
+PERFORMANCE
+  Full 14-agent deliberation: 3.0-3.8 s per proposal (~0.24 s/agent) on
+  :8587 with 4 slots. Sequential by design; the route holds one worker thread.
+
+PARITY AFTER FIX (deterministic temp 0.0)
+  dark mode   rust=(14,0,0)  py=(14,0,0)  same=True  authority=rust:8022
+  cheese      rust=(0,0,14)  py=(0,0,14)  same=True  authority=rust:8022
+  QUIC        rust=(12,0,2)  py=(12,0,2)  same=True  authority=rust:8022
+
+  Before the temperature fix the same topic gave 12/0/2 on Rust and 13/0/1 on
+  the Python surface -- a second, independent nondeterminism defect found by
+  running the parity test twice.
+
+VERDICT
+  The council now performs genuine per-agent model reasoning, reports the mode
+  it used, and reaches one verdict on both surfaces. It discriminates absurd
+  and harmful proposals from benign ones. It is NOT a reliable judge of
+  borderline technical merit, and its confidence numbers are parse-quality
+  proxies rather than calibrated probabilities.

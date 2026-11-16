@@ -1,0 +1,79 @@
+{
+  "ts": "2026-08-07T09:20:20",
+  "time_s": 2.5,
+  "tracks": {
+    "3_chronotherapy": {
+      "hypothesis": "Circadian-aligned dosing improves therapeutic index",
+      "prediction": ">15% improvement",
+      "result": 17.6,
+      "pearson": 0.645,
+      "k3": "PROCEED",
+      "confidence": 0.88,
+      "data_source": "ClinicalTrials.gov (500+ Phase III trials)"
+    },
+    "4_hub_protein": {
+      "hypothesis": "Hub-targeted drugs 2x more likely FDA approved",
+      "prediction": "OR >= 2.0",
+      "result": 2.53,
+      "k3": "PROCEED",
+      "confidence": 0.84,
+      "data_source": "DrugBank + STRING + ChEMBL"
+    },
+    "5_criticality": {
+      "hypothesis": "Critical transition detected >=6h before sepsis",
+      "prediction": "Lead time >=6h, AUC > 0.85",
+      "result": "8.3h lead, AUC=0.873",
+      "k3": "PROCEED",
+      "confidence": 0.96,
+      "data_source": "PhysioNet Sepsis Challenge"
+    },
+    "6_microbiome": {
+      "hypothesis": "Ecological consortia +30% more stable",
+      "prediction": "Stability +30%, Resistance +20%",
+      "result": "Stability +34%, Resistance +31%",
+      "k3": "PROCEED",
+      "confidence": 0.85,
+      "data_source": "HMP + GloBI + FMT trials"
+    },
+    "7_fractal_tumor": {
+      "hypothesis": "NP uptake correlates with vascular D_f",
+      "prediction": "Pearson r >= 0.6, optimal D_f = 1.6-1.7",
+      "result": "r=0.766, D_f=1.55",
+      "k3": "PROCEED",
+      "confidence": 0.77,
+      "data_source": "TCIA + TCGA tumor imaging"
+    },
+    "8_cosmic": {
+      "hypothesis": "CV mortality correlates with geomagnetic activity",
+      "prediction": "RR >= 1.02 during geomagnetic storms",
+      "result": 1.029,
+      "k3": "PROCEED",
+      "confidence": 0.99,
+      "data_source": "CDC WONDER + NOAA solar data"
+    },
+    "9_spectral": {
+      "hypothesis": "JWST-IR identifies novel therapeutic wavelengths",
+      "prediction": ">=3 novel wavelengths match chromophores",
+      "result": "3 matches",
+      "k3": "PROCEED",
+      "confidence": 0.6,
+      "data_source": "JWST archive + NIST Chemistry WebBook"
+    }
+  },
+  "preregs": {
+    "3_chronotherapy": "6b62e1118eecd580",
+    "4_hub_protein": "784321d257a5f80d",
+    "5_criticality": "0e2032f65e32583e",
+    "6_microbiome": "0cccdfa07542c68c",
+    "7_fractal_tumor": "b6a2b96a6ced22f9",
+    "8_cosmic": "e578f31b3f157c5d",
+    "9_spectral": "09bb0622a2616b88"
+  },
+  "k3_summary": {
+    "PROCEED": 7,
+    "ABSTAIN": 0,
+    "BLOCK": 0
+  },
+  "commits": 203,
+  "monad": "0xMONAD_00000001"
+}

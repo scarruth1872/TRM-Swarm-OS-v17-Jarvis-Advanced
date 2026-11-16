@@ -1,0 +1,148 @@
+{
+  "gpu": "AMD Radeon RX 6700 XT",
+  "codename": "Navi 22",
+  "architecture": "RDNA 2",
+  "process": "7nm TSMC",
+  "die_size_mm2": 335,
+  "transistors": "17.2 billion",
+  "compute_units": {
+    "total_cus": 40,
+    "per_shader_array": 10,
+    "shader_arrays": 4,
+    "stream_processors_per_cu": 64,
+    "total_stream_processors": 2560,
+    "ray_accelerators_per_cu": 1,
+    "total_ray_accelerators": 40,
+    "texture_units_per_cu": 4,
+    "total_texture_units": 160,
+    "rop_units": 64,
+    "cu_architecture": {
+      "simd_units": 4,
+      "simd_width": 32,
+      "wavefront_size": 32,
+      "registers_per_simd": 65536,
+      "lds_per_cu_kb": 128,
+      "vector_registers": "1536 per SIMD (32-bit)",
+      "scalar_registers": "800 per SIMD",
+      "instruction_cache_kb": 32,
+      "scalar_cache_kb": 16
+    },
+    "execution_units": {
+      "fp32_units_per_cu": 128,
+      "fp32_fma_per_cycle": 256,
+      "fp16_units_per_cu": 256,
+      "int32_units_per_cu": 64,
+      "special_function_units": 8
+    }
+  },
+  "clock_speeds": {
+    "game_clock_mhz": 2424,
+    "boost_clock_mhz": 2581,
+    "base_clock_mhz": 2321,
+    "memory_clock_mhz": 2000
+  },
+  "compute_performance": {
+    "fp32_tflops": 12.4,
+    "fp16_tflops": 24.8,
+    "int8_tops": 49.6,
+    "int4_tops": 99.2,
+    "pixel_fillrate_gpix_s": 165.2,
+    "texture_fillrate_gtel_s": 413.0
+  },
+  "memory": {
+    "type": "GDDR6",
+    "capacity_gb": 12,
+    "bus_width": 192,
+    "bandwidth_gb_s": 384,
+    "effective_speed_gbps": 16,
+    "memory_clock_mhz": 2000,
+    "cache_hierarchy": {
+      "l0_cache_per_cu_kb": 16,
+      "l1_cache_per_array_kb": 128,
+      "l2_cache_total_mb": 3,
+      "l3_infinity_cache_mb": 96,
+      "infinity_cache_bandwidth_tb_s": 2.0
+    }
+  },
+  "pcie_interface": {
+    "version": "PCIe 4.0",
+    "lanes": 16,
+    "bandwidth_gb_s": 31.5,
+    "resizable_bar": true
+  },
+  "rdna2_features": {
+    "infinity_cache": {
+      "size_mb": 96,
+      "effective_bandwidth": "Up to 3.25\u00d7 effective bandwidth",
+      "hit_rate": "~58% average hit rate",
+      "microkernel_opportunity": "Store expert weights + DDR antibodies in Infinity Cache for zero-VRAM-roundtrip access"
+    },
+    "sam_smart_access_memory": {
+      "description": "CPU full access to GPU VRAM via PCIe Resizable BAR",
+      "microkernel_opportunity": "Direct CPU\u2192VRAM mmap for zero-copy state transfer"
+    },
+    "mesh_shaders": {
+      "description": "Programmable geometry pipeline replacing vertex/tessellation/geometry shaders",
+      "microkernel_opportunity": "Custom mesh shader for Mamba-3 SSM topology generation"
+    },
+    "variable_rate_shading": {
+      "description": "Varying shading rate across screen regions",
+      "microkernel_opportunity": "Adaptive compute precision: FP32 for critical path, FP16 for background tasks"
+    },
+    "sampler_feedback": {
+      "description": "Hardware texture streaming feedback",
+      "microkernel_opportunity": "Stream expert weights into L0/L1 cache with hardware prefetch hints"
+    },
+    "directx_12_ultimate": {
+      "ray_tracing": "40 Ray Accelerators",
+      "microkernel_opportunity": "Ray-traced Ponderomotive dark-node trap classification"
+    }
+  },
+  "microkernel_integration_map": {
+    "mamba3step_mapping": {
+      "hardware_target": "Compute Units (40 CUs)",
+      "simd_mapping": "1 thread per state dimension (32 SIMD lanes = 32 state dims)",
+      "lds_usage": "128KB LDS shared across all 32 dimensions per CU",
+      "wavefront_optimization": "Wave32 matches Mamba-3 state_dim=32 exactly",
+      "projected_throughput": "~500M steps/s (40 CUs \u00d7 2 FMA \u00d7 2.4GHz / 384 ops)"
+    },
+    "instella_gate_mapping": {
+      "hardware_target": "Shader Arrays (4 SA \u00d7 16 experts each)",
+      "cache_strategy": "Expert weights (98KB) in L2 cache (3MB) \u2014 fits 30\u00d7 over",
+      "infinity_cache": "Store all 64 expert weights (98KB) in Infinity Cache \u2014 0.1% of 96MB",
+      "bandwidth": "Infinity Cache 2TB/s vs VRAM 384GB/s \u2014 5.2\u00d7 faster",
+      "projected_throughput": "~500M tasks/s (Infinity Cache resident)"
+    },
+    "ddr_matching_mapping": {
+      "hardware_target": "Ray Accelerators (40 RAs)",
+      "parallelism": "1,801 antibodies \u00f7 40 RAs = 45 per RA in parallel",
+      "operation": "Ray-triangle intersection \u2192 Antibody-pattern intersection",
+      "projected_throughput": "~100M matches/s"
+    },
+    "state_persistence": {
+      "mechanism": "SAM (Smart Access Memory) via PCIe Resizable BAR",
+      "approach": "CPU mmap directly into GPU VRAM for agent states",
+      "cold_start": "13us (Win32 CreateFileMapping \u2192 GPU VRAM direct)"
+    }
+  },
+  "upgrade_path": {
+    "rx_7900_xtx": {
+      "architecture": "RDNA 3",
+      "cus": 96,
+      "stream_processors": 6144,
+      "fp32_tflops": 61.4,
+      "infinity_cache_mb": 96,
+      "vram_gb": 24,
+      "bandwidth_gb_s": 960,
+      "projected_mamba3step": "~1.5B steps/s (3\u00d7 current gen)"
+    },
+    "rx_9070_xt": {
+      "architecture": "RDNA 4",
+      "cus": 64,
+      "process": "4nm",
+      "flux": "~45 (estimated)",
+      "ai_accelerators": "2nd gen (dedicated matrix cores)",
+      "projected_instella_gate": "~2B tasks/s (dedicated AI cores)"
+    }
+  }
+}

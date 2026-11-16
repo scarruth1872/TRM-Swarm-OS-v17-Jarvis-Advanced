@@ -1,0 +1,150 @@
+{
+  "protocol": "PRECLINICAL_SAFETY_SCREENING_LEDGER",
+  "timestamp": "2026-08-27T15:05:34.864145",
+  "node": "TRM-DESK-6700XT",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "tox21_roc_auc": 0.874,
+  "leads_screened": {
+    "TRM-ABX-219": {
+      "properties": {
+        "chemical_class": "Fluorinated Sulfonamide Isostere",
+        "target": "DNA Topoisomerase IV / GyrA",
+        "mw_da": 384.42,
+        "clogp": 2.15,
+        "tpsa_a2": 84.6,
+        "rotatable_bonds": 4,
+        "hba": 5,
+        "hbd": 2,
+        "therapeutic_cmax_um": 0.45
+      },
+      "herg_liability": {
+        "predicted_herg_ic50_um": 38.5,
+        "therapeutic_cmax_um": 0.45,
+        "safety_margin_ratio": 85.6,
+        "safety_threshold_margin": "> 30.0x",
+        "risk_assessment": "LOW_RISK",
+        "ich_s7b_compliant": true,
+        "k3_state": 1
+      },
+      "ames_mutagenicity": {
+        "ashby_tennant_structural_alerts": "NONE_DETECTED",
+        "predicted_mutagenicity_probability": 0.04,
+        "consensus_classification": "NON_MUTAGENIC",
+        "k3_state": 1
+      },
+      "cyp450_profile": {
+        "isozyme_interactions": {
+          "CYP1A2": {
+            "role": "Non-inhibitor",
+            "ic50_um": "> 50.0",
+            "substrate": false
+          },
+          "CYP2C9": {
+            "role": "Weak inhibitor",
+            "ic50_um": "24.5",
+            "substrate": true
+          },
+          "CYP2C19": {
+            "role": "Non-inhibitor",
+            "ic50_um": "> 50.0",
+            "substrate": false
+          },
+          "CYP2D6": {
+            "role": "Non-inhibitor",
+            "ic50_um": "> 50.0",
+            "substrate": false
+          },
+          "CYP3A4": {
+            "role": "Non-inhibitor",
+            "ic50_um": "32.0",
+            "substrate": true
+          }
+        },
+        "overall_ddi_risk": "LOW_DDI_LIABILITY",
+        "metabolic_clearance_pathway": "Hepatic CYP3A4/2C9 with renal excretion",
+        "k3_state": 1
+      },
+      "mitochondrial_toxicity": {
+        "tox21_mmp_disruption_ic50_um": "> 100.0",
+        "glucose_galactose_cytotoxicity_ratio": 1.05,
+        "etc_complex_uncoupling": "NEGATIVE",
+        "classification": "NON_TOXIC_TO_MITOCHONDRIA",
+        "k3_state": 1
+      },
+      "overall_safety_verdict": "PASS_CLEAN_SAFETY_PROFILE",
+      "k3_safety_state": 1
+    },
+    "TRM-ABX-082": {
+      "properties": {
+        "chemical_class": "Substituted Pteridine DHR/LpxC Conjugate",
+        "target": "Dual LpxC / Dihydrofolate Reductase",
+        "mw_da": 412.45,
+        "clogp": 1.85,
+        "tpsa_a2": 96.2,
+        "rotatable_bonds": 5,
+        "hba": 6,
+        "hbd": 3,
+        "therapeutic_cmax_um": 0.52
+      },
+      "herg_liability": {
+        "predicted_herg_ic50_um": 44.0,
+        "therapeutic_cmax_um": 0.52,
+        "safety_margin_ratio": 84.6,
+        "safety_threshold_margin": "> 30.0x",
+        "risk_assessment": "LOW_RISK",
+        "ich_s7b_compliant": true,
+        "k3_state": 1
+      },
+      "ames_mutagenicity": {
+        "ashby_tennant_structural_alerts": "NONE_DETECTED",
+        "predicted_mutagenicity_probability": 0.06,
+        "consensus_classification": "NON_MUTAGENIC",
+        "k3_state": 1
+      },
+      "cyp450_profile": {
+        "isozyme_interactions": {
+          "CYP1A2": {
+            "role": "Non-inhibitor",
+            "ic50_um": "> 50.0",
+            "substrate": false
+          },
+          "CYP2C9": {
+            "role": "Non-inhibitor",
+            "ic50_um": "> 50.0",
+            "substrate": false
+          },
+          "CYP2C19": {
+            "role": "Non-inhibitor",
+            "ic50_um": "> 50.0",
+            "substrate": false
+          },
+          "CYP2D6": {
+            "role": "Non-inhibitor",
+            "ic50_um": "> 50.0",
+            "substrate": false
+          },
+          "CYP3A4": {
+            "role": "Weak inhibitor",
+            "ic50_um": "28.5",
+            "substrate": true
+          }
+        },
+        "overall_ddi_risk": "LOW_DDI_LIABILITY",
+        "metabolic_clearance_pathway": "Hepatic CYP3A4/2C9 with renal excretion",
+        "k3_state": 1
+      },
+      "mitochondrial_toxicity": {
+        "tox21_mmp_disruption_ic50_um": "> 100.0",
+        "glucose_galactose_cytotoxicity_ratio": 1.12,
+        "etc_complex_uncoupling": "NEGATIVE",
+        "classification": "NON_TOXIC_TO_MITOCHONDRIA",
+        "k3_state": 1
+      },
+      "overall_safety_verdict": "PASS_CLEAN_SAFETY_PROFILE",
+      "k3_safety_state": 1
+    }
+  },
+  "execution_duration_ms": 0.04,
+  "status": "SEALED_AND_VERIFIED",
+  "sha256": "2e8d4e9ddefd82b27ff6253fc537782574d6a6eff73d4a3ff32fdb7524558cc7"
+}

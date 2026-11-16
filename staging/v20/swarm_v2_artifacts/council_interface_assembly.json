@@ -1,0 +1,24 @@
+{
+  "byzantine_tolerance": 4,
+  "date_utc": "2026-10-26T21:56:32.155518+00:00",
+  "member_count": 15,
+  "motions": [
+    {
+      "abstain": 0,
+      "approve": 15,
+      "category": "Research",
+      "consensus_reached": true,
+      "monad_seal": "09b7b404e04eaf037d6f7b0a8c7c49e3b25c0a89f7087d0ac77336289c5261d4",
+      "motion": "MOTION-CP1",
+      "phase": "consensus",
+      "proposal_id": "CP-0B62F83B",
+      "reject": 0,
+      "score": 0.984,
+      "topic": "DOCK THE FOLDED CHAINS: use the existing docking crate (swarm-docking) to dock the folded F+E antibody against the folded G antigen and find their relative orientation, then score the docked complex with the SAbDab full-atom scorer (4.5 A). Test whether the docked FOLDED interface is specific (cognate an outlier vs random) where the crystal transfer was only sticky. REJECT AS PREMATURE: claiming specificity from a docking without the scorer re-run; claiming a dock result without naming the docking score. MEASURED: SP1 folded the antibody (F VH 16.8 A, E Vk 6.9 A) + antigen (G 24.2 A) of pdb_00009pzi, but each chain was an independent forward pass -> they land in separate coordinate frames, so the folded complex is unscorable (417 spurious C-alpha contacts vs crystal 1, both artifacts of frame + coarse measure). The platform has a native docking crate (swarm-docking, dock dG -10.03 kcal/mol on LpxC). Specificity needs the chains ASSEMBLED."
+    }
+  ],
+  "prior_state": "SP1 single-chain fold gives parts not interface; FB1 fabric real",
+  "quorum": 9,
+  "record": "INTERFACE ASSEMBLY (dock the folded chains) -- council-voted; platform self-directs",
+  "sha256": "dbf6270fce4219febf8ff9434bfd37c2869bee8909d220a962fca8855e547387"
+}

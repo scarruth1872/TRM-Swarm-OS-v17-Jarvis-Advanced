@@ -1,0 +1,47 @@
+{
+  "benchmark": "fabric_tier_and_retrieval",
+  "chat": {
+    "abstentions_ms": [
+      814.0,
+      832.7
+    ],
+    "cited_from_platform_knowledge": "10/10",
+    "fired_fabric_tier": "10/12",
+    "wall_ms": {
+      "max": 832.7,
+      "p50": 3.9,
+      "p95": 814.0
+    }
+  },
+  "cited_documents": [
+    "papers/paper_149_voltage_doctrine_harmonization_and_continuous_field_grounding.md",
+    "papers/paper_02_k3_ternary_os.md",
+    "papers/paper_18_monad_philosophy.md",
+    "papers/paper_025_the_free_will_directive.md",
+    "papers/paper_17_phoenix_honesty.md",
+    "papers/paper_134_conversation_memory_nand_fabric_and_k3_epistemic_tracking.md",
+    "papers/paper_025_the_free_will_directive.md",
+    "papers/paper_09_cosmic_link.md",
+    "papers/paper_063_knowledge_gap_remediation_and_substrate_hardening.md",
+    "SELF_HOSTING_GUIDE.md"
+  ],
+  "corpus": {
+    "dim": 768,
+    "documents": 180,
+    "encoder": "native-turbovec-hdc",
+    "source": "swarm_v2_artifacts/kernel_knowledge_index.json"
+  },
+  "notes": "10/12 questions answered from the fabric with no model call; the 2 abstentions fall through honestly (0.82 s, the offline Vulkan probe).",
+  "questions": 12,
+  "ran_at_utc": "2026-09-20T11:23:33Z",
+  "retrieval": {
+    "engine_us": {
+      "p50": 112.0,
+      "p95": 121
+    },
+    "wall_ms": {
+      "p50": 1.0,
+      "p95": 14.1
+    }
+  }
+}

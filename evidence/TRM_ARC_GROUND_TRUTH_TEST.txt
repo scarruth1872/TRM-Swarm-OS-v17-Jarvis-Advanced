@@ -1,0 +1,60 @@
+TRM 7M INTELLIGENCE TEST vs ARC-AGI GROUND TRUTH
+Date: 2026-10-24
+Model: F:\Development sites\TRM agent swarm\tiny-recursive-weights\step_155718 (1.8 GB)
+Data : F:\Development sites\TRM agent swarm\kaggle\combined (ARCTIC-AGI corpus)
+
+DATASET (exhaustive scan: 10 files, 5 pairs, no subdirs, NO mapping file)
+  training    400 tasks / 400 solutions
+  training2  1000 / 1000
+  evaluation  400 / 400
+  evaluation2 120 / 120
+  concept     160 / 160
+  TOTAL      2080 tasks
+  colors 0-9 (10) | max grid 30x30 = 900 cells
+  -> vocab_size 12 = 10 colors + 2 special. Consistent.
+  -> seq_len 1024 = 32x32 canvas. Consistent with 30x30 max.
+
+ENCODINGS TESTED (both):
+  A) contiguous flatten: 3x3 -> positions 0..8
+  B) 32-wide row-major: 3x3 -> positions 0,1,2 / 32,33,34 / 64,65,66
+
+RESULTS (encoding B, last H_cycle, grid region decoded):
+  007bbfb7  in 3x3  out 9x9    match 0/81   0/81   4/81
+  00d62c1b  in 6x6  out 6x6    match 6/36   6/36   2/36
+  017c7c7b  in 6x3  out 9x3    match 0/27   0/27   0/27
+  025d127b  in 14x9 out 14x9   match 8/126  9/126  7/126
+  045e512c  in 21x21 out 21x21 match 11/441 21/441 14/441
+  (three puzzle_ids each: 0, 1, 2)
+
+  All results 0-5%. No task approaches correct. Predictions show
+  constant runs (e.g. [1,1,1,1,1,1]) = degenerate output.
+
+CONCLUSION
+  The TRM 7M checkpoint does NOT solve ARC-AGI under any encoding or
+  puzzle_id tested. Measured near-chance accuracy on tasks whose
+  answers are known.
+
+  It DOES load, run deterministically, respond to input, and stay
+  in-vocab. It is a working compute engine that does not produce
+  correct answers.
+
+LIKELY CAUSES (not distinguished by evidence available)
+  1. puzzle_id mapping absent: model has num_puzzle_identifiers=876406
+     learned embeddings; checkpoint has puzzle_emb.weights but NO
+     task->id table. Folder has no mapping. Wrong embedding =
+     wrong task context.
+  2. checkpoint step_155718 may be mid-training / not converged.
+  3. True training token format may differ from both encodings tried.
+
+DEFECTS FOUND + FIXED IN THIS PASS
+  a) reason() returned preds[:12] of a 1024-length prediction,
+     discarding 98.8% of output. Fixed: full_output=True opt-in.
+  b) reason() padded short inputs with torch.zeros (color 0 = black)
+     instead of the PAD token. NOTE: not yet fixed, flagged.
+  c) trm_brain.py had no `import os` (NameError on load) and a
+     checkpoint path that does not exist. Both fixed earlier today.
+
+WHAT WOULD MAKE THIS TESTABLE
+  The task -> puzzle_id mapping used at training time. Without it the
+  learned embedding cannot be selected, and no accuracy claim is
+  meaningful in either direction.

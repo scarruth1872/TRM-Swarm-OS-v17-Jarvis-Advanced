@@ -1,0 +1,51 @@
+[
+ {
+  "kind": "metal_boot_3_the_radio_answers",
+  "fact": "The stick was booted a third time on the board with the AX200, and the attribute-walk fix is settled on that machine: the probe that exited 101 with `range start index 12 out of range for slice of length 9` now completes and reports `WIFI PROBE| wifi: nl80211 is family 33 (asked of the kernel, not assumed)`, `WIFI PROBE| wifi:   phy0 -- 0 ext-feature bytes, four-way handshake in the kernel: no`, `WIFI PROBE| wifi:   wlan0 ifindex 3 of 0 type 2 mac c8cb9e5f0e0b`. The panic was in the second of those -- parse_attrs advancing by align4(len) past the end of a message whose last attribute carried no trailing pad -- and a test reproduces that panic off the machine while this boot reproduces its absence on it. The `WIFI PROBE| ` prefix is the pipe into say(): a child that used to inherit the console and leave nothing behind now writes its report into /trm_boot.log, which is how these lines can be read from another machine at all. The rest of the boot: 22 loaded, 0 not shipped; the volume found by content on pass 7 after the internal NVMe was rejected for carrying no rootfs.squashfs; both interfaces up with link-local addresses derived from their own MACs (169.254.15.12 from the radio, 169.254.45.82 from the Ethernet); `a write from an earlier boot: PRESENT`, so the writable layer still outlives the reboot; `WIFI ASSOCIATION: not attempted -- /mnt/esp/wifi.conf is absent` with the note that no credentials, no access point and a refused association are three different facts; pivot_root refusing and chroot carrying the handover, disclosed; then CONTENT 9 of 9, the counts, and the dashboard as the last lines. And the boot found one more defect in the line an operator reads last: it had said `NET: eth0 ... [no carrier: nothing on the other end of that cable]` and then, thirty seconds later, `(eth0 is linked)` -- both the launcher's own words about the same interface, disagreeing. The second was a verdict derived from a re-reading rather than the reading itself, which is the defect class this pathway keeps finding in its own instruments, this time in its final line. The line now prints both numbers (the carrier read at bring-up and the carrier read now) and only what they support.",
+  "not_claimed": "Still not an association: no access point has been joined, and this boot attempted none by design because the stick carries no wifi.conf. The carrier disagreement is now visible as two numbers but not yet explained -- whether the link genuinely came up between the readings or the driver reported it late is a question the next boot answers. The fixed dashboard line has not been read on metal yet; it is measured in QEMU and in the unit battery, and the stick carries it.",
+  "commit": "f2eaf39",
+  "rederive": {
+   "files": [
+    {
+     "path": "backups/bare_metal_first_boot_20260930/metal_boot_3_radio_probe_20261001.txt",
+     "sha256": "09c86b92476c2456bd03abb7d30b68244c0820851f0a9d5d8c41f29b53d77935"
+    },
+    {
+     "path": "trm_chainload/init/platform_init.c",
+     "sha256": "b46ef90f8d7fcbb7f853a5b594cba789ea20ee639100d9c98e77df812cd7b2c0"
+    },
+    {
+     "path": "trm_uefi_kernel/trm_wifi/src/netlink.rs",
+     "sha256": "b29fc1356677ae121adc5f4aec6550b7db4ef8bbd71c2756ed96a454496350c6"
+    },
+    {
+     "path": "docs/BARE_METAL_LINUX_PATHWAY_20260930.md",
+     "sha256": "c77c15fe4fd573538b3e460d78c49dbe561c3d9a4da01b72993c722587266061"
+    }
+   ],
+   "oracles": [
+    {
+     "script": "trm_chainload/scripts/check_attr_walk.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 failed"
+     ]
+    },
+    {
+     "script": "swarm_v2/core/check_boot_chain_static.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "0 problem(s)"
+     ]
+    },
+    {
+     "script": "trm_chainload/scripts/check_reproducible.py",
+     "expect_exit": 0,
+     "expect_stdout_contains": [
+      "3 of 3 stage(s) reproducible"
+     ]
+    }
+   ]
+  }
+ }
+]
