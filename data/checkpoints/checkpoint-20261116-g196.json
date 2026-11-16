@@ -1,0 +1,37 @@
+{
+ "tag": "checkpoint-20261116-g196",
+ "head": "1300f02",
+ "tree": "83b5e11b71b3fda6b9c0a5738683db931ee5e8f5",
+ "when": "2026-11-16T20:10:15Z",
+ "test_suite": {
+  "total": 107,
+  "passed": 105,
+  "failed": 0,
+  "ignored": 2,
+  "duration_s": 157.51,
+  "ignored_reasons": {
+   "native_ternary::parity::port_reproduces_the_dll_exports": "oracle absent: no swarm_rust_kernel.dll on this machine exports rust_ternary_quantize",
+   "native_encoder::encoder_parity::port_reproduces_the_dll_export": "oracle absent: no embedding engine export available on this machine"
+  }
+ },
+ "modules": {
+  "orphans_revived": 30,
+  "behaviour_probed": 3,
+  "compile_only": 27
+ },
+ "fixture": {
+  "path": "trm_uefi_kernel/assets/parity_vectors.f32",
+  "bytes": 49152,
+  "sha256": "24a1ab61cc50f5dbea3e0405ff47113e28047e3d3cf15e41e63537664b173eb7",
+  "provenance": "SYNTHETIC (labelled) - original corpus kernel_knowledge_index.json and its generator no longer exist on either machine"
+ },
+ "far_side": {
+  "release_build": "0 errors, Finished 49.07s, binary 32,684,032 B",
+  "test_profile": "BLOCKED: os error 448 untrusted mount point (machine policy, needs UAC)",
+  "converged": "src 217=217, hcs 124=124"
+ },
+ "commands": {
+  "head": "git rev-parse --short HEAD",
+  "tests": "cargo test --release --target-dir target-t"
+ }
+}
