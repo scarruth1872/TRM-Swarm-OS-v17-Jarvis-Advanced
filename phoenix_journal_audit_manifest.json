@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T18:52:11Z",
+  "audit_timestamp": "2026-11-16T18:59:01Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 87,
+    "empirical_confirmed": 88,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 87
+      "CONFIRMED": 88
     }
   },
   "articles": [
@@ -2012,6 +2012,19 @@
       ],
       "phoenix_audit_note": "Both builds served /parity/probe; 40 keys compared; second run 40/40 identical with 0 constant groups. First run's 37/37 agreement was on out-of-domain vectors and is recorded as a failure of test design.",
       "finding": "A parity probe was written into both builds so that behaviour, not function names, could be compared. Its first run returned perfect agreement on thirty seven keys, and that result was worthless. The inputs had been chosen outside the domain of every function under test: a priority lookup expecting names like HEALTH_CHECK received the word critical and fell through to its default arm, returning ten every time; a classifier looking for the word audit received sentences about deploying kernels and answered low every time. Two builds returning the same constant agree about nothing. The fix was not more tests but a different question: each group of vectors now has to produce more than one distinct answer, because a constant answer means the input never arrived. With in-domain vectors the same twenty minutes of work produced forty keys, all identical across the two builds, every group varying, and every arithmetic relation checkable by hand against the source. The lesson is recorded because it is the same one this whole campaign keeps teaching: an agreement test agrees with whatever you feed it, including nothing."
+    },
+    {
+      "id": 271,
+      "section": "Verification",
+      "title": "Article 271 - The Code That Was Never Compiled",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g191",
+        "docs/port/laptop-base/parity_probe.rs",
+        "data/parity_run.json"
+      ],
+      "phoenix_audit_note": "Module inclusion audited by grepping lib.rs and hcs main.rs for each module; both trees rebuilt after inclusion (Finished 39.24s / 35.65s); 60 probe keys compared; FNV-1a checked against a published definition via an independent Python implementation.",
+      "finding": "To widen a behavioural test from forty values to sixty, four more modules had to be made visible to a build, and that step revealed that one of them had been invisible all along. A file of nearly twelve hundred lines, merged twice in the preceding days, had been edited and verified and discussed, and no binary on this machine had ever compiled it. It sat in the source directory with no declaration, so the compiler never read it; the merges were real in the file and absent from the machine. Two modules on the other side had the same disease. The lesson is exact: a module that nothing includes is not a feature but a file, and it cannot regress, cannot be tested, and cannot be claimed. Once included, both builds finished cleanly, which means the code was never broken; it was simply unused. The reward for the discovery was a wider test: sixty values across five modules, every one identical across both builds, and for the one function with a published definition, a fingerprint hash, exact agreement with an independent implementation including the standard offset basis. Agreement between two builds is a weaker claim than agreement with the world, and here at least one value could be checked against the world."
     }
   ],
   "provenance_revision": {

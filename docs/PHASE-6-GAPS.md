@@ -7739,3 +7739,38 @@ expose in a release build. The base cannot run `cargo test` at all - its test pr
 `crate::hmac_sha256`, `crate::turbovec`, `crate::float_math` and an asset `assets/parity_vectors.f32` that
 were never shipped - which is why the probe is a route rather than a test binary.
 
+### G191. Coverage 40 -> 60 keys; and two merged modules turned out to be compiled nowhere  [MEASURED]
+
+Extending the probe required exposing four more modules, and that exposed a defect worth more than the tests:
+
+| module | our tree before | base before |
+|---|---|---|
+| `global_memory` | file present, **not declared in `lib.rs`** | included in hcs |
+| `reconnaissance_daemon` | file present, **not declared in `lib.rs`** | **not included anywhere** |
+| `trm_integration` | declared in `lib.rs` | **not included anywhere** |
+
+**So `global_memory.rs` was not part of any binary we build.** 1,186 lines, edited in G185 and again in G189,
+and not one line of it was ever compiled here - the merge was real in the file and absent from the machine.
+`reconnaissance_daemon.rs` was the same on our side, while the base never compiled `reconnaissance_daemon`
+or `trm_integration` at all. A module that nothing includes is a file, not a feature: it cannot be tested,
+cannot regress visibly, and cannot be said to work.
+
+Both now compile: `global_memory` and `reconnaissance_daemon` added to our `lib.rs`; `reconnaissance_daemon`
+and `trm_integration` added to the base's hcs via `#[path]`. Both builds **Finished** (`39.24s`, `35.65s`),
+so the code was valid - it just was not being used.
+
+**Parity result: 60 keys, 60 identical, 0 differing, 0 constant groups**, across five modules:
+`task_arbiter`, `expert_registry`, `global_memory`, `reconnaissance_daemon`, `trm_integration`.
+
+**External oracle, not just cross-tree agreement:** FNV-1a is published, so both builds can be judged against
+it rather than against each other. An independent Python implementation agrees exactly -
+`fnv1a("")` = `14695981039346656037` = `0xcbf29ce484222325` (the published offset basis),
+`fnv1a("a")` = `12638187200555641996`, `fnv1a("hello world")` = `8618312879776256743`.
+
+Other values spot-check against their definitions: token overlap `1.0` (2 of 2), `0.0` (0 of 1),
+`0.6666666865348816` (2 of 3, f32 rounding visible); empty matrix `[]`; empty input to
+`process_symbolic_partitions` returns `([], false, 0.0)` rather than inventing a score.
+
+**Not yet covered:** `manus_engine` (0 public fns), `skill_loader` (2 fns, both private), and the remaining
+superset modules whose functions are methods on types with different shapes in each tree.
+

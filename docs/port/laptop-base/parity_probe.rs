@@ -48,5 +48,48 @@ pub fn run() -> serde_json::Value {
         out.insert(format!("registry.sanitize.{}", id.replace(' ', "_")),
                    s(&trm_uefi_kernel::expert_registry::sanitize_identifier(id)));
     }
+
+    // ── G191: reconnaissance_daemon (fingerprints, relevance, ranking) ────────────────────────────
+    for text in ["", "a", "hello world"] {
+        out.insert(format!("recon.fnv1a.{}", if text.is_empty() { "empty".to_string() } else { text.replace(' ', "_") }),
+                   serde_json::json!(trm_uefi_kernel::reconnaissance_daemon::fnv1a_fold(text.as_bytes())));
+    }
+    out.insert("recon.word_hashes.cap8".into(),
+               serde_json::json!(trm_uefi_kernel::reconnaissance_daemon::word_hashes(b"alpha beta gamma", 8)));
+    out.insert("recon.word_hashes.cap2".into(),
+               serde_json::json!(trm_uefi_kernel::reconnaissance_daemon::word_hashes(b"alpha beta gamma", 2)));
+    out.insert("recon.word_hashes.empty".into(),
+               serde_json::json!(trm_uefi_kernel::reconnaissance_daemon::word_hashes(b"", 4)));
+    for (q, d) in [("memory", "memory"), ("memory", "memory subsystem"), ("memory", "voltage rails")] {
+        out.insert(format!("recon.topic_matches.{}.{}", q, d.replace(' ', "_")),
+                   serde_json::json!(trm_uefi_kernel::reconnaissance_daemon::topic_matches(q, d)));
+    }
+    out.insert("recon.relevance.overlap".into(),
+               serde_json::json!(trm_uefi_kernel::reconnaissance_daemon::topic_relevance(b"k3 memory fabric", b"k3 memory fabric design")));
+    out.insert("recon.relevance.disjoint".into(),
+               serde_json::json!(trm_uefi_kernel::reconnaissance_daemon::topic_relevance(b"alpha", b"beta gamma")));
+    out.insert("recon.relevance.empty".into(),
+               serde_json::json!(trm_uefi_kernel::reconnaissance_daemon::topic_relevance(b"", b"anything")));
+    let docs: [&[u8]; 3] = [b"k3 memory fabric", b"voltage rail measurement", b"council ledger"];
+    out.insert("recon.score_topics".into(),
+               serde_json::json!(trm_uefi_kernel::reconnaissance_daemon::score_topics(b"k3 memory", &docs)));
+
+    // ── G191: global_memory token overlap ────────────────────────────────────────────────────────
+    out.insert("memory.overlap.partial".into(),
+               serde_json::json!(trm_uefi_kernel::global_memory::memory_token_overlap(&[1, 2, 3], &[vec![1, 2, 4], vec![9]])));
+    out.insert("memory.overlap.full".into(),
+               serde_json::json!(trm_uefi_kernel::global_memory::memory_token_overlap(&[1, 2], &[vec![1, 2]])));
+    out.insert("memory.overlap.none".into(),
+               serde_json::json!(trm_uefi_kernel::global_memory::memory_token_overlap(&[7], &[vec![1, 2]])));
+    out.insert("memory.overlap.empty_matrix".into(),
+               serde_json::json!(trm_uefi_kernel::global_memory::memory_token_overlap(&[1], &[])));
+
+    // ── G191: trm_integration symbolic partitions ───────────────────────────────────────────────
+    out.insert("integration.partitions".into(),
+               serde_json::json!(trm_uefi_kernel::trm_integration::process_symbolic_partitions(b"alpha beta gamma delta", 8)));
+    out.insert("integration.partitions.tight".into(),
+               serde_json::json!(trm_uefi_kernel::trm_integration::process_symbolic_partitions(b"alpha beta gamma delta", 2)));
+    out.insert("integration.partitions.empty".into(),
+               serde_json::json!(trm_uefi_kernel::trm_integration::process_symbolic_partitions(b"", 4)));
     serde_json::Value::Object(out)
 }

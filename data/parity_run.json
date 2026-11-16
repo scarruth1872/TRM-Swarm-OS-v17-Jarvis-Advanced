@@ -1,12 +1,25 @@
 {
  "when": "2026-11-16T18:52:11Z",
- "keys": 40,
- "identical": 40,
+ "keys": 60,
+ "identical": 60,
  "differing": 0,
  "constant_groups": 0,
  "first_attempt": {
   "keys": 37,
   "identical": 37,
   "note": "out-of-domain vectors; every value was a default arm - recorded as a test-design failure"
- }
+ },
+ "modules": 5,
+ "fnv1a_oracle": {
+  "empty": 14695981039346656037,
+  "a": 12638187200555641996,
+  "hello world": 8618312879776256743,
+  "matched": true
+ },
+ "exposed": [
+  "global_memory (our lib)",
+  "reconnaissance_daemon (our lib)",
+  "reconnaissance_daemon (base hcs)",
+  "trm_integration (base hcs)"
+ ]
 }
