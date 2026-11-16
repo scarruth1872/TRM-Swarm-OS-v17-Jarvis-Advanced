@@ -6644,3 +6644,47 @@ mean-pooled, renormalised) - counted in `chunk_pooled_records`, never dropped.
 **Lesson (the same one as G159):** a null result from a search that did not look is not evidence of
 absence. Enumerate every drive and match on content, not on the filename you expect.
 
+### G165. Sparse MoE absorbed as code, not as a resolution  [MEASURED]
+
+Doctrine item 1 was "DeepSeek sparse MoE". The council had already approved exactly this on 2026-08-27
+(`CP-FC2DF67C`, "Sparse MoE Top-K Dynamic Router & Hierarchical Supervisor Tree", unanimous support) -
+but the "reasoning" in `council_absorption_deliberation.json` is keyword-templated
+("As Executive Assistant, I evaluate ... from my general perspective"), and there was **no `moe`, `router`,
+`expert` or `top_k` in any `.rs` file**. Approval in prose, zero implementation.
+
+**Built:** `trm_uefi_kernel/moe_router` - native Rust, no HTTP, no cloud, no pretrained download.
+Softmax gate, top-k selection, capacity factor, Switch-style aux load-balance loss, **ternary {-1,0,+1}
+expert weights**, and a dense full-mixture reference so sparse routing is judged against computing
+every expert on the same inputs.
+
+**Input:** the real memory fabric, f16 `.npy`, 768-dim text embeddings (`--synthetic` exists only for
+smoke tests and prints a warning that it is not a measurement).
+
+**Results, k=2 and k=4 of 8 experts, capacity 1.25, 4,000 real vectors:**
+
+| gate | k | sparse-vs-dense cos (mean / min) | imbalance | dropped assignments | expert FLOPs saved |
+|---|---|---|---|---|---|
+| random (untrained) | 2 | 0.5644 / 0.2500 | unbounded | 68.7% | 75% |
+| random (untrained) | 4 | 0.7095 / 0.5906 | 92.98x | 78.7% | 50% |
+| k-means (trained-shape) | 2 | 0.7694 / 0.4934 | 4.59x | 39.8% | 75% |
+| k-means (trained-shape) | **4** | **0.9231 / 0.8553** | 3.45x | 68.8% | 50% |
+
+**Verdict: routing earns its savings only with a gate that matches the data.** An untrained gate is
+uniform (entropy exactly ln 8 = 2.079) and discards 44% of the mixture even at k=4. A gate fitted to the
+data (k-means centroids, which is what a trained MoE gate converges to) keeps **92.3% of the dense
+mixture at 50% of the expert FLOPs** with k=4. k=2 is not enough: 0.77 mean cosine loses a quarter of
+the mixture.
+
+**Capacity is the real cost.** At 4.59x expert imbalance, capacity 1.25 drops 39.8% of assignments;
+raising capacity to 2.0 gives 16.1% and 3.0 gives 6.7%, with identical fidelity (the harness counts drops
+but does not apply them to the output - stated so the cos numbers are not over-read).
+
+**Two bugs found in my own harness, both kept in the record:**
+1. Squared-distance gating over 768 dims produced a **uniform** gate (entropy pinned at ln E) - the
+   temperature was wrong for the scale. Switched to cosine x temperature; entropy fell to 1.376.
+2. "Tokens over capacity" compared *cumulative* usage against a per-batch cap, so every row after an
+   expert passed its cap counted as overflow and the rate was 54-82% regardless of routing. Now measured
+   as dropped assignments over total assignments.
+
+Throughput: 2,736 vec/s (k=2) to 2,318 vec/s (k=4) on the 3900X, single-threaded, ternary experts.
+

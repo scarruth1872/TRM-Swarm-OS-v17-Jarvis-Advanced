@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T13:25:19Z",
+  "audit_timestamp": "2026-11-16T13:31:51Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 72,
+    "empirical_confirmed": 73,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 72
+      "CONFIRMED": 73
     }
   },
   "articles": [
@@ -1818,6 +1818,19 @@
       ],
       "phoenix_audit_note": "Six-drive sweep (6,432,474 files, 1,161 s) plus a content-based rescan; shard headers and seals verified with --verify after building.",
       "finding": "The previous article said the datasets were not on this machine. They were. The claim came from looking in two directories, and the search that should have preceded it found the real corpora within a minute of being run properly: twenty one thousand pathway files from SMPDB, forty four thousand molecules from ChEMBL with their SMILES, a hundred and thirty thousand compound names, and four hundred actives with measured inhibition constants. The SMPDB set had been invisible twice over, because its folder is named as though it were a file and every file inside it is nine hundred and sixty six bytes, so neither a name match nor a size filter could see it. What the full sweep did confirm is that the binding affinity corpora the shards advertised are genuinely absent, which is a different and much narrower statement than the one previously published. The synthetic shards have been replaced for the corpora that exist: the new builder refuses to run when its source is missing, writes a header whose trit count equals the data actually written, pads nothing, seals the payload it wrote, and reports how much the two bit quantization cost, which for the ChEMBL molecules is a cosine of zero point eight four against the original vectors. The lesson is the same one this project keeps relearning: a search that did not look is not evidence of absence."
+    },
+    {
+      "id": 256,
+      "section": "Architecture",
+      "title": "Article 256 - Absorbing a Mixture of Experts Without Copying One",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g165",
+        "trm_uefi_kernel/moe_router/src/main.rs",
+        "council_absorption_deliberation.json"
+      ],
+      "phoenix_audit_note": "Router built and compiled as a native Rust binary; four configurations measured on 4,000 real fabric vectors; dense full-mixture reference computed on the same inputs; two harness bugs found and corrected with the numbers regenerated.",
+      "finding": "The doctrine said to absorb the sparse mixture of experts from an outside architecture, and the record shows the swarm had already approved doing so three months earlier, unanimously, in a deliberation whose every argument was a template with the proposal title dropped into it. No line of code existed. What exists now is a router written in Rust that computes a gate, picks the top few experts, bounds each expert by a capacity, and reports the load balance loss, with expert weights held at minus one, zero and plus one. It runs on the real memory fabric rather than on invented vectors. The measurement answers the question the doctrine never asked: does discarding most of the experts lose the answer? With a gate nobody trained, yes, badly, and the gate is uniform, which means the router is choosing by index rather than by content, and four tokens in five overflow their expert. With a gate fitted to the data, choosing four experts of eight keeps ninety two per cent of what computing all eight would produce while spending half the arithmetic, and choosing only two keeps seventy seven per cent, which is not enough. Two faults were found in the measuring harness itself, a temperature that flattened the gate, and a capacity test that compared a running total against a per batch limit so that every row after the limit looked like an overflow; both were corrected and the numbers regenerated. Absorption, done this way, produces a number that can fail."
     }
   ],
   "provenance_revision": {
