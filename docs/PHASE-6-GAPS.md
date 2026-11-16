@@ -7069,3 +7069,42 @@ directory before sending rather than after.
 carries `seeded: true`; `/kanban/stats` now also publishes `seeded_count` and `seed_origin`, so an empty
 install cannot be read as a busy board.
 
+### G176. Version provenance is now checkable; the corrected archive builds clean  [MEASURED]
+
+Follow-up to G175. The corrected archive was **build-tested in a clean directory before shipping** -
+`cargo build --release` -> `Finished in 53.84s` (the earlier failure was the v2 cut that predated the
+appended assets). 507 entries, 18 MB, sha256 `ff0fcbc7...db38d4`.
+
+**Version provenance, measured on the running kernel:**
+
+| endpoint | field | value |
+|---|---|---|
+| `/health` | `kernel` | `Native Rust Sovereign Kernel v19.1.0-sovereign` |
+| `/health` | `build_commit` | `9aabc88` |
+| `/system/status` | `kernel_version` | `v19.1.0-sovereign` |
+| `/system/status` | `build_commit` | `9aabc88` |
+| `git rev-parse --short HEAD` | - | `9aabc88` |
+| `/kanban/stats` | `seeded_count` / `total_cards` | `13 / 13`, `seed_origin 2026-08-27T00:00:00Z` |
+
+Three defects were found and fixed while making that true:
+1. `/health` carried a **second** hardcoded label (`v19.001`) disagreeing with `/system/status`
+   (`v19.1.0-sovereign`) - two labels in one binary is precisely how the cross-labelled federation
+   happened. Both now read `KERNEL_VERSION`.
+2. The first "rebuild" after committing was a **no-op** (`Finished in 0.14s`), leaving `build_commit`
+   stale at `ad3111b` while HEAD was `bcadc15`. `build.rs` now registers
+   `cargo:rerun-if-changed=../../.git/HEAD`, so a rebuild cannot keep reporting the old commit.
+3. `/kanban/stats` reported `total_cards: 13` on an empty install with nothing to distinguish seed from
+   work; it now publishes `seeded_count` (13) and `seed_origin` alongside it.
+
+**Transfer blocked, not done.** `scp` of the archive and the rebuilt binary to `100.123.215.119` requires
+interactive approval on this host and the request timed out twice without a response. The files are
+staged and hashed locally - no claim of delivery is made:
+
+| artifact | bytes | sha256 |
+|---|---|---|
+| `trm_v20_source_v5.tar.gz` | 18 MB | `ff0fcbc7f3d6681513089ebe68b943e4fab40f181f7bc1885001690ee4db38d4` |
+| `host_council_server.exe` (v19.1.0-sovereign, commit 9aabc88) | 4.1 MB | `041312d424039aed5dbb659b569efb23489c309687b18ab8370d24162d258777` |
+
+**Lesson:** a version string is a claim; a commit captured at build time is evidence. And a rebuild that
+completes in 0.14 s has told you it did not rebuild.
+
