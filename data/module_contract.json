@@ -5,12 +5,12 @@
  "counts": {
   "CANONICAL_ONLY": 126,
   "IDENTICAL": 64,
-  "MERGE_REQUIRED": 47,
+  "MERGE_REQUIRED": 39,
   "SAME_API_DIFF_BODY": 90,
-  "SUPERSET(secondary)": 9,
+  "SUPERSET(secondary)": 17,
   "SECONDARY_ONLY": 15
  },
- "decisions_recorded": 304,
+ "decisions_recorded": 336,
  "modules": {
   "actions_handlers": {
    "status": "CANONICAL_ONLY",
@@ -98,14 +98,14 @@
    }
   },
   "agent_mesh": {
-   "status": "MERGE_REQUIRED",
+   "status": "SUPERSET(secondary)",
    "canonical": {
     "sha256": "ff825f2fa565abff16258531b52d8d5d1ac1e198934b7b342b841429952f04c7",
     "lines": 408
    },
    "secondary": {
-    "sha256": "629abb6d7d43262454dd41aeeffab090094f97db3e4dc56fb8bce5d0530b1e73",
-    "lines": 720
+    "sha256": "9c47b8b2592c464a9f8abd9007ed31e0f8d013e9f5a256cf3e2f3d8eddb91ce7",
+    "lines": 806
    },
    "functions_added_by_secondary": [
     "contains",
@@ -142,14 +142,11 @@
     "validate_status",
     "validated"
    ],
-   "functions_lost_if_secondary_copied": [
-    "best_node",
-    "heartbeat_timestamp_valid",
-    "host_format_valid",
-    "mesh_distance_scores",
-    "node_consistency_ok",
-    "sqrt_f32"
-   ]
+   "functions_lost_if_secondary_copied": [],
+   "decision": {
+    "decision": "merge",
+    "why": "6 base-only free functions grafted verbatim (best_node, heartbeat_timestamp_valid, host_format_valid, mesh_distance_scores, node_consistency_ok, sqrt_f32); compile-verified 49.80s then 49.18s after reverts"
+   }
   },
   "agent_models_generated": {
    "status": "CANONICAL_ONLY",
@@ -404,7 +401,7 @@
     "lines": 336
    },
    "secondary": {
-    "sha256": "e7bdda97b39a6cce77dfc7c9af064b549c8e04f42700744a92419918f1e44370",
+    "sha256": "7da6a2798d0ec1323e542c007a7b0b72d52ecda439c2510dab539dcf6f825286",
     "lines": 607
    },
    "functions_added_by_secondary": [
@@ -457,7 +454,11 @@
     "score_artifact_content",
     "total_artifacts",
     "verify_monad_seal"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['ArtifactStatus']); reverted, needs hand port."
+   }
   },
   "attempt_sampler": {
    "status": "MERGE_REQUIRED",
@@ -466,7 +467,7 @@
     "lines": 130
    },
    "secondary": {
-    "sha256": "23c57bb3fb3f447cb152138279505828e36b1556f8b0f31a4e460476ccca7e4e",
+    "sha256": "086ea3ac646c9f43d4eec0513ed3c284d6580598c25664a75f92ddf13ab6c724",
     "lines": 90
    },
    "functions_added_by_secondary": [
@@ -480,7 +481,11 @@
     "sample_and_collapse",
     "sample_and_collapse_attempts",
     "ternary_dot"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['K3', 'INVOCATION_COUNT', 'SINGLETON_ATTEMPT_SAMPLER', 'TRIT_WEIGHTS']); reverted, needs hand port."
+   }
   },
   "aura_handlers": {
    "status": "CANONICAL_ONLY",
@@ -1272,7 +1277,11 @@
     "pbft_required_votes",
     "tally_prepare_votes",
     "vec_genesis_ledger"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['pbft_required_votes', 'PBFT_REQUIRED_VOTES', 'PBFT_MIN_NODES', 'PBFT_NODE_MUSE']); reverted, needs hand port."
+   }
   },
   "continuum_refract": {
    "status": "CANONICAL_ONLY",
@@ -1323,7 +1332,7 @@
     "lines": 371
    },
    "secondary": {
-    "sha256": "e22811fde8037cbcb51ea2742536a9f3f5f3084a98b2cb880459d41c8a89eb58",
+    "sha256": "52eb42a563811fa62bc0ac654b11e2c77c59fb4cd49cfc644c8cf4fed83745b9",
     "lines": 302
    },
    "functions_added_by_secondary": [
@@ -1352,7 +1361,11 @@
     "response_count",
     "tally_response_values",
     "validate_coordination_task"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['CoordMessageKind', 'COORD_SUBJECT_PREFIX', 'COORD_SUBJECT_TASK_MAX_CHARS', 'COORD_MISSION_PHASE_COMPLETED']); reverted, needs hand port."
+   }
   },
   "coordination_responder": {
    "status": "SAME_API_DIFF_BODY",
@@ -1695,7 +1708,11 @@
     "repo_rel",
     "run_scan",
     "utc_now_iso"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "graft attempted and rejected by dependency analysis: types Request/Resp/Value + REGEX_SHORTHAND + UNIX_EPOCH + crate::k3_retrieval/actions_handlers + json!/serde + std::. Needs a hand port, not a copy."
+   }
   },
   "ddr_self_training": {
    "status": "SAME_API_DIFF_BODY",
@@ -1994,14 +2011,14 @@
    }
   },
   "expert_registry": {
-   "status": "MERGE_REQUIRED",
+   "status": "SUPERSET(secondary)",
    "canonical": {
     "sha256": "61e30504f4d3cf9df59e1262a9e2bdf1e69a504a0c6e83c33b121a483ec85c27",
     "lines": 102
    },
    "secondary": {
-    "sha256": "b054bdaa6dd5de02d57855e5edfe5e0fcffbca69164f7d8e5cf636fa05275095",
-    "lines": 135
+    "sha256": "4acd48f6929829038cc2c1767c67e56d01b847e6cc82b3385a75efb6ba002011",
+    "lines": 183
    },
    "functions_added_by_secondary": [
     "default",
@@ -2009,10 +2026,11 @@
     "get_all_agents",
     "register_team"
    ],
-   "functions_lost_if_secondary_copied": [
-    "resolve_identifier",
-    "sanitize_identifier"
-   ]
+   "functions_lost_if_secondary_copied": [],
+   "decision": {
+    "decision": "merge_required",
+    "why": "graft attempted and rejected by dependency analysis: base-only registry statics. Needs a hand port, not a copy."
+   }
   },
   "expert_team_harnesses": {
    "status": "MERGE_REQUIRED",
@@ -2047,7 +2065,7 @@
     "lines": 172
    },
    "secondary": {
-    "sha256": "4730052d576b7b89ad70ea79c3f3b353859119102f089d35be6667f7edf6922e",
+    "sha256": "b910e29ecae10a034e828399ffc248635a357db6f0d1f7f2822b372c73174ed6",
     "lines": 28
    },
    "functions_added_by_secondary": [
@@ -2062,7 +2080,11 @@
     "skip_ws",
     "task_spec",
     "ternary_dot"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['ternary_dot', 'TRIT_WEIGHTS']); reverted, needs hand port."
+   }
   },
   "fabric_corpus": {
    "status": "CANONICAL_ONLY",
@@ -2404,14 +2426,14 @@
    }
   },
   "global_memory": {
-   "status": "MERGE_REQUIRED",
+   "status": "SUPERSET(secondary)",
    "canonical": {
     "sha256": "1c2c5939126c2763a3ec919af3379bc0e7b76152ed400bf8b99815d60eea8251",
     "lines": 464
    },
    "secondary": {
-    "sha256": "1351879f67f6a8483b45e79cb1a0a2acf47b3b34db477117f98f6d9cc7879878",
-    "lines": 1187
+    "sha256": "d0191cfa99c1c6c68427e971c0517eb667107eac6c7f66148b71acbfedd437aa",
+    "lines": 1437
    },
    "functions_added_by_secondary": [
     "all_digits",
@@ -2452,17 +2474,7 @@
     "tags_to_json",
     "trunc_chars"
    ],
-   "functions_lost_if_secondary_copied": [
-    "compute_stats",
-    "find_surrounded_arrow",
-    "keyword_query",
-    "memory_health",
-    "memory_token_overlap",
-    "parse_relationship",
-    "relationship_double_arrow",
-    "relationship_plain_arrow",
-    "round_half_even"
-   ]
+   "functions_lost_if_secondary_copied": []
   },
   "goal_runner": {
    "status": "CANONICAL_ONLY",
@@ -2701,7 +2713,7 @@
     "lines": 155
    },
    "secondary": {
-    "sha256": "e31b9dfc54522a427a8e5ddadf9d50d3c4f6e14d1c63c11318e1ea2d11b99ef6",
+    "sha256": "e73639192f2043dbd3b01c2c1a50266934abd6375b21fe3dfa9354384d24ee6a",
     "lines": 26
    },
    "functions_added_by_secondary": [
@@ -2717,7 +2729,11 @@
     "split_thought",
     "ternary_dot",
     "trim"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['ternary_dot', 'TW']); reverted, needs hand port."
+   }
   },
   "higher_mind": {
    "status": "IDENTICAL",
@@ -3327,7 +3343,11 @@
     "kanban_tally",
     "priority_index",
     "status_index"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['AGENT_DOMAINS', 'KanbanHistoryEntry', 'TRANSITIONS', 'PRIORITY_ORDER']); reverted, needs hand port."
+   }
   },
   "kanban_handlers": {
    "status": "CANONICAL_ONLY",
@@ -3391,7 +3411,11 @@
     "ponderomotive_trap",
     "radix_trie_walk_step",
     "turbovec_blocked_dot"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft leaves an orphan doc comment (E0585); needs a hand port with its singleton statics."
+   }
   },
   "kernel_lora_adapter": {
    "status": "SAME_API_DIFF_BODY",
@@ -3797,21 +3821,23 @@
    }
   },
   "manus_engine": {
-   "status": "MERGE_REQUIRED",
+   "status": "SUPERSET(secondary)",
    "canonical": {
     "sha256": "56683d77d457594d1092fa5365c120654c7b7daa5a3b4c8f9d5ab39a07698e91",
     "lines": 163
    },
    "secondary": {
-    "sha256": "e6cc0014a93b366ebbb673a5a2c1c4168e6c8d5fb0f8b6b79d30946ceb6eb6ae",
-    "lines": 163
+    "sha256": "c0c766aca18769b3b5289fa08eb057e8bdb0f06fbf1e076e32aef6272191c3cf",
+    "lines": 178
    },
    "functions_added_by_secondary": [
     "f32_sqrt"
    ],
-   "functions_lost_if_secondary_copied": [
-    "sqrt_f32"
-   ]
+   "functions_lost_if_secondary_copied": [],
+   "decision": {
+    "decision": "merge_required",
+    "why": "graft attempted and rejected by dependency analysis: base-only state type. Needs a hand port, not a copy."
+   }
   },
   "mcp_bus": {
    "status": "SAME_API_DIFF_BODY",
@@ -4068,7 +4094,7 @@
     "lines": 496
    },
    "secondary": {
-    "sha256": "664cd37b8440ab377f90b861b11088cc2034ffdd6c4872a821dd777c334413a4",
+    "sha256": "7597945a62f8982ace90816a4e406224d7c1db5d7e507487c9cf6bcb41ed908d",
     "lines": 469
    },
    "functions_added_by_secondary": [
@@ -4099,7 +4125,11 @@
     "microkernel_intercept",
     "native_aggregate_telemetry",
     "terminate"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['get_microkernel_spawner', 'SubAgentStatus', 'DETERMINISTIC_BYPASS_COUNT']); reverted, needs hand port."
+   }
   },
   "model_registry": {
    "status": "CANONICAL_ONLY",
@@ -4760,7 +4790,11 @@
     "compiled_prompt",
     "count_violations",
     "enforce_decision"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['count_violations', 'GEN_SUCCESS', 'GEN_FAILED', 'GEN_RESET']); reverted, needs hand port."
+   }
   },
   "phoenix_protocol_engine": {
    "status": "MERGE_REQUIRED",
@@ -4909,7 +4943,11 @@
     "assess_risk_batch",
     "cause_for",
     "native_assess_telemetry_risk"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['assess_risk', 'native_assess_telemetry_risk', 'TREND_TIME_TO_CRITICAL_S', 'NO_RISK_TIME_S']); reverted, needs hand port."
+   }
   },
   "prism_fqm": {
    "status": "SAME_API_DIFF_BODY",
@@ -5160,25 +5198,23 @@
    }
   },
   "reconnaissance_daemon": {
-   "status": "MERGE_REQUIRED",
+   "status": "SUPERSET(secondary)",
    "canonical": {
     "sha256": "2f00d0a82eb0c93211d382f36fe0f0b25e937227af425e0ba82aa296ccfe75f4",
     "lines": 117
    },
    "secondary": {
-    "sha256": "11524c95cc0f83ab6d35b3d384ed81e66232fcf90d500c5fd9fb8da638630f2c",
-    "lines": 39
+    "sha256": "3f16c1a9d667b621a5bdaa1af9b3bba1e1b3c7a23d7f47e40f628adbc49eb652",
+    "lines": 110
    },
    "functions_added_by_secondary": [
     "start_reconnaissance"
    ],
-   "functions_lost_if_secondary_copied": [
-    "fnv1a_fold",
-    "score_topics",
-    "topic_matches",
-    "topic_relevance",
-    "word_hashes"
-   ]
+   "functions_lost_if_secondary_copied": [],
+   "decision": {
+    "decision": "merge_required",
+    "why": "graft attempted and rejected by dependency analysis: base-only statics. Needs a hand port, not a copy."
+   }
   },
   "redis_mock": {
    "status": "SAME_API_DIFF_BODY",
@@ -5574,7 +5610,11 @@
     "self_fuzzing_telemetry",
     "seq",
     "seq_any"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "nested definitions make span extraction overlap, producing duplicate statics (E0428); hand port required."
+   }
   },
   "self_healing": {
    "status": "MERGE_REQUIRED",
@@ -5621,7 +5661,11 @@
     "scan_and_audit",
     "scan_payload_security",
     "slot"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['get_self_healing']); reverted, needs hand port."
+   }
   },
   "self_healing_infra": {
    "status": "MERGE_REQUIRED",
@@ -5648,7 +5692,11 @@
     "evaluate_services_health",
     "restart_gate",
     "status_name"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['evaluate_services_health', 'SERVICE_STOPPED', 'SERVICE_DEGRADED', 'SERVICE_UNRESPONSIVE']); reverted, needs hand port."
+   }
   },
   "self_healing_orchestrator": {
    "status": "SAME_API_DIFF_BODY",
@@ -5792,8 +5840,8 @@
     "lines": 386
    },
    "secondary": {
-    "sha256": "1259bb9a61367b9c6eea003b5c5f1da21c7aa90e9867bb44aa38d088c4ebc5c9",
-    "lines": 260
+    "sha256": "30dd6992dc3ce9f971da758f9de8bdbde367d73e8c65e9d6cdf0151c548ece25",
+    "lines": 295
    },
    "functions_added_by_secondary": [
     "anomaly_count",
@@ -5807,9 +5855,7 @@
     "set_property"
    ],
    "functions_lost_if_secondary_copied": [
-    "get_topology_snapshot",
-    "pnum",
-    "ptext"
+    "get_topology_snapshot"
    ]
   },
   "semantic_recall": {
@@ -5902,7 +5948,11 @@
     "get_ses",
     "ses_execute",
     "ternary_dot"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['K3', 'SINGLETON_SES', 'INVOCATION_COUNT', 'TRIT_WEIGHTS']); reverted, needs hand port."
+   }
   },
   "shadow_bios": {
    "status": "CANONICAL_ONLY",
@@ -5944,14 +5994,14 @@
    }
   },
   "skill_loader": {
-   "status": "MERGE_REQUIRED",
+   "status": "SUPERSET(secondary)",
    "canonical": {
     "sha256": "9c3c1b1c8096b9a5884e4c85c9e3d2412619febd8028d502a81842c937d76e2f",
     "lines": 183
    },
    "secondary": {
-    "sha256": "966a24b5e76adcfca050ba2e6a8a784926535f2d96b01901666baf63a1a60f90",
-    "lines": 280
+    "sha256": "f51b93e2288378333335da079161c7c7f5ef7be32886e2cf0408a36a3970b309",
+    "lines": 304
    },
    "functions_added_by_secondary": [
     "ascii_lower_key",
@@ -5968,10 +6018,11 @@
     "split_csv",
     "split_frontmatter"
    ],
-   "functions_lost_if_secondary_copied": [
-    "is_ws",
-    "ws_then_newline_candidates"
-   ]
+   "functions_lost_if_secondary_copied": [],
+   "decision": {
+    "decision": "merge_required",
+    "why": "graft attempted and rejected by dependency analysis: base-only skill tables. Needs a hand port, not a copy."
+   }
   },
   "skill_matrix_sync": {
    "status": "MERGE_REQUIRED",
@@ -6287,7 +6338,11 @@
     "seed_canonical",
     "sqrt_hack",
     "with"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "closure plan is clean but automated extraction leaves the file unbalanced (nesting the matcher mis-handles); needs a hand port rather than a scripted graft. Reverted so the tree stays compilable."
+   }
   },
   "state_handlers": {
    "status": "CANONICAL_ONLY",
@@ -6339,7 +6394,11 @@
     "recalibrate_silicon",
     "step_subatomic_mamba",
     "strip_batch_wavefunction_collapse"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['get_silicon_matrix']); reverted, needs hand port."
+   }
   },
   "subatomic_routes": {
    "status": "CANONICAL_ONLY",
@@ -6457,36 +6516,19 @@
    }
   },
   "task_arbiter": {
-   "status": "MERGE_REQUIRED",
+   "status": "SUPERSET(secondary)",
    "canonical": {
     "sha256": "4cb8346c07a183d936c284e367416912df9fdbae483fc060752378bcd322669d",
     "lines": 444
    },
    "secondary": {
-    "sha256": "e167e10f2012050cac03d3037bbf94b392b377c0a8362f29fc7f638a6bab92b5",
-    "lines": 93
+    "sha256": "6dcbfd8f1b544fa91fc1e410ceeff46c188b4324d90dbbf9f63c9d07df6a1ed3",
+    "lines": 394
    },
    "functions_added_by_secondary": [
     "get_dynamic_priority"
    ],
-   "functions_lost_if_secondary_copied": [
-    "affinity_for_role",
-    "autonomous_priority",
-    "base_priority",
-    "classify_task",
-    "contains_ci",
-    "decentralized_assign",
-    "decentralized_consensus",
-    "decentralized_vote_score",
-    "dynamic_priority",
-    "optimal_compute_target",
-    "score_allocation",
-    "setup_cpu_affinity",
-    "should_run",
-    "task_priority_lt",
-    "usage_window",
-    "window_adjustment"
-   ]
+   "functions_lost_if_secondary_copied": []
   },
   "task_executor": {
    "status": "CANONICAL_ONLY",
@@ -6525,7 +6567,11 @@
     "record_external_metric",
     "sample",
     "timestamp_iso"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted extraction left the file with brace imbalance -3 (nesting the matcher mis-handles); reverted to keep the tree compilable - needs a hand port."
+   }
   },
   "telemetry_fabric": {
    "status": "IDENTICAL",
@@ -6652,7 +6698,7 @@
     "lines": 280
    },
    "secondary": {
-    "sha256": "be787065e2789873b12e274cbcab818c72e65f0084441d76050280042934745c",
+    "sha256": "fee741d5249a97474147fa4f79bfac7cb1226d4e5efd8b1f833513a35986e980",
     "lines": 223
    },
    "functions_added_by_secondary": [
@@ -6676,7 +6722,11 @@
     "route_gateway",
     "ternary_dot",
     "thz_bonsai_gateway_execute"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['SINGLETON_THZ_BONSAI_GATEWAY', 'K3', 'TRIT_WEIGHTS', 'INVOCATION_COUNT']); reverted, needs hand port."
+   }
   },
   "thz_wave_gateway": {
    "status": "SAME_API_DIFF_BODY",
@@ -6742,7 +6792,11 @@
     "get_tool_forge",
     "spawn_subordinate",
     "tool_forge_telemetry"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['get_tool_forge', 'SubordinateSpec', 'VOLTAGE_RANK', 'TOOL_FORGE_WEIGHTS_BT']); reverted, needs hand port."
+   }
   },
   "topic_norm": {
    "status": "SECONDARY_ONLY",
@@ -6823,7 +6877,7 @@
     "lines": 232
    },
    "secondary": {
-    "sha256": "576d31f69daf0fdbdebc1f67c2d7eabe1a55e439a0cc159ae64f1b47d61b53a6",
+    "sha256": "7a5579076220400dadec33a60880afabd007cafeaa77ed6d8c3142872fc281e4",
     "lines": 219
    },
    "functions_added_by_secondary": [
@@ -6845,7 +6899,11 @@
     "get_optimized_metrics",
     "p_forward",
     "trm7m_fast_infer"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "grafted fns call a method `forward` on OptimizedTRM7M that only exists in the base impl; hand port."
+   }
   },
   "trm_brain": {
    "status": "MERGE_REQUIRED",
@@ -6854,7 +6912,7 @@
     "lines": 124
    },
    "secondary": {
-    "sha256": "0f321f38d65cd96b04766a805470dbe27c1bea3501fa09be0cc4d1a00f8bf500",
+    "sha256": "d05ad573a98ae69be6be280cfea18bd02ac87658591dcede38163fa6905bbf09",
     "lines": 175
    },
    "functions_added_by_secondary": [
@@ -6870,7 +6928,11 @@
     "exp_f32",
     "infer",
     "tanh_f32"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['STATE_DIMENSION', 'tanh_f32']); reverted, needs hand port."
+   }
   },
   "trm_datagram": {
    "status": "CANONICAL_ONLY",
@@ -6887,14 +6949,14 @@
    }
   },
   "trm_integration": {
-   "status": "MERGE_REQUIRED",
+   "status": "SUPERSET(secondary)",
    "canonical": {
     "sha256": "e41476fca688fe58e6bdd17ef9c978d9ec3a545b1dafe285c9933aa12b65c653",
     "lines": 203
    },
    "secondary": {
-    "sha256": "7b3b5bb53428d35db82a2ecac0e18d402a13404567299eb5c1d6788d7a67b8d1",
-    "lines": 315
+    "sha256": "e26ed568f61644ca99541674a4326c579f045501fb0a21ecc195f2c673c33f6f",
+    "lines": 394
    },
    "functions_added_by_secondary": [
     "context_to_tokens",
@@ -6909,10 +6971,11 @@
     "set_recursion_depth",
     "system_resources_constrained_manual"
    ],
-   "functions_lost_if_secondary_copied": [
-    "contains_ci",
-    "process_symbolic_partitions"
-   ]
+   "functions_lost_if_secondary_copied": [],
+   "decision": {
+    "decision": "merge_required",
+    "why": "graft attempted and rejected by dependency analysis: base-only context types. Needs a hand port, not a copy."
+   }
   },
   "trm_orchestrator": {
    "status": "MERGE_REQUIRED",
@@ -6948,7 +7011,11 @@
     "orchestrator_partition_weights",
     "release_resources",
     "spawn_sub_reasoning"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['ComputeTarget', 'RECURSIVE_DEPTH_PEAK', 'SUPERPOSITION_COLLAPSE_COUNTER']); reverted, needs hand port."
+   }
   },
   "turbovec": {
    "status": "IDENTICAL",
@@ -7133,7 +7200,7 @@
     "lines": 176
    },
    "secondary": {
-    "sha256": "e65ae98d06a175275e572d7bb99616ea84c3b6c59b33ff28d6420a675acc6807",
+    "sha256": "52813cb7e4f3b4c340c334e9950beb96e4da8e32b4c3a58c20ce02769e9c69ba",
     "lines": 239
    },
    "functions_added_by_secondary": [
@@ -7149,7 +7216,11 @@
     "decode_voltage_eval",
     "round4",
     "round_half_even"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "graft compiles shape-wise but types mismatch (E0308); needs a hand port against our signal type."
+   }
   },
   "web_fetch_utility": {
    "status": "SAME_API_DIFF_BODY",
@@ -7221,7 +7292,7 @@
     "lines": 603
    },
    "secondary": {
-    "sha256": "8954eb703d4b33eee927a2133fcda3940dd40b96cd5d4d5807b0cddeab602df6",
+    "sha256": "f840b88773b8c2dee506425c907324fbebf9a57ddd4e420e48f24c61820e7c7a",
     "lines": 449
    },
    "functions_added_by_secondary": [
@@ -7283,7 +7354,11 @@
     "run_tests",
     "synthesize_permutations",
     "verify_suite_health"
-   ]
+   ],
+   "decision": {
+    "decision": "merge_required",
+    "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['TestType', 'EXECUTED_TESTS', 'FNV_OFFSET_BASIS', 'FNV_PRIME']); reverted, needs hand port."
+   }
   }
  }
 }

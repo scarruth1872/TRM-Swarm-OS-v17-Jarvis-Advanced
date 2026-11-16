@@ -160,3 +160,18 @@ impl ManusEngine {
         }
     }
 }
+
+// ── ported from the v20 base tree (G189) ─────────────────────────────────────────────────────────
+// 1 column-0 item(s) only: nested fn definitions and `self` receivers are excluded, and the
+// statics/consts each function names travel with it (grafting bare functions was the first failure).
+
+fn sqrt_f32(x: f32) -> f32 {
+    if x <= 0.0 {
+        return 0.0;
+    }
+    let mut g = x;
+    for _ in 0..12 {
+        g = 0.5 * (g + x / g);
+    }
+    g
+}

@@ -277,3 +277,27 @@ pub fn get_skill_loader() -> u64 {
         v
     }
 }
+
+// ── ported from the v20 base tree (G189) ─────────────────────────────────────────────────────────
+// 2 column-0 item(s) only: nested fn definitions and `self` receivers are excluded, and the
+// statics/consts each function names travel with it (grafting bare functions was the first failure).
+
+fn is_ws(c: u8) -> bool {
+    matches!(c, b' ' | b'\t' | b'\n' | b'\r' | 0x0b | 0x0c)
+}
+
+fn ws_then_newline_candidates(b: &[u8], at: usize) -> Vec<usize> {
+    let mut end = at;
+    while end < b.len() && is_ws(b[end]) {
+        end += 1;
+    }
+    let mut out: Vec<usize> = Vec::new();
+    let mut l = end;
+    while l > at {
+        l -= 1;
+        if b[l] == b'\n' {
+            out.push(l + 1);
+        }
+    }
+    out
+}

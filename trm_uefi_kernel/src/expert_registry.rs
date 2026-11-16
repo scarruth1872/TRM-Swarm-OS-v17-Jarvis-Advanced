@@ -132,3 +132,51 @@ impl Default for ExpertRegistry {
 pub fn get_expert_registry() -> u64 {
     0x4558_5045_5254_5247 // "EXPERTRG"
 }
+
+// ── ported from the v20 base tree (G189) ─────────────────────────────────────────────────────────
+// 2 column-0 item(s) only: nested fn definitions and `self` receivers are excluded, and the
+// statics/consts each function names travel with it (grafting bare functions was the first failure).
+
+pub fn resolve_identifier(
+    identifier: &str,
+    keys: &[String],
+    persona_names: &[String],
+    persona_roles: &[String],
+) -> i32 {
+    if identifier.is_empty() {
+        return -1;
+    }
+    let clean = sanitize_identifier(identifier);
+    let clean_lower = clean.to_lowercase();
+
+    for (i, k) in keys.iter().enumerate() {
+        if *k == clean {
+            return i as i32;
+        }
+    }
+    for (i, k) in keys.iter().enumerate() {
+        if k.to_lowercase() == clean_lower {
+            return i as i32;
+        }
+    }
+    for i in 0..keys.len() {
+        let name = persona_names.get(i).map(|s| s.as_str()).unwrap_or("");
+        let role = persona_roles.get(i).map(|s| s.as_str()).unwrap_or("");
+        if !name.is_empty() && (clean == name || clean_lower.contains(&name.to_lowercase())) {
+            return i as i32;
+        }
+        if !role.is_empty() && (clean == role || clean_lower.contains(&role.to_lowercase())) {
+            return i as i32;
+        }
+    }
+    -1
+}
+
+pub fn sanitize_identifier(identifier: &str) -> String {
+    identifier
+        .chars()
+        .filter(|c| *c != '*' && *c != '`' && *c != '_')
+        .collect::<String>()
+        .trim()
+        .to_string()
+}

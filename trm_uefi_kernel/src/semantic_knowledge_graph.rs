@@ -257,3 +257,38 @@ pub fn get_semantic_knowledge_graph() -> u64 {
 /// Bootstrap invariants used by the host harness (7 nodes / 4 edges).
 pub const BOOTSTRAP_NODE_COUNT: usize = 7;
 pub const BOOTSTRAP_EDGE_COUNT: usize = 4;
+
+// ── ported from the v20 base tree (G189) ─────────────────────────────────────────────────────────
+// 5 column-0 item(s) only: nested fn definitions and `self` receivers are excluded, and the
+// statics/consts each function names travel with it (grafting bare functions was the first failure).
+// imports: use alloc::string::String;
+
+
+fn pnum(v: f64) -> PropertyValue {
+    PropertyValue::Num(v)
+}
+
+fn ptext(s: &str) -> PropertyValue {
+    PropertyValue::Text(String::from(s))
+}
+
+pub struct TopologySnapshot {
+    pub node_count: usize,
+    pub edge_count: usize,
+    pub nodes: Vec<GraphNode>,
+    pub edges: Vec<GraphEdge>,
+    pub anomalies: Vec<GraphAnomaly>,
+    pub timestamp: f64,
+}
+
+pub enum PropertyValue {
+    Num(f64),
+    Text(String),
+}
+
+pub struct GraphAnomaly {
+    pub timestamp: f64,
+    pub node_id: String,
+    pub health_score: f64,
+    pub reason: String,
+}

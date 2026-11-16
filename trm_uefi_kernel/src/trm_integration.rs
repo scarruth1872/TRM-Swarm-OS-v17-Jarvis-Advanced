@@ -312,3 +312,82 @@ pub fn system_resources_constrained_manual() -> bool {
 pub fn llm_synthesize_manual() -> String {
     String::new()
 }
+
+// ── ported from the v20 base tree (G189) ─────────────────────────────────────────────────────────
+// 2 column-0 item(s) only: nested fn definitions and `self` receivers are excluded, and the
+// statics/consts each function names travel with it (grafting bare functions was the first failure).
+
+fn contains_ci(hay: &str, needle: &str) -> bool {
+    let (h, n) = (hay.as_bytes(), needle.as_bytes());
+    if n.len() > h.len() {
+        return false;
+    }
+    h.windows(n.len())
+        .any(|w| w.iter().zip(n.iter()).all(|(a, b)| a.to_ascii_lowercase() == b.to_ascii_lowercase()))
+}
+
+pub fn process_symbolic_partitions(text: &[u8], max_tokens: usize) -> (Vec<i64>, bool, f64) {
+    if text.is_empty() {
+        return (Vec::new(), false, 0.0);
+    }
+    let symbolic = {
+        let n = text.iter().filter(|c| {
+            c.is_ascii_digit() || c.is_ascii_whitespace() || **c == b',' || **c == b'.'
+                || **c == b';' || **c == b':' || **c == b'|'
+        }).count();
+        (n as f64 / text.len() as f64) > 0.6
+    };
+
+    let mut tokens: Vec<i64> = Vec::new();
+    let mut idx = 0usize;
+    while idx < text.len() && tokens.len() < max_tokens {
+        while idx < text.len() && text[idx].is_ascii_whitespace() {
+            idx += 1;
+        }
+        if idx >= text.len() {
+            break;
+        }
+        let start = idx;
+        while idx < text.len() && !text[idx].is_ascii_whitespace() {
+            idx += 1;
+        }
+        let part = &text[start..idx];
+
+        let mut p_idx = 0usize;
+        let mut sign = 1i64;
+        if part[0] == b'-' {
+            sign = -1;
+            p_idx = 1;
+        } else if part[0] == b'+' {
+            p_idx = 1;
+        }
+
+        let mut is_num = p_idx < part.len();
+        let mut num_val: i64 = 0;
+        if is_num {
+            for &c in &part[p_idx..] {
+                if c.is_ascii_digit() {
+                    num_val = num_val.saturating_mul(10).saturating_add((c - b'0') as i64);
+                } else {
+                    is_num = false;
+                    break;
+                }
+            }
+        }
+
+        if is_num {
+            tokens.push(num_val * sign);
+        } else {
+            let mut h: u32 = 0;
+            for &c in part {
+                h = h.wrapping_mul(31).wrapping_add(c as u32);
+            }
+            tokens.push((h % 10) as i64);
+        }
+    }
+
+    let resp_len = tokens.len() * 4;
+    let comp = (resp_len as f64 / 1000.0).min(1.0);
+    let quality = 0.7 * 1.0 + 0.3 * comp;
+    (tokens, symbolic, quality)
+}

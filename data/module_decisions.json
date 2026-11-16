@@ -1223,7 +1223,7 @@
   },
   "kernel_instructions": {
    "decision": "merge_required",
-   "why": "graft attempted and rejected by dependency analysis: statics SINGLETON_INSTRUCTIONS / MONAD_ANCHOR / INSTRUCTION_COUNT / SILICON_CALLS + atomic Ordering. Needs a hand port, not a copy."
+   "why": "scripted graft leaves an orphan doc comment (E0585); needs a hand port with its singleton statics."
   },
   "ddr_scan": {
    "decision": "merge_required",
@@ -1231,11 +1231,11 @@
   },
   "external_socket_bridge": {
    "decision": "merge_required",
-   "why": "graft attempted and rejected by dependency analysis: grafted OK but its callees read task JSON via helpers with no equivalent here. Needs a hand port, not a copy."
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['ternary_dot', 'TRIT_WEIGHTS']); reverted, needs hand port."
   },
   "hf_brain": {
    "decision": "merge_required",
-   "why": "graft attempted and rejected by dependency analysis: callees depend on base-only prompt statics. Needs a hand port, not a copy."
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['ternary_dot', 'TW']); reverted, needs hand port."
   },
   "reconnaissance_daemon": {
    "decision": "merge_required",
@@ -1243,15 +1243,15 @@
   },
   "sub_atomic_kernel": {
    "decision": "merge_required",
-   "why": "graft attempted and rejected by dependency analysis: base-only statics. Needs a hand port, not a copy."
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['get_silicon_matrix']); reverted, needs hand port."
   },
   "trm_7m_optimized": {
    "decision": "merge_required",
-   "why": "graft attempted and rejected by dependency analysis: base-only weight statics. Needs a hand port, not a copy."
+   "why": "grafted fns call a method `forward` on OptimizedTRM7M that only exists in the base impl; hand port."
   },
   "persona_matrix": {
    "decision": "merge_required",
-   "why": "graft attempted and rejected by dependency analysis: base-only persona tables. Needs a hand port, not a copy."
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['count_violations', 'GEN_SUCCESS', 'GEN_FAILED', 'GEN_RESET']); reverted, needs hand port."
   },
   "expert_registry": {
    "decision": "merge_required",
@@ -1268,6 +1268,82 @@
   "manus_engine": {
    "decision": "merge_required",
    "why": "graft attempted and rejected by dependency analysis: base-only state type. Needs a hand port, not a copy."
+  },
+  "star_matrix_lattice": {
+   "decision": "merge_required",
+   "why": "closure plan is clean but automated extraction leaves the file unbalanced (nesting the matcher mis-handles); needs a hand port rather than a scripted graft. Reverted so the tree stays compilable."
+  },
+  "telemetry": {
+   "decision": "merge_required",
+   "why": "scripted extraction left the file with brace imbalance -3 (nesting the matcher mis-handles); reverted to keep the tree compilable - needs a hand port."
+  },
+  "self_fuzzing_engine": {
+   "decision": "merge_required",
+   "why": "nested definitions make span extraction overlap, producing duplicate statics (E0428); hand port required."
+  },
+  "artifact_pipeline": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['ArtifactStatus']); reverted, needs hand port."
+  },
+  "attempt_sampler": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['K3', 'INVOCATION_COUNT', 'SINGLETON_ATTEMPT_SAMPLER', 'TRIT_WEIGHTS']); reverted, needs hand port."
+  },
+  "continuum_pbft": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['pbft_required_votes', 'PBFT_REQUIRED_VOTES', 'PBFT_MIN_NODES', 'PBFT_NODE_MUSE']); reverted, needs hand port."
+  },
+  "coordination_protocol": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['CoordMessageKind', 'COORD_SUBJECT_PREFIX', 'COORD_SUBJECT_TASK_MAX_CHARS', 'COORD_MISSION_PHASE_COMPLETED']); reverted, needs hand port."
+  },
+  "kanban_board": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['AGENT_DOMAINS', 'KanbanHistoryEntry', 'TRANSITIONS', 'PRIORITY_ORDER']); reverted, needs hand port."
+  },
+  "microkernel_spawner": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['get_microkernel_spawner', 'SubAgentStatus', 'DETERMINISTIC_BYPASS_COUNT']); reverted, needs hand port."
+  },
+  "predictive_watchdog": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['assess_risk', 'native_assess_telemetry_risk', 'TREND_TIME_TO_CRITICAL_S', 'NO_RISK_TIME_S']); reverted, needs hand port."
+  },
+  "self_healing": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['get_self_healing']); reverted, needs hand port."
+  },
+  "self_healing_infra": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['evaluate_services_health', 'SERVICE_STOPPED', 'SERVICE_DEGRADED', 'SERVICE_UNRESPONSIVE']); reverted, needs hand port."
+  },
+  "ses": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['K3', 'SINGLETON_SES', 'INVOCATION_COUNT', 'TRIT_WEIGHTS']); reverted, needs hand port."
+  },
+  "thz_bonsai_gateway": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['SINGLETON_THZ_BONSAI_GATEWAY', 'K3', 'TRIT_WEIGHTS', 'INVOCATION_COUNT']); reverted, needs hand port."
+  },
+  "tool_forge": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['get_tool_forge', 'SubordinateSpec', 'VOLTAGE_RANK', 'TOOL_FORGE_WEIGHTS_BT']); reverted, needs hand port."
+  },
+  "trm_brain": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['STATE_DIMENSION', 'tanh_f32']); reverted, needs hand port."
+  },
+  "trm_orchestrator": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['ComputeTarget', 'RECURSIVE_DEPTH_PEAK', 'SUPERPOSITION_COLLAPSE_COUNTER']); reverted, needs hand port."
+  },
+  "zero_human_test_gen": {
+   "decision": "merge_required",
+   "why": "scripted graft produced duplicate/nested definitions (balance +0, dups ['TestType', 'EXECUTED_TESTS', 'FNV_OFFSET_BASIS', 'FNV_PRIME']); reverted, needs hand port."
+  },
+  "voltage_node_engine": {
+   "decision": "merge_required",
+   "why": "graft compiles shape-wise but types mismatch (E0308); needs a hand port against our signal type."
   }
  },
  "triage_note": "90 SAME_API_DIFF_BODY modules decided canonical on evidence: 58 are thin projections (10-24L against 74-302L), 20 score worse on stubs/guards/tests, 12 are comparable bodies where the base carries generated provenance. No module in the set was ours-better.",

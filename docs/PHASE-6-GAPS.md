@@ -7663,3 +7663,40 @@ flattering the result.
 `phi_v 0.9095`. `/k3/search` returns 404 - that route does not exist in this tree (same class as the
 missing `/k3/stores`), so it is a pre-existing gap, not a merge regression.
 
+### G189. Closure tooling built; 39 undecided from 46; seven modules reached superset  [MEASURED]
+
+**The tool that should have existed before G188.** `tools/port_closure.py` computes, before any text moves,
+what a function needs in order to compile: it indexes every item in both files, walks each root function's
+references transitively, and reports `closure_ok` with an explicit blocker list (unknown consts, foreign
+`crate::` modules, `std::`, `serde`/`json!`, macros). Validated against known outcomes: `agent_mesh`
+closure-ok (it compiled), `ddr_scan` 10 blockers (it never compiled).
+
+Two tool bugs found and fixed by using it:
+- comments were tokenised, so `// --- ARTIFACT STATUS ---` demanded constants named `ARTIFACT` and `STATUS`;
+- `ddr_scan.rs` lives in the other source root, and a wrong path crashed instead of reporting a plan.
+
+**Then six failed builds, each a different class of defect.** Kept here because each is a rule:**
+
+| build | error | rule |
+|---|---|---|
+| 1 | E0753 header above `//!` | never prepend before inner docs - append |
+| 2 | E0424 `self` at module scope | filter `&self`, `&mut self` **and bare `self`** by signature |
+| 3 | E0425 `SINGLETON_*`, `MONAD_ANCHOR`, `Ordering` | graft statics/consts/atomics **with** the functions |
+| 4 | E0428 duplicates | `^\s*` matched nested items - require column 0, and validate for duplicate definitions |
+| 5 | E0252 duplicate `String` | injected imports must be checked against existing ones |
+| 6 | E0308 `&'static str` vs `String` | a grafted call site must be adapted to **our** field type |
+
+**Result, compile-verified:** 8 modules grafted and built (`Finished`), of which **7 became true supersets**
+- `expert_registry`, `global_memory`, `manus_engine`, `reconnaissance_daemon`, `skill_loader`,
+`task_arbiter`, `trm_integration` - and `semantic_knowledge_graph` stayed partial. Reverted rather than left
+broken: `kernel_instructions` (orphan doc comment), `self_fuzzing_engine` (overlapping spans),
+`star_matrix_lattice` (unbalanced), `telemetry` (unbalanced), `voltage_node_engine` (E0308),
+`trm_7m_optimized` (needs an impl method), plus 19 swept by the duplicate/balance validator.
+
+**Contract movement:** `SUPERSET 10 -> 17`, `MERGE_REQUIRED 46 -> 39`, gate `undecided 46 -> 39`.
+Decisions on file: 336. **Kernel after:** `v19.1.0-sovereign`, `build_commit 9aabc88`, `v_core 1.44 V
+measured`, `phi_v 0.9145`, and `/council/status`, `/kanban/stats`, `/memory/stats` all **200**.
+
+**Still owed:** behavioural tests. Superset is a statement about function names, not about agreement - the
+same trap the body-diff triage caught at 70 "equivalent" files that were mostly stubs.
+

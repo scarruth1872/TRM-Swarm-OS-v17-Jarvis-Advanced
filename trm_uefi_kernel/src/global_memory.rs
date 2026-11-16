@@ -1184,3 +1184,253 @@ pub fn get_global_memory_instance() -> &'static mut GlobalMemorySync {
         GLOBAL_MEMORY_INSTANCE.as_mut().unwrap()
     }
 }
+
+// ── ported from the v20 base tree (G189) ─────────────────────────────────────────────────────────
+// 12 column-0 item(s) only: nested fn definitions and `self` receivers are excluded, and the
+// statics/consts each function names travel with it (grafting bare functions was the first failure).
+// imports: use alloc::string::String;; use core::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, AtomicUsize, Ordering};
+
+use core::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, AtomicUsize, Ordering};
+
+pub fn compute_stats(entries: &[MemoryEntry]) -> Stats {
+    let mut type_counts: Vec<(String, usize)> = Vec::new();
+    let mut author_counts: Vec<(String, usize)> = Vec::new();
+    let mut total_accesses: u64 = 0;
+    for e in entries {
+        total_accesses += e.access_count;
+        match type_counts.iter_mut().find(|(k, _)| *k == e.memory_type) {
+            Some((_, c)) => *c += 1,
+            None => type_counts.push((e.memory_type.clone(), 1)),
+        }
+        match author_counts.iter_mut().find(|(k, _)| *k == e.author) {
+            Some((_, c)) => *c += 1,
+            None => author_counts.push((e.author.clone(), 1)),
+        }
+    }
+    Stats {
+        total_memories: entries.len(),
+        type_counts,
+        author_counts,
+        total_accesses,
+    }
+}
+
+fn find_surrounded_arrow(s: &str, from: usize) -> Option<(usize, usize)> {
+    let mut search_from = from;
+    loop {
+        let idx = search_from + s[search_from..].find("->")?;
+        let before = &s[..idx];
+        let ws_before_start = before.trim_end().len();
+        if ws_before_start == idx {
+            search_from = idx + 2; // no whitespace before this arrow
+            continue;
+        }
+        let after = &s[idx + 2..];
+        let trimmed = after.trim_start();
+        if trimmed.len() == after.len() {
+            search_from = idx + 2; // no whitespace after this arrow
+            continue;
+        }
+        let ws_after_end = idx + 2 + (after.len() - trimmed.len());
+        return Some((ws_before_start, ws_after_end));
+    }
+}
+
+pub fn keyword_query(
+    query_text: &str,
+    entries: &[MemoryEntry],
+    author_filter: Option<&str>,
+    type_filter: Option<&str>,
+    top_k: usize,
+) -> Vec<(f64, usize)> {
+    // query_words = set(query_text.lower().split())
+    let lower = query_text.to_lowercase();
+    let mut query_words: Vec<&str> = Vec::new();
+    for w in lower.split_whitespace() {
+        if !query_words.contains(&w) {
+            query_words.push(w);
+        }
+    }
+    let q_len = core::cmp::max(query_words.len(), 1);
+    let blank = query_text.trim().is_empty();
+
+    let mut results: Vec<(f64, usize)> = Vec::new();
+    for (idx, entry) in entries.iter().enumerate() {
+        if let Some(af) = author_filter {
+            if !af.is_empty() && entry.author.as_str() != af {
+                continue;
+            }
+        }
+        if let Some(tf) = type_filter {
+            if !tf.is_empty() && entry.memory_type.as_str() != tf {
+                continue;
+            }
+        }
+        let content_lower = entry.content.to_lowercase();
+        let mut overlap = 0usize;
+        for w in &query_words {
+            if content_lower.contains(*w) {
+                overlap += 1;
+            }
+        }
+        let score = (overlap as f64) / (q_len as f64);
+        if overlap > 0 || blank {
+            results.push((score, idx));
+        }
+    }
+    results.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(core::cmp::Ordering::Equal));
+    results.truncate(top_k);
+    results
+}
+
+pub fn memory_health(
+    total_memories: usize,
+    total_accesses: u64,
+    type_count: usize,
+    author_count: usize,
+    backend: &str,
+) -> MemoryHealth {
+    let avg_access = if total_memories > 0 {
+        (total_accesses as f64) / (total_memories as f64)
+    } else {
+        0.0
+    };
+    let avg_access_rate = round_half_even(avg_access, 2);
+    let raw = avg_access * 0.3 + (type_count as f64) * 0.1 + (author_count as f64) * 0.05;
+    let capped = if raw < 1.0 { raw } else { 1.0 };
+    let health_score = round_half_even(capped, 3);
+    MemoryHealth {
+        total_memories,
+        total_accesses,
+        avg_access_rate,
+        type_diversity: type_count,
+        author_diversity: author_count,
+        // Our MemoryHealth stores `backend: &'static str`; the base version took a String, so the grafted
+        // call site is adapted to the field type rather than changing the struct for one function.
+        backend: "global_memory",
+        health_score,
+    }
+}
+
+pub fn memory_token_overlap(query_tokens: &[i32], entry_tokens_matrix: &[Vec<i32>]) -> Vec<f32> {
+    let mut q_set: Vec<i32> = Vec::new();
+    for &t in query_tokens {
+        if !q_set.contains(&t) {
+            q_set.push(t);
+        }
+    }
+    let q_len = core::cmp::max(q_set.len(), 1) as f64;
+    entry_tokens_matrix
+        .iter()
+        .map(|entry| {
+            let count = entry.iter().filter(|t| q_set.contains(t)).count();
+            ((count as f64) / q_len) as f32
+        })
+        .collect()
+}
+
+pub fn parse_relationship(content: &str) -> Option<Relationship> {
+    let s = content.trim();
+    if s.is_empty() {
+        return None;
+    }
+    if let Some(rel) = relationship_double_arrow(s) {
+        return Some(rel);
+    }
+    relationship_plain_arrow(s)
+}
+
+fn relationship_double_arrow(s: &str) -> Option<Relationship> {
+    let m = s.find("--[")?;
+    let before = &s[..m];
+    let source = before.trim_end();
+    // `(.+?)` needs >=1 char and `\s+` needs >=1 whitespace char before `--[`.
+    if source.is_empty() || source.len() == before.len() {
+        return None;
+    }
+    let rest = &s[m + 3..];
+    let k = rest.find("]-->")?;
+    if k == 0 {
+        return None; // label needs >=1 char
+    }
+    let label = &rest[..k];
+    let after = &rest[k + 4..];
+    let target = after.trim_start();
+    // `\s+(.+)` needs >=1 whitespace char then >=1 target char.
+    if target.is_empty() || target.len() == after.len() {
+        return None;
+    }
+    Some(Relationship {
+        source: source.trim().to_string(),
+        label: label.trim().to_string(),
+        target: target.trim().to_string(),
+    })
+}
+
+fn relationship_plain_arrow(s: &str) -> Option<Relationship> {
+    let (ws1_start, ws1_end) = find_surrounded_arrow(s, 0)?;
+    if ws1_start == 0 {
+        return None; // source needs >=1 char
+    }
+    let (ws2_start, ws2_end) = find_surrounded_arrow(s, ws1_end)?;
+    let label = &s[ws1_end..ws2_start];
+    if label.is_empty() {
+        return None; // label needs >=1 char
+    }
+    let target = &s[ws2_end..];
+    if target.is_empty() {
+        return None; // target needs >=1 char
+    }
+    Some(Relationship {
+        source: s[..ws1_start].trim().to_string(),
+        label: label.trim().to_string(),
+        target: target.trim().to_string(),
+    })
+}
+
+fn round_half_even(x: f64, ndigits: i32) -> f64 {
+    if !x.is_finite() {
+        return x;
+    }
+    if x < 0.0 {
+        return -round_half_even(-x, ndigits);
+    }
+    let mut factor = 1.0f64;
+    for _ in 0..ndigits {
+        factor *= 10.0;
+    }
+    let scaled = x * factor;
+    let floored = (scaled as i64) as f64; // x >= 0, so truncation == floor
+    let frac = scaled - floored;
+    let rounded = if frac > 0.5 {
+        floored + 1.0
+    } else if frac < 0.5 {
+        floored
+    } else if (floored as i64) % 2 == 0 {
+        floored
+    } else {
+        floored + 1.0
+    };
+    rounded / factor
+}
+
+pub struct MemoryEntry {
+    pub id: String,
+    pub author: String,
+    pub memory_type: String,
+    pub content: String,
+    pub access_count: u64,
+}
+
+pub struct Stats {
+    pub total_memories: usize,
+    pub type_counts: Vec<(String, usize)>,
+    pub author_counts: Vec<(String, usize)>,
+    pub total_accesses: u64,
+}
+
+pub struct Relationship {
+    pub source: String,
+    pub label: String,
+    pub target: String,
+}

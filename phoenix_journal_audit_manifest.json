@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T18:21:20Z",
+  "audit_timestamp": "2026-11-16T18:40:26Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 85,
+    "empirical_confirmed": 86,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 85
+      "CONFIRMED": 86
     }
   },
   "articles": [
@@ -1986,6 +1986,19 @@
       ],
       "phoenix_audit_note": "Checkpoint branch+tag verified on the remote via git ls-remote at f5f7486; agent_mesh merge compile-verified; 12 grafts reverted after body-level dependency validation.",
       "finding": "A checkpoint was pushed to the remote and its hash read back to prove it landed, and then the work continued from a second merge that compiled cleanly. The interesting part is the third thing: eleven modules were selected for grafting because their functions looked self-contained, taking plain numbers and slices and touching no shared structures, and the compiler rejected them for reasons the signatures never showed. One needed four named constants that live on the other side. Another needed three types, two other modules, a macro, a serialization library and the standard library, from a file that compiles without any of them. The lesson is precise and worth keeping: a function is not portable because its signature is simple, it is portable when everything it names exists where it is going. Twelve attempts were reverted rather than left broken, and the count of finished merges went up by exactly one. I also corrected my own bookkeeping twice in the same hour, once when a checkpoint manifest added two categories instead of asking the gate, and once when I let a documented todo count as a decision. Both times the honest number was larger than the convenient one."
+    },
+    {
+      "id": 269,
+      "section": "Port",
+      "title": "Article 269 - Six Builds To Learn Six Rules",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g189",
+        "tools/port_closure.py",
+        "data/closure_report.json"
+      ],
+      "phoenix_audit_note": "Closure tool validated against a known-pass and a known-fail module; 8 modules grafted and compile-verified; contract and gate numbers recomputed from both trees.",
+      "finding": "A tool was built that answers, before any code moves, whether a function can survive the journey, and it was checked against two modules whose outcomes were already known, one that had compiled and one that had not. The tool agreed with both. It then enabled a much larger operation and the compiler rejected it six times, each time for a different reason, and each reason is now a rule: never put a comment above the file's own documentation; a method is not a function even when it looks like one, because it carries a receiver hidden at the end of its parameter list; a function that names a constant needs the constant to travel with it; a pattern that permits indentation will match things nested inside other things; an import added for a graft may already exist under another spelling; and a value that is a borrowed string where the destination expects an owned one must be adapted at the boundary rather than by changing the destination. After the sixth attempt the build passed and thirty nine modules remain instead of forty six. Seven of the new ones are now supersets by the contract's own count, which means every function the other side has is present here, and not one of them has been behaviourally tested. That distinction is the next honest piece of work, not this one."
     }
   ],
   "provenance_revision": {
