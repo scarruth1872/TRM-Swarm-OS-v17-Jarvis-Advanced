@@ -42,6 +42,15 @@ SOURCES = {
                   "scratch/wt_models/swarm_v2_artifacts/chembl_smiles.json"],
         "kind": "smiles_map",
     },
+    # Full ChEMBL-37 SMILES dump recovered from the laptop's external SSD (D:\chembl_smiles_full.txt,
+    # 203.6 MB, ~5.2 M lines, format "SMILES<TAB>CHEMBL_ID"). G198 found it after a 6.4 M-file sweep had
+    # reported ChEMBL-37 "absent" because the sweep never enumerated removable volumes.
+    "chembl37": {
+        "shard_id": 104,
+        "files": ["scratch/chembl37/chembl_smiles_full.txt",
+                  "F:/Development sites/datasets/chembl_smiles_full.txt"],
+        "kind": "smiles_lines",
+    },
     "chembl_lpxc": {
         "shard_id": 102,
         "files": ["evidence/chembl_lpxc_actives.json"],
@@ -108,6 +117,28 @@ def load_records(name: str, limit: int | None) -> list[tuple[str, str]]:
         if not out:
             raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 protein rows")
         return out
+    if spec["kind"] == "smiles_lines":
+        # Streamed: the file holds ~5.2 M lines, so it is read line by line and stops at `limit`.
+        out2: list[tuple[str, str]] = []
+        with open(path, encoding="utf-8", errors="ignore") as fh:
+            for line in fh:
+                line = line.rstrip("\n\r")
+                if not line or line.startswith("#"):
+                    continue
+                if "\t" in line:
+                    smi, cid = line.split("\t", 1)
+                else:
+                    smi, cid = line, f"line{len(out2)}"
+                smi = smi.strip()
+                cid = cid.strip() or f"line{len(out2)}"
+                if not smi:
+                    continue
+                out2.append((cid, f"ChEMBL molecule {cid} SMILES {smi}"))
+                if limit and len(out2) >= limit:
+                    break
+        if not out2:
+            raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 SMILES lines")
+        return out2
     data = json.load(open(path, encoding="utf-8"))
     out: list[tuple[str, str]] = []
     if spec["kind"] == "smiles_map":
@@ -157,9 +188,50 @@ def dequantize(packed: bytes, dim: int, span: float, lo: float) -> list[float]:
     return [x / n for x in v]
 
 
-def build(source: str, limit: int | None, out_path: str, batch: int = 16) -> dict:
+class NativeEncoder:
+    """The kernel's own model-free text encoder, called in-process instead of over HTTP.
+
+    `rust_native_encode_text_f32(text, len, out, dim)` returns `dim` on success (768), not 0 - a caller that
+    checks `rc == 0` will see a failure on every successful call. Measured on this box at 4,135 records/s
+    (242 us), versus ~16/s for the HTTP embedding server: the 768-dim projection is arithmetic, and the
+    server's 60 ms per request was queueing and JSON, not mathematics.
+
+    IMPORTANT: this encoder produces `native-turbovec-hdc` vectors. The HTTP path produces a different model's
+    vectors. The two are different vector spaces and must never be mixed inside one shard - the engine is
+    therefore recorded in the shard's provenance.
+    """
+
+    def __init__(self, dll: str | None, dim: int = 768):
+        import ctypes
+        if not dll or not os.path.exists(dll):
+            raise SystemExit(f"FAIL-CLOSED: native encoder dll not found: {dll}")
+        self.dim = dim or 768
+        self.lib = ctypes.CDLL(dll)
+        self.lib.rust_native_encode_text_f32.argtypes = [ctypes.c_char_p, ctypes.c_size_t,
+                                                        ctypes.POINTER(ctypes.c_float), ctypes.c_size_t]
+        self.lib.rust_native_encode_text_f32.restype = ctypes.c_int32
+        self.dll = os.path.basename(dll)
+        self.calls = 0
+
+    def one(self, text: str) -> list[float]:
+        import ctypes
+        b = text.encode("utf-8", "ignore")
+        buf = (ctypes.c_float * self.dim)()
+        rc = self.lib.rust_native_encode_text_f32(b, len(b), buf, self.dim)
+        if rc != self.dim:
+            raise RuntimeError(f"native encoder rc={rc} (success is rc == dim == {self.dim})")
+        self.calls += 1
+        return list(buf)
+
+    def many(self, texts: list[str]) -> list[list[float]]:
+        return [self.one(t) for t in texts]
+
+
+def build(source: str, limit: int | None, out_path: str, batch: int = 16,
+          engine: str = "http", dll: str | None = None) -> dict:
     records = load_records(source, limit)
-    model = model_id()
+    native = NativeEncoder(dll) if engine == "native" else None
+    model = native.dll if native else model_id()
     print(f"model={model[:48]}…  records={len(records)}", flush=True)
     dim = None
     payload = bytearray()
@@ -197,12 +269,15 @@ def build(source: str, limit: int | None, out_path: str, batch: int = 16) -> dic
 
     for i in range(0, len(records), batch):
         chunk = records[i:i + batch]
-        try:
-            vecs = embed([t for _, t in chunk], model, dim or 768)
-        except urllib.error.HTTPError as e:
-            if not is_too_large(e):
-                raise
-            vecs = [embed_one(t) for _, t in chunk]
+        if native is not None:
+            vecs = native.many([t for _, t in chunk])
+        else:
+            try:
+                vecs = embed([t for _, t in chunk], model, dim or 768)
+            except urllib.error.HTTPError as e:
+                if not is_too_large(e):
+                    raise
+                vecs = [embed_one(t) for _, t in chunk]
         if dim is None:
             dim = len(vecs[0])
         for vec in vecs:
@@ -286,6 +361,11 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--source", choices=sorted(SOURCES), help="corpus to ingest")
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--engine", choices=["http", "native"], default="http",
+                    help="native = in-process rust_native_encode_text_f32 (4,135 rec/s); "
+                         "http = the embedding server (~16 rec/s). Different vector spaces.")
+    ap.add_argument("--dll", default=None,
+                    help="path to swarm_rust_kernel.dll for --engine native")
     ap.add_argument("--out", default=None)
     ap.add_argument("--verify", default=None, help="verify an existing shard instead of building")
     a = ap.parse_args()
@@ -295,7 +375,7 @@ def main() -> int:
     if not a.source:
         ap.error("--source or --verify is required")
     out = a.out or os.path.join(ROOT, "build", f"{a.source}_real.k3")
-    print(json.dumps(build(a.source, a.limit, out), indent=2))
+    print(json.dumps(build(a.source, a.limit, out, engine=a.engine, dll=a.dll), indent=2))
     print(json.dumps(verify(out), indent=2))
     return 0
 

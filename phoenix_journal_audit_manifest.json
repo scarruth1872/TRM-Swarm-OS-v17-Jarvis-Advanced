@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T22:58:56Z",
+  "audit_timestamp": "2026-11-16T23:24:07Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 95,
+    "empirical_confirmed": 96,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 95
+      "CONFIRMED": 96
     }
   },
   "articles": [
@@ -2116,6 +2116,22 @@
       ],
       "phoenix_audit_note": "Sweeps of 6,432,474 and 172,502 files reported ChEMBL-37 absent; it is 7,628.2 MB at D:\\chembl_37.sdf on a USB SSD. Oracle DLL recovered from E: (765,952 B, sha256 c9137464) un-skipped both parity tests: max |diff| = 0.0, 107 passed / 0 failed / 0 ignored.",
       "finding": "Two months of sweeps had concluded that a dataset did not exist anywhere on the machine. It was on a drive plugged into the side of it: seven point six gigabytes of the complete ChEMBL archive, sitting in the root of a removable SSD that no sweep had ever enumerated, next to a second drive that turned out to be the platform's own boot medium. And on that boot medium sat the library the test suite had been formally unable to verify itself against - a build exporting the quantiser, the agreement metric, the fidelity metric and the text encoder, none of which the copies in the repository exported. With the right library staged where the tests already looked, the two skipped comparisons ran and agreed exactly: not within tolerance, exactly, zero difference across twenty four cases. The suite went from a hundred and five passing with two formal excuses to a hundred and seven passing with nothing skipped. The drives themselves are another matter - both carry the dirty flag and neither filesystem supports the online repair Windows offers, so the safe repair needs an administrator and a dismount, and that was left alone rather than guessed at."
+    },
+    {
+      "id": 279,
+      "section": "Convergence",
+      "title": "Article 279 - Two Nodes, One Suite",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g199",
+        "docs/PHASE-6-GAPS.md#g200",
+        "docs/PHASE-6-GAPS.md#g201",
+        "data/fabric_audit_chembl37.txt",
+        "data/native_encoder_bench.json",
+        "data/external_drives.json"
+      ],
+      "phoenix_audit_note": "Desktop 107 passed/0 failed/0 ignored (157.68s); laptop 107/0/0 (173.30s) with its own 816,128-byte DLL. 448 was rustup's shim (channel 1.98.0 vs 1.100.0, os error 10054), not a mount-point policy. ChEMBL fabric 1.27 GB transferred in 1m56s; native encoder 4,135 rec/s vs HTTP 16/s.",
+      "finding": "For weeks the same suite reported different numbers on two machines, and the gap was filed as a security policy. It was a symlink: a zero-byte rustc pointing at rustup, and a toolchain channel that had drifted ahead of what was installed, so every compile spawned a process that tried to reach the network first. Pinned to the real binaries, the second node ran the whole suite and returned the same totals as the first, to the test. The corpus told the same story from the other direction. The data had been sitting on a thumb drive in the same building, already encoded into a two-terabyte-times-one-point-five fabric whose own header named the source file. Transferring it took two minutes. Recomputing it through the model server would have taken two days, because the server could only manage sixteen vectors a second and batching made it worse, not better. The kernel's own encoder, called in process, is two hundred and forty-eight times faster than the thing that was standing in for it, and it is the very encoder that made the fabric in the first place."
     }
   ],
   "provenance_revision": {

@@ -8080,3 +8080,138 @@ no online scan. Clearing this needs `chkdsk D: /f` / `chkdsk E: /f`, which requi
 dismounts the volume - **not attempted unattended**, and worth doing before trusting a 7.6 GB corpus that lives
 there. Both volumes remain readable and writable; nothing was lost.
 
+### G199. The laptop's `448` was never a mount-point policy: it was rustup's shim in the compile path  [MEASURED]
+
+**Errata on my own G196/G197 conclusion.** I recorded "`os error 448` is a machine policy, not a Rust error"
+and spent a round ruling out ASR, CFA, junctions, WDAC and AppLocker. The mechanism is simpler and was in
+plain sight: `C:\Users\shawn\.cargo\bin\rustc.exe` is a **0-byte symbolic link to `rustup.exe`**. With that
+directory on `PATH` and no `RUSTC` set, cargo spawns `rustc` *by name*, which lands on the proxy, and the
+proxy tries to sync the toolchain channel on every spawn. Installed toolchain **1.98.0**, channel offering
+**1.100.0** - so each spawn reached for `static.rust-lang.org`, three at once, and one died:
+
+```
+info: syncing channel updates for stable-x86_64-pc-windows-msvc   (x3, concurrently)
+error: could not download file from 'https://static.rust-lang.org/dist/channel-rust-stable.toml.sha256'
+       client error (Connect): An existing connection was forcibly closed by the remote host. (os error 10054)
+error: could not compile `thiserror` (build script)
+Caused by: process didn't exit successfully: `rustc --crate-name build_script_build ... build.rs` (exit code: 1)
+```
+
+That is what produced the 16 "dependency crate" errors. On a machine where the guard is enforced the *same
+spawn* dies one step earlier at `CreateProcess` with 448 ("never executed") - which is why 448 looked like a
+policy and behaved like one.
+
+**The A/B decides it** - same crate, same cold target dir, only the rustc binary changed:
+
+| rustc used | result |
+|---|---|
+| shim on PATH, `RUSTC` unset | 3x channel sync, `os error 10054`, **exit 1** |
+| real `1.98.0` `rustc.exe` | `Finished release in 2m 19s`, 0 errors, **exit 0** |
+
+**Fix** - pin the real binaries in the crate's `.cargo/config.toml` (backup taken first, byte-identical
+original kept as `config.toml.bak-g199-20261116-181139`, sha256 `fa09ac97...`):
+
+```toml
+[build]
+rustflags = ["-C", "target-cpu=native"]
+rustc   = "C:/Users/shawn/.rustup/toolchains/stable-x86_64-pc-windows-msvc/bin/rustc.exe"
+rustdoc = "C:/Users/shawn/.rustup/toolchains/stable-x86_64-pc-windows-msvc/bin/rustdoc.exe"
+```
+
+**Result, on the laptop, plain `cargo test --release`:**
+
+```
+test result: ok. 105 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 163.16s
+```
+
+reproduced on a cold target dir: `Finished release in 2m 19s`, then `105 passed; ... 171.99s`, exit 0.
+`os error 448` occurrences across all runs: **0**. Both nodes now execute the same 107-test suite; the two
+`ignored` entries on the laptop are still the G196 versions of the file - it has not yet been sent the G198
+re-enablement, even though its own DLL (`816,128 B`, sha `6d8da0ad...`) exports every symbol those tests need.
+
+Contrary evidence to my own recorded state, kept rather than tidied: the "only the final rustc invocation
+fails" observation needs a *cold* target dir - a warm one never spawns rustc at all, so it cannot reproduce.
+
+### G200. The corpus and the fabric were already built - sending beat recomputing by 248x  [MEASURED]
+
+The full ChEMBL-37 store already existed on the laptop's boot USB, and its own header proves it:
+
+| file | bytes | header |
+|---|---|---|
+| `swarm_v2_chembl_fabric.ternary` | 625,286,709 | `TERNARYV` v1, anchor `0x4D4F4E4144000001`, dim 768, **2,897,805 vectors**, 2 bits |
+| `swarm_v2_chembl_fabric.turbovec` | 648,469,181 | `TURBOVEC` v2, stride 200 B, `source: drugs/chembl_37.sdf.gz`, `model: native-turbovec-hdc` |
+
+Transferred **1.27 GB in 1 min 56 s** (625 MB in 60.4 s, 648 MB in 55.3 s - ~10.4 MB/s) and audited both with
+`tools/fabric_audit.py`, which parses the format the writer documents rather than trusting it:
+
+```
+.turbovec  digest_recorded 4aad1a69cdd3ab2f...   digest_computed 4aad1a69cdd3ab2f...   digest_matches True
+           size_arithmetic {'expected': 648469181, 'actual': 648469181, 'exact': True}
+           key_count 2897805 == vectors, roundtrip_agreement 1.0 (3 samples)  VERDICT: PASS
+.ternary   key_table_off 556378688 == 128 + 2897805*192 exactly, key_count 2897805  VERDICT: PASS
+```
+
+Two independent counts agree: the fabric has 2,897,805 vectors and `D:\chembl_smiles_full.txt` has 2,897,805
+lines. Locally we had only `build/chembl_real.k3` = **44,401** molecules - 1.5% of it, from a different subset.
+
+**Why recomputing took an hour, and why batching could not save it.** The HTTP embedding path measures:
+1 input **274 ms**, batch-of-8 **36.8 ms/vec**, batch-of-32 **56.7 ms/vec** (worse - it overruns the 512-token
+ubatch). Ceiling ~**16-17 vec/s**, so my loop's 13.6/s was already ~85% of it and the full corpus would be
+**48 h**, not 1 h. The maths was never the problem; the *transport* was.
+
+**The fast path, measured.** `rust_native_encode_text_f32` - the same `native-turbovec-hdc` encoder that built
+the fabric - runs in-process at **4,135 records/s (242 us)**, 248x the HTTP path, with the control that makes
+the number mean something: 3,000/3,000 distinct vectors, norm 1.0, `cos(first,last) 0.2995`. Trap recorded:
+**it returns `dim` (768) on success, not 0** - a caller checking `rc == 0` fails on every successful call.
+
+`k3_ingest_real.py` now has `--engine native --dll <path>` (and `NativeEncoder`, which documents both facts).
+2,000 records: **146.7 s -> 1.0 s** (146x end-to-end, quantisation included), `padding 0`, `seal_matches true`,
+`exact true`, fidelity 0.8691.
+
+### G201. Both nodes now run the identical suite: 107 passed, 0 failed, 0 ignored  [MEASURED]
+
+With the toolchain pinned (G199) and the two re-enabled parity tests installed, the laptop reports the same
+totals as this tree - on its **own** oracle DLL, no file pushed from here:
+
+| node | `cargo test --release` |
+|---|---|
+| desktop (canonical tree) | `ok. 107 passed; 0 failed; 0 ignored; ... 157.68s` |
+| laptop (`E:` boot-USB oracle 816,128 B, sha `6d8da0ad...`) | `ok. 107 passed; 0 failed; 0 ignored; ... 173.30s` |
+
+Installed and hash-verified on the way: `native_ternary.rs` 16,855 B sha `cdaa94e1...`,
+`native_encoder.rs` 9,505 B sha `5f2ee503...`, `#[ignore]` markers remaining: **0** in both.
+
+**The shim caught the shim.** The first attempt to run the suite failed with
+`Program 'cargo.exe' failed to run: No application is associated with the specified file for this operation` -
+PowerShell cannot launch a 0-byte symlink either. The real binary
+(`~\.rustup\toolchains\stable-x86_64-pc-windows-msvc\bin\cargo.exe`, 31,435,264 B) runs it, with `RUSTC`
+pinned to the same toolchain. This is the third distinct symptom from one cause: 448 at `CreateProcess` where
+the guard is enforced, `10054` where the rustup proxy gets to run, and "no application associated" when a
+PowerShell caller meets the symlink. One diagnosis, three faces.
+
+### G202. The external volumes, fully enumerated - and the second corpus was not there  [MEASURED]
+
+Deep scan of both volumes (read-only, no repair attempted):
+
+| `D:` (exFAT, 1.86 TB, 780 GB used) | | `E:` (FAT32, 14.6 GB) | |
+|---|---|---|---|
+| `D:\WSL` one `.vhdx` | **174.60 GB** | `EFI\TRM\trm_uefi_kernel.efi` | 15.7 MB |
+| `D:\fuji` (5,230 files) | 99.22 GB | `swarm_v2_artifacts` | 53.0 MB |
+| `D:\trm-models` **34 GGUF** | **43.93 GB** | chembl fabric trio | 1.99 GB |
+| `D:\hf-cache` | 16.54 GB | `swarm_v2_nand_fabric.k3` | 73.2 MB |
+| `chembl_37.sdf` | 7,628.2 MB | `trm-state.ext4` | 64.0 MB |
+| `CascadeProjects` (242,654 files) | 6.16 GB | `swarm_rust_kernel.dll` | 765,952 B |
+
+Model store, largest first: `amd.Instella-MoE-16B-A3B-Think.Q4_K_M` 9,985.2 MB; `Ternary-Bonsai-27B-Q2_g64`
+7,233.9 MB; **`Ternary-Bonsai-2-27B-PQ2`** 6,872.3 MB; `Ternary-Bonsai-27B-Q2_0` 6,833.2 MB;
+`qwen2.5-coder-7b-instruct-q4_k_m` 4,466.1 MB; Bonsai 8B (2,203.1 / 2,081.1 MB), 4B (1,085.1 / 1,025.2 MB),
+1.7B (467.5 / 441.8 MB); `embeddinggemma-2-UD-Q4_K_XL` 167.5 MB.
+
+**Still absent on evidence:** PDBbind, BindingDB, FAERS, Tox21, ESKAPE - zero filename matches on either
+volume. The only `*zinc*` hits were `@redis/client/.../ZINCRBY.js` inside `node_modules`, which is exactly why
+the sweep prints paths rather than a count: a name match is not a dataset.
+
+**Owed:** both volumes still carry the dirty bit (`Full Repair Needed`); `Repair-Volume -Scan` refuses exFAT and
+FAT32, so repair needs `chkdsk D: /f` / `chkdsk E: /f` with elevation and a dismount. Not attempted. The
+174.60 GB `.vhdx` is the one place left where the missing corpora could still be hiding - not yet mounted.
+
