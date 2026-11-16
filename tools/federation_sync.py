@@ -45,9 +45,26 @@ def probe(ip: str, port: int = PORT, timeout: float = 3.0) -> dict:
         return {"reachable": False, "latency_ms": None, "error": type(exc).__name__}
 
 
-def http_get(url: str, timeout: float = 6.0) -> tuple[int | None, bytes, str | None]:
+TOKEN_FILE = Path(r"C:\ProgramData\trm\council_token.txt")
+
+
+def council_token() -> str | None:
+    """The shared secret, read from disk and never printed. Peers require X-Council-Token for writes
+    once they are bound off-loopback; without it every POST comes back 401."""
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as r:
+        tok = TOKEN_FILE.read_text(encoding="utf-8").strip()
+        return tok or None
+    except OSError:
+        return None
+
+
+def http_get(url: str, timeout: float = 6.0) -> tuple[int | None, bytes, str | None]:
+    req = urllib.request.Request(url)
+    tok = council_token()
+    if tok:
+        req.add_header("X-Council-Token", tok)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
             return r.status, r.read(), None
     except urllib.error.HTTPError as e:
         return e.code, e.read(), f"HTTP {e.code}"
@@ -56,8 +73,12 @@ def http_get(url: str, timeout: float = 6.0) -> tuple[int | None, bytes, str | N
 
 
 def http_post(url: str, payload: dict, timeout: float = 8.0) -> tuple[int | None, bytes, str | None]:
+    headers = {"Content-Type": "application/json"}
+    tok = council_token()
+    if tok:
+        headers["X-Council-Token"] = tok
     req = urllib.request.Request(url, data=json.dumps(payload).encode(),
-                                 headers={"Content-Type": "application/json"}, method="POST")
+                                 headers=headers, method="POST")
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return r.status, r.read(), None
@@ -146,6 +167,11 @@ def main() -> int:
         if "sync_post" in r:
             print(f"       POST /federation/sync -> {r['sync_post']['body'] if isinstance(r['sync_post']['body'], str) else r['sync_post']['body'].get('status')}")
 
+    # a 200 on a token-bearing POST is the only evidence of authentication this tool can produce;
+    # a peer that answers without the header proves the opposite, so count it as not authenticated
+    authenticated = sum(1 for r in results
+                        if (r.get("sync_post") or {}).get("http") == 200)
+
     if a.pull:
         LEDGER.parent.mkdir(parents=True, exist_ok=True)
         prev = []
@@ -158,7 +184,7 @@ def main() -> int:
             "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "reachable": len(reachable),
             "configured": len(results),
-            "authenticated": 0,
+            "authenticated": authenticated,
             "files_synced": 0,
             "files_sync_blocker": (
                 "no file transport to these peers: :8022 exposes no upload route, and SMB/445 on the "
@@ -175,7 +201,7 @@ def main() -> int:
         LEDGER.write_text(json.dumps({"ledger": "federation_sync", "anchor": ANCHOR, "runs": runs},
                                      indent=1), encoding="utf-8")
         print(f"\nledger: {LEDGER.relative_to(ROOT)}  (runs kept: {len(runs)})")
-        print(f"authenticated pulls: 0 | files synced: 0 (blocked: no transport)")
+        print(f"authenticated peers: {authenticated}/{len(reachable)} reachable | files synced: 0 (no transport)")
     return 0
 
 

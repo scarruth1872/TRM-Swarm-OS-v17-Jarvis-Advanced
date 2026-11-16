@@ -6819,3 +6819,31 @@ so NODE-001 - previously unreachable from itself - answers on its tailnet addres
 **Lesson:** a security guard verified only on the machine that has it proves nothing about the machine
 that needs it. Ask each host what its code says, not what the plan says.
 
+### G169. Two guarded kernels, one blocked by its own firewall, and two different secrets  [MEASURED]
+
+The laptop reported guarded mode live: `0.0.0.0:8022`, loopback GET 200, tailnet GET 200, tailnet POST
+without header 401, with header 400 (auth passed, body invalid), dashboard POST 400 (loopback exemption).
+That is the intended design, and the same three results this host produced independently (G168).
+
+What neither side could see alone, measured from here:
+
+| probe | result | meaning |
+|---|---|---|
+| `Test-NetConnection 100.123.215.119 -Port 8022` | **False** | the laptop's new firewall allow is scoped to `RemoteAddress 100.93.191.43`, but the path between the two hosts hairpins over the LAN (`tailscale ping` -> via `192.168.1.148`, our address `192.168.1.83`), so the allow rule never matches. Reachability was lost by the mitigation itself |
+| `Test-NetConnection ... -Port 445` | **True** | the SMB share is still open to us while the kernel is locked - the exposure moved rather than closed |
+| `POST laptop /council/propose` with **this host's** token | connection refused (blocked) | token equality is untested until the firewall is fixed |
+| `tools/federation_sync.py --pull` | NODE-001 **6.6 ms** `ok`, NODE-002 56.1 ms `ok`, NODE-003 27.8 ms (404s), NODE-004 unreachable | **2/3 reachable peers authenticated**; our own tailnet address answers now |
+
+**Secret divergence:** the laptop generated its own token; this host has its own. Both are 64 chars, both
+are correct, and they are not the same value - so an HMAC-bearing federation call would fail with a
+mismatch rather than an authentication error, which is the more confusing failure of the two.
+
+**Turned the tool into a real check:** `federation_sync.py` now reads
+`C:\ProgramData\trm\council_token.txt` and sends `X-Council-Token` on every GET and POST, and counts
+`authenticated = peers whose token-bearing POST returned 200` instead of hardcoding 0. Current measure:
+**2/3 reachable peers authenticated**, files synced still 0.
+
+**Lesson:** a firewall rule is part of the topology, not a footnote. Scoping an allow to a tailnet address
+while the packets take the LAN path closes the door you just walked through - and the thing left open
+(SMB/445) is the thing nobody checked.
+
