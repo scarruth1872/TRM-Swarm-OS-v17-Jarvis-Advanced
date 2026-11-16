@@ -168,3 +168,110 @@ that cannot be re-checked.
 
 `tools/federation_sync.py` (desktop) writes that ledger; `tools/audit_ingest_ledger.py` will reject any
 claimed ingest that lacks source + records + bytes + SHA-256.
+
+---
+
+# REVISED after the laptop's reconnaissance (v19 host, not v20)
+
+The first version of Prompt 1 assumed the laptop ran the same tree as the desktop. It does not:
+the laptop's kernel is `C:\Users\shawn\Downloads\TRM-Swarm-OS-v19-...\host_council_server.exe`,
+PID listening on **0.0.0.0:8022**, with `Server::http("0.0.0.0:{port}")` **hardcoded at v19
+main.rs:3984** and **zero** occurrences of `COUNCIL_AUTH_TOKEN` or `TRM_BIND_HOST`. So the guard was
+never there to verify - it has to be built. The desktop's v20 tree does have it (`auth_gate`,
+`main.rs:2468`; fail-closed bind at `main.rs:6196-6220`), which is why the desktop printed the FATAL
+line and the laptop could not.
+
+Consequence, stated plainly: **the laptop's mutation surface is open to anyone on the tailnet right
+now** (`POST /council/propose {}` returns 400 `topic_required`, i.e. it reached the handler).
+
+## Step 0 - mitigate in the next 2 minutes, before touching code
+
+```
+On the laptop, restrict inbound 8022 to the desktop only (no rebuild, no restart):
+  Remove-NetFirewallRule -DisplayName "TRM Kernel 8022" -ErrorAction SilentlyContinue
+  New-NetFirewallRule -DisplayName "TRM Kernel 8022 (desktop only)" -Direction Inbound -Protocol TCP `
+    -LocalPort 8022 -Action Allow -RemoteAddress 100.93.191.43
+  New-NetFirewallRule -DisplayName "TRM Kernel 8022 (block rest)" -Direction Inbound -Protocol TCP `
+    -LocalPort 8022 -Action Block -Profile Any
+  Get-NetFirewallRule -DisplayName "TRM Kernel 8022*" | Format-Table DisplayName,Enabled,Direction,Action
+Then prove it from a non-desktop address if you have one, or state that only the desktop answered.
+The code fix below is the real closure; this buys the time.
+```
+
+## Prompt 1-REV - build the guard into v19, peer-scoped
+
+```
+You are on the field laptop running TRM Swarm OS v19 from C:\Users\shawn\Downloads\TRM-Swarm-OS-v19-...
+The kernel binds 0.0.0.0 with no authentication on writes. Build the guard now, matching the desktop's
+v20 design exactly. Paste raw output for every step; stop and report on any failure.
+
+1. Back up before editing (the repo is not a git checkout on this host if it says so):
+   Copy-Item main.rs main.rs.bak-<yyyyMMdd-HHmmss>
+
+2. Add the bind guard. Replace the hardcoded listen with:
+   let bind_host = std::env::var("TRM_BIND_HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
+   let auth_configured = std::env::var("COUNCIL_AUTH_TOKEN").ok()
+       .map(|t| t.trim().to_string()).filter(|t| !t.is_empty()).is_some();
+   let is_loopback = matches!(bind_host.as_str(), "127.0.0.1" | "localhost" | "::1");
+   if !is_loopback && !auth_configured {
+       eprintln!("FATAL: refusing to bind {} without COUNCIL_AUTH_TOKEN", bind_host);
+       std::process::exit(1);
+   }
+   let server = Arc::new(Server::http(format!("{}:{}", bind_host, port)).unwrap());
+
+3. Add the write gate, called before dispatch for every request. PEER-SCOPED, deliberately:
+   - is_write = POST | PUT | PATCH | DELETE
+   - if !is_write -> allow (GETs stay readable for health checks and federation probes)
+   - if request.remote_addr() is loopback -> allow WITHOUT a token. Loopback is the local trust
+     boundary the dashboard lives behind (same-origin :5183 -> Vite proxy -> 127.0.0.1:8022). Without
+     this exemption, enabling federation would 401 your own dashboard's POSTs.
+   - otherwise: require header X-Council-Token == COUNCIL_AUTH_TOKEN, else 401
+     {"error":"unauthorized","status":401,"path":...,"hint":"send header X-Council-Token ..."}
+   - if COUNCIL_AUTH_TOKEN is unset and the peer is not loopback -> 401 as well (fail closed).
+
+4. Build and restart with the token read from the file, never echoed:
+   $env:COUNCIL_AUTH_TOKEN = (Get-Content C:\ProgramData\trm\council_token.txt -Raw).Trim()
+   $env:TRM_BIND_HOST = "0.0.0.0"
+   cargo build --release
+   Start-Process -FilePath .\target\release\host_council_server.exe -WorkingDirectory <repo root> -WindowStyle Hidden
+   Start-Sleep -Seconds 6
+
+5. Test matrix - paste every HTTP code and body, 4 cases:
+   a) POST 127.0.0.1:8022/council/propose -d "{}"                  -> NOT 401 (dashboard path)
+   b) POST 100.123.215.119:8022/council/propose -d "{}"            -> 401 unauthorized
+   c) same as (b) with -H "X-Council-Token: <token from file>"     -> NOT 401
+   d) GET  100.123.215.119:8022/system/health_matrix               -> 200
+   (b) and (d) must differ: writes locked, reads open.
+
+6. Prove the dashboard still works from this host:
+   curl.exe -s -o NUL -w "%{http_code}" -X POST http://127.0.0.1:5183/council/propose -H "Content-Type: application/json" -d "{}"
+   Expected 200 (the Vite proxy connects from loopback, so the exemption applies).
+
+7. Prove the fail-closed path fires:
+   restart once with COUNCIL_AUTH_TOKEN unset and TRM_BIND_HOST=0.0.0.0; paste the FATAL line and the
+   exit code. It must exit non-zero. Then restart correctly.
+
+Report: the 4 test codes, the dashboard code, the FATAL line + exit code, and the bind line from netstat.
+```
+
+## Prompt 2-REV - close the loop from the laptop outward
+
+```
+After the guard is live:
+  curl.exe -s -m 8 -X POST http://100.93.191.43:8022/federation/sync ^
+    -H "X-Council-Token: <token from file>" -H "Content-Type: application/json" ^
+    -d "{\"monad_anchor\":\"0x4D4F4E4144000001\",\"from\":\"nspiredfitness\"}"
+Paste the body and quote the "status" field verbatim - "recorded_unauthenticated" or
+"anchor_mismatch" is the truthful answer, not something to retry until it looks green.
+Then for /system/health_matrix /memory/stats /kanban/stats on the desktop: save each to %TEMP%,
+report byte size + Get-FileHash SHA256, and state the desktop's corpus documents, dim and kanban total
+next to this laptop's own numbers.
+```
+
+## Codebase convergence (do this after the guard, not before)
+
+The laptop runs v19 from `Downloads`, the desktop runs v20 from `F:\Development sites\TRM-Swarm-OS-v2`.
+Two divergent kernels federating is a trap: every future fix has to be written twice, and the guards
+will drift. The right end state is the same tree on both hosts - clone the v20 repo on the laptop,
+build `host_council_server`, and compare `/system/health_matrix` `kernel_version` across the two.
+

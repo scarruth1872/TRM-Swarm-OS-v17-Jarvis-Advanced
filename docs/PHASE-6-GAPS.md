@@ -6785,3 +6785,37 @@ rather than a green light.
 Two findings kept, not smoothed: the control-plane "offline" label contradicts a measured 6 ms pong, and
 a peer that completes a TCP handshake while 404-ing every route is reachable without being federated.
 
+### G168. The laptop's guard did not exist, and the desktop's needed a peer scope  [MEASURED]
+
+Prompt 1 assumed both machines ran the same kernel. They do not. The laptop's reconnaissance found:
+`Server::http("0.0.0.0:{port}")` hardcoded at v19 `main.rs:3984`, **zero** occurrences of
+`COUNCIL_AUTH_TOKEN` or `TRM_BIND_HOST` in that tree, and `POST /council/propose {}` reaching the
+handler (400 `topic_required`, not 401). So the laptop's mutation surface was open to the whole tailnet,
+and the "expected FATAL" step could not fire because there was no guard to fire - the desktop's FATAL
+line came from the v20 tree, which does have `auth_gate` (`main.rs:2468`) and the fail-closed bind
+(`main.rs:6196`). Two divergent kernels, one of them unauthenticated.
+
+**Fixed on the desktop side first, because the laptop agent's question was correct:** v20's `auth_gate`
+required the token on every write once configured, with no peer exemption - so binding the federation
+link open would have 401'd the dashboard's own POSTs (Vite proxy :5183 -> 127.0.0.1:8022) instead of
+protecting the tailnet. The gate is now peer-scoped: writes from loopback pass without a token, writes
+from any other address need `X-Council-Token`, GETs stay readable everywhere, and an unset token with a
+non-loopback peer is 401 (fail closed).
+
+**Measured, both directions, one process bound 0.0.0.0:8022:**
+
+| case | result |
+|---|---|
+| `POST 127.0.0.1:8022/council/propose` no token (dashboard path) | **200** - dashboard unaffected |
+| `POST 100.93.191.43:8022/council/propose` no token (tailnet) | **401** |
+| same, with `X-Council-Token` | **200** |
+| `GET 100.93.191.43:8022/system/health_matrix` no token | **200** - reads stay open |
+| `POST 127.0.0.1:5183/council/propose` (Vite proxy) | **200** |
+
+Token handling: generated randomly on this host, written to `C:\ProgramData\trm\council_token.txt`
+(64 chars, never printed, never in a commit). Kernel now runs `TRM_BIND_HOST=0.0.0.0` with the token,
+so NODE-001 - previously unreachable from itself - answers on its tailnet address.
+
+**Lesson:** a security guard verified only on the machine that has it proves nothing about the machine
+that needs it. Ask each host what its code says, not what the plan says.
+

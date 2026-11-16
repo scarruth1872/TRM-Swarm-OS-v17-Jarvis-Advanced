@@ -2484,6 +2484,19 @@ fn auth_gate(request: &tiny_http::Request, method: &Method) -> Option<tiny_http:
         return None;
     }
 
+    // PEER-SCOPED POLICY: a write that arrives over loopback needs no token, because loopback is the
+    // local trust boundary the dashboard lives behind (same-origin :5183 -> Vite proxy -> 127.0.0.1:8022).
+    // Every write from OFF the box needs the token. Without this exemption, turning the federation link
+    // on would 401 the dashboard's own POSTs instead of protecting the tailnet surface - which is the
+    // failure the laptop agent asked about before wiring it.
+    let from_loopback = request
+        .remote_addr()
+        .map(|a| a.ip().is_loopback())
+        .unwrap_or(false);
+    if from_loopback {
+        return None;
+    }
+
     let expected = std::env::var("COUNCIL_AUTH_TOKEN")
         .ok()
         .map(|t| t.trim().to_string())
