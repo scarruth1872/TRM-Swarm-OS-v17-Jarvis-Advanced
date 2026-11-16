@@ -7356,3 +7356,63 @@ instead of quietly returning a cached or empty answer.
 `embedding.selected = llamacpp`; `vulkan usable true (loader true, icd false)`; `cuda usable false`;
 `rocm runtime_dll true, sdk_dir false, usable false`; `port_contract 2/16 reachable (8022, 8593)`.
 
+### G183. ERRATA to G175, and Phase A of the parent-crate port  [MEASURED]
+
+**Errata (G175 was wrong about their tree).** G175 said the laptop's packaged `TRM-Swarm-OS-v19-...`
+"advertises v20 for the same 19.1 code" and was "derived from a staging copy, not the working tree". The
+reconstructed base disproves that: its parent `Cargo.toml` reads **`version = "20.0.0"`** and its
+`main.rs` says **`v20.0.0-sovereign`** - internally consistent, and genuinely v20. This tree is
+`19.1.0`. So the mismatch is in the **directory names only** (a directory called v20 holds 19.1.0 code;
+a directory called v19 holds 20.0.0 code); neither code label is false. The correction does not soften
+G175's real finding - a hand-typed version string still cannot be trusted, and ours is now derived from
+the package version and paired with `build_commit` - but the accusation against their tree was wrong and
+is left visible rather than deleted.
+
+**Phase A: our unique modules, ported.** Comparing against **both** base directories (`src/` and
+`host_council_server/src/`) rather than the parent crate alone changed the count: **43** modules exist
+only in this tree, not 30. My first pass compared only against the parent `src/` and would have
+double-ported `ddr_scan`, which the base serves from `host_council_server/src/`.
+
+Copied into `base/trm_uefi_kernel/src/` (28 files; the rest already present or superseded):
+`k3_ternary`, `k3_ternary_sram`, `lexical_gate`, `cadence`, `resonance`, `evidence_index`,
+`local_inference`, `council_ssm_pipeline`, `topic_norm`, `arc_routes`, `bench`, `federation_probe`,
+`sram_fourier`, `platonic_wavelengths`, `hw_truth`, `k3_head`, `mcts_plan`, `aura_spectrum`,
+`apic_core_binding`, `memory_mapped_ipc`, `interrupt_stubs`, `unified_transistor_fabric`,
+`holographic_fabric`, `fractal_*`, `faceted_torus_ternary`, `quantum_drug_screen`, `rare_disease`,
+`text_extract`, `serial`, `float_math`, `smp_trampoline`, `fb_console`, `baremetal_transition`,
+`autonomous_*`, `federation_task_coordinator`, `federation_sync_upgrade`, `p2p_direct_route`,
+`spawn_subagent`, `hmac_sha256`.
+`lib.rs` was deliberately **not** copied: this tree's crate root declares a library target the base does
+not have, and copying it would redefine the base's crate shape.
+
+**Wire one, verify one.** Nothing is claimed as integrated that was not exercised. The base already
+answers `/voltage` (host_sensors) and `/system/voltage` (host_probe), so the HWiNFO reader was added as a
+**separate** module `hw_rails.rs` with its own route `/system/rails` rather than overwriting their
+semantics - two existing endpoints keep their own definitions and the measured rail is available next to
+them.
+
+**Divergence shape, for planning:** of 181 shared parent-crate files, 33 are identical and **148 differ**;
+this tree is substantially larger in **19** of them and the base is substantially larger in **97** - i.e.
+the base is ahead in most files, and this tree's value is concentrated, not spread.
+**Verified on the base (`target-d`, `:8028`):**
+
+```
+GET /system/rails
+  measured       : true
+  source         : HWiNFO64 shared memory (SM2)
+  v_core         : 1.44          (HWiNFO reading "Vcore")
+  v_soc          : 1.025
+  v_gpu          : 0.9118
+  psu_rails      : +12V 12.0758  +5V 5.06016  3VCC 3.28  VBAT 3.344
+  readings       : 413           voltage_readings 36
+```
+
+Cross-check from an independent implementation (`tools/hwinfo_sensors.py`, same moment):
+`CPU Core Voltage (SVI2 TFN) 1.4375` vs the kernel's `1.44` - agreement to 2.5 mV, on a rail that moved
+from 1.408 V earlier in the session while current rose to **79.5 A**. The value tracks load, which is what
+a live rail does and what a nominal constant cannot.
+
+Note on a lookalike: `v_gpu 0.9118` is the RX 6700 XT core rail, numerically near the **forbidden 0.9115**
+figure that must never be published as Phi_V. They are different quantities; the rail is measured, the
+Phi_V value remains forbidden.
+

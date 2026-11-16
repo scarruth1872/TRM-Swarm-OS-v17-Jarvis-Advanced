@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T17:42:12Z",
+  "audit_timestamp": "2026-11-16T17:47:44Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 79,
+    "empirical_confirmed": 80,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 79
+      "CONFIRMED": 80
     }
   },
   "articles": [
@@ -1908,6 +1908,18 @@
       ],
       "phoenix_audit_note": "Every port probed with a live connect; backend availability decided by runtime DLL plus toolchain directory plus env var, verified on a fresh build at :8027.",
       "finding": "Three classes of machine mismatch were cleared today, and each one was decided by a probe rather than a comment. The first was an embedding runtime the code assumed and the machine did not have: nine references pointed at a port that refuses connections, while a different port on the same machine happily serves the same embeddings, so the platform was quietly returning nothing where it could have been searching. The second was a subtler error of my own making: a probe reported that the AMD compute stack was available because a library was sitting in the system directory, and a second measurement showed that library ships with the display driver and there is no compiler or SDK behind it, which is exactly the shape of the nominal voltage rail this platform spent a year learning to stop trusting. The third was the largest: thirty nine hardcoded ports across seventeen distinct services, of which two answer on this machine, and one of them turns out to be a truncated number rather than a port at all. All of it now reports itself at runtime, so a missing service looks like a closed port instead of an empty answer."
+    },
+    {
+      "id": 263,
+      "section": "Substrate",
+      "title": "Article 263 - Two Directories, Two Labels, One Correction",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g183",
+        "docs/port/laptop-base/hw_rails.rs"
+      ],
+      "phoenix_audit_note": "Version claim re-measured from the base Cargo.toml and main.rs; unique-module count recomputed across both base directories; /system/rails verified live on :8028 against an independent Python reader.",
+      "finding": "A correction to my own record, and a count that changed when I looked properly. Yesterday I wrote that the other machine's packaged tree advertised a version number it did not have, and that it must have been built from a staging copy. The manifest on that tree says version twenty point zero point zero and its own status line agrees, so the tree is honestly labelled and it is my note that was false. What is actually crossed is the two directory names: the folder called twenty holds nineteen point one code, and the folder called nineteen holds twenty. That is a shipping mistake, not a lie, and the difference matters because a false accusation in a record is exactly the kind of error this platform exists to stop making. The second correction is arithmetic: I said thirty modules existed only in this tree, then compared against the folder I had been treating as the whole of the other tree and found forty three, because the other tree keeps a second source directory I had already forgotten about once. Copying on the strength of the lower number would have duplicated a module that was already there. One module was then wired and measured rather than assumed: the voltage reader now answers on the base with a live rail of one point four four volts, confirmed to within two and a half millivolts by an independent reader written in a different language."
     }
   ],
   "provenance_revision": {
