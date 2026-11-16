@@ -6965,3 +6965,31 @@ the remote verification result.
 2. Port 445 remains open to the same two addresses. With `:22` keyed and verified, SMB is now redundant
    attack surface and should be shut rather than scoped.
 
+### G173. v20 convergence shipped as a dual-run, not a cutover  [MEASURED]
+
+The laptop runs v19 from `Downloads`; this host runs v20. Two divergent kernels means every guard is
+written twice and they drift - which already happened once (the laptop's sync handler still reports
+`recorded_unauthenticated` while its gate verifies the token).
+
+**Sizing first, so the ship is honest:** full `git archive HEAD` = **529.2 MB**, of which almost all is
+assets and generated state the laptop has its own copies of. Code-only subset =
+`host_council_server` + `moe_router` + `tools` + `docs` = **2.1 MB compressed, 285 files**, and the
+release binary is **4.1 MB**. A 2,300x reduction by shipping code, not corpus.
+
+**Sent, hashes verified on both sides:**
+
+| artifact | bytes | sha256 | far side |
+|---|---|---|---|
+| `trm_v20_source.tar.gz` | 2,151,268 | `830fa76f...3268419` | identical |
+| `host_council_server.exe` (v20) | 4,210,688 | `55dd9f05...ca62149` | identical |
+
+**Why a dual-run:** the v20 binary honours `TRM_PORT`, so it can run on `:8023` **beside** v19 on `:8022`.
+That makes the migration a comparison instead of a leap - both kernels answer the same five endpoints,
+the differences get written down, and only then does anything get retired. Stopping v19 first would have
+made any data-path regression invisible until after the switch.
+
+Data-path risk named in advance: v20 anchors the kanban store on `data/turbo_memory_index_meta.json`
+(`main.rs:3199`) and reads `data/turbo_memory_index.jsonl` (`main.rs:2944`). The laptop's v19 tree has its
+own layout, so `/kanban` and `/memory` may return unmeasured - which is the correct answer to expect, and
+must not be papered over with a stub.
+

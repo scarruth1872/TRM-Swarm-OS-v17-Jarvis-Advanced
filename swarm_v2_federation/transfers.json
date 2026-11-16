@@ -44,6 +44,30 @@
     "interpreter_note": "the laptop's bare `python` is Python 2 and fails on annotations; `py -3` works"
    },
    "files_synced": 3
+  },
+  {
+   "at": "2026-11-16T15:22:29Z",
+   "direction": "desktop-mep4vqn -> nspiredfitness",
+   "purpose": "v20 convergence: source snapshot + prebuilt kernel for dual-run comparison",
+   "files": [
+    {
+     "path": "trm_v20_source.tar.gz",
+     "bytes": 2151268,
+     "sha256": "830fa76f9db7393a58e1a9c7f872c433e8fc9db28cc033bb5f59a540f3268419",
+     "contents": "285 files: host_council_server, moe_router, tools, docs (assets/state excluded)"
+    },
+    {
+     "path": "target/release/host_council_server.exe",
+     "bytes": 4210688,
+     "sha256": "55dd9f057864d591d4fd1a7e168d0ddb4ff3504de2deed1365d497221ca62149",
+     "note": "v20 binary; honours TRM_PORT so it can run beside v19 for comparison"
+    }
+   ],
+   "remote_verification": {
+    "method": "certutil -hashfile SHA256",
+    "result": "both matched byte-for-byte"
+   },
+   "files_synced": 2
   }
  ]
 }
