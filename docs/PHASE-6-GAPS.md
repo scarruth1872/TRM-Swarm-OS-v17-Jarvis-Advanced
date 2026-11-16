@@ -7416,3 +7416,69 @@ Note on a lookalike: `v_gpu 0.9118` is the RX 6700 XT core rail, numerically nea
 figure that must never be published as Phi_V. They are different quantities; the rail is measured, the
 Phi_V value remains forbidden.
 
+### G184. Phi_V on the base: a live rail, an omitted rail, and a metric that saturates  [MEASURED]
+
+Both remaining queue items executed: the base's Phi_V now reads the measured rail, and the three parent-crate
+files where this tree is a genuine superset were ported.
+
+**1. `host_probe::phi_v` rewired.** It had two defects of the class this campaign exists to remove:
+
+- the DDR term was `(DOCTRINE_RAIL_DDR_NOMINAL_V / DOCTRINE_RAIL_DDR_NOMINAL_V)` - **a nominal divided by
+  itself**, structurally 1.0 while looking like a rail product. This board's HWiNFO sensor set exposes no
+  DIMM rail, so the term is now omitted **and named** in `rail_omitted` rather than faked to 1.0.
+- V_core came from `shadow_bios::core_vid_volts()`, i.e. the voltage the CPU *requested*. It now prefers
+  the **measured SVI2 rail** from `hw_rails`, falls back to VID, then to nominal, and reports which one
+  answered in `v_core_source`.
+
+Live on `:8029` (`target-e`):
+
+```
+voltage_phi_v  : 1.0            phi_v_raw : 1.3271      saturated : true
+v_core         : 1.44           v_core_source : HWiNFO SVI2 Vcore (measured)
+rail_coverage  : ["v_core"]     rail_omitted  : {v_ddr: no DIMM rail ... term omitted}
+```
+
+**The finding is the saturation.** `(1.44 / 1.25)^2 = 1.327` on its own, so any ordinary operating point
+pins the metric at its 1.0 ceiling and it stops discriminating between healthy states. That was invisible
+before because the clamp happened silently inside `phi_v()`. `phi_v_raw` and `saturated` are now published,
+so a saturated metric cannot pass for a normal one.
+
+**2. A second fake-fallback, found while reading the output.** The route also reported
+`host_clock_mhz 4000.0` and `host_mem_pct 0.0`. Measured cause: `host_telemetry()` falls back from `wmic`
+(gone on Windows 11) to a PowerShell expression it builds as
+`(Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory,TotalVisibleMemorySize`, which PowerShell
+rejects - `Missing expression after ','` - so the whole read returned `None` and Phi_V used its **reference
+clock and 0% memory**, both of which then appeared on the route as though measured. Fixed to
+`(Get-CimInstance …) | Select-Object … | Format-List`, whose `Name : value` lines parse correctly, and
+`telemetry_source` now states plainly when the reference fallback was used.
+
+**3. Parent-crate port, Phase B: the true supersets only.** Function-level comparison of the 19 files
+where this tree is larger showed that **16 of them are interleaved** - each side holds functions the other
+lacks - so copying those would regress the base. Three are clean supersets (nothing in the base is missing
+from ours) and were ported:
+
+| file | lines | added | missing vs base |
+|---|---|---|---|
+| `trm7m` | 1635 (+1293) | `matvec_tv`, `matvec_fp32`, `matvec_accum_tv`, `has_avx512`, `f32_from_tv` | **0** |
+| `turbovec` | 241 (+98) | `quantize_158`, `dequantize_158`, `pack_4_trits`, `code_to_trit` | **0** |
+| `telemetry_fabric` | 172 (+127) | `publish`, `subscribe`, `get_fabric_metrics`, `oldest_frame_id` | **0** |
+
+**Verified:** `target-f` builds clean with all three compiled (`Finished in 1m 15s`).
+
+**Not ported, deliberately:** `main` (+965, 6 of its functions missing from ours), `turbovec_memory` (+889,
+49 added / 4 missing), `global_memory` (+723, 37/9), `self_healing` (+361, 20/12), `agent_mesh` (+312,
+33/6), `artifact_pipeline` (+271, 34/13), `kernel_instructions` (+214, 10/11), and the rest - these need
+per-function merges, not file copies.
+**Verified after the telemetry fix (`target-g`, `:8030`):**
+
+```
+voltage_phi_v : 1.0      phi_v_raw : 1.0242    saturated : true
+v_core        : 1.44     v_core_source : HWiNFO SVI2 Vcore (measured)
+host_clock_mhz: 3800.0   host_mem_pct  : 37.5207
+```
+
+Independent cross-check, same machine: `CurrentClockSpeed` **3800**; OS memory
+`FreePhysicalMemory 20,922,332` of `TotalVisibleMemorySize 33,461,796` = **37.47 %** used, against the
+kernel's 37.52 % (a sampling gap of two PowerShell round-trips). Before the fix the same route reported
+`4000.0` and `0.0` - the reference fallback, wearing the appearance of a measurement.
+

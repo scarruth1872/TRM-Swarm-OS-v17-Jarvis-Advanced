@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T17:47:44Z",
+  "audit_timestamp": "2026-11-16T17:54:43Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 80,
+    "empirical_confirmed": 81,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 80
+      "CONFIRMED": 81
     }
   },
   "articles": [
@@ -1920,6 +1920,19 @@
       ],
       "phoenix_audit_note": "Version claim re-measured from the base Cargo.toml and main.rs; unique-module count recomputed across both base directories; /system/rails verified live on :8028 against an independent Python reader.",
       "finding": "A correction to my own record, and a count that changed when I looked properly. Yesterday I wrote that the other machine's packaged tree advertised a version number it did not have, and that it must have been built from a staging copy. The manifest on that tree says version twenty point zero point zero and its own status line agrees, so the tree is honestly labelled and it is my note that was false. What is actually crossed is the two directory names: the folder called twenty holds nineteen point one code, and the folder called nineteen holds twenty. That is a shipping mistake, not a lie, and the difference matters because a false accusation in a record is exactly the kind of error this platform exists to stop making. The second correction is arithmetic: I said thirty modules existed only in this tree, then compared against the folder I had been treating as the whole of the other tree and found forty three, because the other tree keeps a second source directory I had already forgotten about once. Copying on the strength of the lower number would have duplicated a module that was already there. One module was then wired and measured rather than assumed: the voltage reader now answers on the base with a live rail of one point four four volts, confirmed to within two and a half millivolts by an independent reader written in a different language."
+    },
+    {
+      "id": 264,
+      "section": "Substrate",
+      "title": "Article 264 - The Metric Was Pinned At Its Own Ceiling",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g184",
+        "docs/port/laptop-base/host_probe.rs",
+        "docs/port/laptop-base/trm7m.rs"
+      ],
+      "phoenix_audit_note": "Phi_V rewired to the measured SVI2 rail and verified live at :8029/:8030; saturation exposed as phi_v_raw + saturated; clock/memory cross-checked against independent PowerShell reads.",
+      "finding": "Two more numbers were pretending to be measurements. The first was a rail term that divided its own nominal by itself, which can only ever produce one, so a fourth of the formula was decoration. The second was the clock and memory terms: the code tried a command that no longer exists on modern Windows, fell back to a query it had written with a syntax error, and when that failed used a reference clock and zero memory, both of which then appeared on the status route as though they had been read from the machine. Both are now real, and both agree with an independent query run by hand. But the more interesting result is what appeared once the numbers were honest: the composite metric saturates. A measured rail of one point four four volts against a nominal divisor of one point two five squares to one point three three on its own, so any ordinary operating point pushes the whole figure past one and it clips at its ceiling. The metric was not reporting health; it was reporting that the machine was switched on. Publishing the unclamped value alongside the clamped one is the difference between a number that saturates and a number that lies."
     }
   ],
   "provenance_revision": {
