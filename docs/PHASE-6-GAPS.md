@@ -7140,3 +7140,39 @@ things this tree does better - compile-time `build_commit` provenance, `KERNEL_V
 version, `seeded_count`/`seed_origin` on the board, and the honesty fixes in `cadence`/`lexical_gate`.
 No cutover until that decision is made; nothing was retired.
 
+### G178. Option 1 chosen: their 121-module tree is canonical. Port inventory measured  [MEASURED]
+
+Direction decided by the user. The base is the laptop's tree; this tree's additions port forward. Rather
+than guess at compatibility, the base was **reconstructed locally** and its build closure resolved.
+
+**The base is not one crate.** `host_council_server/Cargo.toml` declares **32 sibling path crates** under
+`wsl_crates/trm-rust/` (`swarm-k3`, `swarm-ssm`, `swarm-instella`, `swarm-turbovec`, `swarm-council`,
+`swarm-drug`, `swarm-deepdta`, `swarm-agents`, `swarm-brain`, `swarm-nand`, `swarm-jsonl`... ) plus
+`rusqlite` with `bundled` (compiles SQLite from source) and the parent `trm_uefi_kernel` crate (189 files).
+A whole-directory `scp` timed out at 420 s because their `target/` directories sit inside the tree; fetching
+`Cargo.toml` + `src` per crate solved it (32 crates, seconds). Transitive crates (`swarm-proto`, `swarm-agents`)
+only appear when cargo resolves, so the closure is being resolved by iterating build -> "no matching package
+named X" -> fetch X.
+
+**Port inventory of this tree's 19 unique modules, measured against their parent crate:**
+
+| verdict | modules |
+|---|---|
+| **new, port clean** (15) | `arc_routes`, `bench`, `cadence`, `council_ssm_pipeline`, `evidence_index`, `federation_probe`, `k3_ternary`, `k3_ternary_sram`, `lexical_gate`, `local_inference`, `platonic_wavelengths`, `resonance`, `sram_fourier`, `topic_norm`, `voltage` |
+| **identical, skip** (1) | `k3_logic` (sha `7ee55757f747` on both) |
+| **divergent, review** (3) | `sram_pattern_computer` (ours 202L / theirs 902L), `time` (ours 15L shim / theirs 51L no_std TSC), `turbovec` (ours 245L / theirs 143L) |
+
+All 15 new modules are self-contained: no `crate::` dependency outside the port set, and the only external
+names they need are `serde_json`, `alloc` and the parent crate.
+
+**`turbovec` is not a tie - ours contains a real fix.** Their loop is `for i in 0..DIM`; ours is
+`let n = DIM.min(v_rec.len()).min(self.h_state.len())`, with the comment recording why:
+*"Hardcoding DIM here indexed v_rec[i] past its end whenever a caller passed a shorter vector, which panicked
+('len is 64 but the index is 64') and killed the request."* Ours also carries a 101-line
+`TurboVec158Quantizer` (balanced-ternary pack/unpack, 4 trits/byte) that theirs lacks. So the `turbovec`
+port is: apply the bounds fix to their file, then add the quantizer.
+
+**The divergence is at kernel level, not module level:** the parent crate shares 181 files, of which
+**149 differ** and **30 exist only here**. Porting 15 modules is the tractable slice; reconciling 149
+divergent kernel files is a separate campaign and must not be glossed as "done" once the modules land.
+
