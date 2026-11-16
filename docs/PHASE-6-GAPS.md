@@ -7700,3 +7700,42 @@ measured`, `phi_v 0.9145`, and `/council/status`, `/kanban/stats`, `/memory/stat
 **Still owed:** behavioural tests. Superset is a statement about function names, not about agreement - the
 same trap the body-diff triage caught at 70 "equivalent" files that were mostly stubs.
 
+### G190. Behavioural parity measured across both builds - and a test that nearly lied  [MEASURED]
+
+Grafting proved function *names* matched; it said nothing about behaviour. So both builds now answer the same
+probe: `GET /parity/probe` returns the values each build computes for fixed inputs, and the two outputs are
+diffed. The probe file is identical in both trees except one path prefix (`crate::` vs
+`trm_uefi_kernel::`), so a difference is a behaviour difference.
+
+**The first version produced perfect parity and proved nothing.** It fed `"critical"`, `"high"`, `"normal"`
+to `base_priority` and got **10** for every one; `classify_task("Deploy the GPU kernel")` returned **"low"**.
+Both builds agreed on every one of 37 keys - because the vectors were **outside the domain**: `base_priority`
+keys on `HEALTH_CHECK` / `MEMORY_PRUNING` / …, and `classify_task` on keywords like `analyze` / `audit` /
+`code`. Every input fell through to the default arm, so the diff compared two constants. A parity test that
+never reaches the code is worse than no test: it reports success.
+
+Fixed by choosing in-domain vectors **and asserting sensitivity** - a group whose values are identical across
+its own vectors is flagged, because that means the input never reached the branch.
+
+**Result, 40 keys, second run:**
+
+| group | values | varied |
+|---|---|---|
+| `base_priority` | 30, 50, 80, 60, 40, 10, 10 | yes |
+| `classify_task` | low, low, high, low, low, low, low, high | yes |
+| `usage_window` | LOW, CRITICAL, NORMAL, LOW, NORMAL, HIGH, CRITICAL | yes |
+| `window_adjustment` | -50, -20, 50, 10, 0 | yes |
+| `dynamic_priority` | 70, 150, 0 | yes |
+| `vote_score` | 15, 10, 20 | yes |
+| `compute_target` | gpu_model, cpu_cores | yes |
+| `sanitize_identifier` | "", "Agent 007 / ops!", "Devo", "kapha-und-zeichen" | yes |
+
+**40 / 40 identical between the two builds, 0 differing, 0 constant groups.** Every arithmetic relation
+checks out by hand: `100 + LOW_USAGE(50) = 150`; `100 − CRITICAL(50) + overdue min(20) = 70`; `10 − 50`
+clamps to `0`; role-present scores 10 above role-absent; `history_len` capped at 10.
+
+**Scope stated honestly:** this covers `task_arbiter` and `expert_registry`, the two modules both trees can
+expose in a release build. The base cannot run `cargo test` at all - its test profile references
+`crate::hmac_sha256`, `crate::turbovec`, `crate::float_math` and an asset `assets/parity_vectors.f32` that
+were never shipped - which is why the probe is a route rather than a test binary.
+

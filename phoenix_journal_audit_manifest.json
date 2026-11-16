@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T18:40:26Z",
+  "audit_timestamp": "2026-11-16T18:52:11Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 86,
+    "empirical_confirmed": 87,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 86
+      "CONFIRMED": 87
     }
   },
   "articles": [
@@ -1999,6 +1999,19 @@
       ],
       "phoenix_audit_note": "Closure tool validated against a known-pass and a known-fail module; 8 modules grafted and compile-verified; contract and gate numbers recomputed from both trees.",
       "finding": "A tool was built that answers, before any code moves, whether a function can survive the journey, and it was checked against two modules whose outcomes were already known, one that had compiled and one that had not. The tool agreed with both. It then enabled a much larger operation and the compiler rejected it six times, each time for a different reason, and each reason is now a rule: never put a comment above the file's own documentation; a method is not a function even when it looks like one, because it carries a receiver hidden at the end of its parameter list; a function that names a constant needs the constant to travel with it; a pattern that permits indentation will match things nested inside other things; an import added for a graft may already exist under another spelling; and a value that is a borrowed string where the destination expects an owned one must be adapted at the boundary rather than by changing the destination. After the sixth attempt the build passed and thirty nine modules remain instead of forty six. Seven of the new ones are now supersets by the contract's own count, which means every function the other side has is present here, and not one of them has been behaviourally tested. That distinction is the next honest piece of work, not this one."
+    },
+    {
+      "id": 270,
+      "section": "Verification",
+      "title": "Article 270 - The Test That Agreed With Itself",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g190",
+        "docs/port/laptop-base/parity_probe.rs",
+        "data/parity_run.json"
+      ],
+      "phoenix_audit_note": "Both builds served /parity/probe; 40 keys compared; second run 40/40 identical with 0 constant groups. First run's 37/37 agreement was on out-of-domain vectors and is recorded as a failure of test design.",
+      "finding": "A parity probe was written into both builds so that behaviour, not function names, could be compared. Its first run returned perfect agreement on thirty seven keys, and that result was worthless. The inputs had been chosen outside the domain of every function under test: a priority lookup expecting names like HEALTH_CHECK received the word critical and fell through to its default arm, returning ten every time; a classifier looking for the word audit received sentences about deploying kernels and answered low every time. Two builds returning the same constant agree about nothing. The fix was not more tests but a different question: each group of vectors now has to produce more than one distinct answer, because a constant answer means the input never arrived. With in-domain vectors the same twenty minutes of work produced forty keys, all identical across the two builds, every group varying, and every arithmetic relation checkable by hand against the source. The lesson is recorded because it is the same one this whole campaign keeps teaching: an agreement test agrees with whatever you feed it, including nothing."
     }
   ],
   "provenance_revision": {
