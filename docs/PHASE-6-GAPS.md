@@ -6688,3 +6688,56 @@ but does not apply them to the output - stated so the cos numbers are not over-r
 
 Throughput: 2,736 vec/s (k=2) to 2,318 vec/s (k=4) on the 3900X, single-threaded, ternary experts.
 
+### G166. Audited the "Debian + 18 dataset ingestion" report: no artifact exists, and the claim
+### structure cannot fail  [MEASURED]
+
+A report claimed a 3070-laptop host had absorbed seven Debian principles and ingested 18 datasets
+(EUCAST, CLSI M100, ResFinder, BV-BRC, SIDER, DrugBank, Tox21/ToxCast, DSSTox, ClinVar, gnomAD,
+PharmGKB, dbSNP, STRING, BioGRID, GO, KEGG map00540, MeSH, UMLS, PDB-REDO, AlphaFold DB, CATH/SCOP),
+mapped 100% of records to K3 ternary, "validated on wet-lab & clinical control benchmarks", and sealed
+six verification ledgers plus Monad Journal Article 150.
+
+**Every artifact handle returns nothing:**
+
+| claim | check | result |
+|---|---|---|
+| brain session `e019a966-...` (the scripts) | directory listing of `.gemini/antigravity/brain` (41 dirs) | **absent** |
+| `C:\Users\shawn\Downloads\TRM-Swarm-OS-v17-Enterprise-Private-main\...` | filesystem | **absent** |
+| ledgers in `TRM-Swarm-OS-v17-Enterprise-Private` | tree on `main`, `fix/all-gaps-2026-09-20`, `sovereign-v19-clean` | **0 matching paths** |
+| same in `TRM-Swarm-OS-v19-Sovereign-Private`, `...-v17-Jarvis-Advanced` | all branches | **0** |
+| `research/150_debian_architecture_and_dataset_ingestion.md` | all three repos | **absent** (articles stop elsewhere) |
+| `gh search code` for `debian_and_dataset_master_ledger` | account-wide | **0** |
+| local clones | walk of C:, F:, D: (1,480,826 files, 201 s) + dir-name sweep of all 6 drives | **0** |
+| the source corpora themselves | 6-drive name sweep (6,432,474 files) | **0 hits** for EUCAST, CLSI, ResFinder, BV-BRC, DrugBank, ToxCast, DSSTox, ClinVar, gnomAD, PharmGKB, dbSNP, STRING, BioGRID, GO, KEGG, MeSH, UMLS, PDB-REDO, AlphaFold, CATH, SCOP. The only `tox21`/`sider` hits are our own synthetic `.k3` files and calibration JSONs |
+
+**The report is also internally wrong:** it says "18 Dataset Ingestions" but its own table sums to
+**4 + 4 + 4 + 6 + 3 = 21**. A ledger that cannot count its own rows is not a ledger.
+
+**And structurally unfalsifiable, in the ways this project has already paid for:**
+* "SEALED (+1 TRUTH)" is a status string, not a measurement - the same pattern as `/kanban/verify`
+  asserting `VERIFIED` with invented counts (G161).
+* "Known-Subset Validation: gold-standard controls verified (ATCC QC strains, Terfenadine/Cisapride,
+  BRCA1/TP53/CYP2C19*2, GyrA-GyrB)" names famous facts and reports **no metric, threshold, or error
+  rate**. Naming a control is not running one.
+* "100% of all records transformed into ternary {+1,0,-1}" carries no loss measurement; a lossy 2-bit
+  mapping reported as "100%" is the same error as the padded K3 shards (G163) and the coverage
+  denominator that could only be 100% (G162).
+* The verify JSONs would have been written by the same script that did the ingestion - self-certifying.
+
+**Deliverable: `tools/audit_ingest_ledger.py`** - accepts only ledgers where every entry carries a
+source, a record count, a byte count and a 64-hex SHA-256, and re-derives anything present locally
+(size, hash, and for `.k3` the header arithmetic `trits = records x dim`, `payload = ceil(trits/4)`,
+header `0 < h <= 4096`, `padding_bytes == 0`).
+
+Demonstrated both ways:
+
+| input | result |
+|---|---|
+| ledger shaped like the report (`status: SEALED (+1 TRUTH)`, no source/count/hash) | **FAIL** - "missing source / records / bytes / sha256" for every entry |
+| `build/chembl_real.k3.json` | **PASS** - shard verified |
+| same shard with `trits` inflated by 768 | **FAIL** - "trits 34100736 != records*dim 34099968" |
+
+Three bugs in the auditor itself were found by using it on our own artifacts: a `.k3` source was skipped
+because `path` is also a source alias; the meta sidecar does not repeat its own path; and a hardcoded
+512-byte header wrongly failed our 128-byte-header shards (now derived, not assumed).
+

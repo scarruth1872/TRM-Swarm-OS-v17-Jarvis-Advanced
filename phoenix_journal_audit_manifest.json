@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T13:31:51Z",
+  "audit_timestamp": "2026-11-16T13:39:04Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 73,
+    "empirical_confirmed": 74,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 73
+      "CONFIRMED": 74
     }
   },
   "articles": [
@@ -1831,6 +1831,19 @@
       ],
       "phoenix_audit_note": "Router built and compiled as a native Rust binary; four configurations measured on 4,000 real fabric vectors; dense full-mixture reference computed on the same inputs; two harness bugs found and corrected with the numbers regenerated.",
       "finding": "The doctrine said to absorb the sparse mixture of experts from an outside architecture, and the record shows the swarm had already approved doing so three months earlier, unanimously, in a deliberation whose every argument was a template with the proposal title dropped into it. No line of code existed. What exists now is a router written in Rust that computes a gate, picks the top few experts, bounds each expert by a capacity, and reports the load balance loss, with expert weights held at minus one, zero and plus one. It runs on the real memory fabric rather than on invented vectors. The measurement answers the question the doctrine never asked: does discarding most of the experts lose the answer? With a gate nobody trained, yes, badly, and the gate is uniform, which means the router is choosing by index rather than by content, and four tokens in five overflow their expert. With a gate fitted to the data, choosing four experts of eight keeps ninety two per cent of what computing all eight would produce while spending half the arithmetic, and choosing only two keeps seventy seven per cent, which is not enough. Two faults were found in the measuring harness itself, a temperature that flattened the gate, and a capacity test that compared a running total against a per batch limit so that every row after the limit looked like an overflow; both were corrected and the numbers regenerated. Absorption, done this way, produces a number that can fail."
+    },
+    {
+      "id": 257,
+      "section": "Governance",
+      "title": "Article 257 - A Ledger That Cannot Count Its Own Rows",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g166",
+        "tools/audit_ingest_ledger.py",
+        "build/chembl_real.k3.json"
+      ],
+      "phoenix_audit_note": "Six-drive name sweep, an account-wide code search, tree listings of three repositories on every branch, and a 1.48M-file local walk were used to test each handle; the auditor was demonstrated failing a prose ledger and passing a genuine shard.",
+      "finding": "A report arrived describing eighteen datasets ingested and validated on a laptop, with seven architectural principles absorbed and six verification ledgers sealed. None of it could be found. The session that supposedly wrote the scripts is not on this machine, the directory the links point to does not exist, the repositories contain no file matching those names on any branch, a code search across the whole account returns nothing, and the datasets themselves were never on the disk, not one of the twenty one named sources. The report also miscounts its own table, claiming eighteen ingestions where the waves sum to twenty one. More troubling than the missing files is the shape of the claims. A status string reading sealed does not measure anything, and this project has already been burned once by a verifier that asserted success with invented counts. Naming well known control compounds is not running a control, and declaring that every record mapped to ternary without reporting what the mapping lost is the same error as the shards that were padded to a target size. What has been built in response is a checker that a ledger of prose cannot pass: every entry must name its source, its record count, its byte count and a hash, and anything present on disk has its size, its hash and its header arithmetic recomputed. It was shown failing a forged ledger and a corrupted shard, and passing genuine ones. A claim that cannot fail is not evidence, and now there is a tool that makes it fail."
     }
   ],
   "provenance_revision": {
