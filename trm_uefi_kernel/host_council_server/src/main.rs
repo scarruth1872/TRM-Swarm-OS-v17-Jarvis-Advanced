@@ -4343,7 +4343,8 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
     } else if method == Method::Get && (url == "/health" || url == "/health/") {
         response_json = json!({
             "status": "HEALTHY",
-            "kernel": "Native Rust Sovereign Kernel v19.001",
+            "kernel": format!("Native Rust Sovereign Kernel {}", KERNEL_VERSION),
+            "build_commit": env!("TRM_BUILD_COMMIT"),
             "python_active": false,
             "monad_anchor": "0x4D4F4E4144000001",
             "uptime_seconds": process_uptime_secs(),
