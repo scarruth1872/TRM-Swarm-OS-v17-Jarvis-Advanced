@@ -68,6 +68,32 @@
     "result": "both matched byte-for-byte"
    },
    "files_synced": 2
+  },
+  {
+   "at": "2026-11-16T16:55:32Z",
+   "direction": "desktop-mep4vqn -> nspiredfitness",
+   "purpose": "corrected v20 tree: buildable source + binary with version provenance",
+   "files": [
+    {
+     "path": "trm_v20_source_v5.tar.gz",
+     "bytes": 18874368,
+     "sha256": "ff0fcbc7f3d6681513089ebe68b943e4fab40f181f7bc1885001690ee4db38d4",
+     "remote_match": true,
+     "note": "507 entries; includes the three untracked include_bytes! assets; build-tested clean here"
+    },
+    {
+     "path": "host_council_server_v1910_9aabc88.exe",
+     "bytes": 4210688,
+     "sha256": "041312d424039aed5dbb659b569efb23489c309687b18ab8370d24162d258777",
+     "remote_match": true,
+     "note": "renamed on the far side: the first scp failed with 'dest open: Failure' because the running :8023 instance held an exclusive lock on host_council_server.exe"
+    }
+   ],
+   "remote_verification": {
+    "method": "certutil -hashfile SHA256",
+    "result": "both matched"
+   },
+   "files_synced": 2
   }
  ]
 }

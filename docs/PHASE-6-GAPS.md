@@ -7108,3 +7108,35 @@ staged and hashed locally - no claim of delivery is made:
 **Lesson:** a version string is a claim; a commit captured at build time is evidence. And a rebuild that
 completes in 0.14 s has told you it did not rebuild.
 
+### G177. Transfer delivered - and the migration reversed direction  [MEASURED]
+
+**Delivered and hash-verified on the far side:**
+
+| artifact | sha256 | far side |
+|---|---|---|
+| `trm_v20_source_v5.tar.gz` (507 entries) | `ff0fcbc7...db38d4` | identical |
+| `host_council_server_v1910_9aabc88.exe` | `041312d4...258777` | identical |
+
+The first `scp` of the binary failed with `dest open "C:/Users/shawn/trm_incoming/host_council_server.exe": Failure`
+- not an ACL problem: **the running `:8023` instance holds an exclusive lock on its own image**, exactly
+as `cargo build` fails on this host while `:8022` runs. Fixed by shipping a versioned filename rather than
+fighting the lock.
+
+**Then the endpoint comparison was taken seriously.** `/k3/stores` answers 200 with **10 turbovec stores**
+on the laptop (`fabric` 199,218 vectors / 768 dim / 2 bits / 200 B per vector, plus `nomic` 44.2 MB) and
+404 here. That is not one missing route - it is the top of a module-count difference:
+
+| | modules in `host_council_server/src` |
+|---|---|
+| laptop tree (`TRM-Swarm-OS-v19-...`) | **121** |
+| this tree | **20** |
+| present only on the laptop | **120** (`agentq_bridge`, `council_personas`, `chat_handlers`, `aura_*`, `arbiter_routes`, `k3_retrieval` ...) |
+| present only here | **19** (`arc_routes.rs, bench.rs, cadence.rs, council_ssm_pipeline.rs, evidence_index.rs, federation_probe.rs` ...) |
+
+**Conclusion, stated plainly: this tree is the smaller one.** "Migrate the laptop to v20" would have
+deleted 57 modules and an endpoint serving 199,218 vectors in order to standardise a version string.
+The correct direction is the reverse: take the laptop's fuller 19.1 tree as the base and port forward the
+things this tree does better - compile-time `build_commit` provenance, `KERNEL_VERSION` tied to the package
+version, `seeded_count`/`seed_origin` on the board, and the honesty fixes in `cadence`/`lexical_gate`.
+No cutover until that decision is made; nothing was retired.
+
