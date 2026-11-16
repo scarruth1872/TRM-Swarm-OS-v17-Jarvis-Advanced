@@ -13,6 +13,7 @@ use serde_json::json;
 mod voltage;
 mod parity_probe;
 mod orphan_probe;
+mod adopt_probe;
 // The scanner lives in the KERNEL (trm_uefi_kernel/src/ddr_scan.rs) and is
 // compiled into the bare-metal image as well as this host service. One source
 // file, so the two cannot drift into disagreeing about what is dangerous.
@@ -4348,6 +4349,9 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
 
     } else if method == Method::Get && url == "/orphan/probe" {
         response_json = orphan_probe::run();
+
+    } else if method == Method::Get && url == "/adopt/probe" {
+        response_json = adopt_probe::run();
 
     } else if method == Method::Get && (url == "/health" || url == "/health/") {
         response_json = json!({

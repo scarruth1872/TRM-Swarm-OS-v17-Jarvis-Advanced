@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T19:12:40Z",
+  "audit_timestamp": "2026-11-16T19:24:50Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 90,
+    "empirical_confirmed": 91,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 90
+      "CONFIRMED": 91
     }
   },
   "articles": [
@@ -2051,6 +2051,19 @@
       ],
       "phoenix_audit_note": "All 30 declared at crate root and built; 27 compiled (Finished 35.76s), 3 failed with named missing symbols. Capabilities checked against published oracles (SHA-256/HMAC vectors, floor(pi/4*sqrt n), std math) not only against the other build. Cross-build probe: 38/39 identical; the one difference shown to be the function's own time budget by four runs on a single binary.",
       "finding": "Thirty files that no build had ever read were declared and compiled, and twenty seven of them turned out to be real working code: a dependency free SHA-256 that reproduces the published test vectors and the RFC 4231 HMAC vectors exactly, a beacon that signs and verifies and rejects a forged key, float math accurate to the sixteenth decimal place, a search that respects the closed form for optimal iteration count, a text extractor that works on its actual grammar and correctly refuses malformed input, and a planner that returns the same tree twice. Three were broken in a way no amount of tidying would hide: they call functions that do not exist in the modules they name. The most useful shock came afterwards, when the same twenty seven were looked for on this machine and twenty six were already there, already declared, already compiled and shipping; the canonical tree was the one that had left them out. Only one value differed between the two builds across thirty nine checks, and four runs of a single binary explained it as the function's own clock. The whole exercise cost a morning and changed the picture: what looked like missing features were features running on the wrong side of a fork, and what looked like dead weight was three genuinely broken files among twenty seven good ones."
+    },
+    {
+      "id": 274,
+      "section": "Verification",
+      "title": "Article 274 - The Dependencies Were the Stale Thing",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g194",
+        "trm_uefi_kernel/host_council_server/src/adopt_probe.rs",
+        "data/orphan_capability.json"
+      ],
+      "phoenix_audit_note": "Three modules tested here: Kleene truth table 9/9, CAM hit/miss/ratio hand-checked, spawn plan determinism and ids; hw_truth compile-only. Base rebuilt with all 30 declared, 0 errors. Function-set comparison before copying: 52/10/3 theirs-only functions protected from deletion.",
+      "finding": "Three files had been set aside as broken, and the reason they were broken was not in them. They called functions that existed nowhere in the tree that rejected them - and existed in this one. The dependency had moved on one side and not the other, so the file looked rotten while it was only early. Testing them took four attempts because the tests kept fooling themselves: a conjunction that writes in place was measured on a buffer a previous case had already overwritten, and the third row of a truth table came out wrong until each case was given its own memory. With that fixed the nine ternary cells all matched their definition, the content-addressable memory hit and missed where it should, the hit ratio checked out by hand against five lookups, and a spawn planner produced the same identifier twice and a different one for a different role while stating plainly that it only plans and never executes. The push that followed could not be a copy: the three dependency files were interleaved, one of them holding fifty two functions the other side did not have, so the fix was to carry across the three missing symbols and nothing else, and to add a wrapper rather than change a signature that two callers depended on in different shapes."
     }
   ],
   "provenance_revision": {

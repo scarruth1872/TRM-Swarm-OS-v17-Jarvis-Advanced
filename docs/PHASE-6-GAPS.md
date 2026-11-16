@@ -7858,3 +7858,56 @@ MCTS deterministic.
 (repair against the current `microkernel_spawner` / `sram_pattern_computer`, or delete); and pushing the base
 tree's newly-wired 27 modules to the laptop, since the fix so far exists only in the scratch copy here.
 
+### G194. All three "rotten" modules are live here; the base's dependencies were the stale thing  [MEASURED]
+
+G193 left three modules out as repair-or-delete. The question asked was whether they are still needed - so
+each was tested rather than judged by the error text.
+
+**The symbols they import do not exist on the base, but they do exist here:**
+
+| module | import it failed on | base | this machine |
+|---|---|---|---|
+| `k3_ternary_sram` | `sram_pattern_computer::pattern_tcam_match` | **absent** (52 other functions present) | `pattern_tcam_match(&[i8],&[i8],&[u8]) -> bool` |
+| `spawn_subagent` | `microkernel_spawner::make_subagent_id`, `continuum_function_for` | **absent** (10 other functions present) | both present |
+| `hw_truth` | `nand_fs::nand_status(image_handle, bs)` | takes **1** argument | takes **2** |
+
+So the three modules are not rotten: **the base's copies of their dependencies are older.** Here they compile -
+`pub mod hw_truth;` added to `lib.rs`, build `Finished 39.42s`, 0 errors.
+
+**Behaviour tested on this machine (`GET /adopt/probe`):**
+- **Kleene K3 conjunction, full 3x3 truth table, 9/9 correct** against the min rule: `FALSE∧x=FALSE`,
+  `TRUE∧x=x`, `UNKNOWN∧TRUE=UNKNOWN`, `UNKNOWN∧UNKNOWN=UNKNOWN`.
+- CAM: `store_entry("alpha",1,0.9)` → `lookup` returns `Some((1,0.9))`; unknown key → `None`;
+  `cam_lookup` hit 1 / miss 0; `cam_hit_ratio` 0.6 = 3 hits of 5 lookups (hand-checked).
+- Ternary CAM mask: exact match `true`, wildcard-masked match `true`, mismatched `false`.
+- `store_pattern([1,-1,0])` → `stored()=3`, `utilization=2/1024=0.001953125` (zero is UNKNOWN, correctly not
+  counted), `bypass_over_stored()` → `trit -1, confidence 0.333, ambiguity 0.333`.
+- Spawn planner: `sub_devo_000007` from `("Devo", 7)`; same inputs → identical plan; distinct roles → distinct
+  ids; `find(hit)=true`, `find(miss)=false`; `len=3`; note is `// MANUAL: actual process spawn is UEFI/host
+  handoff` - it plans and says so.
+- `hw_truth`: **compiles only.** Its `measure()` takes `*mut efi::BootServices`; there is no UEFI boot on this
+  box (Ring-0 unavailable), so runtime evidence is not claimed.
+
+**A probe bug, caught by reading the source (third of its kind this session).** `k3_conjunction` is **in
+place**, so my first run reused one bank: the FALSE pass overwrote the plane before the UNKNOWN pass read it,
+producing `[-1,-1,-1]` where `[0,-1,0]` was expected. The code was right; the probe measured its own
+mutation. Re-run with a fresh bank per cell: 9/9.
+
+**Verdict: keep all three.** Their capability is present nowhere else (`pattern_tcam_match` is the only CAM
+matcher; the spawn planner is the only id/role-routing plan producer; `hw_truth` is the only boot-panel
+measurement module).
+
+**The push had to be function-level, not file-level.** Comparing function sets before copying:
+`sram_pattern_computer` **interleaved** (theirs-only 52, ours-only 8), `microkernel_spawner` **interleaved**
+(10/15), `nand_fs` **interleaved** (3/0). Copying our files over theirs would have deleted 52 working
+functions to fix an import. Instead the base received exactly what it lacked:
+- `pattern_tcam_match` appended to `sram_pattern_computer.rs`;
+- `make_subagent_id` + `continuum_function_for` appended to `microkernel_spawner.rs`;
+- `nand_status_with_handle(image, bs)` added to `nand_fs.rs` **as a wrapper, not a signature change** -
+  their `main.rs` calls `nand_status(bs)` twice and `hw_truth` calls it with two arguments; changing the
+  signature would have broken one or the other, so the handle is accepted and documented as unused;
+- `hw_truth` pointed at the wrapper; `hw_truth` declared in the base's `main.rs` again.
+
+**Base tree with all 30 orphans declared: build 0 errors** (146 `#[path]` modules). That is the tree that
+gets pushed.
+

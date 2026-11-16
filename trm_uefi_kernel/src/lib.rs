@@ -62,6 +62,7 @@ pub mod global_memory;
 pub mod reconnaissance_daemon;
 pub mod module_registry_generated;
 pub mod serial;
+pub mod hw_truth;
 pub mod task_arbiter;
 pub mod trm_brain;
 pub mod voltage_node_engine;

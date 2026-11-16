@@ -29,5 +29,20 @@
  "already_on_this_machine": 26,
  "copied_in": [
   "module_registry_generated"
- ]
+ ],
+ "need_verdict": {
+  "k3_ternary_sram": "KEEP - only CAM matcher; Kleene truth table 9/9",
+  "spawn_subagent": "KEEP - only spawn plan/id producer; deterministic, honest note",
+  "hw_truth": "KEEP - only boot-panel measurement module; compile-only (no UEFI boot here)"
+ },
+ "push": {
+  "mode": "function-level (deps interleaved: sram 52 theirs-only, spawner 10, nand_fs 3)",
+  "added": [
+   "sram_pattern_computer::pattern_tcam_match",
+   "microkernel_spawner::make_subagent_id",
+   "microkernel_spawner::continuum_function_for",
+   "nand_fs::nand_status_with_handle (wrapper)"
+  ],
+  "base_build": "0 errors, 146 #[path] modules"
+ }
 }
