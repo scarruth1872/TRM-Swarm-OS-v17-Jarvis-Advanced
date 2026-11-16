@@ -1,0 +1,51 @@
+{
+ "tag": "checkpoint-20261116-g194",
+ "head": "b925e75",
+ "tree": "fe97b11a11d952f3479acb013f7ac7364f05bbfb",
+ "when": "2026-11-16T19:24:57Z",
+ "kernel": {
+  "version": "v19.1.0-sovereign",
+  "build_commit": "9aabc88",
+  "v_core_V": 1.44,
+  "source": "HWiNFO64 SM2 (measured)"
+ },
+ "modules": {
+  "total": 351,
+  "counts": {
+   "CANONICAL_ONLY": 126,
+   "IDENTICAL": 64,
+   "MERGE_REQUIRED": 39,
+   "SAME_API_DIFF_BODY": 90,
+   "SUPERSET(secondary)": 17,
+   "SECONDARY_ONLY": 15
+  },
+  "gate_undecided": 39
+ },
+ "orphans": {
+  "base_total": 30,
+  "base_compiling": 30,
+  "none_remaining_broken": true,
+  "ours_total": 0,
+  "note": "all 30 declared in the base tree now; base build 0 errors, 146 #[path] modules"
+ },
+ "capability": {
+  "k3_ternary_sram": "Kleene AND 9/9; CAM hit/miss + ratio 0.6=3/5; tcam exact/masked/reject",
+  "spawn_subagent": "ids sub_<role>_<hex> deterministic; find hit/miss; honest MANUAL note",
+  "hw_truth": "compile-only (measure() needs efi::BootServices; no UEFI boot here)"
+ },
+ "push_plan": {
+  "mode": "function-level",
+  "files": [
+   "sram_pattern_computer.rs",
+   "microkernel_spawner.rs",
+   "nand_fs.rs",
+   "hw_truth.rs",
+   "host_council_server/src/main.rs"
+  ],
+  "target": "laptop 100.123.215.119 (Windows, PowerShell shell)"
+ },
+ "commands": {
+  "head": "git rev-parse --short HEAD",
+  "contract": "python tools/platform_coherence.py contract --write data/module_contract.json"
+ }
+}
