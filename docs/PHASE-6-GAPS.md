@@ -8032,3 +8032,51 @@ connector, and the only sources are browser, desktop, terminal, cron and the loc
 administrator settings were changed on either machine, no files were deleted, and every overwrite was
 backed up first. The one item that genuinely needs a decision is the laptop's rustc execution policy above.
 
+### G198. The external drives: the "absent" corpus was on D:, and the missing oracle was on the boot USB  [MEASURED]
+
+Both external volumes on the laptop were never in any sweep. They are:
+- **`D:` "Extreme SSD"** - SanDisk Extreme 55AE, **USB**, 1,863.0 GB, **exFAT**, 1,084.5 GB free, write **~33 MB/s**.
+  Health **Warning**, OperationalStatus **Full Repair Needed**, dirty bit **SET**.
+- **`E:` "STORAGE3"** - SanDisk Extreme, **USB**, 14.6 GB, **FAT32**, 11.8 GB free, write **~45 MB/s**.
+  Health **Warning**, **Full Repair Needed**, dirty bit **SET**. This one is a **bootable TRM USB**: `EFI/`,
+  `startup.nsh`, `trm_swarm_boot.exe`, `rootfs.squashfs` (123.6 MB), `trm-state.ext4` (64 MB).
+
+**Errata on a standing claim.** G-earlier recorded "PDBbind, BindingDB, **ChEMBL-37 full bioactivity**, FAERS,
+Tox21, ESKAPE corpora genuinely absent after 6,432,474-file and 172,502-file sweeps". That is **wrong for
+ChEMBL-37**, and the sweeps never looked here:
+
+| file | size | where |
+|---|---|---|
+| `chembl_37.sdf` | **7,628.2 MB** | `D:\` root |
+| `chembl_smiles_full.txt` | 203.6 MB | `D:\` root |
+| `swarm_v2_chembl_fabric.ternary` | 596.3 MB | `E:\` root |
+| `swarm_v2_chembl_fabric.text.jsonl` | 774.5 MB | `E:\` root |
+| `swarm_v2_chembl_fabric.turbovec` | 618.4 MB | `E:\` root |
+
+So the full ChEMBL-37 SDF is on this node, plus an already-built ChEMBL fabric (~2 GB of derived artifacts). A
+sweep that reports "absent" without enumerating removable volumes is not a sweep.
+
+**The oracle was on the boot USB.** `E:\swarm_rust_kernel.dll`, **765,952 bytes**, sha256 `c9137464602291b3...`,
+exporting `rust_ternary_quantize`, `rust_ternary_agreement`, `rust_ternary_fidelity`, `rust_ternary_magnitude`,
+`rust_ternary_index_search`, `rust_native_encode_text_f32`, `rust_native_encode_text_ternary` and ~50 others.
+The three `swarm_rust_kernel.dll` builds in the repo are a **different, older artifact** (302,592 B) with none of
+those exports - which is why two parity tests were skipped in G196.
+
+**Both skips are now real passes**, with the oracle staged at the path the tests already expected:
+
+```
+parity: 24 cases x (quantize, scale, magnitude, agreement, fidelity) + search over 24 rows, max |diff| = 0.0
+test native_ternary::parity::port_reproduces_the_dll_exports ... ok
+test native_encoder::encoder_parity::port_reproduces_the_dll_export ... ok
+test result: ok. 107 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 157.68s
+```
+
+**max |diff| = 0.0** is bit-exact agreement between the port and the DLL's own exports over shared buffers, on
+24 cases each. Nothing is skipped any more: 107/107 run.
+
+**Both drives are dirty and that is unresolved.** `fsutil dirty query` says Dirty for `D:` and `E:`;
+`Repair-Volume -Scan` refuses both ("The specified file system is not supported") because exFAT and FAT32 have
+no online scan. Clearing this needs `chkdsk D: /f` / `chkdsk E: /f`, which requires an elevated shell and
+dismounts the volume - **not attempted unattended**, and worth doing before trusting a 7.6 GB corpus that lives
+there. Both volumes remain readable and writable; nothing was lost.
+

@@ -1,0 +1,54 @@
+{
+ "when": "2026-11-16T22:58:56Z",
+ "D": {
+  "label": "Extreme SSD",
+  "device": "SanDisk Extreme 55AE",
+  "bus": "USB",
+  "fs": "exFAT",
+  "size_gb": 1863.0,
+  "free_gb": 1084.5,
+  "health": "Warning",
+  "op_status": "Full Repair Needed",
+  "dirty": true,
+  "write_mb_s": 33,
+  "found": {
+   "chembl_37.sdf": "7,628.2 MB",
+   "chembl_smiles_full.txt": "203.6 MB"
+  },
+  "dirs": [
+   "trm-models",
+   "hf-cache",
+   "WSL",
+   "gitrepos",
+   ".ollama",
+   "llama.cpp-instella",
+   "cuda_installer",
+   "Agent-Q-master"
+  ]
+ },
+ "E": {
+  "label": "STORAGE3",
+  "device": "SanDisk Extreme",
+  "bus": "USB",
+  "fs": "FAT32",
+  "size_gb": 14.6,
+  "free_gb": 11.8,
+  "health": "Warning",
+  "op_status": "Full Repair Needed",
+  "dirty": true,
+  "write_mb_s": 45,
+  "role": "bootable TRM USB",
+  "found": {
+   "swarm_rust_kernel.dll": "765,952 B sha256 c9137464602291b3...",
+   "swarm_v2_nand_fabric.k3": "73.2 MB",
+   "swarm_v2_chembl_fabric.ternary": "596.3 MB",
+   "swarm_v2_chembl_fabric.text.jsonl": "774.5 MB",
+   "swarm_v2_chembl_fabric.turbovec": "618.4 MB",
+   "rootfs.squashfs": "123.6 MB",
+   "trm-state.ext4": "64 MB",
+   "host_council_server.exe": "30.0 MB"
+  }
+ },
+ "errata": "ChEMBL-37 declared absent after a 6,432,474-file sweep; present at D:\\chembl_37.sdf. Sweeps must enumerate removable volumes.",
+ "repair_owed": "chkdsk D: /f and chkdsk E: /f need elevation + dismount; Repair-Volume -Scan unsupported on exFAT/FAT32."
+}

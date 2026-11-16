@@ -209,11 +209,10 @@ mod encoder_parity {
         "the quick brown fox jumps over the lazy dog and then does it again with more words to push the feature count up so the superposition and the normalisation are exercised across every one of the twelve 64-wide blocks that a 768-dimension vector has",
     ];
 
-    // IGNORED with the reason named: `dll_encode` needs an embedding engine / DLL export that this
-    // machine does not have (checked: the swarm_rust_kernel.dll builds in the repo do not carry it).
-    // Re-enable when an oracle with the export is present.
+    // RE-ENABLED (G198): `dll_encode` asks for `rust_native_encode_text_f32`, which the oracle recovered
+    // from the laptop's boot USB (E:\swarm_rust_kernel.dll, sha256 c9137464...) does export. The previous
+    // skip was caused by the DLL being absent from the repo, not by the export being missing.
     #[test]
-    #[ignore = "oracle absent: no embedding engine export available on this machine"]
     fn port_reproduces_the_dll_export() {
         let _native = crate::test_support::native();
         let mut worst = 0f64;

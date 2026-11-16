@@ -277,13 +277,12 @@ mod parity {
         }};
     }
 
-    // IGNORED, with the reason named: this machine has no artifact exporting `rust_ternary_quantize`.
-    // Checked all three swarm_rust_kernel.dll builds in the repo (release, deps, wt_memory): none carries
-    // the symbol, and it does not appear in that crate's source either. The test is kept because the
-    // comparison it makes is the right one - port vs the DLL's own exports over shared buffers - and it
-    // should be re-enabled the moment an oracle that exports these names exists.
+    // RE-ENABLED (G198): the oracle was not missing from the world, it was missing from the repo. The
+    // boot USB on the laptop node carried E:\swarm_rust_kernel.dll (765,952 B, sha256 c9137464...), which
+    // DOES export rust_ternary_quantize. That artifact is now staged at
+    // <repo>/swarm_v2_rust_kernel/target/release/swarm_rust_kernel.dll where this test looks for it, so the
+    // comparison - port vs the DLL's own exports over shared buffers - can actually run.
     #[test]
-    #[ignore = "oracle absent: no swarm_rust_kernel.dll on this machine exports rust_ternary_quantize"]
     fn port_reproduces_the_dll_exports() {
         let _native = crate::test_support::native();
         let dll = repo_root().join("swarm_v2_rust_kernel/target/release/swarm_rust_kernel.dll");
