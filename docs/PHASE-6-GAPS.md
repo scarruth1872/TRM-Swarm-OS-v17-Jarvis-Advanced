@@ -7808,3 +7808,53 @@ transistor fabric - are files that no build includes. They cannot be tested, can
 cannot be claimed. Ours reaching zero is not a boast: it is the result of the same audit being applied after
 G191 closed our last two.
 
+### G193. The 30 orphans: 27 are real working code, 3 are broken, and most were already live here  [MEASURED]
+
+Each of the 30 was declared at crate root in the base's hcs and the tree built. Result: **27 compile and
+build** (`Finished 35.76s`), **3 do not** - and each failure is concrete, not incidental:
+
+| module | why it cannot build |
+|---|---|
+| `k3_ternary_sram` | imports `crate::sram_pattern_computer::pattern_tcam_match` - that function does not exist in the 902-line module it names; plus type mismatches (`ArchDesc` compared with `>`, `.len()`, `.iter()`) |
+| `spawn_subagent` | imports `crate::microkernel_spawner::continuum_function_for` and `make_subagent_id` - neither exists in the 495-line module |
+| `hw_truth` | `E0061`: calls a 1-argument function with 2 arguments |
+
+`fb_console` needed one real fix: it imports `crate::font`, and `font.rs` was only reachable as a *nested*
+module, so `crate::font` never resolved. Declared at the root, it compiles.
+
+**What the 27 actually do - measured against published oracles, not against each other:**
+
+| module | evidence |
+|---|---|
+| `hmac_sha256` | `sha256("abc")` = `ba7816bf8f01cfea…` **MATCH**; `sha256("")` = `e3b0c44298fc1c14…` **MATCH**; HMAC RFC 4231 case 1 = `b0344c61d8db3853…` **MATCH**, case 2 = `5bdcc146bf60754e…` **MATCH**; beacon `sign_beacon`→`verify_beacon` recovers `Ok((42, 14, 1000))` and rejects a wrong key with `Err("HMAC mismatch - forged or wrong key")` |
+| `float_math` | `exp(1)` relative error **9.8e-16**, `exp(-2)` **2.1e-16**, `sqrt(2)` **1.6e-16** vs `std`; `softmax([1,2,3])` matches to 12 dp |
+| `quantum_drug_screen` | `grover_optimal_steps(n) == floor(π/4·√n)` for n=16 → **3** and n=10 000 → **78**; `isqrt(99)` = **9**; `run_screen` returns a constant success probability **0.995**, 727 steps, window 24 across runs |
+| `text_extract` | `WRITE_FILE: a.txt` + `[START]…[END]` → `Some(("a.txt","hello\nworld"))`; fenced → `Some(("b.rs","fn x() {}"))`; missing `[END]` → `None`; no directive → `None`; unlabelled fence → `None` |
+| `mcts_plan` | 50 simulations → 51 nodes, best action 1 with 45 visits, root 50, 6 children, deterministic across runs |
+| `rare_disease` | `run_pilot` labels its own output `status=COMPUTATIONAL_HYPOTHESIS`, `conf=0.65` - it does not claim a diagnosis |
+| `aura_spectrum` | 100 concepts; `interference(1.0,1.0)=1.0`, `interference(1.0,-1.0)=0.0` |
+| `unified_transistor_fabric`, `holographic_fabric`, `memory_mapped_ipc`, `p2p_direct_route`, `platform`, `federation_sync_upgrade`, `federation_task_coordinator`, `autonomous_cadence`, `autonomous_scenario_setup`, `fractal_pattern_engine`, `fractal_telemetry`, `faceted_torus_ternary`, `k3_head`, `module_registry_generated`, `apic_core_binding`, `interrupt_stubs`, `smp_trampoline`, `serial`, `baremetal_transition`, `fb_console` | compile and link; not yet behaviour-probed |
+
+**A test-design error, repeated and caught:** the first `text_extract` vectors used invented marker syntax
+(`<<<FILE: …>>>`) and returned `None`. That was the same out-of-domain mistake as G190 - the grammar is a
+`WRITE_FILE:` line. With the real grammar both extractors work and the negative cases still return `None`.
+
+**The surprising part: 26 of the 27 were already here.** They are present in
+`F:/Development sites/TRM-Swarm-OS-v2/trm_uefi_kernel/src/` and **already declared in our `lib.rs`**, so this
+machine has been compiling and shipping them all along - the "canonical" base is the tree that dropped them.
+Our build with all 27 declared: `Finished 39.74s`. Only `module_registry_generated` had to be copied in;
+`serial` and `module_registry_generated` now declared.
+
+**Both builds probed, 39 keys: 38 identical, 1 differing.** The difference is `screen.run`'s iteration count
+and elapsed-ns. Four consecutive calls on the *same* binary returned iterations 100 206 / 101 992 / 101 916 /
+101 916 with matching nanosecond timings while probability, steps and window stayed fixed at 0.995 / 727 / 24 -
+so it is the function's own time budget, not a behaviour difference between trees.
+
+**Oracles on this machine's build:** `sha256("abc")` MATCH, HMAC RFC 4231 MATCH, `grover(10000)` = 78 MATCH,
+`exp(1)` rel-err 9.8e-16, beacon round-trip OK and wrong key rejected, `text_extract` OK on real grammar,
+MCTS deterministic.
+
+**Owed:** behaviour probes for the 19 modules that only compile so far; a decision on the 3 broken ones
+(repair against the current `microkernel_spawner` / `sram_pattern_computer`, or delete); and pushing the base
+tree's newly-wired 27 modules to the laptop, since the fix so far exists only in the scratch copy here.
+

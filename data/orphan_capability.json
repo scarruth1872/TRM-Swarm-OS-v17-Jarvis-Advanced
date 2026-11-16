@@ -1,0 +1,33 @@
+{
+ "compiled": 27,
+ "broken": {
+  "k3_ternary_sram": "missing sram_pattern_computer::pattern_tcam_match + ArchDesc type errors",
+  "spawn_subagent": "missing microkernel_spawner::continuum_function_for/make_subagent_id",
+  "hw_truth": "E0061 wrong arg count"
+ },
+ "oracles": {
+  "sha256_abc": true,
+  "sha256_empty": true,
+  "hmac_rfc4231_1": true,
+  "hmac_rfc4231_2": true,
+  "grover_16": 3,
+  "grover_10000": 78,
+  "exp1_rel_err": 9.8e-16,
+  "beacon_roundtrip": "Ok((42,14,1000))",
+  "beacon_wrong_key": "rejected",
+  "text_extract": true,
+  "mcts_deterministic": true,
+  "aura_concepts": 100
+ },
+ "cross_build": {
+  "keys": 39,
+  "identical": 38,
+  "differing": [
+   "screen.run (time-budget fields)"
+  ]
+ },
+ "already_on_this_machine": 26,
+ "copied_in": [
+  "module_registry_generated"
+ ]
+}

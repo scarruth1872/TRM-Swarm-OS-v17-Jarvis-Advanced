@@ -60,6 +60,8 @@ pub mod sram_pattern_computer;
 pub mod sub_atomic_kernel;
 pub mod global_memory;
 pub mod reconnaissance_daemon;
+pub mod module_registry_generated;
+pub mod serial;
 pub mod task_arbiter;
 pub mod trm_brain;
 pub mod voltage_node_engine;
