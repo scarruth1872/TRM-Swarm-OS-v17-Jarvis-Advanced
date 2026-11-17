@@ -8327,3 +8327,42 @@ Two formatting facts were **derived by diffing**, not assumed: the fabric prints
 `k3_ingest_real.py` gained `--source chembl37_desc` (kind `smiles_rdkit`), which refuses to run on an interpreter
 without rdkit rather than inventing descriptors.
 
+### G207. The descriptor pass, parallelised: 5m54s for 2.9 M records, and 99.03% byte-identical to the fabric  [MEASURED]
+
+`tools/ingest_parallel.py` runs the **whole** per-record job in worker processes - SMILES -> RDKit descriptors ->
+text -> encode -> 2-bit codes - so the parent never becomes the bottleneck. Parallelising only RDKit would have
+moved the wall to the single-threaded encoder and bought ~1.3x; this bought 8x.
+
+| workers | records/s | 20k wall | full-corpus projection | seal |
+|---|---|---|---|---|
+| 1 | 590.7 | 33.9 s | 81.8 min | `5d0abdd2cf51ab69...` |
+| 12 | 4,335.5 | 4.6 s | 11.1 min | `5d0abdd2cf51ab69...` |
+| **16** | **4,783.4** | 4.2 s | **10.1 min** | `5d0abdd2cf51ab69...` |
+| 24 | 4,622.2 | 4.3 s | 10.4 min | `5d0abdd2cf51ab69...` |
+
+**Every worker count produced the same seal**, so parallelism changed the wall clock and nothing else. 16 beats 24
+because the box is 12C/24T - the optimum is measured on this machine, not chosen. `imap` (ordered) not
+`imap_unordered`: record order must match the source file or every downstream offset is wrong.
+
+**Full run: 2,897,805 records in 354.4 s (5m54s), 8,175 rec/s steady state, 0 unparseable, 0 padding,
+seal `52a30b7e...`, `exact: true`** - re-verified afterwards by `k3_ingest_real.py --verify`. Against the serial
+RDKit projection (62 min) that is **10.5x**; against the HTTP path (48 h) it is **486x**.
+
+**Against the laptop's own fabric, from text alone:**
+
+```
+vs .turbovec: 19,807 / 20,000 records byte-identical = 99.03%
+              code agreement 15,350,311 / 15,360,000 = 99.9369%
+```
+
+The residual is two causes, both named:
+1. **Crippen build drift on logp** - `2.397` here vs `2.398` there, `-4.818` vs `-4.819`, `1.569` vs `1.57`. Same
+   molecule, same RDKit major version, different build.
+2. **Quantiser boundary rounding** - e.g. CHEMBL499809 has byte-identical *text* and still differs in codes;
+   the same f32-vs-f64 half-ULP effect measured in G203.
+
+**`.ternary` is not a second copy of `.turbovec`'s codes.** For record 0 they differ in every byte
+(`70515535f03c...` vs `a5a66a36a569...`), and comparing against `.ternary` yields 2.5% agreement against
+`.turbovec`'s 99.03%. Two stores, two encodings - comparing a shard to the wrong one would have produced a
+"failure" that meant nothing.
+

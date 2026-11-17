@@ -1,0 +1,53 @@
+{
+ "when": "2026-11-17T00:29:25Z",
+ "baseline_rec_s": 590.7,
+ "best": {
+  "workers": 16,
+  "rec_s": 4783.4
+ },
+ "speedup": 8.1,
+ "seals_all_equal": true,
+ "benchmarks": {
+  "1": {
+   "rec_s": 590.7,
+   "seconds": 33.9,
+   "seal": "5d0abdd2cf51ab69"
+  },
+  "12": {
+   "rec_s": 4335.5,
+   "seconds": 4.6,
+   "seal": "5d0abdd2cf51ab69"
+  },
+  "16": {
+   "rec_s": 4783.4,
+   "seconds": 4.2,
+   "seal": "5d0abdd2cf51ab69"
+  },
+  "24": {
+   "rec_s": 4622.2,
+   "seconds": 4.3,
+   "seal": "5d0abdd2cf51ab69"
+  }
+ },
+ "full_run": {
+  "records": 2897805,
+  "seconds": 354.4,
+  "rec_s": 8175.6,
+  "unparseable": 0,
+  "padding": 0,
+  "seal": "52a30b7eea062f070be28144b094f11c061a20621e244527ba604c6cffb80f7e",
+  "exact": true
+ },
+ "fabric_parity": {
+  "vs": "swarm_v2_chembl_fabric.turbovec",
+  "sample": 20000,
+  "records_byte_identical": 19807,
+  "pct": 99.03,
+  "code_agreement": 0.999369,
+  "residual_causes": [
+   "Crippen build drift on logp",
+   "quantiser boundary f32/f64 rounding"
+  ]
+ },
+ "ternary_is_not_turbovec": "record 0 differs in every byte; .ternary compares at 2.5% vs .turbovec 99.03%"
+}
