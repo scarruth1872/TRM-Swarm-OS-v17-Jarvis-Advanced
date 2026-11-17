@@ -61,6 +61,33 @@ def dequantize(packed, span, lo):
     return [x / n for x in v]
 
 
+def work_arc(job):
+    """job = (root, split, lo, hi, dll). Serialisation comes from tools/arc_serialize.py so this worker cannot
+    drift from the serial ingest."""
+    root, split, lo, hi, dll, want_fid = job
+    import sys as _sys
+    _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from arc_serialize import ArcSplit
+    sp = ArcSplit(root, split)
+    lib = _load(dll)
+    buf = (ctypes.c_float * DIM)()
+    out = []
+    for i in range(lo, hi):
+        key, text = sp.record(i)
+        raw = text.encode("utf-8", "ignore")
+        if lib.rust_native_encode_text_f32(raw, len(raw), buf, DIM) != DIM:
+            raise RuntimeError(f"encoder failed on {key}")
+        packed, span, loq = quantize(list(buf))
+        cos = None
+        if want_fid:
+            # control: a shard that decodes to nothing sensible is a fast way to store noise
+            dec = dequantize(packed, span, loq)
+            nv = math.sqrt(sum(x * x for x in buf)) or 1.0
+            cos = sum(a * bb for a, bb in zip([x / nv for x in buf], dec))
+        out.append((True, key, packed, span, loq, cos))
+    return out
+
+
 def _f3(x):
     return str(round(x, 3))
 
@@ -105,7 +132,9 @@ def work_chunk(job):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--file", required=True)
+    ap.add_argument("--mode", choices=["chembl", "arc"], default="chembl")
+    ap.add_argument("--arc-root", default="F:/Development sites/TRM agent swarm/data/arc1concept-aug-1000")
+    ap.add_argument("--file", default=None)
     ap.add_argument("--out", required=True)
     ap.add_argument("--dll", required=True)
     ap.add_argument("--workers", type=int, default=1)
@@ -113,12 +142,31 @@ def main():
     ap.add_argument("--chunk", type=int, default=400)
     a = ap.parse_args()
 
-    with open(a.file, encoding="utf-8", errors="ignore") as f:
-        lines = [l for l in f if l.strip()]
-    if a.limit:
-        lines = lines[:a.limit]
-    chunks = [(lines[i:i + a.chunk], a.dll, i == 0) for i in range(0, len(lines), a.chunk)]
-    print(f"file {os.path.basename(a.file)}  lines {len(lines):,}  workers {a.workers}  chunks {len(chunks)}")
+    if a.mode == "arc":
+        import sys as _sys
+        _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from arc_serialize import ArcSplit
+        chunks = []
+        for split in ("train", "test"):
+            if not os.path.isdir(os.path.join(a.arc_root, split)):
+                continue
+            n = len(ArcSplit(a.arc_root, split))
+            for i in range(0, n, a.chunk):
+                chunks.append((a.arc_root, split, i, min(i + a.chunk, n), a.dll, not chunks))
+        if a.limit:
+            chunks = chunks[:max(1, a.limit // a.chunk)]
+        worker = work_arc
+        total = sum(c[3] - c[2] for c in chunks)
+        print(f"arc root {a.arc_root}  puzzles {total:,}  workers {a.workers}  chunks {len(chunks)}")
+    else:
+        with open(a.file, encoding="utf-8", errors="ignore") as f:
+            lines = [l for l in f if l.strip()]
+        if a.limit:
+            lines = lines[:a.limit]
+        chunks = [(lines[i:i + a.chunk], a.dll, i == 0) for i in range(0, len(lines), a.chunk)]
+        worker = work_chunk
+        total = len(lines)
+        print(f"file {os.path.basename(a.file)}  lines {total:,}  workers {a.workers}  chunks {len(chunks)}")
 
     payload = bytearray()
     spans = []
@@ -127,11 +175,11 @@ def main():
     done = 0
     t0 = time.time()
     if a.workers <= 1:
-        results = map(work_chunk, chunks)
+        results = map(worker, chunks)
         pool = None
     else:
         pool = Pool(a.workers)
-        results = pool.imap(work_chunk, chunks)
+        results = pool.imap(worker, chunks)
     try:
         for res in results:
             for ok, cid, packed, span, lo, cos in res:
@@ -144,7 +192,7 @@ def main():
                     fidelity.append(cos)
             done += len(res)
             if done % (a.chunk * 5) == 0:
-                print(f"  {done:,}/{len(lines):,}  {done / max(time.time() - t0, 1e-9):.0f}/s", flush=True)
+                print(f"  {done:,}/{total:,}  {done / max(time.time() - t0, 1e-9):.0f}/s", flush=True)
     finally:
         if pool is not None:
             pool.close()
@@ -174,7 +222,10 @@ def main():
         f.write(payload)
 
     el = time.time() - t0
-    meta = {"source": "chembl37_desc_parallel", "model": os.path.basename(a.dll), "dim": DIM,
+    src = "arc_concept_aug_1000_parallel" if a.mode == "arc" else "chembl37_desc_parallel"
+    meta = {"source": src, "mode": a.mode,
+            "input": a.arc_root if a.mode == "arc" else a.file,
+            "model": os.path.basename(a.dll), "dim": DIM,
             "records": n_records, "trits": n_records * DIM, "payload_bytes": len(payload),
             "file_bytes": os.path.getsize(a.out), "padding_bytes": 0, "seal_sha256": seal.hex(),
             "quantization": "2-bit symmetric per vector, 4 codes/byte",

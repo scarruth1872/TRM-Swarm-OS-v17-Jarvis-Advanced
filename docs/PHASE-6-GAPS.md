@@ -8366,3 +8366,33 @@ The residual is two causes, both named:
 `.turbovec`'s 99.03%. Two stores, two encodings - comparing a shard to the wrong one would have produced a
 "failure" that meant nothing.
 
+### G208. ARC parallelised (12.28x) and two manifest defects caught before they shipped  [MEASURED]
+
+Same whole-job-in-workers pattern as G207, with the serialiser in the shared `tools/arc_serialize.py`:
+
+| workers | ARC records/s | 20k wall | full 291,778 ETA | seal |
+|---|---|---|---|---|
+| 1 | 67.9 | 294.5 s | 71.6 min | `4995342cfa7f1907...` |
+| **16** | **833.5** | 24.0 s | **5.8 min** | `4995342cfa7f1907...` |
+
+**12.28x, byte-identical at both worker counts.** ARC scales better than the descriptor pass (12.28x vs 8.1x)
+because its serial cost was pure Python string work, which is the most parallelisable part of the pipeline.
+
+The first 400-puzzle comparison showed only **2.2x** - that was not the ceiling, it was four chunks for sixteen
+workers. **A benchmark that cannot fill the workers measures the harness, not the machine.**
+
+**Full run: 291,778 puzzles in 354.3 s (823.6 rec/s), seal `5904b4fc...`, 0 unparseable, 0 padding, `exact: true`**
+- verified afterwards in a separate process. Versus the serial path (71.6 min projected; the abandoned serial run
+was killed at **28 minutes with nothing to show**) this is the difference between a job you can iterate on and one
+you schedule overnight.
+
+**Two defects in my own parallel tool, found because the manifest was read and not assumed:**
+1. `"source"` was hardcoded `chembl37_desc_parallel`, so an ARC shard described itself as a ChEMBL build. A
+   manifest that lies is worse than a missing one - it survives into later audits.
+2. `fidelity_cosine_sample` was `null` on the ARC path. 291,778 puzzles encoded at 837/s with no record ever
+   decoded is speed without evidence. Fixed: the first chunk now round-trips, giving **0.9291** over 24 records,
+   which agrees with the serial 50-puzzle probe (0.9293).
+
+Re-run after the fix produced the **same seal `5904b4fc...`** and a **byte-identical file**, so the fix changed
+labels and controls only, not content. Pre-fix shard kept as `build/arc_concept_aug_1000.k3.pre-g208`.
+
