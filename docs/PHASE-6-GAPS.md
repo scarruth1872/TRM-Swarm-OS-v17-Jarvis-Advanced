@@ -8441,3 +8441,28 @@ structures are v2020 (83% match measured on part 5).
 3. **Manifests omitted drop counts entirely** - 74 rows disappeared between source and shard with no field to say so.
    Now `rows_seen` / `rows_skipped` / `rows_skipped_reason` are mandatory for line-based sources.
 
+### G210. Four more placeholders replaced by real corpora; TPTP unreachable  [MEASURED]
+
+All three acquired corpora verified `exact` by a second process, with their drop counts stated.
+
+| corpus | real source | measured | placeholder claimed | shard |
+|---|---|---|---|---|
+| CARD | `card.mcmaster.ca/latest/data` 4,366,637 B bz2 -> `aro_index.tsv` | **6,463 resistance determinants**, 12 columns | 5,240 | `card_real.k3` seal `b33e148f...` |
+| NCBI AMR | AMRFinderPlus `ReferenceGeneCatalog.txt` 2,350,805 B | **11,554 rows -> 8,143 alleles; 3,411 skipped (empty `allele` column)** | 25,800 | `ncbi_amr_real.k3` seal `5e19d9c1...` |
+| FDA Orange Book | FDA media 76860, 1,104,034 B zip -> `products.txt` | **48,990 products**, tilde-delimited, 14 columns | 30,240 | `orange_book_real.k3` seal `879d8ad3...` |
+
+Note the direction of the errors: NCBI is **8,143 measured vs 25,800 claimed** (the claim was ~3x the file), while
+Orange Book is **48,990 measured vs 30,240 claimed**. A declared number is not a small error in either direction -
+it is not a measurement at all.
+
+**ClinicalTrials.gov**: AACT's bulk copies now require an account (every daily snapshot URL returns a 212-byte
+JSON error and monthly returns `410 Gone`). The NLM registry's own bulk export *is* open: 
+`https://clinicaltrials.gov/api/legacy/public-xml?format=zip` (301 -> `api/legacy/public-xml?format=zip`), 
+downloading, 2.45 GB+ at time of writing.
+
+**TPTP remains unacquired - a blocker, not a choice.** Every historical distribution path is dead:
+`tptp.org/TPTP/Distribution/TPTP-v9.x.tgz` 404, `tptp.cs.miami.edu` 404, `cs.miami.edu/~tptp/...` 302 -> no payload,
+and `www.tptp.org/tptp` is now a Google Sites page with **no download links in its HTML**. Zenodo holds only
+individual solver benchmarks (MoMo, Leo-III, iProver artifacts), not the problem library. Acquiring TPTP needs a
+working URL or an account; the 25,120-record placeholder stands until then.
+

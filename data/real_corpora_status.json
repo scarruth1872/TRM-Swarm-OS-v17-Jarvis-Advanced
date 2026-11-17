@@ -43,5 +43,40 @@
   "silent str.replace no-op",
   "manifests had no drop counts"
  ],
- "invariant": "build fails closed if records + skipped != lines seen"
+ "invariant": "build fails closed if records + skipped != lines seen",
+ "new_shards": {
+  "card": {
+   "records": 6463,
+   "rows": 6463,
+   "skipped": 0,
+   "seal": "b33e148f4eb7fb916ce961e3a837a0c59a959673718de5be4b1a3edda380b026",
+   "exact": true
+  },
+  "ncbi_amr": {
+   "records": 8143,
+   "rows": 11554,
+   "skipped": 3411,
+   "skip_reason": "empty allele column",
+   "seal": "5e19d9c11020edc7b7ce2d7a53eed233d4f3727e3f3af078e105717ff4585968",
+   "exact": true
+  },
+  "orange_book": {
+   "records": 48990,
+   "rows": 48990,
+   "skipped": 0,
+   "seal": "879d8ad31e9c9885d7748cc1d40a9eb5f5b3cefaa461ce83351dea3aecf59241",
+   "exact": true
+  }
+ },
+ "in_flight": {
+  "clinicaltrials": {
+   "url": "https://clinicaltrials.gov/api/legacy/public-xml?format=zip",
+   "bytes_so_far": 2455420928
+  },
+  "pdbbind_parts_0_2": "~65%"
+ },
+ "blocked": {
+  "tptp": "all historical distribution URLs 404; tptp.org is a Google Sites page with no download links",
+  "aact": "bulk copies now require an account"
+ }
 }

@@ -75,6 +75,24 @@ SOURCES = {
                   "F:/Development sites/datasets/bindingdb/BindingDB_All.tsv"],
         "kind": "bindingdb_tsv",
     },
+    # Three real domain corpora replacing placeholder shards. Formats measured from the files themselves:
+    # CARD aro_index.tsv (12 cols), NCBI AMRFinderPlus ReferenceGeneCatalog.txt (25 cols, 11,555 alleles),
+    # FDA Orange Book products.txt (tilde-delimited, 14 cols).
+    "card": {
+        "shard_id": 110,
+        "files": ["F:/Development sites/datasets/card/extracted/aro_index.tsv"],
+        "kind": "card_aro",
+    },
+    "ncbi_amr": {
+        "shard_id": 111,
+        "files": ["F:/Development sites/datasets/ncbi_amr/ReferenceGeneCatalog.txt"],
+        "kind": "ncbi_amr_tsv",
+    },
+    "orange_book": {
+        "shard_id": 112,
+        "files": ["F:/Development sites/datasets/orange_book/orange_book.zip"],
+        "kind": "orange_products",
+    },
     "tox21": {
         "shard_id": 108,
         "files": ["F:/Development sites/datasets/tox21/tox21.csv.gz",
@@ -164,6 +182,78 @@ def load_records(name: str, limit: int | None) -> list[tuple[str, str]]:
         if not out:
             raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 protein rows")
         return out
+    if spec["kind"] == "card_aro":
+        out8: list[tuple[str, str]] = []
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            rd = csv.DictReader(fh, delimiter="\t")
+            for row in rd:
+                aro = (row.get("ARO Accession") or "").strip()
+                if not aro:
+                    continue
+                text = (f"CARD resistance determinant {aro} name {(row.get('ARO Name') or '').strip()} "
+                        f"short {(row.get('CARD Short Name') or '').strip()} "
+                        f"gene_family {(row.get('AMR Gene Family') or '').strip()} "
+                        f"drug_class {(row.get('Drug Class') or '').strip()} "
+                        f"mechanism {(row.get('Resistance Mechanism') or '').strip()} "
+                        f"protein {(row.get('Protein Accession') or '').strip()} "
+                        f"dna {(row.get('DNA Accession') or '').strip()}")
+                out8.append((f"card/{aro}", text))
+                if limit and len(out8) >= limit:
+                    break
+        if not out8:
+            raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 CARD determinants")
+        print(f"  card: {len(out8)} determinants", flush=True)
+        return out8
+    if spec["kind"] == "ncbi_amr_tsv":
+        out9: list[tuple[str, str]] = []
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            rd = csv.DictReader(fh, delimiter="\t")
+            for row in rd:
+                al = (row.get("allele") or "").strip()
+                if not al:
+                    continue
+                def g9(k):
+                    return (row.get(k) or "").strip()
+                text = (f"NCBI AMR allele {al} gene_family {g9('gene_family')} "
+                        f"product {g9('product_name')} scope {g9('scope')} class {g9('class')} "
+                        f"subclass {g9('subclass')} protein {g9('refseq_protein_accession')} "
+                        f"nucleotide {g9('refseq_nucleotide_accession')} "
+                        f"whitelisted_taxa {g9('whitelisted_taxa') or 'none'}")
+                out9.append((f"ncbi_amr/{al}", text))
+                if limit and len(out9) >= limit:
+                    break
+        if not out9:
+            raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 NCBI AMR alleles")
+        print(f"  ncbi_amr: {len(out9)} alleles", flush=True)
+        return out9
+    if spec["kind"] == "orange_products":
+        import zipfile as _zip2
+        import io as _io2
+        _z2 = _zip2.ZipFile(path)
+        _name = "products.txt" if "products.txt" in _z2.namelist() else _z2.namelist()[0]
+        stream = _io2.TextIOWrapper(_z2.open(_name), encoding="latin-1")
+        hdr = [c.strip() for c in stream.readline().rstrip("\r\n").split("~")]
+        ix = {c: i for i, c in enumerate(hdr)}
+        out10: list[tuple[str, str]] = []
+        for line in stream:
+            f = line.rstrip("\r\n").split("~")
+            if len(f) < 10:
+                continue
+            g = lambda k: (f[ix[k]].strip() if k in ix and ix[k] < len(f) else "")
+            if not g("Ingredient"):
+                continue
+            text = (f"FDA Orange Book product {g('Ingredient')} trade {g('Trade_Name')} "
+                    f"form {g('DF;Route')} strength {g('Strength')} applicant {g('Applicant_Full_Name')} "
+                    f"application {g('Appl_Type')}{g('Appl_No')}-{g('Product_No')} "
+                    f"approval {g('Approval_Date')} te_code {g('TE_Code')} rld {g('RLD')} rs {g('RS')} "
+                    f"type {g('Type')}")
+            out10.append((f"orange/{g('Appl_Type')}{g('Appl_No')}/{g('Product_No')}", text))
+            if limit and len(out10) >= limit:
+                break
+        if not out10:
+            raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 Orange Book products")
+        print(f"  orange_book: {len(out10)} products", flush=True)
+        return out10
     if spec["kind"] == "bindingdb_tsv":
         # Row -> text lives in tools/bindingdb_serialize.py so the byte-ranged parallel path cannot drift.
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
