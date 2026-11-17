@@ -1,0 +1,40 @@
+{
+ "tag": "checkpoint-20261116-g206",
+ "head": "cb25e9a",
+ "when": "2026-11-17T00:17:20Z",
+ "tests": {
+  "desktop": "107 passed / 0 / 0",
+  "laptop": "107 passed / 0 / 0"
+ },
+ "shards": {
+  "chembl37_full.k3": {
+   "records": 2897805,
+   "exact": true,
+   "padding": 0
+  },
+  "smpdb_real.k3": {
+   "records": 147932
+  },
+  "chembl_real.k3": {
+   "records": 44401
+  },
+  "chembl_lpxc_real.k3": {
+   "records": 406
+  },
+  "kanban_tasks.k3": {
+   "records": 4135,
+   "exact": true
+  }
+ },
+ "in_flight": [
+  "arc_concept_aug_1000.k3 (291,778)",
+  "chembl37_desc.k3 (2,897,805, ~62 min)"
+ ],
+ "rdkit": "2026.03.6 on both nodes (Python312 desktop / Python313 laptop)",
+ "open": [
+  "chkdsk /f on D: and E: (elevation + dismount)",
+  "D:\\WSL .vhdx 174.60 GB never mounted",
+  "ChEMBL preferred names unavailable on both disks (386/5000 records)",
+  "39 module merges still MERGE_REQUIRED"
+ ]
+}
