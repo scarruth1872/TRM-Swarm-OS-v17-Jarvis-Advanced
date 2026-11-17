@@ -63,6 +63,24 @@ SOURCES = {
     # build time and are recomputed here with RDKit. Recipe confirmed against the fabric's published numbers:
     # NumHAcceptors=3, NumHDonors=2, GetNumHeavyAtoms=16, MolLogP=1.362, Descriptors.MolWt=235.316 for
     # Cc1cc(-c2csc(N=C(N)N)n2)cn1C - all five matched. Requires an interpreter that HAS rdkit (desktop: py3.12).
+    # Real EPA Tox21 12-endpoint matrix (7,831 compounds x 12 assays, measured: 7,832 lines incl header).
+    # Blank cells are rendered 'na' - an assay that was not run is not an inactive, and inventing 0 would be
+    # a false negative in a safety corpus.
+    # Real BindingDB affinity matrix. Measured from the archive itself: 243 columns, one row per ligand-target
+    # measurement, with Ki / IC50 / Kd / EC50 in nM, SMILES, target name + organism, UniProt ids, PDB ids, DOI
+    # and PMID. Only populated affinity fields are rendered - a blank cell is omitted, never written as 0.
+    "bindingdb": {
+        "shard_id": 109,
+        "files": ["F:/Development sites/datasets/bindingdb/BindingDB_All.zip",
+                  "F:/Development sites/datasets/bindingdb/BindingDB_All.tsv"],
+        "kind": "bindingdb_tsv",
+    },
+    "tox21": {
+        "shard_id": 108,
+        "files": ["F:/Development sites/datasets/tox21/tox21.csv.gz",
+                  "F:/Development sites/datasets/tox21/tox21.csv"],
+        "kind": "tox21_csv",
+    },
     "chembl37_desc": {
         "shard_id": 107,
         "files": ["scratch/chembl37/chembl_smiles_full.txt",
@@ -146,6 +164,57 @@ def load_records(name: str, limit: int | None) -> list[tuple[str, str]]:
         if not out:
             raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 protein rows")
         return out
+    if spec["kind"] == "bindingdb_tsv":
+        # Row -> text lives in tools/bindingdb_serialize.py so the byte-ranged parallel path cannot drift.
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from bindingdb_serialize import open_text, header_index, row_to_record
+        stream = open_text(path)
+        ix = header_index(stream.readline())
+        out7: list[tuple[str, str]] = []
+        skipped = 0
+        for line in stream:
+            rec = row_to_record(line.rstrip("\n").split("\t"), ix, len(out7))
+            if rec is None:
+                skipped += 1
+                continue
+            out7.append(rec)
+            if limit and len(out7) >= limit:
+                break
+        if not out7:
+            raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 BindingDB rows")
+        print(f"  bindingdb: {len(out7)} rows, {skipped} skipped (no SMILES/short row)", flush=True)
+        return out7
+    if spec["kind"] == "tox21_csv":
+        import csv as _csv
+        import gzip as _gz
+        opener = _gz.open if path.endswith(".gz") else open
+        out6: list[tuple[str, str]] = []
+        with opener(path, "rt", encoding="utf-8", errors="ignore") as fh:
+            rd = _csv.DictReader(fh)
+            fields = [f for f in rd.fieldnames if f not in ("mol_id", "smiles")]
+            for row in rd:
+                mid = (row.get("mol_id") or "").strip()
+                smi = (row.get("smiles") or "").strip()
+                if not mid or not smi:
+                    continue
+                parts, act = [], 0
+                for f in fields:
+                    v = (row.get(f) or "").strip()
+                    if v not in ("0", "1"):
+                        v = "na"          # not measured stays not measured
+                    else:
+                        act += int(v)
+                    parts.append(f"{f}={v}")
+                text = (f"Tox21 assay compound {mid} SMILES {smi} "
+                        f"{len(fields)} endpoints active {act} of {sum(1 for p_ in parts if not p_.endswith('=na'))} "
+                        + " ".join(parts))
+                out6.append((f"tox21/{mid}", text))
+                if limit and len(out6) >= limit:
+                    break
+        if not out6:
+            raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 Tox21 records")
+        print(f"  tox21: {len(out6)} compounds, {len(fields)} endpoints", flush=True)
+        return out6
     if spec["kind"] == "smiles_rdkit":
         try:
             from rdkit import Chem
@@ -213,39 +282,16 @@ def load_records(name: str, limit: int | None) -> list[tuple[str, str]]:
         print(f"  {tbl}: {len(out4)} rows serialised", flush=True)
         return out4
     if spec["kind"] == "arc_puzzles":
-        import numpy as _np
+        # Serialisation lives in tools/arc_serialize.py so the parallel ingest cannot drift from this one.
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from arc_serialize import ArcSplit
         out3: list[tuple[str, str]] = []
-
-        def _render(row) -> str:
-            """Crop to the non-pad bounding box. Token 0 is padding and token 1 is ARC colour 0, so the two are
-            distinguishable - which is exactly why the crop can be exact instead of guessed at."""
-            grid = _np.asarray(row, dtype=_np.uint8).reshape(30, 30)
-            rows = [r for r in grid if any(v != 0 for v in r)]
-            if not rows:
-                return "(empty)"
-            cols = [c for c in range(30) if any(r[c] != 0 for r in rows)]
-            c0, c1 = min(cols), max(cols)
-            out_rows = []
-            for r in rows:
-                out_rows.append("".join((str(v - 1) if 1 <= v <= 10 else "x") for v in r[c0:c1 + 1]))
-            return f"{len(out_rows)}x{c1 - c0 + 1}:" + "/".join(out_rows)
-
         for split in ("train", "test"):
-            d = os.path.join(path, split)
-            if not os.path.isdir(d):
+            if not os.path.isdir(os.path.join(path, split)):
                 continue
-            inp = _np.load(os.path.join(d, "all__inputs.npy"), mmap_mode="r")
-            lab = _np.load(os.path.join(d, "all__labels.npy"), mmap_mode="r")
-            idx = _np.load(os.path.join(d, "all__puzzle_indices.npy"))
-            ids = _np.load(os.path.join(d, "all__puzzle_identifiers.npy"))
-            for pn in range(len(ids)):
-                lo, hi = int(idx[pn]), int(idx[pn + 1])
-                parts = []
-                for k, row_i in enumerate(range(lo, hi)):
-                    parts.append(f"example {k + 1} input {_render(inp[row_i])} output {_render(lab[row_i])}")
-                out3.append((f"arc/{split}/{int(ids[pn])}",
-                             f"ARC-AGI puzzle {split} number {int(ids[pn])} with {hi - lo} examples: "
-                             + "; ".join(parts)))
+            sp = ArcSplit(path, split)
+            for i in range(len(sp)):
+                out3.append(sp.record(i))
                 if limit and len(out3) >= limit:
                     return out3
         if not out3:

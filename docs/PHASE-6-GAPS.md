@@ -8396,3 +8396,48 @@ you schedule overnight.
 Re-run after the fix produced the **same seal `5904b4fc...`** and a **byte-identical file**, so the fix changed
 labels and controls only, not content. Pre-fix shard kept as `build/arc_concept_aug_1000.k3.pre-g208`.
 
+### G209. The ten "ingested" domain datasets were placeholders; three real corpora acquired and measured  [MEASURED]
+
+`complete_sovereign_ingestion_ledger.json` claims 10 shards / **21,563,934 records**. All ten files exist and **all
+ten sha256 match the ledger**, so these are the genuine artifacts it describes - and none of them contains a corpus.
+
+| evidence | measurement |
+|---|---|
+| payload structure | **2 distinct 256-byte blocks** in the first 64 KB; 4 distinct 512-byte blocks in 1 MB of FAERS |
+| byte histogram | 93% `FF / AA / 00 / 55` - a fill pattern, not codes |
+| size vs claimed records | 8 of 10 are exactly **32.00 bytes/record**; FAERS claims 18.4 M records in 26,214,400 B = **1.42 B/record** |
+| header | **no `TURBOVEC` magic** on any of the ten; a `FF BF AA AA AA 55 55` preamble instead |
+| key table | **none**, and no text sidecar - nothing maps record *i* to a molecule, protein, assay or report |
+
+A shard with no key table cannot answer a query even if its codes were real. `PDBbind` (5,300), `BindingDB`
+(2,540,000), `Tox21` (9,834), `FAERS` (18,400,000), `ESKAPE` (32,400), `CARD` (5,240), `NCBI-AMR` (25,800),
+`ClinicalTrials` (490,000), `OrangeBook` (30,240), `TPTP` (25,120): all placeholder files.
+
+**Real sources located and ingested instead.**
+
+| corpus | source | measured | shard |
+|---|---|---|---|
+| Tox21 | DeepChem S3 `tox21.csv.gz` (122,925 B; the laptop has the same file) | **7,831 compounds x 12 endpoints**, blanks rendered `na` | `tox21_real.k3`, `exact` |
+| BindingDB | laptop `swarm_v2_artifacts/datasets/BindingDB_All_202610_tsv.zip` 594,284,548 B -> TSV **9,004,582,822 B** | **640 columns, 3,243,660 rows -> 3,243,585 records**, 75 skipped (no SMILES), seal `1ec99469...`, **10,088 rec/s** | `bindingdb_202610.k3`, `exact` |
+| PDBbind v2020 refined | Zenodo rec. 7014096, CC-BY-4.0, 6 parts / 6.7 GB | 4 of 6 parts: **2,748 labelled complexes of 3,000 seen** | `pdbbind_4parts.k3` (pipeline proof; full build pending parts 0+2) |
+
+The Zenodo BindingDB (243 columns, 2,695,989 rows) was **superseded** by the laptop's 2026-10 export: 640 vs 243
+columns and 547,671 more measurements. Transferring 594 MB over SSH took **47 s** - Rule 0 again: read the peer's
+copy before downloading your own.
+
+**PDBbind has no labels in its archives, and `LP_PDBBind.csv` has none either.** Labels came from PGDTA's
+`pdbbind_refinedset_2019_split` (Zenodo rec. 14286374): **4,463 complexes, affinity 2.00-11.92**. Two limits are
+recorded in every record rather than smoothed away: the source **does not declare the affinity scale** (so records
+say `affinity <v> (scale not declared in source)` and never claim pKd), and labels are 2019-refined while
+structures are v2020 (83% match measured on part 5).
+
+**Three defects in my own pipeline, each caught by arithmetic rather than by a success message:**
+1. **The header line was ingested as a record.** `fh.seek(0)` after reading the header rewound onto it, producing one
+   bogus record per shard whose ligand "SMILES" was the literal string `Ligand SMILES`. It passed `exact: true`, a
+   matching seal and 0 padding because the shard was internally consistent. Found by `rows - skipped = records + 1`
+   in a synthetic 10,000-line test. Fixed, and the build now **fails closed** if `records + skipped != lines seen`.
+2. **`str.replace` with no match is a silent no-op.** A manifest field I "added" was never added (multi-line pattern
+   vs single-line code); the shard still said `rows_seen: null`. Patches in this repo now assert the anchor exists.
+3. **Manifests omitted drop counts entirely** - 74 rows disappeared between source and shard with no field to say so.
+   Now `rows_seen` / `rows_skipped` / `rows_skipped_reason` are mandatory for line-based sources.
+

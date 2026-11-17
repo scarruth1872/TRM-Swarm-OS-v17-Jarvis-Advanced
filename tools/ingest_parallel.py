@@ -18,6 +18,8 @@ import argparse, ctypes, hashlib, json, math, os, struct, sys, time
 from multiprocessing import Pool
 
 DIM = 768
+PDBBIND_LABELS = "F:/Development sites/datasets/pdbbind_labels/pdbbind2019_labels.json"
+LPDBBIND_CSV = "C:/Users/shawn/AppData/Local/hermes/cache/scratch/laptop_ds/LP_PDBBind.csv"
 BITS = 2
 CODES_PER_BYTE = 8 // BITS        # 4
 PACK = (DIM * BITS + 7) // 8      # 192
@@ -88,6 +90,89 @@ def work_arc(job):
     return out
 
 
+def work_pdbbind(job):
+    """job = (tar_path, dll, want_fid). One tarball per worker: v2020-refined ships as 6 parts, so the archive
+    itself is the natural unit of parallelism (no byte-range splitting inside a gzip stream)."""
+    tar_path, dll, want_fid = job
+    import sys as _sys
+    _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from pdbbind_serialize import iter_complexes, load_labels, load_resolution, record_text
+    labels = load_labels(PDBBIND_LABELS)
+    resolutions = load_resolution(LPDBBIND_CSV)
+    lib = _load(dll)
+    buf = (ctypes.c_float * DIM)()
+    out = []
+    unmatched = 0
+    seen = 0
+    for pid, smi, _ in iter_complexes(tar_path):
+        seen += 1
+        text = record_text(pid, smi, labels, resolutions)
+        if text is None:
+            unmatched += 1
+            continue
+        raw = text.encode("utf-8", "ignore")
+        if lib.rust_native_encode_text_f32(raw, len(raw), buf, DIM) != DIM:
+            raise RuntimeError(f"encoder failed on {pid}")
+        packed, span, loq = quantize(list(buf))
+        cos = None
+        if want_fid and len(out) < 24:
+            dec = dequantize(packed, span, loq)
+            nv = math.sqrt(sum(x * x for x in buf)) or 1.0
+            cos = sum(a * bb for a, bb in zip([x / nv for x in buf], dec))
+        out.append((True, f"pdbbind/{pid}", packed, span, loq, cos))
+    return {"records": out, "skipped": unmatched, "seen": seen}
+
+
+def work_tsv(job):
+    """job = (path, start_byte, end_byte, dll, want_fid, chunk_id).
+
+    Byte ranges, line aligned: a worker that starts mid-file discards its first partial line, and one that is
+    not last stops after the line that begins before end_byte. Every row is processed exactly once.
+    """
+    path, start, end, dll, want_fid, chunk_id = job
+    import sys as _sys
+    _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from bindingdb_serialize import header_index, row_to_record
+    lib = _load(dll)
+    buf = (ctypes.c_float * DIM)()
+    with open(path, "r", encoding="utf-8", errors="replace") as fh:
+        ix = header_index(fh.readline())
+        if start == 0:
+            pass                               # already positioned after the header - do NOT seek(0), which would
+        else:                                  # re-read the header as a data row (found: 1 bogus record/shard)
+            fh.seek(start)
+            fh.readline()                      # discard the partial line
+        out = []
+        skipped = 0
+        seen = 0
+        while True:
+            pos = fh.tell()
+            if pos > end and not (chunk_id == -1):
+                break
+            line = fh.readline()
+            if not line:
+                break
+            seen += 1
+            rec = row_to_record(line.rstrip("\n").split("\t"), ix, len(out))
+            if rec is None:
+                skipped += 1
+                continue
+            key, text = rec
+            raw = text.encode("utf-8", "ignore")
+            if lib.rust_native_encode_text_f32(raw, len(raw), buf, DIM) != DIM:
+                raise RuntimeError(f"encoder failed on {key}")
+            packed, span, loq = quantize(list(buf))
+            cos = None
+            if want_fid and len(out) < 24:
+                dec = dequantize(packed, span, loq)
+                nv = math.sqrt(sum(x * x for x in buf)) or 1.0
+                cos = sum(a * bb for a, bb in zip([x / nv for x in buf], dec))
+            out.append((True, f"{key}#{chunk_id}", packed, span, loq, cos))
+    # Report drops. A source with N rows and a shard with N-74 records must say where the 74 went, or the
+    # count difference becomes an unexplained discrepancy in every future audit.
+    return {"records": out, "skipped": skipped, "seen": seen}
+
+
 def _f3(x):
     return str(round(x, 3))
 
@@ -132,7 +217,10 @@ def work_chunk(job):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--mode", choices=["chembl", "arc"], default="chembl")
+    ap.add_argument("--mode", choices=["chembl", "arc", "bindingdb", "pdbbind"], default="chembl")
+    ap.add_argument("--tars", default=None, help="comma-separated PDBbind tarballs, or a glob is not needed")
+    ap.add_argument("--tsv", default="F:/Development sites/datasets/bindingdb/BindingDB_All.tsv")
+    ap.add_argument("--chunk-mb", type=int, default=64)
     ap.add_argument("--arc-root", default="F:/Development sites/TRM agent swarm/data/arc1concept-aug-1000")
     ap.add_argument("--file", default=None)
     ap.add_argument("--out", required=True)
@@ -142,7 +230,32 @@ def main():
     ap.add_argument("--chunk", type=int, default=400)
     a = ap.parse_args()
 
-    if a.mode == "arc":
+    if a.mode == "pdbbind":
+        import glob as _glob
+        tars = (a.tars.split(",") if a.tars else
+                sorted(_glob.glob("F:/Development sites/datasets/pdbbind/v2020-refined_*.tar.gz")))
+        if not tars:
+            raise SystemExit("FAIL-CLOSED: no PDBbind tarballs found")
+        chunks = [(t_, a.dll, i == 0) for i, t_ in enumerate(tars)]
+        worker = work_pdbbind
+        total = len(tars)
+        print(f"pdbbind {len(tars)} tarballs  workers {a.workers}", flush=True)
+    elif a.mode == "bindingdb":
+        total_bytes = os.path.getsize(a.tsv)
+        step = a.chunk_mb * 1024 * 1024
+        chunks = []
+        i = 0
+        pos = 0
+        last = (total_bytes // step)
+        while pos < total_bytes:
+            end = min(pos + step, total_bytes)
+            chunks.append((a.tsv, pos, end, a.dll, not chunks, -1 if pos + step >= total_bytes else i))
+            pos = end
+            i += 1
+        worker = work_tsv
+        total = 0
+        print(f"tsv {os.path.basename(a.tsv)}  {total_bytes/1e9:.2f} GB  chunks {len(chunks)}  workers {a.workers}")
+    elif a.mode == "arc":
         import sys as _sys
         _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
         from arc_serialize import ArcSplit
@@ -173,6 +286,8 @@ def main():
     fidelity = []
     bad = []
     done = 0
+    skipped_total = 0
+    seen_total = 0
     t0 = time.time()
     if a.workers <= 1:
         results = map(worker, chunks)
@@ -182,6 +297,10 @@ def main():
         results = pool.imap(worker, chunks)
     try:
         for res in results:
+            if isinstance(res, dict):
+                skipped_total += res["skipped"]
+                seen_total += res.get("seen", 0)
+                res = res["records"]
             for ok, cid, packed, span, lo, cos in res:
                 if not ok:
                     bad.append(cid)
@@ -199,6 +318,9 @@ def main():
             pool.join()
 
     n_records = len(payload) // PACK
+    if seen_total and (n_records + skipped_total) != seen_total:
+        raise SystemExit(f"FAIL-CLOSED: {seen_total} lines in, {n_records} records + {skipped_total} skipped "
+                         f"= {n_records + skipped_total}; a line was dropped or duplicated")
     if n_records == 0:
         raise SystemExit("FAIL-CLOSED: no payload produced")
     if len(payload) % PACK:
@@ -222,9 +344,11 @@ def main():
         f.write(payload)
 
     el = time.time() - t0
-    src = "arc_concept_aug_1000_parallel" if a.mode == "arc" else "chembl37_desc_parallel"
+    src = {"arc": "arc_concept_aug_1000_parallel", "bindingdb": "bindingdb_parallel",
+           "pdbbind": "pdbbind_v2020_refined_parallel"}.get(
+        a.mode, "chembl37_desc_parallel")
     meta = {"source": src, "mode": a.mode,
-            "input": a.arc_root if a.mode == "arc" else a.file,
+            "input": {"arc": a.arc_root, "bindingdb": a.tsv}.get(a.mode, a.tars or "F:/Development sites/datasets/pdbbind"),
             "model": os.path.basename(a.dll), "dim": DIM,
             "records": n_records, "trits": n_records * DIM, "payload_bytes": len(payload),
             "file_bytes": os.path.getsize(a.out), "padding_bytes": 0, "seal_sha256": seal.hex(),
@@ -232,6 +356,8 @@ def main():
             "fidelity_cosine_sample": round(sum(fidelity) / len(fidelity), 4) if fidelity else None,
             "fidelity_n": len(fidelity), "workers": a.workers, "seconds": round(el, 1),
             "records_per_s": round(n_records / el, 1), "unparseable": len(bad), "unparseable_ids": bad[:5],
+            "rows_seen": seen_total, "rows_skipped": skipped_total,
+            "rows_skipped_reason": "no ligand SMILES / short row, or complex with no affinity label",
             "built_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     json.dump(meta, open(a.out + ".json", "w"), indent=1)
     print(json.dumps(meta, indent=1))
