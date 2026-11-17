@@ -8556,3 +8556,22 @@ Also: the REST `fields=` parameter returns empty result sets on `proteomes/searc
 `proteome_type:1` / `proteome_type:Reference` are not valid filter values - the working form is `organism_id:<taxid>`.
 Rate limit is ~10 requests/minute, so the resolution loop spaces calls by 6-7 s.
 
+### G214. PDBbind v2020-refined: all six parts, 4,404 labelled complexes  [MEASURED]
+
+The six Zenodo parts finished (`v2020-refined_0..5.tar.gz`, 6,709,801,119 B total) after parts 0 and 2 ran at
+~1.5 MB/s for hours. Ingest: `--mode pdbbind --workers 6 --chunk 1` (one tarball per worker).
+
+| measure | value |
+|---|---|
+| complexes seen | 5,247 |
+| records | **4,404** |
+| skipped | 843 - "complex with no affinity label" |
+| arithmetic | 4,404 + 843 = 5,247 **closes** |
+| payload | 3,382,272 trits / 845,568 B, padding 0 |
+| seal | `9e0e203d...`, **`exact: true`** |
+| throughput | 156.7 s, 28.1 rec/s, fidelity 0.8627 |
+
+The 843 unlabelled complexes are **structural data without a measured affinity**, and are counted rather than
+dropped silently or assigned a fabricated value. Affinity scale remains **undeclared** in the source split
+(the earlier finding stands: the tarballs carry structures, never affinities).
+
