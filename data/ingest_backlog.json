@@ -1,0 +1,105 @@
+{
+ "when": "2026-11-17T00:00:54Z",
+ "rates": {
+  "desktop_rec_s": 4135,
+  "desktop_note": "rust_native_encode_text_f32 via ctypes, 3,000 records, 242 us/record",
+  "laptop_rec_s": 7880,
+  "laptop_note": "same export, own 816,128-byte dll, 3,000 real SMILES records, 127 us/record",
+  "laptop_faster_by": 1.91
+ },
+ "already_ingested": [
+  {
+   "shard": "build/chembl37_full.k3",
+   "records": 2897805,
+   "trits": 2225514240,
+   "padding": 0,
+   "exact": true
+  },
+  {
+   "shard": "build/smpdb_real.k3",
+   "records": 147932
+  },
+  {
+   "shard": "build/chembl_real.k3",
+   "records": 44401,
+   "note": "subset of the full shard, superseded"
+  },
+  {
+   "shard": "build/chembl_lpxc_real.k3",
+   "records": 406
+  }
+ ],
+ "backlog": [
+  {
+   "corpus": "ARC-AGI concept-aug-1000 (train+test puzzles)",
+   "kind": "grids \u2192 text",
+   "source": "F:/Development sites/TRM agent swarm/data/arc1concept-aug-1000",
+   "records": 291778,
+   "est": true,
+   "have_ingest": false,
+   "value": "high",
+   "eta_desktop_min": 1.2,
+   "eta_laptop_min": 0.6,
+   "note": "145,889 train + 145,889 test puzzle identifiers measured; needs a deterministic grid serializer before encoding"
+  },
+  {
+   "corpus": "ChEMBL-37 SDF (property-grounded: mw/logp/hba/hbd/heavy_atoms)",
+   "kind": "sdf records \u2192 text",
+   "source": "laptop D:/chembl_37.sdf 7,628.2 MB",
+   "records": 2897805,
+   "est": true,
+   "have_ingest": "SMILES-only shard yes (build/chembl37_full.k3); SDF text no",
+   "value": "high",
+   "eta_desktop_min": 11.7,
+   "eta_laptop_min": 6.1,
+   "note": "record count estimated from chembl_smiles_full.txt (2,897,805); SDF molecule count not independently counted"
+  },
+  {
+   "corpus": "CADENCE_LEDGER.jsonl (event/telemetry records)",
+   "kind": "jsonl",
+   "source": "F:/Development sites/TRM-Swarm-OS-v2/swarm_v2_artifacts/CADENCE_LEDGER.jsonl 1,192.9 MB",
+   "records": 9324101,
+   "est": false,
+   "have_ingest": false,
+   "value": "low (replay telemetry, not knowledge)",
+   "eta_desktop_min": 37.6,
+   "eta_laptop_min": 19.7,
+   "note": "lines counted"
+  },
+  {
+   "corpus": "CADENCE_LEDGER.b.jsonl",
+   "kind": "jsonl",
+   "source": ".../CADENCE_LEDGER.b.jsonl 505.6 MB",
+   "records": 3350532,
+   "est": false,
+   "have_ingest": false,
+   "value": "low",
+   "eta_desktop_min": 13.5,
+   "eta_laptop_min": 7.1,
+   "note": "lines counted"
+  },
+  {
+   "corpus": "Kanban tasks (real work history)",
+   "kind": "sqlite rows",
+   "source": "F:/Development sites/ub3/uqi-platform/data/kanban-config/db.v2.sqlite",
+   "records": 4135,
+   "est": false,
+   "have_ingest": false,
+   "value": "medium",
+   "eta_desktop_min": 0.02,
+   "eta_laptop_min": 0.01,
+   "note": "tasks table row count measured"
+  }
+ ],
+ "absent_corpora": [
+  "PDBbind",
+  "BindingDB",
+  "FAERS",
+  "Tox21",
+  "ESKAPE",
+  "PDB full structure set"
+ ],
+ "absent_note": "Zero filename matches on either drive (D: 780 GB used, E: 14.6 GB); nothing to ingest until acquired or found in the unmounted 174.60 GB D:\\WSL vhdx.",
+ "total_ingestable_records": 15868351,
+ "eta_total_min_laptop": 33.6
+}

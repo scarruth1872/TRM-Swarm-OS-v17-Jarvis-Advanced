@@ -8253,3 +8253,46 @@ described rather than hidden behind a "match".
 **What this buys:** the fabric is reproducible on this machine from text alone, so its 1.27 GB is provenance,
 not a dependency on another node.
 
+### G204. The fast path is on both nodes - and the laptop is the faster one  [MEASURED]
+
+Same export, same 768 dims, same real corpus lines, each node using **its own** DLL:
+
+| node | dll | rate | us/record | control | full 2.9 M |
+|---|---|---|---|---|---|
+| desktop | `swarm_rust_kernel_E.dll` 765,952 B | 4,135 rec/s | 242 | 3,000/3,000 distinct | 11.7 min |
+| laptop | own `swarm_rust_kernel.dll` 816,128 B | **7,880 rec/s** | **127** | 3,000/3,000 distinct | **6.1 min** |
+
+Laptop is **1.91x** faster here, on 3,000 real `D:\chembl_smiles_full.txt` records (`first rc 768`, norm 1.0,
+`distinct 3000 of 3000`). Both report `rc == dim` on success and both were checked with a control, so neither
+number is a vector-shaped zero. **Ingestion should run on the laptop**; the desktop is the one that lacks the
+toolchain freedom, not the maths.
+
+### G205. What is left to ingest, with ETAs at the measured rates  [MEASURED]
+
+`data/ingest_backlog.json`. Every record count below was counted, not guessed - except the SDF one, which is
+labelled as estimated from the SMILES line count.
+
+| corpus | records | source | already ingested? | laptop ETA |
+|---|---|---|---|---|
+| ARC-AGI concept-aug-1000 | 291,778 | `TRM agent swarm/data/arc1concept-aug-1000` (145,889 train + 145,889 test) | **no** | **0.6 min** |
+| ChEMBL-37 SDF, property-grounded | 2,897,805 (est.) | laptop `D:\chembl_37.sdf` 7,628.2 MB | SMILES-only yes; SDF text **no** | 6.1 min |
+| CADENCE_LEDGER.jsonl | 9,324,101 | 1,192.9 MB, lines counted | no | 19.7 min |
+| CADENCE_LEDGER.b.jsonl | 3,350,532 | 505.6 MB, lines counted | no | 7.1 min |
+| Kanban tasks | 4,135 | `ub3/.../db.v2.sqlite`, row count | no | 0.01 min |
+
+Total ingestable: **15,868,351 records, 33.6 min on the laptop** - or 63 min on the desktop.
+
+Ranked by what the platform gains, not by size:
+1. **ARC (0.6 min)** - the only reasoning corpus that is present and entirely un-ingested. Needs a
+   deterministic grid serialiser first, which is the real work, not the encoding.
+2. **ChEMBL-37 SDF (6.1 min)** - adds the properties (`mw`, `logp`, `hba`, `hbd`, `heavy_atoms`) that the fabric's
+   own text carries and our SMILES shard does not. This is what makes the fabric reproducible exactly.
+3. **Kanban tasks (1 s)** - real work history, trivial cost.
+4. **CADENCE ledgers (27 min combined)** - replay telemetry, not knowledge. 12.7 M records of `gate_replay`,
+   `featurize`, worker ids and microseconds. Cheap to store, expensive in signal-to-noise; ingest only if a
+   question actually needs event replay.
+
+**Still absent, so not "left to ingest" but "left to acquire":** PDBbind, BindingDB, FAERS, Tox21, ESKAPE, a full
+PDB structure set. Zero filename matches on either volume. The only unopened place left is the **174.60 GB
+`D:\WSL\.vhdx`**.
+

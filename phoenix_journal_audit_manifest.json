@@ -1,16 +1,16 @@
 {
   "total_articles_audited": 146,
-  "audit_timestamp": "2026-11-16T23:53:02Z",
+  "audit_timestamp": "2026-11-17T00:01:09Z",
   "monad_truth_anchor": "0x4D4F4E4144000001",
   "verification_operator": "V_JOURNAL(Claim) = CONFIRMED if a RAW DATA artefact named in evidence_logs EXISTS on disk; SPEC if only design docs, source, or a compiled binary back it (proves the code exists, not that a stated measurement ran); ASPIRATIONAL if no artefact resolves. Applied 2026-09-22 across all 94 articles: CONFIRMED 30 -> 7, SPEC 55 -> 29, ASPIRATIONAL 9 -> 58. Council ratification is NOT evidence - see docs/SYSTEM_SELF_KNOWLEDGE.md 2.1, the mechanism cannot distinguish a proposal from its opposite.",
   "summary": {
-    "empirical_confirmed": 97,
+    "empirical_confirmed": 98,
     "spec_models": 24,
     "aspirational_unexecuted": 58,
     "by_status": {
       "ASPIRATIONAL": 58,
       "SPEC": 24,
-      "CONFIRMED": 97
+      "CONFIRMED": 98
     }
   },
   "articles": [
@@ -2145,6 +2145,19 @@
       ],
       "phoenix_audit_note": "2,897,805 records rebuilt in 1,841.9s (48h by HTTP); fabric codes reproduced at 0.996215 over 300 spread samples, 279/300 byte-identical, control 0.603966, residual 0.378% of codes at +-1 step from f32-vs-f64 rounding of stored scale/v_min.",
       "finding": "Rebuilding two point nine million record vectors took half an hour, and the machine then did something more useful than finishing: it checked itself against a copy built elsewhere. The comparison was exact on two hundred and seventy nine of three hundred records and within a hair on the rest, and the difference was traced to the only place it could come from, which was the order in which two honest pieces of arithmetic rounded. A third of one percent of the codes sat on a boundary and fell to the other side. The value of that number is not its size but its provenance: it came with a control, the control scored far lower, and the residual has a mechanism rather than an excuse."
+    },
+    {
+      "id": 281,
+      "section": "Planning",
+      "title": "Article 281 - Thirty Four Minutes Of Backlog",
+      "phoenix_status": "CONFIRMED",
+      "evidence_logs": [
+        "docs/PHASE-6-GAPS.md#g204",
+        "docs/PHASE-6-GAPS.md#g205",
+        "data/ingest_backlog.json"
+      ],
+      "phoenix_audit_note": "Laptop 7,880 rec/s vs desktop 4,135 (1.91x), both with 3,000/3,000 distinct control. Backlog counted: ARC 291,778; SDF 2,897,805 (est); CADENCE 9,324,101 + 3,350,532; kanban 4,135 = 15,868,351 records = 33.6 min on the laptop.",
+      "finding": "Once encoding became arithmetic instead of a network round trip, the backlog stopped being a roadmap and became a schedule. Fifteen million records, thirty four minutes, and the laptop was the faster machine of the two by nearly a factor of two while the desktop was the one that could not even spawn a compiler unaided. What was left was not volume but judgement: half the remaining records were replay telemetry, which is cheap to store and expensive to search, and the one genuinely missing capability, the ARC reasoning corpus, needed a serialiser rather than throughput. The list of what could not be ingested at all was shorter and more interesting than the list of what could, and it was empty of anything that existed on either disk."
     }
   ],
   "provenance_revision": {
