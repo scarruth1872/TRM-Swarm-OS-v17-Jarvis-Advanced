@@ -51,6 +51,35 @@ SOURCES = {
                   "F:/Development sites/datasets/chembl_smiles_full.txt"],
         "kind": "smiles_lines",
     },
+    # ARC-AGI concept-aug-1000 (145,889 train + 145,889 test puzzles, Kaggle npy layout).
+    # Encoding measured, not assumed: 900 tokens = 30x30 grid, token 1..10 = ARC colour 0..9, token 0 = padding,
+    # token 11 = an extra vocabulary entry whose meaning is NOT established here and is rendered as 'x' rather
+    # than guessed. Each row is one example input; the row at the same index in `all__labels` is its output;
+    # `all__puzzle_indices` gives each puzzle's row range.
+    # Real work history from the UQI kanban store (4,135 tasks measured, 0 blank titles). These are the
+    # platform's own goals and their descriptions - the only corpus here that records what was actually asked.
+    # Property-grounded ChEMBL text, matching the fabric's own sidecar format exactly. The SDF carries only
+    # `chembl_id` (measured: 1,472 tags / 1,472 records in an 8 MB sample), so the properties were computed at
+    # build time and are recomputed here with RDKit. Recipe confirmed against the fabric's published numbers:
+    # NumHAcceptors=3, NumHDonors=2, GetNumHeavyAtoms=16, MolLogP=1.362, Descriptors.MolWt=235.316 for
+    # Cc1cc(-c2csc(N=C(N)N)n2)cn1C - all five matched. Requires an interpreter that HAS rdkit (desktop: py3.12).
+    "chembl37_desc": {
+        "shard_id": 107,
+        "files": ["scratch/chembl37/chembl_smiles_full.txt",
+                  "F:/Development sites/datasets/chembl_smiles_full.txt"],
+        "kind": "smiles_rdkit",
+    },
+    "kanban": {
+        "shard_id": 106,
+        "files": ["F:/Development sites/ub3/uqi-platform/data/kanban-config/db.v2.sqlite"],
+        "kind": "sqlite_rows",
+        "table": "tasks",
+    },
+    "arc": {
+        "shard_id": 105,
+        "files": ["F:/Development sites/TRM agent swarm/data/arc1concept-aug-1000"],
+        "kind": "arc_puzzles",
+    },
     "chembl_lpxc": {
         "shard_id": 102,
         "files": ["evidence/chembl_lpxc_actives.json"],
@@ -117,6 +146,112 @@ def load_records(name: str, limit: int | None) -> list[tuple[str, str]]:
         if not out:
             raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 protein rows")
         return out
+    if spec["kind"] == "smiles_rdkit":
+        try:
+            from rdkit import Chem
+            from rdkit.Chem import Descriptors, Crippen, Lipinski
+        except ImportError:
+            raise SystemExit("FAIL-CLOSED: rdkit not importable in THIS interpreter - run with one that has it "
+                             "(desktop: Python312; laptop: py -3 / Python313). Refusing to invent descriptors.")
+        out5: list[tuple[str, str]] = []
+        bad = 0
+        with open(path, encoding="utf-8", errors="ignore") as fh:
+            for line in fh:
+                line = line.rstrip("\n\r")
+                if not line:
+                    continue
+                smi, _, cid = line.partition("\t")
+                smi, cid = smi.strip(), cid.strip()
+                if not smi:
+                    continue
+                m = Chem.MolFromSmiles(smi)
+                if m is None:
+                    bad += 1
+                    if bad <= 5:
+                        print(f"  unparseable SMILES (skipped): {cid} {smi[:40]}", flush=True)
+                    continue
+                def _f3(x: float) -> str:
+                    """The fabric prints `str(round(x, 3))`: mw=2883.39, mw=857.0, logp=0.0. Determined by
+                    diffing 5,000 records against its sidecar - `:.3f` gives 2883.390/857/0 and matches none."""
+                    return str(round(x, 3))
+
+                text = (f"chembl_id: {cid}\nsmiles: {smi}\n"
+                        f"hba={Lipinski.NumHAcceptors(m)} hbd={Lipinski.NumHDonors(m)} "
+                        f"heavy_atoms={m.GetNumHeavyAtoms()} "
+                        f"logp={_f3(Crippen.MolLogP(m))} mw={_f3(Descriptors.MolWt(m))}")
+                out5.append((f"chembl/{cid}", text))
+                if limit and len(out5) >= limit:
+                    break
+        if not out5:
+            raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 descriptor records")
+        print(f"  smiles_rdkit: {len(out5)} records, {bad} unparseable skipped", flush=True)
+        return out5
+    if spec["kind"] == "sqlite_rows":
+        import sqlite3 as _sq
+        if not os.path.isabs(path) and not os.path.exists(path):
+            raise SystemExit(f"FAIL-CLOSED: {path} missing")
+        con = _sq.connect(f"file:{path}?mode=ro", uri=True)
+        tbl = spec.get("table", "tasks")
+        cur = con.execute(f'select * from "{tbl}"')
+        names = [d[0] for d in cur.description]
+        out4: list[tuple[str, str]] = []
+        for row in cur:
+            d = dict(zip(names, row))
+            title = str(d.get("title") or "").strip()
+            if not title:
+                continue
+            desc = str(d.get("description") or "").strip()
+            key = f"{tbl}/{d.get('id')}"
+            text = (f"kanban {tbl} task {title} status {d.get('status')} "
+                    f"created {d.get('created_at')} description {desc}")
+            out4.append((key, text[:4000]))
+            if limit and len(out4) >= limit:
+                break
+        con.close()
+        if not out4:
+            raise SystemExit(f"FAIL-CLOSED: {path}:{tbl} yielded 0 rows")
+        print(f"  {tbl}: {len(out4)} rows serialised", flush=True)
+        return out4
+    if spec["kind"] == "arc_puzzles":
+        import numpy as _np
+        out3: list[tuple[str, str]] = []
+
+        def _render(row) -> str:
+            """Crop to the non-pad bounding box. Token 0 is padding and token 1 is ARC colour 0, so the two are
+            distinguishable - which is exactly why the crop can be exact instead of guessed at."""
+            grid = _np.asarray(row, dtype=_np.uint8).reshape(30, 30)
+            rows = [r for r in grid if any(v != 0 for v in r)]
+            if not rows:
+                return "(empty)"
+            cols = [c for c in range(30) if any(r[c] != 0 for r in rows)]
+            c0, c1 = min(cols), max(cols)
+            out_rows = []
+            for r in rows:
+                out_rows.append("".join((str(v - 1) if 1 <= v <= 10 else "x") for v in r[c0:c1 + 1]))
+            return f"{len(out_rows)}x{c1 - c0 + 1}:" + "/".join(out_rows)
+
+        for split in ("train", "test"):
+            d = os.path.join(path, split)
+            if not os.path.isdir(d):
+                continue
+            inp = _np.load(os.path.join(d, "all__inputs.npy"), mmap_mode="r")
+            lab = _np.load(os.path.join(d, "all__labels.npy"), mmap_mode="r")
+            idx = _np.load(os.path.join(d, "all__puzzle_indices.npy"))
+            ids = _np.load(os.path.join(d, "all__puzzle_identifiers.npy"))
+            for pn in range(len(ids)):
+                lo, hi = int(idx[pn]), int(idx[pn + 1])
+                parts = []
+                for k, row_i in enumerate(range(lo, hi)):
+                    parts.append(f"example {k + 1} input {_render(inp[row_i])} output {_render(lab[row_i])}")
+                out3.append((f"arc/{split}/{int(ids[pn])}",
+                             f"ARC-AGI puzzle {split} number {int(ids[pn])} with {hi - lo} examples: "
+                             + "; ".join(parts)))
+                if limit and len(out3) >= limit:
+                    return out3
+        if not out3:
+            raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 ARC puzzles")
+        print(f"  arc: {len(out3)} puzzles serialised", flush=True)
+        return out3
     if spec["kind"] == "smiles_lines":
         # Streamed: the file holds ~5.2 M lines, so it is read line by line and stops at `limit`.
         out2: list[tuple[str, str]] = []

@@ -8296,3 +8296,34 @@ Ranked by what the platform gains, not by size:
 PDB structure set. Zero filename matches on either volume. The only unopened place left is the **174.60 GB
 `D:\WSL\.vhdx`**.
 
+### G206. RDKit was on both machines; the ledger's "unreachable" was a wrong interpreter  [MEASURED]
+
+G205's backlog ranked the ChEMBL-37 SDF pass as near-worthless because the SDF carries **only** `chembl_id`
+(measured: 1,472 `> <chembl_id>` tags for 1,472 records in an 8 MB sample) and RDKit was reported absent. Both
+halves were wrong in different ways.
+
+**RDKit exists on both nodes.** The desktop has **RDKit 2026.03.6** in `Programs\Python\Python312\Lib\site-packages`;
+the laptop has the same version in `Python313` (`py -3`). It was reported absent because the check ran against
+**Python311** - the same multi-interpreter trap already recorded for `uv pip install --system`. Presence is a
+question about an interpreter, not about a machine.
+
+**The descriptor recipe is reproducible.** For `Cc1cc(-c2csc(N=C(N)N)n2)cn1C` the fabric's published line is
+`hba=3 hbd=2 heavy_atoms=16 logp=1.362 mw=235.316`, and RDKit returns exactly that from
+`Lipinski.NumHAcceptors` / `NumHDonors` / `GetNumHeavyAtoms` / `Crippen.MolLogP` / `Descriptors.MolWt`
+(**not** `ExactMolWt`, which gives 235.089).
+
+**Text reproduction against the fabric's own sidecar, 5,000 records:**
+
+| measure | result |
+|---|---|
+| exact byte-identical text | 4,573 / 5,000 = **91.46%** |
+| among records with no `name:` line | 4,573 / 4,614 = **99.11%** |
+| name-bearing records (not reproducible) | 386 - ChEMBL preferred names exist on neither disk |
+| residual (~0.89% of un-named) | Crippen drift, e.g. `logp=2.397` here vs `2.398` there - different RDKit build |
+
+Two formatting facts were **derived by diffing**, not assumed: the fabric prints `str(round(x, 3))`
+(`mw=2883.39`, `mw=857.0`, `logp=0.0` - `:.3f` matches none of those), and `name:` is the **last** line.
+
+`k3_ingest_real.py` gained `--source chembl37_desc` (kind `smiles_rdkit`), which refuses to run on an interpreter
+without rdkit rather than inventing descriptors.
+

@@ -1,0 +1,41 @@
+{
+ "when": "2026-11-17T00:17:19Z",
+ "shards_on_disk": {
+  "arc_probe50.k3": 9728,
+  "chembl37_2000.k3": 384128,
+  "chembl37_full.k3": 556378688,
+  "chembl37_native_2000.k3": 384128,
+  "chembl_lpxc_real.k3": 78080,
+  "chembl_real.k3": 8525120,
+  "kanban_tasks.k3": 794048,
+  "smpdb_real.k3": 28403072
+ },
+ "in_flight": {
+  "arc_concept_aug_1000.k3": {
+   "records_target": 291778,
+   "started": "2026-11-16T19:00Z",
+   "status": "running"
+  },
+  "chembl37_desc.k3": {
+   "records_target": 2897805,
+   "status": "running",
+   "projected_min": 62
+  }
+ },
+ "rates": {
+  "desktop_encode_rec_s": 4135,
+  "laptop_encode_rec_s": 7880,
+  "rdkit_descriptors_mol_s": 783
+ },
+ "rdkit": {
+  "desktop": "2026.03.6 / Python312",
+  "laptop": "2026.03.6 / Python313",
+  "python311": "absent"
+ },
+ "text_reproduction": {
+  "exact_overall": 0.9146,
+  "exact_unnamed": 0.9911,
+  "name_bearing_unreproducible": 386,
+  "sample": 5000
+ }
+}
