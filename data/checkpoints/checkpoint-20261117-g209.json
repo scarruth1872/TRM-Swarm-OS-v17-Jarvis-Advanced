@@ -1,0 +1,48 @@
+{
+ "tag": "checkpoint-20261117-g209",
+ "head": "051238b",
+ "when": "2026-11-17T01:45:42Z",
+ "real_corpora": {
+  "tox21": {
+   "source": "deepchem tox21.csv.gz",
+   "compounds": 7831,
+   "endpoints": 12,
+   "shard": "build/tox21_real.k3",
+   "exact": true
+  },
+  "bindingdb": {
+   "source": "laptop BindingDB_All_202610_tsv.zip 594284548 B",
+   "tsv_bytes": 9004582822,
+   "columns": 640,
+   "rows_seen": 3243660,
+   "rows_skipped": 75,
+   "records": 3243585,
+   "seal": "1ec99469bfd3ac988b45b8d3b277581e533eaf2bd10ae3062f020b4828054afc",
+   "rec_s": 10088.8,
+   "exact": true
+  },
+  "pdbbind": {
+   "structures_zenodo": "7014096",
+   "parts_have": 4,
+   "parts_total": 6,
+   "labels_source": "PGDTA 14286374 refined2019",
+   "labels": 4463,
+   "affinity_range": [
+    2.0,
+    11.92
+   ],
+   "shard_4parts_records": 2748,
+   "status": "full build pending parts 0+2"
+  }
+ },
+ "placeholder_shards": {
+  "count": 10,
+  "claimed_records": 21563934,
+  "verdict": "fill bytes - 32 B/record, 2 distinct 256B blocks, no TURBOVEC magic, no key table"
+ },
+ "open": [
+  "PDBbind parts 0+2 downloading (~47%)",
+  "FAERS 14.5GB not started",
+  "CARD/NCBI-AMR/ClinicalTrials/OrangeBook/TPTP no source URL yet"
+ ]
+}
