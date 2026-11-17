@@ -90,6 +90,45 @@ def work_arc(job):
     return out
 
 
+def work_ct(job):
+    """job = (zip_path, start_idx, end_idx, dll, want_fid). Members by index: the 612,025-study export is a flat
+    zip, so index ranges are the natural split and the central directory is read once per worker."""
+    zip_path, start, end, dll, want_fid = job
+    import sys as _sys
+    import zipfile as _zf
+    _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from clinicaltrials_serialize import study_text
+    lib = _load(dll)
+    buf = (ctypes.c_float * DIM)()
+    out = []
+    skipped = 0
+    seen = 0
+    z = _zf.ZipFile(zip_path)
+    names = z.namelist()
+    for i in range(start, min(end, len(names))):
+        nm = names[i]
+        if not nm.lower().endswith(".xml"):
+            continue
+        seen += 1
+        with z.open(nm) as fh:
+            rec = study_text(fh.read())
+        if rec is None:
+            skipped += 1
+            continue
+        key, text = rec
+        raw = text.encode("utf-8", "ignore")
+        if lib.rust_native_encode_text_f32(raw, len(raw), buf, DIM) != DIM:
+            raise RuntimeError(f"encoder failed on {key}")
+        packed, span, loq = quantize(list(buf))
+        cos = None
+        if want_fid and len(out) < 24:
+            dec = dequantize(packed, span, loq)
+            nv = math.sqrt(sum(x * x for x in buf)) or 1.0
+            cos = sum(a * bb for a, bb in zip([x / nv for x in buf], dec))
+        out.append((True, key, packed, span, loq, cos))
+    return {"records": out, "skipped": skipped, "seen": seen}
+
+
 def work_pdbbind(job):
     """job = (tar_path, dll, want_fid). One tarball per worker: v2020-refined ships as 6 parts, so the archive
     itself is the natural unit of parallelism (no byte-range splitting inside a gzip stream)."""
@@ -217,7 +256,8 @@ def work_chunk(job):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--mode", choices=["chembl", "arc", "bindingdb", "pdbbind"], default="chembl")
+    ap.add_argument("--mode", choices=["chembl", "arc", "bindingdb", "pdbbind", "clinicaltrials"], default="chembl")
+    ap.add_argument("--ct-zip", default="F:/Development sites/datasets/clinicaltrials/AllPublicXML.zip")
     ap.add_argument("--tars", default=None, help="comma-separated PDBbind tarballs, or a glob is not needed")
     ap.add_argument("--tsv", default="F:/Development sites/datasets/bindingdb/BindingDB_All.tsv")
     ap.add_argument("--chunk-mb", type=int, default=64)
@@ -230,7 +270,19 @@ def main():
     ap.add_argument("--chunk", type=int, default=400)
     a = ap.parse_args()
 
-    if a.mode == "pdbbind":
+    if a.mode == "clinicaltrials":
+        import zipfile as _zf2
+        with _zf2.ZipFile(a.ct_zip) as _z:
+            n_members = len(_z.namelist())
+        if a.limit:
+            n_members = min(n_members, a.limit)
+        step = a.chunk
+        chunks = [(a.ct_zip, i, min(i + step, n_members), a.dll, i == 0)
+                  for i in range(0, n_members, step)]
+        worker = work_ct
+        total = n_members
+        print(f"clinicaltrials {n_members:,} members  chunks {len(chunks)}  workers {a.workers}", flush=True)
+    elif a.mode == "pdbbind":
         import glob as _glob
         tars = (a.tars.split(",") if a.tars else
                 sorted(_glob.glob("F:/Development sites/datasets/pdbbind/v2020-refined_*.tar.gz")))
@@ -345,10 +397,12 @@ def main():
 
     el = time.time() - t0
     src = {"arc": "arc_concept_aug_1000_parallel", "bindingdb": "bindingdb_parallel",
-           "pdbbind": "pdbbind_v2020_refined_parallel"}.get(
+           "pdbbind": "pdbbind_v2020_refined_parallel",
+           "clinicaltrials": "clinicaltrials_public_xml_parallel"}.get(
         a.mode, "chembl37_desc_parallel")
     meta = {"source": src, "mode": a.mode,
-            "input": {"arc": a.arc_root, "bindingdb": a.tsv}.get(a.mode, a.tars or "F:/Development sites/datasets/pdbbind"),
+            "input": {"arc": a.arc_root, "bindingdb": a.tsv, "clinicaltrials": a.ct_zip}.get(
+                a.mode, a.tars or "F:/Development sites/datasets/pdbbind"),
             "model": os.path.basename(a.dll), "dim": DIM,
             "records": n_records, "trits": n_records * DIM, "payload_bytes": len(payload),
             "file_bytes": os.path.getsize(a.out), "padding_bytes": 0, "seal_sha256": seal.hex(),
@@ -357,7 +411,10 @@ def main():
             "fidelity_n": len(fidelity), "workers": a.workers, "seconds": round(el, 1),
             "records_per_s": round(n_records / el, 1), "unparseable": len(bad), "unparseable_ids": bad[:5],
             "rows_seen": seen_total, "rows_skipped": skipped_total,
-            "rows_skipped_reason": "no ligand SMILES / short row, or complex with no affinity label",
+            "rows_skipped_reason": {"bindingdb": "no ligand SMILES / short row",
+                                    "pdbbind": "complex with no affinity label",
+                                    "clinicaltrials": "XML unparseable or no NCT id",
+                                    "arc": "puzzle with no examples"}.get(a.mode, "row not representable"),
             "built_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     json.dump(meta, open(a.out + ".json", "w"), indent=1)
     print(json.dumps(meta, indent=1))

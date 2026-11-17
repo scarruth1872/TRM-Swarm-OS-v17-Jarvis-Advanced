@@ -8466,3 +8466,30 @@ and `www.tptp.org/tptp` is now a Google Sites page with **no download links in i
 individual solver benchmarks (MoMo, Leo-III, iProver artifacts), not the problem library. Acquiring TPTP needs a
 working URL or an account; the 25,120-record placeholder stands until then.
 
+### G211. ClinicalTrials.gov: 612,025 studies ingested from the NLM bulk export  [MEASURED]
+
+AACT's bulk copies are account-gated (daily = 212-byte JSON error, monthly = `410 Gone`), so this used the registry's
+own export: `clinicaltrials.gov/api/legacy/public-xml?format=zip` -> **3,022,163,093 B in 127 s**, containing
+**612,025 study XMLs, 14.86 GB uncompressed, median 12 KB**.
+
+| measure | value |
+|---|---|
+| records | **612,025** (placeholder claimed 490,000) |
+| rows seen / skipped | 612,025 / **0** |
+| payload | 117,508,800 B (117.5 MB), trits 470,035,200, padding 0 |
+| seal | `3601b5ba...`, **`exact: true`** (verified by a second process) |
+| throughput | 2,389.7 rec/s over 16 workers, 256.1 s |
+
+Text per study: NCT id, brief title, status, phase, study type, conditions, interventions, enrollment with its
+`@type`, lead sponsor, start/completion dates, primary outcome measures. Absent fields are **omitted**, never written
+as "unknown" - an unrecorded phase must not look like a recorded value. Long lists are truncated at 8 (5 for outcomes)
+**with the true count retained** (`+N more`), so truncation cannot be mistaken for a complete list.
+
+Records: `clinicaltrials_serialize.py` is shared, and the mode is a worker over member-index ranges of the flat zip,
+so the 612k-file export splits evenly without decompressing twice.
+
+**Two defects fixed mid-build, both invisible to a green test run:**
+1. `chunks = [... not chunks ...]` - a comprehension referencing the name it was defining. `NameError` at startup.
+2. `rows_skipped_reason` still said *"no ligand SMILES"* on a ClinicalTrials shard (hardcoded BindingDB wording).
+   Now mode-aware. A wrong reason string sends a later audit looking for a column that never existed.
+
