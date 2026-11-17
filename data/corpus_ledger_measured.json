@@ -1,0 +1,77 @@
+{
+ "measured_at": "2026-11-17",
+ "shards": {
+  "pdbbind_refined": {
+   "claimed": 5300,
+   "measured": 4404,
+   "shard": "build/pdbbind_full.k3",
+   "note": "843 complexes unlabelled"
+  },
+  "bindingdb_affinities": {
+   "claimed": 2540000,
+   "measured": 3243585,
+   "shard": "build/bindingdb_202610.k3",
+   "note": "2026-10 export, 75 rows skipped"
+  },
+  "eskape_proteome_pockets": {
+   "claimed": 32400,
+   "measured": 25888,
+   "shard": "build/eskape_proteomes.k3",
+   "note": "6 Reference proteomes"
+  },
+  "card_resistance_genes": {
+   "claimed": 5240,
+   "measured": 6463,
+   "shard": "build/card_real.k3",
+   "note": "aro_index.tsv"
+  },
+  "ncbi_amr_alleles": {
+   "claimed": 25800,
+   "measured": 8143,
+   "shard": "build/ncbi_amr_real.k3",
+   "note": "3,411 rows with empty allele column"
+  },
+  "tox21_12_endpoint": {
+   "claimed": 9834,
+   "measured": 7831,
+   "shard": "build/tox21_real.k3",
+   "note": "12 endpoints"
+  },
+  "clinical_trials": {
+   "claimed": 490000,
+   "measured": 612025,
+   "shard": "build/clinicaltrials_real.k3",
+   "note": "NLM bulk export, AACT gated"
+  },
+  "fda_orange_book": {
+   "claimed": 30240,
+   "measured": 48990,
+   "shard": "build/orange_book_real.k3",
+   "note": "products.txt"
+  },
+  "faers_adverse_events": {
+   "claimed": 18400000,
+   "measured": 421404,
+   "shard": "build/faers_2026Q3.k3",
+   "note": "CURRENT QUARTER ONLY (user constraint); 14.5GB all-years not fetched"
+  },
+  "tptp_formal_theorems": {
+   "claimed": 25120,
+   "measured": 28346,
+   "shard": "build/tptp_mptp2078.k3",
+   "note": "MPTP2078, 4 encodings"
+  }
+ },
+ "other": {
+  "chembl37_desc": 2897805,
+  "arc_concept_aug_1000": 291778,
+  "smpdb": 147932,
+  "chembl37_real": 44401,
+  "kanban_tasks": 4135,
+  "lpxc": 406
+ },
+ "claimed_total": 21563934,
+ "measured_total": 4407079,
+ "grand_total": 7793536,
+ "rule": "the ten original ledger entries were byte-authentic filler; these figures come from build manifests verified exact by a second process"
+}

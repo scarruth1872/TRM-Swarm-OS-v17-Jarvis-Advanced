@@ -8575,3 +8575,61 @@ The 843 unlabelled complexes are **structural data without a measured affinity**
 dropped silently or assigned a fabricated value. Affinity scale remains **undeclared** in the source split
 (the earlier finding stands: the tarballs carry structures, never affinities).
 
+### G215. TPTP acquired as MPTP2078: 28,346 problems; all ten placeholders now closed  [MEASURED]
+
+**What TPTP is.** *Thousands of Problems for Theorem Provers* - the standard benchmark library of formal logic
+problems in the TPTP language (fof/cnf/tff/thf), used to rank automated theorem provers in CASC. Sibling library:
+**TSTP**, *Thousands of Solutions from Theorem Provers*. Other names in use: **TPL** (TPTP Problem Library),
+**TPTP World** (the project).
+
+**Why the official download fails:** `tptp.org/TPTP/Distribution/TPTP-v9.x.tgz` is 404 at every version tried
+(v9.2.0, v9.1.0, v9.0.0, v8.1.2), `tptp.cs.miami.edu` is 404, `cs.miami.edu/~tptp/...` 302s to nothing, and
+`www.tptp.org/tptp` is a Google Sites page whose HTML carries **no download links**. Zenodo holds only individual
+solver benchmarks. The full ~25k-problem library therefore remains unacquired.
+
+**What is reachable:** `https://github.com/TPTPWorld/MPTPTP2078`, tarball **924,580,049 B** (2m47s), the Mizar-derived
+subset published by the TPTP project itself.
+
+| set | files | meaning |
+|---|---|---|
+| `Bushy/Problems` | 2,078 | problems, axioms chained for bushy provers |
+| `Chainy/Problems` | 2,079 | same problems, sorted chains (+ `Problems/Axioms/`, 33 files) |
+| `Pruney/Problems-Bushy` | 1,829 | pruned to axioms a solution used |
+| `Pruney/Problems-Chainy` | **22,361** | pruned variants, one per solution - **10x the naive estimate** |
+| **records** | **28,346** | |
+
+`build/tptp_mptp2078.k3`: 21,769,728 trits / 5,442,432 B payload, padding 0, seal `22ecc748...`, **`exact: true`**
+(separate `--verify` process), 36.4 s build, fidelity cosine 0.8613.
+
+**Three traps, all caught before the shard was trusted.**
+1. `Pruney` does not use `<Encoding>/Problems`: it is `Pruney/Problems-Bushy` and `Pruney/Problems-Chainy`. A loader
+   written to the shared layout would have ingested 4,157 of 28,346 problems and reported success.
+2. `Pruney/Problems-Chainy` holds **22,361** files, not ~2,078: pruned variants are generated per solution. Any
+   estimate of "about 8,000 problems" was wrong by 3.5x.
+3. A `tar` killed by a foreground timeout, retried, produced `Chainy/Problems/Axioms: File exists` - a partial
+   extraction that still looks complete. Re-extracted into a fresh directory instead of trusting the dirty tree.
+Plus one code defect: the loader block landed above the `path` resolution and died with `UnboundLocalError` in 0.56 s.
+
+---
+
+### The ten placeholder shards: final accounting
+
+| shard | ledger claim | measured | source used |
+|---|---|---|---|
+| bindingdb_affinities | 2,540,000 | **3,243,585** | 2026-10 export (laptop), 75 rows skipped |
+| clinical_trials | 490,000 | **612,025** | NLM bulk export (AACT was account-gated) |
+| faers_adverse_events | 18,400,000 | **421,404** | 2026Q3 only - user scoped it to current |
+| fda_orange_book | 30,240 | **48,990** | products.txt |
+| tptp_formal_theorems | 25,120 | **28,346** | MPTP2078 |
+| eskape_proteome_pockets | 32,400 | **25,888** | 6 UniProt Reference proteomes |
+| ncbi_amr_alleles | 25,800 | **8,143** | 3,411 rows have empty `allele` |
+| tox21_12_endpoint | 9,834 | **7,831** | 12 endpoints |
+| card_resistance_genes | 5,240 | **6,463** | aro_index.tsv |
+| pdbbind_refined | 5,300 | **4,404** | 843 complexes unlabelled |
+| **total** | **21,563,934** | **4,407,079** | |
+
+**21.56 M claimed, 4.41 M real across the same ten shards.** With the six pre-existing real shards
+(ChEMBL 2,897,805; ARC 291,778; SMPDB 147,932; ChEMBL-real 44,401; kanban 4,135; LpxC 406) the corpus stands at
+**7,793,536 records in 16 shards**, every one verified `exact: true` by a process other than the one that built it.
+Measured ledger: `data/corpus_ledger_measured.json`.
+

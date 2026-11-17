@@ -78,6 +78,13 @@ SOURCES = {
     # Three real domain corpora replacing placeholder shards. Formats measured from the files themselves:
     # CARD aro_index.tsv (12 cols), NCBI AMRFinderPlus ReferenceGeneCatalog.txt (25 cols, 11,555 alleles),
     # FDA Orange Book products.txt (tilde-delimited, 14 cols).
+    # TPTP: MPTP2078 (Mizar-derived TPTP problems, 3 encodings). The official TPTP-v9.x.tgz is unreachable at
+    # every historical path, so this is the TPTP project's own GitHub corpus, labelled MPTP2078 - not "full TPTP".
+    "tptp": {
+        "shard_id": 115,
+        "files": ["F:/Development sites/datasets/tptp/clean/MPTPTP2078-main"],
+        "kind": "tptp_problems",
+    },
     # ESKAPE: six UniProt Reference proteomes (all six verified proteinCount == stream count).
     "eskape": {
         "shard_id": 114,
@@ -176,6 +183,14 @@ def load_records(name: str, limit: int | None) -> list[tuple[str, str]]:
                      for f in spec["files"] if os.path.exists(f if os.path.isabs(f) else os.path.join(ROOT, f))), None)
         if not path:
             raise SystemExit(f"FAIL-CLOSED: none of {spec['files']} exist - refusing to synthesise records")
+    if spec["kind"] == "tptp_problems":
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from tptp_serialize import load_problems
+        recs = load_problems(path)
+        if limit:
+            recs = recs[:limit]
+        print(f"  tptp: TOTAL {len(recs)} problems", flush=True)
+        return recs
     if spec["kind"] == "smpdb_dir":
         out: list[tuple[str, str]] = []
         for dp, _dn, fn in os.walk(path):
