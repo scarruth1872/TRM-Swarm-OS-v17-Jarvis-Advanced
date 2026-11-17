@@ -88,6 +88,18 @@
    "seconds": 460.8,
    "exact": true,
    "scope": "current quarter only (user constraint)"
+  },
+  "eskape_proteomes": {
+   "records": 25888,
+   "rows": 25888,
+   "skipped": 0,
+   "fasta_bytes": 12544596,
+   "payload_bytes": 4970496,
+   "seal": "029d57f14865b4a8bab714bc58347d138dc231a23a51101486d842fee1e18539",
+   "seconds": 55.1,
+   "exact": true,
+   "proteomes": 6,
+   "source": "UniProt REST reference proteomes"
   }
  },
  "in_flight": {
@@ -102,8 +114,8 @@
   "aact": "bulk copies now require an account"
  },
  "totals": {
-  "real_shards": 13,
-  "records": 7737646
+  "real_shards": 14,
+  "records": 7763534
  },
  "rejected_sources": {
   "alexcpn/fda-faers-parquet": {
@@ -115,5 +127,10 @@
    ],
    "reason": "stale by 2-3 years; would be labelled current and not be"
   }
+ },
+ "rejected_organisms": {
+  "UP000019193": "Acinetobacter nosocomialis 28F - not A. baumannii",
+  "UP000238390": "Pseudomonas paraeruginosa - not P. aeruginosa",
+  "UP000255382": "K. pneumoniae subsp. ozaenae - not K. pneumoniae"
  }
 }

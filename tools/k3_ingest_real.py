@@ -78,6 +78,12 @@ SOURCES = {
     # Three real domain corpora replacing placeholder shards. Formats measured from the files themselves:
     # CARD aro_index.tsv (12 cols), NCBI AMRFinderPlus ReferenceGeneCatalog.txt (25 cols, 11,555 alleles),
     # FDA Orange Book products.txt (tilde-delimited, 14 cols).
+    # ESKAPE: six UniProt Reference proteomes (all six verified proteinCount == stream count).
+    "eskape": {
+        "shard_id": 114,
+        "files": [],   # resolved from data/eskape_proteomes.json (UPID -> file), see the loader
+        "kind": "eskape_fasta",
+    },
     # FAERS - CURRENT QUARTER ONLY (2026Q3, 62,624,514 B). The 14.5 GB figure in the tree is all years; the user
     # asked for current only, so that is what is ingested, with the quarter named inside every record.
     "faers": {
@@ -163,10 +169,13 @@ def embed(texts: list[str], model: str, dim: int) -> list[list[float]]:
 
 def load_records(name: str, limit: int | None) -> list[tuple[str, str]]:
     spec = SOURCES[name]
-    path = next((f if os.path.isabs(f) else os.path.join(ROOT, f)
-                 for f in spec["files"] if os.path.exists(f if os.path.isabs(f) else os.path.join(ROOT, f))), None)
-    if not path:
-        raise SystemExit(f"FAIL-CLOSED: none of {spec['files']} exist - refusing to synthesise records")
+    if spec["kind"] == "eskape_fasta":
+        path = None   # resolves six proteome paths from data/eskape_proteomes.json
+    else:
+        path = next((f if os.path.isabs(f) else os.path.join(ROOT, f)
+                     for f in spec["files"] if os.path.exists(f if os.path.isabs(f) else os.path.join(ROOT, f))), None)
+        if not path:
+            raise SystemExit(f"FAIL-CLOSED: none of {spec['files']} exist - refusing to synthesise records")
     if spec["kind"] == "smpdb_dir":
         out: list[tuple[str, str]] = []
         for dp, _dn, fn in os.walk(path):
@@ -189,6 +198,22 @@ def load_records(name: str, limit: int | None) -> list[tuple[str, str]]:
         if not out:
             raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 protein rows")
         return out
+    if spec["kind"] == "eskape_fasta":
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from eskape_serialize import load_proteome
+        meta_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "eskape_proteomes.json")
+        meta = json.load(open(meta_path, encoding="utf-8"))
+        recs = []
+        for pathogen, info in meta.items():
+            part = load_proteome(info["file"], pathogen, info["scientific_name"])
+            if len(part) != info["fasta_proteins"]:
+                raise SystemExit(f"FAIL-CLOSED: {pathogen} parsed {len(part)} != recorded {info['fasta_proteins']}")
+            print(f"  eskape: {pathogen[:30]:32} {len(part):5} proteins  {info['upid']}", flush=True)
+            recs.extend(part)
+        if limit:
+            recs = recs[:limit]
+        print(f"  eskape: TOTAL {len(recs)} proteins from {len(meta)} pathogens", flush=True)
+        return recs
     if spec["kind"] == "faers_quarter":
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
         from faers_serialize import load_quarter

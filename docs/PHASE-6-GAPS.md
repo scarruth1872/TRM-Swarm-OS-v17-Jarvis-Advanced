@@ -8522,3 +8522,37 @@ reported integers as medical indications. Every FAERS table is now addressed by 
 raises `FAIL-CLOSED`. Correct output: `indications Corneal transplant`. This is the same class of error as G209's
 `seek(0)` header re-read: an index that is right for the schema you assumed and wrong for the schema on disk.
 
+### G213. ESKAPE from UniProt: 25,888 proteins across six verified Reference proteomes  [MEASURED]
+
+| pathogen | proteome | proteins |
+|---|---|---|
+| Enterococcus faecium | UP000005269 (DO) | 3,059 |
+| Staphylococcus aureus | UP000008816 (NCTC 8325 / PS 47) | 2,889 |
+| Klebsiella pneumoniae | UP000000265 (subsp. pneumoniae, MGH 78578) | 5,126 |
+| Acinetobacter baumannii | UP000032746 | 3,839 |
+| Pseudomonas aeruginosa | UP000002438 (PAO1) | 5,563 |
+| Enterobacter cloacae | UP000002363 (ATCC 13047) | 5,412 |
+| **total** | 6 proteomes, 12,544,596 B FASTA | **25,888** |
+
+`build/eskape_proteomes.k3`: 19,881,984 trits / 4,970,496 B payload, padding 0, seal `029d57f1...`, **`exact: true`**
+(second process), 55.1 s, fidelity cosine 0.8545. Every streamed protein count equals UniProt's own `proteinCount`.
+
+**Two errors caught before they became records.**
+
+1. **A name search is not a species.** `proteomes/search?query=Acinetobacter baumannii` returned
+   `UP000019193 = Acinetobacter nosocomialis 28F`; `Pseudomonas aeruginosa` returned
+   `UP000238390 = Pseudomonas paraeruginosa`; `Klebsiella pneumoniae` returned `UP000255382 = subsp. ozaenae`.
+   Picking "largest protein count" would have shipped three wrong organisms under correct ESKAPE labels - the
+   labels would have been the only true part. Fixed with `organism_id:<species taxid>` plus a strict
+   `scientificName.startswith("<Genus species> ")` check, and each choice confirmed by reading `proteomeType`
+   from its own record (`K. pneumoniae` needed the susbspecies taxid 272620 to reach a Reference proteome).
+   The three wrong FASTAs were deleted, not left beside the right ones.
+
+2. **A sanity guard rejected real biology.** `MAX_SEQ = 4000` assumed no ESKAPE protein is longer; S. aureus
+   `Q2FYJ6` (ebh) is **9,535 aa** and failed the build with `FAIL-CLOSED: protein Q2FYJ6 length 9535 exceeds 4000`.
+   Raised to 40,000. The guard stays, because its job is to catch a malformed file, not to decide what biology is.
+
+Also: the REST `fields=` parameter returns empty result sets on `proteomes/search` (silently, HTTP 200), and
+`proteome_type:1` / `proteome_type:Reference` are not valid filter values - the working form is `organism_id:<taxid>`.
+Rate limit is ~10 requests/minute, so the resolution loop spaces calls by 6-7 s.
+
