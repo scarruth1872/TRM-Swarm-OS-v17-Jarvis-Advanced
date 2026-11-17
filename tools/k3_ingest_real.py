@@ -78,6 +78,13 @@ SOURCES = {
     # Three real domain corpora replacing placeholder shards. Formats measured from the files themselves:
     # CARD aro_index.tsv (12 cols), NCBI AMRFinderPlus ReferenceGeneCatalog.txt (25 cols, 11,555 alleles),
     # FDA Orange Book products.txt (tilde-delimited, 14 cols).
+    # FAERS - CURRENT QUARTER ONLY (2026Q3, 62,624,514 B). The 14.5 GB figure in the tree is all years; the user
+    # asked for current only, so that is what is ingested, with the quarter named inside every record.
+    "faers": {
+        "shard_id": 113,
+        "files": ["F:/Development sites/datasets/faers/faers_ascii_2026Q3.zip"],
+        "kind": "faers_quarter",
+    },
     "card": {
         "shard_id": 110,
         "files": ["F:/Development sites/datasets/card/extracted/aro_index.tsv"],
@@ -182,6 +189,16 @@ def load_records(name: str, limit: int | None) -> list[tuple[str, str]]:
         if not out:
             raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 protein rows")
         return out
+    if spec["kind"] == "faers_quarter":
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from faers_serialize import load_quarter
+        recs = load_quarter(path)
+        if limit:
+            recs = recs[:limit]
+        if not recs:
+            raise SystemExit(f"FAIL-CLOSED: {path} yielded 0 FAERS reports")
+        print(f"  faers: {len(recs)} case reports from {os.path.basename(path)}", flush=True)
+        return recs
     if spec["kind"] == "card_aro":
         out8: list[tuple[str, str]] = []
         with open(path, encoding="utf-8", errors="replace") as fh:

@@ -8493,3 +8493,32 @@ so the 612k-file export splits evenly without decompressing twice.
 2. `rows_skipped_reason` still said *"no ligand SMILES"* on a ClinicalTrials shard (hardcoded BindingDB wording).
    Now mode-aware. A wrong reason string sends a later audit looking for a column that never existed.
 
+### G212. FAERS: current quarter only, 421,404 reports; the "quantized open version" is stale  [MEASURED]
+
+Two constraints were set by the user and both changed the plan: **current year only**, and **look for an open
+quantized version**.
+
+**The current quarter is small.** `https://fis.fda.gov/content/Exports/faers_ascii_2026Q3.zip` = **62,624,514 B**
+(DEMO 59.27 MB, DRUG 147.25 MB, REAC 51.72 MB, INDI 50.94 MB, OUTC 6.33 MB, THER 12.64 MB, RPSR 0.23 MB). The
+14.5 GB figure elsewhere in the tree is *all* years - not needed and not fetched.
+
+| measure | value |
+|---|---|
+| source | `faers_ascii_2026Q3.zip`, 62,624,514 B |
+| records | **421,404** case reports (DEMO spine, one per `primaryid`) |
+| payload | 323,638,272 trits / 80,909,568 B, padding 0 |
+| seal | `40a1848d...`, **`exact: true`** (second-process verify) |
+| throughput | 7 m 40.8 s, fidelity cosine 0.8634 (n=24) |
+
+**A quantized open version exists and is 2-3 years stale.** `alexcpn/fda-faers-parquet` on HuggingFace: DEMO
+2,902,128 rows / DRUG 15,210,217 / REAC 11,638,745 / INDI 9,292,374, **0.35 GB total** - a genuine columnar
+form of FAERS. Its `fda_dt` spans **20220622 - 20241231** and `rept_dt` max is **2025-01-01**, so a shard built from
+it would be labelled current and end two years ago. Measured (row counts + date min/max), not trusted from its name.
+It is downloaded to `F:/Development sites/datasets/faers_parquet/` and deliberately **not ingested**.
+
+**Bug found in the production run itself.** The first pass printed `indications 1; 2; 3; 4`. The 2026Q3 INDI table is
+`primaryid, caseid, indi_drug_seq, indi_pt` - **four columns** - so a hard-coded index 2 read the drug sequence and
+reported integers as medical indications. Every FAERS table is now addressed by **header name**, and a missing column
+raises `FAIL-CLOSED`. Correct output: `indications Corneal transplant`. This is the same class of error as G209's
+`seek(0)` header re-read: an index that is right for the schema you assumed and wrong for the schema on disk.
+

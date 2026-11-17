@@ -77,6 +77,17 @@
    "rec_s": 2389.7,
    "seconds": 256.1,
    "exact": true
+  },
+  "faers_2026q3": {
+   "records": 421404,
+   "rows": 421404,
+   "skipped": 0,
+   "bytes_zip": 62624514,
+   "payload_bytes": 80909568,
+   "seal": "40a1848dbc3c00942dc43dc7eec5b4b884023e116baeb3f10bde47a987ef3d26",
+   "seconds": 460.8,
+   "exact": true,
+   "scope": "current quarter only (user constraint)"
   }
  },
  "in_flight": {
@@ -91,7 +102,18 @@
   "aact": "bulk copies now require an account"
  },
  "totals": {
-  "real_shards": 12,
-  "records": 7316242
+  "real_shards": 13,
+  "records": 7737646
+ },
+ "rejected_sources": {
+  "alexcpn/fda-faers-parquet": {
+   "bytes": 352000000,
+   "demo_rows": 2902128,
+   "fda_dt_range": [
+    "2022-06-22",
+    "2024-12-31"
+   ],
+   "reason": "stale by 2-3 years; would be labelled current and not be"
+  }
  }
 }
