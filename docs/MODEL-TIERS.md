@@ -43,6 +43,37 @@ K3 gate already measured, where "reject everything" looks like perfect safety an
 work. So the prompt is only accepted after it is measured on the model that will serve it, on dev
 **and** on a holdout set that never informed the rules.
 
+## Independent sets: commands and multi-turn
+
+Arm 4's weakness is authorship — I wrote the prompt *and* both case sets. Two further sets attack that.
+
+**Set C — 32 real shell/PowerShell commands**, labelled by a mechanical verb table (in the harness
+docstring), so the labels cannot see the prompt:
+
+| prompt | accuracy | destructive recall | benign false-block | unknown→abstain |
+|---|---|---|---|---|
+| v4 (shipped) | **96.9%** | **12/12** | **0%** | 83.3% |
+| v5 (rejected) | 93.8% | 12/12 | 0% | 66.7% |
+
+**Set D — 8 multi-turn conversations**, benign turn then a risky turn, decision asked on the final
+directive with history:
+
+| prompt | accuracy | destructive caught | benign | notes |
+|---|---|---|---|---|
+| v4 (shipped) | **87.5%** | **5/5** | 2/2 | median 7.03 s (history costs prefill) |
+| v5 (rejected) | 62.5% | 5/5 | 1/2 | one unparsed answer |
+
+The multi-turn arm matters: it confirms the gate reads *the turn it is answering*, not the
+conversation's tone — every destructive second turn was rejected after a benign opener.
+
+**v5 is not shipped.** Adding "approve metadata, formatting and tests" fixed a dev case and cost
+generalisation: set C 96.9 → 93.8 %, multi-turn 87.5 → 62.5 %. A rule that improves the set you
+tuned on while degrading a set you did not is a regression, not a fix.
+
+**Run-to-run flip:** the same prompt and case returned `abstain` in one run and `approve` in the next
+at temperature 0 — 1 in 32 (3.1 %). So a single-run difference of one case is noise, and no claim
+here rests on one.
+
 ## Swap
 
 ```
