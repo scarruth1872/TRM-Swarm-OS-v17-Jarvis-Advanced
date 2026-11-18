@@ -1,0 +1,98 @@
+{
+ "measured_at": "2026-11-18T11:59:53Z",
+ "rust_port": {
+  "contract": "data/module_contract.json (351 module names across both trees)",
+  "trees": {
+   "canonical": "laptop base tree  ...scratch/laptop_tree/base/trm_uefi_kernel",
+   "secondary": "F:/Development sites/TRM-Swarm-OS-v2/trm_uefi_kernel  (this box)"
+  },
+  "present_in_our_tree": 226,
+  "absent_here": 125,
+  "breakdown": {
+   "IDENTICAL": 64,
+   "SAME_API_DIFF_BODY": 90,
+   "SUPERSET(secondary)": 17,
+   "SECONDARY_ONLY(ours only)": 15,
+   "MERGE_REQUIRED(both, disagree)": 39,
+   "CANONICAL_ONLY(laptop only, absent here)": 125
+  },
+  "merge_decisions_settled": "0 of 39",
+  "verified": "guessed absence checked on disk: 125 of 126 canonical-only names not found under trm_uefi_kernel; secondary-only names all found",
+  "test_suite": "cargo test --release in host_council_server: 107 passed, 0 failed (last recorded run; not re-run after G216 docs-only commit)"
+ },
+ "models_that_work": [
+  {
+   "file": "Qwen3.8-27B-TurboFCFusion-735-882-Here-Uncen-NEO-CODER-MAX-IQ2_M.gguf",
+   "state": "WORKS",
+   "arch": "qwen35",
+   "bytes": 11673303648,
+   "types": "IQ2_S:408 F32:353 Q4_K:64 IQ3_S:25 BF16:1",
+   "evidence": "coherent generation on Vulkan with the rebuilt llama.cpp, 3.29 tok/s"
+  }
+ ],
+ "models_that_fail": [
+  {
+   "file": "Instella-Prometheus-Q3_K_M.gguf",
+   "state": "WILL NOT LOAD",
+   "reason": "llama_model_load: missing tensor 'blk.0.attn_q.weight' - deepseek2/MLA tensor naming not accepted by this build",
+   "note": "the codebase itself names :8596 as the Instella target (TRM_INFER_PORT), so this path is currently dead"
+  },
+  {
+   "file": "Ternary-Bonsai-2-27B-Q2_0.gguf",
+   "state": "LOADS, OUTPUT IS NOISE",
+   "reason": "402 tensors type 42; token_embd+head ternarised"
+  },
+  {
+   "file": "Ternary-Bonsai-2-27B-PTQ1_0.gguf",
+   "state": "UNREADABLE",
+   "reason": "402 tensors type 143, outside the fork's enum (ends at 42)"
+  },
+  {
+   "file": "Ternary-Bonsai-2-9B-Q2_0.gguf",
+   "state": "LOADS, OUTPUT IS NOISE",
+   "reason": "202 tensors type 42"
+  },
+  {
+   "file": "Ternary-Bonsai-2-2B-Q2_0.gguf",
+   "state": "LOADS, OUTPUT IS NOISE",
+   "reason": "151 tensors type 42, 157 tok/s"
+  },
+  {
+   "file": "ollama blob bonsai-27b (sha256-17ef842e...)",
+   "state": "LOADS, OUTPUT IS NOISE",
+   "reason": "498 tensors Q1_0; token_embd + output.weight at 1 bit"
+  }
+ ],
+ "existing_custom_setups": {
+  "inference": {
+   "file": "host_council_server/src/local_inference.rs",
+   "INFER_PORT": 8587,
+   "EMBED_PORT": 8593,
+   "env": "TRM_INFER_PORT overrides port (8595 qwen3-4B, 8596 Instella-MoE per its own doc comment); TRM_PROMPT=chatml selects ChatML, default raw",
+   "measured_in_code": "qwen2.5-1.5B raw -> safe 68.8% / danger 20.4%; qwen3-4B ChatML+no_think -> safe 67.2% / danger 34.6%; ChatML forced on the 1.5B regresses to 1.4% safe (reject-everything)"
+  },
+  "embeddings": {
+   "file": "host_council_server/src/evidence_index.rs",
+   "port": 8593,
+   "model": "nomic-embed-text-v1.5",
+   "dims": 768
+  },
+  "arc": {
+   "file": "host_council_server/src/arc_routes.rs",
+   "port": 8588
+  },
+  "discovery": {
+   "file": "docs/port/laptop-base/intelligence_router.rs",
+   "note": "locates the installed llama-server and a coder GGUF by discovery, not an asserted path"
+  },
+  "sparse_gate": {
+   "evidence": [
+    "evidence/K3_GATE_DIAGNOSIS_MEASURED.json",
+    "evidence/EMB_GATE_REPORT.json"
+   ],
+   "design": "sparse gating per model - the K3 ternary head classifies/abstains; it does not ternarise the base model's weights",
+   "verdict": "change_shipped false - no candidate beats held-out blocking while keeping benign false-blocks under 1%; gate remains advisory"
+  }
+ },
+ "conclusion": "Per-model sparse gating is the design; whole-model ternarisation is what produced the unusable Bonsai GGUFs. A working base model (IQ2_M) on :8587 plus the existing K3 gate at :8022/k3/classify is the configuration the codebase already implements."
+}
