@@ -8631,5 +8631,60 @@ Plus one code defect: the loader block landed above the `path` resolution and di
 **21.56 M claimed, 4.41 M real across the same ten shards.** With the six pre-existing real shards
 (ChEMBL 2,897,805; ARC 291,778; SMPDB 147,932; ChEMBL-real 44,401; kanban 4,135; LpxC 406) the corpus stands at
 **7,793,536 records in 16 shards**, every one verified `exact: true` by a process other than the one that built it.
-Measured ledger: `data/corpus_ledger_measured.json`.
-
+Measured ledger: `data/corpus_ledger_measured.json`.
+
+## G216 — Bonsai 27B cannot be served by llama.cpp: the ternary GGUFs are structurally unservable
+
+**Asked:** "bring bonsai 8587".
+
+**Done:** built `llama.cpp` from `F:/Development sites/ub3/llama.cpp` (the tree that defines
+`GGML_TYPE_Q1_0 = 41` and `GGML_TYPE_Q2_0 = 42`, with `quantize_row_q*_0` / `dequantize_row_q*_0` kernels) —
+VS2019 + Ninja + Vulkan SDK 1.4.363.1, `BUILD_OK`, 776 build steps, output in `build-win/bin`.
+The rebuilt loader then prints `type q1_0: 498 tensors` and `type q2_0: 151 tensors`: the types **are** recognised.
+
+**Result: still garbage**, and identical garbage, in every configuration tried — old binary and new, Vulkan
+`-ngl 99` and CPU `-ngl 0`, 27B Q1_0 blob and E:'s Q2_0 27B/9B/2B. Qwen IQ2_M on the same binary answers
+coherently, so the runtime, the GPU and the sampler are not at fault.
+
+**Controls that cleared the file and the kernels:**
+- blob sha256 recomputed = **matches its own Ollama blob name** (3,803,452,480 B) — not corrupt;
+- type-41 blocks hand-decoded: per-block scales 0.0065–0.0123 (mean 0.0094), all finite, none zero, 49.2% one-bits
+  — a structurally valid Q1_0 payload, not misaligned;
+- `test-quantize-fns.exe`: `q1_0` and `q2_0` round-trip **pass, 0 failures** — llama.cpp's kernels are self-consistent.
+
+**What the tensor census actually shows** (the reason it can never work):
+
+| tensor | 27B blob | 2B Q2_0 |
+|---|---|---|
+| `token_embd.weight` | **Q1_0** (5120×248,320) | **Q2_0** (2048×248,320) |
+| `output.weight` (LM head) | **Q1_0** (5120×248,320) | tied / absent |
+| `blk.0.ssm_alpha` / `ssm_beta` | **Q1_0** | F32 (kept) |
+| `blk.0.ssm_a` | F32 | F32 |
+
+The embedding table and the LM head are ternarised. An embedding layer at 1 bit per weight maps 248,320 tokens
+onto a degenerate set of ternary patterns; no downstream layer can recover token identity from that. The output is
+not "poor quality", it is noise drawn from a near-uniform distribution — exactly what the samples show.
+
+**Correction:** an earlier sample in this session reported a *coherent* CPU generation from the blob at 4.30 tok/s.
+It could not be reproduced in six subsequent attempts and is **withdrawn**. One unrepeatable sample is not a
+capability, and reporting it as one was wrong.
+
+**Also measured, `E:\Hugginface models` (34.9 GB, 6 GGUFs) — only one is usable:**
+
+| file | custom tensors | verdict |
+|---|---|---|
+| `Qwen3.8-27B-TurboFCFusion…IQ2_M.gguf` (10.87 GiB) | **none** — IQ2_S 408, F32 353, Q4_K 64, IQ3_S 25 | **usable**, coherent at 3.29 tok/s on Vulkan |
+| `Ternary-Bonsai-2-27B-PTQ1_0.gguf` | 402 × **type 143** | unreadable — 143 is outside the fork's enum (ends at 42) |
+| `Ternary-Bonsai-2-27B-Q2_0.gguf` | 402 × type 42 | garbage |
+| `Ternary-Bonsai-2-9B-Q2_0.gguf` | 202 × type 42 | garbage |
+| `Ternary-Bonsai-2-2B-Q2_0.gguf` | 151 × type 42 | garbage (157 tok/s) |
+
+Scan: `data/e_drive_models_scan.json`; full evidence: `data/bonsai_runtime_findings.json`.
+
+**Open question, not resolved:** `test-quantize-fns` proves llama.cpp agrees with *itself*. It does not prove the
+fork's Q1_0/Q2_0 block layout equals the layout the external writer used (`tools/turbovec_gguf_apply.py` packs
+trits `c0 + c1*4 + c2*16 + c3*64` with a **per-tensor** alpha kept in the ledger, not a per-block half scale).
+A writer/reader codec mismatch is therefore **not excluded** by that test, and is the cheapest remaining thing to
+check before concluding the 1.58-bit recipe itself destroyed these models.
+
+**State:** nothing is served on `:8587`; no file under `E:` was modified; `:8593` embeddings untouched and healthy.

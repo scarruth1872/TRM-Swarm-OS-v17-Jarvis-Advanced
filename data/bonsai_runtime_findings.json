@@ -1,0 +1,63 @@
+{
+ "measured_at": "2026-11-18T11:45:39Z",
+ "kernel": {
+  "runtime": "host_council_server.exe (Rust)",
+  "path": "F:\\Development sites\\TRM-Swarm-OS-v2\\trm_uefi_kernel\\host_council_server\\target\\release\\host_council_server.exe",
+  "health_body_marker": "Native Rust Sovereign Kernel v19.1.0-sovereign",
+  "build_commit": "9aabc88",
+  "python_active": false,
+  "port": 8022,
+  "note": "verified by HTTP body marker, not netstat"
+ },
+ "models_dir": "E:\\Hugginface models",
+ "gguf_audit": "data/e_drive_models_scan.json",
+ "usable_model": {
+  "file": "Qwen3.8-27B-TurboFCFusion-735-882-Here-Uncen-NEO-CODER-MAX-IQ2_M.gguf",
+  "arch": "qwen35",
+  "tensors": 851,
+  "types": "IQ2_S:408 F32:353 Q4_K:64 IQ3_S:25 BF16:1",
+  "custom_ternary_tensors": 0,
+  "verified": "coherent generation (reasoning_content produced 'Paris is the capital') at 3.29 tok/s on Vulkan"
+ },
+ "unusable_models": [
+  {
+   "file": "Ternary-Bonsai-2-27B-PTQ1_0.gguf",
+   "why": "402 tensors of type 143 - outside the fork's enum (ends at 42); no runtime can read it"
+  },
+  {
+   "file": "Ternary-Bonsai-2-27B-Q2_0.gguf",
+   "why": "402 tensors type 42 (Q2_0 bespoke); garbage output"
+  },
+  {
+   "file": "Ternary-Bonsai-2-9B-Q2_0.gguf",
+   "why": "202 tensors type 42"
+  },
+  {
+   "file": "Ternary-Bonsai-2-2B-Q2_0.gguf",
+   "why": "151 tensors type 42; garbage output at 157 tok/s"
+  }
+ ],
+ "ollama_blob_bonsai27b": {
+  "digest": "sha256-17ef842e47450caeb8eaa3ebfbbab5d2f2278b62b79be107985fb69a2f819aa0",
+  "bytes": 3803452480,
+  "sha256_matches_name": true,
+  "arch": "qwen35",
+  "tensors": 851,
+  "types": "q1_0:498 F32:353",
+  "config_layer": "num_ctx 4096, temperature 0.7, top_p 0.9",
+  "system_prompt": "You are Bonsai-27B, a ternary neural network model providing deep reasoning for the TRM Swarm OS ecosystem.",
+  "output": "deterministic garbage identical across GPU/CPU and across old/new binaries"
+ },
+ "controls_run": [
+  "sha256 of blob recomputed = matches its own Ollama blob name (not corrupt)",
+  "hand-decoded type-41 blocks: per-block scales 0.0065-0.0123 (mean 0.0094), all finite, 0 zeros, 49.2% one-bits -> valid Q1_0 payload",
+  "rebuilt llama.cpp from F:/Development sites/ub3/llama.cpp (BUILD_OK): log prints 'type q1_0: 498 tensors' and 'type q2_0: 151 tensors' -> types recognised",
+  "test-quantize-fns.exe: q1_0 and q2_0 round-trip pass, 0 failures -> llama.cpp kernels self-consistent",
+  "CPU (ngl 0) and Vulkan (ngl 99) both produce the same garbage -> not a backend bug",
+  "Qwen IQ2_M on the same binary is coherent -> runtime and GPU are healthy"
+ ],
+ "structural_finding": "the blob ternarises token_embd (2048x248320 / 5120x248320) and output.weight to Q1_0, and ssm_alpha/ssm_beta to Q1_0. An embedding table and LM head at 1 bit/weight cannot preserve token identity",
+ "open_question": "llama.cpp's own round-trip passes, but no test proves the FORK's block layout equals the layout the external writer used; a writer/reader codec mismatch is not excluded by test-quantize-fns",
+ "withdrawn_claim": "an earlier reported coherent CPU sample of Bonsai at 4.30 tok/s could not be reproduced and is withdrawn; it is not evidence of a working model",
+ "no_action_taken": "no model was left serving on :8587; nothing was written into E:\\Hugginface models"
+}
