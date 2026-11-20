@@ -72,7 +72,8 @@
     },
     "params_per_agent": 8288,
     "params_total": 124320,
-    "approx_weight_bytes_fp32": 497280
+    "approx_weight_bytes_fp32": 497280,
+    "verified_by_torch": true
   },
   "training_state": {
     "steps_executed": 0,
@@ -128,9 +129,25 @@
     "avg/best/final loss all NaN, yet the session exited normally and wrote a final_model"
   ],
   "method": {
-    "torch_available": false,
-    "why": "both Python 3.11 and 3.12 on this host have a numpy whose binaries are for cpython-3.14 ('No module named numpy._core._multiarray_umath'), so torch.load cannot import",
-    "workaround": "decoded the torch.save zip directly with a stub unpickler (scratch/inspect_pt.py, inspect_pt2.py): recovers keys/shapes/dtypes from _rebuild_tensor_v2 args and never materialises tensor data"
+    "errata": "The first pass reported 'numpy cp314 binaries under py3.11/py3.12' as the reason torch could not import. That was FALSE. The system interpreters are healthy (py3.11: numpy 1.26.4 + torch 2.5.1; py3.12: numpy 2.0.2 + torch 2.9.1 + rdkit 2026.03.6). The cp314 numpy is the TOOL environment's: execute_code runs Python 3.14.9 and exports a PYTHONPATH pointing at its own venv, which child interpreters inherit. Fix is on the caller (PYTHONPATH cleared / -E), not in either interpreter.",
+    "method_1_stub_unpickler": "decoded the torch.save zip directly; recovers keys/shapes/dtypes from _rebuild_tensor_v2 args, never materialises tensor data",
+    "method_2_real_torch": {
+      "interpreter": "Python 3.12.6, torch 2.9.1+cpu, PYTHONPATH cleared",
+      "file": "checkpoint_e35_306s.pt",
+      "optimizer_state_entries": 0,
+      "param_group_lr": 0.0003,
+      "weights_any_nan": false,
+      "weights_any_inf": false,
+      "nonzero_params_per_agent": 8288,
+      "b_lora_all_zero": false,
+      "init_note": "B_lora non-zero => not a standard LoRA init (which zeroes B so dW=0 at step 0); random init, never stepped",
+      "epoch_loss_sample": [
+        "nan",
+        "nan",
+        "nan"
+      ]
+    },
+    "agreement": "both methods agree: zero steps, no NaN/Inf in weights, all epoch losses NaN"
   },
   "recommendation": {
     "keep": [

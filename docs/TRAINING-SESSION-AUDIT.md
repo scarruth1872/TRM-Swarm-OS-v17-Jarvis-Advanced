@@ -3,10 +3,36 @@
 **Verdict: this is not a trained model. It is a three-hour crash loop that saved 30.6 GiB of its own
 error log.** Nothing in the folder is servable, and the weights it contains were never updated.
 
-Inspected without torch or numpy (both Python interpreters on this box have a numpy install whose
-binaries are for cpython-3.14, so `import torch` fails): the `.pt` files are zip archives, so the
-pickle was decoded with a stub unpickler that recovers keys, shapes and dtypes but never materialises
-tensor data.
+Two independent inspections, because the first one was preceded by a wrong diagnosis.
+
+**ERRATUM.** An earlier version of this document claimed "both Python interpreters on this box have a
+numpy install whose binaries are for cpython-3.14, so `import torch` fails". **That was false.** The
+system interpreters are healthy:
+
+| interpreter | numpy | torch | other |
+|---|---|---|---|
+| Python 3.11.9 | 1.26.4 | 2.5.1+cpu | — |
+| Python 3.12.6 | 2.0.2 | 2.9.1+cpu | rdkit 2026.03.6 |
+
+The cp314 numpy belongs to the *tool* environment: `execute_code` runs on **Python 3.14.9** and exports
+a `PYTHONPATH` containing its own venv, so a child `py3.11`/`py3.12` process inherits it and imports
+numpy 2.5.4 (cp314 wheel) instead of its own. The fix is on the calling side — run child interpreters
+with `PYTHONPATH=` cleared or `-E`. Nothing needed repairing in either interpreter.
+
+**Method 1 — stub unpickler (no torch).** The `.pt` files are zip archives; the pickle was decoded with
+a stub unpickler that recovers keys, shapes and dtypes from `_rebuild_tensor_v2` arguments and never
+materialises tensor data.
+
+**Method 2 — real `torch.load`** on `checkpoint_e35_306s.pt` under Python 3.12.6 with `PYTHONPATH`
+cleared. It confirms method 1 and adds what a structural read cannot see:
+
+- `optimizers['Shield']['state']` has **0 entries**, `param_groups[0]['lr'] = 3e-4` — a rate that was
+  configured and never applied. **Zero steps, confirmed by torch itself.**
+- weights contain **no NaN and no Inf**; all 8,288 parameters per agent are non-zero (Gaussian
+  initialisation, untouched).
+- `B_lora` is **not** all-zero, so this is not a standard LoRA init (which zeroes B so ΔW = 0 at step
+  0); it is a random init that no step ever moved.
+- `stats['epoch_loss'][:3]` returns `np.float64(nan)`, `nan`, `nan`.
 
 ## What is on disk
 
@@ -80,14 +106,15 @@ and this report should never have been presented as a training result.
 - The folder costs **30.6 GiB** to preserve a 4 KB conclusion: the run was broken from its first
   second and should have aborted on the first exception instead of looping 1,187 times.
 
-## Recommended actions
+## Recommended actions — taken
 
-1. **Keep** `training_report.json` (4 KB) and this audit — the evidence of the failure.
-2. Optional: keep one representative checkpoint (`checkpoint_e35_306s.pt`, 57 MB) as a specimen;
-   the other 32 add nothing that e35 does not already contain, and each is larger for no new
-   information.
-3. **Reclaim ~30.6 GiB** by deleting the remaining checkpoints — *not done; requires the owner's
-   approval.*
+1. **Kept** `training_report.json` (4 KB) and this audit — the evidence of the failure.
+2. **Kept** one specimen, `checkpoint_e35_306s.pt` (57.7 MB), which contains the failure at its
+   smallest.
+3. **Deleted the other 32 checkpoints on 2026-11-18 — 30.54 GiB reclaimed** (32,793,072,830 bytes),
+   0 errors. Each file's name, size, mtime and a first-1-MiB sha256 are recorded in
+   `data/training_session_pruned_20261118.json`, so the deletion is auditable even though the bytes
+   are gone. The folder now holds 2 files / 55 MiB.
 4. If this trainer is ever recovered, it needs three fixes: build the projection from the real input
    width (96, not `lora_rank`), let the first exception abort the run, and never embed the error list
    in a checkpoint.
