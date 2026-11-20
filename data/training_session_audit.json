@@ -1,0 +1,149 @@
+{
+  "folder": "F:/Development sites/TRM-Swarm-OS-v2/swarm_v2_artifacts/training_session",
+  "audited": "2026-11-18",
+  "verdict": "NOT a trained model. A 3-hour crash loop that persisted 30.6 GiB of its own error log. Zero optimizer steps; all 1,187 epoch losses are NaN; weights are at initialisation.",
+  "inventory": {
+    "files": 34,
+    "checkpoints": 33,
+    "final_model": true,
+    "total_bytes": 32850767836,
+    "total_gib": 30.59,
+    "span": "2026-08-06T04:37 -> 2026-08-06T07:33",
+    "report_duration_s": 10802,
+    "cadence_epochs": 35,
+    "size_growth": {
+      "first": "57987368 bytes (e35)",
+      "last": "1938802448 bytes (final_model)"
+    }
+  },
+  "weights": {
+    "agents": [
+      "Shield",
+      "Logic",
+      "Devo",
+      "Seeker",
+      "Verify",
+      "Archi",
+      "Flow",
+      "Bridge",
+      "Orchestra",
+      "EventLedger",
+      "LogicMaster",
+      "Pulse",
+      "THzGateway",
+      "Jarvis",
+      "Hermes"
+    ],
+    "tensors_per_agent": 9,
+    "shapes": {
+      "A_lora": [
+        16,
+        32
+      ],
+      "B_lora": [
+        32,
+        16
+      ],
+      "C_lora": [
+        16,
+        32
+      ],
+      "D_lora": [
+        32,
+        16
+      ],
+      "W_in": [
+        32,
+        96
+      ],
+      "W_out": [
+        96,
+        32
+      ],
+      "A_diag": [
+        32
+      ],
+      "B_vec": [
+        32
+      ],
+      "C_vec": [
+        32
+      ]
+    },
+    "params_per_agent": 8288,
+    "params_total": 124320,
+    "approx_weight_bytes_fp32": 497280
+  },
+  "training_state": {
+    "steps_executed": 0,
+    "optimizer_state_entries": 0,
+    "epochs_declared": 1187,
+    "epoch_loss_entries": 1187,
+    "epoch_loss_nan": 1187,
+    "loss_report": {
+      "avg": null,
+      "best": null,
+      "final": null,
+      "note": "all NaN in the checkpoint and in training_report.json"
+    }
+  },
+  "errors": {
+    "count": 13923510,
+    "distinct_messages": 2,
+    "messages": [
+      {
+        "text": "mat1 and mat2 shapes cannot be multiplied (64x96 and 16x16)",
+        "count": 13905705
+      },
+      {
+        "text": "mat1 and mat2 shapes cannot be multiplied (16x96 and 16x16)",
+        "count": 17805
+      }
+    ],
+    "first": "2026-08-06T04:32:16.744437",
+    "last": "2026-08-06T07:32:18.744617",
+    "agent": "Shield",
+    "step_field": 0,
+    "root_cause": "a 16x16 nn.Linear is applied to a 96-wide input: the projection's in_features was taken from lora_rank (16) instead of the real input width (96; state_dim 32, W_in maps 96->32). Every forward raised; the loop caught it per agent per epoch instead of aborting."
+  },
+  "why_30_gib": {
+    "cause": "each checkpoint embeds the entire accumulated errors list inside data.pkl, so the file grows with the log, not with learning",
+    "measured": {
+      "e35": {
+        "total_mib": 55.0,
+        "data_pkl_mib": 54.5,
+        "tensors_mib": 0.02
+      },
+      "final": {
+        "total_mib": 1849.0,
+        "data_pkl_mib": 1849.0,
+        "tensors_mib": 0.02
+      }
+    }
+  },
+  "report_defects": [
+    "error_rate_pct = 1392351000.0 (1.39 billion percent) - computed against total_steps: 0",
+    "total_steps: 0 alongside epochs: 1187 - a run with no steps reported as a completed session",
+    "error_log keeps only 20 of 13,923,510 entries, all identical, all at step 0",
+    "avg/best/final loss all NaN, yet the session exited normally and wrote a final_model"
+  ],
+  "method": {
+    "torch_available": false,
+    "why": "both Python 3.11 and 3.12 on this host have a numpy whose binaries are for cpython-3.14 ('No module named numpy._core._multiarray_umath'), so torch.load cannot import",
+    "workaround": "decoded the torch.save zip directly with a stub unpickler (scratch/inspect_pt.py, inspect_pt2.py): recovers keys/shapes/dtypes from _rebuild_tensor_v2 args and never materialises tensor data"
+  },
+  "recommendation": {
+    "keep": [
+      "training_report.json (4 KB)",
+      "docs/TRAINING-SESSION-AUDIT.md",
+      "optionally checkpoint_e35_306s.pt as a specimen"
+    ],
+    "reclaimable_gib": 30.6,
+    "action_taken": "none - deletion requires the owner's approval",
+    "if_trainer_recovered": [
+      "build the projection from the real input width (96), not lora_rank",
+      "abort on the first exception instead of catching per agent",
+      "never embed the error list in a checkpoint"
+    ]
+  }
+}
