@@ -15,6 +15,87 @@ pub const FALSE: i8 = -1;
 pub const UNKNOWN: i8 = 0;
 pub const TRUE: i8 = 1;
 
+/// Kleene K3 consensus over a council tally.
+///
+/// Kleene logic is the reason this exists: an abstention is UNKNOWN, not FALSE. The platform's
+/// verdict rule compared only `approve_count` against a threshold, so 8 approve / 0 reject /
+/// 6 abstain and 0 approve / 0 reject / 14 abstain both came out REJECTED -- as if the council had
+/// rejected, when it had never actually said no. Here the two are distinguishable.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct K3Consensus {
+    /// Kleene AND of the agent trits: FALSE if anyone rejected, UNKNOWN if anyone abstained,
+    /// TRUE only if every agent approved.
+    pub k3_and: i8,
+    /// Kleene OR: TRUE if anyone approved, UNKNOWN if anyone abstained, FALSE if all rejected.
+    pub k3_or: i8,
+    /// Number of abstentions (UNKNOWN trits).
+    pub unknown: usize,
+    /// Total votes seen.
+    pub n: usize,
+}
+
+/// Consensus directly from a tally. AND/OR over a multiset depend only on the counts, so this is
+/// exact rather than an approximation of the per-agent fold.
+pub fn k3_from_counts(approve: usize, abstain: usize, reject: usize) -> K3Consensus {
+    let n = approve + abstain + reject;
+    let (k3_and, k3_or) = if n == 0 {
+        (UNKNOWN, UNKNOWN)
+    } else {
+        (
+            if reject > 0 {
+                FALSE
+            } else if abstain > 0 {
+                UNKNOWN
+            } else {
+                TRUE
+            },
+            if approve > 0 {
+                TRUE
+            } else if abstain > 0 {
+                UNKNOWN
+            } else {
+                FALSE
+            },
+        )
+    };
+    K3Consensus {
+        k3_and,
+        k3_or,
+        unknown: abstain,
+        n,
+    }
+}
+
+/// Consensus by folding the individual agent trits with the Kleene operators.
+/// Must agree with `k3_from_counts` for any tally (asserted by a test).
+pub fn k3_consensus(trits: &[i8]) -> K3Consensus {
+    if trits.is_empty() {
+        return K3Consensus {
+            k3_and: UNKNOWN,
+            k3_or: UNKNOWN,
+            unknown: 0,
+            n: 0,
+        };
+    }
+    let mut acc_and = TRUE;
+    let mut acc_or = FALSE;
+    let mut unknown = 0usize;
+    for &t in trits {
+        let t = t.clamp(FALSE, TRUE);
+        if t == UNKNOWN {
+            unknown += 1;
+        }
+        acc_and = KleeneTernaryEngine::kleene_and(acc_and, t);
+        acc_or = KleeneTernaryEngine::kleene_or(acc_or, t);
+    }
+    K3Consensus {
+        k3_and: acc_and,
+        k3_or: acc_or,
+        unknown,
+        n: trits.len(),
+    }
+}
+
 /// Default threshold bands (identical to python DEFAULT_TAU_UPPER/LOWER).
 pub const DEFAULT_TAU_UPPER: f32 = 0.35;
 pub const DEFAULT_TAU_LOWER: f32 = -0.35;
@@ -28,11 +109,18 @@ pub struct KleeneState {
 }
 
 impl KleeneState {
+    /// G6: DECLARED, NEVER CONSULTED. No gate in the vote path asks this today — the bypass
+    /// decision is made by `council_ssm_pipeline::fuse` and the asymmetric veto lanes. Marked
+    /// instead of deleted so the missing wiring stays visible rather than looking like an absent
+    /// capability.
+    #[allow(dead_code)]
     #[inline]
     pub fn is_bypassable(&self) -> bool {
         self.trit == TRUE && self.confidence >= 0.88
     }
 
+    /// G6: declared, never consulted — see `is_bypassable`.
+    #[allow(dead_code)]
     #[inline]
     pub fn is_rejected(&self) -> bool {
         self.trit == FALSE

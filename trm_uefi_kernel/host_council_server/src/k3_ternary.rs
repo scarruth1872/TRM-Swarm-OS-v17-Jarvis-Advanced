@@ -79,6 +79,8 @@ impl TriVec {
     }
 
     /// Full-vector dot, consuming packed trits four at a time.
+    #[allow(dead_code)] // G6: no caller today. This is the only ternary dot in the crate; deleting
+                        // it would remove the primitive rather than the dead weight.
     pub fn dot(&self, x: &[f32]) -> f32 {
         let mut acc = 0.0f32;
         let n = self.len.min(x.len());

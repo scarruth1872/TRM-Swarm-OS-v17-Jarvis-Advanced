@@ -132,6 +132,78 @@ fn parse_completion(raw: &str) -> Option<(String, f64)> {
     Some((content, tps))
 }
 
+/// Token budget for a chat answer. gpt-oss emits a reasoning block before the answer, so a cap
+/// that is too small truncates inside the thinking and yields nothing usable. Tunable without a
+/// rebuild: TRM_CHAT_MAX_TOKENS (default 420 = reasoning + a few sentences).
+pub fn chat_max_tokens() -> u32 {
+    std::env::var("TRM_CHAT_MAX_TOKENS")
+        .ok()
+        .and_then(|v| v.trim().parse().ok())
+        .unwrap_or(420)
+}
+
+/// Chat-formatted completion. Lets the SERVER apply the model's own chat template instead of
+/// hand-building a prompt string. Required whenever :8587 serves a model whose template is not
+/// ChatML: a raw `/completion` prompt makes such models continue the text as prose (measured:
+/// gpt-oss-20b answered "confirm link" with a Django tutorial and an invented email exchange).
+pub fn chat_completion(system: Option<&str>, user: &str, max_tokens: u32) -> Option<(String, f64)> {
+    let addr = format!("{}:{}", INFER_HOST, infer_port());
+    let mut s = TcpStream::connect(&addr).ok()?;
+    s.set_read_timeout(Some(Duration::from_secs(120))).ok()?;
+    s.set_write_timeout(Some(Duration::from_secs(30))).ok()?;
+
+    let mut msgs = String::new();
+    if let Some(sys) = system {
+        if !sys.trim().is_empty() {
+            msgs.push_str(&format!(
+                "{{\"role\":\"system\",\"content\":\"{}\"}},",
+                json_escape(sys)
+            ));
+        }
+    }
+    msgs.push_str(&format!(
+        "{{\"role\":\"user\",\"content\":\"{}\"}}",
+        json_escape(user)
+    ));
+    let body = format!(
+        "{{\"messages\":[{}],\"max_tokens\":{},\"temperature\":0.7,\"stream\":false}}",
+        msgs, max_tokens
+    );
+    let req = format!(
+        "POST /v1/chat/completions HTTP/1.1\r\nHost: {}\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
+        addr, body.len(), body
+    );
+    s.write_all(req.as_bytes()).ok()?;
+    let mut raw = String::new();
+    let _ = s.read_to_string(&mut raw);
+    parse_chat(&raw)
+}
+
+/// Parse a /v1/chat/completions reply. gpt-oss puts the answer in `reasoning_content` when
+/// `content` is empty, so accept either -- BUT only when generation actually finished. A reply
+/// truncated by the token cap (finish_reason "length") with empty content is a half-finished
+/// thought, not an answer; returning it leaks the model's chain-of-thought to the operator.
+fn parse_chat(raw: &str) -> Option<(String, f64)> {
+    let jstart = raw.find("\r\n\r\n").map(|i| i + 4).or_else(|| raw.find('{'))?;
+    let body = &raw[jstart..];
+    let v: serde_json::Value = serde_json::from_str(body).ok()?;
+    let choice = v.get("choices")?.get(0)?;
+    let msg = choice.get("message")?;
+    let finish = choice.get("finish_reason").and_then(|f| f.as_str()).unwrap_or("");
+    let mut content = msg.get("content").and_then(|c| c.as_str()).unwrap_or("").trim().to_string();
+    if content.is_empty() {
+        if finish == "length" {
+            // truncated mid-thought: better to report "no answer" and let the caller fall back
+            return None;
+        }
+        content = msg.get("reasoning_content").and_then(|c| c.as_str()).unwrap_or("").trim().to_string();
+    }
+    if content.is_empty() { return None; }
+    let tps = v.get("timings").and_then(|t| t.get("predicted_per_second"))
+        .and_then(|x| x.as_f64()).unwrap_or(0.0);
+    Some((content, tps))
+}
+
 /// Is the local inference engine reachable?
 pub fn available() -> bool {
     TcpStream::connect_timeout(

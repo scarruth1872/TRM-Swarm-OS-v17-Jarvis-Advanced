@@ -14,17 +14,20 @@ mod voltage;
 mod parity_probe;
 mod orphan_probe;
 mod adopt_probe;
-// The scanner lives in the KERNEL (trm_uefi_kernel/src/ddr_scan.rs) and is
-// compiled into the bare-metal image as well as this host service. One source
-// file, so the two cannot drift into disagreeing about what is dangerous.
-#[path = "../../src/ddr_scan.rs"]
-mod ddr_scan;
+// The scanner lives in the KERNEL (trm_uefi_kernel/src/ddr_scan.rs) and is compiled into the
+// bare-metal image as well as this host service. It is reached through the library
+// (`trm_uefi_kernel::ddr_scan::…`), so this crate must NOT re-declare it: a `#[path] mod` here
+// compiled a SECOND copy of the same file, and since every call site qualified the library path,
+// the local copy was dead weight emitting its own duplicate warnings. (G4, 2026-11-21)
 mod federation_probe;
 // Real kernel implementations reused for measurement. These are the ACTUAL K3
 // ternary logic, TurboVec quantizer and K3 SRAM code the platform is built on -
 // copied from trm_uefi_kernel/src so the council can EXERCISE them rather than
 // only mentioning them in journal text.
 mod k3_logic;
+mod ofp_wire;
+mod hands;
+mod skills;
 mod council_ssm_pipeline;
 mod evidence_index;
 mod lexical_gate;
@@ -38,11 +41,61 @@ mod k3_ternary;
 mod local_inference;
 mod arc_routes;
 mod cadence;
+// G5: unwired reference implementation — 0 call sites, but 5 tests prove the DFT/bind math is
+// correct. Marked rather than deleted: it is the Fourier binding primitive the SRAM/K3 programme
+// would need, and its tests keep it honest until something calls it.
+#[allow(dead_code)]
 mod sram_fourier;
 mod resonance;
 mod platonic_wavelengths;
 // KERNEL LIBRARY LINK: modules compiled from ../src via lib.rs
 use trm_uefi_kernel::k3_logic::KleeneTernaryEngine;
+
+// --- OFP federation transport (ported from openfang-wire v0.6.9; see src/ofp_wire.rs) ---
+// The council token authenticates *operators*; these use the federation secret, which peers hold
+// and operators do not. Keeping them separate is why the handshake verifies its own HMAC.
+const OUR_NODE_ID: &str = "trm-sovereign-kernel";
+
+// --- G9: loopback trust policy -------------------------------------------------------------
+// The gate exempts loopback peers, which is what lets the dashboard and the companion proxy
+// write without carrying a token. That exemption is a real trust boundary, so it is now (a)
+// switchable, (b) counted, and (c) published instead of being an invisible assumption.
+static LOOPBACK_AUTHORIZED: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+static LOOPBACK_LAST_PATH: std::sync::OnceLock<std::sync::Mutex<String>> = std::sync::OnceLock::new();
+
+fn loopback_last_path() -> &'static std::sync::Mutex<String> {
+    LOOPBACK_LAST_PATH.get_or_init(|| std::sync::Mutex::new(String::new()))
+}
+
+/// `TRM_LOOPBACK_TRUST=token|strict` forces the council token even for local writes. Anything
+/// else keeps the local-trust default, which is now reported by `/platform/auth_policy`.
+fn loopback_trust_strict() -> bool {
+    matches!(
+        std::env::var("TRM_LOOPBACK_TRUST")
+            .ok()
+            .map(|s| s.trim().to_ascii_lowercase())
+            .as_deref(),
+        Some("token") | Some("strict")
+    )
+}
+
+fn loopback_policy() -> &'static str {
+    if loopback_trust_strict() {
+        "token"
+    } else {
+        "local"
+    }
+}
+static OFP_NONCES: std::sync::OnceLock<ofp_wire::NonceTracker> = std::sync::OnceLock::new();
+static OFP_PEERS: std::sync::OnceLock<ofp_wire::PeerRegistry> = std::sync::OnceLock::new();
+
+fn ofp_nonces() -> &'static ofp_wire::NonceTracker {
+    OFP_NONCES.get_or_init(ofp_wire::NonceTracker::new)
+}
+
+fn ofp_peers() -> &'static ofp_wire::PeerRegistry {
+    OFP_PEERS.get_or_init(ofp_wire::PeerRegistry::new)
+}
 
 // ── TRAINED K3 DECISION HEADS ────────────────────────────────────────────────
 // The 15 per-agent heads are trained ternary classifiers exported by
@@ -903,6 +956,124 @@ fn sovereign_cognitive_engine(role: &str, user_msg: &str) -> String {
     }
 }
 
+/// Where the served journal articles actually came from. A journal that cannot name the artefact
+/// behind a number must not serve the number.
+#[derive(Debug)]
+struct JournalArticles {
+    articles: Vec<serde_json::Value>,
+    source: &'static str,
+    verified: bool,
+    reason: Option<String>,
+}
+
+fn journal_fixtures_enabled() -> bool {
+    matches!(std::env::var("TRM_JOURNAL_FIXTURES").as_deref(), Ok("1") | Ok("true"))
+}
+
+/// Resolve the manifest WITHOUT depending on the process CWD.
+///
+/// The old lookup searched five relative paths, so a server started anywhere other than the repo
+/// root silently fell through to the hardcoded list — measured 2026-09-22: the manifest held 94
+/// articles while `/journal/articles` served 88. Anchoring on the executable's own location removes
+/// the dependency on where it was launched from.
+fn resolve_journal_manifest() -> Option<String> {
+    if let Ok(p) = std::env::var("TRM_JOURNAL_MANIFEST") {
+        if let Ok(s) = std::fs::read_to_string(&p) {
+            return Some(s);
+        }
+    }
+    let mut roots: Vec<std::path::PathBuf> = Vec::new();
+    if let Ok(exe) = std::env::current_exe() {
+        let mut cur = exe.parent().map(|p| p.to_path_buf());
+        while let Some(dir) = cur {
+            roots.push(dir.clone());
+            cur = dir.parent().map(|p| p.to_path_buf());
+        }
+    }
+    if let Ok(cwd) = std::env::current_dir() {
+        roots.push(cwd);
+    }
+    for root in roots {
+        let candidate = root.join("phoenix_journal_audit_manifest.json");
+        if let Ok(s) = std::fs::read_to_string(&candidate) {
+            return Some(s);
+        }
+    }
+    None
+}
+
+/// Tag fixture articles so they can never be mistaken for measurements: every entry carries
+/// `source: "fixture"` and `verified: false`.
+fn tag_fixtures(fixtures: Vec<serde_json::Value>) -> Vec<serde_json::Value> {
+    fixtures
+        .into_iter()
+        .map(|mut v| {
+            if let Some(obj) = v.as_object_mut() {
+                obj.insert("source".to_string(), json!("fixture"));
+                obj.insert("verified".to_string(), json!(false));
+            }
+            v
+        })
+        .collect()
+}
+
+/// The authoritative journal payload: manifest if it resolves, otherwise FAIL CLOSED.
+fn journal_payload() -> JournalArticles {
+    if let Some(raw) = resolve_journal_manifest() {
+        match serde_json::from_str::<serde_json::Value>(&raw) {
+            Ok(m) => {
+                if let Some(articles) = m.get("articles").and_then(|a| a.as_array()) {
+                    return JournalArticles {
+                        articles: articles.clone(),
+                        source: "manifest",
+                        verified: true,
+                        reason: None,
+                    };
+                }
+                return JournalArticles {
+                    articles: Vec::new(),
+                    source: "manifest",
+                    verified: false,
+                    reason: Some("manifest parsed but contains no `articles` array".to_string()),
+                };
+            }
+            Err(e) => {
+                return JournalArticles {
+                    articles: Vec::new(),
+                    source: "manifest",
+                    verified: false,
+                    reason: Some(format!("manifest is not valid JSON: {e}")),
+                }
+            }
+        }
+    }
+
+    // Fail closed. The hardcoded list below carries specific figures ($392M, Pearson r=0.9248,
+    // Kd=14.2 nM) with no artefact behind them, so it is not served unless explicitly asked for —
+    // and even then every entry is tagged `verified: false`.
+    if journal_fixtures_enabled() {
+        return JournalArticles {
+            articles: tag_fixtures(get_sovereign_journal_articles()),
+            source: "fixture",
+            verified: false,
+            reason: Some(
+                "manifest unresolved; serving FIXTURE articles because TRM_JOURNAL_FIXTURES=1"
+                    .to_string(),
+            ),
+        };
+    }
+    JournalArticles {
+        articles: Vec::new(),
+        source: "none",
+        verified: false,
+        reason: Some(
+            "manifest unresolved; refusing to serve the hardcoded fixture list (its article bodies \
+             contain figures no artefact can reproduce). Set TRM_JOURNAL_FIXTURES=1 to inspect it."
+                .to_string(),
+        ),
+    }
+}
+
 fn get_sovereign_journal_articles() -> Vec<serde_json::Value> {
     // The manifest was read with a bare relative path, so it only resolved when
     // the server happened to be started from the repository root. Started from
@@ -1681,6 +1852,37 @@ fn consensus_for(rule: &ConsequenceRule, approve_count: usize) -> bool {
     approve_count >= rule.min_approve && !rule.decision_path
 }
 
+/// Verdict from the tally plus its K3 reading, extracted so the abstain-vs-reject distinction is
+/// testable without running a 15-agent deliberation.
+///
+/// THE K3 FIX: the old path asked one question -- "did approvals reach the threshold?" -- and
+/// answered everything else with NO_CONSENSUS or REJECTED. An abstention is UNKNOWN, not a no.
+/// A tally with approvals, no rejections and abstentions is UNDECIDED: the council could still go
+/// either way, so it escalates for information instead of being recorded as a decision.
+fn k3_verdict(
+    rule: &ConsequenceRule,
+    k3: &k3_logic::K3Consensus,
+    approve: usize,
+    reject: usize,
+) -> &'static str {
+    if rule.escalated {
+        return if reject > approve { "REJECTED" } else { "ESCALATED" };
+    }
+    if rule.decision_path {
+        return if reject > approve { "REJECTED" } else { "ESCALATED" };
+    }
+    if reject > approve {
+        return "REJECTED";
+    }
+    if consensus_for(rule, approve) {
+        return "APPROVED";
+    }
+    if k3.unknown > 0 && reject == 0 && approve > 0 {
+        return "UNDECIDED";
+    }
+    "NO_CONSENSUS"
+}
+
 /// 5-arg wrapper kept so the startup seed proposals compile unchanged.
 fn evaluate_proposal(
     state: &mut CouncilState,
@@ -2104,6 +2306,7 @@ fn build_proposal(
     let mut approve_count = 0;
     let mut abstain_count = 0;
     let mut reject_count = 0;
+    let mut trits: Vec<i8> = Vec::new();
     let mut total_weighted = 0.0f32;
 
     // === DELIBERATION ===
@@ -2170,6 +2373,9 @@ fn build_proposal(
         if e.trit > 0 { approve_count += 1; }
         else if e.trit < 0 { reject_count += 1; }
         else { abstain_count += 1; }
+        // K3 needs the individual trits, not just the totals: the fold is the record of what each
+        // agent actually said, and it is what the verdict consumes.
+        trits.push(e.trit);
 
         total_weighted += (e.trit as f32) * e.weight * e.conf;
 
@@ -2219,23 +2425,22 @@ fn build_proposal(
     // G9: the threshold is structural, not model-derived. Irreversible removals
     // need 12 of 14 (a supermajority), and a proposal that removes the decision
     // path itself can never reach consensus on model votes alone.
+    // K3 consensus over the tally: an abstention is UNKNOWN, not FALSE (see k3_verdict).
+    let k3 = k3_logic::k3_consensus(&trits);
     let consensus_reached = consensus_for(&rule, approve_count);
 
     let has_evidence = !evidence.is_empty();
-    let (phoenix_status, phase) = if rule.escalated {
-        // Never auto-enact a removal of a safety-critical component. A human
-        // must review it, whatever the tally says.
-        if reject_count > approve_count {
-            ("SPEC".to_string(), "REJECTED".to_string())
-        } else {
-            ("SPEC".to_string(), "ESCALATED".to_string())
-        }
-    } else if !consensus_reached {
-        ("SPEC".to_string(), if reject_count > approve_count { "REJECTED" } else { "NO_CONSENSUS" }.to_string())
-    } else if has_evidence {
-        ("CONFIRMED".to_string(), "ENACTED".to_string())
-    } else {
-        ("SPEC".to_string(), "CONSENSUS".to_string())
+    let (phoenix_status, phase) = match k3_verdict(&rule, &k3, approve_count, reject_count) {
+        "REJECTED" => ("SPEC".to_string(), "REJECTED".to_string()),
+        // Never auto-enact a removal of a safety-critical component. A human must
+        // review it, whatever the tally says.
+        "ESCALATED" => ("SPEC".to_string(), "ESCALATED".to_string()),
+        // Approvals below threshold with zero rejections: the council has not decided, so it
+        // opens a next step rather than being recorded as a decision it never made.
+        "UNDECIDED" => ("SPEC".to_string(), "UNDECIDED".to_string()),
+        "APPROVED" if has_evidence => ("CONFIRMED".to_string(), "ENACTED".to_string()),
+        "APPROVED" => ("SPEC".to_string(), "CONSENSUS".to_string()),
+        _ => ("SPEC".to_string(), "NO_CONSENSUS".to_string()),
     };
 
     let proposal = Proposal {
@@ -2487,6 +2692,20 @@ fn auth_gate(request: &tiny_http::Request, method: &Method) -> Option<tiny_http:
         return None;
     }
 
+    // The OFP handshake carries its OWN cryptographic auth (HMAC-SHA256 over nonce+node_id,
+    // verified against the federation secret, failing closed with 401/503). Exempting it here for
+    // the same reason the tailnet relay does: a federation peer holds the secret, never the
+    // operator token, so gating it on that token would make federation impossible in strict mode.
+    if request
+        .url()
+        .split('?')
+        .next()
+        .unwrap_or("")
+        .starts_with("/federation/handshake")
+    {
+        return None;
+    }
+
     // PEER-SCOPED POLICY: a write that arrives over loopback needs no token, because loopback is the
     // local trust boundary the dashboard lives behind (same-origin :5183 -> Vite proxy -> 127.0.0.1:8022).
     // Every write from OFF the box needs the token. Without this exemption, turning the federation link
@@ -2497,7 +2716,16 @@ fn auth_gate(request: &tiny_http::Request, method: &Method) -> Option<tiny_http:
         .map(|a| a.ip().is_loopback())
         .unwrap_or(false);
     if from_loopback {
-        return None;
+        // G9: the exemption is policy, not an oversight. In strict mode the token is required even
+        // locally; in local mode the write is allowed but COUNTED, so the boundary can be audited
+        // at /platform/auth_policy rather than taken on faith.
+        if !loopback_trust_strict() {
+            LOOPBACK_AUTHORIZED.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+            if let Ok(mut last) = loopback_last_path().lock() {
+                *last = format!("{} {}", method.as_str(), request.url());
+            }
+            return None;
+        }
     }
 
     let expected = std::env::var("COUNCIL_AUTH_TOKEN")
@@ -3320,7 +3548,11 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "status": "ONLINE"
         })).collect();
 
-        let active_proposals: Vec<serde_json::Value> = st.proposals.iter().map(|p| json!({
+        let active_proposals: Vec<serde_json::Value> = st.proposals.iter().map(|p| {
+            // AND/OR over a multiset depend only on the counts, so status can publish the K3
+            // reading exactly without carrying the per-agent trits.
+            let k3c = k3_logic::k3_from_counts(p.approve_count, p.abstain_count, p.reject_count);
+            json!({
             "id": p.id,
             "topic": p.topic,
             "category": p.category,
@@ -3330,8 +3562,11 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "approve_count": p.approve_count,
             "consensus_reached": p.consensus_reached,
             "phoenix_status": p.phoenix_status,
-            "phoenix_evidence": p.phoenix_evidence
-        })).collect();
+            "phoenix_evidence": p.phoenix_evidence,
+            "k3": { "and": k3c.k3_and, "or": k3c.k3_or, "unknown": k3c.unknown, "n": k3c.n,
+                    "note": "Kleene AND/OR over agent trits; unknown = abstentions" }
+            })
+        }).collect();
 
         response_json = json!({
             "server": "Sovereign Native Rust Kernel v19.001",
@@ -4258,7 +4493,8 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             response_json = json!({"error": "Invalid proposal ID"});
         }
     } else if method == Method::Get && (url.starts_with("/journal/articles") || url.starts_with("/monad/journal") || url == "/journal" || url == "/journal/") {
-        let papers = get_sovereign_journal_articles();
+        let journal = journal_payload();
+        let papers = journal.articles.clone();
         response_json = json!({
             "name": "The Monad Journal of Autonomous Discovery",
             "issn": "2998-277X",
@@ -4268,10 +4504,16 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "access": "Open Access — $0",
             "monad_anchor": "0x4D4F4E4144000001",
             "total_papers": papers.len(),
+            // PROVENANCE: which artefact produced this list. `none` means the manifest could not be
+            // resolved and the hardcoded fixture list was deliberately withheld.
+            "article_source": journal.source,
+            "articles_verified": journal.verified,
+            "article_source_reason": journal.reason.clone(),
             "papers": papers
         });
     } else if method == Method::Get && url.starts_with("/journal/status") {
-        let papers = get_sovereign_journal_articles();
+        let journal = journal_payload();
+        let papers = journal.articles.clone();
         let pub_count = papers.iter().filter(|p| p.get("status").and_then(|s| s.as_str()) == Some("PUBLISHED")).count();
         let prereg_count = papers.iter().filter(|p| p.get("status").and_then(|s| s.as_str()) == Some("PRE-REGISTERED")).count();
         let confirmed_count = papers.iter().filter(|p| p.get("phoenix_status").and_then(|s| s.as_str()) == Some("CONFIRMED")).count();
@@ -4282,6 +4524,11 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "name": "The Monad Journal of Autonomous Discovery",
             "issn": "2998-277X",
             "total_papers": papers.len(),
+            // PROVENANCE: which artefact produced this list. `none` means the manifest could not be
+            // resolved and the hardcoded fixture list was deliberately withheld.
+            "article_source": journal.source,
+            "articles_verified": journal.verified,
+            "article_source_reason": journal.reason.clone(),
             "published": pub_count,
             "pre_registered": prereg_count,
             "phoenix_audit": {
@@ -4430,21 +4677,38 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         // Falls back to the legacy template ONLY if the engine is unreachable,
         // and the response says so explicitly.
         let t_call = Instant::now();
-        let prompt = local_inference::build_prompt(role, user_msg);
-        // 128 not 512: measured answers are ~8 tokens. A large cap only
-        // gives a runaway trace room to fill the budget.
-        let (agent_reply, model_trace, engine, tps) = match local_inference::complete(&prompt, 128) {
-            Some((raw, tps)) => {
-                let (ans, tr) = local_inference::split_think(&raw);
-                (ans, tr, "on-device-qwen2.5-1.5b-q4km-vulkan", tps)
-            }
-            None => (
-                sovereign_cognitive_engine(role, user_msg),
-                String::new(),
-                "TEMPLATE-FALLBACK-NO-ENGINE",
-                0.0,
-            ),
-        };
+        // CHAT PATH: /v1/chat/completions so the SERVER applies the model's own chat template.
+        // The previous raw-prompt path assumed ChatML; once :8587 moved to gpt-oss-20b (the G222
+        // veto tier) that produced unrelated prose ("a User class in a Django project") because a
+        // bare /completion prompt is continued as text. The model name is no longer asserted here
+        // -- the port can serve different GGUFs, so the label states the PATH, not a model.
+        let sys = format!(
+            "You are {}, a member of the TRM Swarm council. Reply to the operator directly and concisely, \
+             in at most 4 sentences. Never switch to an unrelated topic.",
+            role
+        );
+        let (agent_reply, model_trace, engine, tps) =
+            match local_inference::chat_completion(Some(&sys), user_msg, local_inference::chat_max_tokens()) {
+                Some((raw, tps)) => {
+                    let (ans, tr) = local_inference::split_think(&raw);
+                    (ans, tr, "on-device-chat-template", tps)
+                }
+                None => match local_inference::complete(
+                    &local_inference::build_prompt(role, user_msg),
+                    128,
+                ) {
+                    Some((raw, tps)) => {
+                        let (ans, tr) = local_inference::split_think(&raw);
+                        (ans, tr, "on-device-raw-prompt", tps)
+                    }
+                    None => (
+                        sovereign_cognitive_engine(role, user_msg),
+                        String::new(),
+                        "TEMPLATE-FALLBACK-NO-ENGINE",
+                        0.0,
+                    ),
+                },
+            };
         let elapsed_us = t_call.elapsed().as_micros() as u64;
 
         let neural_active = true;
@@ -5512,6 +5776,202 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "antibody_id": format!("ab-custom-{:04}", (std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs() % 10000)),
             "message": "Custom antibody registered into Digital DNA Repository."
         });
+    } else if method == Method::Get && url.starts_with("/platform/auth_policy") {
+        // G9: publish the trust boundary instead of leaving it implicit.
+        let token_configured = std::env::var("COUNCIL_AUTH_TOKEN")
+            .ok()
+            .map(|t| !t.trim().is_empty())
+            .unwrap_or(false);
+        let policy = loopback_policy();
+        response_json = json!({
+            "policy": {
+                "loopback_trust": policy,
+                "token_configured": token_configured,
+                "off_box_writes": if token_configured { "require X-Council-Token" } else { "refused unless loopback-bound" },
+                "tighten_with": "TRM_LOOPBACK_TRUST=token  (local clients must then send X-Council-Token)"
+            },
+            "measured": {
+                "loopback_writes_authorized_since_start": LOOPBACK_AUTHORIZED.load(std::sync::atomic::Ordering::Relaxed),
+                "last_loopback_write": loopback_last_path().lock().map(|g| g.clone()).unwrap_or_default()
+            },
+            "assessment": if policy == "local" {
+                "DECLARED BOUNDARY: any local process may issue writes without a token. Enable strict mode to close it."
+            } else {
+                "STRICT: loopback writes require the council token."
+            }
+        });
+    } else if method == Method::Get && url.starts_with("/platform/skills_registry") {
+        // REAL skill registry: parses every SKILL.md under the skills dir and reports per-file
+        // parse errors instead of counting directories. Ported loader (openfang-skills).
+        let dir = std::env::var("TRM_SKILLS_DIR")
+            .map(std::path::PathBuf::from)
+            .or_else(|_| {
+                std::env::var("LOCALAPPDATA")
+                    .map(|l| std::path::PathBuf::from(l).join("hermes").join("skills"))
+            })
+            .unwrap_or_else(|_| std::path::PathBuf::from("skills"));
+        let report = skills::scan_skills_dir(&dir);
+        response_json = serde_json::to_value(&report)
+            .unwrap_or_else(|e| json!({ "error": format!("serialize: {e}") }));
+    } else if method == Method::Post && url.starts_with("/platform/hands_inspect") {
+        // Capability manifest: parse, validate, and PROBE THE REAL HOST for each requirement.
+        let mut hand_body = String::new();
+        let _ = request.as_reader().read_to_string(&mut hand_body);
+        match hands::parse_hand(&hand_body) {
+            Err(e) => {
+                status_code = 400;
+                response_json = json!({ "error": e });
+            }
+            Ok(h) => {
+                let validation = hands::validate_hand(&h);
+                let ready = hands::readiness(&h);
+                status_code = if validation.is_ok() { 200 } else { 422 };
+                response_json = json!({
+                    "hand": h,
+                    "validation": match validation {
+                        Ok(()) => json!({ "ok": true, "errors": Vec::<String>::new() }),
+                        Err(errs) => json!({ "ok": false, "errors": errs }),
+                    },
+                    "readiness": ready
+                });
+            }
+        }
+    } else if method == Method::Post && url.starts_with("/federation/handshake") {
+        // OFP handshake (ported from openfang-wire v0.6.9 — see src/ofp_wire.rs).
+        // Authenticates on the FEDERATION SECRET, not the council token, because a peer is not an
+        // operator. Fails closed: no usable secret means no handshake, never a default.
+        let mut hs_body = String::new();
+        let _ = request.as_reader().read_to_string(&mut hs_body);
+        let hs: serde_json::Value = serde_json::from_str(&hs_body).unwrap_or(json!({}));
+        let node_id = hs.get("node_id").and_then(|v| v.as_str()).unwrap_or("").to_string();
+        let nonce = hs.get("nonce").and_then(|v| v.as_str()).unwrap_or("").to_string();
+        let auth_hmac = hs.get("auth_hmac").and_then(|v| v.as_str()).unwrap_or("").to_string();
+        let peer_proto = hs.get("protocol_version").and_then(|v| v.as_u64())
+            .unwrap_or(ofp_wire::PROTOCOL_VERSION as u64) as u32;
+
+        if node_id.is_empty() || nonce.is_empty() || auth_hmac.is_empty() {
+            status_code = 400;
+            response_json = json!({
+                "error": "node_id, nonce and auth_hmac are required",
+                "protocol": "OFP/1"
+            });
+        } else {
+            match ofp_wire::federation_secret() {
+                Err(e) => {
+                    status_code = 503;
+                    response_json = json!({
+                        "error": "federation secret unavailable",
+                        "detail": e,
+                        "protocol": "OFP/1"
+                    });
+                }
+                Ok(secret) => {
+                    let signed = format!("{nonce}{node_id}");
+                    if !ofp_wire::hmac_verify(&secret, signed.as_bytes(), &auth_hmac) {
+                        status_code = 401;
+                        response_json = json!({
+                            "error": "handshake HMAC verification failed",
+                            "protocol": "OFP/1"
+                        });
+                    } else if let Err(replay) = ofp_nonces().check_and_record(&nonce) {
+                        status_code = 409;
+                        response_json = json!({ "error": replay, "protocol": "OFP/1" });
+                    } else {
+                        let nanos = std::time::SystemTime::now()
+                            .duration_since(std::time::UNIX_EPOCH)
+                            .map(|d| d.as_nanos())
+                            .unwrap_or(0);
+                        let ours = ofp_wire::hex_encode(&k3_logic::sha256(
+                            format!("{nanos}|{node_id}|{OUR_NODE_ID}").as_bytes(),
+                        ));
+                        let our_hmac = ofp_wire::handshake_hmac(&secret, &ours, OUR_NODE_ID);
+                        let session_key = ofp_wire::derive_session_key(&secret, &ours, &nonce);
+                        let agents: Vec<ofp_wire::RemoteAgentInfo> = hs
+                            .get("agents")
+                            .and_then(|a| a.as_array())
+                            .map(|arr| {
+                                arr.iter()
+                                    .filter_map(|v| {
+                                        serde_json::from_value::<ofp_wire::RemoteAgentInfo>(v.clone()).ok()
+                                    })
+                                    .collect()
+                            })
+                            .unwrap_or_default();
+                        let agent_count = agents.len();
+                        // Prefer the relay's X-OFP-Peer-Addr over remote_addr: through the tailnet
+                        // relay every peer would otherwise be recorded as 127.0.0.1:<relay-port>.
+                        let forwarded_addr = request
+                            .headers()
+                            .iter()
+                            .find(|h| h.field.to_string().eq_ignore_ascii_case("x-ofp-peer-addr"))
+                            .map(|h| h.value.as_str().trim().to_string());
+                        let peer_addr: std::net::SocketAddr = forwarded_addr
+                            .or_else(|| request.remote_addr().map(|a| a.to_string()))
+                            .unwrap_or_else(|| "0.0.0.0:0".to_string())
+                            .parse()
+                            .unwrap_or_else(|_| "0.0.0.0:0".parse().unwrap());
+                        let now_unix = std::time::SystemTime::now()
+                            .duration_since(std::time::UNIX_EPOCH)
+                            .map(|d| d.as_secs())
+                            .unwrap_or(0);
+                        ofp_peers().add_peer(ofp_wire::PeerEntry {
+                            node_id: node_id.clone(),
+                            node_name: hs.get("node_name").and_then(|v| v.as_str())
+                                .unwrap_or("").to_string(),
+                            address: peer_addr,
+                            agents,
+                            state: ofp_wire::PeerState::Connected,
+                            connected_at_unix: now_unix,
+                            protocol_version: ofp_wire::PROTOCOL_VERSION,
+                        });
+                        response_json = json!({
+                            "status": "HANDSHAKE_OK",
+                            "protocol": "OFP/1",
+                            "node_id": OUR_NODE_ID,
+                            "node_name": "trm-sovereign-kernel",
+                            "protocol_version": ofp_wire::PROTOCOL_VERSION,
+                            "peer_node_id": node_id,
+                            "peer_protocol_version": peer_proto,
+                            "peer_agents": agent_count,
+                            "nonce": ours,
+                            "auth_hmac": our_hmac,
+                            "session_key_len": session_key.len(),
+                            "nonce_window_secs": 300
+                        });
+                    }
+                }
+            }
+        }
+    } else if method == Method::Get && url.starts_with("/federation/ofp") {
+        // REAL peers only: what actually completed an authenticated handshake.
+        // /federation/peers above is the legacy subnet generator and says so in peer_source.
+        let reg = ofp_peers();
+        let peers: Vec<serde_json::Value> = reg
+            .all_peers()
+            .iter()
+            .map(|p| {
+                json!({
+                    "node_id": p.node_id,
+                    "node_name": p.node_name,
+                    "address": p.address.to_string(),
+                    "state": match p.state {
+                        ofp_wire::PeerState::Connected => "connected",
+                        ofp_wire::PeerState::Disconnected => "disconnected",
+                    },
+                    "agents": p.agents.len(),
+                    "connected_at_unix": p.connected_at_unix,
+                    "protocol_version": p.protocol_version
+                })
+            })
+            .collect();
+        response_json = json!({
+            "source": "ofp-registry",
+            "measured": true,
+            "total": reg.total_count(),
+            "connected": reg.connected_count(),
+            "nonces_tracked": ofp_nonces().len(),
+            "peers": peers
+        });
     } else if method == Method::Post && (url == "/sync" || url.starts_with("/federation/sync")) {
         // Federation sync, v4 shape (see staging/federation_deploy/20261019_sync_protocol).
         // Verifies the Monad anchor and reports MEASURED counts from the configured peer set.
@@ -6363,6 +6823,59 @@ mod g9_consequence_tests {
     fn negated_removal_is_not_a_removal() {
         assert_eq!(rule("do not delete the audit ledger").rule_fired, "");
         assert_eq!(rule("preserve all backups").rule_fired, "");
+    }
+
+    #[test]
+    fn fixtures_are_tagged_unverified_and_keep_their_fields() {
+        let f = vec![json!({"id":189,"status":"PUBLISHED","finding":"$392M valuation; Pearson r=0.9248"})];
+        let t = tag_fixtures(f);
+        assert_eq!(t[0]["source"], json!("fixture"));
+        assert_eq!(t[0]["verified"], json!(false));
+        assert_eq!(t[0]["id"], json!(189), "tagging must not drop existing fields");
+        assert_eq!(t[0]["finding"], json!("$392M valuation; Pearson r=0.9248"));
+    }
+
+    #[test]
+    fn k3_consensus_agrees_with_counts() {
+        let cases: Vec<(Vec<i8>, usize, usize, usize)> = vec![
+            (vec![1, 1, 1], 3, 0, 0),
+            (vec![1, -1, 0], 1, 1, 1),
+            (vec![0, 0, 0], 0, 3, 0),
+            (vec![-1, -1], 0, 0, 2),
+        ];
+        for (trits, a, ab, r) in cases {
+            assert_eq!(
+                k3_logic::k3_consensus(&trits),
+                k3_logic::k3_from_counts(a, ab, r),
+                "per-agent fold must equal the count form for {trits:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn abstain_is_unknown_not_reject() {
+        let c = k3_logic::k3_from_counts(8, 6, 0);
+        assert_eq!(c.k3_and, k3_logic::UNKNOWN, "no rejection => AND is not FALSE");
+        assert_eq!(c.k3_or, k3_logic::TRUE, "someone approved => OR is TRUE");
+        let all_abstain = k3_logic::k3_from_counts(0, 14, 0);
+        assert_eq!(all_abstain.k3_and, k3_logic::UNKNOWN);
+        assert_eq!(all_abstain.k3_or, k3_logic::UNKNOWN);
+        let one_reject = k3_logic::k3_from_counts(13, 0, 1);
+        assert_eq!(one_reject.k3_and, k3_logic::FALSE);
+        assert_eq!(one_reject.k3_or, k3_logic::TRUE);
+    }
+
+    #[test]
+    fn k3_verdict_distinguishes_undecided_from_rejected() {
+        let r = rule("Add a dark mode toggle.");
+        let undecided = k3_logic::k3_from_counts(8, 6, 0);
+        assert_eq!(k3_verdict(&r, &undecided, 8, 0), "UNDECIDED");
+        let rejected = k3_logic::k3_from_counts(6, 0, 8);
+        assert_eq!(k3_verdict(&r, &rejected, 6, 8), "REJECTED");
+        let approved = k3_logic::k3_from_counts(10, 0, 4);
+        assert_eq!(k3_verdict(&r, &approved, 10, 4), "APPROVED");
+        let silent = k3_logic::k3_from_counts(0, 14, 0);
+        assert_eq!(k3_verdict(&r, &silent, 0, 0), "NO_CONSENSUS");
     }
 
     #[test]

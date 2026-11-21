@@ -19,6 +19,23 @@ import sys
 
 COUNCIL_SERVER_HOST = "http://127.0.0.1:8022"
 TARGET_RUST_HOST = "http://127.0.0.1:3002"
+START_TS = time.time()
+
+# G9: when the kernel runs with TRM_LOOPBACK_TRUST=token, local writes need the council token.
+# Carry it so the companion keeps working under strict mode. Read once at startup, like the
+# tailnet relay — rotating the token requires a proxy restart.
+COUNCIL_TOKEN_FILE = os.getenv("TRM_COUNCIL_TOKEN_FILE", r"C:\ProgramData\trm\council_token.txt")
+
+
+def _load_council_token() -> str:
+    try:
+        with open(COUNCIL_TOKEN_FILE, "r", encoding="utf-8", errors="replace") as fh:
+            return fh.read().strip()
+    except OSError:
+        return ""
+
+
+COUNCIL_AUTH_HEADERS = {"X-Council-Token": _load_council_token()} if _load_council_token() else {}
 
 def check_port_alive(port, timeout=0.3):
     try:
@@ -93,7 +110,9 @@ class ProxyHandler(BaseHTTPRequestHandler):
             pass
 
     def do_GET(self):
-        if self.path.startswith("/companion/health") or self.path.startswith("/system/anomaly_monitor"):
+        if self.path.split("?")[0] in ("/", "/health", "/status", "/companion/health", "/companion/status"):
+            self._send_status()
+        elif self.path.startswith("/system/anomaly_monitor"):
             health = get_platform_health_status()
             res_bytes = json.dumps(health, indent=2).encode("utf-8")
             try:
@@ -107,6 +126,51 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 pass
         else:
             self._proxy("GET")
+
+    def _send_status(self):
+        """Real health/status instead of a 502: probe both upstream tiers and report what is
+        actually reachable, so the companion app and any monitor get truthful state."""
+        def probe(url, timeout=1.5):
+            try:
+                with urllib.request.urlopen(url, timeout=timeout) as r:
+                    return r.status, json.loads(r.read().decode("utf-8", "replace"))
+            except Exception as e:
+                return None, {"error": type(e).__name__}
+
+        council_code, council = probe(COUNCIL_SERVER_HOST + "/health")
+        bridge_code, bridge = probe(TARGET_RUST_HOST + "/companion/status")
+
+        payload = {
+            "service": "trm_companion_proxy",
+            "status": "ok" if (council_code == 200 or bridge_code == 200) else "degraded",
+            "port": 3001,
+            "uptime_seconds": round(time.time() - START_TS, 1),
+            "monad_anchor": "0x4D4F4E4144000001",
+            "upstreams": {
+                "council_8022": {
+                    "url": COUNCIL_SERVER_HOST,
+                    "reachable": council_code == 200,
+                    "kernel": council.get("kernel"),
+                    "build_commit": council.get("build_commit"),
+                    "health": council.get("status"),
+                },
+                "companion_bridge_3002": {
+                    "url": TARGET_RUST_HOST,
+                    "reachable": bridge_code == 200,
+                    "detail": "online" if bridge_code == 200 else bridge,
+                },
+            },
+        }
+        res_bytes = json.dumps(payload, indent=2).encode("utf-8")
+        try:
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Content-Length", str(len(res_bytes)))
+            self.end_headers()
+            self.wfile.write(res_bytes)
+        except (ConnectionResetError, BrokenPipeError):
+            pass
 
     def do_POST(self):
         if self.path.startswith("/companion/chat"):
@@ -145,12 +209,13 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 req = urllib.request.Request(
                     COUNCIL_SERVER_HOST + "/swarm/chat",
                     data=json.dumps(chat_payload).encode("utf-8"),
-                    headers={"Content-Type": "application/json"},
+                    headers={"Content-Type": "application/json", **COUNCIL_AUTH_HEADERS},
                     method="POST"
                 )
-                with urllib.request.urlopen(req, timeout=2) as resp:
+                with urllib.request.urlopen(req, timeout=25) as resp:
                     resp_data = json.loads(resp.read().decode("utf-8"))
-                    reply_text = resp_data.get("response") or resp_data.get("reply")
+                    reply_text = (resp_data.get("response") or resp_data.get("reply")
+                                  or resp_data.get("content") or resp_data.get("text"))
                     if resp_data.get("thought_process"):
                         thought_process = resp_data["thought_process"]
                     if resp_data.get("reasoning_trace"):
@@ -174,7 +239,8 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 )
                 with urllib.request.urlopen(req, timeout=2) as resp:
                     resp_data = json.loads(resp.read().decode("utf-8"))
-                    reply_text = resp_data.get("response") or resp_data.get("reply")
+                    reply_text = (resp_data.get("response") or resp_data.get("reply")
+                                  or resp_data.get("content") or resp_data.get("text"))
             except Exception as e:
                 reply_text = f"Sovereign Swarm active under Monad Truth Anchor 0x4D4F4E4144000001. All 14 Council agents standing by."
 
@@ -266,7 +332,7 @@ def main():
     print("======================================================================")
     print("TRM SWARM OS - PURE RUST SOVEREIGN COGNITION & ANOMALY SENTINEL PROXY")
     print("======================================================================")
-    print(f"Listening on: 0.0.0.0:{port}")
+    print(f"Listening on: {_bind_host}:{port}")
     print(f"Primary Cognitive Engine: Native Rust Council Server ({COUNCIL_SERVER_HOST})")
     print(f"Fallback Microkernel: {TARGET_RUST_HOST}")
     print("======================================================================")
