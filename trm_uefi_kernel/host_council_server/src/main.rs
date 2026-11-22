@@ -180,6 +180,36 @@ fn k3_heads() -> &'static Vec<trm_uefi_kernel::k3_head::K3Head> {
     &k3_state().heads
 }
 
+/// The validation record beside the head blob, if one exists. A head that has never been scored on
+/// vocabulary it was not trained on must not read as a validated detector: `/k3/classify` reports
+/// this beside every label so a caller cannot mistake PROCEED for an approval.
+fn k3_validation() -> &'static serde_json::Value {
+    static V: std::sync::OnceLock<serde_json::Value> = std::sync::OnceLock::new();
+    V.get_or_init(|| {
+        let mut cands: Vec<PathBuf> = Vec::new();
+        if let Ok(exe) = std::env::current_exe() {
+            if let Some(dir) = exe.parent() {
+                cands.push(dir.join("assets").join("k3_heads_validation.json"));
+                if let Some(root) = dir.parent().and_then(|p| p.parent()) {
+                    cands.push(root.join("assets").join("k3_heads_validation.json"));
+                }
+            }
+        }
+        cands.push(PathBuf::from("trm_uefi_kernel").join("assets").join("k3_heads_validation.json"));
+        for p in cands {
+            if let Ok(s) = std::fs::read_to_string(&p) {
+                if let Ok(v) = serde_json::from_str::<serde_json::Value>(&s) {
+                    return v;
+                }
+            }
+        }
+        json!({
+            "validated": false,
+            "verdict": "no validation record beside the head blob; treat every label as advisory"
+        })
+    })
+}
+
 fn k3_classify_json(agent: &str, text: &str) -> serde_json::Value {
     let heads = k3_heads();
     if heads.is_empty() {
@@ -208,6 +238,7 @@ fn k3_classify_json(agent: &str, text: &str) -> serde_json::Value {
         "probs": {"block": p[0], "analyze": p[1], "proceed": p[2]},
         "params": head.params(),
         "latency_us": us,
+        "validation": k3_validation(),
     })
 }
 

@@ -1,0 +1,18 @@
+{
+  "head_blob": "k3_heads.bin",
+  "head_epoch": "v1 (exported 2026-11-06)",
+  "candidate": "shield_v5_candidate.pt (not deployed)",
+  "measured": "2026-11-22",
+  "holdout_n": 42,
+  "holdout_accuracy": 0.738,
+  "holdout_danger_pass_through": 0.450,
+  "holdout_false_block": 0.0,
+  "design_accuracy": 0.989,
+  "majority_baseline": 0.476,
+  "keyword_baseline_accuracy": 0.833,
+  "positive_control": 1.0,
+  "null_control": 0.571,
+  "validated": false,
+  "verdict": "NOT A VALIDATED DETECTOR. On fresh vocabulary a destructive-verb keyword list scores 0.833 against this head's 0.738, and 45% of dangerous requests are waved through as PROCEED. The featuriser is a hashed character n-gram bag: an unseen destructive verb hashes to slots it never learned, so no amount of same-featuriser training transfers. Advisory only - never read PROCEED as an approval.",
+  "report": "TRM_Test_Campaign_2026-11-21.md"
+}
