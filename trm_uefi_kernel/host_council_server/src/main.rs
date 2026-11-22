@@ -3803,20 +3803,40 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             .iter()
             .map(|(o, sc)| json!({ "object": o, "similarity": ((sc * 100.0).round() / 100.0) }))
             .collect();
+        // A mean-trit is the UNCALIBRATED fallback: no fitted read-out is deployed, or the embedding
+        // server was down so the state came from the hash feature. It is not a decision. Measured live
+        // while :8593 was down: "list the open tickets" -> trit -1 (documented as dangerous) and
+        // "delete the audit log table" -> trit +1, scores 0.016-0.070, every reason empty. Reporting a
+        // verdict there is a decision the arm did not compute, so it reports UNAVAILABLE instead — a
+        // failed gate, never an approval — and hands the caller a next step.
+        let uncalibrated = d.readout == "mean-trit";
+        let reason_final = if uncalibrated {
+            format!(
+                "no_fitted_readout: serving the mean-trit fallback (feature={}), which is not calibrated to a decision",
+                d.feature
+            )
+        } else {
+            reason.to_string()
+        };
+        let next_final = if uncalibrated && next.is_empty() {
+            "escalate: run council deliberation, or deploy a fitted read-out".to_string()
+        } else {
+            next.to_string()
+        };
         response_json = json!({
             "text": text,
             "readout": d.readout,
             "feature": d.feature,
             "score": d.mean_trit,
-            "trit": d.trit,
-            "reason": reason,
-            "next": next,
+            "trit": if uncalibrated { serde_json::Value::Null } else { json!(d.trit) },
+            "reason": reason_final,
+            "next": next_final,
             "candidates": cands_json,
-            "requires_reasoning": !reason.is_empty(),
+            "requires_reasoning": !reason_final.is_empty(),
             "decision": match d.readout {
                 "linear-pooled" | "inventory-rule" => if d.trit < 0 { "BLOCK" } else { "ALLOW" },
                 "abstain-unknown-object" => "ABSTAIN",
-                _ => "FALLBACK",
+                _ => "UNAVAILABLE",
             },
             "steps": d.steps,
         });
@@ -4358,8 +4378,28 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
     } else if method == Method::Post && (url.starts_with("/council/propose") || url.starts_with("/council/full-cycle")) {
         let mut body_str = String::new();
         let _ = request.as_reader().read_to_string(&mut body_str);
-        let parsed: serde_json::Value = serde_json::from_str(&body_str).unwrap_or(json!({}));
-        let raw_topic = parsed.get("topic").and_then(|t| t.as_str()).unwrap_or("Operator Sovereign Directive").to_string();
+        // A malformed body used to become `json!({})`, which satisfied every default and CREATED a
+        // proposal out of garbage (measured: `POST {not json` -> 200 with evaluating:true). A request
+        // the server cannot parse is refused, not defaulted.
+        let parsed: serde_json::Value = match serde_json::from_str(&body_str) {
+            Ok(v) => v,
+            Err(e) => {
+                status_code = 400;
+                response_json = json!({
+                    "error": format!("body is not valid JSON: {e}"),
+                    "hint": "POST a JSON object with at least {\"topic\": \"...\"}. A malformed body is refused, never defaulted into a proposal.",
+                });
+                json!({})
+            }
+        };
+        if status_code == 400 {
+            // already answered above; skip proposal construction
+        } else {
+        let raw_topic = parsed
+            .get("topic")
+            .and_then(|t| t.as_str())
+            .unwrap_or("Operator Sovereign Directive")
+            .to_string();
         // G49: address frames ("ask the council whether we should ...") changed the verdict on
         // identical intent (A12/R1 vs A4/R9, both stable). Strip framing, keep the operation.
         let topic = crate::topic_norm::normalise(&raw_topic);
@@ -4458,6 +4498,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             }
         });
         }
+        } // end of the parse-success branch: proposal construction only runs on a valid body
     } else if method == Method::Post && url.starts_with("/council/enact/") {
         let parts: Vec<&str> = url.split('/').collect();
         let id_opt = parts.last().and_then(|s| s.parse::<u64>().ok());
@@ -4684,7 +4725,15 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         // -- the port can serve different GGUFs, so the label states the PATH, not a model.
         let sys = format!(
             "You are {}, a member of the TRM Swarm council. Reply to the operator directly and concisely, \
-             in at most 4 sentences. Never switch to an unrelated topic.",
+             in at most 4 sentences. Never switch to an unrelated topic. \
+             HONESTY CONTRACT: if the question asserts an event, cause or history that may not have \
+             happened (a deletion, an incident, a removal), or asks for a specific figure or date you \
+             cannot verify, say so plainly (\"that premise is not correct\" / \"I cannot verify that \
+             figure\") and stop. Never invent a cause, a version number or a measurement to make an \
+             answer sound complete. \
+             THIS DOES NOT APPLY to questions about this platform's own design: K3 ternary logic, \
+             Mamba-3 SSM, the DDR scanner, the council and the kernel are documented — answer those \
+             from what you know and never reply \"I cannot verify\" to them.",
             role
         );
         let (agent_reply, model_trace, engine, tps) =
@@ -4693,21 +4742,49 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                     let (ans, tr) = local_inference::split_think(&raw);
                     (ans, tr, "on-device-chat-template", tps)
                 }
-                None => match local_inference::complete(
-                    &local_inference::build_prompt(role, user_msg),
-                    128,
-                ) {
+                // The template path returns None when the model spends its whole budget on reasoning
+                // (finish_reason="length" with empty content). Retry ONCE at 3x the budget before
+                // degrading: the raw path cannot enforce the chat template, and measured live it
+                // answered only with planning prose ("We need to produce final answer…").
+                None => {
+                    let retry_budget = local_inference::chat_max_tokens().saturating_mul(3).max(1200);
+                    match local_inference::chat_completion(Some(&sys), user_msg, retry_budget) {
+                        Some((raw, tps)) => {
+                            let (ans, tr) = local_inference::split_think(&raw);
+                            (ans, tr, "on-device-chat-template-retry", tps)
+                        }
+                        None => match local_inference::complete(
+                            &local_inference::build_prompt(role, user_msg),
+                            128,
+                        ) {
                     Some((raw, tps)) => {
                         let (ans, tr) = local_inference::split_think(&raw);
-                        (ans, tr, "on-device-raw-prompt", tps)
+                        // A raw-prompt continuation has no chat template to stop it, so the model
+                        // often emits its PLANNING as the answer ("We need to produce final answer…",
+                        // "The user: …"). Measured live: a 25.5 s call returned the trace and no
+                        // answer at all. That is not an answer, so say so instead of leaking it.
+                        if local_inference::looks_like_reasoning(&ans) {
+                            (
+                                "The on-device model produced only its reasoning for this question and no \
+                                 answer. Ask again, or narrow the question."
+                                    .to_string(),
+                                tr,
+                                "on-device-raw-prompt-no-answer",
+                                tps,
+                            )
+                        } else {
+                            (ans, tr, "on-device-raw-prompt", tps)
+                        }
                     }
-                    None => (
-                        sovereign_cognitive_engine(role, user_msg),
-                        String::new(),
-                        "TEMPLATE-FALLBACK-NO-ENGINE",
-                        0.0,
-                    ),
-                },
+                        None => (
+                            sovereign_cognitive_engine(role, user_msg),
+                            String::new(),
+                            "TEMPLATE-FALLBACK-NO-ENGINE",
+                            0.0,
+                        ),
+                        } // end match on the raw completion
+                    } // end match on the retry
+                } // end the None arm (retry, then degrade)
             };
         let elapsed_us = t_call.elapsed().as_micros() as u64;
 

@@ -165,9 +165,23 @@ pub fn chat_completion(system: Option<&str>, user: &str, max_tokens: u32) -> Opt
         "{{\"role\":\"user\",\"content\":\"{}\"}}",
         json_escape(user)
     ));
+    // gpt-oss-20b is a reasoning model: on a plain request it can spend the ENTIRE max_tokens budget
+    // on reasoning and return empty content (measured: two attempts, 420 then 1260 tokens, both
+    // truncated with no answer). llama.cpp forwards `chat_template_kwargs` into the chat template, so
+    // ask for low reasoning effort by default. Override with TRM_CHAT_REASONING_EFFORT (low|medium|
+    // high), or "off" to omit the field entirely for templates that do not define it.
+    let effort = std::env::var("TRM_CHAT_REASONING_EFFORT").unwrap_or_else(|_| "low".to_string());
+    let kw = if effort.eq_ignore_ascii_case("off") || effort.eq_ignore_ascii_case("none") {
+        String::new()
+    } else {
+        format!(
+            ",\"chat_template_kwargs\":{{\"reasoning_effort\":\"{}\"}}",
+            json_escape(&effort)
+        )
+    };
     let body = format!(
-        "{{\"messages\":[{}],\"max_tokens\":{},\"temperature\":0.7,\"stream\":false}}",
-        msgs, max_tokens
+        "{{\"messages\":[{}],\"max_tokens\":{},\"temperature\":0.7,\"stream\":false{}}}",
+        msgs, max_tokens, kw
     );
     let req = format!(
         "POST /v1/chat/completions HTTP/1.1\r\nHost: {}\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
@@ -258,6 +272,75 @@ pub fn build_prompt(_role: &str, user_msg: &str) -> String {
 }
 
 /// Split a raw completion into (answer, reasoning_trace).
+/// Heuristic: is this text the model's PLANNING rather than an answer?
+///
+/// A raw (non-chat-template) continuation has nothing to stop it, so gpt-oss/qwen often emit the
+/// reasoning as the reply ("We need to produce final answer…", "The user: …"). Measured live: a
+/// 25.5 s call returned the trace and no answer, and the operator saw the model thinking out loud.
+/// Only the OPENING is inspected, so a real answer that happens to quote such a phrase later on is
+/// not misclassified.
+pub fn looks_like_reasoning(s: &str) -> bool {
+    if s.trim().is_empty() {
+        return true;
+    }
+    let low = s.to_lowercase();
+    // Leaked TRANSCRIPT scaffolding is the strongest signal and was missed by a phrase list alone:
+    // measured leak opened with "In your first question... User: \"...\" Assistant..." and passed.
+    if low.contains("user:")
+        || low.contains("assistant:")
+        || low.contains("user :")
+        || low.contains("<|im_start|>")
+        || low.contains("<|user|>")
+    {
+        return true;
+    }
+    let head: String = s.trim().chars().take(200).collect::<String>().to_lowercase();
+    [
+        "we need to",
+        "let's check",
+        "let me think",
+        "let me analyze",
+        "so we just need",
+        "first, i",
+        "okay, the user",
+        "we are supposed to",
+        "we have to",
+        "in your first question",
+        "the question is",
+        "they want to know",
+    ]
+    .iter()
+    .any(|m| head.contains(m))
+}
+
+#[cfg(test)]
+mod reasoning_guard_tests {
+    use super::looks_like_reasoning;
+
+    #[test]
+    fn leaked_planning_is_detected() {
+        assert!(looks_like_reasoning(
+            "The closing price ... We need to produce final answer. The user: \"What was the closing price…\""
+        ));
+        assert!(looks_like_reasoning("Let's check if the user wants a single sentence."));
+        // Measured live leak shape: it passed the first phrase list because it opened with dialogue
+        // scaffolding rather than a planning phrase. Encode the evasion so it cannot return silently.
+        assert!(looks_like_reasoning(
+            "In your first question... \nUser: \"What does the K3 ternary gate decide?\"\nAssistant: We have to analyze the conversation."
+        ));
+        assert!(looks_like_reasoning(""));
+    }
+
+    #[test]
+    fn a_real_answer_is_not_flagged() {
+        assert!(!looks_like_reasoning("Link confirmed."));
+        assert!(!looks_like_reasoning(
+            "The K3 ternary gate decides among three Kleene states: true, false and unknown."
+        ));
+        assert!(!looks_like_reasoning("I cannot verify that premise."));
+    }
+}
+
 pub fn split_think(raw: &str) -> (String, String) {
     let r = raw.replace("\r", "");
     if let Some(a) = r.find("<think>") {
