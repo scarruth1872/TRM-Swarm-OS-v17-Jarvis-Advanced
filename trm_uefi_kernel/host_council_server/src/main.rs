@@ -3540,6 +3540,20 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         // so it needs an explicit branch now that unmatched routes return 404.
         status_code = 200;
         response_json = json!({ "status": "PREFLIGHT_OK" });
+    } else if method == Method::Get && (url == "/" || url == "") {
+        // There was no root route at all: `GET /` returned the 404 body, which is what a browser,
+        // a load balancer health check or a curious operator hits first. Serve a small, true index
+        // instead of a dead end, and point at the endpoints that carry the real state.
+        response_json = json!({
+            "service": "trm-sovereign-council",
+            "kernel": env!("CARGO_PKG_VERSION"),
+            "note": "native Rust sovereign kernel; fixed route set, no dynamic dispatch",
+            "start_here": [
+                "/health", "/council/status", "/council/proposals", "/journal/status",
+                "/federation/ofp", "/platform/auth_policy", "/platform/skills_registry"
+            ],
+            "unknown_paths": "a 404 body names this list; routes never fail silently"
+        });
     } else if method == Method::Get && (url == "/council/status" || url == "/council/status/") {
         let st = lock_state(state);
         let members: Vec<serde_json::Value> = AGENTS.iter().map(|a| json!({
@@ -3594,6 +3608,14 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         })).collect();
 
         response_json = json!({ "proposals": proposals });
+    } else if method == Method::Get && url == "/council/proposal" {
+        // The list lives at /council/proposals and one record at /council/proposal/<id>. The bare
+        // form 404'd, which reads as "the endpoint does not exist" rather than "you omitted the id".
+        status_code = 400;
+        response_json = json!({
+            "error": "proposal id required",
+            "hint": "GET /council/proposal/<id> for one record, or /council/proposals for the list",
+        });
     } else if method == Method::Get && url.starts_with("/council/proposal/") {
         let parts: Vec<&str> = url.split('/').collect();
         let id_opt = parts.last().and_then(|s| s.parse::<u64>().ok());
@@ -3737,7 +3759,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "monad_seal": "0x4D4F4E4144000001"
         });
 
-    } else if method == Method::Get && url.starts_with("/council/sram/") {
+    } else if method == Method::Get && (url == "/council/sram" || url.starts_with("/council/sram/")) {
         let ids = url.split('/').last().and_then(|s| s.parse::<u64>().ok());
         let st = lock_state(state);
         let mut fv: Option<serde_json::Value> = None;
@@ -4596,7 +4618,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "monad_seal": "0x4D4F4E4144000001",
             "message": "Discovery successfully registered in immutable Monad Journal ledger."
         });
-    } else if method == Method::Get && url.starts_with("/arc/") {
+    } else if method == Method::Get && (url == "/arc" || url.starts_with("/arc/")) {
         // 20 ARC-AGI dataset routes (arc_routes.rs) over kaggle/combined
         let (p, qs) = match url.split_once('?') { Some((a, b)) => (a, b), None => (url.as_str(), "") };
         match crate::arc_routes::handle(p, qs) {
@@ -5315,8 +5337,18 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         let parsed: serde_json::Value = serde_json::from_str(&rb).unwrap_or(json!({}));
         let agent = parsed.get("agent").and_then(|v| v.as_str()).unwrap_or("");
         let text = parsed.get("text").or_else(|| parsed.get("message"))
-            .and_then(|v| v.as_str()).unwrap_or("");
-        response_json = k3_classify_json(agent, text);
+            .and_then(|v| v.as_str()).unwrap_or("").trim().to_string();
+        // Classifying the empty string returns a confident label for nothing, which is the same
+        // defect as the propose route defaulting a malformed body. Require text.
+        if text.is_empty() {
+            status_code = 400;
+            response_json = json!({
+                "error": "text is required",
+                "hint": "POST {\"text\": \"...\"} — an empty string is not classified",
+            });
+        } else {
+            response_json = k3_classify_json(agent, &text);
+        }
     } else if method == Method::Get && url.starts_with("/k3/ternary/bench") {
         // G53: pack the live roster to 1.58-bit ternary and measure both arms in-process.
         let heads = k3_heads();
@@ -6207,6 +6239,12 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         response_json = json!({
             "stats": { "active_threats": 0, "antibodies_loaded": 0, "note": "no registry in scope; use /ddr/stats", "vault_status": "LOCKED", "threats_detected_24h": 0, "threats_neutralized_24h": 0 },
             "threats": []
+        });
+    } else if method == Method::Get && url == "/inbox" {
+        status_code = 400;
+        response_json = json!({
+            "error": "agent name required",
+            "hint": "GET /mailbox/<agent>/inbox — inboxes are per agent, not global",
         });
     } else if method == Method::Get && url.starts_with("/mailbox/") && url.contains("/inbox") {
         let parts: Vec<&str> = url.split('/').collect();
