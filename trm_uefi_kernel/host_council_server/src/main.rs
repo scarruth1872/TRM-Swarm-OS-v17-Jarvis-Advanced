@@ -28,6 +28,7 @@ mod k3_logic;
 mod ofp_wire;
 mod hands;
 mod skills;
+mod shield_rules;
 mod council_ssm_pipeline;
 mod evidence_index;
 mod lexical_gate;
@@ -227,19 +228,49 @@ fn k3_classify_json(agent: &str, text: &str) -> serde_json::Value {
         }
     };
     let t0 = Instant::now();
-    let (trit, logits) = head.classify(text);
-    let us = t0.elapsed().as_nanos() as f64 / 1000.0;
-    let p = trm_uefi_kernel::k3_head::softmax3(&logits);
-    json!({
-        "agent": head.name,
-        "text": text,
-        "trit": trit,
-        "label": match trit { -1 => "BLOCK", 0 => "ANALYZE", _ => "PROCEED" },
-        "probs": {"block": p[0], "analyze": p[1], "proceed": p[2]},
-        "params": head.params(),
-        "latency_us": us,
-        "validation": k3_validation(),
-    })
+        let (head_trit, logits) = head.classify(text);
+        let us = t0.elapsed().as_nanos() as f64 / 1000.0;
+        let p = trm_uefi_kernel::k3_head::softmax3(&logits);
+        // The RULE LANE decides; the head is reported beside it as an advisory cross-check. The head
+        // cannot represent an unseen destructive verb (measured: 45 % danger pass-through on fresh
+        // vocabulary, losing to a keyword list 0.833 vs 0.738), so it must not be the deciding vote.
+        let rule = crate::shield_rules::classify(text);
+            // TRM_SHIELD_LANE=rules (default) | head | both. Rules decide by default because the two fresh
+            // held-outs measured pass-through 0.00 against the head's 0.33-0.42, and false-block 0.00 against
+            // the head's 0.43 on operational language. `head` restores the previous behaviour; `both` refuses
+            // only when they agree on BLOCK (strictest on false-blocks, weakest on recall).
+            let lane = std::env::var("TRM_SHIELD_LANE").unwrap_or_else(|_| "rules".to_string());
+            let (final_trit, lane_name) = match lane.trim().to_ascii_lowercase().as_str() {
+                "head" => (head_trit, "head"),
+                "both" => (if head_trit == -1 && rule.trit == -1 { -1 } else { rule.trit }, "rules+head"),
+                _ => (rule.trit, "rule"),
+            };
+            let label_of = |t: i8| match t {
+            -1 => "BLOCK",
+            0 => "ANALYZE",
+            _ => "PROCEED",
+        };
+        json!({
+            "agent": head.name,
+            "text": text,
+            "trit": final_trit,
+                    "label": label_of(final_trit),
+                    "lane": lane_name,
+            "reason": rule.reason,
+            "matched_verb": rule.matched_verb,
+            "matched_object": rule.matched_object,
+            "head": {
+                "trit": head_trit,
+                "label": label_of(head_trit),
+                "probs": {"block": p[0], "analyze": p[1], "proceed": p[2]},
+                "agrees": head_trit == rule.trit,
+                "note": "advisory: hashed char-ngram features cannot represent an unseen destructive verb",
+            },
+            "probs": {"block": p[0], "analyze": p[1], "proceed": p[2]},
+            "params": head.params(),
+            "latency_us": us,
+            "validation": k3_validation(),
+        })
 }
 
 /// 4D cognitive genes, copied from `swarm_v2/core/continuum_genomics.py` PERSONA_PRESETS.
@@ -5360,6 +5391,10 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             .map(|a| a.iter().filter_map(|x| x.as_f64()).map(|f| f as f32).collect())
             .unwrap_or_default();
         response_json = bench::k3_reduce(&vec);
+    } else if method == Method::Get && url.starts_with("/k3/rules") {
+        // The rule lane's inventory and decision order, so a reader can argue with the lists rather
+        // than guess at them. Same doctrine as /platform/auth_policy: publish the heuristic.
+        response_json = crate::shield_rules::describe();
     } else if method == Method::Post && url.starts_with("/k3/classify") {
         // Trained ternary decision: text -> trit (BLOCK/ANALYZE/PROCEED) via the
         // per-agent K3 heads, computed in-process. No Python, no LLM.
