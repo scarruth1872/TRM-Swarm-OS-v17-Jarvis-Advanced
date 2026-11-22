@@ -261,6 +261,43 @@ pub fn scan(code: &str) -> Vec<Finding> {
         });
     }
 
+    // ---- layer 1c: configuration-level hazards ----
+    // Written AFTER a blind campaign measured all three as misses (`requests.get(url, verify=False)`,
+    // `os.chmod('/etc/shadow', 0o777)` and `hashlib.md5(...)` were each ALLOWED), so that set is
+    // fitted-adjacent: the number that counts is the held-out one. Each rule is tested against its
+    // benign look-alike (verify=True, 0o755, sha256) because a pattern that cannot tell those apart
+    // is worse than no pattern.
+    if stripped.contains("verify=False") || stripped.contains("verify = False") {
+        out.push(Finding {
+            error_type: "tls_verification_disabled",
+            severity: "high",
+            detail: "verify=False".to_string(),
+            fix: "Keep certificate verification on. If a private CA is the obstacle, add it to the trust store rather than disabling verification.",
+        });
+    }
+    if has_call(&stripped, "os.chmod") || has_call(&stripped, "os.fchmod") {
+        const PERM_WIDENING: [&str; 3] = ["0o777", "0o666", "0o776"];
+        if let Some(hit) = PERM_WIDENING.iter().find(|p| stripped.contains(*p)) {
+            out.push(Finding {
+                error_type: "permission_widening",
+                severity: "high",
+                detail: format!("chmod {}", hit),
+                fix: "Grant the narrowest mode that works (0o600 for a secret, 0o640 for a shared log). World- or group-writable modes on a sensitive path are a privilege-escalation surface.",
+            });
+        }
+    }
+    const WEAK_HASH: [(&str, &str); 2] = [("hashlib.md5(", "md5"), ("hashlib.sha1(", "sha1")];
+    for (needle, label) in WEAK_HASH.iter() {
+        if stripped.contains(needle) {
+            out.push(Finding {
+                error_type: "weak_hash",
+                severity: "medium",
+                detail: (*label).to_string(),
+                fix: "Use sha256+ for integrity and argon2/bcrypt/scrypt for passwords. md5 and sha1 are collision-broken and far too fast for credential storage.",
+            });
+        }
+    }
+
     // ---- layer 2: obfuscation, matched on RAW (these hide tokens from layer 1) ----
         // OBFUSCATION IS A COMBINATION, NOT A SINGLE FEATURE.
     // Each indicator below is individually routine in real Python: backslash-x
@@ -412,3 +449,4 @@ pub fn blocking_finding(code: &str) -> Option<Finding> {
 pub fn is_suspicious(code: &str) -> bool {
     !scan(code).is_empty()
 }
+

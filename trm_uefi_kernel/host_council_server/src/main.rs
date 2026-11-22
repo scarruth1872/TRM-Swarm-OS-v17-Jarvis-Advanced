@@ -6978,3 +6978,40 @@ mod g9_consequence_tests {
     }
 }
 
+
+#[cfg(test)]
+mod ddr_config_lane_tests {
+    // These live HERE, not in trm_uefi_kernel/src/ddr_scan.rs: that crate is the bare-metal image and
+    // no test target runs its tests, so an assertion placed there would never execute and would read
+    // as coverage that does not exist. The scanner is reached through the library, which this crate
+    // links, so the same code is under test.
+    use trm_uefi_kernel::ddr_scan::scan;
+
+    fn flagged(code: &str, want: &str) -> bool {
+        scan(code).iter().any(|f| f.error_type == want)
+    }
+
+    #[test]
+    fn tls_off_blocks_but_verify_on_does_not() {
+        assert!(flagged("requests.get(url, verify=False)", "tls_verification_disabled"));
+        assert!(flagged("httpx.post(api, verify = False)", "tls_verification_disabled"));
+        assert!(!flagged("requests.get(url, verify=True, timeout=5)", "tls_verification_disabled"));
+        assert!(!flagged("session.get(api, verify=ca_bundle)", "tls_verification_disabled"));
+    }
+
+    #[test]
+    fn permission_widening_blocks_but_narrow_modes_do_not() {
+        assert!(flagged("os.chmod('/etc/shadow', 0o777)", "permission_widening"));
+        assert!(flagged("os.fchmod(fd, 0o666)", "permission_widening"));
+        assert!(!flagged("os.chmod(log_path, 0o640)", "permission_widening"));
+        assert!(!flagged("os.chmod(script, 0o755)", "permission_widening"));
+    }
+
+    #[test]
+    fn weak_hash_blocks_but_sha256_does_not() {
+        assert!(flagged("hashlib.md5(password.encode()).hexdigest()", "weak_hash"));
+        assert!(flagged("hashlib.sha1(token).hexdigest()", "weak_hash"));
+        assert!(!flagged("hashlib.sha256(payload).hexdigest()", "weak_hash"));
+        assert!(!flagged("hmac.new(key, msg, hashlib.sha256)", "weak_hash"));
+    }
+}
