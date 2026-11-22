@@ -305,6 +305,31 @@ struct Readout {
 
 static READOUT: std::sync::OnceLock<Option<Readout>> = std::sync::OnceLock::new();
 
+/// Every place a read-out artifact may legitimately live, in precedence order: CWD first (so an operator can
+/// override), then beside the executable, then the crate's own `data/` as seen from `target/release`.
+fn readout_candidates(name: &str) -> Vec<std::path::PathBuf> {
+    use std::path::PathBuf;
+    let mut out: Vec<PathBuf> = Vec::new();
+    out.push(PathBuf::from(name));
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(dir) = exe.parent() {
+            out.push(dir.join(name));
+            // target/release -> crate root -> crate data/
+            if let Some(crate_dir) = dir.parent().and_then(|p| p.parent()) {
+                out.push(crate_dir.join("data").join(
+                    std::path::Path::new(name).file_name().unwrap_or_default()));
+                out.push(crate_dir.join(name));
+                // repo root (crate is trm_uefi_kernel/host_council_server)
+                if let Some(repo) = crate_dir.parent().and_then(|p| p.parent()) {
+                    out.push(repo.join(name));
+                }
+            }
+        }
+    }
+    out.dedup();
+    out
+}
+
 /// Parse a D_STATE x D_MODEL gain matrix from JSON: [[f32; D_MODEL]; D_STATE].
 /// Returns None unless the shape is exactly right -- a short array silently zero-padded
 /// would be a wrong model that looks trained.
@@ -330,9 +355,15 @@ fn readout() -> &'static Option<Readout> {
    READOUT.get_or_init(|| {
        // The scope gate lives in its own artifact and, when deployed, takes precedence: it is the arm that was
        // measured beating its baselines (G139), while the general read-out was refused twice (G137).
-       let txt = ["data/scope_gate.json", READOUT_PATH]
-           .iter()
-           .find_map(|p| std::fs::read_to_string(p).ok())?;
+       //
+       // MEASURED 2026-11-22: this was read as a bare relative path, so a kernel started with the repo root as
+       // CWD read repo `data/` (which holds only refused candidates) while the DEPLOYED gate sits in the crate's
+       // own `data/`. Result: a passing gate (AUC 0.926) served as UNAVAILABLE because the file was never opened.
+       // Candidates are now anchored on the executable as well as CWD, the same fix the journal manifest needed.
+       let txt = readout_candidates("scope_gate.json")
+           .into_iter()
+           .chain(readout_candidates(READOUT_PATH))
+           .find_map(|p| std::fs::read_to_string(&p).ok())?;
         let v: serde_json::Value = serde_json::from_str(&txt).ok()?;
         // A fitted read-out is only used when the fitting run says so. MEASURED:
         // the first fit reached 0.458 leave-one-topic-out against a 0.455
