@@ -147,6 +147,35 @@ kernel first and falls back to a direct port, and `/council/sram/:id` is untouch
 it is a compile-time constant, not the git SHA, so that field cannot identify which binary is serving.
 Recorded identity for the binary running now: `sha256:15f758325480c3c33f8a24b6de8faf7d…`.
 
+### Correction and fix (G230/G231) — that field now does identify the binary
+
+The sentence above was half right: the value *is* captured at compile time by `build.rs`, which was the
+point of the mechanism. But it was wrong in the way that matters — it did not change when the source did,
+so it named the commit the binary was **first** built from. Two defects, both in `build.rs`:
+
+1. **Watching `.git/HEAD` cannot detect a commit.** On a branch, `.git/HEAD` contains
+   `ref: refs/heads/snapshot` and is byte-identical before and after `git commit`; the SHA lives in
+   `.git/refs/heads/<branch>` (or `packed-refs`). So `rerun-if-changed` fired only on branch switches,
+   Cargo reused the cached `TRM_BUILD_COMMIT`, and the kernel kept advertising `9aabc88`. It now watches
+   `HEAD`, the resolved ref file and `packed-refs`, plus `src/`.
+2. **A binary built from uncommitted source claimed a clean commit.** That is a false provenance claim,
+   and it is what concealed defect 1 through a whole rebuild. The label now carries `+dirty` when the
+   crate differs from HEAD. Scoped to the crate (`git status -- .` from the package root), because two
+   unrelated files are modified in this repo and a warning that fires for them is a warning people learn
+   to ignore.
+
+Verified as a sequence, each step a measurement rather than an assertion:
+
+| build | HEAD | `/health build_commit` | meaning |
+|---|---|---|---|
+| build.rs edited, uncommitted | `16431b4` | `16431b4+dirty` | dirty detection works |
+| after committing build.rs | `a2e4708` | `a2e4708+dirty` | **rerun fired on the commit** (defect 1 gone) |
+| after scoping, crate still dirty | `a2e4708` | `a2e4708+dirty` | control: scoping did not blind it |
+| after committing the scope fix | `97519a0` | `97519a0` | clean while 2 unrelated files stay dirty |
+
+So the field now either names the commit the binary came from, or says plainly that it came from more
+than that commit.
+
 
 ## Known compromises
 
