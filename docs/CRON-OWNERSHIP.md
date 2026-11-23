@@ -23,6 +23,39 @@ is a report about the wrong system.
 | Swarm GitHub Skill Acquisition | Mon 08:00 | `trm_report_skills.py` | reads the registry; acquires nothing (no such native endpoint) |
 | wisdom-pipeline | 06:00 | `trm_wisdom_pipeline.py` | runs `uqi-platform/scripts/harvest_wisdom_v2.py` (stdlib + curl, no LLM) |
 | federation-registry-tick | every 5 m | `federation_tick_hysteresis.py` | unchanged |
+| **Swarm Kanban Board Check** | **06:45 daily** | **`trm_kanban_check.py`** | **board counts, stale %, seeded vs organic, verify status, store mtime** |
+
+## The kanban job (added 2026-11-23, job `7164ea587c04`)
+
+The board endpoints have existed since G161 (`/kanban/board`, `/kanban/stats`, `/kanban/verify`) but
+nothing ever called them on a schedule. Measured the moment the check first ran:
+
+```
+cards: 13 total — todo 0 / in_progress 7 / review 2 / done 4
+stale: 13/13 (100.0%) — nothing moved for more than 7.0 days
+provenance: 13 seeded card(s), 0 changed organically
+age: newest update 7.4 days ago, oldest 89.0 days ago
+verification: UNVERIFIED (not instrumented) — no per-card evidence is instrumented
+store file: last written 2026-11-16 13:18 UTC (7.4 days ago)
+verdict: FROZEN
+```
+
+So "the kanban board hasn't been running" is doubly true: no job ran, and no card has moved since the
+seed. The check reports both facts and **moves nothing** — inventing a board transition would manufacture
+progress that never happened. Two honest exits from here, both the user's call: post real work through
+`POST /kanban/cards/{id}/move`, or retire the seeded cards (they describe an FDA eCTD dossier, a muon-flux
+scrubber and a 100-node federation audit — seed fiction, not a backlog).
+
+It also prints `UNVERIFIED (not instrumented)` verbatim rather than converting a missing verification into
+a tick, and reports `unmeasured` for any field the kernel does not instrument. An unreachable kernel exits
+3 with "no values reported — the board was not measured, not found empty".
+
+### Note on the four jobs still showing HTTP 402
+
+`wisdom-pipeline`, Daily Health, Weekly Security and Weekly Evolution still carry `last_error: HTTP 402:
+Insufficient Balance` in `cronjob_manage list`. Those are **pre-G226 records**: their last LLM run was
+05:00–07:00 on 2026-11-23, before the jobs were repointed to `no_agent`. Heartbeat and Learning, which
+have fired since, show `ok`. The next fires are script-only and cannot 402.
 
 ### Layering, and why it is split
 
