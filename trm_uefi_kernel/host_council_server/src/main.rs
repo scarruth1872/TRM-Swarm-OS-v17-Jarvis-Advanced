@@ -1665,12 +1665,34 @@ fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> Option<(i8,
     } else {
         ask.push_str("Judge whether this proposal should be adopted.\nReply with exactly two lines:\nVOTE: approve or abstain or reject\nWHY: one short sentence");
     }
-    let prompt = local_inference::build_prompt(agent.role, &ask);
-    // temperature 0.0: the verdict must be reproducible, or the two council
-    // surfaces cannot agree on the same topic (measured: 12/0/2 vs 13/0/1 at 0.7).
-    let (raw, _tps) = local_inference::complete_with_temp(&prompt, 96, 0.0)?;
-    let (answer, _trace) = local_inference::split_think(&raw);
-    let lower = answer.to_lowercase();
+    // MEASURED 2026-11-22: this asked the RAW `/completion` endpoint for 96 tokens. gpt-oss-20b spends a
+    // 96-token budget inside its reasoning trace and emits no `VOTE:` line, so the parse returned None and
+    // 10 of 14 agents recorded `decision_path: "no signal"` on a live proposal (3 approve / 11 abstain,
+    // min_approve 10, no consensus). The chat endpoint carries reasoning_effort=low (llama.cpp forwards
+    // chat_template_kwargs), takes temperature 0.0 for a reproducible verdict, and gets a budget that can
+    // hold EVIDENCE + HARM + VOTE + WHY with one wider retry before the vote is reported missing.
+    let budget: u32 = std::env::var("TRM_VOTE_MAX_TOKENS")
+        .ok()
+        .and_then(|v| v.trim().parse().ok())
+        .unwrap_or(320);
+    let attempt = |n: u32| -> Option<String> {
+        let (r, _) = local_inference::chat_completion_with(None, &ask, n, 0.0)?;
+        let (a, _trace) = local_inference::split_think(&r);
+        Some(a)
+    };
+    let mut answer = attempt(budget)?;
+    let mut lower = answer.to_lowercase();
+    if !lower.contains("vote:") {
+        // One retry at 3x (min 960). A missing VOTE is the difference between an abstention the agent
+        // chose and a vote the transport swallowed, and those must not look alike in the record.
+        if let Some(a2) = attempt(budget.saturating_mul(3).max(960)) {
+            let l2 = a2.to_lowercase();
+            if l2.contains("vote:") {
+                answer = a2;
+                lower = l2;
+            }
+        }
+    }
 
     let mut trit = {
         let pos = lower.find("vote:")?;

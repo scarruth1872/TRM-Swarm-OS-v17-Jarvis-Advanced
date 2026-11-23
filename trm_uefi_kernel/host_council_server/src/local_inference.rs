@@ -147,6 +147,12 @@ pub fn chat_max_tokens() -> u32 {
 /// ChatML: a raw `/completion` prompt makes such models continue the text as prose (measured:
 /// gpt-oss-20b answered "confirm link" with a Django tutorial and an invented email exchange).
 pub fn chat_completion(system: Option<&str>, user: &str, max_tokens: u32) -> Option<(String, f64)> {
+    chat_completion_with(system, user, max_tokens, 0.7)
+}
+
+/// Same engine and payload, explicit temperature. Council VOTES pass 0.0: at 0.7 the same topic scored
+/// 12/0/2 and 13/0/1 on consecutive runs, so the two council surfaces could not agree on identical input.
+pub fn chat_completion_with(system: Option<&str>, user: &str, max_tokens: u32, temperature: f32) -> Option<(String, f64)> {
     let addr = format!("{}:{}", INFER_HOST, infer_port());
     let mut s = TcpStream::connect(&addr).ok()?;
     s.set_read_timeout(Some(Duration::from_secs(120))).ok()?;
@@ -180,8 +186,8 @@ pub fn chat_completion(system: Option<&str>, user: &str, max_tokens: u32) -> Opt
         )
     };
     let body = format!(
-        "{{\"messages\":[{}],\"max_tokens\":{},\"temperature\":0.7,\"stream\":false{}}}",
-        msgs, max_tokens, kw
+        "{{\"messages\":[{}],\"max_tokens\":{},\"temperature\":{},\"stream\":false{}}}",
+        msgs, max_tokens, temperature, kw
     );
     let req = format!(
         "POST /v1/chat/completions HTTP/1.1\r\nHost: {}\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
