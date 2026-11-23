@@ -29,8 +29,8 @@ rem On a model that fits in VRAM this took Bonsai-27B Q1_0 from 13.20 to 23.72 t
 rem oversized Qwen3.8-27B (10.87 GB file on a 12 GB card) from 5.16 to 5.95. The Instella alias
 rem keeps plain flags: it runs the fork build, which was not benchmarked for -fa.
 rem
-rem ALIASES: embed (8593) · instella (8596) · bonsai (8591) · 1.5b (8587)
-rem          4b (8595) · jarvis (8597, qwen3-4b + LoRA)
+rem ALIASES: vote (8587, gpt-oss-20b = the council's vote model) · embed (8593) · instella (8596)
+rem          bonsai (8591) · 1.5b (8598) · 4b (8595) · jarvis (8597, qwen3-4b + LoRA)
 rem
 rem EXIT: 0 already serving or now healthy · 1 failed to come up
 rem       2 refused (not enough free memory) · 3 usage error
@@ -44,6 +44,9 @@ rem   PTQ1_0 (5.54 GB) needs the PrismML fork's ternary kernels - the fork DOES 
 rem   Q2_0   (7.10 GB) needs stock llama.cpp >= b11556; older builds load it and emit garbage.
 set "PRISM_EXE=F:\Development sites\llama-vulkan-prism\llama-server.exe"
 set "B12360_EXE=F:\Development sites\llama-vulkan-b12360\llama-server.exe"
+rem The council's vote model runs on the VENDOR build, not the ub3 build: that is the binary the
+rem council was measured against (task TRM-VoteModel-8587, tools/start_vote_model_8587.bat).
+set "VOTE_EXE=%ROOT_DIR%\vendor\llama.cpp\build-win\bin\llama-server.exe"
 
 set "M_1.5B=%ROOT_DIR%\models\qwen2.5-1.5b-instruct-q4_k_m.gguf"
 set "M_4B=%ROOT_DIR%\models\qwen3-4b-instruct-q4_k_m.gguf"
@@ -55,6 +58,7 @@ set "M_BONSAI2_PTQ=E:\Hugginface models\Ternary-Bonsai-2-27B-PTQ1_0.gguf"
 set "M_BONSAI2_Q2=E:\Hugginface models\Ternary-Bonsai-2-27B-Q2_0.gguf"
 set "M_BONSAI2_2B=E:\Hugginface models\Ternary-Bonsai-2-2B-Q2_0.gguf"
 set "M_BONSAI2_9B=E:\Hugginface models\Ternary-Bonsai-2-9B-Q2_0.gguf"
+set "M_GPTOSS=F:\models\gpt-oss-20b\gpt-oss-20b-MXFP4.gguf"
 
 rem Measured as MB free physically, not as a guess. Override for a deliberate squeeze.
 if not defined TRM_MIN_FREE_MB set "TRM_MIN_FREE_MB=6000"
@@ -70,7 +74,11 @@ set "EXTRA="
 if /i "%ALIAS%"=="embed"    (set "PORT=8593" & set "LABEL=Embeddings"       & set "MODEL=%M_EMBED%"   & set "EXTRA=--embeddings --ctx-size 2048 --threads 6")
 if /i "%ALIAS%"=="instella" (set "PORT=8596" & set "LABEL=Instella-MoE-16B" & set "MODEL=%M_INSTELLA%" & set "EXE=%INSTELLA_EXE%" & set "EXTRA=--n-gpu-layers 99 -fa on -ub 128 -b 512 --ctx-size 16384 --parallel 4 --threads 8")
 if /i "%ALIAS%"=="bonsai"   (set "PORT=8591" & set "LABEL=Bonsai-27B"       & set "MODEL=%M_BONSAI%"  & set "EXTRA=--n-gpu-layers 99 -fa on -ub 128 -b 512 --ctx-size 2048 --threads 8")
-if /i "%ALIAS%"=="1.5b"     (set "PORT=8587" & set "LABEL=Inference-1.5B"   & set "MODEL=%M_1.5B%"    & set "EXTRA=--n-gpu-layers 99 -fa on -ub 128 -b 512 --ctx-size 4096 --threads 12 --parallel 4")
+if /i "%ALIAS%"=="vote"     (set "PORT=8587" & set "LABEL=Council-Vote-gpt-oss-20b" & set "MODEL=%M_GPTOSS%" & set "EXE=%VOTE_EXE%" & set "EXTRA=--ctx-size 4096 --threads 12")
+rem 1.5b used to live on 8587. Since 2026-11-22 that port belongs to the council's VOTE model
+rem (task TRM-VoteModel-8587), so the 1.5B moved to 8598. Leaving the old mapping here would have made
+rem 'start_model.bat 1.5b' report [OK] already serving while the port answered with a 20B.
+if /i "%ALIAS%"=="1.5b"     (set "PORT=8598" & set "LABEL=Inference-1.5B"   & set "MODEL=%M_1.5B%"    & set "EXTRA=--n-gpu-layers 99 -fa on -ub 128 -b 512 --ctx-size 4096 --threads 12 --parallel 4")
 if /i "%ALIAS%"=="4b"       (set "PORT=8595" & set "LABEL=Qwen3-4B"         & set "MODEL=%M_4B%"      & set "EXTRA=--n-gpu-layers 99 --ctx-size 4096 --threads 8")
 if /i "%ALIAS%"=="bonsai2"  (set "PORT=8612" & set "LABEL=Bonsai2-27B-PTQ1_0" & set "MODEL=%M_BONSAI2_PTQ%" & set "EXE=%PRISM_EXE%" & set "EXTRA=--n-gpu-layers 99 -fa on -ub 128 -b 512 --ctx-size 32768 --parallel 8 --threads 8")
 if /i "%ALIAS%"=="bonsai2q" (set "PORT=8613" & set "LABEL=Bonsai2-27B-Q2_0"   & set "MODEL=%M_BONSAI2_Q2%"  & set "EXE=%B12360_EXE%" & set "EXTRA=--n-gpu-layers 99 -fa on -ub 128 -b 512 --ctx-size 8192 --threads 8")
@@ -93,6 +101,9 @@ if not exist "%MODEL%" (
 call :probe %PORT%
 if not errorlevel 1 (
     echo   [OK]    already serving on :%PORT% - nothing started
+    echo           expected here: %LABEL%
+    echo           %MODEL%
+    echo           If that is NOT what answers, another model owns this port - check before trusting it.
     exit /b 0
 )
 
@@ -171,10 +182,11 @@ exit /b 0
 echo.
 echo  start_model.bat ^<alias^>       start one model, with the memory guard
 echo.
+echo    vote      8587  gpt-oss-20b MXFP4 - THE COUNCIL'S VOTE MODEL (task TRM-VoteModel-8587)
 echo    embed     8593  embeddings, ~0.35 GB commit
 echo    instella  8596  Instella-MoE-16B, ~8.4 GB
 echo    bonsai    8591  Bonsai-27B ternary deep tier, ~5.3 GB
-echo    1.5b      8587  qwen2.5-1.5b chat, ~9.8 GB
+echo    1.5b      8598  qwen2.5-1.5b chat, ~9.8 GB (was 8587 before the vote model took that port)
 echo    4b        8595  qwen3-4b, ~13.6 GB
 echo    jarvis    8597  qwen3-4b + LoRA, ~9.5 GB
 echo    bonsai2   8612  Bonsai 2 27B ternary PTQ1_0, 5.5 GB, 8 slots (G100: 312 tok/s at 2B), prism fork

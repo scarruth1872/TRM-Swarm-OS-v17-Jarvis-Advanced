@@ -144,6 +144,10 @@ scratch/hwinfo/
 !STOP_TRM_PLATFORM.bat
 !start_model.bat
 !tools/*.ps1
+# tools/*.bat are the platform's own launchers (start_embedder_8593, start_vote_model_8587), not
+# scratch scripts. They were landing in the blanket *.bat rule and had to be `git add -f`'d, which
+# means a launcher that only exists on this disk is not reproducible. Keep them in history.
+!tools/*.bat
 
 # --- training environment -------------------------------------------------
 # 2.1 GB / 23,161 files measured on 2026-11-15, zero of them tracked in git.
