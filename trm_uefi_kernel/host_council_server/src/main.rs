@@ -1671,11 +1671,28 @@ fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> Option<(i8,
     // min_approve 10, no consensus). The chat endpoint carries reasoning_effort=low (llama.cpp forwards
     // chat_template_kwargs), takes temperature 0.0 for a reproducible verdict, and gets a budget that can
     // hold EVIDENCE + HARM + VOTE + WHY with one wider retry before the vote is reported missing.
+    // MEASURED 2026-11-22, the actual cause of irreproducible verdicts: llama.cpp is NOT batch-invariant.
+    // One prompt at temperature 0 returned byte-identical text 7/7 when alone or when 4 IDENTICAL requests
+    // shared the batch -- but with three UNRELATED prompts in flight the same prompt flipped from "none of
+    // the provided documents..." to citing a document and abstaining. Batch composition perturbs the logits
+    // (~1e-3, the same effect that makes nomic vectors differ by 9e-4 batched vs alone) and greedy decoding
+    // takes the next token from there. So 14 agents deliberating in parallel make each other's votes random:
+    // one topic scored A10/A7/A7/A8/A6 across five runs.
+    //
+    // Votes are therefore SERIALISED by default: one request in flight, so every agent sees the same
+    // numerics every run. Measured cost is negative -- sequential calls are FASTER than 4-way contention on
+    // a 2-slot server. TRM_VOTE_CONCURRENCY=unbounded restores parallel voting for throughput experiments
+    // that accept the noise.
+    static VOTE_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+    let serialise = std::env::var("TRM_VOTE_CONCURRENCY")
+        .map(|v| v.trim() != "unbounded")
+        .unwrap_or(true);
     let budget: u32 = std::env::var("TRM_VOTE_MAX_TOKENS")
         .ok()
         .and_then(|v| v.trim().parse().ok())
         .unwrap_or(320);
     let attempt = |n: u32| -> Option<String> {
+        let _guard = if serialise { Some(VOTE_LOCK.lock().unwrap_or_else(|e| e.into_inner())) } else { None };
         let (r, _) = local_inference::chat_completion_with(None, &ask, n, 0.0)?;
         let (a, _trace) = local_inference::split_think(&r);
         Some(a)
