@@ -56,6 +56,32 @@ Services: 5 probed, 1 not ONLINE (lcars_dashboard=OFFLINE)
 Voltage: measured=true phi_v=0.444 rails={'measured': False, 'error': 'HWiNFO shared memory not enabled…'}
 ```
 
+## Addendum — the rail reading is not stable, so neither was my first claim about it
+
+The sample above was captured at 16:21 UTC, when `/health` reported
+`voltage_rails.measured = false` with `error: "HWiNFO shared memory not enabled (Settings → Shared
+Memory Support)"`. **One minute later the same job, same endpoint, reported `measured = true` with 417
+SM2 readings** and real rails:
+
+```
+v_core 1.488 V (HWiNFO64 SM2: Vcore SVI2) | v_gpu 1.1768 V | v_soc 1.03125 V
+v_ddr 1.2 V — WMI Win32_PhysicalMemory.ConfiguredVoltage, i.e. SPD configured, NOT a live rail
+phi_v 0.8096
+```
+
+Two corrections, both recorded rather than deleted:
+
+1. I first told the owner the heartbeat's "rails unmeasured" prose was wrong and the endpoint should be
+   trusted. That was wrong — the endpoint agreed with the prose at that moment.
+2. I then said the prose was right and the rails were unmeasured. That was true at 16:21 and false at
+   16:22.
+
+The lesson for the report path: **HWiNFO SM2 availability is a runtime state, not a build property.**
+A single sample of `voltage_rails` cannot support "voltage is unmeasured on this host" — read
+`measured` and `source` on every run (the report does, since it prints the whole field), and treat a
+transition from unmeasured to measured as an event worth noting rather than a contradiction to argue
+about.
+
 ## SwarmKernel guard: the firing fixed
 
 `tools/swarm_kernel_guard.ps1` supervises five listeners (kernel 8022, companion proxy 3001, companion
