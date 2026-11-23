@@ -93,6 +93,60 @@ measuring a port the platform moved off. Same pattern as 8021 → 8022.
 
 Guard after all of this: `ALL LISTENING (8022,3000,3001,3002,5183 + tailnet 8022,3001)` in **183 ms**.
 
+## The integration question, decided by the SRAM computer (G229)
+
+The question was not "which port" any more — it was **who should hold the model, and who should hold the
+grounding**. Three things were already true and pulling in different directions:
+
+- Jarvis knows what it just measured (live platform state) and grounds every prompt in it.
+- The kernel knows which model is resident, and runs it through `/v1/chat/completions` so **the server
+  applies that model's own template**. Jarvis hand-builds ChatML, which is why gpt-oss on `:8587` leaked
+  Harmony control tokens.
+- Neither alone was sufficient: `/swarm/chat` with no caller grounding answered *"I cannot verify that
+  premise"*, and Jarvis alone cannot apply a template it does not know.
+
+So the six candidate policies were run through the platform's own primitives — `host_sramsim` includes
+`k3_logic.rs`, `sram_pattern_computer.rs` and `k3_ternary_sram.rs` **by path**, so the CAM, TCAM,
+Hopfield, Ising and Kleene operations are the same code `/council/sram/:id` executes. Full output:
+`data/sram_integration_sim.txt`.
+
+| | S0 gate-8587 | S3 no model | S5 kernel down | S7 Harmony model | usable |
+|---|---|---|---|---|---|
+| P1 hardcoded :8597 | FAILS | FAILS | WORKS | DEGRADED | 2/8 |
+| P2 probe + ChatML (shipped earlier today) | WORKS | ABSTAIN | WORKS | DEGRADED | 5/8 |
+| P3 kernel chat, no grounding | DEGRADED | ABSTAIN | FAILS | WORKS | 1/8 |
+| P4 kernel chat + caller grounding | WORKS | ABSTAIN | ABSTAIN | WORKS | 6/8 |
+| **P6 kernel + direct fallback** | **WORKS** | ABSTAIN | **WORKS** | **WORKS** | **7/8** |
+| P5 cloud LLM | FORBIDDEN | FORBIDDEN | FORBIDDEN | FORBIDDEN | 0/8 |
+
+TCAM frontier (exact-match, per scenario): `S0 -> P2,P4,P6` · `S3 -> nobody` · `S5 -> P1,P2,P6` ·
+`S7 -> P3,P4,P6`. **P6 is the only policy present in all four queries.** Ising energy over the doctrine
+spins gives P6 the ground state (−16); P5 scores 0 and P1 −4. Hopfield stability under two flipped cells
+is 7/8 for P6 against 1/8 for P3, meaning P6's profile survives being wrong about two assumptions while
+P3's collapses. Kleene trisum: P6 `trit=0 conf=0.875 amb=0.125`, the highest confidence of any
+non-rejecting policy.
+
+**What the simulation got wrong first, and why that matters.** My first run used `ising_spin_glass` as if
+it returned energy (it returns per-spin field signs, which saturate at +4 for every policy), shared one
+`K3Sram` across policies for the Kleene read (which reports the whole plane, so the metric tracked
+insertion order — the last policy stored "won" with confidence 1.000), and asked TCAM "who never fails",
+which exact-match semantics cannot express. All three produced confident, meaningless numbers. They are
+described here rather than deleted, because a simulation is only as honest as its stated semantics.
+
+**Then it was implemented and the modelled cells became measurements.** `POST /swarm/chat` now accepts
+caller-supplied `system` text (the kernel appends its role framing and a grounding rule), Jarvis asks the
+kernel first and falls back to a direct port, and `/council/sram/:id` is untouched. Measured:
+
+- kernel + caller grounding → *"The kernel is listening on TCP port 8022 and is running build 9aabc88"*
+  in **1.73 s**, against *"I cannot verify that premise"* in 6.39 s without grounding
+- Jarvis log: `[Harness] answered via kernel:/swarm/chat`
+- with the kernel stopped (`8022=000`): `[Harness] answered via direct:http://127.0.0.1:8587` → *"Ready."*
+- re-run of the simulation: measured cells **18 → 21 of 48**, and no policy is left as pure hypothesis
+
+**One provenance defect this exposed:** `/health` still reports `build_commit: 9aabc88` after a rebuild —
+it is a compile-time constant, not the git SHA, so that field cannot identify which binary is serving.
+Recorded identity for the binary running now: `sha256:15f758325480c3c33f8a24b6de8faf7d…`.
+
 
 ## Known compromises
 

@@ -80,3 +80,50 @@ export async function resolveCodeUrl(force = false): Promise<string> {
 export function modelTargets(): { model: string | null; code: string | null; pool: number[] } {
   return { model: cachedModelUrl, code: cachedCodeUrl, pool: PORTS };
 }
+
+// ── kernel-mediated inference (the P6 hybrid the SRAM simulation selected) ────────────────────────
+//
+// Why this exists: /swarm/chat on :8022 runs the resident model through /v1/chat/completions, so the
+// SERVER applies that model's own chat template. Jarvis was hand-building a ChatML prompt against a raw
+// /completion port, which is why gpt-oss on :8587 leaked Harmony control tokens and why a ChatML prompt
+// to a Harmony model answered poorly. The kernel also chooses which resident tier thinks, so Jarvis no
+// longer needs to know a port at all.
+//
+// The direct-port path stays as the fallback: the SRAM simulation's TCAM frontier showed the
+// kernel-only policy (P4) is the ONE candidate that dies when the kernel is down (S5), while the hybrid
+// (P6) answers either way. Measured: kernel path 1.73 s and correctly grounded, against 6.39 s for the
+// kernel without caller grounding and 16 refusals for the hardcoded port.
+const KERNEL_URL = process.env.JARVIS_KERNEL_URL || "http://127.0.0.1:8022";
+
+export async function kernelChat(
+  system: string,
+  message: string,
+  role = "Jarvis",
+  timeoutMs = 120_000,
+): Promise<string | null> {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const r = await fetch(`${KERNEL_URL}/swarm/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // `system` carries Jarvis's grounding. The kernel appends its own role framing and grounding rule,
+      // so live figures survive the hop instead of being replaced by the kernel's static persona.
+      body: JSON.stringify({ role, message, system }),
+      signal: ctrl.signal,
+    });
+    if (!r.ok) return null;
+    const data: any = await r.json();
+    const text = String(data?.content ?? "").trim();
+    return text.length > 0 ? text : null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/** Where a chat request would go right now, for /api/status style reporting. */
+export function chatPaths(): { kernel: string; directPool: number[] } {
+  return { kernel: KERNEL_URL, directPool: PORTS };
+}

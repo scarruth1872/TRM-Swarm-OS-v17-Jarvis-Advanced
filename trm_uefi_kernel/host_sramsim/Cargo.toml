@@ -1,0 +1,13 @@
+[package]
+name = "host_sramsim"
+version = "0.1.0"
+edition = "2021"
+
+# Deliberately dependency-free: it includes the kernel's own K3/SRAM modules by path, so the
+# simulation runs on the same code the kernel serves rather than a re-implementation of it.
+[[bin]]
+name = "host_sramsim"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3

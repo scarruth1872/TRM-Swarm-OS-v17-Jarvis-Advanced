@@ -4870,7 +4870,28 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         // veto tier) that produced unrelated prose ("a User class in a Django project") because a
         // bare /completion prompt is continued as text. The model name is no longer asserted here
         // -- the port can serve different GGUFs, so the label states the PATH, not a model.
-        let sys = format!(
+        // CALLER-SUPPLIED SYSTEM TEXT (G229). The platform applies the model's chat template, but only
+        // the caller knows what it just measured. Without this, a caller that grounds its prompt in live
+        // state had to bypass the kernel and hand-build a prompt against a raw port — which is exactly
+        // how the :8597 and Harmony/ChatML defects entered this platform. With it, Jarvis asks the kernel
+        // to think and the kernel decides which resident model does the thinking.
+        let caller_sys = parsed
+            .get("system")
+            .and_then(|s| s.as_str())
+            .unwrap_or("")
+            .trim()
+            .to_string();
+        let sys = if !caller_sys.is_empty() {
+            format!(
+                "{}\n\nYou are answering as {}, a member of the TRM Swarm council. Reply directly and \
+                 concisely, in at most 4 sentences, and never switch to an unrelated topic. \
+                 GROUNDING RULE: the figures, ports, builds and states above were just measured — use \
+                 them. If a figure, port, event or date is NOT stated above, say it is not measured \
+                 rather than inventing it. Never invent a version number or a cause.",
+                caller_sys, role
+            )
+        } else {
+            format!(
             "You are {}, a member of the TRM Swarm council. Reply to the operator directly and concisely, \
              in at most 4 sentences. Never switch to an unrelated topic. \
              HONESTY CONTRACT: if the question asserts an event, cause or history that may not have \
@@ -4882,7 +4903,8 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
              Mamba-3 SSM, the DDR scanner, the council and the kernel are documented — answer those \
              from what you know and never reply \"I cannot verify\" to them.",
             role
-        );
+            )
+        };
         let (agent_reply, model_trace, engine, tps) =
             match local_inference::chat_completion(Some(&sys), user_msg, local_inference::chat_max_tokens()) {
                 Some((raw, tps)) => {

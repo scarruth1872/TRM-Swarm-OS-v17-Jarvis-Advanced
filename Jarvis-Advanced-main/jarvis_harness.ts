@@ -35,7 +35,7 @@ import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
-import { resolveCodeUrl, resolveModelUrl } from "./model_targets";
+import { kernelChat, resolveCodeUrl, resolveModelUrl } from "./model_targets";
 
 export type JarvisMode = "chat" | "code";
 
@@ -569,21 +569,47 @@ export async function jarvisHarnessTurn(args: {
       ? "\n\nYou are in CODING mode: be technical, precise, and propose verified changes."
       : "");
 
-  const answerUrl = mode === "code" ? await resolveCodeUrl() : await resolveModelUrl();
-  const reply =
-    (await complete(
-      answerUrl,
-      transcriptToChatml(
-        system,
-        args.message,
-        toolOutput ? `\n\n(Use the tool result above, then answer the last request.)\n` : undefined,
-      ),
-      // 1600, not 400: the 400 cap truncated a podcast script mid-sentence at "Here's the full
-      // script:" (123 chars, measured in jarvis_chat_history.json).
-      { n_predict: 1600, temperature: 0.4 },
-    ))
-      .replace(/[\s\S]*?<\/think>/g, "")
-      .trim() || "Standing by, Boss.";
+  // P6 hybrid, chosen by the SRAM simulation (host_sramsim): ask the kernel to think first, because it
+  // runs the resident model through /v1/chat/completions and therefore applies THAT model's template —
+  // the ChatML/Harmony defect disappears, and Jarvis stops needing to know a model port. Fall back to
+  // the direct port when the kernel is unreachable, because the simulation's TCAM frontier showed the
+  // kernel-only policy failing in exactly that scenario while the hybrid still answers.
+  let reply = "";
+  let answerVia = "";
+  try {
+    const viaKernel = await kernelChat(system, args.message, "Jarvis");
+    if (viaKernel) {
+      reply = viaKernel;
+      answerVia = "kernel:/swarm/chat";
+    }
+  } catch {
+    /* treated as an unavailable kernel; the direct path below decides what to report */
+  }
+
+  if (!reply) {
+    const answerUrl = mode === "code" ? await resolveCodeUrl() : await resolveModelUrl();
+    reply =
+      (await complete(
+        answerUrl,
+        transcriptToChatml(
+          system,
+          args.message,
+          toolOutput ? `\n\n(Use the tool result above, then answer the last request.)\n` : undefined,
+        ),
+        // 1600, not 400: the 400 cap truncated a podcast script mid-sentence at "Here's the full
+        // script:" (123 chars, measured in jarvis_chat_history.json).
+        { n_predict: 1600, temperature: 0.4 },
+      ))
+        .replace(/[\s\S]*?<\/think>/g, "")
+        .trim();
+    answerVia = `direct:${answerUrl}`;
+  }
+
+  if (!reply) {
+    // Both paths dead. Say which two, rather than "Standing by" as if the platform were fine.
+    reply = `I could not reach a model: the kernel at ${process.env.JARVIS_KERNEL_URL || "http://127.0.0.1:8022"} did not answer and no local model answered on ${process.env.JARVIS_MODEL_PORTS || "8596,8597,8587"}.`;
+  }
+  console.log(`[Harness] answered via ${answerVia}`);
 
   return { reply, tool: tool === "none" ? undefined : tool, toolOutput, mode };
 }
