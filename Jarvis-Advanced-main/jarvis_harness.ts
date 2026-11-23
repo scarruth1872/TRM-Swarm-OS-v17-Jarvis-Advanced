@@ -137,7 +137,15 @@ async function complete(
   });
   if (!res.ok) throw new Error(`${url} -> HTTP ${res.status}`);
   const data: any = await res.json();
-  return String(data.content || "");
+  // Token cleanup, because which model is resident decides what comes back. An Instella/ChatML model
+  // returns plain text; the gpt-oss gate model on :8587 emits Harmony framing, so its reply arrives as
+  // "We have to answer: ... <|end|><|start|>assistant<|channel|>final<|message|>The actual answer".
+  // Keep the text, drop the control tokens and any analysis preamble before the final channel.
+  let text = String(data.content || "");
+  const finalChannel = text.lastIndexOf("<|message|>");
+  if (finalChannel !== -1) text = text.slice(finalChannel + "<|message|>".length);
+  text = text.replace(/<\|[^|>]*\|>/g, "").trim();
+  return text;
 }
 
 // Deterministic first pass. Measured alone on 12 fitted cases: 1.000; on 8 held-out cases
@@ -541,7 +549,7 @@ export async function jarvisHarnessTurn(args: {
     let health = "";
     try {
       const h = JSON.parse(hRaw);
-      health = `\nstatus: ${h.status}, kernel: ${h.kernel}, uptime_s: ${h.uptime_seconds}, mem_pct: ${h.memory_percent}`;
+      health = `\nstatus: ${h.status}, kernel: ${h.kernel}, uptime_s: ${h.uptime_seconds}, mem_pct: ${h.memory_percent}, tcp_port: 8022, build: ${h.build_commit}, python_active: ${h.python_active}`;
     } catch {
       health = "\n" + hRaw.slice(0, 400);
     }

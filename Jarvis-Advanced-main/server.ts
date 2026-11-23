@@ -19,6 +19,11 @@ import tls from "tls";
 import os from "os";
 import { jarvisHarnessTurn, type JarvisMode } from "./jarvis_harness";
 import { resolveModelUrl } from "./model_targets";
+import { createRequire } from "node:module";
+
+// In an ES module `require` is undefined. Only ioredis needs it (lazily, and only when REDIS_URL is
+// set), so create it once instead of crashing into a fallback that claims Redis was "bypassed".
+const nodeRequire = createRequire(import.meta.url);
 import http from "http";
 import net from "net";
 import vm from "vm";
@@ -823,7 +828,13 @@ async function microkernelGenerate(prompt: string, system?: string): Promise<str
   }
   if (!resp.ok) throw new Error(`local model ${modelUrl} -> HTTP ${resp.status}`);
   const data: any = await resp.json();
-  const raw: string = data.content || "";
+  let raw: string = data.content || "";
+  // The resident model decides the framing. gpt-oss (the :8587 gate model) emits Harmony channels, so
+  // the reply can arrive as "… <|start|>assistant<|channel|>final<|message|>answer". Keep the final
+  // channel's text and drop the control tokens before the usual think-tag strip.
+  const finalChannel = raw.lastIndexOf("<|message|>");
+  if (finalChannel !== -1) raw = raw.slice(finalChannel + "<|message|>".length);
+  raw = raw.replace(/<\|[^|>]*\|>/g, "");
   // qwen3 emits a stray closing think tag even under /no_think; strip the block if present.
   const answer = raw.replace(/[\s\S]*?<\/think>/g, "").trim() || raw.trim();
   if (!answer) throw new Error("local model returned an empty completion");
@@ -1057,7 +1068,7 @@ class RedisCacheManager {
   constructor() {
     if (process.env.REDIS_URL) {
       try {
-        const Redis = require("ioredis");
+        const Redis = nodeRequire("ioredis");
         this.client = new Redis(process.env.REDIS_URL);
         console.log("[Redis Cache] Connected to live Redis instance.");
       } catch (e) {
@@ -2322,6 +2333,42 @@ Return a strict JSON document with these exact keys and nothing else:
   }
 }
 
+// Signed UDP probe for a kernel-side jarvis_chat op. Dynamic import: this file is an ES module, so a
+// bare `require` is undefined at runtime even though it type-checks as a Node global.
+async function udpBridgeProbe(message: string, timeoutMs = 800): Promise<any> {
+  const dgram = await import("node:dgram");
+  const crypto = await import("node:crypto");
+  const window = Math.floor(Date.now() / 1000 / 300);
+  const taskId = "bridge-jarvis_chat";
+  const token = crypto
+    .createHmac("sha256", BRIDGE_SECRET)
+    .update(`kernel->resident:${taskId}:${window}`)
+    .digest("hex");
+  return await new Promise((resolve, reject) => {
+    const sock = dgram.createSocket("udp4");
+    const timer = setTimeout(() => {
+      try { sock.close(); } catch (e) {}
+      reject(new Error("bridge timeout"));
+    }, timeoutMs);
+    sock.on("error", (err) => {
+      clearTimeout(timer);
+      try { sock.close(); } catch (e) {}
+      reject(err); // WSAECONNRESET lands here when nothing listens on UDP 8022
+    });
+    sock.on("message", (msg) => {
+      clearTimeout(timer);
+      try { sock.close(); } catch (e) {}
+      try { resolve(JSON.parse(msg.toString("utf-8"))); } catch (e) { reject(e); }
+    });
+    sock.send(
+      Buffer.from(JSON.stringify({ op: "jarvis_chat", token, message: String(message).slice(0, 2000) })),
+      8022,
+      "127.0.0.1",
+      (err) => { if (err) { clearTimeout(timer); try { sock.close(); } catch (e) {} reject(err); } },
+    );
+  });
+}
+
 // Reusable cognitive Jarvis Agent logic
 async function runJarvisAgent(
   message: string,
@@ -2335,36 +2382,27 @@ async function runJarvisAgent(
   // ── NATIVE BRIDGE FIRST: sovereign Jarvis on-device, zero external LLM ──
   // Platform rule: no Gemini, no Ollama, no external APIs. The bridge runs
   // the real kernel intelligence (council + K3 + 584-twin + symbiosis).
-  try {
-    const dgram = require("dgram");
-    const crypto = require("crypto");
-    const SECRET = BRIDGE_SECRET;
-    const window = Math.floor(Date.now() / 1000 / 300);
-    const taskId = "bridge-jarvis_chat";
-    const token = crypto.createHmac("sha256", SECRET)
-      .update(`kernel->resident:${taskId}:${window}`).digest("hex");
-    const nativeReply = await new Promise((resolve, reject) => {
-      const sock = dgram.createSocket("udp4");
-      const timer = setTimeout(() => { try { sock.close(); } catch (e) {} reject(new Error("bridge timeout")); }, 3000);
-      sock.on("message", (msg) => {
-        clearTimeout(timer);
-        try { sock.close(); } catch (e) {}
-        try { resolve(JSON.parse(msg.toString("utf-8"))); } catch (e) { reject(e); }
-      });
-      sock.send(
-        Buffer.from(JSON.stringify({ op: "jarvis_chat", token, message: String(message).slice(0, 2000) })),
-        8022, "127.0.0.1", (err) => { if (err) { clearTimeout(timer); try { sock.close(); } catch (e) {} reject(err); } }
-      );
-    });
-    if (nativeReply && nativeReply.ok && nativeReply.reply) {
-      console.log("[Jarvis] Native bridge reply (sovereign, no external LLM)");
-      return { reply: nativeReply.reply };
+  // Opt-in only, and OFF by default. Two separate defects were hiding behind one log line here:
+  //   1. `require("dgram")` inside an ES module throws `require is not defined`, so this block never
+  //      ran and the log blamed a missing bridge rather than a broken import.
+  //   2. Fixing the import would not have helped: measured 2026-11-23, a UDP datagram to
+  //      127.0.0.1:8022 comes back WSAECONNRESET - nothing listens on UDP there. The kernel serves
+  //      TCP only (/health, /system/*, /council/*, /k3/*), and jarvis_harness already grounds every
+  //      prompt in those routes. The old 3000 ms wait therefore bought latency, not an answer.
+  // Kept behind JARVIS_NATIVE_UDP=1 for a kernel that grows a UDP op; 800 ms instead of 3000.
+  if (process.env.JARVIS_NATIVE_UDP === "1") {
+    try {
+      const nativeReply: any = await udpBridgeProbe(message);
+      if (nativeReply && nativeReply.ok && nativeReply.reply) {
+        console.log("[Jarvis] Native UDP bridge reply");
+        return { reply: nativeReply.reply };
+      }
+      if (nativeReply && nativeReply.error && nativeReply.error !== "timeout") {
+        console.warn("[Jarvis] Native UDP bridge error, continuing to grounded local model:", nativeReply.error);
+      }
+    } catch (nativeErr: any) {
+      console.warn("[Jarvis] Native UDP bridge unavailable, continuing to grounded local model:", nativeErr?.message);
     }
-    if (nativeReply && nativeReply.error && nativeReply.error !== "timeout") {
-      console.warn("[Jarvis] Native bridge error, continuing to legacy fallback:", nativeReply.error);
-    }
-  } catch (nativeErr) {
-    console.warn("[Jarvis] Native bridge unavailable — legacy fallback:", nativeErr.message);
   }
   // 1. Fetch cognitive data + fire Bonsai triage concurrently (zero user latency)
   const [core, episodic, graph, skills] = await Promise.all([

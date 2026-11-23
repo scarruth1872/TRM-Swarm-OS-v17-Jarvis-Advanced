@@ -78,11 +78,12 @@ function Invoke-Guard {
     $proxyUp    = Test-Port '127.0.0.1' 3001
     $cpBridgeUp = Test-Port '127.0.0.1' 3002
     $jarvisUp   = Test-Port '127.0.0.1' 3000
+    $lcarsUp    = Test-Port '127.0.0.1' 5183
     $tailKernel = if ($hasBridge) { Test-Port $tailnet 8022 } else { $true }
     $tailRelay  = if ($hasBridge) { Test-Port $tailnet 3001 } else { $true }
 
-    if ($kernelUp -and $proxyUp -and $cpBridgeUp -and $jarvisUp -and $tailKernel -and $tailRelay) {
-        Write-Output 'ALL LISTENING (8022,3000,3001,3002 + tailnet 8022,3001)'
+    if ($kernelUp -and $proxyUp -and $cpBridgeUp -and $jarvisUp -and $lcarsUp -and $tailKernel -and $tailRelay) {
+        Write-Output 'ALL LISTENING (8022,3000,3001,3002,5183 + tailnet 8022,3001)'
         return 0
     }
 
@@ -164,6 +165,20 @@ function Invoke-Guard {
             } else { Write-Output "JARVIS SKIPPED: $jarvisBat missing" }
         }
     } else { Write-Output 'JARVIS ALIVE (port answering)' }
+
+    # --- LCARS dashboard :5183 (vite dev server) ---
+    # The kernel's health matrix reports this as its ONLY anomaly ("LCARS dashboard unreachable on port
+    # 5183") because nothing ever started it. Supervised here so the platform stops reporting a defect
+    # that is really an unsupervised process.
+    if (-not $lcarsUp) {
+        $dashBat = Join-Path $repo 'tools\start_dashboard_5183.bat'
+        if (Test-Path $dashBat) {
+            try {
+                Start-Process -FilePath 'cmd.exe' -ArgumentList ('/c "' + $dashBat + '"') -WindowStyle Hidden | Out-Null
+                Write-Output 'LCARS DASHBOARD STARTED (:5183)'
+            } catch { Write-Output ('LCARS START FAILED: ' + $_.Exception.Message) }
+        } else { Write-Output "LCARS SKIPPED: $dashBat missing" }
+    } else { Write-Output 'LCARS ALIVE (port answering)' }
 
     # --- kernel ---
     if ($kernelUp) { Write-Output 'ALIVE (port answering)'; return 0 }
