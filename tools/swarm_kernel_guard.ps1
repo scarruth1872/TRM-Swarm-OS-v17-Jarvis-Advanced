@@ -77,11 +77,12 @@ function Invoke-Guard {
     $kernelUp   = Test-Port '127.0.0.1' 8022
     $proxyUp    = Test-Port '127.0.0.1' 3001
     $cpBridgeUp = Test-Port '127.0.0.1' 3002
+    $jarvisUp   = Test-Port '127.0.0.1' 3000
     $tailKernel = if ($hasBridge) { Test-Port $tailnet 8022 } else { $true }
     $tailRelay  = if ($hasBridge) { Test-Port $tailnet 3001 } else { $true }
 
-    if ($kernelUp -and $proxyUp -and $cpBridgeUp -and $tailKernel -and $tailRelay) {
-        Write-Output 'ALL LISTENING (8022,3001,3002 + tailnet 8022,3001)'
+    if ($kernelUp -and $proxyUp -and $cpBridgeUp -and $jarvisUp -and $tailKernel -and $tailRelay) {
+        Write-Output 'ALL LISTENING (8022,3000,3001,3002 + tailnet 8022,3001)'
         return 0
     }
 
@@ -145,6 +146,24 @@ function Invoke-Guard {
             else { Write-Output ("COMPANION ALIVE pid=" + $cp[0].Id) }
         }
     } else { Write-Output 'COMPANION BRIDGE ALIVE (port answering)' }
+
+    # --- Jarvis :3000 (UI + /api + kernel-grounded chat) ---
+    # Supervised because it was NOT: when the Node server died it stayed dead until someone noticed,
+    # while every other listener here self-healed. Started from a .bat, never from an inline command
+    # whose arguments contain 'server.ts' — a pattern like that also matches the shell running it.
+    if (-not $jarvisUp) {
+        if (Test-Port '127.0.0.1' 3000) {
+            Write-Output 'JARVIS ALIVE (port answering)'
+        } else {
+            $jarvisBat = Join-Path $repo 'tools\start_jarvis_3000.bat'
+            if (Test-Path $jarvisBat) {
+                try {
+                    Start-Process -FilePath 'cmd.exe' -ArgumentList ('/c "' + $jarvisBat + '"') -WindowStyle Hidden | Out-Null
+                    Write-Output 'JARVIS STARTED (:3000)'
+                } catch { Write-Output ('JARVIS START FAILED: ' + $_.Exception.Message) }
+            } else { Write-Output "JARVIS SKIPPED: $jarvisBat missing" }
+        }
+    } else { Write-Output 'JARVIS ALIVE (port answering)' }
 
     # --- kernel ---
     if ($kernelUp) { Write-Output 'ALIVE (port answering)'; return 0 }

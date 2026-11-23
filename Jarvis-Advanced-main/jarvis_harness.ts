@@ -35,11 +35,13 @@ import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import { resolveCodeUrl, resolveModelUrl } from "./model_targets";
 
 export type JarvisMode = "chat" | "code";
 
-const CHAT_URL = process.env.JARVIS_MODEL_URL || "http://127.0.0.1:8597";
-const CODE_URL = process.env.JARVIS_CODE_URL || "http://127.0.0.1:8595";
+// Was two hardcoded ports (:8597 chat, :8595 code). Which model is live depends on the resident
+// tier — see model_targets.ts — so the URL is resolved per call and re-probed on failure, instead of
+// failing forever against a port that happens to be empty.
 const K3_URL = process.env.JARVIS_K3_URL || "http://127.0.0.1:8022";
 const REPO_ROOT = process.env.JARVIS_REPO_ROOT || process.cwd();
 const KERNEL_UI = process.env.JARVIS_KERNEL_UI || "http://127.0.0.1:5184";
@@ -200,7 +202,7 @@ export async function decideTool(fullPrompt: string): Promise<{ tool: ToolName; 
     "classify_risk: judge safety or danger. none: answer from your own knowledge.";
   let raw = "";
   try {
-    raw = await complete(CHAT_URL, chatml(system, message, "/no_think\n"), {
+    raw = await complete(await resolveModelUrl(), chatml(system, message, "/no_think\n"), {
       n_predict: 30,
       temperature: 0,
       grammar: decisionGrammar(),
@@ -415,7 +417,7 @@ export async function writeCode(brief: string, mode: JarvisMode): Promise<string
     "no markdown fences. Use print() for results. Standard library only.";
   // /no_think is mandatory here: without it qwen3 writes its reasoning out first and the harness
   // ran that prose as Python ("SyntaxError: unterminated string literal" on line 2).
-  const raw = await complete(CODE_URL, chatml(system, brief, "/no_think\n"), {
+  const raw = await complete(await resolveCodeUrl(), chatml(system, brief, "/no_think\n"), {
     n_predict: 900,
     temperature: 0,
     // NOT "```": the model usually opens with a fence, so stopping on it truncated the program
@@ -456,7 +458,8 @@ export async function jarvisHarnessTurn(args: {
 
   if (tool === "switch_model") {
     mode = /code|coding|debug|compile|refactor/i.test(brief + " " + request) ? "code" : "chat";
-    toolOutput = `mode switched to ${mode} (${mode === "code" ? CODE_URL : CHAT_URL})`;
+    const switchedTo = mode === "code" ? await resolveCodeUrl() : await resolveModelUrl();
+    toolOutput = `mode switched to ${mode} (${switchedTo})`;
   } else if (tool === "python_repl") {
     const code = await writeCode(brief || request, mode);
     const out = await runPython(code);
@@ -558,7 +561,7 @@ export async function jarvisHarnessTurn(args: {
       ? "\n\nYou are in CODING mode: be technical, precise, and propose verified changes."
       : "");
 
-  const answerUrl = mode === "code" ? CODE_URL : CHAT_URL;
+  const answerUrl = mode === "code" ? await resolveCodeUrl() : await resolveModelUrl();
   const reply =
     (await complete(
       answerUrl,

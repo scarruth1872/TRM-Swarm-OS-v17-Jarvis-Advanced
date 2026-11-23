@@ -16,7 +16,9 @@ export default defineConfig(() => {
         '/api': {
           // 127.0.0.1, not "localhost": Node resolves localhost to ::1 first on this host, but
           // the backend binds IPv4, so every proxied call failed with ECONNREFUSED -> HTTP 500.
-          target: 'http://127.0.0.1:8021',
+          // Jarvis's own server (server.ts) serves the /api routes; 8021 was the retired Python
+          // proxy, so every dev-UI call 500'd while the kernel and Jarvis were both healthy.
+          target: 'http://127.0.0.1:3000',
           changeOrigin: true,
           // NO rewrite: server.ts registers its routes WITH the /api prefix (/api/chat,
           // /api/memory, ...). Stripping it here turned every UI call into a 404 on :8021 --

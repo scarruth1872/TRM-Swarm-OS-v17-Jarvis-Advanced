@@ -18,6 +18,7 @@ import dns from "dns/promises";
 import tls from "tls";
 import os from "os";
 import { jarvisHarnessTurn, type JarvisMode } from "./jarvis_harness";
+import { resolveModelUrl } from "./model_targets";
 import http from "http";
 import net from "net";
 import vm from "vm";
@@ -752,7 +753,19 @@ function turbovecSearch(queryVector: number[], items: any[]): Promise<any[]> {
 //      reachable: jarvis_inference_server.py on :5115 is down and, when up, loads through
 //      transformers with a DirectML/CPU fallback.
 // Now: one shape, one local GPU model, no cloud, no Ollama.
-const JARVIS_MODEL_URL = process.env.JARVIS_MODEL_URL || "http://127.0.0.1:8597";
+//
+// Which port that model is on is a RUNTIME fact, not a constant: tools/model_tiers.ps1 swaps between
+// the veto model on 8587 and the analysis model on 8596, and start_model.bat brings others up on
+// demand. This used to be a fixed `|| "http://127.0.0.1:8597"`, so chat failed with
+// `ECONNREFUSED 127.0.0.1:8597` whenever that exact port was not the one running (measured: 16
+// occurrences in logs/jarvis_3000.log on 2026-11-23, with 8587 serving the whole time).
+//
+// So: resolve the live port. JARVIS_MODEL_URL still wins outright when set; otherwise probe the known
+// tiers in order and cache the first that answers /health. A failed call re-probes, so a model swap
+// mid-session recovers without restarting Jarvis.
+// The model URL is resolved at call time by ./model_targets (see the comment above): the live port
+// depends on which tier is resident, and a fixed default made Jarvis report a model outage
+// while the model was up on another port.
 
 // Sticky across turns: once the harness switches to the coding model, it stays there until a
 // request routes back. Single-user desktop, so one module-level value is the right scope.
@@ -786,17 +799,29 @@ async function microkernelGenerate(prompt: string, system?: string): Promise<str
   const chatml =
     `${S}system\n${sysClip}` +
     `${E}\n${S}user\n${userClip}${E}\n${S}assistant\n/no_think\n`;
-  const resp = await fetch(`${JARVIS_MODEL_URL}/completion`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      prompt: chatml,
-      n_predict: JARVIS_MODEL_NPREDICT,
-      temperature: 0.7,
-      stop: [E],
-    }),
+  const payload = JSON.stringify({
+    prompt: chatml,
+    n_predict: JARVIS_MODEL_NPREDICT,
+    temperature: 0.7,
+    stop: [E],
   });
-  if (!resp.ok) throw new Error(`local model ${JARVIS_MODEL_URL} -> HTTP ${resp.status}`);
+  const post = (url: string) =>
+    fetch(`${url}/completion`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: payload,
+    });
+  let modelUrl = await resolveModelUrl();
+  let resp: Response;
+  try {
+    resp = await post(modelUrl);
+  } catch (err) {
+    // The model was stopped or swapped between calls — re-probe once, then fail with the real port
+    // named instead of the port this file happened to be compiled with.
+    modelUrl = await resolveModelUrl(true);
+    resp = await post(modelUrl);
+  }
+  if (!resp.ok) throw new Error(`local model ${modelUrl} -> HTTP ${resp.status}`);
   const data: any = await resp.json();
   const raw: string = data.content || "";
   // qwen3 emits a stray closing think tag even under /no_think; strip the block if present.
@@ -2004,7 +2029,9 @@ app.get("/api/status", async (req, res) => {
   const cpuVal = getCpuUsage();
 
   const dependencies = await Promise.all([
-    probeTcp("127.0.0.1", Number(process.env.JARVIS_UPSTREAM_PORT) || 8021),
+    // 8022 is the native kernel. 8021 was the retired Python proxy and defaulting to it made the
+    // upstream probe report the platform DOWN while the kernel was answering.
+    probeTcp("127.0.0.1", Number(process.env.JARVIS_UPSTREAM_PORT) || 8022),
   ]);
 
   res.status(200).json({
