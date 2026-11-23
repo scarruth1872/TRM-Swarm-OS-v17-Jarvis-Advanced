@@ -27,9 +27,12 @@ fn main() {
     //      string now carries `+dirty` whenever tracked files differ from HEAD.
     let sha = git(&["rev-parse", "--short", "HEAD"]).unwrap_or_else(|| "unknown".to_string());
 
-    // Tracked modifications only: an untracked scratch file does not change the compiled source, an
-    // edited .rs file does.
-    let dirty = git(&["status", "--porcelain", "--untracked-files=no"])
+    // Tracked modifications only, and ONLY inside this crate. An untracked scratch file does not change
+    // the compiled source; an edited .rs file does. Repo-wide would be wrong in the other direction:
+    // unrelated edits elsewhere (the federation registry, a submodule pointer) do not change this
+    // binary, and a flag that fires for them is a flag people learn to ignore — which would defeat the
+    // whole point of the label. `-- .` runs from Cargo's package root, so it means exactly "this crate".
+    let dirty = git(&["status", "--porcelain", "--untracked-files=no", "--", "."])
         .map(|s| !s.is_empty())
         .unwrap_or(false);
     let label = if dirty { format!("{sha}+dirty") } else { sha.clone() };
