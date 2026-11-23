@@ -2446,7 +2446,23 @@ fn build_proposal(
     }
     // The citation is also recorded on the proposal itself, so a reader can tell a verdict that leaned on
     // self-measurement from one that did not.
-    let mut evidence_cited = evidence.clone();
+    //
+    // MEASURED 2026-11-22: this recorded the `evidence` PARAMETER — pre-fetched text handed in by a
+    // delegating caller, which is EMPTY for an HTTP POST /council/propose. So a proposal that deliberated
+    // on two retrieved documents reported `phoenix_evidence: []` and `evidence_used: 2` at the same time,
+    // while agents quoted those documents in their WHY lines. A verdict that cannot name what it read is
+    // not auditable, so record the lines the agents were actually shown.
+    let mut evidence_cited: Vec<String> = evidence_block
+        .lines()
+        .filter(|l| l.trim_start().starts_with('['))
+        .map(|l| l.trim().chars().take(160).collect::<String>())
+        .collect();
+    // Keep the caller's pre-fetched paths too, when one was supplied.
+    for e in evidence.iter() {
+        if !evidence_cited.iter().any(|c| c.contains(e.as_str())) {
+            evidence_cited.push(e.clone());
+        }
+    }
     if let Some(line) = &cadence_line {
         evidence_cited.push(line.clone());
     }
@@ -2530,7 +2546,10 @@ fn build_proposal(
     let k3 = k3_logic::k3_consensus(&trits);
     let consensus_reached = consensus_for(&rule, approve_count);
 
-    let has_evidence = !evidence.is_empty();
+    // Was the verdict reached WITH documents? Read the block the agents saw, not the caller's parameter:
+    // the parameter is empty on an HTTP propose, so this used to mark every such verdict as reached
+    // without evidence and cap it at CONSENSUS even when two documents were quoted in the WHY lines.
+    let has_evidence = evidence_sources > 0 || !evidence.is_empty();
     let (phoenix_status, phase) = match k3_verdict(&rule, &k3, approve_count, reject_count) {
         "REJECTED" => ("SPEC".to_string(), "REJECTED".to_string()),
         // Never auto-enact a removal of a safety-critical component. A human must
@@ -3742,7 +3761,12 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                     "deliberations": p.deliberations,
                     "votes": p.votes,
                     "phoenix_status": p.phoenix_status,
-                    "phoenix_evidence": p.phoenix_evidence
+                    "phoenix_evidence": p.phoenix_evidence,
+                    // Audit fields: how many documents were shown, where the votes came from, and the
+                    // operator's exact words. A record that cannot answer those three is not auditable.
+                    "evidence_used": p.evidence_used,
+                    "deliberation_mode": p.deliberation_mode,
+                    "raw_topic": p.raw_topic
                 });
             } else {
                 status_code = 404;
