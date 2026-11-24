@@ -120,12 +120,26 @@ def rule_for(title: str):
             return status == "ok", f"job {name!r} last_status = {status}"
         return f"cron:{name}", check
 
+    if t.startswith("PBFT quorum arithmetically unreachable"):
+        def check(state):
+            bq = (state.get("nodes") or {}).get("byzantine_quorum")
+            if not isinstance(bq, dict) or "quorum_reachable" not in bq:
+                return False, "unmeasured: /council/federation/nodes returned no byzantine_quorum"
+            ok = bq.get("quorum_reachable") is True
+            return ok, f"/council/federation/nodes quorum_reachable = {ok} (threshold={bq.get('threshold')})"
+        return "pbft_quorum", check
+
     return None, None
 
 
 def gather() -> dict:
     state: dict = {}
-    for key, path in (("hm", "/system/health_matrix"), ("ddr", "/ddr/stats"), ("fed", "/federation/stats")):
+    for key, path in (
+        ("hm", "/system/health_matrix"),
+        ("ddr", "/ddr/stats"),
+        ("fed", "/federation/stats"),
+        ("nodes", "/council/federation/nodes"),
+    ):
         try:
             state[key] = get(path)
         except (urllib.error.URLError, urllib.error.HTTPError, OSError, ValueError):
@@ -156,6 +170,8 @@ def self_test() -> int:
         ("Cron job failing: X — boom", {"jobs": [{"name": "X", "last_status": "error"}]}, False),
         ("Anomaly: svc — x", {"hm": {}}, False),  # absent data must NOT close
         ("DDR scanner armed but has performed 0 scans", {"ddr": {}}, False),
+        ("PBFT quorum arithmetically unreachable: threshold 67", {"nodes": {"byzantine_quorum": {"quorum_reachable": True, "threshold": 3}}}, True),
+        ("PBFT quorum arithmetically unreachable: threshold 67", {"nodes": {"byzantine_quorum": {"quorum_reachable": False, "threshold": 4}}}, False),
     ]
     failures = 0
     for title, state, want in cases:

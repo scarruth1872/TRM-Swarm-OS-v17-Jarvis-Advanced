@@ -1,0 +1,33 @@
+{
+  "task_id": "TASK-USR-0017",
+  "timestamp_utc": "2026-11-24T01:37:51.320213+00:00",
+  "monad_anchor": "0x4D4F4E4144000001",
+  "audit_source": "wetlab_provenance_audit.json",
+  "approved_for_dispatch": [
+    {
+      "compound": "TRM-ABX-219",
+      "sha256_lock": "b558c3470c2b56eed0804578fcda19356d6f00a843a8069ee017e89e2709a5da",
+      "eskape_kd_nm_range": [
+        14.2,
+        65.0
+      ],
+      "note": "Reconciled against eskape_spectrum_full.json (summary previously cited subset [14.2, 28.0])"
+    },
+    {
+      "compound": "TRM-ABX-082",
+      "sha256_lock": "4a038fad7847b9ffcec93ba8d39ea2d452977bbdb1e5f6f6f9ce7745387cd501",
+      "eskape_kd_nm_range": [
+        18.7,
+        85.0
+      ],
+      "note": "Reconciled against eskape_spectrum_full.json (summary previously cited subset [18.7, 29.8])"
+    }
+  ],
+  "quarantined_withheld": [
+    {
+      "compound": "TRM-ABX-220",
+      "status": "REVISED_UNRESOLVED_PENDING_STRUCTURE_AND_EXPERIMENT",
+      "reason": "No SMILES structure on record; recalibration ledger ~50x inconsistent with ESKAPE table; withheld from wet-lab dispatch"
+    }
+  ]
+}
