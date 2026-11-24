@@ -135,3 +135,45 @@ A repo-wide grep re-run confirmed two details the first pass stated too narrowly
   than on honesty.
 - **Ionosphere (`MUF`/`OWF`/`skywave`) returned zero hits** outside tier-description strings — card 09 has
   no implementation, confirmed rather than assumed.
+
+---
+
+# ERRATUM — `TASK-USR-0018` was wrong, and the reason matters
+
+`TASK-USR-0018` said *"Council cannot enact: proposal 1439 sits at deliberation_mode=pending with 0 votes
+after being accepted"*. **That claim was false.** Re-measured:
+
+```
+proposal 1439  phase=REJECTED  deliberation_mode=ssm+llm:8587
+               approve 3 / abstain 5 / reject 6   weighted -0.1486
+               deliberations 14  votes 14  evidence_used 2
+proposal 1440  completed in 38.1 s   approve 3 / abstain 4 / reject 7   weighted -0.2057
+```
+
+The council deliberates. The "0 votes" reading was taken **6 seconds** into a deliberation that takes
+**38.1 s** with 14 agents at concurrency 4 against `:8587`. The card is closed as **REFUTED, not fixed** —
+the record is corrected here rather than deleted.
+
+## The real defect the misreading exposed
+
+The propose response published `"poll": "/council/proposals"` — the **list**, not `/council/proposal/{id}`.
+A caller following it can never see its own proposal's progress, and `EVALUATING` + `deliberation_mode:
+pending` with no stated expectation reads naturally as "stuck". My own reading is the proof that this
+misleads. Fixed in `main.rs`:
+
+```
+"poll": format!("/council/proposal/{}", id),
+"deliberation_expected_seconds": 40,
+"deliberation_note": "EVALUATING + deliberation_mode=pending are the normal transient state;
+                      measured completion at 38.1 s for 14 agents. A reading taken before that is not a verdict."
+```
+
+Verified live on a fresh proposal: `id 2520 | poll /council/proposal/2520 | expected_s 40`.
+
+# Card 06 — the AMR node now measures
+
+`GET /amr/deployment` (new, `src/amr_surveillance.rs`) replaces the scratch module that emitted authored
+strings. Measured on this host: `verdict REFUTED | passed 0 | refuted 3 | undetermined 2`, with arch
+`x86_64` / 24 cores, **7** serialisers in `tools/`, sha256 `062b0cf3449094a6…` of the ESKAPE file (3 of 7
+named genes present), and a 0.244 ms real ingest. REFUTED is the correct verdict: the deployment target is
+aarch64. Details in `docs/AMR-SURVEILLANCE.md`.

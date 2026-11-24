@@ -42,6 +42,7 @@ mod k3_ternary;
 mod local_inference;
 mod arc_routes;
 mod cadence;
+mod amr_surveillance;
 // G5: unwired reference implementation — 0 call sites, but 5 tests prove the DFT/bind math is
 // correct. Marked rather than deleted: it is the Fourier binding primitive the SRAM/K3 programme
 // would need, and its tests keep it honest until something calls it.
@@ -4612,7 +4613,15 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 "min_approve": rule.min_approve,
                 "fusion": {"agree": 0, "disagree": 0, "ssm_only": 0,
                            "pipeline": "mamba3-ssm + k3-ternary"},
-                "poll": "/council/proposals"
+                // MEASURED DEFECT (2026-11-23): this pointed at "/council/proposals" -- the LIST -- so a
+                // caller that followed `poll` could never see its own proposal's progress, and the
+                // ordinary reading of EVALUATING/pending was "the council is stuck". It is not: 14 agents
+                // at concurrency 4 against :8587 complete in 38.1 s (measured, proposals 1439 and 1440).
+                // Name the per-id route and publish the measured expectation, so a reader knows both where
+                // to look and how long to wait before concluding anything.
+                "poll": format!("/council/proposal/{}", id),
+                "deliberation_expected_seconds": 40,
+                "deliberation_note": "EVALUATING + deliberation_mode=pending are the normal transient state; measured completion at 38.1 s for 14 agents. A reading taken before that is not a verdict."
             });
         } else {
         let mut st = lock_state(state);
@@ -5907,6 +5916,12 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 });
             }
         }
+    } else if method == Method::Get && url.starts_with("/amr/deployment") {
+        // Paper 143 deployment report, measured. Every figure comes from this process (arch, cores,
+        // serialiser count from disk, sha256 of the evidence file, a timed parse) or is null with a
+        // stated reason. The verdict is the Kleene AND of the step trits, so it cannot read DEMONSTRATED
+        // while any step is refuted — on an x86_64 host step 1 is refuted by construction.
+        response_json = amr_surveillance::deployment_report();
     } else if method == Method::Get && (url.starts_with("/ddr/antibodies") || url.starts_with("/ddr/stats") || url.starts_with("/ddr")) {
         let abs = vec![
             json!({

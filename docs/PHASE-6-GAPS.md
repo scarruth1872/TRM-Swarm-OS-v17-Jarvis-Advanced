@@ -8631,60 +8631,143 @@ Plus one code defect: the loader block landed above the `path` resolution and di
 **21.56 M claimed, 4.41 M real across the same ten shards.** With the six pre-existing real shards
 (ChEMBL 2,897,805; ARC 291,778; SMPDB 147,932; ChEMBL-real 44,401; kanban 4,135; LpxC 406) the corpus stands at
 **7,793,536 records in 16 shards**, every one verified `exact: true` by a process other than the one that built it.
-Measured ledger: `data/corpus_ledger_measured.json`.
-
-## G216 — Bonsai 27B cannot be served by llama.cpp: the ternary GGUFs are structurally unservable
-
-**Asked:** "bring bonsai 8587".
-
-**Done:** built `llama.cpp` from `F:/Development sites/ub3/llama.cpp` (the tree that defines
-`GGML_TYPE_Q1_0 = 41` and `GGML_TYPE_Q2_0 = 42`, with `quantize_row_q*_0` / `dequantize_row_q*_0` kernels) —
-VS2019 + Ninja + Vulkan SDK 1.4.363.1, `BUILD_OK`, 776 build steps, output in `build-win/bin`.
-The rebuilt loader then prints `type q1_0: 498 tensors` and `type q2_0: 151 tensors`: the types **are** recognised.
-
-**Result: still garbage**, and identical garbage, in every configuration tried — old binary and new, Vulkan
-`-ngl 99` and CPU `-ngl 0`, 27B Q1_0 blob and E:'s Q2_0 27B/9B/2B. Qwen IQ2_M on the same binary answers
-coherently, so the runtime, the GPU and the sampler are not at fault.
-
-**Controls that cleared the file and the kernels:**
-- blob sha256 recomputed = **matches its own Ollama blob name** (3,803,452,480 B) — not corrupt;
-- type-41 blocks hand-decoded: per-block scales 0.0065–0.0123 (mean 0.0094), all finite, none zero, 49.2% one-bits
-  — a structurally valid Q1_0 payload, not misaligned;
-- `test-quantize-fns.exe`: `q1_0` and `q2_0` round-trip **pass, 0 failures** — llama.cpp's kernels are self-consistent.
-
-**What the tensor census actually shows** (the reason it can never work):
-
-| tensor | 27B blob | 2B Q2_0 |
-|---|---|---|
-| `token_embd.weight` | **Q1_0** (5120×248,320) | **Q2_0** (2048×248,320) |
-| `output.weight` (LM head) | **Q1_0** (5120×248,320) | tied / absent |
-| `blk.0.ssm_alpha` / `ssm_beta` | **Q1_0** | F32 (kept) |
-| `blk.0.ssm_a` | F32 | F32 |
-
-The embedding table and the LM head are ternarised. An embedding layer at 1 bit per weight maps 248,320 tokens
-onto a degenerate set of ternary patterns; no downstream layer can recover token identity from that. The output is
-not "poor quality", it is noise drawn from a near-uniform distribution — exactly what the samples show.
-
-**Correction:** an earlier sample in this session reported a *coherent* CPU generation from the blob at 4.30 tok/s.
-It could not be reproduced in six subsequent attempts and is **withdrawn**. One unrepeatable sample is not a
-capability, and reporting it as one was wrong.
-
-**Also measured, `E:\Hugginface models` (34.9 GB, 6 GGUFs) — only one is usable:**
-
-| file | custom tensors | verdict |
-|---|---|---|
-| `Qwen3.8-27B-TurboFCFusion…IQ2_M.gguf` (10.87 GiB) | **none** — IQ2_S 408, F32 353, Q4_K 64, IQ3_S 25 | **usable**, coherent at 3.29 tok/s on Vulkan |
-| `Ternary-Bonsai-2-27B-PTQ1_0.gguf` | 402 × **type 143** | unreadable — 143 is outside the fork's enum (ends at 42) |
-| `Ternary-Bonsai-2-27B-Q2_0.gguf` | 402 × type 42 | garbage |
-| `Ternary-Bonsai-2-9B-Q2_0.gguf` | 202 × type 42 | garbage |
-| `Ternary-Bonsai-2-2B-Q2_0.gguf` | 151 × type 42 | garbage (157 tok/s) |
-
-Scan: `data/e_drive_models_scan.json`; full evidence: `data/bonsai_runtime_findings.json`.
-
-**Open question, not resolved:** `test-quantize-fns` proves llama.cpp agrees with *itself*. It does not prove the
-fork's Q1_0/Q2_0 block layout equals the layout the external writer used (`tools/turbovec_gguf_apply.py` packs
-trits `c0 + c1*4 + c2*16 + c3*64` with a **per-tensor** alpha kept in the ledger, not a per-block half scale).
-A writer/reader codec mismatch is therefore **not excluded** by that test, and is the cheapest remaining thing to
-check before concluding the 1.58-bit recipe itself destroyed these models.
-
-**State:** nothing is served on `:8587`; no file under `E:` was modified; `:8593` embeddings untouched and healthy.
+Measured ledger: `data/corpus_ledger_measured.json`.
+
+
+
+## G216 — Bonsai 27B cannot be served by llama.cpp: the ternary GGUFs are structurally unservable
+
+
+
+**Asked:** "bring bonsai 8587".
+
+
+
+**Done:** built `llama.cpp` from `F:/Development sites/ub3/llama.cpp` (the tree that defines
+
+`GGML_TYPE_Q1_0 = 41` and `GGML_TYPE_Q2_0 = 42`, with `quantize_row_q*_0` / `dequantize_row_q*_0` kernels) —
+
+VS2019 + Ninja + Vulkan SDK 1.4.363.1, `BUILD_OK`, 776 build steps, output in `build-win/bin`.
+
+The rebuilt loader then prints `type q1_0: 498 tensors` and `type q2_0: 151 tensors`: the types **are** recognised.
+
+
+
+**Result: still garbage**, and identical garbage, in every configuration tried — old binary and new, Vulkan
+
+`-ngl 99` and CPU `-ngl 0`, 27B Q1_0 blob and E:'s Q2_0 27B/9B/2B. Qwen IQ2_M on the same binary answers
+
+coherently, so the runtime, the GPU and the sampler are not at fault.
+
+
+
+**Controls that cleared the file and the kernels:**
+
+- blob sha256 recomputed = **matches its own Ollama blob name** (3,803,452,480 B) — not corrupt;
+
+- type-41 blocks hand-decoded: per-block scales 0.0065–0.0123 (mean 0.0094), all finite, none zero, 49.2% one-bits
+
+  — a structurally valid Q1_0 payload, not misaligned;
+
+- `test-quantize-fns.exe`: `q1_0` and `q2_0` round-trip **pass, 0 failures** — llama.cpp's kernels are self-consistent.
+
+
+
+**What the tensor census actually shows** (the reason it can never work):
+
+
+
+| tensor | 27B blob | 2B Q2_0 |
+
+|---|---|---|
+
+| `token_embd.weight` | **Q1_0** (5120×248,320) | **Q2_0** (2048×248,320) |
+
+| `output.weight` (LM head) | **Q1_0** (5120×248,320) | tied / absent |
+
+| `blk.0.ssm_alpha` / `ssm_beta` | **Q1_0** | F32 (kept) |
+
+| `blk.0.ssm_a` | F32 | F32 |
+
+
+
+The embedding table and the LM head are ternarised. An embedding layer at 1 bit per weight maps 248,320 tokens
+
+onto a degenerate set of ternary patterns; no downstream layer can recover token identity from that. The output is
+
+not "poor quality", it is noise drawn from a near-uniform distribution — exactly what the samples show.
+
+
+
+**Correction:** an earlier sample in this session reported a *coherent* CPU generation from the blob at 4.30 tok/s.
+
+It could not be reproduced in six subsequent attempts and is **withdrawn**. One unrepeatable sample is not a
+
+capability, and reporting it as one was wrong.
+
+
+
+**Also measured, `E:\Hugginface models` (34.9 GB, 6 GGUFs) — only one is usable:**
+
+
+
+| file | custom tensors | verdict |
+
+|---|---|---|
+
+| `Qwen3.8-27B-TurboFCFusion…IQ2_M.gguf` (10.87 GiB) | **none** — IQ2_S 408, F32 353, Q4_K 64, IQ3_S 25 | **usable**, coherent at 3.29 tok/s on Vulkan |
+
+| `Ternary-Bonsai-2-27B-PTQ1_0.gguf` | 402 × **type 143** | unreadable — 143 is outside the fork's enum (ends at 42) |
+
+| `Ternary-Bonsai-2-27B-Q2_0.gguf` | 402 × type 42 | garbage |
+
+| `Ternary-Bonsai-2-9B-Q2_0.gguf` | 202 × type 42 | garbage |
+
+| `Ternary-Bonsai-2-2B-Q2_0.gguf` | 151 × type 42 | garbage (157 tok/s) |
+
+
+
+Scan: `data/e_drive_models_scan.json`; full evidence: `data/bonsai_runtime_findings.json`.
+
+
+
+**Open question, not resolved:** `test-quantize-fns` proves llama.cpp agrees with *itself*. It does not prove the
+
+fork's Q1_0/Q2_0 block layout equals the layout the external writer used (`tools/turbovec_gguf_apply.py` packs
+
+trits `c0 + c1*4 + c2*16 + c3*64` with a **per-tensor** alpha kept in the ledger, not a per-block half scale).
+
+A writer/reader codec mismatch is therefore **not excluded** by that test, and is the cheapest remaining thing to
+
+check before concluding the 1.58-bit recipe itself destroyed these models.
+
+
+
+**State:** nothing is served on `:8587`; no file under `E:` was modified; `:8593` embeddings untouched and healthy.
+
+
+
+## G237 — the council was never stuck, and the AMR node now measures
+
+**Council.** `TASK-USR-0018` claimed a proposal sat at `pending` with 0 votes. It was measured 6 s into a
+deliberation that completes in **38.1 s** (proposals 1439 `REJECTED` 3/5/6 with 14 votes; 1440 timed at
+38.1 s, 3/4/7). The council works; the *reporting* was broken: `POST /council/propose` published
+`"poll": "/council/proposals"` — the list, not `/council/proposal/{id}` — so a caller could never follow its
+own proposal, and nothing stated that the transient state lasts ~40 s. Now the response names the per-id
+route, `deliberation_expected_seconds: 40` and a note saying a reading taken earlier is not a verdict.
+Verified live: `id 2520 | poll /council/proposal/2520 | expected_s 40`.
+
+**AMR node.** New `src/amr_surveillance.rs` + `GET /amr/deployment` replace
+`scratch/kernel194/src/hospital_amr_surveillance_node.rs`, whose five steps carried authored metrics
+("0.42 ms", "14.8 MB", "0x8FA4912DEBC31002") and `K3Trit::Unknown`. Each step now computes: arch/cores from
+the process, serialiser count from disk, SHA-256 of the evidence file, a timed `serde_json` ingest, and a
+plain statement that no drill was run. Trits are derived from those values and the verdict is their Kleene
+AND.
+
+Measured: `verdict REFUTED | passed 0 | refuted 3 | undetermined 2`, `k3 {and:-1, or:0, unknown:2}`, 2.3 ms.
+Step 1 is refuted by construction (target aarch64, host x86_64) — the correct answer to "did the Kisumu
+deployment run".
+
+**Defect found by running it:** the first build counted 0 serialisers because it scanned `.` and `../../`
+while they live in `tools/`. A count from the wrong directory is not a measurement of absence; the scan now
+publishes `searched_dirs`.
