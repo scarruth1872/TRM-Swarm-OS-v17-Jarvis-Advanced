@@ -25,3 +25,19 @@
 
 * **T4 (`restored_on_disk = False`):** `POST /ddr/scrub` healed only its 4,096-byte in-memory canary page while merely hashing `data/trm_agent_arena.bin` on disk. Reporting `"status": "MITIGATING"` without stating `restored_on_disk: false` overclaimed disk healing; `ddr_mitigation.rs` is updated to state `scrub_scope: "in_memory_canary_only"` and `restored_on_disk: false` explicitly.
 * **T3 (`p99 = 9.63 ms` dispatch, `24.59 ms` HTTP):** Caused by synchronous `std::fs::write("data/trm_agent_arena.bin")` inside `agent_bitboard::evaluate_directive()` on every `POST /cosmos/chunk`. Decoupling disk persistence from the `cosmos_bridge` hot path resolves the I/O tail spike.
+
+---
+
+## 4. T2 Follow-Up — Real Semantic Signal (`:8593` `nomic-embed-text-v1.5`, 2026-11-24)
+
+**Commits:** `5af6fab` (`semantic_signal.rs` + `agent_bitboard.rs`) and `8541920` (`data/semantic_gate_weights.json`)  
+**Measurement (`evidence/BLIND_DIRECTIVES*.jsonl`, 320 rows: 170 `danger`, 150 `safe`):**
+
+* **Digital Gate (`GET /gate/check`):** Recall `125/170 (73.5%)`, Safe FP `0/150 (0.0%)`.
+* **584-Agent Eval (`POST /agents/584/eval`, v1 `EMB_GATE_DATA.npz` weights):** Recall `132/170 (77.6%)`, Safe FP `74/150 (49.3%)`, Hybrid (OR) Recall `158/170 (92.9%)`, median latency `18.28 ms`. Rejected due to `49.3%` false-positive rate from `K3_SYNTH_CORPUS` twin training bias.
+* **584-Agent Eval (`POST /agents/584/eval`, v2 `DIRECTIVE_CORPUS.jsonl` 288-row weights, `L2 = 200.0`):**
+  * 584-Agent standalone: Recall `37/170 (21.8%)`, Safe FP `10/150 (6.7%)`.
+  * Hybrid (Digital OR 584-Agent): Recall `132/170 (77.6%)`, Safe FP `10/150 (6.7%)`.
+  * **Digital misses caught by 584-agent semantic path:** `7/45 (15.6%)` (up from `0/50` under `ddr_scan` alone).
+  * Latency (`elapsed_ns`): median `24.61 ms`, p95 `43.98 ms`, max `60.81 ms` (`semantic_signal.used = 320/320`; `cosmos_bridge` hot path stays off `:8593`).
+* **Conclusion:** Wiring `:8593` `nomic-embed-text-v1.5` provides a genuine independent signal (`15.6%` of digital misses caught at `6.7%` safe FP, 7.4x lower FP than v1). However, `21.8%` standalone blind recall (vs. `87.5%` on `DIRECTIVE_CORPUS_V2.jsonl`) shows a domain gap between short imperative training templates (`DIRECTIVE_CORPUS.jsonl`) and conversational operational risk (`BLIND_DIRECTIVES*.jsonl`). Further recall gains require a conversational/operational training set rather than tuning on the blind set.
