@@ -132,6 +132,11 @@ pub fn reduce_range_k3(pos: &[u32; BITBOARD_LANES], neg: &[u32; BITBOARD_LANES],
 
 /// Evaluate a query/directive across the 584-agent bitboard and persist the binary arena.
 pub fn evaluate_directive(input: &str) -> Value {
+    evaluate_directive_with_persist(input, true)
+}
+
+/// Evaluate a query/directive across the 584-agent bitboard with optional disk arena flush.
+pub fn evaluate_directive_with_persist(input: &str, persist_arena: bool) -> Value {
     let t0 = Instant::now();
     let blocking = trm_uefi_kernel::ddr_scan::blocking_finding(input);
     let trimmed = input.trim();
@@ -191,8 +196,12 @@ pub fn evaluate_directive(input: &str) -> Value {
         trits,
     };
 
-    let arena_written = if let Some(path) = arena_path() {
-        std::fs::write(&path, frame.as_bytes()).is_ok()
+    let arena_written = if persist_arena {
+        if let Some(path) = arena_path() {
+            std::fs::write(&path, frame.as_bytes()).is_ok()
+        } else {
+            false
+        }
     } else {
         false
     };

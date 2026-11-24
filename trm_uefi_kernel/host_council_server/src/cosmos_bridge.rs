@@ -102,7 +102,7 @@ pub fn ingest_chunk(payload: &Value) -> Value {
         }
     }
 
-    let plan_eval = agent_bitboard::evaluate_directive(semantic_plan);
+    let plan_eval = agent_bitboard::evaluate_directive_with_persist(semantic_plan, false);
     let plan_trit = plan_eval["consensus_trit"].as_i64().unwrap_or(0) as i8;
 
     let overall_trit: i8 = if hazard_count > 0 || plan_trit == -1 {
