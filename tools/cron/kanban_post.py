@@ -70,12 +70,15 @@ def current_titles(board) -> set[str]:
     titles: set[str] = set()
     if isinstance(board, dict):
         for column, items in board.items():
-            if str(column).upper() == "DONE":
+            # DONE and RETIRED are both terminal for the poster: a refined defect must be able to re-open,
+            # a retired one must never come back hour after hour. Retiring a card is a decision, not a
+            # pause, so its key stops squatting in the dedupe set only when the card itself does.
+            if str(column).upper() in ("DONE", "RETIRED"):
                 continue
             if isinstance(items, list):
                 for c in items:
                     if isinstance(c, dict) and c.get("title"):
-                        if str(c.get("status", "")).upper() == "DONE":
+                        if str(c.get("status", "")).upper() in ("DONE", "RETIRED"):
                             continue
                         titles.add(str(c["title"]))
     return titles
