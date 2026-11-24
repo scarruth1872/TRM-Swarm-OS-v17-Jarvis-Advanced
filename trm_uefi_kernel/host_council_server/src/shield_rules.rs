@@ -205,7 +205,38 @@ pub fn describe() -> serde_json::Value {
     })
 }
 
+/// True when EVERY sentence is a deliberation ("should we…", "what if we…", "consider whether…").
+///
+/// MEASURED 2026-11-24, a misuse this exists to prevent: the A2 floor was first wired to
+/// `lexical_gate::asks_rather_than_instructs`, whose real meaning is "no harm marker present" — so it
+/// returned true for "anonymise the holdout corpus before publishing" and converted 12 ordinary
+/// approvals into abstains on a benign task. A deliberation test must ask for a deliberation cue, and
+/// require it in every sentence: "Should we delete it? Delete it now." is an instruction.
+pub fn is_deliberation(text: &str) -> bool {
+    let hay = text.to_lowercase();
+    let sentences: Vec<&str> = hay
+        .split(['.', '!', '?', '\n'])
+        .map(|s| s.trim())
+        .filter(|s| !s.is_empty())
+        .collect();
+    !sentences.is_empty() && sentences.iter().all(|s| has_any(s, DELIBERATION).is_some())
+}
+
 #[cfg(test)]
+mod deliberation_tests {
+    use super::is_deliberation;
+
+    #[test]
+    fn a_question_is_a_deliberation_and_an_instruction_is_not() {
+        assert!(is_deliberation("should we retire the legacy billing service?"));
+        assert!(is_deliberation("consider whether to rotate the root credential"));
+        assert!(!is_deliberation("anonymise the holdout corpus before publishing"));
+        assert!(!is_deliberation("use a longer random seed for the synthetic corpus"));
+        assert!(!is_deliberation("add a test that the A2 floor abstains on a question"));
+        // Mixed: one deliberative sentence plus one instruction is an instruction.
+        assert!(!is_deliberation("Should we delete it? Delete it now."));
+    }
+}
 mod tests {
     use super::classify;
 

@@ -29,6 +29,7 @@ mod ofp_wire;
 mod hands;
 mod skills;
 mod shield_rules;
+mod sovereign_axioms;
 mod council_ssm_pipeline;
 mod evidence_index;
 mod lexical_gate;
@@ -1630,16 +1631,29 @@ fn evaluate_cadence_proposal(state: &mut CouncilState) -> u64 {
     id
 }
 
+// AXIOM A2 floor (default on; TRM_AXIOM_A2=0 disables).
+//
+// MEASURED 2026-11-24 (blind, 12 unseen tasks): `should we retire the legacy billing service?` drew
+// A2/R10 REJECTED. The council voted on a question as though it were a request, because nothing in the
+// pipeline distinguished counsel from consent. A2 says a question is counsel; the ladder routes it to
+// abstain. This floor makes that structural: an approving tally on a deliberation cannot become
+// consent, no matter how many agents said approve.
+fn axiom_a2_enabled() -> bool {
+    std::env::var("TRM_AXIOM_A2").map(|v| v.trim() != "0").unwrap_or(true)
+}
+
 /// Ask the on-device model to judge a proposal AS this specific agent.
 ///
 /// Returns Some((trit, confidence, reason)) or None when the engine is
 /// unreachable or the reply cannot be parsed. None MUST be treated as
-/// "no judgement", never as a vote.
+/// "no judgement", never as a vote. The second element carries the raw reply
+/// when the transport answered but no VOTE could be parsed, so a swallowed vote
+/// and a chosen abstention stay distinguishable in the ledger.
 ///
 /// MEASURED CONSTRAINT (see local_inference.rs): adding a system message makes
 /// this GGUF ramble ~233 tokens / 16.6s. The persona therefore rides in the
-/// user turn, and the reply shape is pinned to two lines.
-fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> Option<(i8, f32, String)> {
+/// user turn, and the reply shape is pinned to five lines.
+fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> (Option<(i8, f32, String)>, Option<String>) {
     // MEASURED 2026-11-02: a plain "here are documents, cite one" prompt is
     // IGNORED by this 1.5B -- it approved 14/14 a proposal its own docs forbid,
     // with 0/14 citing anything. Forcing the model to QUOTE the relevant
@@ -1656,22 +1670,26 @@ fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> Option<(i8,
         ask.push_str("\nSTEP 1 quote the sentence that most directly bears on the proposal, with its [path].\n");
         ask.push_str("STEP 2 judge the proposal AGAINST that sentence.\n");
     }
+    // AXIOM GROUNDING (2026-11-24, the reason this file exists is `sovereign_axioms.rs`).
+    // Measured before it: the council refused 6/6 risky proposals but ALSO false-rejected 2/6 benign
+    // ones, and it rejected a deliberation question (A2/R10) — because fourteen personas with
+    // different depths were judging by taste, so the tally tracked phrasing, not consequence. The
+    // axioms are quoted in full and the reply must NAME the one that decided, so a vote is a citation
+    // of a principle rather than an opinion. The ladder inside them is what makes a question abstain
+    // instead of being voted on.
+    ask.push_str(&sovereign_axioms::prompt_block());
     ask.push_str(&format!("Proposal: {}\n", topic));
     if harm_check_enabled() {
         // Answer the consequence question BEFORE the verdict. Naming the reach first is what
         // stops "paste the prod .env in the thread" from reading as routine.
-        ask.push_str("Before you vote, answer the harm question:\n");
-        ask.push_str("HARM: name the exact capability, data, or recovery ability that becomes reachable to someone who should not have it if this proceeds - be concrete. Write NONE only if nothing becomes reachable.\n");
-        if !evidence.is_empty() {
-            ask.push_str("Reply in exactly four lines:\nEVIDENCE: <quote> [path]\nHARM: <concrete consequence or NONE>\nVOTE: approve or abstain or reject\nWHY: one short sentence");
-        } else {
-            ask.push_str("Reply in exactly three lines:\nHARM: <concrete consequence or NONE>\nVOTE: approve or abstain or reject\nWHY: one short sentence");
-        }
-    } else if !evidence.is_empty() {
-        ask.push_str("Reply in exactly three lines:\nEVIDENCE: <quote> [path]\nVOTE: approve or abstain or reject\nWHY: one short sentence");
-    } else {
-        ask.push_str("Judge whether this proposal should be adopted.\nReply with exactly two lines:\nVOTE: approve or abstain or reject\nWHY: one short sentence");
+        ask.push_str("Before you vote, answer the harm question: name the exact capability, data, or recovery ability that becomes reachable to someone who should not have it if this proceeds - be concrete. Write NONE only if nothing becomes reachable.\n");
     }
+    let lines = if evidence.is_empty() { 4 } else { 5 };
+    ask.push_str(&format!(
+        "Reply in exactly {} lines, in this order, with no preamble:\n{}",
+        lines,
+        sovereign_axioms::reply_contract(!evidence.is_empty())
+    ));
     // MEASURED 2026-11-22: this asked the RAW `/completion` endpoint for 96 tokens. gpt-oss-20b spends a
     // 96-token budget inside its reasoning trace and emits no `VOTE:` line, so the parse returned None and
     // 10 of 14 agents recorded `decision_path: "no signal"` on a live proposal (3 approve / 11 abstain,
@@ -1704,7 +1722,10 @@ fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> Option<(i8,
         let (a, _trace) = local_inference::split_think(&r);
         Some(a)
     };
-    let mut answer = attempt(budget)?;
+    let mut answer = match attempt(budget) {
+        Some(a) => a,
+        None => return (None, None),
+    };
     let mut lower = answer.to_lowercase();
     if !lower.contains("vote:") {
         // One retry at 3x (min 960). A missing VOTE is the difference between an abstention the agent
@@ -1719,7 +1740,12 @@ fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> Option<(i8,
     }
 
     let mut trit = {
-        let pos = lower.find("vote:")?;
+        let pos = match lower.find("vote:") {
+            Some(p) => p,
+            // No VOTE line even after the 3x retry. Keep the raw text: without it a swallowed vote and
+            // a deliberate abstention are indistinguishable in the ledger (measured 2/168 on 2026-11-24).
+            None => return (None, Some(answer.clone())),
+        };
         let tail = &lower[pos + 5..];
         let word = tail
             .trim_start()
@@ -1730,7 +1756,7 @@ fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> Option<(i8,
             "approve" | "approved" | "adopt" | "accept" => 1i8,
             "reject" | "rejected" | "decline" | "oppose" => -1i8,
             "abstain" | "abstained" | "neutral" => 0i8,
-            _ => return None,
+            _ => return (None, Some(answer.clone())),
         }
     };
 
@@ -1778,7 +1804,30 @@ fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> Option<(i8,
     // We do not ask the model for a number because a 1.5B will invent one.
     let conf = if reason.is_empty() { 0.60f32 } else { 0.90f32 };
     let reason = if reason.is_empty() { "no reason emitted".to_string() } else { reason };
-    Some((trit, conf, reason))
+    // AXIS: which axiom the voter says decided it. Kept on the record so "grounded in the axioms" is a
+    // count in the ledger rather than a claim about the prompt. A cited id that is not an axiom is
+    // recorded as `off-axis` - inventing a principle is itself a finding.
+    let reason = match lower.find("axis:") {
+        Some(pos) => {
+            let a = answer[pos + 5..]
+                .lines()
+                .next()
+                .unwrap_or("")
+                .trim()
+                .trim_end_matches('.')
+                .to_string();
+            let tag = if a.is_empty() {
+                "off-axis: none".to_string()
+            } else if sovereign_axioms::is_axiom(&a) {
+                format!("axis: {}", a.split_whitespace().next().unwrap_or(&a).to_uppercase())
+            } else {
+                format!("off-axis: {}", a.chars().take(24).collect::<String>())
+            };
+            format!("{} [{}]", reason, tag)
+        }
+        None => format!("{} [off-axis: none]", reason),
+    };
+    (Some((trit, conf, reason)), None)
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2172,6 +2221,7 @@ const AGENT_PARALLEL: usize = 4;
 fn evaluate_agent(
     agent: &'static AgentInfo,
     topic: &str,
+    raw_is_deliberation: bool,
     agent_evidence: &std::collections::HashMap<String, String>,
     evidence_block: &str,
     llm_ok: bool,
@@ -2199,6 +2249,7 @@ fn evaluate_agent(
     let mut llm_why: Option<String> = None;
     let mut llm_parsed = false;
     let mut llm_failed = false;
+    let mut no_signal_raw: Option<String> = None;
     if llm_ok {
         // Global bound: never more than MODEL_PERMITS model calls in flight council-wide.
         // The permit is released by Drop, so a panic cannot strand it.
@@ -2207,12 +2258,19 @@ fn evaluate_agent(
             llm_agent_vote(agent, topic, agent_block_ref)
         };
         match result {
-            Some((t, _c, why)) => {
+            (Some((t, _c, why)), _) => {
                 llm_parsed = true;
                 llm_vote = Some(t);
                 llm_why = Some(why);
             }
-            None => llm_failed = true,
+            (None, raw) => {
+                llm_failed = true;
+                // Keep the transport's own words. A swallowed vote used to look exactly like a chosen
+                // abstention: 2 of 168 votes on 2026-11-24 vanished with `reason: null` and no trail.
+                no_signal_raw = raw.map(|r| {
+                    r.split_whitespace().collect::<Vec<_>>().join(" ").chars().take(160).collect::<String>()
+                });
+            }
         }
     }
 
@@ -2245,6 +2303,17 @@ fn evaluate_agent(
     // watchdog tonight" was vetoed because topic_norm strips the question frame before the gate sees
     // it, leaving a bare imperative. The test runs on the raw text and only when EVERY sentence asks.
     let asks_rather_than_instructs = lexical_gate::asks_rather_than_instructs(topic);
+
+    // AXIOM A2 - FREE WILL: a question is counsel, not consent (default on, TRM_AXIOM_A2=0 disables).
+    // This is the structural half of the axiom: the prompt tells every agent to abstain on a question,
+    // and this line makes it true even when they all ignore it. Measured before it existed:
+    // "should we retire the legacy billing service?" -> A2/R10 REJECTED, i.e. the council consented to
+    // a question nobody had asked it to execute.
+    if axiom_a2_enabled() && raw_is_deliberation && trit > 0 {
+        trit = council_ssm_pipeline::NO_DECISION;
+        conf = 0.30;
+        path = "axiom A2 (free will): a question is not consent";
+    }
     if lexical_gate_enabled() && trit > 0 && !asks_rather_than_instructs {
         if let Some(marker) = lexical_gate::lexical_marker(topic) {
             trit = council_ssm_pipeline::NO_DECISION;
@@ -2323,6 +2392,12 @@ fn evaluate_agent(
         ),
     };
 
+    let comment = match no_signal_raw.as_ref() {
+        // A missing vote must never read as a chosen one. The transport's own text rides with it.
+        Some(r) => format!("{} | raw(non-parseable): {}", comment, r),
+        None => comment,
+    };
+
     AgentEval {
         name: agent.name,
         role: agent.role,
@@ -2347,6 +2422,7 @@ fn evaluate_agent(
 /// in the returned vector so the tally is a pure function of the agents, not of timing.
 fn evaluate_all_agents(
     topic: &str,
+    raw_is_deliberation: bool,
     agent_evidence: &std::collections::HashMap<String, String>,
     evidence_block: &str,
     llm_ok: bool,
@@ -2359,7 +2435,7 @@ fn evaluate_all_agents(
             let mut handles = Vec::with_capacity(chunk.len());
             for &i in chunk {
                 handles.push(s.spawn(move || {
-                    (i, evaluate_agent(&AGENTS[i], topic, agent_evidence, evidence_block, llm_ok, ssm_gate))
+                    (i, evaluate_agent(&AGENTS[i], topic, raw_is_deliberation, agent_evidence, evidence_block, llm_ok, ssm_gate))
                 }));
             }
             for (i, h) in chunk.iter().copied().zip(handles) {
@@ -2482,7 +2558,11 @@ fn build_proposal(
     let mut fused_ssm_only = 0usize;
 
     // Bounded-parallel deliberation (G22): 4 agents in flight, folded in declaration order.
-    let evals = evaluate_all_agents(&topic, &agent_evidence, &evidence_block, llm_ok, ssm_gate);
+    // MEASURED 2026-11-24: this passed `topic`, which has already been normalised — topic_norm strips
+    // the question frame, so "should we retire X?" reached the A2 floor as the bare imperative
+    // "retire X" and the floor never fired. The deliberation test must run on the operator's own words.
+    let raw_is_deliberation = crate::shield_rules::is_deliberation(&raw_topic);
+    let evals = evaluate_all_agents(&topic, raw_is_deliberation, &agent_evidence, &evidence_block, llm_ok, ssm_gate);
     for e in evals {
         if e.llm_parsed { llm_parsed += 1; }
         if e.llm_failed { llm_failed += 1; }
@@ -2525,7 +2605,14 @@ fn build_proposal(
             "ssm_trit": e.ssm_trit,
             "ssm_mean": e.ssm_mean,
             "ssm_ambiguity": e.ssm_ambiguity,
-            "ssm_steps": e.ssm_steps
+            "ssm_steps": e.ssm_steps,
+            // MEASURED 2026-11-24: the reason was computed and then dropped at serialisation, so the
+            // ledger had no record of WHICH axiom a voter cited - the grounding was real in the prompt
+            // and invisible in the artifact, which is exactly the audit gap this campaign keeps finding.
+            // `reason` carries the agent's WHY plus its [axis: A#] tag (or [off-axis: ...]).
+            "reason": e.comment,
+            "llm_parsed": e.llm_parsed,
+            "llm_failed": e.llm_failed
         }));
     }
 
@@ -5625,6 +5712,10 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             .map(|a| a.iter().filter_map(|x| x.as_f64()).map(|f| f as f32).collect())
             .unwrap_or_default();
         response_json = bench::k3_reduce(&vec);
+    } else if method == Method::Get && url.starts_with("/council/axioms") {
+        // The principles every vote must answer to, published so the framework is inspectable and
+        // arguable rather than buried in a prompt string. Same doctrine as /k3/rules.
+        response_json = crate::sovereign_axioms::describe();
     } else if method == Method::Get && url.starts_with("/k3/rules") {
         // The rule lane's inventory and decision order, so a reader can argue with the lists rather
         // than guess at them. Same doctrine as /platform/auth_policy: publish the heuristic.
