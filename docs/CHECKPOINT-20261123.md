@@ -75,3 +75,9 @@ no provider in the path, so `kanban_post.py` skips those as history and names th
 2. **The DDR counter is per process.** `scans_performed` resets to 0 on every kernel restart, so a restart
    makes the "0 scans" condition true again — which is why the counter is reported with `last_scan` and
    `counter_window` rather than as an absolute.
+
+   **Resolved 2026-11-23 19:44 by Antigravity** (`main.rs`, committed as G239): the counters now persist to
+   `data/ddr_scan_state.json` and `/ddr/stats` publishes `scans_performed` (persistent) and
+   `scans_since_boot` separately. Verified by restarting the kernel: `scans_performed` held at 1 while
+   `scans_since_boot` reset to 0. The point above is left standing because it describes why the split was
+   needed.

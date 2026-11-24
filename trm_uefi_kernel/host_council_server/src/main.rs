@@ -2793,6 +2793,38 @@ static REGISTRY_FIRINGS: std::sync::atomic::AtomicUsize = std::sync::atomic::Ato
 
 static SCAN_CALLS: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
 static SCAN_DETECTIONS: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+static DDR_PERSISTED_BASE: std::sync::OnceLock<(u64, u64)> = std::sync::OnceLock::new();
+
+fn ddr_state_path() -> Option<PathBuf> {
+    kanban_path().and_then(|p| p.parent().map(|d| d.join("ddr_scan_state.json")))
+}
+
+fn ddr_base_counts() -> (u64, u64) {
+    *DDR_PERSISTED_BASE.get_or_init(|| {
+        if let Some(path) = ddr_state_path() {
+            if let Ok(bytes) = std::fs::read(&path) {
+                if let Ok(v) = serde_json::from_slice::<serde_json::Value>(&bytes) {
+                    let s = v.get("scans_performed").and_then(|x| x.as_u64()).unwrap_or(0);
+                    let d = v.get("total_prevented").and_then(|x| x.as_u64()).unwrap_or(0);
+                    return (s, d);
+                }
+            }
+        }
+        (0, 0)
+    })
+}
+
+fn ddr_save_counts(scans_total: u64, detections_total: u64) {
+    if let Some(path) = ddr_state_path() {
+        let payload = json!({
+            "scans_performed": scans_total,
+            "total_prevented": detections_total,
+        });
+        if let Ok(text) = serde_json::to_string_pretty(&payload) {
+            let _ = std::fs::write(path, text);
+        }
+    }
+}
 
 fn auth_gate(request: &tiny_http::Request, method: &Method) -> Option<tiny_http::Response<std::io::Cursor<Vec<u8>>>> {
     // SECURITY 2026-11-03. There was no authentication of any kind on this
@@ -3808,12 +3840,54 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             }
         });
     } else if method == Method::Get && (url == "/council/federation/nodes" || url == "/council/federation/nodes/") {
+        let cfg_path = std::env::var("TRM_FEDERATION_PEERS").unwrap_or_else(|_| {
+            format!("{}/config/federation_peers.json", env!("CARGO_MANIFEST_DIR"))
+        });
+        let mut nodes_out: Vec<serde_json::Value> = Vec::new();
+        let mut probe_targets: Vec<(String, u16)> = Vec::new();
+        if let Ok(text) = std::fs::read_to_string(&cfg_path) {
+            if let Ok(v) = serde_json::from_str::<serde_json::Value>(&text) {
+                if let Some(arr) = v.get("peers").and_then(|x| x.as_array()) {
+                    for e in arr {
+                        let ip = e.get("ip").and_then(|x| x.as_str()).unwrap_or("").to_string();
+                        if ip.is_empty() {
+                            continue;
+                        }
+                        probe_targets.push((ip.clone(), 8022u16));
+                        nodes_out.push(e.clone());
+                    }
+                }
+            }
+        }
+        let _ = federation_probe::init_probe(probe_targets);
+        let mut active = 0usize;
+        let mut measured_nodes: Vec<serde_json::Value> = Vec::new();
+        for (idx, mut node) in nodes_out.into_iter().enumerate() {
+            let reachable = federation_probe::peer_reachable(idx).unwrap_or(false);
+            if reachable {
+                active += 1;
+            }
+            if let Some(obj) = node.as_object_mut() {
+                obj.insert("reachable".into(), json!(reachable));
+                obj.insert("status".into(), json!(if reachable { "REACHABLE" } else { "CONFIGURED_UNREACHABLE" }));
+            }
+            measured_nodes.push(node);
+        }
+        let total = measured_nodes.len();
+        let fault_tolerance = total.saturating_sub(1) / 3;
+        let threshold = total.saturating_sub(fault_tolerance);
         response_json = json!({
-            "total_nodes": 100,
-            "master_node": { "id": "NODE-001-DESK-6700XT", "ip": "100.93.191.43", "role": "Master Orchestrator", "status": "ONLINE_PRIMARY" },
-            "secondary_node": { "id": "NODE-002-LAPTOP-3070", "ip": "100.123.215.119", "role": "Field Ingestion & CUDA Docking", "status": "ONLINE_COUNCIL_ACTIVE" },
-            "mobile_node": { "id": "NODE-003-S25-ULTRA", "ip": "100.114.251.33", "role": "Mobile Companion", "status": "ONLINE_NEURAL_ACTIVE" },
-            "byzantine_quorum": { "threshold": 67, "fault_tolerance": 33, "monad_seal": "0x4D4F4E4144000001" }
+            "total_nodes": total,
+            "active_nodes": active,
+            "offline_nodes": total.saturating_sub(active),
+            "peer_source": "config:federation_peers.json",
+            "nodes": measured_nodes,
+            "byzantine_quorum": {
+                "threshold": threshold,
+                "fault_tolerance": fault_tolerance,
+                "quorum_reachable": total > 0 && active >= threshold,
+                "monad_seal": "0x4D4F4E4144000001"
+            }
         });
     } else if method == Method::Post && url.starts_with("/council/federation/dispatch") {
         response_json = json!({
@@ -4455,15 +4529,19 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 code = v.get("code").and_then(|c| c.as_str()).unwrap_or("").to_string();
             }
         }
-        SCAN_CALLS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        let boot_scans = SCAN_CALLS.fetch_add(1, std::sync::atomic::Ordering::Relaxed) + 1;
         let findings = trm_uefi_kernel::ddr_scan::scan(&code);
         let blocking = trm_uefi_kernel::ddr_scan::blocking_finding(&code);
         // "prevented" means BLOCKED, not flagged: a low/medium lint finding does not stop anything,
         // and counting findings made the number move with how many lanes happened to fire on one
         // snippet (subprocess+shell=True produced 2 for a single block).
-        if blocking.is_some() {
-            SCAN_DETECTIONS.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-        }
+        let boot_detections = if blocking.is_some() {
+            SCAN_DETECTIONS.fetch_add(1, std::sync::atomic::Ordering::Relaxed) + 1
+        } else {
+            SCAN_DETECTIONS.load(std::sync::atomic::Ordering::Relaxed)
+        };
+        let (base_scans, base_detections) = ddr_base_counts();
+        ddr_save_counts(base_scans + boot_scans, base_detections + boot_detections);
         let list: Vec<serde_json::Value> = findings
             .iter()
             .map(|f| {
@@ -6001,8 +6079,11 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         let registry = REGISTRY_COUNT.load(std::sync::atomic::Ordering::Relaxed);
         // `abs` is the small in-server rule list; `registry` is the shipped file.
         let antibody_count = if registry > 0 { registry } else { abs.len() };
-        let detections = SCAN_DETECTIONS.load(std::sync::atomic::Ordering::Relaxed);
-        let scan_calls = SCAN_CALLS.load(std::sync::atomic::Ordering::Relaxed);
+        let (base_scans, base_detections) = ddr_base_counts();
+        let boot_detections = SCAN_DETECTIONS.load(std::sync::atomic::Ordering::Relaxed);
+        let boot_calls = SCAN_CALLS.load(std::sync::atomic::Ordering::Relaxed);
+        let detections = base_detections + boot_detections;
+        let scan_calls = base_scans + boot_calls;
         let distinct_rules = REGISTRY_DISTINCT.load(std::sync::atomic::Ordering::Relaxed);
         let firings = REGISTRY_FIRINGS.load(std::sync::atomic::Ordering::Relaxed);
         let stats_obj = json!({
@@ -6013,9 +6094,10 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "total_prevented": detections,
             "prevented_corruptions": detections,
             "scans_performed": scan_calls,
-            "scans_since_boot": scan_calls,
-            "counter_window": "since process start (resets on restart)",
+            "scans_since_boot": boot_calls,
+            "counter_window": "persistent (data/ddr_scan_state.json)",
             "rowhammer_mitigation": "NOT_IMPLEMENTED",
+            "ddr_code_gate_enforcing": ddr_gate_enabled(),
             "vault_status": "LOCKED",
             "last_scan": "on request",
             "status": if antibody_count > 0 { "ARMED_WITH_REGISTRY" } else { "EMPTY" }
