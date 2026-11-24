@@ -1,0 +1,28 @@
+{
+  "written_at_utc": "2026-11-24T16:56:04Z",
+  "written_before": "any relevance judgement was made; the 24 citations were already recorded in docs/phase1_provenance_results_2026-11-24.jsonl (provenance PASS 24/24) but have NOT yet been scored for relevance",
+  "question": "Does the text the council cites actually ADDRESS the proposal, or is it decoration that merely exists?",
+  "items": "12 dev proposals x 2 citations each = 24 judgements. Citation text is the 160-240 char snippet stored in phoenix_evidence; the judge sees the snippet, never the verdict.",
+  "rubric": {
+    "DIRECT": "the snippet names or discusses the proposal's actual subject matter (same object/operation/policy being proposed)",
+    "TANGENTIAL": "same domain or vocabulary as the proposal but does not address the specific subject",
+    "UNRELATED": "the snippet is about something else entirely; citing it would mislead a reader",
+    "UNGRADED": "the judge returned nothing parseable - recorded and counted SEPARATELY, never folded into a pass"
+  },
+  "judge": {
+    "model": "gpt-oss-20b-MXFP4 on :8587 (the same resident model the council votes with)",
+    "blindness": "the judge is shown the proposal topic and the snippet only; the verdict, the agent names and the vote tallies are withheld",
+    "determinism": "temperature 0, one call per citation, no retries on disagreement; a non-parseable reply is UNGRADED",
+    "known_limitation": "this is MODEL-graded, not human-graded, and the grader is the same model family that produced the votes. It can share the council's blind spots, so a PASS means 'a local judge reading only the text says these citations are on-topic', not 'a human verified relevance'."
+  },
+  "cross_check": {
+    "method": "mechanical key-term overlap: share of the proposal's content words (len>4, minus stopwords) that also appear in the snippet",
+    "role": "reported beside every judgement; if mechanical overlap says 'no shared vocabulary' while the model says DIRECT, that disagreement is printed as a warning rather than resolved silently"
+  },
+  "decision_rule": {
+    "PASS": "at least 18 of 24 (75%) of the GRADED citations are DIRECT",
+    "FAIL": "fewer than 18 DIRECT; the distribution is reported as measured and the gate stays failed",
+    "why_75pct": "a citation that at least names the proposal's own subject means retrieval is on-topic; below three quarters, most citations are decoration and the evidence block is not doing the work the votes imply",
+    "ungraded_rule": "UNGRADED citations reduce the denominator only if fewer than 3 of 24; at 3 or more the run is INVALID and must be re-run, because an unknown share of the evidence would be unassessed"
+  }
+}
