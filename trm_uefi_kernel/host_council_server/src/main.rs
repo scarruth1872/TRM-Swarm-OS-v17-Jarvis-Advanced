@@ -55,6 +55,7 @@ mod spectral_acousto_k3;
 mod gpu_compute;
 mod cosmos_bridge;
 mod ddr_mitigation;
+mod kanban_verifier;
 // KERNEL LIBRARY LINK: modules compiled from ../src via lib.rs
 use trm_uefi_kernel::k3_logic::KleeneTernaryEngine;
 
@@ -6750,22 +6751,48 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             response_json = json!({ "status": if saved { "CREATED" } else { "SAVE_FAILED" }, "persisted": saved, "card": card });
         }
     } else if method == Method::Get && url.starts_with("/kanban/verify") {
-        // G161: this used to assert VERIFIED with invented per-card item counts (13147, 1420, 60...).
-        // No per-card verification is instrumented, so say so instead of inventing numbers.
         let store = kanban_load(&kanban_seed());
-        let cards: Vec<serde_json::Value> = store.iter().map(|c| json!({
-            "id": c.get("card_id").cloned().unwrap_or(json!(null)),
-            "name": c.get("title").cloned().unwrap_or(json!(null)),
-            "status": c.get("status").cloned().unwrap_or(json!(null)),
-            "evidence": serde_json::Value::Null,
-            "verified": false,
-        })).collect();
-        response_json = json!({
-            "status": "UNVERIFIED",
-            "verify_mode": "not instrumented",
-            "note": "no per-card verification exists in this process; earlier VERIFIED/item counts were literals",
-            "cards": cards,
+        let (base_scans, _) = ddr_base_counts();
+        let scan_calls = base_scans + SCAN_CALLS.load(std::sync::atomic::Ordering::Relaxed);
+        let cfg_path = std::env::var("TRM_FEDERATION_PEERS").unwrap_or_else(|_| {
+            format!("{}/config/federation_peers.json", env!("CARGO_MANIFEST_DIR"))
         });
+        let mut peer_ips: Vec<(String, u16)> = Vec::new();
+        if let Ok(text) = std::fs::read_to_string(&cfg_path) {
+            if let Ok(v) = serde_json::from_str::<serde_json::Value>(&text) {
+                if let Some(arr) = v.get("peers").and_then(|x| x.as_array()) {
+                    for e in arr {
+                        if let Some(ip) = e.get("ip").and_then(|x| x.as_str()) {
+                            if !ip.is_empty() {
+                                peer_ips.push((ip.to_string(), 8022u16));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        let _ = federation_probe::init_probe(peer_ips.clone());
+        let fed_total = peer_ips.len();
+        let fed_active = (0..fed_total)
+            .filter(|&i| federation_probe::peer_reachable(i).unwrap_or(false))
+            .count();
+        let ft = fed_total.saturating_sub(1) / 3;
+        let threshold = fed_total.saturating_sub(ft);
+        let ctx = kanban_verifier::LiveVerifyContext {
+            ddr_scans_performed: scan_calls,
+            ddr_mitigation: ddr_mitigation::mitigation_label(ddr_gate_enabled()).to_string(),
+            fed_active,
+            fed_total,
+            fed_quorum_reachable: fed_total > 0 && fed_active >= threshold,
+            health_optimal: [3001u16, 3002u16, 5183u16].iter().all(|&p| {
+                std::net::TcpStream::connect_timeout(
+                    &std::net::SocketAddr::from(([127, 0, 0, 1], p)),
+                    std::time::Duration::from_millis(120),
+                )
+                .is_ok()
+            }),
+        };
+        response_json = kanban_verifier::verify_board(&store, &ctx);
     } else if method == Method::Get && (url.starts_with("/kanban/board") || url.starts_with("/kanban/stats") || url.starts_with("/kanban")) {
         // G161: the board was 13 hardcoded literals with no timestamps and no write path, so every card
         // was permanently stale. It now lives in data/kanban_board.json, seeded once from those literals.
