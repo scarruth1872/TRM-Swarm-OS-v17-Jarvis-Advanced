@@ -116,7 +116,7 @@ F(check="abx220_ci_contains_mean",
   mean_kd_nm=ci["mean_kd_nm"], ci=[ci["ci_95_lower"], ci["ci_95_upper"]],
   per_structure_kd_nm=ks, arithmetic_mean=round(sum(ks) / len(ks), 4),
   verdict="VALID" if ci["ci_95_lower"] <= ci["mean_kd_nm"] <= ci["ci_95_upper"] else "IMPOSSIBLE (mean outside its own CI)")
-F(check="abx220_verdict_vs_numbers", verdict_string=ci["validation_verdict"],
+F(check="abx220_verdict_vs_numbers", verdict_string=recal.get("validation_verdict", ci.get("validation_verdict", "")),
   implied_ki_nm=4.2, ledger_mean_kd_nm=ci["mean_kd_nm"], eskape_range_nm=[3.6, 4.8],
   verdict="INCONSISTENT (~50x apart) + 'Confirmed' contradicts pre-registration doctrine")
 
