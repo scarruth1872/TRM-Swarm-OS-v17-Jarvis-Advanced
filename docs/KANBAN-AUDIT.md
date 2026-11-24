@@ -51,3 +51,25 @@ it is fixed.
   instead of **FROZEN**. The seed is still there; only it is still 89 days old.
 
 Jobs: `7164ea587c04` check 06:45 daily, `e12f823da647` poster hourly at :20, both `no_agent`.
+
+## The verified closer (job `c6625c567d2e`, hourly at :35)
+
+`tools/cron/kanban_close.py` closes a card only when the *same* endpoint that opened it says the defect is
+gone, and prints the evidence:
+
+```
+TASK-USR-0014: CLOSED -> DONE — /ddr/stats scans_performed = 1 (> 0)
+TASK-USR-0015: STILL OPEN — /ddr/stats rowhammer_mitigation = NOT_IMPLEMENTED
+TASK-USR-0016: STILL OPEN — /federation/stats offline_nodes = 3
+closed 1, still open 2, left alone 9 (seeded or no rule)
+```
+
+That close is a real end-to-end proof rather than a dry run: `POST /ddr/scan` was executed on the live
+kernel and moved `scans_performed` 0 → 1, which is precisely the condition the card named. The card
+`TASK-USR-0014` had been created from the 0-scan state and closed from the 1-scan state.
+
+**A bug the self-test caught, before it closed anything in production:** the anomaly rule defaulted a
+missing `anomalies` field to an empty list, so an unreadable `/system/health_matrix` would have CLOSED
+every anomaly card — absence of data treated as absence of the defect. `--self-test` now covers 12 cases in
+both directions (`12/12`), including `{"hm": {}}` → left open, and every rule is exercised both resolving
+and not resolving. Cards with no rule and all 13 seeded cards are named as unverifiable and left untouched.
