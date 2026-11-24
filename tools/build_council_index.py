@@ -36,6 +36,26 @@ import sys
 import time
 import urllib.request
 
+# Self-citation exclusion, applied by DEFAULT (2026-11-24).
+#
+# The relevance gate failed 6/24 and three of the six were the corpus citing itself: reports ABOUT an
+# evaluation sat inside the index, so the retriever could return the exam paper as evidence. The first fix
+# was an `--exclude` flag passed by hand for one round — which means the next plain rebuild silently puts
+# the exam papers back and the failure returns without anyone noticing. A guard that has to be remembered is
+# not a guard, so these are applied unless `--allow-self-citation` is passed explicitly to REPRODUCE the old
+# failure. Council output is excluded on the same rule: a document the platform wrote about itself is not
+# independent evidence of what the platform does.
+SELF_CITATION_GLOBS = (
+    # evaluation reports that quote the questions verbatim
+    "docs/TRM_Phase1_*",
+    "docs/phase1_*",
+    "docs/TRM_Blind_Run_*",
+    # council-written findings and falsification records
+    "docs/FINDING-council-*",
+    "evidence/COUNCIL_*",
+    "evidence/article-191-council-*",
+)
+
 COUNCIL = "http://127.0.0.1:8022"
 EMBED = "http://127.0.0.1:8593"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -175,6 +195,9 @@ def main():
     ap.add_argument("--out", default="v2", help="suffix: writes data/council_evidence_index_<out>.json")
     ap.add_argument("--exclude", action="append", default=[], metavar="GLOB",
                     help="fnmatch glob on '<sub>/<name>'; repeatable. Excluded files are NOT indexed.")
+    ap.add_argument("--allow-self-citation", action="store_true",
+                    help="index the evaluation reports and council output that SELF_CITATION_GLOBS excludes "
+                         "by default. Only for reproducing the 6/24 failure.")
     a = ap.parse_args()
 
     global OUT, META
@@ -188,7 +211,10 @@ def main():
         return 2
     n_facts = len(chunks)
     if not a.no_corpus:
-        chunks += corpus_chunks(a.max_docs, tuple(a.exclude))
+        exclude = tuple(a.exclude) if a.allow_self_citation else tuple(a.exclude) + SELF_CITATION_GLOBS
+        if not a.allow_self_citation:
+            print(f"  excluding {len(SELF_CITATION_GLOBS)} self-citation globs (exam papers + council output)")
+        chunks += corpus_chunks(a.max_docs, exclude)
 
     texts = [c[2] for c in chunks]
     vecs = []

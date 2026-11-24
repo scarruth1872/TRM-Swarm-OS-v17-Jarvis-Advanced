@@ -16,37 +16,46 @@
       "allocated_port": 8022,
       "assignee": "Verify",
       "card_id": "TASK-CAD-02",
+      "closed_at": "2026-11-24T18:17:10Z",
       "created_at": "2026-08-27T00:00:00Z",
       "description": "Compile 230-patient Phase 2 clinical safety report with differential privacy e=0.45.",
       "priority": "high",
+      "reason": "0 eCTD/patient-level files on this host (measured 2026-11-24); a Module 5 dossier cannot be packaged from data that does not exist",
+      "reason_at": "2026-11-24T18:17:10Z",
       "seeded": true,
-      "status": "TODO",
+      "status": "RETIRED",
       "title": "FDA eCTD Module 5 Safety Dossier Packaging",
-      "updated_at": "2026-11-24T18:09:25Z"
+      "updated_at": "2026-11-24T18:17:10Z"
     },
     {
       "allocated_port": 8022,
       "assignee": "Hermes",
       "card_id": "TASK-CAD-03",
+      "closed_at": "2026-11-24T18:17:10Z",
       "created_at": "2026-08-27T00:00:00Z",
       "description": "Verify 67/100 PBFT quorum resilience across all 6 tiers.",
       "priority": "medium",
+      "reason": "the card claims a 100-node Byzantine audit; 3 peers are configured and 1-2 answer. The 3-node audit is the real task, tracked as the federation defects",
+      "reason_at": "2026-11-24T18:17:10Z",
       "seeded": true,
-      "status": "TODO",
+      "status": "RETIRED",
       "title": "100-Node Federation Byzantine Health Audit",
-      "updated_at": "2026-11-24T18:09:25Z"
+      "updated_at": "2026-11-24T18:17:10Z"
     },
     {
       "allocated_port": 8022,
       "assignee": "THzGateway",
       "card_id": "TASK-CAD-04",
+      "closed_at": "2026-11-24T18:17:10Z",
       "created_at": "2026-08-27T00:00:00Z",
       "description": "Continuous monitoring of 13,147 daily cosmic muons and SEU mitigation on DDR banks.",
       "priority": "critical",
+      "reason": "no muon detector and no muon code exists; the DDR scrubbing half already runs and is tracked separately (TASK-USR-0014/0015)",
+      "reason_at": "2026-11-24T18:17:10Z",
       "seeded": true,
-      "status": "TODO",
+      "status": "RETIRED",
       "title": "Real-Time Muon Flux & 6s Memory Scrubbing",
-      "updated_at": "2026-11-24T18:09:25Z"
+      "updated_at": "2026-11-24T18:17:10Z"
     },
     {
       "allocated_port": 8022,
@@ -88,25 +97,31 @@
       "allocated_port": 8022,
       "assignee": "Logic",
       "card_id": "TASK-CAD-08",
+      "closed_at": "2026-11-24T18:17:10Z",
       "created_at": "2026-08-27T00:00:00Z",
       "description": "100.0% pass rate verified across Instella, Bonsai, DeepSeek-R1, Qwen-Coder, Gemma3, and TRM Native.",
       "priority": "high",
+      "reason": "1 of 4 model ports answers (:8587 gpt-oss); a 6-tier certification cannot run with one tier resident",
+      "reason_at": "2026-11-24T18:17:10Z",
       "seeded": true,
-      "status": "TODO",
+      "status": "RETIRED",
       "title": "6-Tier 60-Task Hybrid Intelligence Suite Certification",
-      "updated_at": "2026-11-24T18:09:25Z"
+      "updated_at": "2026-11-24T18:17:10Z"
     },
     {
       "allocated_port": 8022,
       "assignee": "Hermes",
       "card_id": "TASK-CAD-09",
+      "closed_at": "2026-11-24T18:17:04Z",
       "created_at": "2026-08-27T00:00:00Z",
       "description": "Planetary skywave mesh synced to 15.92 fs with ML-DSA-87 signatures.",
       "priority": "medium",
+      "reason": "ionosphere mesh exists only as a markdown string at main.rs:693 — no MUF/OWF code, no SDR hardware",
+      "reason_at": "2026-11-24T18:17:04Z",
       "seeded": true,
-      "status": "TODO",
+      "status": "RETIRED",
       "title": "Tier 24 Ionosphere F2 MUF/OWF Dispersion Protocol",
-      "updated_at": "2026-11-24T18:09:25Z"
+      "updated_at": "2026-11-24T18:17:04Z"
     },
     {
       "allocated_port": 8022,
@@ -124,13 +139,16 @@
       "allocated_port": 8022,
       "assignee": "Jarvis",
       "card_id": "TASK-CAD-11",
+      "closed_at": "2026-11-24T18:17:10Z",
       "created_at": "2026-08-27T00:00:00Z",
       "description": "Direct Ollama gemma3:1b socket integration across all 14 Council agent personas.",
       "priority": "critical",
+      "reason": "Ollama is forbidden on this host by standing instruction and no persona-routing code exists; the neural bridge is served by Jarvis on :3000",
+      "reason_at": "2026-11-24T18:17:10Z",
       "seeded": true,
-      "status": "TODO",
+      "status": "RETIRED",
       "title": "Neural Bridge Dynamic Persona Routing Activated",
-      "updated_at": "2026-11-24T18:09:25Z"
+      "updated_at": "2026-11-24T18:17:10Z"
     },
     {
       "allocated_port": 8022,
@@ -148,13 +166,16 @@
       "allocated_port": 8022,
       "assignee": "Bridge",
       "card_id": "TASK-CAD-13",
+      "closed_at": "2026-11-24T18:17:10Z",
       "created_at": "2026-08-27T00:00:00Z",
       "description": "Desktop and Laptop nodes synchronized in lockstep with zero divergence.",
       "priority": "high",
+      "reason": "54-asset sync needs 54 assets; 3 peers are configured and 1-2 active. Sync of what exists runs in the federation tick",
+      "reason_at": "2026-11-24T18:17:10Z",
       "seeded": true,
-      "status": "TODO",
+      "status": "RETIRED",
       "title": "Federation 54-Asset State Synchronization",
-      "updated_at": "2026-11-24T18:09:25Z"
+      "updated_at": "2026-11-24T18:17:10Z"
     },
     {
       "allocated_port": 8022,
@@ -276,8 +297,19 @@
       "status": "DONE",
       "title": "Federation: 1 of 3 configured peers offline (2 active) — reconcile or retire the entries",
       "updated_at": "2026-11-24T17:35:25Z"
+    },
+    {
+      "allocated_port": 8022,
+      "assignee": "Bridge",
+      "card_id": "TASK-USR-0025",
+      "created_at": "2026-11-24T18:20:25Z",
+      "description": "",
+      "priority": "high",
+      "status": "TODO",
+      "title": "Federation: 1 of 3 configured peers offline (2 active) — reconcile or retire the entries",
+      "updated_at": "2026-11-24T18:20:25Z"
     }
   ],
-  "updated_at": "2026-11-24T18:09:25Z",
+  "updated_at": "2026-11-24T18:20:25Z",
   "version": 1
 }

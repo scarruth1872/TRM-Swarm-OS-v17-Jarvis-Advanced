@@ -6930,11 +6930,33 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         // create branch and answered SUCCESS without changing anything.
         let mut req_buf = String::new();
         let _ = request.as_reader().read_to_string(&mut req_buf);
-        let parsed: serde_json::Value = serde_json::from_str(&req_buf).unwrap_or(json!({}));
+        // MEASURED DEFECT (2026-11-24): an unparseable body used to fall back to json!({}) and then to
+        // target_status "TODO", so a malformed move silently MOVED the card to TODO and answered 200. It
+        // was caught by sending a reason containing an em dash: the parse failed, the card moved, and the
+        // reply said "to":"TODO". A write that cannot be understood must be refused, not defaulted.
+        let parsed: serde_json::Value = serde_json::from_str(&req_buf).unwrap_or(serde_json::Value::Null);
         let target = parsed.get("target_status").and_then(|s| s.as_str()).unwrap_or("TODO");
+        let reason = parsed.get("reason").and_then(|r| r.as_str()).unwrap_or("").trim().to_string();
         let card_id = url.split("/kanban/cards/").nth(1).unwrap_or("").split('/').next().unwrap_or("").to_string();
-        if !["TODO", "IN_PROGRESS", "REVIEW", "DONE"].contains(&target) {
-            status_code = 400; response_json = json!({ "error": format!("unknown target_status {target:?}") });
+        // RETIRED (2026-11-24). The board had exactly one terminal state, DONE, so on 2026-11-24 all 13
+        // seed cards were bulk-closed as DONE -- including the FDA eCTD dossier (no data on disk) and the
+        // ionosphere mesh (a markdown string). "Abandoned" and "completed" were the same word, and the
+        // store had no field in which a close could justify itself. RETIRED separates them and a terminal
+        // move now has to say why; a move to TODO/IN_PROGRESS/REVIEW does not, because reopening costs
+        // nothing and a reason requirement there would only teach people to type "x".
+        let terminal = target == "DONE" || target == "RETIRED";
+        if parsed.is_null() {
+            status_code = 400; response_json = json!({ "error": "invalid or empty JSON body",
+                "hint": "send {\"target_status\":\"...\",\"reason\":\"...\"} as UTF-8 JSON" });
+        } else if !["TODO", "IN_PROGRESS", "REVIEW", "DONE", "RETIRED"].contains(&target) {
+            status_code = 400; response_json = json!({ "error": format!("unknown target_status {target:?}"),
+                "allowed": ["TODO", "IN_PROGRESS", "REVIEW", "DONE", "RETIRED"] });
+        } else if terminal && reason.is_empty() {
+            status_code = 400; response_json = json!({
+                "error": "a terminal move requires a reason",
+                "target_status": target,
+                "hint": "POST {\"target_status\":\"DONE\",\"reason\":\"what was measured that makes this true\"}"
+            });
         } else {
             let mut store = kanban_load(&kanban_seed());
             match store.iter_mut().find(|c| c.get("card_id").and_then(|x| x.as_str()) == Some(card_id.as_str())) {
@@ -6942,6 +6964,14 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                     if let Some(obj) = card.as_object_mut() {
                         obj.insert("status".into(), json!(target));
                         obj.insert("updated_at".into(), json!(rfc3339_now()));
+                        if !reason.is_empty() {
+                            // Kept, not overwritten by a later move: the reason describes THIS transition.
+                            obj.insert("reason".into(), json!(reason));
+                            obj.insert("reason_at".into(), json!(rfc3339_now()));
+                        }
+                        if terminal {
+                            obj.insert("closed_at".into(), json!(rfc3339_now()));
+                        }
                     }
                     let saved = kanban_save(&store);
                     response_json = json!({ "status": if saved { "MOVED" } else { "SAVE_FAILED" },
@@ -6969,7 +6999,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 "title": title,
                 "assignee": assignee,
                 "priority": priority,
-                "status": if ["TODO","IN_PROGRESS","REVIEW","DONE"].contains(&target_status) { target_status } else { "TODO" },
+                "status": if ["TODO","IN_PROGRESS","REVIEW","DONE","RETIRED"].contains(&target_status) { target_status } else { "TODO" },
                 "description": "",
                 "allocated_port": 8022,
                 "created_at": now,
@@ -7050,8 +7080,12 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         };
         let (todo_cards, in_progress_cards, review_cards, done_cards) =
             (column("TODO"), column("IN_PROGRESS"), column("REVIEW"), column("DONE"));
+        let retired_cards = column("RETIRED");
         let total = store.len();
+        // A retired card is not stale work -- it is work that will not be done, recorded with its reason.
+        // Counting it as stale would put the same number in the report forever.
         let stale: Vec<serde_json::Value> = store.iter().map(|c| with_age(c))
+            .filter(|c| c.get("status").and_then(|s| s.as_str()) != Some("RETIRED"))
             .filter(|c| c.get("stale").and_then(|s| s.as_bool()).unwrap_or(false)).collect();
         let oldest = store.iter().filter_map(|c| c.get("updated_at").and_then(|x| x.as_str()))
             .min().unwrap_or("").to_string();
@@ -7061,6 +7095,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "todo_count": todo_cards.len(),
             "review_count": review_cards.len(),
             "done_count": done_cards.len(),
+            "retired_count": retired_cards.len(),
             "stale_count": stale.len(),
             "stale_after_days": KANBAN_STALE_DAYS,
             "oldest_updated_at": if oldest.is_empty() { serde_json::Value::Null } else { json!(oldest) },
@@ -7070,13 +7105,13 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             // work is a number the caller needs, not a footnote. 13 cards on an empty install is not
             // a busy board.
             "seeded_count": todo_cards.iter().chain(in_progress_cards.iter())
-                .chain(review_cards.iter()).chain(done_cards.iter())
+                .chain(review_cards.iter()).chain(done_cards.iter()).chain(retired_cards.iter())
                 .filter(|c| c.get("seeded").and_then(|v| v.as_bool()).unwrap_or(false)).count(),
             "seed_origin": KANBAN_SEED_ORIGIN,
         });
         let board_obj = json!({
             "TODO": todo_cards, "IN_PROGRESS": in_progress_cards,
-            "REVIEW": review_cards, "DONE": done_cards,
+            "REVIEW": review_cards, "DONE": done_cards, "RETIRED": retired_cards,
         });
         response_json = if url.starts_with("/kanban/stats") { stats_obj }
             else if url.starts_with("/kanban/board") { board_obj }

@@ -149,3 +149,16 @@ Verified end-to-end: the companion bridge was force-stopped (pid 225828), the gu
   anomaly; it does not probe 8588 at all, so that gap is invisible to the platform's own health matrix.
 - Delivery: every job still writes `local`. Pointing them at Telegram is one field per job
   (`deliver: telegram:<chat_id>`), not wired in this change.
+
+## Telegram delivery (added 2026-11-24)
+
+Until today every job delivered `local` or `origin`, so nothing the platform measured ever reached the
+channel the user reads. Two jobs now deliver to the DM `telegram:8047398662`:
+
+| job | schedule | script | behaviour |
+|---|---|---|---|
+| `6995397e096f` TRM Daily Digest → Telegram | `0 7 * * *` | `trm_telegram_digest.py` | one message a day: platform, matrix, board by status, DDR, federation, AMR verdict, 24h commits, open cards, non-ok cron jobs. Fired once to prove delivery — `last_status ok`, `last_delivery_error: null`. |
+| `09560fd08024` TRM Telegram Transport Health | `15 * * * *` | `trm_telegram_transport.py` | silent when healthy; one line when not. Counts failures, recoveries, failed sends and injected notices from `logs/gateway.log`, against the measured baseline of 222 failures / 222 recoveries in a day. |
+
+Both are `no_agent`: empty stdout sends nothing, so silence means "nothing to report" rather than "the job
+died" — which is why the transport check prints a problem line instead of a health line.

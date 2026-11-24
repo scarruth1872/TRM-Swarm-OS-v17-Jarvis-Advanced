@@ -78,12 +78,13 @@ def main() -> int:
         add("  cards: unmeasured (the kernel did not return total_cards)")
     else:
         add(
-            "  cards: {} total — todo {} / in_progress {} / review {} / done {}".format(
+            "  cards: {} total — todo {} / in_progress {} / review {} / done {} / retired {}".format(
                 total,
                 stats.get("todo_count", "unmeasured"),
                 stats.get("in_progress_count", "unmeasured"),
                 stats.get("review_count", "unmeasured"),
                 stats.get("done_count", "unmeasured"),
+                stats.get("retired_count", 0),
             )
         )
 

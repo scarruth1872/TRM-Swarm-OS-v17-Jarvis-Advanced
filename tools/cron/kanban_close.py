@@ -57,7 +57,10 @@ def open_cards(board) -> list[dict]:
         for column, items in board.items():
             if isinstance(items, list):
                 for c in items:
-                    if isinstance(c, dict) and str(c.get("status", "")).upper() != "DONE":
+                    st = str(c.get("status", "")).upper()
+                    # RETIRED is terminal too: a card that records why it will not be done must not be
+                    # re-examined every hour, and must never be closed as DONE by this script.
+                    if isinstance(c, dict) and st not in ("DONE", "RETIRED"):
                         out.append(c)
     return out
 
@@ -232,7 +235,10 @@ def main(argv: list[str]) -> int:
             print(f"  {cid}: would close -> DONE — {evidence}")
             continue
         try:
-            res = post(f"/kanban/cards/{cid}/move", {"target_status": "DONE"})
+            # The kernel now refuses a terminal move without a reason, because "done" and
+            # "abandoned" used to be the same word. The evidence string was already being
+            # printed; it becomes the stored justification.
+            res = post(f"/kanban/cards/{cid}/move", {"target_status": "DONE", "reason": evidence})
         except (urllib.error.URLError, urllib.error.HTTPError, OSError, ValueError) as exc:
             print(f"  {cid}: move failed ({type(exc).__name__}: {exc})")
             continue

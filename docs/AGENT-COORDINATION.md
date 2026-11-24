@@ -43,3 +43,18 @@ counters there. **New capability belongs in its own module** (`amr_surveillance.
 `data/kanban_board.json` (live board), `data/council_ledger.json` (proposals), `data/ddr_scan_state.json`
 (DDR counters). These change on every request — never hand-edit them, never treat a modified copy as a
 conflict, and never commit one without saying which measurement produced it.
+
+## Background notices cost turns — do not spray them
+
+Measured 2026-11-24: the Telegram channel received **8 background-process notices** in one day and each one
+was injected into the session as a turn — three of them inside four minutes with no user message, at ~30 s
+each. The gateway has **no batching setting** (its only mechanism is per-notice dedupe by notice key), so the
+reduction has to happen at the source:
+
+- use `notify=true` for a **terminal** event only (the process finishing), never `notify=['pattern']` watch
+  patterns for progress chatter;
+- prefer polling a log once over being pinged on every match;
+- if several results are expected, run one background job that reports once rather than many that report each.
+
+`tools/cron/telegram_transport.py` counts notices per hour and complains at 4 or more, so the volume is
+measured instead of remembered.
