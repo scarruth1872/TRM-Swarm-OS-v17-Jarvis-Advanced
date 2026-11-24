@@ -1,0 +1,13 @@
+{
+ "source": "council_evidence_index_v3.json",
+ "format": "int8 FacetedTrit per dim (vec*108, round, clamp)",
+ "n_chunks": 2436,
+ "dim": 768,
+ "bytes_per_chunk": 768,
+ "f32_bytes": 7483392,
+ "facet_bytes": 1870848,
+ "compression": 4.0,
+ "recall_at_10_vs_f32": 0.944,
+ "top1_vs_f32": 0.938,
+ "measured_on": "16 queries (4 platform facts + 12 dev texts)"
+}
