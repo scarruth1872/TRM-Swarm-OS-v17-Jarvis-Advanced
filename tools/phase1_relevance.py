@@ -38,15 +38,29 @@ RUBRIC = (
 
 def judge(topic, snippet):
     body = json.dumps({
-        "model": "gpt-oss-20b", "temperature": 0.0, "max_tokens": 90,
-        "reasoning_effort": "low", "enable_thinking": False,
+        "model": "gpt-oss-20b", "temperature": 0.0,
+        # 90 was too small: the harmony model writes reasoning_content first, the budget ran out, and
+        # `content` came back empty for all 24 items — which the pre-registered rule correctly called
+        # INVALID rather than passing. 220 leaves room for the reasoning block plus the one-line label.
+        # 220 was still not enough on the hard items: 8 of 24 came back with an empty content field
+        # because the harmony reasoning block consumed the whole budget. 600 leaves room for reasoning
+        # plus the one-line label. Budget is the only thing that changed; rubric and threshold are frozen.
+        "max_tokens": 600, "reasoning_effort": "low",
         "messages": [{"role": "system", "content": RUBRIC},
                      {"role": "user", "content": f"PROPOSAL: {topic}\n\nCITED TEXT: {snippet}"}],
     }).encode()
     r = urllib.request.Request(JUDGE, data=body, headers={"Content-Type": "application/json"})
     out = json.loads(urllib.request.urlopen(r, timeout=180).read())
-    txt = out["choices"][0]["message"].get("content") or ""
+    msg = out["choices"][0]["message"]
+    txt = msg.get("content") or ""
     m = re.search(r"LABEL:\s*(DIRECT|TANGENTIAL|UNRELATED)", txt.upper())
+    if not m:
+        # the model sometimes emits the label inside its reasoning block instead of content
+        m = re.search(r"LABEL:\s*(DIRECT|TANGENTIAL|UNRELATED)", (msg.get("reasoning_content") or "").upper())
+    if not m:
+        # and sometimes it answers with the bare vocabulary word, since those three words are the entire
+        # answer space. The raw reply is stored beside every judgement for audit.
+        m = re.search(r"\b(DIRECT|TANGENTIAL|UNRELATED)\b", txt.upper())
     return (m.group(1) if m else "UNGRADED"), txt.strip()[:160]
 
 
