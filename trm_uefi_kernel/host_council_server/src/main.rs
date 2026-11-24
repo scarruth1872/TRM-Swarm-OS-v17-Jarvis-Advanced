@@ -54,6 +54,7 @@ mod agent_bitboard;
 mod spectral_acousto_k3;
 mod gpu_compute;
 mod cosmos_bridge;
+mod ddr_mitigation;
 // KERNEL LIBRARY LINK: modules compiled from ../src via lib.rs
 use trm_uefi_kernel::k3_logic::KleeneTernaryEngine;
 
@@ -4514,6 +4515,9 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "voltage": voltage_block(),
             "sample": sample
         });
+    } else if (method == Method::Get || method == Method::Post) && url.starts_with("/ddr/scrub") {
+        let distinct = REGISTRY_DISTINCT.load(std::sync::atomic::Ordering::Relaxed);
+        response_json = ddr_mitigation::run_scrub(ddr_gate_enabled(), distinct);
     } else if (method == Method::Get || method == Method::Post) && url.starts_with("/ddr/scan") {
         // Read-only, like /gate/check: score the scanner that actually runs in the vote path.
         // ONE handler. There used to be a second POST branch further down that returned a different
@@ -6153,7 +6157,10 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "scans_performed": scan_calls,
             "scans_since_boot": boot_calls,
             "counter_window": "persistent (data/ddr_scan_state.json)",
-            "rowhammer_mitigation": "NOT_IMPLEMENTED",
+            "rowhammer_mitigation": ddr_mitigation::mitigation_label(ddr_gate_enabled()),
+            "hardware_dram_trr": "UNAVAILABLE_IN_USERSPACE",
+            "scrubs_performed": ddr_mitigation::scrubs_performed(),
+            "bytes_scrubbed_total": ddr_mitigation::total_bytes_scrubbed(),
             "ddr_code_gate_enforcing": ddr_gate_enabled(),
             "vault_status": "LOCKED",
             "last_scan": "on request",
