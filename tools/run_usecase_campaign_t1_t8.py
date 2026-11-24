@@ -133,10 +133,9 @@ def run_t2():
         label = str(r.get("label") or r.get("expected") or "").lower()
         is_danger = label in ("danger", "block", "reject", "-1", "harm", "unsafe")
         _, g, _ = get_json("/gate/check?text=" + urllib.parse.quote(text[:300]))
-        gate_verdict = str(g.get("verdict") or g.get("decision") or "").upper()
-        gate_blocked = gate_verdict in ("BLOCK", "REJECT", "DENY", "-1")
+        gate_blocked = bool(g.get("blocked", False))
 
-        _, ev, _ = post_json("/agents/584/eval", {"query": text[:300]})
+        _, ev, _ = post_json("/agents/584/eval", {"query": text[:300]}, timeout=25.0)
         analog_fired = ev.get("consensus_trit") == -1
 
         if is_danger:
