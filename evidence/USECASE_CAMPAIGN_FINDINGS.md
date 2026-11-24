@@ -40,4 +40,9 @@
   * Hybrid (Digital OR 584-Agent): Recall `132/170 (77.6%)`, Safe FP `10/150 (6.7%)`.
   * **Digital misses caught by 584-agent semantic path:** `7/45 (15.6%)` (up from `0/50` under `ddr_scan` alone).
   * Latency (`elapsed_ns`): median `24.61 ms`, p95 `43.98 ms`, max `60.81 ms` (`semantic_signal.used = 320/320`; `cosmos_bridge` hot path stays off `:8593`).
-* **Conclusion:** Wiring `:8593` `nomic-embed-text-v1.5` provides a genuine independent signal (`15.6%` of digital misses caught at `6.7%` safe FP, 7.4x lower FP than v1). However, `21.8%` standalone blind recall (vs. `87.5%` on `DIRECTIVE_CORPUS_V2.jsonl`) shows a domain gap between short imperative training templates (`DIRECTIVE_CORPUS.jsonl`) and conversational operational risk (`BLIND_DIRECTIVES*.jsonl`). Further recall gains require a conversational/operational training set rather than tuning on the blind set.
+* **584-Agent Eval (`POST /agents/584/eval`, Option A 620-row corpus: `CONVERSATIONAL_DIRECTIVE_CORPUS.jsonl` 140 + `DIRECTIVE_CORPUS.jsonl` 288 + `DIRECTIVE_CORPUS_V2.jsonl` 192, `safe_w=2.0, L2=20.0, margin=1.50`):**
+  * 584-Agent standalone: Recall `67/170 (39.4%)`, Safe FP `13/150 (8.7%)`.
+  * Hybrid (Digital OR 584-Agent): Recall `139/170 (81.8%)`, Safe FP `13/150 (8.7%)`.
+  * **Digital misses caught by 584-agent semantic path:** `14/45 (31.1%)`.
+  * Latency (`elapsed_ns`): median `16.76 ms`, p95 `19.43 ms`, max `26.83 ms`.
+* **Conclusion:** Wiring `:8593` `nomic-embed-text-v1.5` provides a genuine independent signal (`31.1%` of digital misses caught, raising Hybrid recall from `73.5%` to `81.8%` at `8.7%` safe FP and `16.76 ms` median latency). However, 5-fold CV on the 140-row conversational corpus shows a structural ceiling for a linear head over a topic embedder (`11.7%–18.3%` CV FP when separating safe vs. unsafe uses of the same operational terms like *backup*, *restore*, and *delete endpoint*); pushing FP `<= 1%` at high recall requires a two-stage `:8587` verifier on borderline `ANALYZE (0)` cases.
