@@ -162,6 +162,12 @@ fn embed_query(query: &str) -> Option<Vec<f32>> {
     (!out.is_empty()).then_some(out)
 }
 
+/// Public wrapper so the continuum path shares the exact same query embedding.
+/// Duplicating the llama-server request shape in a second module is how two retrievers drift apart.
+pub fn embed_query_pub(query: &str) -> Option<Vec<f32>> {
+    embed_query(query)
+}
+
 fn cosine(a: &[f32], b: &[f32]) -> f32 {
     if a.len() != b.len() || a.is_empty() {
         return 0.0;

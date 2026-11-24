@@ -29,6 +29,7 @@ mod ofp_wire;
 mod hands;
 mod skills;
 mod shield_rules;
+mod continuum;
 mod platform_facts;
 mod sovereign_axioms;
 mod council_ssm_pipeline;
@@ -6405,6 +6406,24 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         // and the retrieval index never contained these facts at all - so they are published here,
         // generated from the constants and the module scan rather than typed into a document.
         response_json = crate::platform_facts::facts();
+    } else if method == Method::Get && url.starts_with("/continuum/status") {
+        // The Monad continuum as realised in THIS process: i8 facets on the 217-state axis, loaded from
+        // the K3CX artefact. Placement/phase only; similarity is the integer facet dot.
+        response_json = crate::continuum::status();
+    } else if method == Method::Get && url.starts_with("/continuum/search") {
+        let (_, qs) = url.split_once('?').unwrap_or((url.as_str(), ""));
+        let mut q = String::new();
+        let mut k = 8usize;
+        for pair in qs.split('&') {
+            if let Some((key, val)) = pair.split_once('=') {
+                match key {
+                    "q" => q = url_decode(val),
+                    "k" => k = val.parse::<usize>().unwrap_or(8).clamp(1, 50),
+                    _ => {}
+                }
+            }
+        }
+        response_json = crate::continuum::search_json(&q, k);
     } else if method == Method::Get && url.starts_with("/platform/auth_policy") {
         // G9: publish the trust boundary instead of leaving it implicit.
         let token_configured = std::env::var("COUNCIL_AUTH_TOKEN")

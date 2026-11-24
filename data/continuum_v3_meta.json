@@ -1,0 +1,29 @@
+{
+ "tag": "v3",
+ "source": "council_evidence_index_v3.json",
+ "n_chunks": 2436,
+ "dim": 768,
+ "format": "K3CX v1: i8 FacetedTrit per dim, raw rows, no header per row",
+ "facet_rule": "round(clamp(v,-1,1)*108) \u2014 matches FacetedTrit::from_f32 exactly",
+ "bytes": 1870864,
+ "f32_bytes": 7483392,
+ "size_ratio_bin_over_f32": 0.25,
+ "compression_x": 4.0,
+ "sha256": "0997d22aaf50878aaad11dbce7769fce6c797fda5ae3eb8d42a063059b94794f",
+ "placement": {
+  "cell_of": "axis_index of the chunk's largest-|facet| dimension",
+  "states": 217,
+  "cells_used": 23,
+  "note": "placement only; similarity is the integer dot, never torus distance"
+ },
+ "measured": {
+  "recall_at_10_vs_f32": 0.944,
+  "top1_vs_f32": 0.938,
+  "on": "16 queries (4 platform facts + 12 dev texts), docs/TRM_Torus_Architecture_2026-11-24.md"
+ },
+ "feature_range": {
+  "min": -26,
+  "max": 22,
+  "distinct": 48
+ }
+}
