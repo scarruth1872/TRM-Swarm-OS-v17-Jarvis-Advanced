@@ -11,7 +11,7 @@ reappearance here is evidence about the seed, not about the platform.
 | card | claim | found | verdict |
 |---|---|---|---|
 | `TASK-CAD-01` Monthly UEFI Kernel & Boot Media Re-Flash | "28th monthly re-flash, G:\ attestation under SHA-256 seal" | `trm_uefi_kernel.efi` **exists** (17,488,896 B, 2026-11-13); `G:` drive exists; **no flash or attestation script anywhere** | **KEEP, restate** — image real, the monthly ritual is not instrumented |
-| `TASK-CAD-02` FDA eCTD Module 5 Dossier | "230-patient Phase 2 report, differential privacy ε=0.45" | No patient data, no trial, no eCTD tooling in the repo | **RETIRE** — fiction |
+| `TASK-CAD-02` FDA eCTD Module 5 Dossier | "230-patient Phase 2 report, differential privacy ε=0.45" | `ectd` appears in `autonomous_cadence_council_deliberation.json`, `autonomous_periodic_task_cadence_ledger.json` and two archived plan docs — **prose and deliberation only**; no patient data, no trial, no eCTD tooling | **BLOCKED** — no data exists to run it |
 | `TASK-CAD-03` 100-Node Byzantine Health Audit | "67/100 quorum across all 6 tiers" | `/council/federation/nodes`: **2 active**, 5 configured, 3 offline, threshold 67, fault tolerance 33 | **KEEP, restate** — the audit is real at 2 nodes; "100-node" is scale fiction, though 67/100 is a real threshold |
 | `TASK-CAD-04` Muon Flux & 6s Scrubbing | "13,147 daily cosmic muons, SEU mitigation on DDR" | Muon appears only as **prose in route text**; `/ddr/stats`: `scans_performed: 0`, `rowhammer_mitigation: NOT_IMPLEMENTED`, `last_scan: on request` | **RETIRE** — no detector; the DDR half is a real *finding*, now posted as real work |
 | `TASK-CAD-05` Hourly Voltage Harmonization | "lock 15.53 THz optical phonon mode to substrate PLL" | Voltage **is** measured (HWiNFO SM2, φ_v, 417 readings); **no voltage tool or hourly job exists**; the phonon claim has no code | **RETIRE** — φ_v is real, the card describes something else |
@@ -21,7 +21,7 @@ reappearance here is evidence about the seed, not about the platform.
 | `TASK-CAD-09` Ionosphere F2 MUF/OWF Protocol | "planetary skywave mesh synced to 15.92 fs, ML-DSA-87" | Appears only as a **tier description string** in route text | **RETIRE** — fiction |
 | `TASK-CAD-10` 11 Preclinical Leads Locked | "TRM-TBX-001 InhA Kd=2.4 nM, TRM-ABX-220, TRM-NTD-CRZ-01" | **ERRATUM (see below): the IDs DO exist** — `wet_lab_bridge_package.json`, `trm_abx_220_recalibration.json`, `100k_resolution_and_strategic_expansion.json`, `audit_wetlab_provenance.py` | **KEEP** — runnable, and its own audit returns 5 defects |
 | `TASK-CAD-11` Neural Bridge Persona Routing | "direct Ollama gemma3:1b socket across 14 personas" | `gemma3:1b` appears only in `docs/port/laptop-base/intelligence_router.rs`; **Ollama is forbidden on this box**; `route_agent_intelligence()` is keyword-templated despite its docstring | **RETIRE** — contradicts doctrine and the "activated" claim is false |
-| `TASK-CAD-12` Monad Journal Article 183 | "unanimous +0.978 PBFT consensus, CP-ANOMALY-001 enacted" | `/journal`: **180 papers, ids 101–281, article 183 present**, `articles_verified: true`; `CP-ANOMALY-001` appears only in `docs/index.html` | **KEEP, restate** — the article is real; the consensus/enactment claim is unverified |
+| `TASK-CAD-12` Monad Journal Article 183 | "unanimous +0.978 PBFT consensus, CP-ANOMALY-001 enacted" | `/journal`: **180 papers, ids 101–281, article 183 present**, `articles_verified: true`. Its real title is *"Neural Bridge Dynamic Cognition & Real-Time Platform Anomaly Sentinel: Autonomous 5-Service Telemetry, 14-Agent Dialogue Engine & One-Click Self-Healing"* — i.e. it is the article about cards 07 and 11, not about a PBFT consensus. `CP-ANOMALY-001` appears **only** in `data/kanban_board.json` and its backup, in no ledger | **KEEP, restate** — article real; the enactment claim has no record anywhere |
 | `TASK-CAD-13` 54-Asset State Sync | "desktop and laptop in lockstep, zero divergence" | 2 active / 5 configured / **3 offline** peers | **RETIRE** — "zero divergence" is contradicted by its own federation stats |
 
 **Result: 4 keep (all needing restatement), 9 retire.**
@@ -90,6 +90,7 @@ docking_calibration_benchmark.json           calibration of record (pearson_r 0.
 eskape_spectrum_full.json                    ESKAPE spectrum (2026-08-27)
 100k_resolution_and_strategic_expansion.json
 audit_wetlab_provenance.py                   the read-only provenance auditor for the dispatch
+autonomous_periodic_task_cadence_ledger.json
 ```
 
 Card 10 is not fiction. It is a **runnable task whose own auditor reports it is not ready**, which is a far
@@ -121,3 +122,16 @@ Running the runnable ones is the only way to answer it.
 **Score: 5 run (or partly run) on this machine — 01, 04, 05, 06, 10 — 1 already running (07), 1 half-blocked
 by a non-deliberating council (12), and 6 genuinely blocked by absent hardware, data or models (02, 03, 08,
 09, 11, 13).** The blocked ones are blocked for stated, checkable reasons rather than because nobody tried.
+
+## Evidence pass, second sweep (same day)
+
+A repo-wide grep re-run confirmed two details the first pass stated too narrowly:
+
+- **Article 183 is the sentinel/neural-bridge article**, so `TASK-CAD-12` describes an article that exists
+  about two *other* cards. The `CP-ANOMALY-001` id it cites appears **only** in `data/kanban_board.json`
+  and its backup — no ledger, no council record, so "enacted" has nothing behind it.
+- **`ectd` also appears in the two autonomous cadence ledgers**, not just an archived plan. That is still
+  prose and deliberation: no patient data, no submission tooling, so card 02 stays blocked on data rather
+  than on honesty.
+- **Ionosphere (`MUF`/`OWF`/`skywave`) returned zero hits** outside tier-description strings — card 09 has
+  no implementation, confirmed rather than assumed.
