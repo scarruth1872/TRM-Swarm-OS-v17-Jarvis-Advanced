@@ -29,6 +29,7 @@ mod ofp_wire;
 mod hands;
 mod skills;
 mod shield_rules;
+mod platform_facts;
 mod sovereign_axioms;
 mod council_ssm_pipeline;
 mod evidence_index;
@@ -6398,6 +6399,12 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "antibody_id": format!("ab-custom-{:04}", (std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs() % 10000)),
             "message": "Custom antibody registered into Digital DNA Repository."
         });
+    } else if method == Method::Get && url.starts_with("/platform/facts") {
+        // Facts FROM CODE, for the index builder. Measured 2026-11-24: both resident MoE models
+        // answered platform questions wrong and confidently (council port "443", A2 as set theory),
+        // and the retrieval index never contained these facts at all - so they are published here,
+        // generated from the constants and the module scan rather than typed into a document.
+        response_json = crate::platform_facts::facts();
     } else if method == Method::Get && url.starts_with("/platform/auth_policy") {
         // G9: publish the trust boundary instead of leaving it implicit.
         let token_configured = std::env::var("COUNCIL_AUTH_TOKEN")

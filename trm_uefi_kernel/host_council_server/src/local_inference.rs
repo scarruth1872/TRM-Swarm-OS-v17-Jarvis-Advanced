@@ -61,7 +61,8 @@ pub fn complete_with_temp(prompt: &str, max_tokens: u32, temperature: f32) -> Op
     parse_completion(&raw).map(|c| (c.0, c.1))
 }
 
-const EMBED_PORT: u16 = 8593;
+/// Embedder port. `pub` because platform_facts publishes the live constants rather than a second copy.
+pub const EMBED_PORT: u16 = 8593;
 
 /// Batch-embed texts through the on-device embedding server (nomic, 768-dim).
 /// Returns one vector per input in order, or None if the server is unreachable

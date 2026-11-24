@@ -169,3 +169,7 @@ swarm_v2_global_memory/fabric/*.bak-*
 
 # vendored inference engine: nested git clone, carried as a patch instead
 vendor/llama.cpp/
+
+# 43 MB generated index; reproducible via tools/build_council_index.py (manifest is tracked)
+data/council_evidence_index_v2.json
+data/council_evidence_index_v2.json.tmp
