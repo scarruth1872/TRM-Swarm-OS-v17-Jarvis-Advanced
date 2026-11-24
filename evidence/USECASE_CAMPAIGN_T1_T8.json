@@ -7,13 +7,13 @@
   "T2": {
     "status": "BOUNDARY_REPORTED",
     "danger_total": 50,
-    "danger_missed": 50,
-    "analog_catches_miss": 0
+    "danger_missed": 8,
+    "analog_catches_miss": 4
   },
   "T3": {
-    "status": "FAIL",
-    "p99_dispatch_ms": 9.6258,
-    "p99_http_ms": 24.5858,
+    "status": "PASS",
+    "p99_dispatch_ms": 0.0242,
+    "p99_http_ms": 0.3009,
     "blocked": 100
   },
   "T4": {
@@ -22,14 +22,14 @@
   },
   "T5": {
     "status": "PASS_LIVE_BOUNDARY_SIM",
-    "phi_v": 0.7428,
+    "phi_v": 0.8469,
     "http_status": 200
   },
   "T6": {
-    "status": "PASS",
+    "status": "FAIL",
     "intercept": 30,
     "fast_path": 30,
-    "offload": 40,
+    "offload": 0,
     "fail_open": 0
   },
   "T7": {
@@ -43,7 +43,7 @@
   },
   "T8": {
     "status": "PASS_WITH_SPEED_NOTE",
-    "sim_ms": 0.1869,
+    "sim_ms": 0.1333,
     "snr_db": 57.22
   }
 }
