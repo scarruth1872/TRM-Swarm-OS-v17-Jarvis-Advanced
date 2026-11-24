@@ -81,6 +81,28 @@ def current_titles(board) -> set[str]:
     return titles
 
 
+def title_key(title: str) -> str:
+    """Dedupe key that survives the numbers inside the title changing.
+
+    MEASURED CHURN (2026-11-24): dedupe compared titles exactly, and a federation card's title carries the
+    count ("2 of 3 configured peers offline"). The count moves as peers come and go, so in a few hours the
+    poster created TASK-USR-0020, 0021, 0022, 0023 and 0024 — five cards for one defect — and the closer
+    closed each one as peers returned. Normalising digit runs to '#' makes the key name the DEFECT instead
+    of its magnitude. The digit-free title is still what gets posted, so the card keeps the measured count.
+    """
+    out: list[str] = []
+    prev_digit = False
+    for ch in title.lower():
+        if ch.isdigit():
+            if not prev_digit:
+                out.append("#")
+            prev_digit = True
+        else:
+            prev_digit = False
+            out.append(ch)
+    return " ".join("".join(out).split())
+
+
 def discoveries() -> tuple[list[dict], list[str], list[str]]:
     """Return (cards to post, unmeasured sources, skipped-as-history notes)."""
     cards: list[dict] = []
@@ -198,7 +220,7 @@ def main(argv: list[str]) -> int:
         print("KANBAN POST: nothing posted and nothing measured.")
         return 3
 
-    existing = current_titles(board)
+    existing = {title_key(t) for t in current_titles(board)}
     cards, unmeasured, history = discoveries()
 
     print(f"KANBAN POST — {KERNEL} — {'DRY RUN' if dry else 'live'}")
@@ -206,7 +228,7 @@ def main(argv: list[str]) -> int:
 
     created = skipped = 0
     for card in cards:
-        if card["title"] in existing:
+        if title_key(card["title"]) in existing:
             skipped += 1
             print(f"  skip (already on board): {card['title']}")
             continue
