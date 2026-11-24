@@ -110,7 +110,12 @@ def facts_chunks():
     return out
 
 
-def corpus_chunks(max_docs=None):
+def corpus_chunks(max_docs=None, exclude=()):
+    """exclude: fnmatch globs matched against "<sub>/<name>". MEASURED 2026-11-24 (relevance gate FAIL 6/24):
+    the corpus contained the evaluation questions verbatim - 22 chunk hits - because reports ABOUT the
+    evaluation sat inside it, so the retriever could cite the exam paper. Those globs are now excluded
+    explicitly rather than ranked down: a document that quotes the questions is not evidence."""
+    import fnmatch
     out = []
     files = []
     for sub in ("docs", "evidence"):
@@ -123,6 +128,8 @@ def corpus_chunks(max_docs=None):
             # thousands of 900-char slices of machine output, which cost embed time and dilute the
             # index with text nobody asks a question about. Docs and .txt/.md evidence are the corpus.
             if not name.lower().endswith((".md", ".txt")):
+                continue
+            if any(fnmatch.fnmatch(f"{sub}/{name}", g) for g in exclude):
                 continue
             if os.path.isfile(p) and 200 < os.path.getsize(p) < 3_000_000:
                 files.append(p)
@@ -166,6 +173,8 @@ def main():
     ap.add_argument("--no-corpus", action="store_true")
     ap.add_argument("--max-docs", type=int, default=None)
     ap.add_argument("--out", default="v2", help="suffix: writes data/council_evidence_index_<out>.json")
+    ap.add_argument("--exclude", action="append", default=[], metavar="GLOB",
+                    help="fnmatch glob on '<sub>/<name>'; repeatable. Excluded files are NOT indexed.")
     a = ap.parse_args()
 
     global OUT, META
@@ -179,7 +188,7 @@ def main():
         return 2
     n_facts = len(chunks)
     if not a.no_corpus:
-        chunks += corpus_chunks(a.max_docs)
+        chunks += corpus_chunks(a.max_docs, tuple(a.exclude))
 
     texts = [c[2] for c in chunks]
     vecs = []

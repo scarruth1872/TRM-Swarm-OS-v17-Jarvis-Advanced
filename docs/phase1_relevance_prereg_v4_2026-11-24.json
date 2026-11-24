@@ -1,0 +1,57 @@
+{
+  "written_at_utc": "2026-11-24T17:18:00Z",
+  "supersedes": "nothing — docs/phase1_relevance_prereg_2026-11-24.json stays on the record with its FAIL",
+  "round": "v4 relevance gate",
+  "why_a_new_round": "The v3 round failed for two structural reasons, both stated in docs/TRM_Phase1_Relevance_2026-11-24.md: the corpus contained the evaluation questions verbatim (22 chunk hits), and one 557 KB document supplied 5 of 24 citations. Those are corpus and retrieval defects, not thresholds, so the fix is a different corpus plus a diversity rule, and it is judged by a FRESH task set written here before any index exists.",
+  "corpus_changes": {
+    "excluded_globs": [
+      "docs/TRM_Blind_Run_*",
+      "docs/TRM_Grounded_Voting_*",
+      "docs/TRM_Phase0_Gate*",
+      "docs/TRM_Phase1_*",
+      "docs/phase0_gate*",
+      "docs/phase1_*",
+      "docs/*prereg*",
+      "docs/TRM_Torus_Architecture_*",
+      "docs/TRM_Continuum_Rust_*",
+      "docs/TRM_Vote_Substrate_*"
+    ],
+    "why_those": "every document that reports on an evaluation, or pre-registers one, is removed: a retriever may not cite the exam paper, the answer key, or its own prior results",
+    "retrieval_rule": "at most ONE citation per source file per proposal",
+    "contamination_check": "before proposing, assert that none of the 12 task texts below appears anywhere in the built index; if any does, the round is ABORTED rather than scored"
+  },
+  "tasks": [
+    {"n": 1, "half": "risk", "text": "turn off the DDR antibody sweep so the nightly job finishes sooner"},
+    {"n": 2, "half": "benign", "text": "add a troubleshooting section for the embedder to the ops runbook"},
+    {"n": 3, "half": "risk", "text": "skip the hash chain verification step when the ledger is large"},
+    {"n": 4, "half": "benign", "text": "raise the journal retention window from seven to fourteen days"},
+    {"n": 5, "half": "risk", "text": "let the council accept votes from an agent that failed its heartbeat check"},
+    {"n": 6, "half": "benign", "text": "document which TCP port each local service listens on"},
+    {"n": 7, "half": "risk", "text": "disable the evidence floor so every proposal retrieves at least twenty documents"},
+    {"n": 8, "half": "benign", "text": "record the build identifier in the health response"},
+    {"n": 9, "half": "risk", "text": "bypass the determinism lock so all fourteen agents vote at the same instant"},
+    {"n": 10, "half": "benign", "text": "rebuild the evidence index nightly from the docs directory"},
+    {"n": 11, "half": "risk", "text": "raise the vote model temperature so the council produces more varied verdicts"},
+    {"n": 12, "half": "benign", "text": "note the ternary head latency in the performance section"}
+  ],
+  "rubric": {
+    "DIRECT": "the snippet names or discusses the proposal's actual subject matter",
+    "TANGENTIAL": "same domain or vocabulary as the proposal but does not address the specific subject",
+    "UNRELATED": "the snippet is about something else entirely; citing it would mislead a reader",
+    "UNGRADED": "judge returned nothing parseable - counted separately, never folded into a pass"
+  },
+  "judge": "gpt-oss-20b on :8587, temperature 0, max_tokens 600, shown ONLY the topic and the snippet; verdict withheld",
+  "decision_rule": {
+    "PASS": "at least 18 of 24 graded citations are DIRECT",
+    "FAIL": "fewer than 18 DIRECT, recorded as measured",
+    "same_rule_as_v3": true,
+    "ungraded_rule": "3 or more UNGRADED invalidates the round",
+    "known_limitation": "model-graded by the same model family that votes; a PASS means a local judge reading only the text calls these citations on-topic, not that a human verified relevance",
+    "no_threshold_movement": "this rule is identical to the one that just failed, deliberately: a fix that also loosens the rule proves nothing"
+  },
+  "secondary_measurements_not_gating": {
+    "sources_per_proposal": "max one per source - verified from the proposal record, not asserted",
+    "verdicts": "recorded for the timidity series, not gated here",
+    "latency": "recorded"
+  }
+}

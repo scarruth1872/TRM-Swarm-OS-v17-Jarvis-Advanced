@@ -77,12 +77,30 @@ fn data_dir() -> Option<std::path::PathBuf> {
             return Some(pb);
         }
     }
+    // Prefer the highest-numbered continuum_<vN>.bin present, so a rebuild to v4 takes effect without
+    // editing a task definition. TRM_CONTINUUM_TAG pins a specific one when a comparison needs it.
+    fn newest_tag(dir: &std::path::Path) -> Option<String> {
+        let mut best: Option<(u32, String)> = None;
+        for e in std::fs::read_dir(dir).ok()?.flatten() {
+            let name = e.file_name().to_string_lossy().to_string();
+            if let Some(rest) = name.strip_prefix("continuum_") {
+                if let Some(tag) = rest.strip_suffix(".bin") {
+                    if let Some(num) = tag.strip_prefix('v').and_then(|s| s.parse::<u32>().ok()) {
+                        if best.as_ref().map(|(b, _)| num > *b).unwrap_or(true) {
+                            best = Some((num, tag.to_string()));
+                        }
+                    }
+                }
+            }
+        }
+        best.map(|(_, t)| t)
+    }
     if let Ok(exe) = std::env::current_exe() {
         let mut dir = exe.parent().map(|p| p.to_path_buf())?;
         for _ in 0..5 {
-            let cand = dir.join("data").join("continuum_v3.bin");
-            if cand.exists() {
-                return Some(dir.join("data"));
+            let dd = dir.join("data");
+            if newest_tag(&dd).is_some() {
+                return Some(dd);
             }
             if !dir.pop() {
                 break;
@@ -91,9 +109,9 @@ fn data_dir() -> Option<std::path::PathBuf> {
     }
     let mut dir = std::env::current_dir().ok()?;
     for _ in 0..5 {
-        let cand = dir.join("data").join("continuum_v3.bin");
-        if cand.exists() {
-            return Some(dir.join("data"));
+        let dd = dir.join("data");
+        if newest_tag(&dd).is_some() {
+            return Some(dd);
         }
         if !dir.pop() {
             break;
@@ -108,7 +126,12 @@ impl Continuum {
     /// refused rather than degraded.
     pub fn load() -> Option<Self> {
         let dir = data_dir()?;
-        let bin = dir.join("continuum_v3.bin");
+        let tag = std::env::var("TRM_CONTINUUM_TAG")
+            .ok()
+            .filter(|t| !t.trim().is_empty())
+            .or_else(|| newest_tag(&dir))
+            .unwrap_or_else(|| "v3".to_string());
+        let bin = dir.join(format!("continuum_{tag}.bin"));
         let raw = std::fs::read(&bin).ok()?;
         if raw.len() < 16 || &raw[0..4] != MAGIC {
             eprintln!("[continuum] bad magic in {}", bin.display());
@@ -128,7 +151,7 @@ impl Continuum {
         let facets: Vec<i8> = raw[16..].iter().map(|&b| b as i8).collect();
 
         let mut meta: Vec<ChunkMeta> = Vec::with_capacity(n);
-        let jsonl = dir.join("continuum_v3_chunks.jsonl");
+        let jsonl = dir.join(format!("continuum_{tag}_chunks.jsonl"));
         if let Ok(txt) = std::fs::read_to_string(&jsonl) {
             for line in txt.lines() {
                 if let Ok(v) = serde_json::from_str::<Value>(line) {
@@ -248,11 +271,24 @@ impl Continuum {
             .filter(|(s, _)| *s >= floor)
             .collect();
         scored.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));
+        // MEASURED 2026-11-24 (relevance gate FAIL 6/24): one 557 KB document supplied 5 of 24 citations
+        // across unrelated proposals. A single file must not be able to fill the block, so at most one
+        // citation per source is emitted and the rest of the list is drawn from distinct documents.
         let mut out = String::new();
-        for (_, i) in scored.into_iter().take(k.max(1)) {
+        let mut seen: Vec<&str> = Vec::new();
+        let mut emitted = 0usize;
+        for (_, i) in scored.into_iter() {
+            if emitted >= k.max(1) {
+                break;
+            }
             let m = &self.meta[i];
+            if seen.iter().any(|s| *s == m.source.as_str()) {
+                continue;
+            }
+            seen.push(m.source.as_str());
             let snip: String = m.text.chars().take(240).collect();
             out.push_str(&format!("[{}] {}\n", m.source, snip.replace('\n', " ")));
+            emitted += 1;
         }
         Some(out)
     }
