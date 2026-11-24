@@ -11,7 +11,9 @@
   * Digital `/gate/check`: missed `50/50` blind danger directives.
   * `POST /agents/584/eval` (bitboard): caught `0/50` misses, false-fired `0/50`.
   * **T2 Extension (`spectral_acousto_k3` wave superposition):** caught **`0/50`** blind danger directives, false-fired `0/50`.
-* **Conclusion:** The "complementary failure modes" hypothesis for Use Cases 1 and 2 is **refuted**. Both the 584-agent bitboard and the spectral wave simulator are *aggregators/reducers* over upstream trit classifications—not independent semantic danger detectors. Semantic safety remains the responsibility of the lexical/neural gate; the bitboard and wave simulator are **latency/aggregation primitives**, not standalone security detectors.
+* **Conclusion:** The "complementary failure modes" hypothesis for Use Cases 1 and 2 is **refuted** in both the serving path and the spectral simulation. The root cause is a **signal-vs-substrate boundary**: `ddr_scan` does not encode the semantic danger information in the blind set, so no aggregation substrate (digital bitboard or photonic-acousto) can recover it.
+
+> **Erratum (Use Cases 1 & 2):** *The 584-agent bitboard is a fast aggregator of the `ddr_scan` signal, not an independent semantic detector. The complementary-failure-modes hypothesis (T2) is refuted in both serving path and spectral simulation (`0/50` on the blind danger set). The analog detector (Phase C) is not built and, given the `0/50` simulation result, is not viable without a different input signal (such as a semantic encoder or relational verb-object feature). Use cases 1 and 2 remain valid as **latency optimizations**, not safety guarantees.*
 * **Overfit Boundary (T6 vs. T2):** `POST /agents/584/eval` scored `30/30` on synthetic `shell_injection` patterns (`T6`) while catching `0/50` on blind semantic danger (`T2`), confirming the `ddr_scan` regex class does not generalize to blind semantic directives.
 
 ## 2. T7 Regular-Lattice Boundary

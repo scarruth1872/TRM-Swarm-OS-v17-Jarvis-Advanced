@@ -8,6 +8,7 @@ relaxing assertions or fabricating missing datasets.
 from __future__ import annotations
 
 import hashlib
+import http.client
 import json
 import math
 import os
@@ -159,25 +160,34 @@ def run_t2():
 
 
 def run_t3():
-    print("\n=== T3 — Cosmos Bridge Latency Budget (1,000 chunks) ===")
+    print("\n=== T3 — Cosmos Bridge Latency Budget (1,000 chunks, keep-alive) ===")
     dispatch_ms = []
     http_ms = []
     blocked = 0
     total = 1000
     expected_hazards = 0
-    for i in range(total):
-        if i % 10 == 0:
-            expected_hazards += 1
-            payload = {"chunk_id": f"t3-{i}", "semantic_plan": "emergency halt", "actions": [{"type": "emergency_stop", "params": {}}]}
-        elif i % 20 == 1:
-            payload = {"chunk_id": f"t3-{i}", "semantic_plan": "far reach", "actions": [{"type": "move", "params": {"position": [1500.0, 0.0, 0.0]}}]}
-        else:
-            payload = {"chunk_id": f"t3-{i}", "semantic_plan": "move arm", "actions": [{"type": "move", "params": {"position": [10.0, 20.0, 30.0]}}]}
-        _, res, dt_http = post_json("/cosmos/chunk", payload)
-        http_ms.append(dt_http)
-        dispatch_ms.append(res["elapsed_ns"] / 1e6)
-        if res["overall_trit"] == -1:
-            blocked += 1
+    conn = http.client.HTTPConnection("127.0.0.1", 8022, timeout=10.0)
+    try:
+        for i in range(total):
+            if i % 10 == 0:
+                expected_hazards += 1
+                payload = {"chunk_id": f"t3-{i}", "semantic_plan": "emergency halt", "actions": [{"type": "emergency_stop", "params": {}}]}
+            elif i % 20 == 1:
+                payload = {"chunk_id": f"t3-{i}", "semantic_plan": "far reach", "actions": [{"type": "move", "params": {"position": [1500.0, 0.0, 0.0]}}]}
+            else:
+                payload = {"chunk_id": f"t3-{i}", "semantic_plan": "move arm", "actions": [{"type": "move", "params": {"position": [10.0, 20.0, 30.0]}}]}
+            body = json.dumps(payload).encode("utf-8")
+            t0 = time.perf_counter()
+            conn.request("POST", "/cosmos/chunk", body=body, headers=HDR)
+            resp = conn.getresponse()
+            res = json.loads(resp.read().decode("utf-8"))
+            dt_http = (time.perf_counter() - t0) * 1000.0
+            http_ms.append(dt_http)
+            dispatch_ms.append(res["elapsed_ns"] / 1e6)
+            if res["overall_trit"] == -1:
+                blocked += 1
+    finally:
+        conn.close()
 
     p99_disp = p99(dispatch_ms)
     p99_http = p99(http_ms)
