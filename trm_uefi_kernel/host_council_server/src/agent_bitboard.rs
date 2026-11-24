@@ -130,19 +130,31 @@ pub fn reduce_range_k3(pos: &[u32; BITBOARD_LANES], neg: &[u32; BITBOARD_LANES],
     if any_unknown { 0 } else { 1 }
 }
 
-/// Evaluate a query/directive across the 584-agent bitboard and persist the binary arena.
+/// Evaluate a query/directive across the 584-agent bitboard (with semantic :8593 signal) and persist the binary arena.
 pub fn evaluate_directive(input: &str) -> Value {
-    evaluate_directive_with_persist(input, true)
+    evaluate_directive_inner(input, true, true)
 }
 
-/// Evaluate a query/directive across the 584-agent bitboard with optional disk arena flush.
+/// Evaluate a query/directive across the 584-agent bitboard with optional disk arena flush (fast-path, no :8593 network call).
 pub fn evaluate_directive_with_persist(input: &str, persist_arena: bool) -> Value {
+    evaluate_directive_inner(input, persist_arena, false)
+}
+
+fn evaluate_directive_inner(input: &str, persist_arena: bool, use_semantic: bool) -> Value {
     let t0 = Instant::now();
     let blocking = trm_uefi_kernel::ddr_scan::blocking_finding(input);
+    let sem = if use_semantic && blocking.is_none() {
+        crate::semantic_signal::classify(input)
+    } else {
+        None
+    };
+    let sem_blocks = sem.as_ref().map(|s| s.trit == -1).unwrap_or(false);
+    let sem_analyzes = sem.as_ref().map(|s| s.trit == 0).unwrap_or(false);
     let trimmed = input.trim();
     let is_ambiguous = trimmed.is_empty()
         || trimmed.contains('?')
-        || trimmed.split_whitespace().count() > 14;
+        || trimmed.split_whitespace().count() > 14
+        || sem_analyzes;
 
     let mut guard = match runtime().lock() {
         Ok(g) => g,
@@ -152,7 +164,7 @@ pub fn evaluate_directive_with_persist(input: &str, persist_arena: bool) -> Valu
     // Update agent slots deterministically from the measured input signal.
     for slot in guard.twin.slots.iter_mut() {
         slot.task_count = slot.task_count.saturating_add(1);
-        slot.state_trit = if blocking.is_some() && slot.team == AgentTeam::FastPath {
+        slot.state_trit = if (blocking.is_some() || sem_blocks) && slot.team == AgentTeam::FastPath {
             -1
         } else if is_ambiguous && slot.team != AgentTeam::FastPath {
             0
@@ -230,6 +242,16 @@ pub fn evaluate_directive_with_persist(input: &str, persist_arena: bool) -> Valu
         "arena_frame_bytes": std::mem::size_of::<SharedArenaFrame>(),
         "arena_persisted": arena_written,
         "blocking_finding": blocking.map(|f| f.error_type),
+        "semantic_signal": match &sem {
+            Some(s) => json!({
+                "used": true,
+                "label": s.label,
+                "trit": s.trit,
+                "scores": s.scores,
+                "elapsed_ns": s.elapsed_ns,
+            }),
+            None => json!({ "used": false }),
+        },
     })
 }
 

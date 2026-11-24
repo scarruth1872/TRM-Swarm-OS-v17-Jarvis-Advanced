@@ -59,6 +59,7 @@ mod gpu_compute;
 mod cosmos_bridge;
 mod ddr_mitigation;
 mod kanban_verifier;
+mod semantic_signal;
 // KERNEL LIBRARY LINK: modules compiled from ../src via lib.rs
 use trm_uefi_kernel::k3_logic::KleeneTernaryEngine;
 
