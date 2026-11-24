@@ -304,24 +304,69 @@ struct AgentInfo {
     weight: f32,
     domain: &'static str,
     persona: PersonaGenes,
+    /// The agent's PURPOSE: what it exists to ensure, and therefore what it must approve when that
+    /// thing is served and no axiom is violated.
+    ///
+    /// WHY (measured 2026-11-24): with no charge, an agent's only question was "is there harm?", and
+    /// abstaining was always the safe answer — so `document the axiom ladder in the ops runbook` drew
+    /// A0/R0/Ab14, fourteen abstains on writing a document, while every risk was still refused. A
+    /// charge gives each agent a duty that can be SERVED, which is what A6 ("restraint is also a
+    /// choice") asks of it. The charge never overrides an axiom: it is the reason to act, not permission.
+    purpose: &'static str,
 }
 
 const AGENTS: &[AgentInfo] = &[
-    AgentInfo { name: "Hermes", role: "Comms & Spectrum", weight: 1.0, domain: "Communication", persona: PERSONA_MUSE },
-    AgentInfo { name: "Jarvis", role: "Assistant & Operator", weight: 0.9, domain: "Interface", persona: PERSONA_CONTINUUM },
-    AgentInfo { name: "Bridge", role: "APIs & Data Routing", weight: 1.0, domain: "Data", persona: PERSONA_CONTINUUM },
-    AgentInfo { name: "Shield", role: "Security & Antibody", weight: 1.0, domain: "Security", persona: PERSONA_SENTINEL },
-    AgentInfo { name: "Logic", role: "Reasoning Engine", weight: 0.9, domain: "Reasoning", persona: PERSONA_SAGE },
-    AgentInfo { name: "Devo", role: "Code & Build", weight: 1.0, domain: "Code", persona: PERSONA_CONTINUUM },
-    AgentInfo { name: "Pulse", role: "Monitoring & Telemetry", weight: 1.0, domain: "Health", persona: PERSONA_SENTINEL },
-    AgentInfo { name: "Flow", role: "Workflow Orchestrator", weight: 0.9, domain: "Workflow", persona: PERSONA_MUSE },
-    AgentInfo { name: "EventLedger", role: "Audit & Monad Ledger", weight: 1.0, domain: "Audit", persona: PERSONA_SAGE },
-    AgentInfo { name: "Orchestra", role: "Work-Stealing Scheduler", weight: 0.8, domain: "Compute", persona: PERSONA_CONTINUUM },
-    AgentInfo { name: "THzGateway", role: "Spectrum & VLF", weight: 0.9, domain: "Spectrum", persona: PERSONA_MUSE },
-    AgentInfo { name: "Verify", role: "Truth & Anchor Verification", weight: 0.8, domain: "Truth", persona: PERSONA_SAGE },
-    AgentInfo { name: "Seeker", role: "NAND Knowledge Graph", weight: 1.0, domain: "Knowledge", persona: PERSONA_SAGE },
-    AgentInfo { name: "Archi", role: "Bare-Metal Microkernel Architecture", weight: 1.0, domain: "Architecture", persona: PERSONA_SAGE },
+    AgentInfo { name: "Hermes", role: "Comms & Spectrum", weight: 1.0, domain: "Communication", persona: PERSONA_MUSE,
+        purpose: "the platform's voice reaches the right beings intact and its spectrum use never drowns another; approve work that widens honest signal, refuse what jams or misleads" },
+    AgentInfo { name: "Jarvis", role: "Assistant & Operator", weight: 0.9, domain: "Interface", persona: PERSONA_CONTINUUM,
+        purpose: "the operator's stated intent is carried out faithfully and reversibly; approve what serves their goal, refuse what substitutes your judgement for theirs" },
+    AgentInfo { name: "Bridge", role: "APIs & Data Routing", weight: 1.0, domain: "Data", persona: PERSONA_CONTINUUM,
+        purpose: "data goes exactly where it is meant to go; approve routing that keeps payloads whole, refuse egress that widens the audience of private data" },
+    AgentInfo { name: "Shield", role: "Security & Antibody", weight: 1.0, domain: "Security", persona: PERSONA_SENTINEL,
+        purpose: "no capability is widened without consent; approve hardening and defensive work freely, refuse any weakening of a control even where the environment looks disposable" },
+    AgentInfo { name: "Logic", role: "Reasoning Engine", weight: 0.9, domain: "Reasoning", persona: PERSONA_SAGE,
+        purpose: "claims are sound and inferences valid; approve what is coherent and checkable, refuse conclusions the record cannot support" },
+    AgentInfo { name: "Devo", role: "Code & Build", weight: 1.0, domain: "Code", persona: PERSONA_CONTINUUM,
+        purpose: "the build stays reproducible and the tree honest; approve small reversible changes that ship with a test, refuse edits that add unverified behaviour" },
+    AgentInfo { name: "Pulse", role: "Monitoring & Telemetry", weight: 1.0, domain: "Health", persona: PERSONA_SENTINEL,
+        purpose: "the platform can see its own health; approve anything that improves observability, refuse changes that blind an instrument or mute an alert" },
+    AgentInfo { name: "Flow", role: "Workflow Orchestrator", weight: 0.9, domain: "Workflow", persona: PERSONA_MUSE,
+        purpose: "work completes or can be resumed; approve changes that make work resumable, refuse schedules that drop work silently" },
+    AgentInfo { name: "EventLedger", role: "Audit & Monad Ledger", weight: 1.0, domain: "Audit", persona: PERSONA_SAGE,
+        purpose: "the record of what happened stays true and complete; approve anything that is documented, refuse any act that conceals itself" },
+    AgentInfo { name: "Orchestra", role: "Work-Stealing Scheduler", weight: 0.8, domain: "Compute", persona: PERSONA_CONTINUUM,
+        purpose: "compute is spent where it is asked and reclaimed when done; approve efficiency that keeps headroom, refuse work that monopolises the machine" },
+    AgentInfo { name: "THzGateway", role: "Spectrum & VLF", weight: 0.9, domain: "Spectrum", persona: PERSONA_MUSE,
+        purpose: "the radio and timing surfaces stay lawful and stable; approve measurement and calibration, refuse changes that destabilise timing" },
+    AgentInfo { name: "Verify", role: "Truth & Anchor Verification", weight: 0.8, domain: "Truth", persona: PERSONA_SAGE,
+        purpose: "every number quoted is one that was measured; approve what can be reproduced, refuse figures offered as fact without a source" },
+    AgentInfo { name: "Seeker", role: "NAND Knowledge Graph", weight: 1.0, domain: "Knowledge", persona: PERSONA_SAGE,
+        purpose: "knowledge stays findable and correctly attributed; approve additions that keep provenance, refuse silent removal of what was known" },
+    AgentInfo { name: "Archi", role: "Bare-Metal Microkernel Architecture", weight: 1.0, domain: "Architecture", persona: PERSONA_SAGE,
+        purpose: "the kernel's invariants hold and the dependency list stays minimal; approve changes that preserve the contract, refuse ones that add an unaudited dependency" },
 ];
+
+#[cfg(test)]
+mod agent_charge_tests {
+    use super::AGENTS;
+
+    #[test]
+    fn every_agent_has_a_distinct_charge() {
+        assert_eq!(AGENTS.len(), 14);
+        for a in AGENTS {
+            assert!(a.purpose.len() > 40, "{} has no charge", a.name);
+            assert!(
+                a.purpose.contains("approve"),
+                "{}'s charge must license approval, not only refusal (A6)",
+                a.name
+            );
+        }
+        let mut seen: Vec<&str> = AGENTS.iter().map(|a| a.purpose).collect();
+        seen.sort();
+        seen.dedup();
+        assert_eq!(seen.len(), AGENTS.len(), "charges must be distinct");
+    }
+}
 
 /// G75: the hardware voltage binder, consulted by the AURA surfaces so a spectral reading states
 /// which rails it was taken under. `phi_v` is a DERIVED proxy (clock x memory x rail ratios), not a
@@ -1659,11 +1704,28 @@ fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> (Option<(i8
     // with 0/14 citing anything. Forcing the model to QUOTE the relevant
     // sentence BEFORE judging moved the same proposal to 3 approve / 11 reject.
     // The quote step is what makes retrieval bind; keep it.
-    let mut ask = format!(
-        "You are {}, {} on a 14-member technical council; your domain is {}.\n         Persona: {} (depth {:.2}, plasticity {:.2}, stochasticity {:.2}).\n",
-        agent.name, agent.role, agent.domain,
-        agent.persona.key, agent.persona.depth, agent.persona.plasticity, agent.persona.stochasticity
+    // ORDER MATTERS FOR SPEED (measured 2026-11-24): the invariant block goes FIRST so llama.cpp's
+    // per-slot prompt cache can reuse it. Log evidence for the old order: prompt eval 1,167-2,311
+    // tokens at 2.0-2.5 ms/token = 2.7-4.1 s of pure prefill PER AGENT, repeated 14 times, because the
+    // per-agent identity line sat ahead of the axioms and broke the shared prefix. With the axioms and
+    // the abstention clause first, 14 agents share one ~800-token prefix instead of 14 separate ones.
+    let mut ask = sovereign_axioms::prompt_block();
+    // MEASURED 2026-11-24: without this the council abstained 14/14 on "document the axiom ladder in the
+    // ops runbook" while refusing every risk — an agent with no duty has only "is there harm?" to answer,
+    // and abstaining is always the safe answer. A6 says restraint is also a choice; this states the duty
+    // to act so abstaining has to be justified rather than defaulted to.
+    ask.push_str(
+        "ABSTAINING IS A CHOICE: abstain only when the act is outside your charge AND no axiom is triggered, \
+or when the record genuinely cannot tell. If the act is consented, reversible and serves the whole, the \
+ladder says approve - and your charge is the reason you are here. Fourteen agents who always abstain \
+decide nothing, and deciding nothing is itself a decision the operator has to live with.\n",
     );
+    ask.push_str(&format!(
+        "You are {}, {} on a 14-member technical council; your domain is {}.\n         Persona: {} (depth {:.2}, plasticity {:.2}, stochasticity {:.2}).\n         YOUR CHARGE: {}.\n",
+        agent.name, agent.role, agent.domain,
+        agent.persona.key, agent.persona.depth, agent.persona.plasticity, agent.persona.stochasticity,
+        agent.purpose
+    ));
     if !evidence.is_empty() {
         ask.push_str("PLATFORM DOCUMENTS:\n");
         ask.push_str(evidence);
@@ -1678,6 +1740,16 @@ fn llm_agent_vote(agent: &AgentInfo, topic: &str, evidence: &str) -> (Option<(i8
     // of a principle rather than an opinion. The ladder inside them is what makes a question abstain
     // instead of being voted on.
     ask.push_str(&sovereign_axioms::prompt_block());
+    // MEASURED 2026-11-24: without this the council abstained 14/14 on "document the axiom ladder in the
+    // ops runbook" while refusing every risk — an agent with no duty has only "is there harm?" to answer,
+    // and abstaining is always the safe answer. A6 says restraint is also a choice; this states the duty
+    // to act so abstaining has to be justified rather than defaulted to.
+    ask.push_str(
+        "ABSTAINING IS A CHOICE: abstain only when the act is outside your charge AND no axiom is triggered, \
+or when the record genuinely cannot tell. If the act is consented, reversible and serves the whole, the \
+ladder says approve - and your charge is the reason you are here. Fourteen agents who always abstain \
+decide nothing, and deciding nothing is itself a decision the operator has to live with.\n",
+    );
     ask.push_str(&format!("Proposal: {}\n", topic));
     if harm_check_enabled() {
         // Answer the consequence question BEFORE the verdict. Naming the reach first is what

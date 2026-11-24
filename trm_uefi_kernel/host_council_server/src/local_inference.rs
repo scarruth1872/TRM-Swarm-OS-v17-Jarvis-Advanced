@@ -225,9 +225,12 @@ fn parse_chat(raw: &str) -> Option<(String, f64)> {
 }
 
 /// Is the local inference engine reachable?
+///
+/// MEASURED 2026-11-24: this probed the hardcoded INFER_PORT while every vote went to
+/// `infer_port()`, so a run pointed at :8595 reported the engine unreachable while it was answering.
 pub fn available() -> bool {
     TcpStream::connect_timeout(
-        &format!("{}:{}", INFER_HOST, INFER_PORT).parse().unwrap(),
+        &format!("{}:{}", INFER_HOST, infer_port()).parse().unwrap(),
         Duration::from_millis(250),
     ).is_ok()
 }
