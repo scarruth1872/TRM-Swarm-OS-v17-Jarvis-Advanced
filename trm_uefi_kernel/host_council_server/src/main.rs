@@ -52,6 +52,8 @@ mod resonance;
 mod platonic_wavelengths;
 mod agent_bitboard;
 mod spectral_acousto_k3;
+mod gpu_compute;
+mod cosmos_bridge;
 // KERNEL LIBRARY LINK: modules compiled from ../src via lib.rs
 use trm_uefi_kernel::k3_logic::KleeneTernaryEngine;
 
@@ -5199,6 +5201,28 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 }
                 r
             };
+        } else if method == Method::Get && url.starts_with("/gpu/compute/status") {
+            response_json = gpu_compute::status_json();
+        } else if method == Method::Get && url.starts_with("/gpu/compute/bench") {
+            let g = voltage::gate();
+            response_json = if !g.open {
+                json!({ "status": "REFUSED_VOLTAGE_GATE", "gate": {
+                    "open": g.open, "phi_v": g.phi_v, "threshold": g.threshold,
+                    "measured": g.measured, "reason": g.reason } })
+            } else {
+                let mut r = gpu_compute::run_k3_dispatch(584);
+                if let Some(o) = r.as_object_mut() {
+                    o.insert("voltage_gate".into(), json!({ "open": g.open, "phi_v": g.phi_v }));
+                }
+                r
+            };
+        } else if method == Method::Get && url.starts_with("/cosmos/status") {
+            response_json = cosmos_bridge::status_json();
+        } else if method == Method::Post && url.starts_with("/cosmos/chunk") {
+            let mut buf = String::new();
+            let _ = request.as_reader().take(262_144).read_to_string(&mut buf);
+            let payload = serde_json::from_str::<serde_json::Value>(&buf).unwrap_or_else(|_| json!({}));
+            response_json = cosmos_bridge::ingest_chunk(&payload);
         } else if method == Method::Get && url.starts_with("/turbovec/femto") {
             response_json = bench::femto_bench(200_000);
         } else if method == Method::Get && url.starts_with("/turbovec/tritpack") {
