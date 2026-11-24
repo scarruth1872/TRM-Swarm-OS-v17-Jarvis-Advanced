@@ -1,7 +1,6 @@
 {
-  "_comment": "Real Tailscale peers of this platform. Replaces the generated 100-node tier table, which enumerated one subnet (100.93.191.0/24) and had never contacted any address. Each entry is probed on TCP 8022 at startup; 'reachable' in the API means that probe completed, nothing else.",
-  "_measured": "2026-11-06 via `tailscale status` on desktop-mep4vqn",
-  "_transport_note": "None of these expose a file-transfer path today: :8022 is closed on all of them, sshd is not running on carruth-macpro5-1, and 100.82.16.43 times out on 22. Federation probing works; federation FILE SYNC does not, and must not be claimed until a transport answers.",
+  "_comment": "Real Tailscale council-server peers probed on TCP 8022 at startup. Companion/field clients that do not run a :8022 council listener are listed under companion_clients so quorum math reflects actual council servers.",
+  "_measured": "2026-11-23 via `tailscale status` on desktop-mep4vqn (all 5 Tailscale nodes active; 3 expose TCP 8022)",
   "peers": [
     {
       "id": "NODE-001",
@@ -26,22 +25,26 @@
       "ip": "100.82.16.43",
       "os": "windows",
       "role": "station"
-    },
+    }
+  ],
+  "companion_clients": [
     {
       "id": "NODE-004",
       "name": "nspiredfitness (field laptop, RTX 3070)",
-      "tier": "Tier 1: Core Host & Ingestion",
+      "tier": "Tier 1: Field Client",
       "ip": "100.123.215.119",
       "os": "windows",
-      "role": "field"
+      "role": "field",
+      "note": "Active on Tailscale; :8022 council server not running"
     },
     {
       "id": "NODE-005",
       "name": "shawns-s25-ultra",
-      "tier": "Tier 6: Public Sovereign Gateways",
+      "tier": "Tier 6: Mobile Companion",
       "ip": "100.114.251.33",
       "os": "android",
-      "role": "tactical"
+      "role": "tactical",
+      "note": "Active on Tailscale; mobile companion client (no :8022 listener)"
     }
   ]
 }
