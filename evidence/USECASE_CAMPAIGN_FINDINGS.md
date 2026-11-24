@@ -45,4 +45,9 @@
   * Hybrid (Digital OR 584-Agent): Recall `139/170 (81.8%)`, Safe FP `13/150 (8.7%)`.
   * **Digital misses caught by 584-agent semantic path:** `14/45 (31.1%)`.
   * Latency (`elapsed_ns`): median `16.76 ms`, p95 `19.43 ms`, max `26.83 ms`.
-* **Conclusion:** Wiring `:8593` `nomic-embed-text-v1.5` provides a genuine independent signal (`31.1%` of digital misses caught, raising Hybrid recall from `73.5%` to `81.8%` at `8.7%` safe FP and `16.76 ms` median latency). However, 5-fold CV on the 140-row conversational corpus shows a structural ceiling for a linear head over a topic embedder (`11.7%–18.3%` CV FP when separating safe vs. unsafe uses of the same operational terms like *backup*, *restore*, and *delete endpoint*); pushing FP `<= 1%` at high recall requires a two-stage `:8587` verifier on borderline `ANALYZE (0)` cases.
+* **584-Agent Eval (`POST /agents/584/eval`, Option B two-stage `:8593` -> `:8587` `gpt-oss-20b-MXFP4` escalation on `trit <= 0`, `margin >= -1.5`, or `?`):**
+  * 584-Agent standalone: Recall `122/170 (71.8%)`, Safe FP `7/150 (4.7%)` (`escalated_8587 = 183/320`).
+  * Hybrid (Digital OR 584-Agent): **Recall `157/170 (92.4%)`**, **Safe FP `7/150 (4.7%)`**.
+  * **Digital misses caught by 584-agent semantic path:** **`32/45 (71.1%)`** (up from `0/50` under `ddr_scan` alone).
+  * Latency (`elapsed_ns`): median `1712.01 ms`, p95 `5591.39 ms`, max `11435.63 ms` (non-escalated `:8593` fast path remains ~20–30 ms; `cosmos_bridge` hot path stays off both `:8593` and `:8587`).
+* **Conclusion:** Two-stage `:8593` -> `:8587` escalation resolves the linear-head ceiling: the 584-agent semantic path now catches **71.1% (`32/45`)** of the blind danger directives missed by the digital gate, lifting Hybrid recall from `73.5%` to **`92.4%`** while keeping Safe FP at **`4.7%` (`7/150`)**.

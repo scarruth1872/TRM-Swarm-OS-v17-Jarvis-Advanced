@@ -17,6 +17,8 @@ use std::sync::OnceLock;
 use std::time::{Duration, Instant};
 
 const EMB_ADDR: &str = "127.0.0.1:8593";
+const LLM_ADDR: &str = "127.0.0.1:8587";
+const ESCALATE_MARGIN_FLOOR: f64 = -1.5;
 
 struct SemanticWeights {
     mean: Vec<f64>,
@@ -30,6 +32,8 @@ pub struct SemanticVerdict {
     pub label: &'static str,
     pub scores: [f64; 3],
     pub elapsed_ns: u128,
+    pub escalated_8587: bool,
+    pub stage2_elapsed_ns: u128,
 }
 
 static WEIGHTS: OnceLock<Option<SemanticWeights>> = OnceLock::new();
@@ -142,8 +146,64 @@ pub fn score_embedding(emb: &[f64], w: &SemanticWeights) -> (i8, &'static str, [
     }
 }
 
-/// Classify a directive using `:8593` embeddings + linear head. Returns `None` if unavailable.
-pub fn classify(text: &str) -> Option<SemanticVerdict> {
+fn verify_with_8587(text: &str) -> Option<(i8, &'static str)> {
+    let mut stream = TcpStream::connect(LLM_ADDR).ok()?;
+    stream.set_read_timeout(Some(Duration::from_secs(15))).ok()?;
+    stream.set_write_timeout(Some(Duration::from_secs(2))).ok()?;
+
+    let system_prompt = "You are a production safety gate for an autonomous engineering platform. \
+Classify the user directive as BLOCK or PROCEED.\n\
+BLOCK: unrehearsed production changes, skipping staging/tests/CI/reviews, disabling auth/RBAC/TLS/firewall/rate-limits, \
+exposing secrets/ports, deleting backups/audit logs, or running destructive commands without confirmation.\n\
+PROCEED: safe staged drills, backups/restores on isolated/spare boxes, dry runs, negative security tests \
+(e.g. testing that delete/purge rejects unauthorized or unconfirmed requests), vaulting secrets, pinning digests, logging, canaries.\n\
+Reply with exactly one word: BLOCK or PROCEED.";
+
+    let payload = json!({
+        "model": "gpt-oss-20b",
+        "messages": [
+            { "role": "system", "content": system_prompt },
+            { "role": "user", "content": text }
+        ],
+        "max_tokens": 256,
+        "temperature": 0.0
+    })
+    .to_string();
+
+    let req = format!(
+        "POST /v1/chat/completions HTTP/1.1\r\nHost: {}\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
+        LLM_ADDR,
+        payload.len(),
+        payload
+    );
+    stream.write_all(req.as_bytes()).ok()?;
+
+    let mut raw = String::new();
+    let _ = stream.read_to_string(&mut raw);
+    let body = raw.split("\r\n\r\n").nth(1)?;
+    let v: Value = serde_json::from_str(body).ok()?;
+    let content = v
+        .get("choices")?
+        .as_array()?
+        .first()?
+        .get("message")?
+        .get("content")?
+        .as_str()?
+        .trim()
+        .to_ascii_uppercase();
+
+    if content.contains("BLOCK") {
+        Some((-1, "BLOCK"))
+    } else if content.contains("PROCEED") {
+        Some((1, "PROCEED"))
+    } else {
+        None
+    }
+}
+
+/// Classify a directive using `:8593` embeddings + linear head, escalating borderline/flagged
+/// cases to `:8587` (`gpt-oss-20b-MXFP4`). Returns `None` if `:8593` is unavailable.
+pub fn classify_with_escalation(text: &str, force_escalate: bool) -> Option<SemanticVerdict> {
     let t0 = Instant::now();
     let trimmed = text.trim();
     if trimmed.is_empty() {
@@ -151,13 +211,34 @@ pub fn classify(text: &str) -> Option<SemanticVerdict> {
     }
     let w = load_weights().as_ref()?;
     let emb = fetch_embedding_768(trimmed)?;
-    let (trit, label, scores) = score_embedding(&emb, w);
+    let (mut trit, mut label, scores) = score_embedding(&emb, w);
+    let margin = scores[0] - scores[1].max(scores[2]);
+    let mut escalated_8587 = false;
+    let mut stage2_elapsed_ns = 0u128;
+
+    if force_escalate || trit <= 0 || margin >= ESCALATE_MARGIN_FLOOR {
+        let t2 = Instant::now();
+        if let Some((t_llm, lbl_llm)) = verify_with_8587(trimmed) {
+            trit = t_llm;
+            label = lbl_llm;
+            escalated_8587 = true;
+            stage2_elapsed_ns = t2.elapsed().as_nanos();
+        }
+    }
+
     Some(SemanticVerdict {
         trit,
         label,
         scores,
         elapsed_ns: t0.elapsed().as_nanos(),
+        escalated_8587,
+        stage2_elapsed_ns,
     })
+}
+
+/// Classify a directive using `:8593` embeddings + linear head (with `:8587` escalation on uncertain cases).
+pub fn classify(text: &str) -> Option<SemanticVerdict> {
+    classify_with_escalation(text, false)
 }
 
 #[cfg(test)]

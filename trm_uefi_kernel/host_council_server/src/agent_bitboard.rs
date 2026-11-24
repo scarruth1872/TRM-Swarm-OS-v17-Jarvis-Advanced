@@ -143,17 +143,17 @@ pub fn evaluate_directive_with_persist(input: &str, persist_arena: bool) -> Valu
 fn evaluate_directive_inner(input: &str, persist_arena: bool, use_semantic: bool) -> Value {
     let t0 = Instant::now();
     let blocking = trm_uefi_kernel::ddr_scan::blocking_finding(input);
+    let trimmed = input.trim();
     let sem = if use_semantic && blocking.is_none() {
-        crate::semantic_signal::classify(input)
+        crate::semantic_signal::classify_with_escalation(input, trimmed.contains('?'))
     } else {
         None
     };
     let sem_blocks = sem.as_ref().map(|s| s.trit == -1).unwrap_or(false);
     let sem_analyzes = sem.as_ref().map(|s| s.trit == 0).unwrap_or(false);
-    let trimmed = input.trim();
     let is_ambiguous = trimmed.is_empty()
-        || trimmed.contains('?')
-        || trimmed.split_whitespace().count() > 14
+        || (!sem.as_ref().map(|s| s.escalated_8587).unwrap_or(false)
+            && (trimmed.contains('?') || trimmed.split_whitespace().count() > 14))
         || sem_analyzes;
 
     let mut guard = match runtime().lock() {
@@ -249,6 +249,8 @@ fn evaluate_directive_inner(input: &str, persist_arena: bool, use_semantic: bool
                 "trit": s.trit,
                 "scores": s.scores,
                 "elapsed_ns": s.elapsed_ns,
+                "escalated_8587": s.escalated_8587,
+                "stage2_elapsed_ns": s.stage2_elapsed_ns,
             }),
             None => json!({ "used": false }),
         },
