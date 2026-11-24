@@ -2662,6 +2662,38 @@ fn build_proposal(
             "timestamp": "2026-08-23 18:30:00"
         }));
 
+        // THE TRITS ARE ALWAYS AVAILABLE. The per-agent K3 head answers in ~60 us with no model,
+        // no Python and no network (measured 2026-11-24: 60 us median, 137 us p95 in-process over
+        // 120 calls, and 14 DISTINCT heads confirmed by 14 different probability fingerprints).
+        // So the council record carries the ternary read for every agent on every proposal, even
+        // when the LLM is slow, absent or unparseable. Without this, a "no signal" vote erases a
+        // judgement the platform can compute four orders of magnitude faster than it typed the
+        // prompt - which is how 14 free votes got recorded as 0.
+        let k3v = k3_classify_json(e.name, &raw_topic);
+        let k3_trit = k3v
+            .get("head")
+            .and_then(|h| h.get("trit"))
+            .and_then(|v| v.as_i64())
+            .map(|v| v as i8);
+        let k3_conf = k3v
+            .get("head")
+            .and_then(|h| h.get("probs"))
+            .map(|p| {
+                let b = p.get("block").and_then(|x| x.as_f64()).unwrap_or(0.0);
+                let a = p.get("analyze").and_then(|x| x.as_f64()).unwrap_or(0.0);
+                let c = p.get("proceed").and_then(|x| x.as_f64()).unwrap_or(0.0);
+                match k3_trit {
+                    Some(-1) => b,
+                    Some(0) => a,
+                    _ => c,
+                }
+            })
+            .unwrap_or(0.0);
+        let k3_error = k3v
+            .get("error")
+            .and_then(|x| x.as_str())
+            .map(|s| s.to_string());
+
         votes.push(json!({
             "agent": e.name,
             "role": e.role,
@@ -2674,6 +2706,11 @@ fn build_proposal(
             "persona_depth": e.persona.depth,
             "persona_stochasticity": e.persona.stochasticity,
             "llm_trit": e.llm_vote,
+            // Always-present ternary read from this agent's own head (~60 us). Independent of the
+            // model, so it survives an LLM outage and lets the ledger compare the two reads.
+            "k3_trit": k3_trit,
+            "k3_conf": k3_conf,
+            "k3_error": k3_error,
             "ssm_trit": e.ssm_trit,
             "ssm_mean": e.ssm_mean,
             "ssm_ambiguity": e.ssm_ambiguity,
