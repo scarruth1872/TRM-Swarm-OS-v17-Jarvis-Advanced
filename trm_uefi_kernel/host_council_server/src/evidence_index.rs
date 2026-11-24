@@ -187,7 +187,46 @@ fn cosine(a: &[f32], b: &[f32]) -> f32 {
 /// Compact "[source] snippet" block for the top-k chunks.
 /// Empty string means retrieval is unavailable or found nothing — callers must treat that as
 /// "no evidence", never as "evidence supports this".
+/// Which ranker answers: "continuum" (integer facet dot over the K3CX artefact) by default when it is
+/// loaded, "f32" to force the previous path. Measured before switching: the continuum keeps 0.944
+/// recall@10 of the f32 ranking at 4.0x less memory and served 4/4 platform facts (docs/TRM_Continuum_Rust_2026-11-24.md).
+/// Public name of the ranker that would answer right now ("continuum" or "f32"), so the proposal
+/// record can state which one produced its citations instead of leaving a reader to infer it.
+pub fn ranker_name() -> &'static str {
+    if ranker().eq_ignore_ascii_case("f32") {
+        "f32"
+    } else if crate::continuum::loaded().is_some() {
+        "continuum(i8 facets, i32 dot)"
+    } else {
+        "f32(fallback: no continuum)"
+    }
+}
+
+fn ranker() -> &'static str {
+    std::env::var("TRM_EVIDENCE_RANKER")
+        .map(|s| Box::leak(s.into_boxed_str()) as &'static str)
+        .unwrap_or("continuum")
+}
+
 pub fn evidence_for(query: &str, k: usize) -> String {
+    // Caught by `empty_query_returns_no_evidence` after the ranker swap: the embedder happily embeds the
+    // empty string, so without this guard an empty query returned a full evidence block from whichever
+    // ranker ran first. An empty query must mean "no evidence", never "here is the nearest thing".
+    if query.trim().is_empty() {
+        return String::new();
+    }
+    // The continuum path is tried first; an empty result from it is NOT treated as "no evidence" unless
+    // it actually answered, so a missing artefact falls through to the f32 index rather than silently
+    // blanking every citation.
+    if !ranker().eq_ignore_ascii_case("f32") {
+        if let Some(c) = crate::continuum::loaded() {
+            if let Some(block) = c.evidence_for(query, k, MIN_SCORE) {
+                if !block.trim().is_empty() {
+                    return block;
+                }
+            }
+        }
+    }
     let cs = chunks();
     if cs.is_empty() || query.trim().is_empty() {
         return String::new();

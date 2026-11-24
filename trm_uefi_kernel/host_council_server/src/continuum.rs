@@ -41,6 +41,9 @@ pub struct Continuum {
     dim: usize,
     /// n*dim int8 facets, row-major.
     facets: Vec<i8>,
+    /// Per-row sqrt(sum of squares of the i8 facets). Present so the evidence path can keep using the
+    /// SAME 0.30 similarity floor as the f32 retriever: ranking stays integer, the floor stays comparable.
+    row_norm: Vec<f32>,
     meta: Vec<ChunkMeta>,
     path: String,
 }
@@ -140,9 +143,18 @@ impl Continuum {
             eprintln!("[continuum] metadata rows {} != index rows {}", meta.len(), n);
             return None;
         }
+        let mut row_norm = Vec::with_capacity(n);
+        for i in 0..n {
+            let mut s = 0f32;
+            for j in 0..dim {
+                let v = facets[i * dim + j] as f32;
+                s += v * v;
+            }
+            row_norm.push(s.sqrt());
+        }
         eprintln!("[continuum] loaded {} x {} facets ({:.2} MB) from {}",
                   n, dim, raw.len() as f64 / 1e6, bin.display());
-        Some(Continuum { n, dim, facets, meta, path: bin.display().to_string() })
+        Some(Continuum { n, dim, facets, row_norm, meta, path: bin.display().to_string() })
     }
 
     pub fn len(&self) -> usize { self.n }
@@ -198,6 +210,52 @@ static CONT: OnceLock<Option<Continuum>> = OnceLock::new();
 
 fn get() -> Option<&'static Continuum> {
     CONT.get_or_init(Continuum::load).as_ref()
+}
+
+/// The loaded continuum, if any. Used by the evidence path to rank without touching the f32 JSON.
+pub fn loaded() -> Option<&'static Continuum> {
+    get()
+}
+
+impl Continuum {
+    /// Evidence block, same "[source] snippet" shape the council already consumes, but ranked by the
+    /// integer facet dot and filtered by the caller's similarity floor.
+    ///
+    /// The floor is applied to `dot / (|q| * |row|)`, i.e. the cosine of the QUANTISED rows. That keeps
+    /// `MIN_SCORE = 0.30` meaning what it meant on the f32 index instead of inventing a new number for
+    /// integer scores (which have no fixed scale). Ranking is still decided by the integer dot alone.
+    pub fn evidence_for(&self, query: &str, k: usize, floor: f32) -> Option<String> {
+        let qv = crate::evidence_index::embed_query_pub(query)?;
+        if qv.len() != self.dim {
+            return None;
+        }
+        let qf: Vec<i8> = qv.iter().map(|&v| to_facet(v)).collect();
+        let mut qn = 0f32;
+        for &v in &qf {
+            let f = v as f32;
+            qn += f * f;
+        }
+        let qn = qn.sqrt();
+        if qn == 0.0 {
+            return None;
+        }
+        let mut scored: Vec<(f32, usize)> = (0..self.n)
+            .map(|i| {
+                let d = self.dot(&qf, i) as f32;
+                let denom = qn * self.row_norm[i];
+                (if denom > 0.0 { d / denom } else { 0.0 }, i)
+            })
+            .filter(|(s, _)| *s >= floor)
+            .collect();
+        scored.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));
+        let mut out = String::new();
+        for (_, i) in scored.into_iter().take(k.max(1)) {
+            let m = &self.meta[i];
+            let snip: String = m.text.chars().take(240).collect();
+            out.push_str(&format!("[{}] {}\n", m.source, snip.replace('\n', " ")));
+        }
+        Some(out)
+    }
 }
 
 /// Status of the continuum as loaded in this process.
@@ -258,7 +316,16 @@ mod tests {
             -20, 30, -40, 0,
         ];
         let meta = (0..3).map(|i| ChunkMeta { source: format!("s{i}"), text: format!("t{i}") }).collect();
-        Continuum { n: 3, dim: 4, facets, meta, path: "mem".into() }
+        let mut row_norm = Vec::new();
+        for i in 0..3 {
+            let mut s = 0f32;
+            for j in 0..4 {
+                let v = facets[i * 4 + j] as f32;
+                s += v * v;
+            }
+            row_norm.push(s.sqrt());
+        }
+        Continuum { n: 3, dim: 4, facets, row_norm, meta, path: "mem".into() }
     }
 
     #[test]

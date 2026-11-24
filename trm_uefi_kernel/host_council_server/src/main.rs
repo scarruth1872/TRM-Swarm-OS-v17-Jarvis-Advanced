@@ -4002,6 +4002,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                     // Audit fields: how many documents were shown, where the votes came from, and the
                     // operator's exact words. A record that cannot answer those three is not auditable.
                     "evidence_used": p.evidence_used,
+                    "evidence_ranker": crate::evidence_index::ranker_name(),
                     "deliberation_mode": p.deliberation_mode,
                     "raw_topic": p.raw_topic
                 });
@@ -4315,6 +4316,8 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             // Measured field, previously invisible: the council's verdict changes with evidence
             // on vs off (12-1 approve vs 1-13 reject), so the count must be readable.
             "evidence_used": p.evidence_used, "deliberation_mode": p.deliberation_mode,
+            // which ranker produced the citations: "continuum(i8 facets, i32 dot)" or "f32"
+            "evidence_ranker": crate::evidence_index::ranker_name(),
             // the operator's exact words, next to the normalised topic the vote actually saw
             "raw_topic": p.raw_topic
         })).collect();
