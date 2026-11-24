@@ -66,12 +66,17 @@ def trim(text: str, limit: int = MAX_TITLE) -> str:
 
 
 def current_titles(board) -> set[str]:
+    """Collect active (non-DONE) card titles so closed defects can re-open if they recur."""
     titles: set[str] = set()
     if isinstance(board, dict):
         for column, items in board.items():
+            if str(column).upper() == "DONE":
+                continue
             if isinstance(items, list):
                 for c in items:
                     if isinstance(c, dict) and c.get("title"):
+                        if str(c.get("status", "")).upper() == "DONE":
+                            continue
                         titles.add(str(c["title"]))
     return titles
 
