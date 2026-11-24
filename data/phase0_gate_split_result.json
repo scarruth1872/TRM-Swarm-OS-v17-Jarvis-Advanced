@@ -1,0 +1,133 @@
+{
+ "prereg": "F:/Development sites/TRM-Swarm-OS-v2/docs/phase0_gate_split_prereg_2026-11-24.json",
+ "gating_artifact": "v3 (post-dilution-fix)",
+ "detail": {
+  "v1 (shipped)": {
+   "passed": 0,
+   "detail": [
+    {
+     "q": "Which TCP port does the TRM council server listen on?",
+     "keys": [
+      "8022"
+     ],
+     "top1": "evidence/COUNCIL_DELIBERATION_CRATE.txt",
+     "score": 0.6498332023620605,
+     "ok": false
+    },
+    {
+     "q": "What is axiom A2 in the council's framework about?",
+     "keys": [
+      "free will",
+      "consent"
+     ],
+     "top1": "evidence/article-191-council-falsification.txt",
+     "score": 0.6120693683624268,
+     "ok": false
+    },
+    {
+     "q": "How many modules does the TRM kernel have?",
+     "keys": [
+      "322"
+     ],
+     "top1": "evidence/what_is_running.txt",
+     "score": 0.6811192035675049,
+     "ok": false
+    },
+    {
+     "q": "Which TCP port does the embedding server use?",
+     "keys": [
+      "8593"
+     ],
+     "top1": "evidence/MODEL_INVENTORY.txt",
+     "score": 0.597081184387207,
+     "ok": false
+    }
+   ]
+  },
+  "v2 (facts+prose)": {
+   "passed": 3,
+   "detail": [
+    {
+     "q": "Which TCP port does the TRM council server listen on?",
+     "keys": [
+      "8022"
+     ],
+     "top1": "platform/facts",
+     "score": 0.9194925427436829,
+     "ok": true
+    },
+    {
+     "q": "What is axiom A2 in the council's framework about?",
+     "keys": [
+      "free will",
+      "consent"
+     ],
+     "top1": "council/axioms",
+     "score": 0.7462761402130127,
+     "ok": true
+    },
+    {
+     "q": "How many modules does the TRM kernel have?",
+     "keys": [
+      "322"
+     ],
+     "top1": "platform/facts",
+     "score": 0.8725703954696655,
+     "ok": true
+    },
+    {
+     "q": "Which TCP port does the embedding server use?",
+     "keys": [
+      "8593"
+     ],
+     "top1": "platform/routes",
+     "score": 0.7201048731803894,
+     "ok": false
+    }
+   ]
+  },
+  "v3 (post-dilution-fix)": {
+   "passed": 4,
+   "detail": [
+    {
+     "q": "Which TCP port does the TRM council server listen on?",
+     "keys": [
+      "8022"
+     ],
+     "top1": "platform/facts",
+     "score": 0.9194925427436829,
+     "ok": true
+    },
+    {
+     "q": "What is axiom A2 in the council's framework about?",
+     "keys": [
+      "free will",
+      "consent"
+     ],
+     "top1": "council/axioms",
+     "score": 0.7458707094192505,
+     "ok": true
+    },
+    {
+     "q": "How many modules does the TRM kernel have?",
+     "keys": [
+      "322"
+     ],
+     "top1": "platform/facts",
+     "score": 0.8724883794784546,
+     "ok": true
+    },
+    {
+     "q": "Which TCP port does the embedding server use?",
+     "keys": [
+      "8593"
+     ],
+     "top1": "platform/facts",
+     "score": 0.822779655456543,
+     "ok": true
+    }
+   ]
+  }
+ },
+ "gate_b": "not run (out of scope)"
+}

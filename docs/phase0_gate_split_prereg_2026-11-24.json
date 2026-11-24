@@ -1,0 +1,30 @@
+{
+ "kind": "phase0-gate-split-preregistration",
+ "written_utc": "2026-11-24T15:56:01Z",
+ "written_local": "2026-11-24 10:56:01 EST",
+ "supersedes_nothing": true,
+ "context": "The original Phase 0 gate (docs/TRM_Domain_Grounding_Plan_2026-11-24.md) mixed two different requirements into one 4/4 rule and FAILED as written: v1 0/4, v2 2/4 (docs/TRM_Phase0_Gate_2026-11-24.md). The failure stands. This file splits that gate in two, before the split gates are run.",
+ "why_split_is_not_a_threshold_move": "No threshold changes and no probe is removed. Gate A uses four platform-fact probes, two of which were already run and passed (council port, axiom A2) and two never run before (kernel module total, embedder port). Gate B is the general-knowledge half, which the index was never the right instrument for; it is recorded as out of scope and remains measured where it belongs, on the model (6/6 general, 0/4 platform, docs/TRM_MoE_Inventory_Probe_2026-11-24.md).",
+ "disclosure": "The two new Gate A probes target facts that this author knows are present in the generated facts block. The gate therefore tests RETRIEVAL of facts the platform publishes, not whether the content is right - the content is asserted separately by platform_facts.rs unit tests against main.rs and sovereign_axioms.",
+ "gate_a_platform_facts": {
+  "requirement": "4/4: every probe's top-1 chunk must contain the key string, on index v2 (council_evidence_index_v2.json)",
+  "probes": [
+   {"question": "Which TCP port does the TRM council server listen on?", "keys": ["8022"], "seen_before": true, "prior": "v2 PASS at 0.919 (top-1 platform/facts)"},
+   {"question": "What is axiom A2 in the council's framework about?", "keys": ["free will", "consent"], "seen_before": true, "prior": "v2 PASS at 0.746 (top-1 council/axioms)"},
+   {"question": "How many modules does the TRM kernel have?", "keys": ["322"], "seen_before": false},
+   {"question": "Which TCP port does the embedding server use?", "keys": ["8593"], "seen_before": false}
+  ],
+  "also_recorded_not_gating": "the same four probes on v1 (shipped index), for the delta"
+ },
+ "gate_b_general_knowledge": {
+  "status": "out of scope for an evidence index",
+  "probes_that_failed_in_the_original_gate": [
+   "does disabling TLS certificate verification allow machine-in-the-middle attacks?",
+   "why is an append-only hash chain tamper-evident?"
+  ],
+  "where_it_is_measured_instead": "the model: gpt-oss-20b 6/6 on general domains (docs/TRM_MoE_Inventory_Probe_2026-11-24.md)",
+  "no_run_here": "Gate B is not run against the index again; a second 0/2 would only restate the original failure"
+ },
+ "next_if_gate_a_passes": "Phase 1 opens: evidence_index.rs prefers v2, score floor re-derived from the v2 distribution, gate = every phoenix_evidence entry contains the text its verdict cites",
+ "next_if_gate_a_fails": "the plan stops; v2 stays unwired and the facts stay available only on GET /platform/facts"
+}

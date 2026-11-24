@@ -41,6 +41,7 @@ EMBED = "http://127.0.0.1:8593"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "council_evidence_index_v2.json")
 META = os.path.join(ROOT, "data", "council_evidence_index_v2_meta.json")
+# overwritten in main() from --out so a rebuild cannot silently replace the artifact a gate already scored
 CHUNK_CHARS = 900
 BATCH = 16
 
@@ -68,9 +69,20 @@ def facts_chunks():
     out.append(("platform/facts", 0,
                 f"The {svc['binary']} (the TRM council server) listens on TCP port {ports['council']}, "
                 f"http://127.0.0.1:{ports['council']}. Its build reports version {svc['version']}."))
+    # MEASURED 2026-11-24 (gate A, 3/4): the "port assignments" chunk ranked 3rd behind route chunks
+    # because 26 route lines each repeat "on port 8022" while nothing said "embedding server = 8593" as
+    # its own subject. Each service now gets a sentence whose subject IS the service.
     out.append(("platform/facts", 1,
-                f"Port assignments: council server {ports['council']}, LLM vote model {ports['vote_model']}, "
-                f"embedder {ports['embedder']}. The council does not listen on 443; 443 is HTTPS."))
+                f"The embedding server (the embedder that turns text into 768-dimension vectors, "
+                f"nomic-embed-text) listens on TCP port {ports['embedder']}, "
+                f"http://127.0.0.1:{ports['embedder']}."))
+    out.append(("platform/facts", 2,
+                f"The LLM vote model server listens on TCP port {ports['vote_model']}, "
+                f"http://127.0.0.1:{ports['vote_model']}; the council asks it for one vote per agent."))
+    out.append(("platform/facts", 3,
+                f"Port assignments, summarised: council server {ports['council']}, LLM vote model "
+                f"{ports['vote_model']}, embedder {ports['embedder']}. The council does not listen on 443; "
+                f"443 is the default HTTPS port and is unrelated to this platform."))
     km = f["kernel_modules"]
     out.append(("platform/facts", 2,
                 f"The TRM kernel has {km['total']} modules from the live scan: {km['real']} hand-written "
@@ -86,9 +98,13 @@ def facts_chunks():
                 f"Two-sided rule: {ax['two_sided_rule']}"))
     out.append(("council/axioms", n + 1,
                 "The council's decision ladder, in order: " + " | ".join(ax["ladder"])))
-    for i, r in enumerate(f["routes"]):
-        out.append(("platform/routes", i,
-                    f"Route {r['signature']} is served by host_council_server on port {ports['council']}."))
+    # MEASURED 2026-11-24: 26 separately-embedded route lines formed a dense cluster around every
+    # port/route question and pushed the correct answer to rank 3 (229 chunks mention 8022 vs 68 for 8593).
+    # One grouped chunk keeps the information and removes the dilution.
+    route_list = "; ".join(f"{r['signature']}" for r in f["routes"])
+    out.append(("platform/routes", 0,
+                f"host_council_server on port {ports['council']} serves these {len(f['routes'])} canonical "
+                f"routes: {route_list}."))
     for i, note in enumerate(f.get("known_absences", [])):
         out.append(("platform/absences", i, "Known limitation: " + note))
     return out
@@ -149,8 +165,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-corpus", action="store_true")
     ap.add_argument("--max-docs", type=int, default=None)
+    ap.add_argument("--out", default="v2", help="suffix: writes data/council_evidence_index_<out>.json")
     a = ap.parse_args()
 
+    global OUT, META
+    OUT = os.path.join(ROOT, "data", f"council_evidence_index_{a.out}.json")
+    META = os.path.join(ROOT, "data", f"council_evidence_index_{a.out}_meta.json")
     t0 = time.time()
     try:
         chunks = facts_chunks()
