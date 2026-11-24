@@ -50,6 +50,8 @@ mod amr_surveillance;
 mod sram_fourier;
 mod resonance;
 mod platonic_wavelengths;
+mod agent_bitboard;
+mod spectral_acousto_k3;
 // KERNEL LIBRARY LINK: modules compiled from ../src via lib.rs
 use trm_uefi_kernel::k3_logic::KleeneTernaryEngine;
 
@@ -5161,6 +5163,37 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                     "measured": g.measured, "reason": g.reason } })
             } else {
                 let mut r = bench::k3_bench(200_000);
+                if let Some(o) = r.as_object_mut() {
+                    o.insert("voltage_gate".into(), json!({ "open": g.open, "phi_v": g.phi_v }));
+                }
+                r
+            };
+        } else if method == Method::Get && url.starts_with("/agents/584/status") {
+            response_json = agent_bitboard::status_json();
+        } else if method == Method::Get && url.starts_with("/agents/584/bench") {
+            response_json = agent_bitboard::evaluate_directive("status check");
+        } else if method == Method::Post && url.starts_with("/agents/584/eval") {
+            let mut buf = String::new();
+            let _ = request.as_reader().take(65_536).read_to_string(&mut buf);
+            let query_text = serde_json::from_str::<serde_json::Value>(&buf)
+                .ok()
+                .and_then(|v| {
+                    v.get("query")
+                        .or_else(|| v.get("directive"))
+                        .or_else(|| v.get("text"))
+                        .and_then(|s| s.as_str())
+                        .map(|s| s.to_string())
+                })
+                .unwrap_or(buf);
+            response_json = agent_bitboard::evaluate_directive(&query_text);
+        } else if method == Method::Get && url.starts_with("/spectral/photoacoustic/bench") {
+            let g = voltage::gate();
+            response_json = if !g.open {
+                json!({ "status": "REFUSED_VOLTAGE_GATE", "gate": {
+                    "open": g.open, "phi_v": g.phi_v, "threshold": g.threshold,
+                    "measured": g.measured, "reason": g.reason } })
+            } else {
+                let mut r = spectral_acousto_k3::bench_json(584);
                 if let Some(o) = r.as_object_mut() {
                     o.insert("voltage_gate".into(), json!({ "open": g.open, "phi_v": g.phi_v }));
                 }
