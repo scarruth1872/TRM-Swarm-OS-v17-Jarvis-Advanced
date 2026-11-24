@@ -27,11 +27,18 @@ Index v4: 2,403 chunks (v3: 2,436), 42.62 MB, sha256 `3d0c48cd…`; continuum v4
 | DIRECT | 6 (3 of them self-citations) | **6 (none self-citing)** |
 | TANGENTIAL | 9 | **16** |
 | UNRELATED | 9 | **2** |
-| citations from one 557 KB hub | 5 of 24 | 0 (rule: one per source) |
+| citations from one 557 KB hub | 5 of 24 | **4 of 24** (ERRATA — first published as 0) |
 | questions present in corpus | 22 chunk hits | **0** |
 
-So both named defects were actually fixed: no exam-paper citations, no single-file domination, unrelated
-citations cut from 9 to 2. The failure mode moved rather than vanished. The corpus is now dominated by
+**ERRATA, 2026-11-25.** This section first claimed hub citations fell "5 → 0". That was wrong and the raw
+record contradicts it: `docs/PHASE-6-GAPS.md` supplies **4 of 24** v4 citations, in proposals 2, 4, 9 and 10.
+The one-citation-per-source rule caps it to **one per proposal** — which is what it was designed to do — and
+that is not the same as removing it, because a large document can still be the best match for a quarter of
+all proposals. Verified from `docs/phase1_relevance_v4_results_2026-11-24.json`, not from memory.
+
+So one named defect was fixed and one was only bounded: no exam-paper citations (22 → 0 hits, genuine), no
+single-file *domination within a proposal* (bounded to 1), unrelated citations cut from 9 to 2 — but the hub
+file remains the single most-cited source in the round. The failure mode moved rather than vanished. The corpus is now dominated by
 **documents about the system** — `PHASE-6-GAPS`, `*-PLAN`, `*-STATUS`, `SYSTEM_SELF_KNOWLEDGE`,
 `MONAD_JOURNAL_PROCEDURE` — which share vocabulary with every proposal and therefore rank well while saying
 nothing decision-specific. Tangential is the new plateau.
