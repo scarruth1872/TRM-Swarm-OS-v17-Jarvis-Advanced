@@ -1,0 +1,141 @@
+{
+ "base": "C:/Users/shawn/AppData/Local/hermes/cache/scratch/laptop_tree/base/trm_uefi_kernel/src/ddr_scan.rs",
+ "ours": "trm_uefi_kernel/src/ddr_scan.rs",
+ "roots": [
+  "civil_from_days",
+  "collect_py_files",
+  "file_pattern_matches",
+  "handle",
+  "literal_substring",
+  "ok",
+  "repo_rel",
+  "run_scan",
+  "utc_now_iso"
+ ],
+ "portable_items": {
+  "civil_from_days": {
+   "kind": "fn",
+   "bytes": 528
+  },
+  "collect_py_files": {
+   "kind": "fn",
+   "bytes": 369
+  },
+  "file_pattern_matches": {
+   "kind": "fn",
+   "bytes": 357
+  },
+  "handle": {
+   "kind": "fn",
+   "bytes": 303
+  },
+  "literal_substring": {
+   "kind": "fn",
+   "bytes": 1328
+  },
+  "ok": {
+   "kind": "fn",
+   "bytes": 296
+  },
+  "repo_rel": {
+   "kind": "fn",
+   "bytes": 332
+  },
+  "run_scan": {
+   "kind": "fn",
+   "bytes": 5262
+  },
+  "utc_now_iso": {
+   "kind": "fn",
+   "bytes": 406
+  },
+  "Resp": {
+   "kind": "type",
+   "bytes": 792
+  },
+  "REGEX_SHORTHAND": {
+   "kind": "const",
+   "bytes": 1675
+  },
+  "REPORT_PREVIEW": {
+   "kind": "const",
+   "bytes": 544
+  },
+  "SCAN_DIR": {
+   "kind": "const",
+   "bytes": 467
+  },
+  "MAX_FILES": {
+   "kind": "const",
+   "bytes": 653
+  },
+  "REPORT_REL": {
+   "kind": "const",
+   "bytes": 369
+  }
+ },
+ "portable_count": 15,
+ "blockers": [
+  {
+   "name": "serde_json",
+   "kind": "crate",
+   "needed_by": "run_scan",
+   "why": "not available in this crate"
+  },
+  {
+   "name": "UNIX_EPOCH",
+   "kind": "unknown-const",
+   "needed_by": "utc_now_iso",
+   "why": "upper-case identifier with no definition in either file"
+  },
+  {
+   "name": "std::",
+   "kind": "module",
+   "needed_by": "collect_py_files",
+   "why": "this crate is no_std"
+  },
+  {
+   "name": "crate::k3_retrieval",
+   "kind": "module",
+   "needed_by": "repo_rel",
+   "why": "resolved in the crate root of the source tree"
+  },
+  {
+   "name": "crate::actions_handlers",
+   "kind": "module",
+   "needed_by": "run_scan",
+   "why": "resolved in the crate root of the source tree"
+  },
+  {
+   "name": "crate::k3_retrieval",
+   "kind": "module",
+   "needed_by": "run_scan",
+   "why": "resolved in the crate root of the source tree"
+  },
+  {
+   "name": "crate::k3_retrieval",
+   "kind": "module",
+   "needed_by": "run_scan",
+   "why": "resolved in the crate root of the source tree"
+  },
+  {
+   "name": "std::",
+   "kind": "module",
+   "needed_by": "run_scan",
+   "why": "this crate is no_std"
+  },
+  {
+   "name": "json!/serde",
+   "kind": "macro",
+   "needed_by": "run_scan",
+   "why": "serialization is not in this crate"
+  },
+  {
+   "name": "std::",
+   "kind": "module",
+   "needed_by": "Resp",
+   "why": "this crate is no_std"
+  }
+ ],
+ "closure_ok": false
+}

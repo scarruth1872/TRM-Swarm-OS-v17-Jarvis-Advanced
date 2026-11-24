@@ -1,0 +1,163 @@
+{
+ "base": "C:\\Users\\shawn\\AppData\\Local\\hermes\\cache\\scratch\\laptop_tree\\base\\trm_uefi_kernel\\src\\coordination_protocol.rs",
+ "ours": "F:\\Development sites\\TRM-Swarm-OS-v2\\trm_uefi_kernel\\src\\coordination_protocol.rs",
+ "roots": [
+  "agents_sent",
+  "classify_coord_message",
+  "coord_subject",
+  "coordination_round_id",
+  "elapsed_s",
+  "extract_agent_response",
+  "fnv1a64",
+  "is_complete",
+  "is_mission_completion",
+  "majority_consensus",
+  "mission_objective",
+  "register_mission_result",
+  "register_response",
+  "respond_by_deadline_ms",
+  "response_count",
+  "tally_response_values",
+  "validate_coordination_task"
+ ],
+ "portable_items": {
+  "agents_sent": {
+   "kind": "fn",
+   "bytes": 79,
+   "impl": "CoordinationRound"
+  },
+  "classify_coord_message": {
+   "kind": "fn",
+   "bytes": 571,
+   "impl": null
+  },
+  "coord_subject": {
+   "kind": "fn",
+   "bytes": 245,
+   "impl": null
+  },
+  "coordination_round_id": {
+   "kind": "fn",
+   "bytes": 232,
+   "impl": null
+  },
+  "elapsed_s": {
+   "kind": "fn",
+   "bytes": 155,
+   "impl": "CoordinationRound"
+  },
+  "extract_agent_response": {
+   "kind": "fn",
+   "bytes": 240,
+   "impl": null
+  },
+  "fnv1a64": {
+   "kind": "fn",
+   "bytes": 220,
+   "impl": null
+  },
+  "is_complete": {
+   "kind": "fn",
+   "bytes": 96,
+   "impl": "CoordinationRound"
+  },
+  "is_mission_completion": {
+   "kind": "fn",
+   "bytes": 227,
+   "impl": null
+  },
+  "majority_consensus": {
+   "kind": "fn",
+   "bytes": 439,
+   "impl": null
+  },
+  "mission_objective": {
+   "kind": "fn",
+   "bytes": 107,
+   "impl": null
+  },
+  "register_mission_result": {
+   "kind": "fn",
+   "bytes": 153,
+   "impl": "CoordinationRound"
+  },
+  "register_response": {
+   "kind": "fn",
+   "bytes": 309,
+   "impl": "CoordinationRound"
+  },
+  "respond_by_deadline_ms": {
+   "kind": "fn",
+   "bytes": 99,
+   "impl": null
+  },
+  "response_count": {
+   "kind": "fn",
+   "bytes": 84,
+   "impl": "CoordinationRound"
+  },
+  "tally_response_values": {
+   "kind": "fn",
+   "bytes": 346,
+   "impl": null
+  },
+  "validate_coordination_task": {
+   "kind": "fn",
+   "bytes": 825,
+   "impl": null
+  },
+  "CoordinationRound": {
+   "kind": "struct",
+   "bytes": 385,
+   "impl": null
+  },
+  "CoordMessageKind": {
+   "kind": "enum",
+   "bytes": 351,
+   "impl": null
+  },
+  "COORD_MSG_TYPE_TASK": {
+   "kind": "const",
+   "bytes": 242,
+   "impl": null
+  },
+  "COORD_SUBJECT_TASK_MAX_CHARS": {
+   "kind": "const",
+   "bytes": 780,
+   "impl": null
+  },
+  "COORD_SUBJECT_PREFIX": {
+   "kind": "const",
+   "bytes": 105,
+   "impl": null
+  },
+  "COORD_ROUND_ID_PREFIX": {
+   "kind": "const",
+   "bytes": 1106,
+   "impl": null
+  },
+  "COORD_MISSION_PHASE_COMPLETED": {
+   "kind": "const",
+   "bytes": 648,
+   "impl": null
+  },
+  "COORD_MISSION_PREFIX": {
+   "kind": "const",
+   "bytes": 114,
+   "impl": null
+  },
+  "COORD_MAX_COLLECT_WAIT_S": {
+   "kind": "const",
+   "bytes": 884,
+   "impl": null
+  },
+  "COORD_DEFAULT_TIMEOUT_S": {
+   "kind": "const",
+   "bytes": 984,
+   "impl": null
+  }
+ },
+ "portable_count": 27,
+ "blockers": [],
+ "closure_ok": true
+}

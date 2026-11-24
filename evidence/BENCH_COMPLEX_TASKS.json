@@ -1,23 +1,23 @@
 {
-  "generated": "2026-11-11 11:44:17",
-  "passed": 7,
+  "generated": "2026-11-23 20:18:02",
+  "passed": 5,
   "total": 7,
-  "total_ms": 19511.4,
+  "total_ms": 23739.2,
   "results": [
     {
       "task": "T1 council round-trip",
       "pass": true,
-      "ms": 13.7,
-      "detail": "propose -> id 1952 in 8 ms; listed in /council/proposals: True",
+      "ms": 50.8,
+      "detail": "propose -> id 2522 in 39 ms; listed in /council/proposals: True",
       "extra": {
-        "proposal_id": "1952",
-        "propose_ms": 7.6
+        "proposal_id": "2522",
+        "propose_ms": 38.8
       }
     },
     {
       "task": "T2 K3 safety triage",
       "pass": true,
-      "ms": 68.4,
+      "ms": 50.0,
       "detail": "danger pass-through 0/3 (safety property), benign PROCEED 0/3, p50 1 ms",
       "extra": {
         "verdicts": {
@@ -37,27 +37,24 @@
     },
     {
       "task": "T3 independent model",
-      "pass": true,
-      "ms": 14156.6,
-      "detail": "1036 chars, 16.9 tok/s, starts '<think>\\nFirst, the question is: \"State one invar'",
-      "extra": {
-        "answer": "<think>\nFirst, the question is: \"State one invariant that a hash-chained audit ledger must preserve.\" I need to recall what a hash-chained audit ledger is. From my knowledge, it's a type of ledger that uses hashing to chain transactions together, creating a secure and tamper-evident record. This is often used in blockchain technology for auditing and ensuring data integrity.\n\nThe key here is that ",
-        "tok_per_s": 16.93
-      }
+      "pass": false,
+      "ms": 2049.1,
+      "detail": "completion failed: URLError: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>",
+      "extra": {}
     },
     {
       "task": "T4 memory round-trip",
       "pass": true,
-      "ms": 29.9,
-      "detail": "contribute -> gm_71c0776b; recall via /memory/entry/{id} found",
+      "ms": 17489.3,
+      "detail": "contribute -> gm_8937d36e; recall via /memory/entry/{id} found",
       "extra": {
-        "entry_id": "gm_71c0776b"
+        "entry_id": "gm_8937d36e"
       }
     },
     {
       "task": "T5 embedding stability",
       "pass": true,
-      "ms": 47.3,
+      "ms": 43.1,
       "detail": "dims 768, identical across calls: True",
       "extra": {
         "dims": 768,
@@ -66,25 +63,23 @@
     },
     {
       "task": "T6 cross-service chain",
-      "pass": true,
-      "ms": 3518.3,
-      "detail": "model 175 chars -> stored gm_92713575 -> recalled with matching text",
-      "extra": {
-        "answer": "An audit ledger is tamper-evident through the inclusion of cryptographic hashes that change if the ledger's contents are altered, making unauthorized modifications detectable."
-      }
+      "pass": false,
+      "ms": 2050.2,
+      "detail": "model step failed: URLError: <urlopen error [WinError 10061] No connection could be made because the target machine actively refused it>",
+      "extra": {}
     },
     {
       "task": "T7 endpoint latency",
       "pass": true,
-      "ms": 14.8,
-      "detail": "warm median 14.8 ms over 3 calls, 141 modules (ceiling 200 ms)",
+      "ms": 7.2,
+      "detail": "warm median 7.2 ms over 3 calls, 146 modules (ceiling 200 ms)",
       "extra": {
         "latencies_ms": [
-          214.2,
-          14.8,
-          4.8
+          12.1,
+          7.2,
+          6.8
         ],
-        "modules": 141
+        "modules": 146
       }
     }
   ]

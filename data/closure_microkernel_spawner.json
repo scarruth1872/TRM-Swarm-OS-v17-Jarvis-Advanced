@@ -1,0 +1,96 @@
+{
+ "base": "C:\\Users\\shawn\\AppData\\Local\\hermes\\cache\\scratch\\laptop_tree\\base\\trm_uefi_kernel\\src\\microkernel_spawner.rs",
+ "ours": "F:\\Development sites\\TRM-Swarm-OS-v2\\trm_uefi_kernel\\src\\microkernel_spawner.rs",
+ "roots": [
+  "aggregate_stats",
+  "as_str",
+  "cleanup",
+  "execute",
+  "get_active_count",
+  "get_microkernel_spawner",
+  "get_process_table",
+  "microkernel_intercept",
+  "native_aggregate_telemetry",
+  "terminate"
+ ],
+ "portable_items": {
+  "aggregate_stats": {
+   "kind": "fn",
+   "bytes": 733,
+   "impl": "FractalTelemetryBus"
+  },
+  "as_str": {
+   "kind": "fn",
+   "bytes": 337,
+   "impl": "SubAgentStatus"
+  },
+  "cleanup": {
+   "kind": "fn",
+   "bytes": 151,
+   "impl": "MicrokernelSpawner"
+  },
+  "execute": {
+   "kind": "fn",
+   "bytes": 6725,
+   "impl": "MicrokernelSubAgent"
+  },
+  "get_active_count": {
+   "kind": "fn",
+   "bytes": 179,
+   "impl": "MicrokernelSpawner"
+  },
+  "get_microkernel_spawner": {
+   "kind": "fn",
+   "bytes": 208,
+   "impl": null
+  },
+  "get_process_table": {
+   "kind": "fn",
+   "bytes": 93,
+   "impl": "MicrokernelSpawner"
+  },
+  "microkernel_intercept": {
+   "kind": "fn",
+   "bytes": 587,
+   "impl": null
+  },
+  "native_aggregate_telemetry": {
+   "kind": "fn",
+   "bytes": 701,
+   "impl": null
+  },
+  "terminate": {
+   "kind": "fn",
+   "bytes": 240,
+   "impl": "MicrokernelSubAgent"
+  },
+  "SubAgentStatus": {
+   "kind": "enum",
+   "bytes": 96,
+   "impl": null
+  },
+  "MicrokernelSubAgent": {
+   "kind": "struct",
+   "bytes": 549,
+   "impl": null
+  },
+  "SPAWNER_SINGLETON": {
+   "kind": "static",
+   "bytes": 265,
+   "impl": null
+  },
+  "TERMINATED_SUBAGENTS_COUNT": {
+   "kind": "static",
+   "bytes": 315,
+   "impl": null
+  },
+  "DETERMINISTIC_BYPASS_COUNT": {
+   "kind": "static",
+   "bytes": 249,
+   "impl": null
+  }
+ },
+ "portable_count": 15,
+ "blockers": [],
+ "closure_ok": true
+}

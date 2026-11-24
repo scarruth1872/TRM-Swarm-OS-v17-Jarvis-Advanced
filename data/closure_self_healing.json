@@ -1,0 +1,103 @@
+{
+ "base": "C:\\Users\\shawn\\AppData\\Local\\hermes\\cache\\scratch\\laptop_tree\\base\\trm_uefi_kernel\\src\\self_healing.rs",
+ "ours": "F:\\Development sites\\TRM-Swarm-OS-v2\\trm_uefi_kernel\\src\\self_healing.rs",
+ "roots": [
+  "as_str",
+  "contains_ci",
+  "get_self_healing",
+  "is_loopback",
+  "is_tripped",
+  "record_failure",
+  "record_target_failure",
+  "reset",
+  "reset_circuit_breaker",
+  "scan_and_audit",
+  "scan_payload_security",
+  "slot"
+ ],
+ "portable_items": {
+  "as_str": {
+   "kind": "fn",
+   "bytes": 397,
+   "impl": "SecurityThreatType"
+  },
+  "contains_ci": {
+   "kind": "fn",
+   "bytes": 313,
+   "impl": null
+  },
+  "get_self_healing": {
+   "kind": "fn",
+   "bytes": 212,
+   "impl": null
+  },
+  "is_loopback": {
+   "kind": "fn",
+   "bytes": 104,
+   "impl": null
+  },
+  "is_tripped": {
+   "kind": "fn",
+   "bytes": 224,
+   "impl": "SelfHealingEngine"
+  },
+  "record_failure": {
+   "kind": "fn",
+   "bytes": 302,
+   "impl": "ProcessSupervisionState"
+  },
+  "record_target_failure": {
+   "kind": "fn",
+   "bytes": 446,
+   "impl": "SelfHealingEngine"
+  },
+  "reset": {
+   "kind": "fn",
+   "bytes": 114,
+   "impl": "ProcessSupervisionState"
+  },
+  "reset_circuit_breaker": {
+   "kind": "fn",
+   "bytes": 262,
+   "impl": "SelfHealingEngine"
+  },
+  "scan_and_audit": {
+   "kind": "fn",
+   "bytes": 280,
+   "impl": "SelfHealingEngine"
+  },
+  "scan_payload_security": {
+   "kind": "fn",
+   "bytes": 2024,
+   "impl": null
+  },
+  "slot": {
+   "kind": "fn",
+   "bytes": 303,
+   "impl": "TokenRateMonitor"
+  },
+  "SecurityThreatType": {
+   "kind": "enum",
+   "bytes": 358,
+   "impl": null
+  },
+  "SINGLETON_SELF_HEALING": {
+   "kind": "static",
+   "bytes": 274,
+   "impl": null
+  },
+  "SelfHealingEngine": {
+   "kind": "struct",
+   "bytes": 144,
+   "impl": null
+  },
+  "ProcessSupervisionState": {
+   "kind": "struct",
+   "bytes": 204,
+   "impl": null
+  }
+ },
+ "portable_count": 16,
+ "blockers": [],
+ "closure_ok": true
+}
