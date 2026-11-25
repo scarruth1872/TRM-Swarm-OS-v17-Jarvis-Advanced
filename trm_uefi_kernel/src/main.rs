@@ -51,6 +51,7 @@ mod coordination_protocol;
 mod heuristic_consensus;
 mod llm_brain;
 mod mamba3_turbovec_ssm;
+mod quorum_consensus;
 mod pbft_consensus;
 mod resonance_engine;
 mod security_scanner;

@@ -1,7 +1,7 @@
 // =============================================================================
 // GENERATED FILE — DO NOT EDIT BY HAND.
 // Produced by tools/rebuild_module_registry.py from every LIVE source tree on this host.
-// Scan timestamp: 2026-11-25 15:41:31 UTC
+// Scan timestamp: 2026-11-25 16:01:27 UTC
 //
 // TREES BELOW ARE THE ONES THAT BUILD HERE: the UEFI kernel and the cdylib
 // (swarm_v2_rust_kernel -> target/release/swarm_rust_kernel.dll). The staged v20 snapshot is
@@ -14,9 +14,9 @@
 // =============================================================================
 
 /// Live modules across every tree that builds here.
-pub const TOTAL: u64 = 218;
+pub const TOTAL: u64 = 219;
 /// Hand-written intelligence (pub fns, real bodies).
-pub const REAL: u64 = 103;
+pub const REAL: u64 = 104;
 /// Mechanical port carrying MANUAL markers.
 pub const PORTED: u64 = 60;
 /// Constants/structs only.
@@ -26,7 +26,7 @@ pub const EXCLUDED: u64 = 9;
 /// Publishes numbers it did not measure.
 pub const FABRICATED: u64 = 0;
 /// The scan date, so a reader can see how old the claim is.
-pub const SCAN_DATE: &str = "2026-11-25 15:41:31 UTC";
+pub const SCAN_DATE: &str = "2026-11-25 16:01:27 UTC";
 
 /// (module, status)
 pub const STATUSES: &'static [(&'static str, &'static str)] = &[
@@ -189,6 +189,7 @@ pub const STATUSES: &'static [(&'static str, &'static str)] = &[
     ("quorum_consensus", "REAL"),
     ("radix_trie_matcher", "PORTED"),
     ("rare_disease", "REAL"),
+    ("reasoning_engine", "REAL"),
     ("reconnaissance_daemon", "PORTED"),
     ("redis_mock", "SKELETON"),
     ("remediation_engine", "SKELETON"),
@@ -411,6 +412,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
     ("quorum_consensus", "uefi"),
     ("radix_trie_matcher", "uefi"),
     ("rare_disease", "uefi"),
+    ("reasoning_engine", "uefi"),
     ("reconnaissance_daemon", "uefi"),
     ("redis_mock", "uefi"),
     ("remediation_engine", "uefi"),
@@ -473,7 +475,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
 ];
 
 /// Modules per LIVE tree.
-pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 210), ("dll", 13)];
+pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 211), ("dll", 13)];
 /// Names compiled in more than one tree. One name resolves to one status.
 pub const TREE_COLLISIONS: u64 = 5;
 /// Source trees that exist on disk but are NOT built by the launcher (reported, never counted).
@@ -640,6 +642,7 @@ pub const FUNCTION_COUNTS: &'static [(&'static str, u64)] = &[
     ("quorum_consensus", 14),
     ("radix_trie_matcher", 63),
     ("rare_disease", 5),
+    ("reasoning_engine", 14),
     ("reconnaissance_daemon", 7),
     ("redis_mock", 0),
     ("remediation_engine", 0),

@@ -62,6 +62,7 @@ pub mod sub_atomic_kernel;
 pub mod global_memory;
 pub mod reconnaissance_daemon;
 pub mod module_registry_generated;
+pub mod reasoning_engine;
 pub mod serial;
 pub mod hw_truth;
 pub mod task_arbiter;

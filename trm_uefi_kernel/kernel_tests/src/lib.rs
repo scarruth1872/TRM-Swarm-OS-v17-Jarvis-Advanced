@@ -845,3 +845,184 @@ mod registry_guard {
         assert_eq!(declared, reg.len(), "TOTAL disagrees with STATUSES");
     }
 }
+
+
+/// Tasks 571 / 572 / 576 / 580 — the reasoning engine's semantics, stated as assertions.
+///
+/// Each test names the behaviour that would be a lie if it did not hold: an UNKNOWN premise must not produce
+/// a TRUE conclusion; a rule with an UNKNOWN exception must not fire; a cycle must end; a conflict must be
+/// reported rather than resolved by ordering.
+#[cfg(test)]
+mod reasoning_engine_tests {
+    use trm_uefi_kernel::reasoning_engine::{derivation_json, Engine, Rule, Trit};
+
+    fn chain_engine() -> Engine {
+        let mut e = Engine::new();
+        e.assert_fact("a", "shard:test@rec 1 seal deadbeef");
+        e.add_rule(Rule::new(1, "a_implies_b", &["a"], "b"));
+        e.add_rule(Rule::new(2, "b_implies_c", &["b"], "c"));
+        e
+    }
+
+    #[test]
+    fn forward_chain_derives_transitively_from_a_fact() {
+        let r = chain_engine().forward_chain();
+        assert_eq!(r.truth.get("b"), Some(&Trit::True), "b must be derived from a");
+        assert_eq!(r.truth.get("c"), Some(&Trit::True), "c must be derived through b");
+        assert!(!r.truncated, "a two-step chain must settle well inside the cap");
+        assert_eq!(r.rules_fired, 2, "both rules should fire exactly once");
+    }
+
+    #[test]
+    fn a_missing_premise_yields_unknown_not_true() {
+        let mut e = Engine::new();
+        e.add_rule(Rule::new(1, "needs_p", &["p"], "q"));
+        let r = e.forward_chain();
+        assert_eq!(r.truth.get("q"), Some(&Trit::Unknown), "q must be UNKNOWN, never TRUE");
+        let note = &r.derivations.get("q").expect("an UNKNOWN must still be explained").note;
+        assert!(note.contains('p'), "the reason must name the missing premise, got: {note}");
+    }
+
+    #[test]
+    fn a_false_premise_does_not_fire_the_rule() {
+        let mut e = Engine::new();
+        e.assert_false("p");
+        e.add_rule(Rule::new(1, "needs_p", &["p"], "q"));
+        let r = e.forward_chain();
+        assert_ne!(r.truth.get("q"), Some(&Trit::True), "a FALSE premise must not derive q");
+        let note = &r.derivations.get("q").expect("explained").note;
+        assert!(note.contains("FALSE"), "the reason must say the premise was FALSE, got: {note}");
+    }
+
+    #[test]
+    fn a_cycle_terminates_and_is_explained() {
+        let mut e = Engine::new();
+        e.add_rule(Rule::new(1, "b_from_a", &["a"], "b"));
+        e.add_rule(Rule::new(2, "a_from_b", &["b"], "a"));
+        let r = e.forward_chain();
+        assert!(!r.truncated, "a cycle with no facts must settle immediately, not spin to the cap");
+        // backward chaining over the same rules must refuse rather than recurse forever
+        let d = e.prove("a");
+        assert_eq!(d.trit, Trit::Unknown);
+        assert!(d.note.contains("cycle") || d.note.contains("depth"), "got note: {}", d.note);
+    }
+
+    #[test]
+    fn a_defeasible_rule_is_defeated_by_its_exception() {
+        let mut e = Engine::new();
+        e.assert_fact("violation_tpsa", "shard:descriptors@rec 7");
+        e.assert_fact("violation_rotb", "shard:descriptors@rec 7");
+        e.add_rule(
+            Rule::new(1, "tolerated", &["violation_tpsa", "violation_rotb"], "acceptable")
+                .with_exception("narrow_therapeutic_window"),
+        );
+        // baseline: no exception asserted, rule fires
+        let r1 = e.forward_chain();
+        assert_eq!(r1.truth.get("acceptable"), Some(&Trit::True));
+
+        // now the exception holds: the conclusion must be withdrawn, not kept
+        e.assert_fact("narrow_therapeutic_window", "shard:tox@rec 3");
+        let r2 = e.forward_chain();
+        assert_ne!(r2.truth.get("acceptable"), Some(&Trit::True), "defeat must withdraw the conclusion");
+        let note = &r2.derivations.get("acceptable").expect("explained").note;
+        assert!(note.contains("defeated"), "the reason must say it was defeated, got: {note}");
+    }
+
+    #[test]
+    fn an_unknown_exception_is_named_not_hidden() {
+        // 576: a default may apply when its exception is UNKNOWN — that is what "default" means — but the
+        // assumption must be visible, and a caller needing certainty must be able to see it was made.
+        let mut e = Engine::new();
+        e.assert_fact("violation_tpsa", "shard:descriptors@rec 9");
+        e.assert_fact("violation_rotb", "shard:descriptors@rec 9");
+        e.add_rule(
+            Rule::new(1, "tolerated", &["violation_tpsa", "violation_rotb"], "acceptable")
+                .with_exception("narrow_therapeutic_window"),
+        );
+        let d = e.prove("acceptable");
+        assert_eq!(d.trit, Trit::True, "an UNKNOWN exception does not defeat the default");
+        assert!(d.note.contains("assumed"), "the assumption must be named, got: {}", d.note);
+        assert!(d.note.contains("narrow_therapeutic_window"), "got note: {}", d.note);
+
+        // and the forward path must report the same assumption in the machine-readable list
+        let r = e.forward_chain();
+        assert_eq!(r.assumptions.len(), 1, "the run must report one assumption: {:?}", r.assumptions);
+        assert!(r.assumptions[0].contains("narrow_therapeutic_window"));
+
+        // once the exception is explicitly FALSE, the default applies with nothing assumed
+        e.assert_false("narrow_therapeutic_window");
+        let r2 = e.forward_chain();
+        assert_eq!(r2.assumptions.len(), 0, "an explicit FALSE exception needs no assumption");
+        assert_eq!(r2.truth.get("acceptable"), Some(&Trit::True));
+    }
+
+    #[test]
+    fn a_conflict_is_reported_and_left_unknown() {
+        let mut e = Engine::new();
+        e.assert_fact("a", "shard:test@rec 1");
+        e.assert_false("c");
+        e.add_rule(Rule::new(1, "a_implies_c", &["a"], "c"));
+        let r = e.forward_chain();
+        assert_eq!(r.conflicts.len(), 1, "the contradiction must be reported");
+        assert_eq!(r.conflicts[0].atom, "c");
+        assert_eq!(r.truth.get("c"), Some(&Trit::Unknown), "a conflict resolves to UNKNOWN, not to TRUE");
+    }
+
+    #[test]
+    fn backward_chaining_returns_the_chain_down_to_the_evidence() {
+        let d = chain_engine().prove("c");
+        assert_eq!(d.trit, Trit::True);
+        assert_eq!(d.rule_id, Some(2));
+        assert_eq!(d.premises.len(), 1);
+        let b = &d.premises[0];
+        assert_eq!(b.atom, "b");
+        assert_eq!(b.rule_id, Some(1));
+        let a = &b.premises[0];
+        assert_eq!(a.atom, "a");
+        assert!(a.fact_source.as_deref().unwrap_or("").contains("seal deadbeef"),
+                "the leaf must carry the evidence it was asserted with");
+    }
+
+    #[test]
+    fn backward_chaining_names_the_premise_it_could_not_settle() {
+        let mut e = Engine::new();
+        e.add_rule(Rule::new(1, "needs_missing", &["missing_fact"], "goal"));
+        let d = e.prove("goal");
+        assert_eq!(d.trit, Trit::Unknown);
+        assert!(d.note.contains("missing_fact"), "got note: {}", d.note);
+        assert_eq!(d.rule_id, None, "an UNKNOWN is not justified by a rule");
+    }
+
+    #[test]
+    fn the_druglikeness_rulebase_derives_two_violations() {
+        let mut e = Engine::new();
+        for r in Engine::druglikeness_rules() {
+            e.add_rule(r);
+        }
+        e.assert_fact("mw_gt_500", "shard:chembl_lpxc@rec 12 seal cafe");
+        e.assert_fact("logp_gt_5", "shard:chembl_lpxc@rec 12 seal cafe");
+        let r = e.forward_chain();
+        assert_eq!(r.truth.get("violation_mw"), Some(&Trit::True));
+        assert_eq!(r.truth.get("violation_logp"), Some(&Trit::True));
+        assert_eq!(r.truth.get("too_many_violations"), Some(&Trit::True),
+                   "two violations must chain to 'too many'");
+        // and one violation alone must not
+        let mut one = Engine::new();
+        for r in Engine::druglikeness_rules() {
+            one.add_rule(r);
+        }
+        one.assert_fact("mw_gt_500", "shard:chembl_lpxc@rec 13 seal cafe");
+        let r1 = one.forward_chain();
+        assert_ne!(r1.truth.get("too_many_violations"), Some(&Trit::True));
+    }
+
+    #[test]
+    fn an_explanation_serialises_with_its_rule_and_source() {
+        let d = chain_engine().prove("c");
+        let json = derivation_json(&d);
+        assert!(json.contains("\"atom\":\"c\""), "{json}");
+        assert!(json.contains("\"rule_id\":2"), "{json}");
+        assert!(json.contains("seal deadbeef"), "the leaf evidence must survive serialisation");
+        assert!(json.contains("\"premises\":[{"), "the tree must serialise recursively");
+    }
+}

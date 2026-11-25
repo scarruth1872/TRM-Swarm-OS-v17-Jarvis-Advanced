@@ -51,15 +51,15 @@
   },
   "571": {
    "name": "forward chaining inference",
-   "verdict": "ABSENT_BUILD_FIRST",
-   "why": "no inference engine; only shield_rules::describe() (fixed decision order). Cheapest real engine: shard facts + shield-shaped rules in Kleene K3, checkable against the corpus",
-   "artifact": "docs/REASONING-TASKS-571-580.md"
+   "verdict": "BUILT",
+   "why": "trm_uefi_kernel/src/reasoning_engine.rs Engine::forward_chain + POST /reason/forward; K3 fixpoint, bounded with truncated flag; 406/406 agreement with RDKit on two profiles",
+   "artifact": "docs/REASONING-TASKS-571-580.md + trm_uefi_kernel/src/reasoning_engine.rs + tools/reasoning_verify.py"
   },
   "572": {
    "name": "backward chaining inference",
-   "verdict": "ABSENT_DEFER",
-   "why": "no goal-directed search; no prover binary (z3/cvc5/vampire/eprover absent); TPTP MPTP2078 28,346 problems sit unused by any Rust code",
-   "artifact": "docs/REASONING-TASKS-571-580.md"
+   "verdict": "BUILT",
+   "why": "Engine::prove + POST /reason/prove; goal-directed over the same rules; UNKNOWN always names the premise or the depth/cycle bound; propositional only",
+   "artifact": "docs/REASONING-TASKS-571-580.md + trm_uefi_kernel/src/reasoning_engine.rs + tools/reasoning_verify.py"
   },
   "573": {
    "name": "case-based reasoning",
@@ -81,9 +81,9 @@
   },
   "576": {
    "name": "default reasoning",
-   "verdict": "ABSENT_CHEAP_AFTER_571",
-   "why": "no defeasible/non-monotonic code; K3 UNKNOWN is a truth value, not a default rule. Exceptions become a rule class once 571 exists",
-   "artifact": "docs/REASONING-TASKS-571-580.md"
+   "verdict": "BUILT",
+   "why": "defeasible rules with three-valued exception; UNKNOWN applies the default but records the assumption in ForwardResult.assumptions",
+   "artifact": "docs/REASONING-TASKS-571-580.md + trm_uefi_kernel/src/reasoning_engine.rs + tools/reasoning_verify.py"
   },
   "577": {
    "name": "temporal reasoning",
@@ -99,15 +99,15 @@
   },
   "579": {
    "name": "complete reasoning suite",
-   "verdict": "NO_SUITE",
-   "why": "umbrella over 571-578; eight of nine absent",
-   "artifact": "docs/REASONING-TASKS-571-580.md"
+   "verdict": "PARTIAL_4_OF_10",
+   "why": "571/572/576/580 built; 573/574/575/577/578 remain absent with stated reasons",
+   "artifact": "docs/REASONING-TASKS-571-580.md + trm_uefi_kernel/src/reasoning_engine.rs + tools/reasoning_verify.py"
   },
   "580": {
    "name": "explainable reasoning reports",
-   "verdict": "PARTIAL_EXTEND",
-   "why": "votes carry reason + [axis: A#]; cards carry reason; cadence cites samples >= 200; /council/axioms and /k3/rules publish the framework. Missing: a derivation trace and any endpoint reconstructing an argument",
-   "artifact": "docs/REASONING-TASKS-571-580.md"
+   "verdict": "BUILT",
+   "why": "Derivation trees to asserted facts with per-leaf provenance (shard/record/seal), serialised by derivation_json, returned by both endpoints",
+   "artifact": "docs/REASONING-TASKS-571-580.md + trm_uefi_kernel/src/reasoning_engine.rs + tools/reasoning_verify.py"
   }
  },
  "measured_defects": [
@@ -192,6 +192,17 @@
    "fixed": "tools/rebuild_module_registry.py scans both live trees with ORIGIN/TREES/TREE_COLLISIONS and reports staged trees separately; 218 modules, REAL 103 / PORTED 60 / SKELETON 46 / EXCLUDED 9",
    "guard": "kernel_tests::registry_guard fails on drift in either tree (proved by injecting a module into the cdylib tree)",
    "reasoning_modules": "cross_modality_reasoning, voltage_raw_reasoning_engine and analog_cognition_engine exist ONLY in staging/v20 and scratch worktrees - not compiled into either live tree; collaborative_reasoning is live but 23 lines with one function"
+  },
+  "built_2026_11_25": {
+   "module": "trm_uefi_kernel/src/reasoning_engine.rs",
+   "endpoints": [
+    "/reason/rulebases",
+    "/reason/forward",
+    "/reason/prove"
+   ],
+   "tests": "11 unit tests pass (kernel_tests)",
+   "verification": "tools/reasoning_verify.py vs RDKit: 406/406 on Lipinski profile (0 TRUE derived) and 406/406 on strict profile (5 TRUE derived); withheld-fact control PASS on both",
+   "defect_found_by_the_control": "pairwise violation set was incomplete (8 of 10) - CHEMBL242031 (hbd+ghose) returned UNKNOWN where RDKit expects TRUE; fixed"
   }
  }
 }

@@ -105,3 +105,74 @@ registry should never have counted it as one.
   no solver binary in this tree.
 - "ABSENT" means "no implementation found by these searches", not "asked and answered". Each absence names the
   search that would have found it.
+
+
+---
+
+# BUILT — four of the ten now exist (2026-11-25)
+
+The gaps that mattered were closed with **one primitive**, not four demos: `trm_uefi_kernel/src/reasoning_engine.rs`
+(no_std), exposed at `/reason/rulebases`, `/reason/forward`, `/reason/prove`, and checked against RDKit.
+
+| task | status now | what exists |
+|---|---|---|
+| **571** forward chaining | **BUILT** | `Engine::forward_chain` saturates a rule base to fixpoint. A rule fires only when every premise is TRUE, every negative FALSE, and the exception is not TRUE. Bounded by `MAX_ITERATIONS`; hitting the bound sets `truncated` rather than returning a partial answer as if complete |
+| **572** backward chaining | **BUILT** | `Engine::prove` searches goal-directed over the same rules, returns the derivation, and on failure names the premise or the depth/cycle bound that stopped it. Propositional only — atoms are opaque strings, no unification |
+| **576** default reasoning | **BUILT** | rules carry an `exception`, three-valued: TRUE defeats (conclusion withdrawn), FALSE lets the default apply, **UNKNOWN lets it apply but records the assumption** in `ForwardResult.assumptions`. A caller needing certainty requires `assumptions.is_empty()` |
+| **580** explainable reports | **BUILT** | every conclusion carries a `Derivation` tree down to asserted facts, and each leaf keeps the `source` string it was asserted with (shard, record, seal). A proof prints as `too_many_violations ← two_violations ← [violation_mw ← lipinski_mw ← mw_gt_500 · shard … seal …]` |
+| 573 case-based · 574 analogical · 575 abductive | still absent | no case library with adaptation, no structure mapping, no hypothesis space. Unchanged verdicts, with reasons above |
+| 577 temporal · 578 spatial | still absent | no interval calculus and no spatial data; both would be libraries with no caller |
+| 579 complete suite | 4 of 10 | the umbrella is only as real as its members |
+
+## Semantics, stated because they are choices
+
+- **Kleene K3** throughout, the kernel's existing encoding: TRUE / UNKNOWN / FALSE. An UNKNOWN premise never
+  yields a TRUE conclusion.
+- **A conflict is reported, never resolved by arrival order.** An atom derived TRUE and asserted FALSE becomes
+  UNKNOWN and appears in `conflicts`.
+- **No negation-as-failure.** Absence of a fact is not falsity: the closed-world assumption is a non-monotonic
+  leap this engine refuses. Falsity must be asserted.
+- **No counting.** "Two or more violations" is written as all **C(5,2) = 10** explicit pairwise rules.
+- **No arithmetic, no probabilities, no variables.** Thresholds arrive as asserted facts; a fact is TRUE, FALSE
+  or UNKNOWN, never 0.73.
+- **A malformed request is refused (400)**, never defaulted to an empty fact set — an empty set answers UNKNOWN
+  to everything, which reads as caution and is really a broken request.
+
+## Verification: the engine against RDKit, 406 real compounds
+
+`tools/reasoning_verify.py` recomputes the properties with **RDKit** — an independent implementation in another
+language — and compares the engine's derived conclusion, compound by compound, over all 406 real ChEMBL LpxC
+actives (`evidence/chembl_lpxc_actives.json`).
+
+| profile | scored | agree | TRUE derived | left below TRUE | withheld-fact control |
+|---|---|---|---|---|---|
+| Lipinski/Veber/Ghose (`mw>500, logp>5, hbd>5, hba>10`) | 406 | **406 (100%)** | 0 | 406 | PASS |
+| strict (`mw>450, logp>4, hbd>4, hba>8`) | 406 | **406 (100%)** | 5 | 401 | PASS |
+
+The second profile exists because the published thresholds are so lenient that **not one of the 406 reaches two
+violations** — a rule base that never derives a positive cannot be verified by running it. The strict thresholds
+are stated up front, not tuned until something passed.
+
+**The harness earned its keep on the first run.** With 8 pairwise rules instead of 10, CHEMBL242031 (hbd 5,
+heavy atoms 19 — exactly `hbd + ghose`, two violations) came back **UNKNOWN** where RDKit expects TRUE. That was a
+real defect in the encoding, caught by the control rather than by inspection; all 10 pairs are now present in
+both profiles.
+
+## Unit tests (11, all passing)
+
+`forward_chain_derives_transitively_from_a_fact`, `a_missing_premise_yields_unknown_not_true`,
+`a_false_premise_does_not_fire_the_rule`, `a_cycle_terminates_and_is_explained`,
+`a_defeasible_rule_is_defeated_by_its_exception`, `an_unknown_exception_is_named_not_hidden`,
+`a_conflict_is_reported_and_left_unknown`, `backward_chaining_returns_the_chain_down_to_the_evidence`,
+`backward_chaining_names_the_premise_it_could_not_settle`, `the_druglikeness_rulebase_derives_two_violations`,
+`an_explanation_serialises_with_its_rule_and_source`.
+
+## Live
+
+```
+GET  /reason/rulebases      -> 3 rule profiles + the semantics document + the limits
+POST /reason/forward        -> truth, per-atom derivations, assumptions, conflicts, iterations, truncated
+POST /reason/prove          -> goal truth + full derivation tree + the note explaining any UNKNOWN
+malformed JSON              -> 400 (never a defaulted empty request)
+rule with no premises       -> 400 ("an unconditional rule is a fact, assert it")
+```

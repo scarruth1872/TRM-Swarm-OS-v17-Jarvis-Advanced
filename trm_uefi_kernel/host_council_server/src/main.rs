@@ -32,6 +32,7 @@ mod shield_rules;
 mod continuum;
 mod platform_facts;
 mod sovereign_axioms;
+mod reason_routes;
 mod council_ssm_pipeline;
 mod evidence_index;
 mod lexical_gate;
@@ -5931,6 +5932,44 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         // The principles every vote must answer to, published so the framework is inspectable and
         // arguable rather than buried in a prompt string. Same doctrine as /k3/rules.
         response_json = crate::sovereign_axioms::describe();
+    } else if method == Method::Get && url.starts_with("/reason/rulebases") {
+        // Tasks 571/572/576/580: what the reasoning engine can be asked, and what it refuses to do.
+        // Same doctrine as /k3/rules — publish the mechanism and the boundary, so a reader can argue with it.
+        response_json = crate::reason_routes::rulebases();
+    } else if method == Method::Post && url.starts_with("/reason/forward") {
+        // A malformed body is refused, never defaulted to an empty fact set: an empty set answers UNKNOWN
+        // to everything, which reads as caution and is really a broken request.
+        let mut rb = String::new();
+        let _ = request.as_reader().read_to_string(&mut rb);
+        match serde_json::from_str::<serde_json::Value>(&rb) {
+            Ok(v) => match crate::reason_routes::forward(&v) {
+                Ok(j) => response_json = j,
+                Err(e) => {
+                    status_code = 400;
+                    response_json = json!({ "error": e });
+                }
+            },
+            Err(e) => {
+                status_code = 400;
+                response_json = json!({ "error": format!("malformed JSON body: {e}") });
+            }
+        }
+    } else if method == Method::Post && url.starts_with("/reason/prove") {
+        let mut rb = String::new();
+        let _ = request.as_reader().read_to_string(&mut rb);
+        match serde_json::from_str::<serde_json::Value>(&rb) {
+            Ok(v) => match crate::reason_routes::prove(&v) {
+                Ok(j) => response_json = j,
+                Err(e) => {
+                    status_code = 400;
+                    response_json = json!({ "error": e });
+                }
+            },
+            Err(e) => {
+                status_code = 400;
+                response_json = json!({ "error": format!("malformed JSON body: {e}") });
+            }
+        }
     } else if method == Method::Get && url.starts_with("/k3/rules") {
         // The rule lane's inventory and decision order, so a reader can argue with the lists rather
         // than guess at them. Same doctrine as /platform/auth_policy: publish the heuristic.
