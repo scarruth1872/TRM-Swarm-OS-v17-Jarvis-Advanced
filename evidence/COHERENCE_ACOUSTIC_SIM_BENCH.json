@@ -1,0 +1,47 @@
+{
+  "article": 208,
+  "mode": "SOFTWARE_PRE_BENCH_SIMULATION",
+  "honest_boundary": "Validates the real-time C_total DSP pipeline, C_total>0.618 trigger, and classical 40 kHz acoustic radiation-force particle clustering in software. Physical bench validation is still required before advancing Article 208 from SPEC to CONFIRMED.",
+  "conditions": {
+    "active": {
+      "n_trials": 20,
+      "trigger_rate": 1.0,
+      "mean_peak_c_total": 0.8874,
+      "mean_delta_s1": 0.9324,
+      "std_delta_s1": 0.0026,
+      "median_trigger_latency_s": 1.0
+    },
+    "sham": {
+      "n_trials": 20,
+      "trigger_rate": 1.0,
+      "mean_peak_c_total": 0.6441,
+      "mean_delta_s1": -0.0112,
+      "std_delta_s1": 0.0092,
+      "median_trigger_latency_s": 1.6
+    },
+    "reversed_phase": {
+      "n_trials": 20,
+      "trigger_rate": 1.0,
+      "mean_peak_c_total": 0.7944,
+      "mean_delta_s1": -1.1986,
+      "std_delta_s1": 0.0475,
+      "median_trigger_latency_s": 1.0
+    },
+    "control_only": {
+      "n_trials": 20,
+      "trigger_rate": 0.0,
+      "mean_peak_c_total": 0.6031,
+      "mean_delta_s1": -0.0039,
+      "std_delta_s1": 0.0081,
+      "median_trigger_latency_s": null
+    }
+  },
+  "hypothesis_tests": {
+    "H1_active_vs_sham_paired_t": 479.831,
+    "H1_p_value": 2.911e-40,
+    "H1_cohens_d": 107.29,
+    "H2_reversed_phase_mean_delta_s1": -1.1986,
+    "H2_reversed_phase_vs_zero_t": -112.864
+  },
+  "elapsed_s": 2.55
+}
