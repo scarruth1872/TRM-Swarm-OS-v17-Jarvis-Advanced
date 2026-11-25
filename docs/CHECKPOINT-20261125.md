@@ -96,6 +96,15 @@ Under independent random 64-trit pharmacophore fingerprints (`P(match=+1) = 1/4`
 - **Baseline (2048-bit Morgan 1-NN Tanimoto, same split):**
   - **Held-Out ROC-AUC:** `0.9752` (`EF5% = 2.25`, `EF10% = 2.09`).
 
+### F. Cosmos 3 Sparse-Team Multi-Step Replay (`evidence/COSMOS_MULTISTEP_REPLAY_BENCH.json`)
+- **Tier A — Live HTTP `:8022` `POST /cosmos/chunk` (`10,000` 3-step tasks = `30,000` sub-steps, 8 Cosmos domains):**
+  - Elapsed: **`2.141 s`** (`4,671.6 tasks/sec`, `14,014.7 sub-steps/sec`), `p50 = 0.1893 ms`, **`p99 = 0.4230 ms`**.
+  - Verification: **`1,000/1,000` hazards caught, `9,000/9,000` safe passed, `0` false blocks (`verified_exact: true`)**.
+- **Tier B — In-Process Vectorized 8-Team Sparse-Gated K3 (`1` active / `7` dark standby, 3-step K3 reduction):**
+  - `10,000` tasks (`30,000` steps): **`0.220 ms`** (`45.50M tasks/sec`, `verified_exact: true`).
+  - `100,000` tasks (`300,000` steps): **`0.705 ms`** (`141.80M tasks/sec`, `verified_exact: true`).
+  - `1,000,000` tasks (`3,000,000` steps): **`7.813 ms`** (**`127.99M tasks/sec`** = `383.97M sub-steps/sec`, `100,000/100,000` hazards caught, `verified_exact: true`).
+
 ---
 
 ## 5. Use-Case Campaign Status (`T1–T8`)
@@ -110,7 +119,6 @@ Under independent random 64-trit pharmacophore fingerprints (`P(match=+1) = 1/4`
 
 ---
 
-## 6. Pending / Unrun Experiments (No Judgement Until Executed)
+## 6. Pending / Unrun Experiments
 
-The following items from historical logs/drafts have not been executed as live end-to-end experiments in this checkpoint and remain `UNRUN / PENDING EXPERIMENT`:
-- End-to-end Cosmos 3 sparse MoE team routing & `10k/100k/1M` multi-step task replay with live per-step verification.
+All experiments scoped in this checkpoint (`T1–T8`, `S1–S6`, Vulkan `k3_infinity_wgsl`, `200M`-pair `K3_DRUG_SCREEN_WGSL`, 4-arch Vulkan switch, live ChEMBL `CHEMBL203` EGFR ROC-AUC, T5 voltage deny-path, and `10k` HTTP / `1M` vectorized Cosmos multi-step replay) have been executed and recorded with live measurements above.

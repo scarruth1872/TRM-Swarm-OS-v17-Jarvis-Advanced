@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-11-25T01:40:04",
+  "tier_a_live_http_8022_cosmos_10k": {
+    "tasks": 10000,
+    "sub_steps": 30000,
+    "elapsed_s": 2.141,
+    "tasks_per_sec": 4671.6,
+    "sub_steps_per_sec": 14014.7,
+    "p50_ms": 0.1893,
+    "p99_ms": 0.423,
+    "hazards_caught": 1000,
+    "hazards_injected": 1000,
+    "safe_passed": 9000,
+    "false_blocks": 0,
+    "verified_exact": true
+  },
+  "tier_b_vectorized_sparse_k3": {
+    "tasks_10000": {
+      "tasks": 10000,
+      "sub_steps": 30000,
+      "active_teams_per_task": 1,
+      "dark_standby_teams": 7,
+      "elapsed_ms": 0.22,
+      "tasks_per_sec": 45495920.4,
+      "sub_steps_per_sec": 136487761.2,
+      "hazards_caught": 1000,
+      "hazards_expected": 1000,
+      "safe_passed": 9000,
+      "verified_exact": true
+    },
+    "tasks_100000": {
+      "tasks": 100000,
+      "sub_steps": 300000,
+      "active_teams_per_task": 1,
+      "dark_standby_teams": 7,
+      "elapsed_ms": 0.705,
+      "tasks_per_sec": 141803740.7,
+      "sub_steps_per_sec": 425411222.0,
+      "hazards_caught": 10000,
+      "hazards_expected": 10000,
+      "safe_passed": 90000,
+      "verified_exact": true
+    },
+    "tasks_1000000": {
+      "tasks": 1000000,
+      "sub_steps": 3000000,
+      "active_teams_per_task": 1,
+      "dark_standby_teams": 7,
+      "elapsed_ms": 7.813,
+      "tasks_per_sec": 127990170.3,
+      "sub_steps_per_sec": 383970510.8,
+      "hazards_caught": 100000,
+      "hazards_expected": 100000,
+      "safe_passed": 900000,
+      "verified_exact": true
+    }
+  }
+}
