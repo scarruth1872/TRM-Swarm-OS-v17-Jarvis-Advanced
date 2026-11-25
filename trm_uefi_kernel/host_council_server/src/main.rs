@@ -5439,6 +5439,19 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 }
                 r
             };
+        } else if method == Method::Get && url.starts_with("/gpu/infinity/bench") {
+            let g = voltage::gate();
+            response_json = if !g.open {
+                json!({ "status": "REFUSED_VOLTAGE_GATE", "gate": {
+                    "open": g.open, "phi_v": g.phi_v, "threshold": g.threshold,
+                    "measured": g.measured, "reason": g.reason } })
+            } else {
+                let mut r = gpu_compute::run_infinity_cache_bench();
+                if let Some(o) = r.as_object_mut() {
+                    o.insert("voltage_gate".into(), json!({ "open": g.open, "phi_v": g.phi_v }));
+                }
+                r
+            };
         } else if method == Method::Get && url.starts_with("/cosmos/status") {
             response_json = cosmos_bridge::status_json();
         } else if method == Method::Post && url.starts_with("/cosmos/chunk") {
