@@ -177,3 +177,24 @@ strings. Measured on this host: `verdict REFUTED | passed 0 | refuted 3 | undete
 `x86_64` / 24 cores, **7** serialisers in `tools/`, sha256 `062b0cf3449094a6…` of the ESKAPE file (3 of 7
 named genes present), and a 0.244 ms real ingest. REFUTED is the correct verdict: the deployment target is
 aarch64. Details in `docs/AMR-SURVEILLANCE.md`.
+
+
+## ERRATUM — the wet-lab "no SMILES" defect (2026-11-24)
+
+The audit reported *"TRM-ABX-220 has no SMILES anywhere"* and card `TASK-CAD-10` carried it. The accurate
+statement is narrower and its consequence is now fixed:
+
+- `wet_lab_bridge_package.json` holds SMILES for **TRM-ABX-219** and **TRM-ABX-082** with sha256 locks that
+  recompute;
+- **TRM-ABX-220 was absent from that registry** — that absence is the whole of the defect;
+- the chemistry itself was never lost: `TRM-ABX-220_benchmark_docked.pdbqt` carries
+  `REMARK SMILES CC1=C(C(=O)NO)C(=O)N(Cc2ccccc2)C1=O`, and RDKit canonicalises it to the same molecule the
+  pose represents.
+
+TRM-ABX-220 was registered with a lock over its SMILES and a recorded source
+(`tools/suite_leads_reconcile.py --register`; evidence in `data/suite_leads_reconciliation.json`). All three
+leads now reconcile across registry, pose and SDF.
+
+The wider lesson, recorded because it recurred within hours: **a search that stops at one field name in one
+file is not a search.** The same error produced my "74 tasks blocked at the molecule" and its retraction in
+`docs/SUITE-CAPABILITY-1000.md`.

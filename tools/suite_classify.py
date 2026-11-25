@@ -75,9 +75,14 @@ RULES: list[tuple[str, re.Pattern, str]] = [
     ("D", re.compile(r"tumou?r|neoantigen|cancer genome|patient sample|patients|\bcohort\b|clinical database|horizontal gene transfer|clinical isolate", re.I),
      "no patient/tumour data on this host, and none may be sourced without explicit approval"),
 
-    # L -- the molecule the task names has no structure, so the computation cannot be run as written.
-    ("L", re.compile(r"trm-abx-220|trm leads|trm-tbx-001|trm-ntd", re.I),
-     "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"),
+    # L -- a molecule the task names has no structure anywhere. CORRECTED 2026-11-24: this class was
+    # populated with 74 tasks on the belief that TRM-ABX-220 had no SMILES. It does -- the structure is a
+    # REMARK SMILES line inside TRM-ABX-220_benchmark_docked.pdbqt, and 219/082 also have 3D SDF files whose
+    # canonical SMILES agree with their pose files. The blocker was a search that stopped at a `smiles` JSON
+    # field. The rule is kept so a future molecule with genuinely absent chemistry lands here, but it now
+    # requires a lead with NO structure file on disk.
+    ("L", re.compile(r"^(?!.*(?:trm-abx-082|trm-abx-219|trm-abx-220|chir-090)).*\btrm-(?:abx|tbx|ntd)-\d", re.I),
+     "the named molecule has no structure file on disk (all three current leads DO have one, so this is empty today)"),
 
     # B -- engine runs, control fails. Measured: vina 1.2.7 completes a dock in 22 s, redock RMSD 13.82 A.
     ("B", re.compile(r"dock|binding affinity|free energy perturbation|binding mode|binding pose|proteome-wide", re.I),

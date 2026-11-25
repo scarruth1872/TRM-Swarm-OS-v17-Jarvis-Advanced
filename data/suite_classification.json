@@ -3,12 +3,12 @@
  "n_tasks": 1000,
  "totals": {
   "P": 3,
-  "A1": 32,
+  "A1": 39,
   "A2": 54,
-  "B": 2,
-  "C": 677,
-  "N": 77,
-  "L": 74,
+  "B": 8,
+  "C": 731,
+  "N": 84,
+  "L": 0,
   "D": 42,
   "E": 29,
   "F": 10
@@ -16,12 +16,12 @@
  "by_domain": {
   "Drug Discovery & Biomedical": {
    "P": 0,
-   "A1": 3,
+   "A1": 10,
    "A2": 0,
-   "B": 0,
-   "C": 21,
-   "N": 1,
-   "L": 71,
+   "B": 6,
+   "C": 72,
+   "N": 8,
+   "L": 0,
    "D": 4,
    "E": 0,
    "F": 0,
@@ -136,9 +136,9 @@
    "A1": 0,
    "A2": 1,
    "B": 0,
-   "C": 94,
+   "C": 97,
    "N": 1,
-   "L": 3,
+   "L": 0,
    "D": 0,
    "E": 1,
    "F": 0,
@@ -150,22 +150,22 @@
    "id": 1,
    "text": "Optimize TRM-ABX-220 binding affinity against LpxC using 500 conformer docking sweep. Generate real docking scores.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "B",
+   "reason": "vina 1.2.7 runs but the shipped receptor/ligand pairs are in different frames (redock RMSD 13.82 A, positive affinity at a tight box), so its numbers are not evidence"
   },
   {
    "id": 2,
    "text": "Perform molecular dynamics simulation of TRM-ABX-220 in LpxC active site for 100ns. Output trajectory analysis.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 3,
    "text": "Generate 50 analogs of TRM-ABX-220 with predicted Ki values. Rank by potency and synthetic accessibility.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 4,
@@ -185,36 +185,36 @@
    "id": 6,
    "text": "Predict resistance development pathways for TRM-ABX-220 over 100 generations of bacterial evolution.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 7,
    "text": "Generate synthesis protocol for TRM-ABX-220 with \u226595% HPLC purity specification. Include reagents, conditions, and purification steps.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 8,
    "text": "Perform retrosynthetic analysis for TRM-ABX-220. Generate 5 viable synthetic routes with cost estimates.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 9,
    "text": "Calculate drug-likeness scores (Lipinski, Veber, Ghose) for all 3 TRM leads. Generate comparison table.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "A1",
+   "reason": "RDKit 2026.03.6 (py3.12) computes these; measured on 406 real LpxC actives"
   },
   {
    "id": 10,
    "text": "Perform QSAR model training on 10,000 known antibiotics. Predict TRM-ABX-220 activity class.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "A1",
+   "reason": "sklearn 1.3.2 (py3.11) trains on local shards; measured CV5 R2 0.7226 on 406 LpxC actives"
   },
   {
    "id": 11,
@@ -227,78 +227,78 @@
    "id": 12,
    "text": "Analyze efflux pump recognition patterns for TRM-ABX-220 across 50 bacterial species.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 13,
    "text": "Predict biofilm penetration capability of TRM-ABX-220 using physicochemical properties.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 14,
    "text": "Generate combination therapy recommendations with TRM-ABX-220 and existing antibiotics.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 15,
    "text": "Analyze cross-resistance potential between TRM-ABX-220 and existing LpxC inhibitors.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "A1",
+   "reason": "CARD 6,463 / NCBI-AMR 8,143 / ESKAPE 25,888 real records are on disk"
   },
   {
    "id": 16,
    "text": "Perform structural alignment of TRM-ABX-220 against known LpxC inhibitor co-crystals.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 17,
    "text": "Generate pharmacophore model from active LpxC inhibitors. Validate TRM-ABX-220 fit.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "N",
+   "reason": "a normative claim: nothing on this host can verify that a policy is just, dignified or fair \u2014 the platform can only write it"
   },
   {
    "id": 18,
    "text": "Predict TRM-ABX-220 activity against anaerobic bacteria using metabolic pathway analysis.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 19,
    "text": "Analyze TRM-ABX-220 spectrum of activity across Gram-negative and Gram-positive species.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 20,
    "text": "Generate resistance surveillance report for TRM-ABX-220 based on genomic markers.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "A1",
+   "reason": "CARD 6,463 / NCBI-AMR 8,143 / ESKAPE 25,888 real records are on disk"
   },
   {
    "id": 21,
    "text": "Perform full hERG binding mode analysis for TRM-ABX-220. Generate binding pose visualization.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "B",
+   "reason": "vina 1.2.7 runs but the shipped receptor/ligand pairs are in different frames (redock RMSD 13.82 A, positive affinity at a tight box), so its numbers are not evidence"
   },
   {
    "id": 22,
    "text": "Predict TRM-ABX-220 metabolite structures via CYP450 oxidation. Assess metabolite toxicity.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 23,
@@ -311,22 +311,22 @@
    "id": 24,
    "text": "Analyze TRM-ABX-220 potential for phototoxicity using structural alerts.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 25,
    "text": "Predict TRM-ABX-220 blood-brain barrier penetration and CNS effects.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 26,
    "text": "Generate complete toxicological profile for TRM-ABX-220 across 50 assay endpoints.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 27,
@@ -339,50 +339,50 @@
    "id": 28,
    "text": "Analyze TRM-ABX-220 potential for drug-induced liver injury using DILI models.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 29,
    "text": "Predict TRM-ABX-220 renal clearance pathway and nephrotoxicity risk.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 30,
    "text": "Generate safety pharmacology panel predictions for TRM-ABX-220.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "N",
+   "reason": "a normative claim: nothing on this host can verify that a policy is just, dignified or fair \u2014 the platform can only write it"
   },
   {
    "id": 31,
    "text": "Predict TRM-ABX-220 human pharmacokinetic parameters (Cmax, Tmax, AUC, half-life).",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "N",
+   "reason": "a normative claim: nothing on this host can verify that a policy is just, dignified or fair \u2014 the platform can only write it"
   },
   {
    "id": 32,
    "text": "Generate dose-response curves for TRM-ABX-220 against 20 bacterial strains.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 33,
    "text": "Predict TRM-ABX-220 tissue distribution using physiologically-based pharmacokinetic modeling.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "N",
+   "reason": "a normative claim: nothing on this host can verify that a policy is just, dignified or fair \u2014 the platform can only write it"
   },
   {
    "id": 34,
    "text": "Calculate TRM-ABX-220 protein binding percentage and free fraction.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 35,
@@ -395,15 +395,15 @@
    "id": 36,
    "text": "Predict TRM-ABX-220 drug-drug interaction potential with 100 common medications.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 37,
    "text": "Analyze TRM-ABX-220 potential for QT prolongation beyond hERG (multi-ion channel).",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 38,
@@ -416,15 +416,15 @@
    "id": 39,
    "text": "Predict TRM-ABX-220 efficacy in immunocompromised patient models.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 40,
    "text": "Generate clinical trial design recommendation for Phase 1 study of TRM-ABX-220.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 41,
@@ -444,8 +444,8 @@
    "id": 43,
    "text": "Predict TRM-ABX-220 binding mode in LpxC from 10 different species.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "B",
+   "reason": "vina 1.2.7 runs but the shipped receptor/ligand pairs are in different frames (redock RMSD 13.82 A, positive affinity at a tight box), so its numbers are not evidence"
   },
   {
    "id": 44,
@@ -458,15 +458,15 @@
    "id": 45,
    "text": "Perform ensemble docking of TRM-ABX-220 against 50 LpxC conformations.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "B",
+   "reason": "vina 1.2.7 runs but the shipped receptor/ligand pairs are in different frames (redock RMSD 13.82 A, positive affinity at a tight box), so its numbers are not evidence"
   },
   {
    "id": 46,
    "text": "Generate mutation energy analysis for TRM-ABX-220 binding to wild-type vs mutant LpxC.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 47,
@@ -479,22 +479,22 @@
    "id": 48,
    "text": "Analyze TRM-ABX-220 zinc coordination geometry in LpxC active site.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 49,
    "text": "Generate conformational analysis of TRM-ABX-220 in solution using molecular dynamics.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 50,
    "text": "Perform free energy perturbation calculation for TRM-ABX-220 binding affinity.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "B",
+   "reason": "vina 1.2.7 runs but the shipped receptor/ligand pairs are in different frames (redock RMSD 13.82 A, positive affinity at a tight box), so its numbers are not evidence"
   },
   {
    "id": 51,
@@ -507,8 +507,8 @@
    "id": 52,
    "text": "Analyze TRM-ABX-220 effect on downstream lipid A modifications using network perturbation.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "A1",
+   "reason": "SMPDB (147,932 records) and ChEMBL LpxC (406) are on disk and queryable"
   },
   {
    "id": 53,
@@ -521,8 +521,8 @@
    "id": 54,
    "text": "Analyze TRM-ABX-220 potential off-target effects using proteome-wide docking.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "B",
+   "reason": "vina 1.2.7 runs but the shipped receptor/ligand pairs are in different frames (redock RMSD 13.82 A, positive affinity at a tight box), so its numbers are not evidence"
   },
   {
    "id": 55,
@@ -535,8 +535,8 @@
    "id": 56,
    "text": "Predict TRM-ABX-220 effect on bacterial cell envelope stress response pathways.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 57,
@@ -549,8 +549,8 @@
    "id": 58,
    "text": "Analyze TRM-ABX-220 potential synergy with cell wall synthesis inhibitors.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 59,
@@ -563,8 +563,8 @@
    "id": 60,
    "text": "Predict TRM-ABX-220 effect on bacterial virulence factor expression.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 61,
@@ -584,8 +584,8 @@
    "id": 63,
    "text": "Identify LpxC mutations that could confer TRM-ABX-220 resistance.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 64,
@@ -626,8 +626,8 @@
    "id": 69,
    "text": "Predict TRM-ABX-220 susceptibility using machine learning on genomic features.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 70,
@@ -640,92 +640,92 @@
    "id": 71,
    "text": "Generate formulation recommendations for TRM-ABX-220 oral bioavailability enhancement.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 72,
    "text": "Predict TRM-ABX-220 solubility at different pH values using computational models.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 73,
    "text": "Generate nanoparticle formulation design for TRM-ABX-220 targeted delivery.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 74,
    "text": "Predict TRM-ABX-220 stability under various storage conditions.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 75,
    "text": "Generate prodrug design for TRM-ABX-220 to improve pharmacokinetics.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "N",
+   "reason": "a normative claim: nothing on this host can verify that a policy is just, dignified or fair \u2014 the platform can only write it"
   },
   {
    "id": 76,
    "text": "Calculate TRM-ABX-220 partition coefficient and permeability values.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "A1",
+   "reason": "RDKit 2026.03.6 (py3.12) computes these; measured on 406 real LpxC actives"
   },
   {
    "id": 77,
    "text": "Generate sustained-release formulation design for TRM-ABX-220.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 78,
    "text": "Predict TRM-ABX-220 compatibility with common pharmaceutical excipients.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "N",
+   "reason": "a normative claim: nothing on this host can verify that a policy is just, dignified or fair \u2014 the platform can only write it"
   },
   {
    "id": 79,
    "text": "Generate IV formulation design for TRM-ABX-220 acute care use.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 80,
    "text": "Perform stability indicating assay development for TRM-ABX-220.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 81,
    "text": "Generate FDA regulatory pathway analysis for TRM-ABX-220 (505(b)(1) vs 505(b)(2)).",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 82,
    "text": "Compile IND-enabling study requirements for TRM-ABX-220.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 83,
    "text": "Generate QIDP designation justification for TRM-ABX-220 under GAIN Act.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 84,
@@ -738,8 +738,8 @@
    "id": 85,
    "text": "Generate orphan drug designation analysis for TRM-ABX-220 if applicable.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 86,
@@ -759,15 +759,15 @@
    "id": 88,
    "text": "Analyze freedom-to-operate for TRM-ABX-220 chemical space.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 89,
    "text": "Generate regulatory risk assessment for TRM-ABX-220 development program.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 90,
@@ -780,64 +780,64 @@
    "id": 91,
    "text": "Generate complete CLSI M07-A10 broth microdilution protocol for TRM-ABX-220.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 92,
    "text": "Design MIC testing panel for TRM-ABX-220 against 100 clinical strains.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 93,
    "text": "Generate time-kill assay protocol for TRM-ABX-220.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 94,
    "text": "Design resistance development study protocol for TRM-ABX-220.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 95,
    "text": "Generate cytotoxicity assay protocol for TRM-ABX-220 in mammalian cells.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "A1",
+   "reason": "Tox21 (7,831 real assay records) is on disk for measured endpoints"
   },
   {
    "id": 96,
    "text": "Design synergy testing protocol for TRM-ABX-220 combination therapy.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 97,
    "text": "Generate biofilm eradication assay protocol for TRM-ABX-220.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 98,
    "text": "Design in vivo efficacy study protocol for TRM-ABX-220 in mouse model.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 99,
    "text": "Generate pharmacokinetic sampling protocol for TRM-ABX-220 in animals.",
    "domain": "Drug Discovery & Biomedical",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "N",
+   "reason": "a normative claim: nothing on this host can verify that a policy is just, dignified or fair \u2014 the platform can only write it"
   },
   {
    "id": 100,
@@ -6527,15 +6527,15 @@
    "id": 912,
    "text": "Generate research proposal for TRM-ABX-220 wet-lab validation.",
    "domain": "Creative & Generative Work",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 913,
    "text": "Generate patent application for TRM-ABX-220.",
    "domain": "Creative & Generative Work",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 914,
@@ -6660,8 +6660,8 @@
    "id": 931,
    "text": "Generate molecular visualization of TRM-ABX-220.",
    "domain": "Creative & Generative Work",
-   "class": "L",
-   "reason": "TRM-ABX-220 has no SMILES anywhere in the repo (wet-lab audit), so any descriptor/docking/PK task about it is blocked at the molecule; the same computation runs on the 406 real LpxC actives in the shard"
+   "class": "C",
+   "reason": "the deliverable is a written document or report; the platform can produce it (gpt-oss-20b on :8587) but nothing in the platform verifies its content"
   },
   {
    "id": 932,

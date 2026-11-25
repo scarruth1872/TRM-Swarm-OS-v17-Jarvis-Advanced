@@ -49,6 +49,43 @@ def main() -> int:
         "reading": ("beats the mean-predictor baseline" if mean_r2 > base + 0.05
                     else "does NOT beat the mean-predictor baseline -> not a usable QSAR model"),
     }
+    # ---- predict the three leads, with an applicability-domain check -------------------------------
+    # A prediction from a model trained on 406 actives says nothing useful about a molecule outside that
+    # model's range. So each lead gets its descriptor distance from the training set, and the extrapolation
+    # is stated rather than hidden.
+    leads_path = ROOT / "data" / "suite_leads_descriptors.json"
+    if leads_path.exists():
+        leads = json.loads(leads_path.read_text(encoding="utf-8"))["leads"]
+        full = GradientBoostingRegressor(random_state=0, n_estimators=300, max_depth=3).fit(X, y)
+        mu, sd = X.mean(axis=0), X.std(axis=0)
+        preds = {}
+        for name, e in leads.items():
+            feats = e.get("model_features")
+            if not feats:
+                preds[name] = {"error": e.get("error", "no features")}
+                continue
+            f = np.array([feats], dtype=float)
+            z = np.abs((f[0] - mu) / np.where(sd == 0, 1, sd))
+            outs = [t.predict(f)[0] for t in (GradientBoostingRegressor(random_state=0, n_estimators=300,
+                                                                       max_depth=3).fit(X[tr], y[tr])
+                                              for tr, _ in KFold(n_splits=5, shuffle=True,
+                                                                 random_state=0).split(X))]
+            preds[name] = {
+                "predicted_pKi": round(float(full.predict(f)[0]), 2),
+                "fold_prediction_spread": [round(float(min(outs)), 2), round(float(max(outs)), 2)],
+                "max_abs_z": round(float(z.max()), 2),
+                "outside_training_range_features": [res["features"][i] for i in range(len(z)) if z[i] > 2],
+                "in_domain": bool(z.max() <= 2),
+                "training_mean_max_z": round(float(np.abs((X - mu) / np.where(sd == 0, 1, sd)).max()), 2),
+            }
+        res["lead_predictions"] = preds
+        print("\nlead predictions (pKi from the 406-actives model):")
+        for name, pr in preds.items():
+            if "error" in pr:
+                print(f"  {name}: {pr['error']}"); continue
+            flag = "in domain" if pr["in_domain"] else f"EXTRAPOLATION (max |z| {pr['max_abs_z']}, outside: {pr['outside_training_range_features']})"
+            print(f"  {name}: pKi {pr['predicted_pKi']} (fold spread {pr['fold_prediction_spread']}) -> {flag}")
+
     if LPXC.exists():
         rec = json.loads(LPXC.read_text(encoding="utf-8"))
         rec["steps"]["task10_qsar"] = res
