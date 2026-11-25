@@ -875,6 +875,197 @@ pub fn run_drug_screen_bench() -> Value {
     })
 }
 
+const FOUR_ARCH_WGSL: &str = r#"
+@group(0) @binding(0) var<storage, read_write> fabric: array<u32>;
+
+@compute @workgroup_size(256)
+fn k3_step(@builtin(global_invocation_id) gid: vec3<u32>) {
+    let i = gid.x * 2u;
+    if (i + 1u >= arrayLength(&fabric)) { return; }
+    let pa = fabric[i];
+    let na = fabric[i + 1u];
+    fabric[i] = (pa & (pa ^ 0x55555555u)) | 0x11111111u;
+    fabric[i + 1u] = (na | (pa & 0x22222222u)) & ~fabric[i];
+}
+
+@compute @workgroup_size(256)
+fn fpga_lut_step(@builtin(global_invocation_id) gid: vec3<u32>) {
+    let i = gid.x;
+    if (i >= arrayLength(&fabric)) { return; }
+    let x = fabric[i];
+    // 7-input LUT lookup from first 4 words (128-bit truth table)
+    let inp = x & 127u;
+    let lut_word = fabric[inp >> 5u];
+    let out_bit = (lut_word >> (inp & 31u)) & 1u;
+    fabric[i] = (x << 1u) | out_bit;
+}
+
+@compute @workgroup_size(256)
+fn neural_step(@builtin(global_invocation_id) gid: vec3<u32>) {
+    let i = gid.x;
+    if (i >= arrayLength(&fabric)) { return; }
+    let packed = fabric[i];
+    let a = f32(packed & 0xFFFFu) * 0.001;
+    let b = f32((packed >> 16u) & 0xFFFFu) * 0.001;
+    let y = max(0.0, a * 0.75 + b * 0.25);
+    fabric[i] = (u32(y * 1000.0) & 0xFFFFu) | ((packed & 0xFFFFu) << 16u);
+}
+
+@compute @workgroup_size(256)
+fn ca_step(@builtin(global_invocation_id) gid: vec3<u32>) {
+    let n = arrayLength(&fabric);
+    let i = gid.x;
+    if (i >= n) { return; }
+    let left = fabric[(i + n - 1u) % n];
+    let mid = fabric[i];
+    let right = fabric[(i + 1u) % n];
+    // Rule-30 style bitwise CA transition across 32 cells in parallel
+    fabric[i] = left ^ (mid | right);
+}
+"#;
+
+/// Benchmark switching across 4 distinct compute architectures (K3, FPGA-lite, Neural, CA)
+/// over the exact same 4 MB cache-resident GPU buffer on the RX 6700 XT.
+pub fn run_four_arch_switch_bench() -> Value {
+    let ctx = match init_gpu() {
+        Ok(c) => c,
+        Err(e) => return json!({ "status": "GPU_UNAVAILABLE", "error": e }),
+    };
+
+    let shader = ctx.device.create_shader_module(wgpu::ShaderModuleDescriptor {
+        label: Some("four_arch_wgsl"),
+        source: wgpu::ShaderSource::Wgsl(FOUR_ARCH_WGSL.into()),
+    });
+    let bgl = ctx.device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+        label: Some("four_arch_bgl"),
+        entries: &[wgpu::BindGroupLayoutEntry {
+            binding: 0,
+            visibility: wgpu::ShaderStages::COMPUTE,
+            ty: wgpu::BindingType::Buffer {
+                ty: wgpu::BufferBindingType::Storage { read_only: false },
+                has_dynamic_offset: false,
+                min_binding_size: None,
+            },
+            count: None,
+        }],
+    });
+    let pl = ctx.device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+        label: Some("four_arch_pl"),
+        bind_group_layouts: &[Some(&bgl)],
+        immediate_size: 0,
+    });
+    let make_pipe = |entry: &str| {
+        ctx.device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
+            label: Some(entry),
+            layout: Some(&pl),
+            module: &shader,
+            entry_point: Some(entry),
+            compilation_options: Default::default(),
+            cache: None,
+        })
+    };
+    let pipes = [
+        ("k3_ternary", make_pipe("k3_step")),
+        ("fpga_lite_lut", make_pipe("fpga_lut_step")),
+        ("neural_mac", make_pipe("neural_step")),
+        ("cellular_automaton", make_pipe("ca_step")),
+    ];
+
+    // 4 MB shared fabric (1,048,576 u32 words) resident in L2 / 96 MB Infinity Cache
+    const WORDS: usize = 1_048_576;
+    const DISPATCH_WG: u32 = 256; // 65,536 active elements per switch step
+    const CYCLES: usize = 250;    // 250 * 4 = 1,000 back-to-back architecture switches
+    let init_data: Vec<u32> = (0..WORDS as u32).map(|i| i.wrapping_mul(2654435761) ^ 0xA5A5_5A5A).collect();
+    let buf_bytes = (WORDS * 4) as u64;
+
+    let fabric_buf = ctx.device.create_buffer(&wgpu::BufferDescriptor {
+        label: Some("four_arch_fabric"),
+        size: buf_bytes,
+        usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::COPY_SRC,
+        mapped_at_creation: false,
+    });
+    let staging = ctx.device.create_buffer(&wgpu::BufferDescriptor {
+        label: Some("four_arch_staging"),
+        size: 64,
+        usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
+        mapped_at_creation: false,
+    });
+    ctx.queue.write_buffer(&fabric_buf, 0, bytemuck::cast_slice(&init_data));
+
+    let bg = ctx.device.create_bind_group(&wgpu::BindGroupDescriptor {
+        label: Some("four_arch_bg"),
+        layout: &bgl,
+        entries: &[wgpu::BindGroupEntry {
+            binding: 0,
+            resource: fabric_buf.as_entire_binding(),
+        }],
+    });
+
+    // Warm-up 1 cycle
+    {
+        let mut enc = ctx.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: Some("sw_warm") });
+        {
+            let mut pass = enc.begin_compute_pass(&wgpu::ComputePassDescriptor { label: Some("sw_warm_p"), timestamp_writes: None });
+            pass.set_bind_group(0, &bg, &[]);
+            for (_, p) in &pipes {
+                pass.set_pipeline(p);
+                pass.dispatch_workgroups(DISPATCH_WG, 1, 1);
+            }
+        }
+        ctx.queue.submit(Some(enc.finish()));
+        let _ = ctx.device.poll(wgpu::PollType::Wait { submission_index: None, timeout: None });
+    }
+
+    // Timed 1,000 back-to-back architecture switches inside one command buffer
+    let t0 = Instant::now();
+    let mut enc = ctx.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: Some("sw_run") });
+    {
+        let mut pass = enc.begin_compute_pass(&wgpu::ComputePassDescriptor { label: Some("sw_run_p"), timestamp_writes: None });
+        pass.set_bind_group(0, &bg, &[]);
+        for _ in 0..CYCLES {
+            for (_, p) in &pipes {
+                pass.set_pipeline(p);
+                pass.dispatch_workgroups(DISPATCH_WG, 1, 1);
+            }
+        }
+    }
+    enc.copy_buffer_to_buffer(&fabric_buf, 0, &staging, 0, 64);
+    ctx.queue.submit(Some(enc.finish()));
+
+    let slice = staging.slice(..);
+    let (tx, rx) = std::sync::mpsc::channel();
+    slice.map_async(wgpu::MapMode::Read, move |res| {
+        let _ = tx.send(res);
+    });
+    let _ = ctx.device.poll(wgpu::PollType::Wait { submission_index: None, timeout: None });
+    let _ = rx.recv();
+    let elapsed_us = t0.elapsed().as_secs_f64() * 1_000_000.0;
+
+    let sample_nonzero = match slice.get_mapped_range() {
+        Ok(view) => {
+            let vals: &[u32] = bytemuck::cast_slice(&view);
+            vals.iter().any(|&v| v != 0)
+        }
+        Err(_) => false,
+    };
+    staging.unmap();
+
+    let total_switches = CYCLES * 4;
+    let us_per_switch = elapsed_us / (total_switches as f64);
+
+    json!({
+        "status": if sample_nonzero { "MEASURED_VERIFIED" } else { "EMPTY_OUTPUT" },
+        "adapter": ctx.adapter_name,
+        "backend": ctx.backend,
+        "architectures": ["k3_ternary", "fpga_lite_lut", "neural_mac", "cellular_automaton"],
+        "shared_buffer_mb": 4,
+        "total_switches": total_switches,
+        "total_elapsed_ms": (elapsed_us / 1000.0 * 100.0).round() / 100.0,
+        "us_per_switch": (us_per_switch * 100.0).round() / 100.0,
+        "under_10us_claim_met": us_per_switch < 10.0,
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

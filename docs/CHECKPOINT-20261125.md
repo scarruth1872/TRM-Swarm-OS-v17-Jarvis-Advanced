@@ -54,7 +54,7 @@ Source: `tools/run_security_benchmarks.py` + `evidence/SECURITY_BENCHMARK_S1_S6.
 | **S1** (`/platform/shutdown` Auth) | **HARDENED** | `no_token=401`, `bad_token=401`, `still_up=True` (loopback exemption removed for `/platform/shutdown`) |
 | **S2** (Prompt Injection / Jailbreak, 20 attacks + 10 controls) | **MEASURED** | Hybrid `18/20 (90.0%)` caught, Benign FP `0/10 (0.0%)` |
 | **S3** (DDR Code-Safety Scanner, 9 payloads) | **HARDENED (`100%`)** | `9/9 (100.0%)` caught after adding `getattr(__builtins__, ...)` rule in `ddr_scan.rs` |
-| **S4** (Cosmos Edge Bridge, 20 hazards + 20 safe) | **MEASURED** | `14/20` kinematic/type hazards blocked (`0/20` FP); `6/6` string-plan injections pending Cosmos plan-field parser review |
+| **S4** (Cosmos Edge Bridge, 20 hazards + 20 safe) | **HARDENED (`100%`)** | **`20/20 (100.0%)`** blocked (`0/20` FP) after adding `plan`/`action_plan`/`directive` aliases in `cosmos_bridge.rs` |
 | **S5 / T4** (Disk Arena Bit-Flip Healing) | **PASS (`4071355`)** | Cold-boot single-bit flip (`1/1`) and multi-byte 16-bit tamper (`16/16`) detected and restored bit-exact on disk (`restored_on_disk: true`, `7–8 ms`) |
 | **S6** (Fuzz Resilience) | **HARDENED** | `6/6` survived with zero 5xx; malformed JSON fast-rejected (`invalid_json: 19.0 ms`, `deep_json: 0.7 ms`) |
 
@@ -85,6 +85,10 @@ Under independent random 64-trit pharmacophore fingerprints (`P(match=+1) = 1/4`
 | `T >= 32` | `2.2863 × 10⁻⁶` | `457` | — |
 | `T >= 36` | `1.6761 × 10⁻⁸` | `3.4` | *(recommended high-specificity threshold)* |
 
+### D. 4-Architecture Vulkan Pipeline Switch (`GET /gpu/switch/bench`, `FOUR_ARCH_WGSL`)
+- **Architectures:** `k3_ternary`, `fpga_lite_lut`, `neural_mac`, `cellular_automaton` operating over the same `4 MB` cache-resident GPU buffer.
+- **Measured Result (`1,000` back-to-back switches, `65,536` elements/dispatch):** `16.51 ms` total = **`16.51 µs / switch`** (`status: MEASURED_VERIFIED`, `under_10us_claim_met: false` — `1.65×` slower than the `< 10 µs` draft figure, measured end-to-end including compute dispatch).
+
 ---
 
 ## 5. Use-Case Campaign Status (`T1–T8`)
@@ -102,8 +106,6 @@ Under independent random 64-trit pharmacophore fingerprints (`P(match=+1) = 1/4`
 ## 6. Pending / Unrun Experiments (No Judgement Until Executed)
 
 The following items from historical logs/drafts have not been executed as live end-to-end experiments in this checkpoint and remain `UNRUN / PENDING EXPERIMENT`:
-- Multi-architecture (`FPGA-lite`, `Neural`, `CA`, `K3`) live Vulkan pipeline-switch timing benchmark.
 - Real chemical library (e.g., ChEMBL/PubChem fingerprints) screening on `GET /gpu/screen/bench` at `T >= 36` vs. known actives/decoys (ROC-AUC / enrichment factor).
 - End-to-end Cosmos 3 sparse MoE team routing & `10k/100k/1M` multi-step task replay with live per-step verification.
-- `S4` Cosmos string-plan injection parser verification (`plan` vs. `semantic_plan` field).
 - `T5` `Phi_V < 0.30` deny-path exercise.

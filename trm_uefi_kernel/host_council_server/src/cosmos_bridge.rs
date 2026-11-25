@@ -79,6 +79,9 @@ pub fn ingest_chunk(payload: &Value) -> Value {
         });
     let semantic_plan = payload
         .get("semantic_plan")
+        .or_else(|| payload.get("plan"))
+        .or_else(|| payload.get("action_plan"))
+        .or_else(|| payload.get("directive"))
         .and_then(|v| v.as_str())
         .unwrap_or("");
     let actions = payload
