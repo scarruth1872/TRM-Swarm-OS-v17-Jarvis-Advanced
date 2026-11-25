@@ -48,6 +48,66 @@
    "name": "consensus security audit",
    "verdict": "DONE_AND_FIXED",
    "artifact": "docs/CONSENSUS-TASKS-712-720.md + trm_uefi_kernel/src/quorum_consensus.rs"
+  },
+  "571": {
+   "name": "forward chaining inference",
+   "verdict": "ABSENT_BUILD_FIRST",
+   "why": "no inference engine; only shield_rules::describe() (fixed decision order). Cheapest real engine: shard facts + shield-shaped rules in Kleene K3, checkable against the corpus",
+   "artifact": "docs/REASONING-TASKS-571-580.md"
+  },
+  "572": {
+   "name": "backward chaining inference",
+   "verdict": "ABSENT_DEFER",
+   "why": "no goal-directed search; no prover binary (z3/cvc5/vampire/eprover absent); TPTP MPTP2078 28,346 problems sit unused by any Rust code",
+   "artifact": "docs/REASONING-TASKS-571-580.md"
+  },
+  "573": {
+   "name": "case-based reasoning",
+   "verdict": "ABSENT_DEFER",
+   "why": "no case base or adaptation; fabric gives similarity retrieval only",
+   "artifact": "docs/REASONING-TASKS-571-580.md"
+  },
+  "574": {
+   "name": "analogical reasoning",
+   "verdict": "ABSENT_DEFER",
+   "why": "no structure-mapping; every 'analog' hit is prose or an analogue signal",
+   "artifact": "docs/REASONING-TASKS-571-580.md"
+  },
+  "575": {
+   "name": "abductive reasoning",
+   "verdict": "ABSENT",
+   "why": "zero hits for abduct; no hypothesis space or cost model",
+   "artifact": "docs/REASONING-TASKS-571-580.md"
+  },
+  "576": {
+   "name": "default reasoning",
+   "verdict": "ABSENT_CHEAP_AFTER_571",
+   "why": "no defeasible/non-monotonic code; K3 UNKNOWN is a truth value, not a default rule. Exceptions become a rule class once 571 exists",
+   "artifact": "docs/REASONING-TASKS-571-580.md"
+  },
+  "577": {
+   "name": "temporal reasoning",
+   "verdict": "ABSENT_SKIP",
+   "why": "time is wall-clock stamps only; no interval or LTL calculus, and no caller for one",
+   "artifact": "docs/REASONING-TASKS-571-580.md"
+  },
+  "578": {
+   "name": "spatial reasoning",
+   "verdict": "ABSENT_SKIP",
+   "why": "zero Rust hits; no spatial or geometric data on this host",
+   "artifact": "docs/REASONING-TASKS-571-580.md"
+  },
+  "579": {
+   "name": "complete reasoning suite",
+   "verdict": "NO_SUITE",
+   "why": "umbrella over 571-578; eight of nine absent",
+   "artifact": "docs/REASONING-TASKS-571-580.md"
+  },
+  "580": {
+   "name": "explainable reasoning reports",
+   "verdict": "PARTIAL_EXTEND",
+   "why": "votes carry reason + [axis: A#]; cards carry reason; cadence cites samples >= 200; /council/axioms and /k3/rules publish the framework. Missing: a derivation trace and any endpoint reconstructing an argument",
+   "artifact": "docs/REASONING-TASKS-571-580.md"
   }
  },
  "measured_defects": [
@@ -70,5 +130,66 @@
    "no crypto crate (no authenticated messages)",
    "Raft still waits for its trigger"
   ]
+ },
+ "reasoning_571_580": {
+  "audited": "2026-11-25",
+  "artifact": "docs/REASONING-TASKS-571-580.md",
+  "tasks": {
+   "571": {
+    "name": "forward chaining inference",
+    "verdict": "ABSENT_BUILD_FIRST",
+    "why": "no inference engine; only shield_rules::describe() (fixed decision order). Cheapest real engine: shard facts + shield-shaped rules in Kleene K3, checkable against the corpus"
+   },
+   "572": {
+    "name": "backward chaining inference",
+    "verdict": "ABSENT_DEFER",
+    "why": "no goal-directed search; no prover binary (z3/cvc5/vampire/eprover absent); TPTP MPTP2078 28,346 problems sit unused by any Rust code"
+   },
+   "573": {
+    "name": "case-based reasoning",
+    "verdict": "ABSENT_DEFER",
+    "why": "no case base or adaptation; fabric gives similarity retrieval only"
+   },
+   "574": {
+    "name": "analogical reasoning",
+    "verdict": "ABSENT_DEFER",
+    "why": "no structure-mapping; every 'analog' hit is prose or an analogue signal"
+   },
+   "575": {
+    "name": "abductive reasoning",
+    "verdict": "ABSENT",
+    "why": "zero hits for abduct; no hypothesis space or cost model"
+   },
+   "576": {
+    "name": "default reasoning",
+    "verdict": "ABSENT_CHEAP_AFTER_571",
+    "why": "no defeasible/non-monotonic code; K3 UNKNOWN is a truth value, not a default rule. Exceptions become a rule class once 571 exists"
+   },
+   "577": {
+    "name": "temporal reasoning",
+    "verdict": "ABSENT_SKIP",
+    "why": "time is wall-clock stamps only; no interval or LTL calculus, and no caller for one"
+   },
+   "578": {
+    "name": "spatial reasoning",
+    "verdict": "ABSENT_SKIP",
+    "why": "zero Rust hits; no spatial or geometric data on this host"
+   },
+   "579": {
+    "name": "complete reasoning suite",
+    "verdict": "NO_SUITE",
+    "why": "umbrella over 571-578; eight of nine absent"
+   },
+   "580": {
+    "name": "explainable reasoning reports",
+    "verdict": "PARTIAL_EXTEND",
+    "why": "votes carry reason + [axis: A#]; cards carry reason; cadence cites samples >= 200; /council/axioms and /k3/rules publish the framework. Missing: a derivation trace and any endpoint reconstructing an argument"
+   }
+  },
+  "registry_defect": {
+   "measured": "281 registry names, 184 present in src/, 0 elsewhere, 97 phantom (no .rs file anywhere) and all 97 labelled REAL",
+   "consequence": "REAL=274 overstates compiled intelligence by at least 97 modules (<= 177)",
+   "fix": "regenerate via swarm_v2/core/build_module_registry.py and make the boot path refuse an entry with no file"
+  }
  }
 }
