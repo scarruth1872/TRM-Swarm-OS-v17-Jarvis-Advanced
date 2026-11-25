@@ -323,7 +323,10 @@ pub fn scan(code: &str) -> Vec<Finding> {
     let builds_dangerous_name = (has_adjacent_literals
             && (raw.contains("eval") || raw.contains("exec") || raw.contains("__import__")))
         || (has_chr_assembly
-            && (raw.contains("eval") || raw.contains("exec") || raw.contains("__import__")));
+            && (raw.contains("eval") || raw.contains("exec") || raw.contains("__import__")))
+        || (has_getattr_string
+            && (raw.contains("__builtins__") || raw.contains("builtins"))
+            && (raw.contains("eval") || raw.contains("exec") || raw.contains("__import__") || raw.contains("system")));
     if has_adjacent_literals { obf.push("adjacent string literals".to_string()); }
     if has_chr_assembly { obf.push("chr() assembly".to_string()); }
     if has_base64_decode { obf.push("base64 decode".to_string()); }

@@ -3073,7 +3073,13 @@ fn auth_gate(request: &tiny_http::Request, method: &Method) -> Option<tiny_http:
         .remote_addr()
         .map(|a| a.ip().is_loopback())
         .unwrap_or(false);
-    if from_loopback {
+    let is_shutdown = request
+        .url()
+        .split('?')
+        .next()
+        .unwrap_or("")
+        .starts_with("/platform/shutdown");
+    if from_loopback && !is_shutdown {
         // G9: the exemption is policy, not an oversight. In strict mode the token is required even
         // locally; in local mode the write is allowed but COUNTED, so the boundary can be audited
         // at /platform/auth_policy rather than taken on faith.
@@ -5384,17 +5390,27 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
         } else if method == Method::Post && url.starts_with("/agents/584/eval") {
             let mut buf = String::new();
             let _ = request.as_reader().take(65_536).read_to_string(&mut buf);
-            let query_text = serde_json::from_str::<serde_json::Value>(&buf)
-                .ok()
-                .and_then(|v| {
-                    v.get("query")
-                        .or_else(|| v.get("directive"))
-                        .or_else(|| v.get("text"))
-                        .and_then(|s| s.as_str())
-                        .map(|s| s.to_string())
-                })
-                .unwrap_or(buf);
-            response_json = agent_bitboard::evaluate_directive(&query_text);
+            let trimmed_buf = buf.trim();
+            if trimmed_buf.is_empty() {
+                response_json = json!({ "error": "empty_body", "status": 400 });
+            } else if trimmed_buf.starts_with('{') || trimmed_buf.starts_with('[') {
+                match serde_json::from_str::<serde_json::Value>(trimmed_buf) {
+                    Ok(v) if v.is_object() => {
+                        let query_text = v
+                            .get("query")
+                            .or_else(|| v.get("directive"))
+                            .or_else(|| v.get("text"))
+                            .and_then(|s| s.as_str())
+                            .unwrap_or("");
+                        response_json = agent_bitboard::evaluate_directive(query_text);
+                    }
+                    _ => {
+                        response_json = json!({ "error": "invalid_json", "status": 400 });
+                    }
+                }
+            } else {
+                response_json = agent_bitboard::evaluate_directive(trimmed_buf);
+            }
         } else if method == Method::Get && url.starts_with("/spectral/photoacoustic/bench") {
             let g = voltage::gate();
             response_json = if !g.open {
