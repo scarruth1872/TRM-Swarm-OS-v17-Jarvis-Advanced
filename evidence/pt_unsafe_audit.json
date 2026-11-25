@@ -1,0 +1,66 @@
+{
+ "unsafe_blocks_total": 99,
+ "kernel": 97,
+ "host": 2,
+ "dangerous_constructs": [
+  {
+   "file": "trm_uefi_kernel\\src\\formal_verification_engine.rs",
+   "line": 75,
+   "construct": "transmute"
+  },
+  {
+   "file": "trm_uefi_kernel\\src\\main.rs",
+   "line": 4363,
+   "construct": "from_raw_parts"
+  },
+  {
+   "file": "trm_uefi_kernel\\src\\main.rs",
+   "line": 4334,
+   "construct": "copy_nonoverlapping"
+  },
+  {
+   "file": "trm_uefi_kernel\\src\\smp_trampoline.rs",
+   "line": 108,
+   "construct": "copy_nonoverlapping"
+  },
+  {
+   "file": "trm_uefi_kernel\\host_council_server\\src\\agent_bitboard.rs",
+   "line": 37,
+   "construct": "from_raw_parts"
+  },
+  {
+   "file": "trm_uefi_kernel\\host_council_server\\src\\voltage.rs",
+   "line": 213,
+   "construct": "from_raw_parts"
+  },
+  {
+   "file": "trm_uefi_kernel\\host_council_server\\src\\voltage.rs",
+   "line": 230,
+   "construct": "from_raw_parts"
+  }
+ ],
+ "host_blocks": [
+  {
+   "file": "trm_uefi_kernel\\host_council_server\\src\\agent_bitboard.rs",
+   "line": 36,
+   "context": "fn as_bytes(&self) -> &[u8] { / unsafe { / std::slice::from_raw_parts( / (self as *const Self) as *const u8,"
+  },
+  {
+   "file": "trm_uefi_kernel\\host_council_server\\src\\voltage.rs",
+   "line": 197,
+   "context": "let name = wide(\"Global\\\\HWiNFO_SENS_SM2\"); / unsafe { / let h = OpenFileMappingW(0x0004, 0, name.as_ptr()); / if h.is_null() {"
+  }
+ ],
+ "host_blocks_reachable": [
+  {
+   "file": "trm_uefi_kernel\\host_council_server\\src\\agent_bitboard.rs",
+   "line": 36,
+   "enclosing_fn": "as_bytes"
+  },
+  {
+   "file": "trm_uefi_kernel\\host_council_server\\src\\voltage.rs",
+   "line": 197,
+   "enclosing_fn": "rails"
+  }
+ ]
+}

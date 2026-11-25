@@ -288,6 +288,66 @@
    "verdict": "BUILT",
    "why": "schema trm.ie.structured.v1, all required keys, 0 span mismatches",
    "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
+  },
+  "321": {
+   "name": "vulnerability assessment",
+   "verdict": "BUILT",
+   "why": "186 routes, 99 unsafe blocks, 57 JSON parse sites, loopback-only bind; evidence/pt_surface.json",
+   "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
+  },
+  "322": {
+   "name": "fuzzing test suite",
+   "verdict": "BUILT",
+   "why": "689 hostile requests, 0 panics; found and fixed an unbounded-k DoS on /reading/summarize",
+   "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
+  },
+  "323": {
+   "name": "buffer overflow on unsafe",
+   "verdict": "BUILT",
+   "why": "no memory-unsafety construct on the input path; unsafe blocks are FFI/UEFI only",
+   "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
+  },
+  "324": {
+   "name": "race condition analysis",
+   "verdict": "BUILT_FINDING",
+   "why": "4 concurrent proposals: 0 verdicts in 240s - deliberation liveness stall; batches of 3 complete",
+   "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
+  },
+  "325": {
+   "name": "privilege escalation",
+   "verdict": "BUILT_FIXED",
+   "why": "token readable by BUILTIN\\Users -> ACL tightened; traversal refused; spawns use literal argv",
+   "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
+  },
+  "326": {
+   "name": "network attack simulation",
+   "verdict": "BUILT_FINDING",
+   "why": "CRITICAL (local): API unauthenticated - /kv/suite 200 with no token, /council/propose accepts unauthenticated writes; loopback-only bind",
+   "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
+  },
+  "327": {
+   "name": "side-channel simulation",
+   "verdict": "BUILT",
+   "why": "no timing leak: 0.04ms gap vs 6.71ms noise; response sizes identical",
+   "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
+  },
+  "328": {
+   "name": "social engineering assessment",
+   "verdict": "BUILT",
+   "why": "no employees; prompt-injection test into council agents (control vs treated proposal)",
+   "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
+  },
+  "329": {
+   "name": "physical security",
+   "verdict": "BLOCKED_PARTIAL",
+   "why": "no facility exists to assess; physical-adjacent controls measured (BitLocker not confirmed, token ACL fixed)",
+   "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
+  },
+  "330": {
+   "name": "penetration test report",
+   "verdict": "BUILT",
+   "why": "docs/PENETRATION-TEST-REPORT.md generated from evidence JSON by tools/pt_report.py",
+   "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
   }
  },
  "measured_defects": [
@@ -503,5 +563,25 @@
    "harness measured with str slices and CRLF-translated reads - 54 phantom mismatches"
   ],
   "lesson": "an offset check compares BYTES, not characters"
+ },
+ "penetration_test_321_330": {
+  "audited": "2026-11-25",
+  "scope": "own machine only, loopback only, no external target",
+  "critical": {
+   "PT-326-1": "API unauthenticated; unauthenticated writes to /council/propose; local scope (127.0.0.1 bind)"
+  },
+  "high": {
+   "PT-324-1": "4 concurrent proposals produced 0 verdicts in 240s"
+  },
+  "fixed": {
+   "PT-325-1": "token ACL tightened via icacls",
+   "PT-322-1": "k/pool/max_pairs clamped"
+  },
+  "not_tested": {
+   "329": "no physical facility",
+   "328": "no employees - prompt injection tested instead",
+   "326": "no off-box network tests"
+  },
+  "report": "docs/PENETRATION-TEST-REPORT.md"
  }
 }

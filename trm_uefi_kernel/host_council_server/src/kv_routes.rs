@@ -15,6 +15,12 @@ use trm_uefi_kernel::text_reading::{quantities, split_sentences};
 
 use crate::evidence_index;
 
+/// Bounded numeric parameter — an unbounded `k` turns retrieval into a denial of service (measured: k = 2^63-1
+/// hung an endpoint until the client timed out).
+fn bounded(body: &Value, key: &str, default: u64, max: u64) -> u64 {
+    body.get(key).and_then(|v| v.as_u64()).unwrap_or(default).min(max)
+}
+
 fn repo_root() -> Option<PathBuf> {
     let mut dir = std::env::current_dir().ok()?;
     for _ in 0..6 {
@@ -71,7 +77,7 @@ fn best_evidence(claim: &str, k: usize) -> (Vec<String>, Option<(String, String,
 /// shard whose measured count is recorded.
 pub fn factcheck(body: &Value) -> Result<Value, String> {
     let claim = body.get("claim").and_then(|v| v.as_str()).ok_or("'claim' must be a string")?;
-    let k = body.get("k").and_then(|v| v.as_u64()).unwrap_or(10) as usize;
+    let k = bounded(body, "k", 10, 50) as usize;
 
     let (sentences, best) = best_evidence(claim, k);
     let check = verify(claim, &sentences);
@@ -115,7 +121,7 @@ pub fn consistency(body: &Value) -> Result<Value, String> {
         .and_then(|v| v.as_array())
         .map(|a| a.iter().filter_map(|x| x.as_str().map(|s| s.to_string())).collect())
         .ok_or("'paths' must be an array of file paths")?;
-    let max_pairs = body.get("max_pairs").and_then(|v| v.as_u64()).unwrap_or(50_000) as usize;
+    let max_pairs = bounded(body, "max_pairs", 50_000, 2_000_000) as usize;
 
     struct Item { file: String, start: usize, text: String }
     let mut items: Vec<Item> = Vec::new();
@@ -233,7 +239,7 @@ pub fn conflict(body: &Value) -> Result<Value, String> {
 /// 595 — uncertainty quantification for a claim, with the components that make up the number.
 pub fn uncertainty(body: &Value) -> Result<Value, String> {
     let claim = body.get("claim").and_then(|v| v.as_str()).ok_or("'claim' must be a string")?;
-    let k = body.get("k").and_then(|v| v.as_u64()).unwrap_or(10) as usize;
+    let k = bounded(body, "k", 10, 50) as usize;
     let (sentences, best) = best_evidence(claim, k);
     let check = verify(claim, &sentences);
     let claim_nums: Vec<f64> = quantities(claim).iter().map(|q| q.value).collect();

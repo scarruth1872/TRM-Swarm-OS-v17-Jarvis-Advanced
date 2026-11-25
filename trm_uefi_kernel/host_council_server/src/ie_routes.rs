@@ -13,6 +13,11 @@ use trm_uefi_kernel::information_extraction::{
 use trm_uefi_kernel::k3_logic::sha256;
 use trm_uefi_kernel::text_reading::split_sentences;
 
+/// Bounded numeric parameter (same denial-of-service class as the reading routes).
+fn bounded(body: &Value, key: &str, default: u64, max: u64) -> u64 {
+    body.get(key).and_then(|v| v.as_u64()).unwrap_or(default).min(max)
+}
+
 fn repo_root() -> Option<PathBuf> {
     let mut dir = std::env::current_dir().ok()?;
     for _ in 0..6 {

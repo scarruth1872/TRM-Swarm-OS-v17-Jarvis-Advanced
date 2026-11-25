@@ -126,6 +126,14 @@ pub fn evidence(body: &Value) -> Result<Value, String> {
     }))
 }
 
+/// Bounded numeric parameter. A fuzz request with `k = 2^63-1` hung the summariser: retrieval work scales with k,
+/// so an unbounded k is a denial of service with a one-line payload. Every numeric parameter is clamped and the
+/// clamp is reported when it fires.
+fn bounded(body: &Value, key: &str, default: u64, max: u64) -> (u64, bool) {
+    let raw = body.get(key).and_then(|v| v.as_u64()).unwrap_or(default);
+    (raw.min(max), raw > max)
+}
+
 fn stopwords() -> [&'static str; 22] {
     ["the", "a", "an", "of", "and", "or", "in", "on", "for", "to", "is", "are", "was", "were",
      "what", "which", "how", "many", "does", "do", "did", "with"]
@@ -142,7 +150,8 @@ fn tokens(s: &str) -> Vec<String> {
 /// Task 582 — extractive QA. The answer is a sentence from the corpus, cited; never generated.
 pub fn qa(body: &Value) -> Result<Value, String> {
     let question = body.get("question").and_then(|v| v.as_str()).ok_or("'question' must be a string")?;
-    let k = body.get("k").and_then(|v| v.as_u64()).unwrap_or(5) as usize;
+    let (k_raw, clamped_k) = bounded(body, "k", 5, 50);
+    let k = k_raw as usize;
     if tokens(question).is_empty() {
         return Err("the question has no content words; nothing to match".to_string());
     }
@@ -229,9 +238,11 @@ pub fn qa(body: &Value) -> Result<Value, String> {
 /// floor by swapping the least useful chunk for the candidate that adds the most uncovered query terms.
 pub fn summarize(body: &Value) -> Result<Value, String> {
     let query = body.get("query").and_then(|v| v.as_str()).ok_or("'query' must be a string")?;
-    let k = body.get("k").and_then(|v| v.as_u64()).unwrap_or(5) as usize;
+    let (k_raw, clamped_k) = bounded(body, "k", 5, 50);
+    let k = k_raw as usize;
     let lambda = body.get("lambda").and_then(|v| v.as_f64()).unwrap_or(0.6) as f32;
-    let pool = body.get("pool").and_then(|v| v.as_u64()).unwrap_or(30) as usize;
+    let (pool_raw, clamped_pool) = bounded(body, "pool", 30, 500);
+    let pool = pool_raw as usize;
 
     let mut mmr_hits = evidence_index::mmr(query, k, lambda, pool);
     if mmr_hits.is_empty() {
@@ -301,6 +312,7 @@ pub fn summarize(body: &Value) -> Result<Value, String> {
             "source": h.source, "score": h.score,
             "text": h.text.chars().take(400).collect::<String>()
         })).collect::<Vec<_>>(),
+        "clamped": {"k": clamped_k, "pool": clamped_pool},
         "metrics": {
             "mmr_redundancy": mmr_red,
             "topk_redundancy": top_red,

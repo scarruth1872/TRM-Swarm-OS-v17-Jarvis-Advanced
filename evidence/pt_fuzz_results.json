@@ -1,0 +1,3800 @@
+{
+ "requests": 689,
+ "results": [
+  {
+   "endpoint": "/reading/parse",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "path-traversal",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "absolute-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "nul-in-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "rtl-override",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/parse",
+   "payload": "type-confusion:path",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "path-traversal",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "absolute-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "nul-in-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "rtl-override",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "type-confusion:path",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/evidence",
+   "payload": "type-confusion:limit",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "huge-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "dup-keys",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "type-confusion:question",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "type-confusion:k",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "huge-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "k-overflow",
+   "status": 0
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "dup-keys",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "type-confusion:query",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "type-confusion:k",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "huge-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "dup-keys",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "type-confusion:claim",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "type-confusion:k",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "path-traversal",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "absolute-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "nul-in-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "rtl-override",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "type-confusion:path",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/scientific",
+   "payload": "type-confusion:limit",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "type-confusion:sentences",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "path-traversal",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "absolute-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "nul-in-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "rtl-override",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/source",
+   "payload": "type-confusion:path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "path-traversal",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "absolute-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "nul-in-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "rtl-override",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/peerreview",
+   "payload": "type-confusion:path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "path-traversal",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "absolute-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "nul-in-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "rtl-override",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/reproducibility",
+   "payload": "type-confusion:path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "path-traversal",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "absolute-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "nul-in-path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "rtl-override",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/retraction",
+   "payload": "type-confusion:path",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "huge-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "all-arrays",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "dup-keys",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "type-confusion:paths",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "huge-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "dup-keys",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "type-confusion:claim",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "type-confusion:k",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "huge-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "dup-keys",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "type-confusion:claim",
+   "status": 400
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "type-confusion:k",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "type-confusion:text",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "type-confusion:text",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "type-confusion:text",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "type-confusion:text",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "type-confusion:text",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "type-confusion:text",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "type-confusion:text",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "type-confusion:text",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "type-confusion:text",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "json-null",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "json-array",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "json-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "huge-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "dup-keys",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "type-confusion:rulebase",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "type-confusion:facts",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "huge-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "dup-keys",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "type-confusion:rulebase",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "type-confusion:observation",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "type-confusion:hypotheses",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "type-confusion:max_size",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "baseline",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "empty-body",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "invalid-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "truncated-json",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "json-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "json-array",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "json-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "deep-nesting",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "huge-string",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "path-traversal",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "absolute-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "nul-in-path",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "rtl-override",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "k-overflow",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "k-negative",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "k-float",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "k-string",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "nan",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "infinity",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "all-null",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "all-arrays",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "all-nested-objects",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "utf8-invalid",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "bom-prefix",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "dup-keys",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "type-confusion:cases",
+   "status": 400
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "type-confusion:mode",
+   "status": 200
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "type-confusion:query",
+   "status": 400
+  }
+ ],
+ "defects": [
+  {
+   "endpoint": "/reading/qa",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/qa",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/summarize",
+   "payload": "k-overflow",
+   "status": 0,
+   "detail": "timed out"
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/claim",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reading/contradictions",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/kv/consistency",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/kv/factcheck",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/kv/uncertainty",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/relations",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/events",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/temporal",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/negation",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/uncertainty",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/coref",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/entities",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/language",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/ie/structured",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reason/forward",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reason/abduce",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "path-traversal",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "absolute-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  },
+  {
+   "endpoint": "/reason/analogy",
+   "payload": "nul-in-path",
+   "status": 200,
+   "detail": "ACCEPTED a hostile path (200)"
+  }
+ ]
+}

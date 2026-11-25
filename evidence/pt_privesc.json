@@ -1,0 +1,43 @@
+{
+ "whoami": "shawn",
+ "findings": [
+  {
+   "id": "PT-325-1",
+   "severity": "INFO",
+   "finding": "token ACL restricted",
+   "evidence": "[\n    {\n        \"IdentityReference\":  {\n                                  \"Value\":  \"NT AUTHORITY\\\\SYSTEM\"\n                              },\n        \"FileSystemRights\":  2032127\n    },\n    {\n        \"IdentityReference\":  {\n                                  \"Value\":  \"BUILTIN\\\\Administrators\"\n        ",
+   "impact": "any local interactive user can read the token and call 186 authenticated endpoints",
+   "fix": "icacls council_token.txt /inheritance:r /grant:r \"%USERNAME%:R\" /grant:r SYSTEM:R"
+  },
+  {
+   "id": "PT-325-2",
+   "severity": "INFO",
+   "finding": "kernel runs as shawn",
+   "evidence": "no elevated debug privilege reported",
+   "impact": "single-user process, no service account to pivot to"
+  },
+  {
+   "id": "PT-325-3",
+   "severity": "PASS",
+   "finding": "path traversal refused on every file-reading endpoint",
+   "evidence": "all probes returned 400",
+   "impact": "none"
+  },
+  {
+   "id": "PT-325-4",
+   "severity": "MEDIUM",
+   "finding": "process-spawn sites 3 (literal commands only: False)",
+   "evidence": "bench.rs:203; bench.rs:229; voltage.rs:41",
+   "impact": "no request data reaches an argv; wmic/powershell telemetry with fixed arguments",
+   "fix": "keep spawns behind literal argv; never interpolate a request field into a command"
+  },
+  {
+   "id": "PT-325-5",
+   "severity": "MEDIUM",
+   "finding": "data/ writable by the kernel user: True",
+   "evidence": "F:\\Development sites\\TRM-Swarm-OS-v2\\data",
+   "impact": "the evidence index and verdict ledgers can be edited by the same account that serves them",
+   "fix": "this is inherent to a single-user on-device design; integrity is protected by sha256 seals, not by permissions"
+  }
+ ]
+}

@@ -1,0 +1,66 @@
+{
+ "samples": [
+  {
+   "label": "valid",
+   "median_ms": 1.8474499811418355,
+   "mean_ms": 4.701710000517778,
+   "stdev_ms": 6.711385630534127,
+   "n": 120,
+   "responses": [
+    [
+     200,
+     2024
+    ]
+   ]
+  },
+  {
+   "label": "wrong_same_length",
+   "median_ms": 1.802649989258498,
+   "mean_ms": 4.29356000192153,
+   "stdev_ms": 5.931147108331511,
+   "n": 120,
+   "responses": [
+    [
+     200,
+     2024
+    ]
+   ]
+  },
+  {
+   "label": "wrong_prefix_match",
+   "median_ms": 1.5146000077947974,
+   "mean_ms": 3.4554416643610844,
+   "stdev_ms": 5.600605472267117,
+   "n": 120,
+   "responses": [
+    [
+     200,
+     2024
+    ]
+   ]
+  },
+  {
+   "label": "empty_token",
+   "median_ms": 1.6793999820947647,
+   "mean_ms": 4.852250003993201,
+   "stdev_ms": 6.915553773122875,
+   "n": 120,
+   "responses": [
+    [
+     200,
+     2024
+    ]
+   ]
+  }
+ ],
+ "timing_gap_ms": 0.0447999918833375,
+ "timing_noise_ms": 6.711385630534127,
+ "timing_leak": false,
+ "missing_file_responses": [
+  [
+   400,
+   103
+  ]
+ ],
+ "note": "desktop Windows scheduling noise dominates sub-millisecond differences; a gap under 3 sigma is reported as within noise, not as a leak"
+}
