@@ -64,6 +64,8 @@ pub mod reconnaissance_daemon;
 pub mod module_registry_generated;
 pub mod reasoning_engine;
 pub mod case_base;
+pub mod abduction;
+pub mod analogical_reasoning;
 pub mod spatial_reasoning;
 pub mod temporal_reasoning;
 pub mod serial;

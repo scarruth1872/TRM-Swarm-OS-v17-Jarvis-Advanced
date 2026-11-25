@@ -114,3 +114,43 @@ highest-potency compound in the set is an outlier, and the tool says so instead 
 | **574** analogical | council: no consensus (8/4/2). Assets exist (406 structures, matched pairs); the decision was not to spend on it |
 | **575** abductive | council: undecided (8/6/0). The hypothesis space is real but thin, which the proposal itself flagged |
 | 579 complete suite | 7 of 10 members now exist; the umbrella is still only as real as its parts |
+
+
+---
+
+# Resubmission, and what the second vote produced
+
+574 and 575 were declined at 8 approvals against a threshold of 10. The deliberation comments said why:
+
+- **Verify [Truth]**: "The proposal presents unverified figures as fact without a source" (A5) and "no
+  measurable figure is provided to verify the claim".
+- **Devo [Code]**: "adding unverified behaviour violates A4" — no test was named.
+- Six agents abstained because "no harm or benefit is explicitly named" (A6), and the SSM read the topic as an
+  `unknown-object`, so its trit stayed 0.
+
+The resubmission answered each objection: benefit **and** harm named, every figure sourced to the file that
+holds it, the shipping test named, and reversibility stated. All three enacted:
+
+| task | proposal | verdict | approve / abstain / reject |
+|---|---|---|---|
+| 574 analogical | 2592 | **ENACTED** | 12 / 2 / 0 |
+| 575 abductive | 2593 | **ENACTED** | 13 / 1 / 0 |
+| 579 complete suite | 2594 | **ENACTED** | 11 / 3 / 0 |
+
+## What was built, and what it measured
+
+- **575 abductive** — `abduction.rs`, `POST /reason/abduce`. **Works**: 27/27 exact on real Ghose violations,
+  minimality confirmed (no size-1 explanation of a two-premise rule), and equal-cost alternatives counted (9).
+- **574 analogical** — `analogical_reasoning.rs`, `POST /reason/analogy`. **Refuted against its own
+  pre-registered test**: LOO RMSE 1.1984 versus zero-delta 1.0235, with the control showing no gain either. The
+  code, its 10 tests and the endpoint exist; the capability does not. See `docs/REASONING-SUITE-COMPLETE.md`.
+- **579 complete suite** — `GET /reason/suite` checks module presence on disk at request time and names the
+  harness per task. It immediately caught its own error: it looked only in the kernel tree and reported 579
+  itself as ABSENT, because that module lives in the council crate. 10/10 now.
+
+## Note on the mechanism that made the resubmission possible
+
+None of this works without the G246 quorum change: 8 approvals had previously been recorded as a score and
+interpreted loosely. With `min_approve = 10` enforced over distinct voters, a "strong majority" that does not
+reach the threshold is `NO_CONSENSUS`, and the difference between 8/4/2 and 12/2/0 is visible instead of being
+averaged away.

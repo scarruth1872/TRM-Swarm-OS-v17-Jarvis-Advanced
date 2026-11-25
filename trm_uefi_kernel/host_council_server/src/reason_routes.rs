@@ -13,6 +13,8 @@
 use serde_json::{json, Value};
 use trm_uefi_kernel::reasoning_engine::{derivation_json, Engine, Rule};
 use trm_uefi_kernel::case_base::CaseBase;
+use trm_uefi_kernel::abduction::{abduce, Hypothesis};
+use trm_uefi_kernel::analogical_reasoning::{leave_one_out as analogy_loo, predict as analogy_predict, random_outcome_control};
 use trm_uefi_kernel::spatial_reasoning::{contact_graph, near_set, Atom, BoundingBox, Point};
 use trm_uefi_kernel::temporal_reasoning::{compose, relation, Allen, Interval};
 
@@ -376,4 +378,177 @@ pub fn case_base(body: &Value) -> Result<Value, String> {
         }
         other => Err(format!("unknown case mode '{other}' (loo | query)")),
     }
+}
+
+
+// ---------------------------------------------------------------------------------------------------
+// Task 575 — abduction: the smallest assumption set that explains an observation.
+// ---------------------------------------------------------------------------------------------------
+
+pub fn abduce_route(body: &Value) -> Result<Value, String> {
+    let observation = body.get("observation").and_then(|v| v.as_str())
+        .ok_or("'observation' must be a string atom")?;
+    let hyps_json = body.get("hypotheses").and_then(|v| v.as_array())
+        .ok_or("'hypotheses' must be an array of {atom, cost?}")?;
+    if hyps_json.is_empty() {
+        return Err("'hypotheses' is empty: with nothing to assume, nothing can be explained".to_string());
+    }
+    let mut hyps: Vec<Hypothesis> = Vec::new();
+    for (i, h) in hyps_json.iter().enumerate() {
+        let atom = h.get("atom").and_then(|v| v.as_str())
+            .ok_or_else(|| format!("hypothesis[{i}] has no 'atom' string"))?;
+        let cost = h.get("cost").and_then(|v| v.as_f64()).unwrap_or(1.0);
+        if !(cost > 0.0) {
+            return Err(format!("hypothesis[{i}] ('{atom}') must have a positive cost"));
+        }
+        hyps.push(Hypothesis::with_cost(atom, cost));
+    }
+    let max_size = body.get("max_size").and_then(|v| v.as_u64()).unwrap_or(3) as usize;
+    if max_size == 0 {
+        return Err("'max_size' must be at least 1".to_string());
+    }
+
+    // reuse the same rule/fact builder as /reason/forward, minus the goal
+    let engine = build_engine(body)?;
+    let r = abduce(&engine, observation, &hyps, max_size);
+    Ok(json!({
+        "observation": observation,
+        "assumptions": r.assumptions,
+        "cost": r.cost,
+        "searched": r.searched,
+        "complete": r.complete,
+        "alternatives": r.alternatives,
+        "unexplained": r.unexplained,
+        "semantics": "minimal set by increasing size; assumed facts are labelled ASSUMED, never observed"
+    }))
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Task 574 — analogy: transfer a measured change along the best-aligned transformation.
+// ---------------------------------------------------------------------------------------------------
+
+fn build_case_base(cases: &[Value]) -> Result<CaseBase, String> {
+    if cases.is_empty() {
+        return Err("'cases' is empty: an analogy needs a case base".to_string());
+    }
+    let first = cases[0].get("features").and_then(|v| v.as_array())
+        .ok_or("case[0] has no 'features' array")?;
+    let mut cb = CaseBase::new(first.len());
+    for (i, c) in cases.iter().enumerate() {
+        let id = c.get("id").and_then(|v| v.as_str()).ok_or_else(|| format!("case[{i}] has no 'id'"))?;
+        let feats: Vec<f64> = c.get("features").and_then(|v| v.as_array())
+            .ok_or_else(|| format!("case[{i}] has no 'features' array"))?
+            .iter().map(|x| x.as_f64().unwrap_or(f64::NAN)).collect();
+        if feats.iter().any(|f| !f.is_finite()) {
+            return Err(format!("case[{i}] ('{id}') has a non-finite feature"));
+        }
+        let outcome = c.get("outcome").and_then(|v| v.as_f64())
+            .ok_or_else(|| format!("case[{i}] ('{id}') has no numeric 'outcome'"))?;
+        cb.add(id, &feats, outcome)?;
+    }
+    Ok(cb)
+}
+
+pub fn analogy_route(body: &Value) -> Result<Value, String> {
+    let cases = body.get("cases").and_then(|v| v.as_array()).ok_or("'cases' must be an array")?;
+    let cb = build_case_base(cases)?;
+    match body.get("mode").and_then(|v| v.as_str()).unwrap_or("query") {
+        "query" => {
+            let q = body.get("query").and_then(|v| v.as_array())
+                .ok_or("mode 'query' needs a 'query' array of features")?;
+            let qv: Vec<f64> = q.iter().map(|x| x.as_f64().unwrap_or(f64::NAN)).collect();
+            if qv.iter().any(|f| !f.is_finite()) {
+                return Err("query contains a non-numeric feature".to_string());
+            }
+            let a = analogy_predict(&cb, &qv, None)
+                .ok_or("no analogy could be formed: the case base is too small")?;
+            Ok(json!({
+                "mode": "query",
+                "prediction": a.prediction,
+                "source": a.source_id,
+                "transformation": a.transformation_id,
+                "cosine": a.cosine,
+                "scale": a.scale,
+                "extrapolated": a.extrapolated,
+                "note": a.note,
+                "source_outcome": a.source_outcome
+            }))
+        }
+        "loo" => {
+            let r = analogy_loo(&cb).ok_or("leave-one-out needs at least 4 cases")?;
+            Ok(json!({
+                "mode": "leave_one_out",
+                "n": r.n,
+                "analogy_rmse": r.analogy_rmse,
+                "zero_delta_rmse": r.zero_delta_rmse,
+                "mean_rmse": r.mean_rmse,
+                "r2": r.r2,
+                "worse_than_zero_delta": r.worse_than_zero_delta,
+                "clamped_fraction": r.clamped_fraction
+            }))
+        }
+        "control" => {
+            let seed = body.get("seed").and_then(|v| v.as_u64()).unwrap_or(42);
+            let c = random_outcome_control(&cb, seed).ok_or("control needs at least 4 cases")?;
+            Ok(json!({
+                "mode": "random_outcome_control",
+                "seed": seed,
+                "analogy_rmse": c.analogy_rmse,
+                "zero_delta_rmse": c.zero_delta_rmse,
+                "r2": c.r2,
+                "note": "outcomes are shuffled: any apparent gain here is the control failing, not a capability"
+            }))
+        }
+        other => Err(format!("unknown analogy mode '{other}' (query | loo | control)")),
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Task 579 — the suite index. Every claim below is checked against the filesystem when the request is
+// served, so the report cannot drift from what is actually on disk.
+// ---------------------------------------------------------------------------------------------------
+
+pub fn suite() -> Value {
+    // Two source roots: the kernel library and this crate. 579's implementation is the route module, which
+    // lives here — the first version of this table looked only in the kernel and reported its own suite ABSENT.
+    let council_src = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../src");
+    let tasks: [(u32, &str, &str, &str); 10] = [
+        (571, "forward chaining", "reasoning_engine.rs", "POST /reason/forward"),
+        (572, "backward chaining", "reasoning_engine.rs", "POST /reason/prove"),
+        (573, "case-based reasoning", "case_base.rs", "POST /reason/case"),
+        (574, "analogical reasoning", "analogical_reasoning.rs", "POST /reason/analogy"),
+        (575, "abductive reasoning", "abduction.rs", "POST /reason/abduce"),
+        (576, "default reasoning", "reasoning_engine.rs", "POST /reason/forward (exception field)"),
+        (577, "temporal reasoning", "temporal_reasoning.rs", "POST /reason/temporal"),
+        (578, "spatial reasoning", "spatial_reasoning.rs", "POST /reason/spatial"),
+        (579, "complete reasoning suite", "reason_routes.rs", "GET /reason/suite"),
+        (580, "explainable reports", "reasoning_engine.rs", "POST /reason/prove (derivation tree)"),
+    ];
+    let entries: Vec<Value> = tasks.iter().map(|(id, name, module, endpoint)| {
+        let present = root.join(module).exists() || council_src.join(module).exists();
+        json!({
+            "id": id,
+            "name": name,
+            "module": module,
+            "module_present": present,
+            "endpoint": endpoint,
+            "status": if present { "present" } else { "ABSENT" },
+        })
+    }).collect();
+    let present = entries.iter().filter(|e| e["module_present"] == json!(true)).count();
+    json!({
+        "suite": entries,
+        "present_modules": present,
+        "total_tasks": 10,
+        "note": "module_present is checked on disk at request time; it proves a file exists, not that the task is verified - the harnesses in tools/reasoning_*_verify.py are what prove behaviour",
+        "harnesses": [
+            "tools/reasoning_verify.py (571/572/576/580 vs RDKit)",
+            "tools/reasoning_cbr_verify.py (573)",
+            "tools/reasoning_analogical_verify.py (574)",
+            "tools/reasoning_abduction_verify.py (575)",
+            "tools/reasoning_temporal_verify.py (577)",
+            "tools/reasoning_spatial_verify.py (578)"
+        ]
+    })
 }

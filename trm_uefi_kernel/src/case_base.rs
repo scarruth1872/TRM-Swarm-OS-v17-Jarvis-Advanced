@@ -94,6 +94,17 @@ impl CaseBase {
         self.cases.len()
     }
 
+    /// The cases as stored. Exposed so an analogy layer can compute deltas in the *same* standardised space
+    /// rather than inventing a second distance definition that could disagree with retrieval.
+    pub fn cases(&self) -> &[Case] {
+        &self.cases
+    }
+
+    /// Standardise a vector against this base's statistics (the same transform retrieval uses internally).
+    pub fn standardise_public(&self, features: &[f64]) -> Vec<f64> {
+        self.standardise(features)
+    }
+
     pub fn is_empty(&self) -> bool {
         self.cases.is_empty()
     }

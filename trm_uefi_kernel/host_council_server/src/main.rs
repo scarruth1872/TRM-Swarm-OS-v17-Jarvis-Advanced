@@ -5981,6 +5981,13 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 response_json = json!({ "error": format!("malformed JSON body: {e}") });
             }
         }
+    } else if method == Method::Get && url.starts_with("/reason/suite") {
+        // Task 579: the index, with module presence checked on disk at request time.
+        response_json = crate::reason_routes::suite();
+    } else if method == Method::Post && url.starts_with("/reason/abduce") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reason_routes::abduce_route)
+    } else if method == Method::Post && url.starts_with("/reason/analogy") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reason_routes::analogy_route)
     } else if method == Method::Post && url.starts_with("/reason/temporal") {
         route_reason(&mut request, &mut status_code, &mut response_json, crate::reason_routes::temporal)
     } else if method == Method::Post && url.starts_with("/reason/spatial") {

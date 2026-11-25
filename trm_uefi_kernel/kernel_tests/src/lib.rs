@@ -1284,3 +1284,161 @@ mod case_base_tests {
         assert!(r.worse_than_baseline, "a tie must be reported as not better than the baseline");
     }
 }
+
+
+/// Tasks 575 (abduction) and 574 (analogy) — enacted by council on resubmission (13-1 and 12-2).
+///
+/// The load-bearing tests: abduction must return the MINIMAL set and must admit when the space cannot explain
+/// an observation; analogy must beat copying the neighbour, and must lose once the outcomes are shuffled.
+#[cfg(test)]
+mod abduction_analogy_tests {
+    use trm_uefi_kernel::abduction::{abduce, Hypothesis, ASSUMPTION_SOURCE};
+    use trm_uefi_kernel::analogical_reasoning::{leave_one_out, predict, random_outcome_control};
+    use trm_uefi_kernel::case_base::CaseBase;
+    use trm_uefi_kernel::reasoning_engine::{Engine, Rule, Trit};
+
+    fn engine_with_rule() -> Engine {
+        // p AND q -> obs
+        let mut e = Engine::new();
+        e.add_rule(Rule::new(1, "pq_obs", &["p", "q"], "obs"));
+        e
+    }
+
+    #[test]
+    fn abduction_returns_a_minimal_set_of_size_two() {
+        let e = engine_with_rule();
+        let hyps = vec![Hypothesis::new("p"), Hypothesis::new("q"), Hypothesis::new("noise")];
+        let r = abduce(&e, "obs", &hyps, 3);
+        assert!(!r.unexplained);
+        assert_eq!(r.assumptions.len(), 2, "needs both premises, got {:?}", r.assumptions);
+        assert!(r.assumptions.contains(&"p".to_string()));
+        assert!(r.assumptions.contains(&"q".to_string()));
+        assert!(r.complete, "the whole space is 8 subsets; the search must be exhaustive");
+        assert_eq!(r.alternatives, 0, "only one set of size 2 explains it");
+    }
+
+    #[test]
+    fn abduction_prefers_the_cheaper_of_two_explanations() {
+        let mut e = Engine::new();
+        // either a or b alone derives obs
+        e.add_rule(Rule::new(1, "a_obs", &["a"], "obs"));
+        e.add_rule(Rule::new(2, "b_obs", &["b"], "obs"));
+        let hyps = vec![Hypothesis::with_cost("a", 5.0), Hypothesis::with_cost("b", 1.0)];
+        let r = abduce(&e, "obs", &hyps, 2);
+        assert_eq!(r.assumptions, vec!["b".to_string()], "the cheaper single assumption must win");
+        assert!((r.cost - 1.0).abs() < 1e-12);
+        assert_eq!(r.alternatives, 0);
+    }
+
+    #[test]
+    fn equal_cost_explanations_are_counted_not_hidden() {
+        let mut e = Engine::new();
+        e.add_rule(Rule::new(1, "a_obs", &["a"], "obs"));
+        e.add_rule(Rule::new(2, "b_obs", &["b"], "obs"));
+        let hyps = vec![Hypothesis::new("a"), Hypothesis::new("b")];
+        let r = abduce(&e, "obs", &hyps, 2);
+        assert_eq!(r.assumptions.len(), 1);
+        assert_eq!(r.alternatives, 1, "the other equal-cost explanation must be reported");
+    }
+
+    #[test]
+    fn an_unexplainable_observation_says_so() {
+        let e = engine_with_rule();
+        let hyps = vec![Hypothesis::new("unrelated")];
+        let r = abduce(&e, "obs", &hyps, 2);
+        assert!(r.unexplained, "no subset derives obs; that must be reported, not papered over");
+        assert!(r.assumptions.is_empty());
+    }
+
+    #[test]
+    fn an_observation_that_follows_from_the_facts_needs_no_assumption() {
+        let mut e = engine_with_rule();
+        e.assert_fact("p", "shard:test@rec 1");
+        e.assert_fact("q", "shard:test@rec 2");
+        let r = abduce(&e, "obs", &[Hypothesis::new("noise")], 2);
+        assert!(r.assumptions.is_empty(), "nothing to assume when the facts already entail it");
+        assert_eq!(r.cost, 0.0);
+    }
+
+    #[test]
+    fn assumed_facts_are_labelled_as_assumptions_in_the_derivation() {
+        let e = engine_with_rule();
+        let hyps = vec![Hypothesis::new("p"), Hypothesis::new("q")];
+        let r = abduce(&e, "obs", &hyps, 2);
+        let mut check = e.clone();
+        for a in &r.assumptions {
+            check.assert_fact(a, ASSUMPTION_SOURCE);
+        }
+        let fr = check.forward_chain();
+        assert_eq!(fr.truth.get("obs"), Some(&Trit::True));
+        let d = fr.derivations.get("p").expect("derivation for p");
+        assert_eq!(d.fact_source.as_deref(), Some(ASSUMPTION_SOURCE),
+                   "an assumption must never be recorded as an observation");
+    }
+
+    // ---- analogy ------------------------------------------------------------------------------
+
+    fn linear_base() -> CaseBase {
+        // outcome moves with feature 0: transfer along the transformation should be near-exact
+        let mut cb = CaseBase::new(1);
+        for i in 0..12 {
+            let x = i as f64;
+            cb.add(&format!("c{i}"), &[x], 2.0 * x).unwrap();
+        }
+        cb
+    }
+
+    #[test]
+    fn analogy_transfers_along_the_matched_transformation() {
+        let cb = linear_base(); // y = 2x, cases at x = 0..11
+        // half-way between c5 (y=10) and c6 (y=12): the observed change is c4->c5 (+2 per unit), applied at 0.5
+        let a = predict(&cb, &[5.5], None).expect("an analogy");
+        assert!((a.source_outcome - 10.0).abs() < 1e-9, "source outcome must be c5's 10, got {}", a.source_outcome);
+        assert!((a.prediction - 11.0).abs() < 1e-6, "transfer must land on 11, got {}", a.prediction);
+        assert!(a.cosine > 0.99, "the transformation is exactly aligned, cosine={}", a.cosine);
+        assert!((a.scale - 0.5).abs() < 1e-9, "scale must be the distance fraction, got {}", a.scale);
+        assert!(a.note.is_empty(), "a real transfer must not carry a fallback note: {}", a.note);
+    }
+
+    #[test]
+    fn an_exact_match_returns_the_measured_outcome_and_says_why() {
+        let cb = linear_base();
+        let a = predict(&cb, &[5.0], None).expect("an analogy");
+        assert!((a.prediction - 10.0).abs() < 1e-9);
+        assert!(a.note.contains("exact match"), "the reason must be recorded, got: {}", a.note);
+    }
+
+    #[test]
+    fn analogy_beats_copying_the_neighbour_on_a_linear_relationship() {
+        let cb = linear_base();
+        let r = leave_one_out(&cb).expect("loo");
+        assert!(r.analogy_rmse <= r.zero_delta_rmse + 1e-9,
+                "analogy {} must not be worse than zero-delta {}", r.analogy_rmse, r.zero_delta_rmse);
+        assert!(r.r2 > 0.9, "a linear relationship must be recovered, R²={}", r.r2);
+    }
+
+    #[test]
+    fn the_random_outcome_control_loses() {
+        let cb = linear_base();
+        let c = random_outcome_control(&cb, 42).expect("control");
+        // with outcomes shuffled the features carry no information: the analogy cannot beat copying the
+        // neighbour by any meaningful margin.
+        // No more than a 10% apparent gain once the signal is destroyed. A larger gain would mean the analogy
+        // is fitting the shuffle, not transferring a measured change.
+        assert!(c.analogy_rmse >= c.zero_delta_rmse * 0.90,
+                "control must not show a real gain: analogy {} vs zero-delta {}", c.analogy_rmse, c.zero_delta_rmse);
+    }
+
+    #[test]
+    fn extrapolation_beyond_the_observed_transformation_is_clamped_and_flagged() {
+        let mut cb = CaseBase::new(1);
+        cb.add("a", &[0.0], 0.0).unwrap();
+        cb.add("b", &[1.0], 1.0).unwrap();
+        cb.add("c", &[2.0], 2.0).unwrap();
+        cb.add("d", &[10.0], 10.0).unwrap();
+        // query far beyond the dense part of the base
+        let an = predict(&cb, &[50.0], None).expect("analogy");
+        assert!(an.scale <= 1.0 + 1e-12, "scale must be clamped, got {}", an.scale);
+        assert!(an.extrapolated, "the clamp must be recorded, not silent");
+    }
+}

@@ -69,15 +69,15 @@
   },
   "574": {
    "name": "analogical reasoning",
-   "verdict": "NOT_BUILT_COUNCIL_NO_CONSENSUS",
-   "why": "council proposal 2588: 8 approve / 4 abstain / 2 reject = NO_CONSENSUS, below min_approve 10. Assets researched (406 structures, matched molecular pairs) but not built, per the council",
-   "artifact": "docs/REASONING-ABSENCES-RESEARCH.md"
+   "verdict": "BUILT_REFUTED",
+   "why": "council ENACTED 12-2 on resubmission (proposal 2592). src/analogical_reasoning.rs implements transformation-aligned transfer, but its pre-registered acceptance test FAILED: LOO RMSE 1.1984 vs zero-delta 1.0235 (17% worse); random-outcome control shows no gain. Recorded as a refuted hypothesis, not a capability",
+   "artifact": "trm_uefi_kernel/src/analogical_reasoning.rs + POST /reason/analogy + tools/reasoning_analogical_verify.py (exits 1) + docs/REASONING-SUITE-COMPLETE.md"
   },
   "575": {
    "name": "abductive reasoning",
-   "verdict": "NOT_BUILT_COUNCIL_UNDECIDED",
-   "why": "council proposal 2589: 8 approve / 6 abstain = UNDECIDED, below min_approve 10. Hypothesis space (eskape_candidates/proteomes) flagged as thin in the proposal itself",
-   "artifact": "docs/REASONING-ABSENCES-RESEARCH.md"
+   "verdict": "BUILT",
+   "why": "council ENACTED 13-1 on resubmission (proposal 2593). src/abduction.rs searches by increasing size; 27/27 exact on real Ghose violations, minimality confirmed (0 size-1 explanations of a 2-premise rule), alternatives counted (9)",
+   "artifact": "trm_uefi_kernel/src/abduction.rs + POST /reason/abduce + tools/reasoning_abduction_verify.py"
   },
   "576": {
    "name": "default reasoning",
@@ -99,9 +99,9 @@
   },
   "579": {
    "name": "complete reasoning suite",
-   "verdict": "PARTIAL_7_OF_10",
-   "why": "571/572/573/576/577/578/580 built; 574 and 575 declined by council; 579 is the umbrella",
-   "artifact": "docs/REASONING-TASKS-571-580.md + trm_uefi_kernel/src/reasoning_engine.rs + tools/reasoning_verify.py"
+   "verdict": "BUILT",
+   "why": "council ENACTED 11-3 on resubmission (proposal 2594). GET /reason/suite checks module presence on disk at request time, names the harness per task; 10/10 modules present, 7/7 endpoints answer 200",
+   "artifact": "trm_uefi_kernel/host_council_server/src/reason_routes.rs (suite) + tools/reasoning_suite_verify.py + docs/REASONING-SUITE-COMPLETE.md"
   },
   "580": {
    "name": "explainable reasoning reports",
@@ -233,6 +233,29 @@
     "temporal": "400/400 pairs agree with an independent implementation; 300/300 real triples satisfy the composition algebra",
     "spatial": "13,288 contacts and checksum 29114098492237 identical to numpy on 4,478 atoms; proximity query 98/98",
     "cbr": "LOO k=5 RMSE 0.9181 vs mean predictor 1.6259 (R\u00b2 0.6796); held-out query error 3.67 on an outlier"
+   },
+   "resubmission": {
+    "proposals": {
+     "574": 2592,
+     "575": 2593,
+     "579": 2594
+    },
+    "verdicts": {
+     "574": "ENACTED 12/2/0",
+     "575": "ENACTED 13/1/0",
+     "579": "ENACTED 11/3/0"
+    },
+    "objections_answered": [
+     "unverified figures (A5) -> every figure sourced to its file",
+     "unverified behaviour (A4) -> shipping test named per proposal",
+     "no harm/benefit named (A6) -> benefit and harm both stated",
+     "reversibility -> stated (git revert)"
+    ],
+    "outcome": {
+     "575": "works (27/27, minimality confirmed)",
+     "574": "REFUTED (1.1984 vs 1.0235 zero-delta)",
+     "579": "works (10/10 modules, 7/7 endpoints)"
+    }
    }
   }
  }

@@ -1,7 +1,7 @@
 // =============================================================================
 // GENERATED FILE — DO NOT EDIT BY HAND.
 // Produced by tools/rebuild_module_registry.py from every LIVE source tree on this host.
-// Scan timestamp: 2026-11-25 17:17:40 UTC
+// Scan timestamp: 2026-11-25 17:41:48 UTC
 //
 // TREES BELOW ARE THE ONES THAT BUILD HERE: the UEFI kernel and the cdylib
 // (swarm_v2_rust_kernel -> target/release/swarm_rust_kernel.dll). The staged v20 snapshot is
@@ -14,9 +14,9 @@
 // =============================================================================
 
 /// Live modules across every tree that builds here.
-pub const TOTAL: u64 = 222;
+pub const TOTAL: u64 = 224;
 /// Hand-written intelligence (pub fns, real bodies).
-pub const REAL: u64 = 107;
+pub const REAL: u64 = 109;
 /// Mechanical port carrying MANUAL markers.
 pub const PORTED: u64 = 60;
 /// Constants/structs only.
@@ -26,16 +26,18 @@ pub const EXCLUDED: u64 = 9;
 /// Publishes numbers it did not measure.
 pub const FABRICATED: u64 = 0;
 /// The scan date, so a reader can see how old the claim is.
-pub const SCAN_DATE: &str = "2026-11-25 17:17:40 UTC";
+pub const SCAN_DATE: &str = "2026-11-25 17:41:48 UTC";
 
 /// (module, status)
 pub const STATUSES: &'static [(&'static str, &'static str)] = &[
+    ("abduction", "REAL"),
     ("advanced_scene_fusion", "PORTED"),
     ("agent_mailbox", "REAL"),
     ("agent_mailbox_bus", "PORTED"),
     ("agent_mesh", "PORTED"),
     ("agent_runtime", "REAL"),
     ("allocator", "SKELETON"),
+    ("analogical_reasoning", "REAL"),
     ("apic_core_binding", "REAL"),
     ("architectural_rl_agent", "PORTED"),
     ("artifact_pipeline", "PORTED"),
@@ -256,12 +258,14 @@ pub const STATUSES: &'static [(&'static str, &'static str)] = &[
 
 /// (module, tree it was found in).
 pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
+    ("abduction", "uefi"),
     ("advanced_scene_fusion", "uefi"),
     ("agent_mailbox", "uefi"),
     ("agent_mailbox_bus", "uefi"),
     ("agent_mesh", "uefi"),
     ("agent_runtime", "dll+uefi"),
     ("allocator", "uefi"),
+    ("analogical_reasoning", "uefi"),
     ("apic_core_binding", "uefi"),
     ("architectural_rl_agent", "uefi"),
     ("artifact_pipeline", "uefi"),
@@ -481,7 +485,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
 ];
 
 /// Modules per LIVE tree.
-pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 214), ("dll", 13)];
+pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 216), ("dll", 13)];
 /// Names compiled in more than one tree. One name resolves to one status.
 pub const TREE_COLLISIONS: u64 = 5;
 /// Source trees that exist on disk but are NOT built by the launcher (reported, never counted).
@@ -489,12 +493,14 @@ pub const TREES_STAGED: &'static [(&'static str, u64)] = &[("staging/v20 uefi", 
 
 /// (module, number of `pub fn`) — the raw measure behind the classification.
 pub const FUNCTION_COUNTS: &'static [(&'static str, u64)] = &[
+    ("abduction", 4),
     ("advanced_scene_fusion", 5),
     ("agent_mailbox", 12),
     ("agent_mailbox_bus", 19),
     ("agent_mesh", 43),
     ("agent_runtime", 7),
     ("allocator", 0),
+    ("analogical_reasoning", 3),
     ("apic_core_binding", 9),
     ("architectural_rl_agent", 3),
     ("artifact_pipeline", 40),
@@ -509,7 +515,7 @@ pub const FUNCTION_COUNTS: &'static [(&'static str, u64)] = &[
     ("benchmark_epistemology", 2),
     ("brain_ai_microkernel_bridge", 1),
     ("bridge", 4),
-    ("case_base", 9),
+    ("case_base", 11),
     ("chain_of_verification", 4),
     ("chaos_engine", 10),
     ("chaos_simulator", 2),
