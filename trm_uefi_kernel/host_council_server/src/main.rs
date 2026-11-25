@@ -471,6 +471,11 @@ struct Proposal {
     /// How many platform documents were retrieved and shown to the agents.
     #[serde(default)]
     evidence_used: usize,
+    /// Distinct-voter quorum evidence (2026-11-24). Until now a verdict was `approve_count >= min_approve`
+    /// over `votes.len()`: an agent voting twice inflated the tally, and a rejection could not block
+    /// anything. This recomputes from distinct agents and records whether a veto made quorum unreachable.
+    #[serde(default)]
+    quorum_evidence: serde_json::Value,
     /// G49: the operator's exact words. `topic` is the normalised form that retrieval, the
     /// gates and the vote actually saw; this keeps the input auditable.
     #[serde(default)]
@@ -1413,6 +1418,7 @@ fn evaluate_chat_proposal(state: &mut CouncilState) -> u64 {
         abstain_count: 0,
         reject_count: 0,
         consensus_reached: true,
+        quorum_evidence: serde_json::json!(null),
         deliberations,
         votes,
         timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
@@ -1536,6 +1542,7 @@ fn evaluate_coordination_proposal(state: &mut CouncilState) -> u64 {
         abstain_count: 0,
         reject_count: 0,
         consensus_reached: true,
+        quorum_evidence: serde_json::json!(null),
         deliberations,
         votes,
         timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
@@ -1659,6 +1666,7 @@ fn evaluate_cadence_proposal(state: &mut CouncilState) -> u64 {
         abstain_count: 0,
         reject_count: 0,
         consensus_reached: true,
+        quorum_evidence: serde_json::json!(null),
         deliberations,
         votes,
         timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
@@ -2750,13 +2758,44 @@ fn build_proposal(
     // path itself can never reach consensus on model votes alone.
     // K3 consensus over the tally: an abstention is UNKNOWN, not FALSE (see k3_verdict).
     let k3 = k3_logic::k3_consensus(&trits);
-    let consensus_reached = consensus_for(&rule, approve_count);
+    // DISTINCT-VOTER QUORUM (2026-11-24). `approve_count` was a count of vote records, so two records from
+    // one agent counted as two agents, and a rejection could never block a proposal. The decision is now
+    // taken over distinct agents, with a veto when rejections make the threshold arithmetically unreachable.
+    let mut distinct: std::collections::BTreeMap<String, i64> = std::collections::BTreeMap::new();
+    for v in &votes {
+        if let (Some(agent), Some(trit)) = (
+            v.get("agent").and_then(|x| x.as_str()),
+            v.get("vote").and_then(|x| x.as_i64()),
+        ) {
+            distinct.insert(agent.to_string(), trit);
+        }
+    }
+    let distinct_approve = distinct.values().filter(|t| **t > 0).count();
+    let distinct_reject = distinct.values().filter(|t| **t < 0).count();
+    let distinct_abstain = distinct.len().saturating_sub(distinct_approve + distinct_reject);
+    let duplicates = votes.len().saturating_sub(distinct.len());
+    // `VETO_BLOCK` rejections make the approval threshold impossible out of N_AGENTS: quorum is unreachable.
+    let vetoed = distinct_reject as u64 >= trm_uefi_kernel::quorum_consensus::VETO_BLOCK;
+    let consensus_reached = consensus_for(&rule, distinct_approve) && !vetoed;
+    let quorum_evidence = serde_json::json!({
+        "method": "distinct-agent tally, veto arithmetic",
+        "distinct_voters": distinct.len(),
+        "approvals": distinct_approve,
+        "abstentions": distinct_abstain,
+        "rejections": distinct_reject,
+        "duplicate_vote_records": duplicates,
+        "vote_records": votes.len(),
+        "min_approve": rule.min_approve,
+        "veto_block": trm_uefi_kernel::quorum_consensus::VETO_BLOCK,
+        "vetoed": vetoed,
+        "note": "single process, one host: agreement over 14 in-process agents is not Byzantine fault tolerance (f=0 failure domains)"
+    });
 
     // Was the verdict reached WITH documents? Read the block the agents saw, not the caller's parameter:
     // the parameter is empty on an HTTP propose, so this used to mark every such verdict as reached
     // without evidence and cap it at CONSENSUS even when two documents were quoted in the WHY lines.
     let has_evidence = evidence_sources > 0 || !evidence.is_empty();
-    let (phoenix_status, phase) = match k3_verdict(&rule, &k3, approve_count, reject_count) {
+    let (phoenix_status, phase) = match k3_verdict(&rule, &k3, distinct_approve, distinct_reject) {
         "REJECTED" => ("SPEC".to_string(), "REJECTED".to_string()),
         // Never auto-enact a removal of a safety-critical component. A human must
         // review it, whatever the tally says.
@@ -2782,6 +2821,7 @@ fn build_proposal(
         abstain_count,
         reject_count,
         consensus_reached,
+        quorum_evidence,
         deliberations,
         votes,
         timestamp: std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
@@ -2855,6 +2895,7 @@ fn spawn_proposal_evaluation(
         abstain_count: 0,
         reject_count: 0,
         consensus_reached: false,
+        quorum_evidence: serde_json::json!(null),
         deliberations: Vec::new(),
         votes: Vec::new(),
         timestamp: std::time::SystemTime::now()
@@ -3939,6 +3980,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "weighted_score": p.weighted_score,
             "approve_count": p.approve_count,
             "consensus_reached": p.consensus_reached,
+            "quorum_evidence": p.quorum_evidence,
             "phoenix_status": p.phoenix_status,
             "phoenix_evidence": p.phoenix_evidence,
             "k3": { "and": k3c.k3_and, "or": k3c.k3_or, "unknown": k3c.unknown, "n": k3c.n,
@@ -3998,6 +4040,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                     "abstain_count": p.abstain_count,
                     "reject_count": p.reject_count,
                     "consensus_reached": p.consensus_reached,
+            "quorum_evidence": p.quorum_evidence,
                     "irreversible": p.irreversible,
                     "escalated": p.escalated,
                     "rule_fired": p.rule_fired,
@@ -4319,7 +4362,8 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "id": p.id, "topic": p.topic, "phase": p.phase,
             "approve_count": p.approve_count, "abstain_count": p.abstain_count,
             "reject_count": p.reject_count, "weighted_score": p.weighted_score,
-            "consensus_reached": p.consensus_reached, "timestamp": p.timestamp,
+            "consensus_reached": p.consensus_reached,
+            "quorum_evidence": p.quorum_evidence, "timestamp": p.timestamp,
             // Measured field, previously invisible: the council's verdict changes with evidence
             // on vs off (12-1 approve vs 1-13 reject), so the count must be readable.
             "evidence_used": p.evidence_used, "deliberation_mode": p.deliberation_mode,
@@ -4353,6 +4397,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                     "abstain_count": p.abstain_count, "reject_count": p.reject_count,
                     "weighted_score": p.weighted_score,
                     "consensus_reached": p.consensus_reached,
+            "quorum_evidence": p.quorum_evidence,
                     "phase": p.phase }));
             }
         }
@@ -7234,6 +7279,7 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
             "phase": p.phase,
             "weighted_score": p.weighted_score,
             "consensus_reached": p.consensus_reached,
+            "quorum_evidence": p.quorum_evidence,
             "phoenix_status": p.phoenix_status,
             "source": "council"
         })).collect();

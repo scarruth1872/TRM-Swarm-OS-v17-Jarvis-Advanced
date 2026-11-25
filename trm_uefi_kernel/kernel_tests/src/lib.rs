@@ -367,114 +367,135 @@ mod council_tests {
     };
     use trm_uefi_kernel::pbft_consensus::{
         PbftConsensus, COMMIT_THRESHOLD, MAX_BYZANTINE, N_AGENTS, PHASE_ACCEPTED,
-        PHASE_COMMIT, PHASE_PRE_PREPARE, PHASE_REJECTED, QUORUM_THRESHOLD,
+        PHASE_COMMIT, PHASE_PRE_PREPARE, PHASE_REJECTED, QUORUM_THRESHOLD, VETO_BLOCK,
     };
 
-    // ---- PBFT quorum arithmetic (the tally rule, isolated) -------------
+    // ---- quorum primitive: enforced invariants (2026-11-24) -------------
+    //
+    // These replace tests that encoded the OLD counter behaviour (commit accepted without prepare votes,
+    // duplicate voters counted, rejections dropped). Those behaviours are recorded as defects in
+    // docs/CONSENSUS-TASKS-712-720.md; the tests below assert the opposite, and fail if the module
+    // regresses to a counter.
 
     #[test]
-    fn pbft_constants_match_the_documented_model() {
-        // N=14, f=4, quorum 2f+1=9, commit 10.
+    fn quorum_constants_are_consistent() {
         assert_eq!(N_AGENTS, 14);
         assert_eq!(MAX_BYZANTINE, 4);
         assert_eq!(QUORUM_THRESHOLD, 9);
-        assert_eq!(COMMIT_THRESHOLD, 10);
         assert_eq!(QUORUM_THRESHOLD, 2 * MAX_BYZANTINE + 1);
+        assert_eq!(COMMIT_THRESHOLD, 10);
+        assert_eq!(VETO_BLOCK, 6, "6 rejections make 9 approvals impossible out of 14");
     }
 
     #[test]
-    fn pbft_quorum_advances_to_commit_at_exactly_nine_approvals() {
+    fn commit_without_any_vote_is_refused() {
         let mut c = PbftConsensus::new();
         let id = c.propose("OPERATOR", "security");
-        assert_eq!(c.get_phase(id), PHASE_PRE_PREPARE);
-
-        for i in 1..=8 {
-            assert_eq!(c.prepare(id, true), i);
-            assert_eq!(c.get_phase(id), PHASE_PRE_PREPARE, "advanced too early at {i}");
-        }
-        // The 9th approval is the quorum boundary.
-        assert_eq!(c.prepare(id, true), 9);
-        assert_eq!(c.get_phase(id), PHASE_COMMIT);
+        assert_eq!(c.commit(id), 0, "commit with zero votes must not accept");
+        assert_ne!(c.get_phase(id), PHASE_ACCEPTED);
+        assert_eq!(c.get_status().1, 0, "accepted_count stays 0");
     }
 
     #[test]
-    fn pbft_abstention_does_not_count_toward_quorum() {
-        // `prepare(id, false)` is an abstain/reject vote: it returns the
-        // unchanged count and never advances the phase.
+    fn nine_distinct_approvals_reach_the_commit_phase_but_not_acceptance() {
         let mut c = PbftConsensus::new();
         let id = c.propose("OPERATOR", "security");
-        for _ in 0..20 {
-            assert_eq!(c.prepare(id, false), 0);
-        }
-        assert_eq!(c.get_phase(id), PHASE_PRE_PREPARE);
-
-        // 8 approvals + 20 abstentions is still short of quorum.
-        for _ in 0..8 {
-            c.prepare(id, true);
-        }
-        assert_eq!(c.get_phase(id), PHASE_PRE_PREPARE);
-        c.prepare(id, true);
-        assert_eq!(c.get_phase(id), PHASE_COMMIT);
-    }
-
-    #[test]
-    fn pbft_commit_requires_ten_votes_not_nine() {
-        let mut c = PbftConsensus::new();
-        let id = c.propose("OPERATOR", "code");
-        for _ in 0..9 {
-            c.prepare(id, true);
-        }
         for i in 1..=9 {
-            assert_eq!(c.commit(id), i);
-            assert_eq!(c.get_phase(id), PHASE_COMMIT, "accepted at {i} commit votes");
+            assert_eq!(c.prepare(id, true), i);
+        }
+        assert_eq!(c.get_phase(id), PHASE_COMMIT, "quorum 9 advances the phase");
+        assert_eq!(c.commit(id), 0, "commit still needs 10 approvals");
+        assert_ne!(c.get_phase(id), PHASE_ACCEPTED);
+    }
+
+    #[test]
+    fn ten_distinct_approvals_commit() {
+        let mut c = PbftConsensus::new();
+        let id = c.propose("OPERATOR", "security");
+        for _ in 0..10 {
+            c.prepare(id, true);
         }
         assert_eq!(c.commit(id), 10);
         assert_eq!(c.get_phase(id), PHASE_ACCEPTED);
-        assert_eq!(c.get_status().1, 1, "accepted_count");
     }
 
     #[test]
-    fn pbft_commit_is_idempotent_after_acceptance() {
-        // The `phase < PHASE_ACCEPTED` guard means extra commits must not
-        // double-count accepted_count.
-        let mut c = PbftConsensus::new();
-        let id = c.propose("OPERATOR", "code");
-        for _ in 0..10 {
-            c.commit(id);
-        }
-        assert_eq!(c.get_phase(id), PHASE_ACCEPTED);
-        for _ in 0..5 {
-            c.commit(id);
-        }
-        assert_eq!(c.get_status().1, 1);
+    fn a_repeat_voter_cannot_inflate_the_tally() {
+        let mut q = trm_uefi_kernel::quorum_consensus::QuorumCouncil::new();
+        let id = q.propose("OPERATOR", "security", 1, 1, 42).unwrap();
+        q.vote(id, 7, 1).unwrap();
+        assert_eq!(q.vote(id, 7, 1), Err(trm_uefi_kernel::quorum_consensus::DecisionError::DuplicateVoter));
+        assert_eq!(q.tally(id).unwrap().0, 1, "one voter, one approval");
     }
 
     #[test]
-    fn pbft_reject_overrides_phase_and_counts() {
-        let mut c = PbftConsensus::new();
-        let id = c.propose("OPERATOR", "data");
-        for _ in 0..9 {
-            c.prepare(id, true);
+    fn the_tally_cannot_exceed_the_council_size() {
+        let mut q = trm_uefi_kernel::quorum_consensus::QuorumCouncil::new();
+        let id = q.propose("OPERATOR", "security", 1, 1, 42).unwrap();
+        for v in 1..=N_AGENTS {
+            q.vote(id, v, 1).unwrap();
         }
-        c.reject(id);
-        assert_eq!(c.get_phase(id), PHASE_REJECTED);
-        assert_eq!(c.get_status().2, 1, "rejected_count");
-        // Unknown proposal ids are reported as rejected, not panicking.
-        assert_eq!(c.get_phase(9999), PHASE_REJECTED);
-        assert_eq!(c.prepare(9999, true), 0);
-        assert_eq!(c.commit(9999), 0);
+        assert_eq!(q.vote(id, 99, 1), Err(trm_uefi_kernel::quorum_consensus::DecisionError::TooManyVoters));
+        assert_eq!(q.tally(id).unwrap().3, N_AGENTS);
     }
 
     #[test]
-    fn pbft_full_cycle_accepts_with_n_minus_f_honest_votes() {
+    fn six_rejections_veto_a_proposal_that_could_not_reach_quorum() {
+        let mut q = trm_uefi_kernel::quorum_consensus::QuorumCouncil::new();
+        let id = q.propose("OPERATOR", "security", 1, 1, 42).unwrap();
+        for v in 1..=5 {
+            q.vote(id, v, 1).unwrap();
+        }
+        for v in 6..=11 {
+            q.vote(id, v, -1).unwrap();
+        }
+        assert_eq!(q.commit(id, QUORUM_THRESHOLD), Err(trm_uefi_kernel::quorum_consensus::DecisionError::Vetoed));
+        assert_eq!(q.phase(id), PHASE_REJECTED, "a veto is terminal, not undecided");
+    }
+
+    #[test]
+    fn an_abstention_is_not_an_approval() {
+        let mut q = trm_uefi_kernel::quorum_consensus::QuorumCouncil::new();
+        let id = q.propose("OPERATOR", "security", 1, 1, 42).unwrap();
+        for v in 1..=9 {
+            q.vote(id, v, 0).unwrap();
+        }
+        assert_eq!(q.commit(id, QUORUM_THRESHOLD), Err(trm_uefi_kernel::quorum_consensus::DecisionError::QuorumNotReached));
+    }
+
+    #[test]
+    fn a_committed_slot_cannot_commit_a_different_value() {
+        let mut q = trm_uefi_kernel::quorum_consensus::QuorumCouncil::new();
+        let a = q.propose("OPERATOR", "approve", 1, 1, 0xAAAA).unwrap();
+        for v in 1..=10 {
+            q.vote(a, v, 1).unwrap();
+        }
+        q.commit(a, COMMIT_THRESHOLD).unwrap();
+        assert_eq!(q.propose("OPERATOR", "reject", 1, 1, 0xBBBB),
+                   Err(trm_uefi_kernel::quorum_consensus::DecisionError::ConflictingValue),
+                   "two values cannot commit in one slot");
+    }
+
+    #[test]
+    fn different_slots_can_both_commit() {
+        let mut q = trm_uefi_kernel::quorum_consensus::QuorumCouncil::new();
+        for slot in [1u64, 2u64] {
+            let id = q.propose("OPERATOR", "decision", 1, slot, 0x1000 + slot).unwrap();
+            for v in 1..=10 {
+                q.vote(id, v, 1).unwrap();
+            }
+            q.commit(id, COMMIT_THRESHOLD).unwrap();
+        }
+        assert_eq!(q.status().1, 2);
+    }
+
+    #[test]
+    fn a_full_cycle_accepts_on_real_quorum_and_reports_the_real_fraction() {
         let mut c = PbftConsensus::new();
         let (id, accepted, score) = c.run_full_cycle("OPERATOR", "protocol");
         assert!(accepted);
-        assert_eq!(score, 0.98);
         assert_eq!(c.get_phase(id), PHASE_ACCEPTED);
-        let p = &c.proposals[0];
-        assert_eq!(p.prepare_votes, N_AGENTS - MAX_BYZANTINE); // 10
-        assert_eq!(p.commit_votes, COMMIT_THRESHOLD); // 10
+        assert!((score - 10.0 / 14.0).abs() < 1e-9, "score is approvals/N, not a constant");
     }
 
     // ---- 14-agent council tally ---------------------------------------
@@ -711,67 +732,5 @@ mod k3_ternary_sram_tests {
         assert!(sram.tcam_match(&[TRUE, FALSE, UNKNOWN, TRUE], &[1, 1, 1, 1]));
         assert!(sram.tcam_match(&[TRUE, TRUE, TRUE, TRUE], &[1, 0, 0, 0]));
         assert!(!sram.tcam_match(&[FALSE, FALSE, UNKNOWN, TRUE], &[1, 1, 1, 1]));
-    }
-}
-
-
-/// DEFECT CHARACTERISATION — what `pbft_consensus` actually enforces (measured 2026-11-24).
-///
-/// The module's own header says "PBFT: propose -> pre-prepare -> prepare -> commit with quorum arithmetic
-/// ... requires >= 2f+1 = 9 prepare votes and a valid commit round". These three tests show that the second
-/// half of that sentence is not enforced:
-///
-///   1. `commit()` increments a counter and accepts at 10 commits *without consulting prepare_votes at all*,
-///      so a proposal with zero prepare votes is accepted;
-///   2. two conflicting proposals in the same view are both accepted — PBFT safety forbids exactly this;
-///   3. a reject vote (`prepare(id, false)`) is silently dropped instead of being counted against the
-///      proposal, so no amount of disagreement can stop acceptance.
-///
-/// These tests are a tripwire, not a specification. If a real protocol replaces the counters, they should
-/// FAIL, and that failure is the signal to delete them.
-#[cfg(test)]
-mod pbft_defect_characterisation {
-    use trm_uefi_kernel::pbft_consensus::{PbftConsensus, COMMIT_THRESHOLD, PHASE_ACCEPTED};
-
-    #[test]
-    fn commit_without_any_prepare_vote_is_accepted() {
-        let mut c = PbftConsensus::new();
-        let id = c.propose("OPERATOR", "security");
-        for _ in 0..COMMIT_THRESHOLD {
-            c.commit(id); // no prepare() call whatsoever
-        }
-        assert_eq!(
-            c.get_phase(id),
-            PHASE_ACCEPTED,
-            "if this fails the module now checks quorum before accepting -- delete this test and the audit's finding"
-        );
-    }
-
-    #[test]
-    fn two_conflicting_proposals_are_both_accepted() {
-        let mut c = PbftConsensus::new();
-        let a = c.propose("OPERATOR", "decision:approve");
-        let b = c.propose("OPERATOR", "decision:reject");
-        for id in [a, b] {
-            for _ in 0..COMMIT_THRESHOLD {
-                c.commit(id);
-            }
-        }
-        assert_eq!(c.get_phase(a), PHASE_ACCEPTED);
-        assert_eq!(c.get_phase(b), PHASE_ACCEPTED);
-        // PBFT safety: at most one of these can commit in a view. The module commits both.
-    }
-
-    #[test]
-    fn disagreement_cannot_prevent_acceptance() {
-        let mut c = PbftConsensus::new();
-        let id = c.propose("OPERATOR", "security");
-        for _ in 0..14 {
-            assert_eq!(c.prepare(id, false), 0, "a reject vote is not counted anywhere");
-        }
-        for _ in 0..COMMIT_THRESHOLD {
-            c.commit(id);
-        }
-        assert_eq!(c.get_phase(id), PHASE_ACCEPTED, "14 rejections still produced acceptance");
     }
 }

@@ -128,3 +128,81 @@ have to be vendored into a `no_std` kernel first.
   beyond reading their consensus strings.
 - Whether an external caller relies on `/council/*` semantics for agreement is out of scope.
 - The characterisation tests document current behaviour deliberately. They are not a specification.
+
+
+---
+
+# FIXED — what changed after this audit (2026-11-24)
+
+Every defect named above was addressed the same day. Nothing was relabelled into correctness; the claims that
+could not be supported were removed, and the mechanism that *was* supported was made to enforce its own rules.
+
+## 1. A quorum primitive that can refuse — `trm_uefi_kernel/src/quorum_consensus.rs`
+
+Four invariants are now enforced in code rather than asserted in a header:
+
+| invariant | how it is enforced |
+|---|---|
+| distinct voters | a second vote from the same voter returns `DuplicateVoter`; a tally may never exceed `N_AGENTS` (`TooManyVoters`) |
+| veto arithmetic | `VETO_BLOCK = 6` rejections out of 14 make quorum 9 unreachable → `Vetoed`, terminal |
+| one value per (view, slot) | a different digest for a committed slot returns `ConflictingValue` |
+| commit requires quorum | `commit()` is the only path to ACCEPTED and it refuses below the threshold (`QuorumNotReached`) |
+
+`pbft_consensus.rs` is now a compatibility facade that delegates to it; its type name survives only so call
+sites keep compiling, and its header says so. The three characterisation tests from the audit were **deleted**
+and replaced by eleven positive tests (`commit_without_any_vote_is_refused`,
+`a_repeat_voter_cannot_inflate_the_tally`, `six_rejections_veto_a_proposal_that_could_not_reach_quorum`,
+`a_committed_slot_cannot_commit_a_different_value`, …). **46 tests pass** in `kernel_tests`.
+
+## 2. The council's decision now counts distinct agents — verified live
+
+`consensus_for()` was `approve_count >= min_approve` over `votes.len()`, so a duplicated agent inflated the
+tally and a rejection could not block anything. The verdict is now computed over **distinct agents**, with a
+veto when rejections make the threshold arithmetically unreachable, and the evidence is published:
+
+```
+POST /council/propose  ->  id 2586
+phase: ENACTED   approve 12 / abstain 2 / reject 0
+quorum_evidence: { "distinct_voters": 14, "approvals": 12, "abstentions": 2, "rejections": 0,
+                   "duplicate_vote_records": 0, "min_approve": 10, "veto_block": 6, "vetoed": false,
+                   "method": "distinct-agent tally, veto arithmetic",
+                   "note": "single process, one host: ... not Byzantine fault tolerance (f=0 failure domains)" }
+```
+
+The `k3_verdict` call now reads the deduped approvals too, so a duplicate cannot flip a verdict either.
+
+## 3. The fabricated claims are gone — `trm_companion_bridge`
+
+| was | now |
+|---|---|
+| "Tolerates up to f=33 radiation-damaged / offline nodes" | "Tolerates zero Byzantine faults: 3 peers configured and active, all 14 agents in one process (f = 0)" |
+| "Byzantine Quorum: 67/100 Nodes \| f=33 Byzantine Nodes" | "Measured Peers: 3 configured / 3 active \| Byzantine Faults Tolerated: f = 0 (single failure domain)" |
+| "Triple Modular Redundancy … (< 1.0e-18 fault rate)" | "No TMR: no hardware redundancy is deployed, and no fault-rate figure is published because none is measured" |
+| "Unanimous 14-0-0 approval on CP-COMPANION-001 (+0.970)" | "CP-COMPANION-001 has no recorded verdict: this notification is seeded, not the result of a deliberation" |
+| telemetry: 9 hardcoded literals (`cpu_util_pct: 2.4`, `pbft_consensus_cycle: 18420`, …) | read from `/health`, `/federation/stats`, `/kanban/stats`, `/ddr/stats` at request time; anything not measured is `null` |
+| "Consensus: 14-Agent PBFT Unanimous Approval (+0.970)" | "Consensus: 14-agent distinct-voter tally (NOT Byzantine: one process, one host, f=0)" |
+
+Verified: `grep -c` for `f=33`, `67/100`, `1.0e-18`, `18420`, `+0.970`, `Unanimous` → **0** of each.
+
+## 4. Seven copies became one source
+
+The four demo crates (`host_catalyst`, `host_pipeline23`, `host_tranche`, `host_small1`) each carried their own
+copy. They now compile the canonical file through `#[path = "../../src/quorum_consensus.rs"]` and
+`../../src/pbft_consensus.rs`. All four build. The four copies were moved to
+`trm_uefi_kernel/archive/duplicates_20261124/` with a hashed `MANIFEST.json` — moved, not deleted.
+
+## 5. `continuum_pbft.rs` says what it is
+
+Its header now states that it is a majority-hash ledger over four `&str` role names in one address space, that
+`f = 1` is arithmetic over roles rather than replicas, and that the true tolerated Byzantine count is **f = 0**.
+
+## What deliberately did **not** change
+
+- **No Raft, Paxos, HotStuff, async or randomized consensus was implemented.** The verdicts above stand:
+  at n=3 with one failure domain, f=0, so no BFT protocol can be demonstrated; Raft waits for the trigger
+  (ledger must survive host loss or gain a second writer).
+- **No crypto crate was added.** Authenticated messages and threshold signatures remain unavailable; the
+  kernel depends on `r-efi` alone. This means the council's agreement is over *cooperating* agents, not
+  adversarial ones, and no document should imply otherwise.
+- **The quorum constants were not tuned to make anything pass.** 9 and 10 are the declared council
+  thresholds; the veto bound 6 is derived from them (`N - quorum + 1`).

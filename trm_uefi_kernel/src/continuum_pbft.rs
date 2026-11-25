@@ -1,8 +1,17 @@
-//! TRM Swarm OS — Project Continuum (v5.3) Autonomic PBFT Consensus & Self-Healing Ledger (no_std port).
+//! TRM Swarm OS — Project Continuum Autonomic Ledger (no_std port).
 //! 1:1 core semantics from swarm_v2/core/continuum_pbft.py.
-//! PBFT consensus (N >= 3f + 1) across ORCH/SAGE/MUSE/SENTINEL with ledger hash
-//! voting, Byzantine isolation and rolling AST state repair. SHA-256 is
-//! implemented locally (no_std: no hashlib/libm available).
+//!
+//! WHAT THIS IS (corrected 2026-11-24): a **majority-hash ledger** over four named roles — ORCH, SAGE,
+//! MUSE, SENTINEL — that live in the same process as `&str` constants. Each "node" hashes the state ledger,
+//! the majority hash wins, and a divergent node's AST is repaired. That is a useful self-healing check over
+//! a shared ledger.
+//!
+//! WHAT THIS IS NOT: Byzantine fault tolerant. Four roles in one address space are one failure domain, not
+//! four replicas; there are no messages, no views, no signatures, and no independent clocks.
+//! `f = 1` below is arithmetic over a role count, so the true tolerated Byzantine faults are **f = 0**.
+//! The enforced decision primitive is [`crate::quorum_consensus`] (distinct voters, veto arithmetic, one
+//! value per slot) — and even that is single-process, so it makes no Byzantine claim either.
+//!
 //! DIVERGENCE (documented): python tx_id = f"tx_{int(time.time()*1000)}" and
 //! record timestamps use wall-clock time — replaced by a deterministic
 //! monotonic tx counter (tx_1, tx_2, ...) since no_std has no clock.

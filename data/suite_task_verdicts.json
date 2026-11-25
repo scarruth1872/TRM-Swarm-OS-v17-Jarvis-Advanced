@@ -46,8 +46,8 @@
   },
   "720": {
    "name": "consensus security audit",
-   "verdict": "DONE",
-   "artifact": "docs/CONSENSUS-TASKS-712-720.md"
+   "verdict": "DONE_AND_FIXED",
+   "artifact": "docs/CONSENSUS-TASKS-712-720.md + trm_uefi_kernel/src/quorum_consensus.rs"
   }
  },
  "measured_defects": [
@@ -57,5 +57,18 @@
   "council server has no PBFT phases at all; decisions are a weighted tally with seeded static proposals",
   "companion bridge ships f=33 / 67-of-100 quorum / TMR 1e-18 claims with no mechanism",
   "federation declares threshold 4 of 5 against 3 configured peers"
- ]
+ ],
+ "fixed_2026_11_24": {
+  "quorum_primitive": "quorum_consensus.rs enforces distinct voters, veto arithmetic, one value per slot, quorum before commit",
+  "tests": "46 pass in kernel_tests (11 new positive tests; 3 characterisation tests deleted)",
+  "council": "verdict computed over distinct agents; quorum_evidence published; verified live on proposal 2586",
+  "companion_bridge": "five fabricated claims removed; telemetry read from the kernel or null",
+  "deduplication": "4 demo crates compile the canonical file via #[path]; 4 copies archived with hashes",
+  "continuum_pbft": "header states it is a majority-hash ledger over role names, f=0 Byzantine tolerated",
+  "not_done": [
+   "no BFT protocol implemented (n=3 => f=0)",
+   "no crypto crate (no authenticated messages)",
+   "Raft still waits for its trigger"
+  ]
+ }
 }

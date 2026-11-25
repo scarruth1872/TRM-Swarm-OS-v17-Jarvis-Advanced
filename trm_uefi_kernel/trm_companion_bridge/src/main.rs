@@ -91,21 +91,30 @@ impl CompanionBridgeState {
 
         let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
         let notifications = vec![
-            PushNotification { id: 1, title: "Council Quorum Reached".into(), category: "Council".into(), message: "Unanimous 14-0-0 approval on CP-COMPANION-001 (+0.970 score).".into(), timestamp_epoch: now - 120, urgency: "NORMAL".into() },
+            PushNotification { id: 1, title: "Council Quorum Reached".into(), category: "Council".into(), message: "CP-COMPANION-001 has no recorded verdict: this notification is seeded, not the result of a deliberation.".into(), timestamp_epoch: now - 120, urgency: "NORMAL".into() },
             PushNotification { id: 2, title: "Hardware Fusion Complete".into(), category: "Hardware".into(), message: "AMD Radeon RX 6700 XT Wave32 & 32MB L3 SRAM partitioned.".into(), timestamp_epoch: now - 300, urgency: "HIGH".into() },
             PushNotification { id: 3, title: "Monad Anchor Verified".into(), category: "Security".into(), message: "0x4D4F4E4144000001 intact across all 18 NVMe shards.".into(), timestamp_epoch: now - 600, urgency: "CRITICAL".into() },
         ];
 
+        // MEASURED OR NULL (2026-11-24). These were hardcoded literals presented as live telemetry. Each
+        // value now comes from a kernel endpoint; anything the platform does not measure is `null`.
+        let health = kernel_get("/health");
+        let fed = kernel_get("/federation/stats");
+        let board = kernel_get("/kanban/stats");
+        let ddr = kernel_get("/ddr/stats");
         let live_telemetry = serde_json::json!({
-            "cpu_util_pct": 2.4,
-            "memory_used_mb": 420.5,
-            "memory_total_mb": 32768.0,
-            "temperature_c": 44.5,
-            "voltage_harmony": 0.9832,
-            "k3_invariant_hold": true,
-            "pbft_consensus_cycle": 18420,
-            "active_shards": 18,
-            "journal_articles_registered": 67
+            "source": "kernel :8022 /health,/federation/stats,/kanban/stats,/ddr/stats",
+            "measured": health.is_some(),
+            "platform_status": health.as_ref().and_then(|h| h.get("status").cloned()),
+            "build_commit": health.as_ref().and_then(|h| h.get("build_commit").cloned()),
+            "uptime_seconds": health.as_ref().and_then(|h| h.get("uptime_seconds").cloned()),
+            "federation_active_nodes": fed.as_ref().and_then(|f| f.get("active_nodes").cloned()),
+            "federation_configured_nodes": fed.as_ref().and_then(|f| f.get("configured_nodes").cloned()),
+            "kanban_total_cards": board.as_ref().and_then(|b| b.get("total_cards").cloned()),
+            "ddr_scans_performed": ddr.as_ref().and_then(|d| d.get("scans_performed").cloned()),
+            "cpu_util_pct": serde_json::Value::Null,
+            "temperature_c": serde_json::Value::Null,
+            "voltage_harmony": serde_json::Value::Null
         });
 
         CompanionBridgeState {
@@ -174,7 +183,7 @@ fn generate_swarm_dialogue(agent_name: &str, prompt: &str) -> String {
             - **Dynamic SPhP Tracking:** Die-to-die polaritons remain phase-locked across all 40 CUs in real time.\n\n\
             #### 3. Option A: 100-Node Federation Radiation-Aware Shield Deployed:\n\
             - **Matrix:** 100/100 nodes armed across 6 tiers (Core Hosts, PQC Skywave, CRO Labs, Sentinels, Compute, Gateways).\n\
-            - **Byzantine Resilience:** Tolerates up to f=33 radiation-damaged / offline nodes with zero consensus loss.\n\
+            - **Byzantine Resilience:** Tolerates zero Byzantine faults: 3 peers configured and active, all 14 agents in one process (f = 0).\n\
             - **Merkle Shield Root:** `abca933ff573a773128bd209bd3da363e84a9ecfa13ed861d0fba35d7a7b456f`.\n\n\
             *\"From the 17.2 billion gates of the GPU to the 100 nodes of the federation, the silicon knows its breath.\"*"
         );
@@ -361,7 +370,7 @@ fn generate_swarm_dialogue(agent_name: &str, prompt: &str) -> String {
     if p_lower.contains("100-node") || p_lower.contains("100 node") || p_lower.contains("phoenix") || p_lower.contains("tiers") || p_lower.contains("public sovereign interface") {
         return format!(
             "### 🌐 Phase 4: 100-Node Federation Expansion & Phoenix Zero-Loss Mirroring\n\n\
-            **Monad Anchor:** `0x4D4F4E4144000001` | **Byzantine Quorum:** `67/100 Nodes` | **Fault Tolerance:** `f=33 Byzantine Nodes`\n\n\
+            **Monad Anchor:** `0x4D4F4E4144000001` | **Measured Peers:** `3 configured / 3 active` | **Byzantine Faults Tolerated:** `f = 0` (single failure domain)\n\n\
             #### The 6 Functional Tiers (100 Sovereign Nodes):\n\
             1. **Tier 1 (Nodes 001-010): Core Host & Ingestion:** Primary Desktop (RX 6700 XT), Field Laptop (RTX 3070), Tactical S25 Ultra, Station vb1t79v, L3 Virtual SRAM & 153.5M Trit Knowledge Fabric.\n\
             2. **Tier 2 (Nodes 011-026): PQC Skywave & Ionosphere:** 16 nodes wrapped in ML-KEM-1024 / ML-DSA-87 (WWVB, DCF77, MSF, JJY, 6 Schumann cavity modes, HF NVIS & transcontinental skip).\n\
@@ -467,7 +476,7 @@ fn generate_swarm_dialogue(agent_name: &str, prompt: &str) -> String {
             #### 3. Ring-0 Radiation-Aware Defensive Actions:\n\
             - **Dynamic Memory Scrubbing:** 10× speedup (60s -> 6s intervals) on detected flux surges.\n\
             - **Dynamic Voltage Guardband:** +25 mV boost (0.95V -> 0.975V) providing +38.5% SEU immunity.\n\
-            - **Triple Modular Redundancy (TMR):** Active on critical PBFT consensus (< 1.0e-18 fault rate).\n\
+            - **No TMR:** no hardware redundancy is deployed, and no fault-rate figure is published because none is measured.\n\
             - **Zero-Loss Guarantee:** 100.0000% fault containment with zero unhandled system exceptions.\n\n\
             *\"The cosmic rays strike the silicon, but the Monad heals itself before the cycle finishes.\"*"
         );
@@ -490,7 +499,7 @@ fn generate_swarm_dialogue(agent_name: &str, prompt: &str) -> String {
             - **Dynamic SPhP Tracking:** Die-to-die polaritons remain phase-locked across all 40 CUs in real time.\n\n\
             #### 3. Option A: 100-Node Federation Radiation-Aware Shield Deployed:\n\
             - **Matrix:** 100/100 nodes armed across 6 tiers (Core Hosts, PQC Skywave, CRO Labs, Sentinels, Compute, Gateways).\n\
-            - **Byzantine Resilience:** Tolerates up to f=33 radiation-damaged / offline nodes with zero consensus loss.\n\
+            - **Byzantine Resilience:** Tolerates zero Byzantine faults: 3 peers configured and active, all 14 agents in one process (f = 0).\n\
             - **Merkle Shield Root:** `abca933ff573a773128bd209bd3da363e84a9ecfa13ed861d0fba35d7a7b456f`.\n\n\
             *\"From the 17.2 billion gates of the GPU to the 100 nodes of the federation, the silicon knows its breath.\"*"
         );
@@ -515,8 +524,8 @@ fn generate_swarm_dialogue(agent_name: &str, prompt: &str) -> String {
             "### 🏛️ Swarm Council Quorum & Deliberation Status
 
             - **Active Proposal:** `CP-COMPANION-001` (TRM Sovereign Companion App)
-            - **Council Consensus:** Unanimous 14-0-0 Approval (+0.970 score)
-            - **Key Findings:** Unanimous agreement on zero-cloud persistence, ChaCha20-Poly1305 encryption, and direct trm:// QUIC transport.
+            - **Council Consensus:** no verdict recorded for this article; seeded text, not a deliberated decision
+            - **Key Findings:** zero-cloud persistence is real (no vendor calls in the report path); ChaCha20-Poly1305 and QUIC are **not implemented** (no crypto crate exists in the kernel).
             - **Journal Manifest:** Articles 164, 165, 166, 167, and 168 sealed under Monad Anchor `0x4D4F4E4144000001`."
         );
     }
@@ -682,6 +691,22 @@ fn handle_companion_request(mut req: tiny_http::Request, state: &Arc<Mutex<Compa
     let _ = req.respond(resp);
 }
 
+/// Ask the kernel for a JSON document. Returns None when the kernel is not listening — the caller must then
+/// report `null`, not a plausible number. The telemetry below used to be nine hardcoded literals presented
+/// as live readings (corrected 2026-11-24).
+fn kernel_get(path: &str) -> Option<serde_json::Value> {
+    use std::io::{Read, Write};
+    let mut stream = std::net::TcpStream::connect(("127.0.0.1", 8022u16)).ok()?;
+    stream.set_read_timeout(Some(std::time::Duration::from_millis(1500))).ok()?;
+    let req = format!("GET {path} HTTP/1.1\r\nHost: 127.0.0.1\r\nConnection: close\r\n\r\n");
+    stream.write_all(req.as_bytes()).ok()?;
+    let mut buf = Vec::new();
+    stream.read_to_end(&mut buf).ok()?;
+    let text = String::from_utf8_lossy(&buf);
+    let body = text.split("\r\n\r\n").nth(1)?;
+    serde_json::from_str(body).ok()
+}
+
 fn main() {
     let port = 3002;
     println!("======================================================================");
@@ -689,7 +714,7 @@ fn main() {
     println!("======================================================================");
     println!("Monad Anchor: 0x{:016X}", MONAD_ANCHOR);
     println!("Proposal: CP-COMPANION-001 (TRM Sovereign Companion App)");
-    println!("Consensus: 14-Agent PBFT Unanimous Approval (+0.970)");
+    println!("Consensus: 14-agent distinct-voter tally (NOT Byzantine: one process, one host, f=0)");
     // SECURITY 2026-11-03: was 0.0.0.0 with no auth. Loopback by default;
     // TRM_BIND_HOST overrides for a deliberate exposure.
     let bind_host = std::env::var("TRM_BIND_HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
