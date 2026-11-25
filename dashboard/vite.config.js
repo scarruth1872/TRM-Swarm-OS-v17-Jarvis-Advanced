@@ -41,6 +41,12 @@ export default defineConfig({
       '/skills':         { target: 'http://127.0.0.1:8022', changeOrigin: true },
       '/journal':        { target: 'http://127.0.0.1:8022', changeOrigin: true },
       '/monad':          { target: 'http://127.0.0.1:8022', changeOrigin: true },
+      '/agents':         { target: 'http://127.0.0.1:8022', changeOrigin: true },
+      '/gpu':            { target: 'http://127.0.0.1:8022', changeOrigin: true },
+      '/cosmos':         { target: 'http://127.0.0.1:8022', changeOrigin: true },
+      '/gate':           { target: 'http://127.0.0.1:8022', changeOrigin: true },
+      '/k3':             { target: 'http://127.0.0.1:8022', changeOrigin: true },
+      '/spectral':       { target: 'http://127.0.0.1:8022', changeOrigin: true },
       '/companion':      { target: 'http://127.0.0.1:3001', changeOrigin: true },
     }
   }

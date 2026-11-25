@@ -10,23 +10,23 @@
 
 ---
 
-## 🔴 Current State — checkpoint 2026-11-13 (STOPPED, BIOS update pending)
+## 🟢 Current State — checkpoint 2026-11-25 (`checkpoint-20261125-v4`, LIVE & VERIFIED)
 
-**The platform is stopped and every port has been re-probed silent.** VRAM went 10.8 GB → 1.6 GB. Do not start it
-before the firmware change you are about to make; `START_TRM_PLATFORM.bat` afterwards.
+All 7 host services (`:8022`, `:8593`, `:8587`, `:5183`, `:3000`, `:3001`, `:3002`) and all 3 Tailscale federation peers (`NODE-001` `desktop-mep4vqn`, `NODE-002` `carruth-macpro5-1`, `NODE-003` `desktop-vb1t79v`) are online and verified (`anchor_verified: true`, `synced: true`, `3/3`). See `docs/CHECKPOINT-20261125.md` and `docs/JOURNAL.md` (Articles 202–208) for full measurements and probability analysis.
 
-Read `docs/CHECKPOINT-2026-11-13.md` before rebooting: it lists what was running, the pid files, the stop/start
-order, the measured baselines to compare against, the BIOS change and what it should buy, the artifact hashes, and
-what is **not** verified. `docs/BIOS-CHECKLIST-DOCP-CPB.md` is the firmware walk-through.
-
-| Item | Value (measured) |
+| Item | Value (measured 2026-11-25) |
 |---|---|
-| Boot artifact | `trm_uefi_kernel.efi` · **17,488,896 B** · sha256 `504c41ee647ff45f…` · PE x86-64 / subsystem 10 |
-| USB media (G:) | `SWARM_OS`, FAT32, four names carrying the **same** kernel — parity PASS |
-| Council server | `:8022`, native Rust, cadence 8 workers, 0 errors |
-| Council gate | **80.0 % danger recall · 20.0 % dangerous miss · 0.000 % false-block** — advisory, fail-open |
-| Journal | **115 articles** in the manifest (max id 216) — served at `/journal/articles` once the council is up |
-| Boot verification | QEMU/OVMF boot **passes**; **on-metal boot still unverified** |
+| Boot artifact | `trm_uefi_kernel.efi` · **17,491,456 B** · sha256 `8ea4765b8ebd7ebc…` · PE x86-64 / subsystem 10 |
+| USB media (`G:`) | `SWARM_OS`, FAT32, four names carrying the **same** refreshed kernel (`8ea4765b8ebd7ebc`) — parity **PASS** |
+| Council server | `:8022`, native Rust (`host_council_server`), `143/143` release tests passing (`target/verify`) |
+| Two-stage semantic firewall (`POST /agents/584/eval`) | `:8593` (`nomic-embed-text-v1.5`) + `:8587` (`gpt-oss-20b-MXFP4`) escalation: **92.4% Hybrid recall** (`157/170`, 95% CI `[87.4%, 95.5%]`), **4.7% Safe FP** (`7/150`), **95.7% PPV**, **71.1% digital-miss catch** (`32/45`) across all 320 blind directives |
+| Security hardening (`S1–S6`) | `/platform/shutdown` enforces `X-Council-Token` on loopback (`401`); DDR scanner **9/9 (100%)** (`getattr(__builtins__)` closed); Cosmos Edge **20/20 (100%)**; cold-boot disk arena bit-flip healing **PASS** (`16/16` bits restored); malformed JSON fast-rejected (`0.7–19 ms`) |
+| RX 6700 XT Vulkan Compute (`wgpu`) | `/gpu/infinity/bench`: **603.8B–865.4B K3 ops/s** (`432.7 GB/s`, `verified: true`); `/gpu/screen/bench`: **200M 64-trit protein-drug pairs in 1.06 ms** (`189.29B pairs/s`, `12.11T trit-ops/s`, CPU-verified); `/gpu/switch/bench`: **16.51 µs/switch** (4 architectures, 1,000x) |
+| Real ChEMBL Validation (`CHEMBL203` EGFR) | 480 unique IC50 molecules (70/30 held-out split): **0.9590 ROC-AUC** (`EF10% = 2.09`) using exact 16-byte 64-trit K3 template |
+| Cosmos 3 Multi-Step Replay | Live HTTP `:8022` **10,000 3-step tasks (`30k` steps) in 2.141 s** (`p99 = 0.423 ms`, `1,000/1,000` hazards caught); vectorized 8-team sparse K3 **1,000,000 tasks (`3M` steps) in 7.813 ms** (`127.99M tasks/s`) |
+| Federation (`3/3` peers) | `NODE-001`, `NODE-002` (`carruth-macpro5-1`), `NODE-003` (`desktop-vb1t79v`) — `quorum_reachable: true`, `POST /federation/sync` `synced: true` |
+| Monad Journal | Articles **202–207** `CONFIRMED` from measurement + Article **208** `SPEC` (pre-registered coherence/acoustic protocol + 4-condition software pre-bench) |
+| Boot verification | QEMU/OVMF boot **verified**; **on-metal boot still unverified** |
 
 ### Version strings are not yet unified — do not "fix" one without the others
 

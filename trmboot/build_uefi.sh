@@ -59,7 +59,7 @@ fi
 
 validate_pe() {
   local f="$1"
-  python3 - "$f" <<'PYEOF'
+  "$PY" - "$f" <<'PYEOF'
 import struct, sys, pathlib
 p = pathlib.Path(sys.argv[1]); b = p.read_bytes()
 assert b[:2] == b"MZ", "not a PE: missing MZ"

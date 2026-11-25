@@ -24,6 +24,7 @@ import ContinuumGenomicsViewport from './components/ContinuumGenomicsViewport';
 import NeuroDynamicEvolutionEngine from './components/NeuroDynamicEvolutionEngine';
 import CouncilChamber from './components/CouncilChamber';
 import AnomalySentinel from './components/AnomalySentinel';
+import SovereignBenchPanel from './components/SovereignBenchPanel';
 
 // ─── Component: File Write Action Card ──────────────────────────────────
 const FileWriteCard = ({ filename, lang, code }) => {
@@ -998,6 +999,8 @@ export default function App() {
                   <div className="stat-card-value text-lg">{overview?.active_proposals || 0}</div>
                 </div>
               </div>
+
+              <SovereignBenchPanel />
 
               <div className="panel-grid panel-grid-3-col">
                 {/* Column 1: System & Resources */}
