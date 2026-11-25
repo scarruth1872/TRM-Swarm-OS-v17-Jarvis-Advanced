@@ -1,0 +1,64 @@
+{
+ "source": "evidence\\chembl_lpxc_actives.json",
+ "n_records": 406,
+ "steps": {
+  "task9_druglikeness": {
+   "measured": true,
+   "n_parsed": 406,
+   "n_unparseable": 0,
+   "frac_lipinski_0_violations": 0.9778,
+   "frac_veber_ok": 0.9532,
+   "frac_ghose_ok": 0.8695,
+   "median_mw": 386.47,
+   "example": {
+    "mw": 376.36,
+    "logp": 1.07,
+    "mr": 91.63,
+    "hbd": 4,
+    "hba": 4,
+    "tpsa": 98.66,
+    "rotb": 5,
+    "heavy_atoms": 27,
+    "lipinski_violations": 0,
+    "veber_ok": true,
+    "ghose_ok": true,
+    "chembl_id": "CHEMBL6161779",
+    "value_nM": 0.0089,
+    "type": "Ki"
+   }
+  },
+  "trm_leads": {
+   "measured": true,
+   "files_checked": {
+    "wet_lab_bridge_package.json": "file absent",
+    "trm_abx_220_recalibration.json": "file absent"
+   },
+   "runnable": false,
+   "why_blocked": "no SMILES exists for TRM-ABX-220 in any repo file (wet-lab audit, 5 defects); a descriptor or QSAR task about a molecule without a structure cannot be run"
+  },
+  "task10_qsar": {
+   "measured": true,
+   "interpreter": "3.11.9",
+   "n": 406,
+   "features": [
+    "mw",
+    "logp",
+    "mr",
+    "hbd",
+    "hba",
+    "tpsa",
+    "rotb",
+    "heavy_atoms"
+   ],
+   "target": "pKi = -log10(Ki in M), from value_nM",
+   "cv5_r2_mean": 0.7226,
+   "cv5_r2_std": 0.0565,
+   "cv5_r2_baseline_mean": -0.0085,
+   "pki_range": [
+    3.86,
+    11.05
+   ],
+   "reading": "beats the mean-predictor baseline"
+  }
+ }
+}
