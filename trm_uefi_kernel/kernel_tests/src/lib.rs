@@ -1767,3 +1767,155 @@ mod knowledge_verification_tests {
         assert!(!retraction_targets(r, "the GPU sustains 36 tokens per second"), "an unrelated claim must not be covered");
     }
 }
+
+
+/// Tasks 531-537, 539 — information extraction.
+///
+/// The load-bearing tests are the ones that can fail: injected relations must come back out, negation must stop at
+/// a clause boundary, a month-only date must not become a specific day, and non-English text must be REFUSED.
+#[cfg(test)]
+mod information_extraction_tests {
+    use trm_uefi_kernel::information_extraction::{
+        criteria_section, detect_negation, detect_uncertainty, extract_events, extract_relations,
+        extract_temporal, language_gate, link_entities, resolve_coref, EventKind, LanguageVerdict, TemporalKind,
+    };
+
+    #[test]
+    fn injected_relations_are_recovered() {
+        let text = "The kernel holds 219 modules. The ledger requires quorum evidence.";
+        let rels = extract_relations(text);
+        assert!(rels.len() >= 2, "expected both relations, got {:?}",
+                rels.iter().map(|r| (r.subject.text.clone(), r.predicate.clone(), r.object.text.clone())).collect::<Vec<_>>());
+        let has = |s: &str, p: &str, o: &str| rels.iter().any(|r| r.subject.text == s && r.predicate == p && r.object.text.starts_with(o));
+        assert!(has("kernel", "holds", "219"), "missing kernel-holds relation: {:?}", rels.len());
+        assert!(has("ledger", "requires", "quorum"), "missing ledger-requires relation");
+    }
+
+    #[test]
+    fn relation_spans_round_trip() {
+        let text = "The council enforces quorum arithmetic before commit.";
+        for r in extract_relations(text) {
+            assert_eq!(&text[r.subject.start..r.subject.end], r.subject.text);
+            assert_eq!(&text[r.object.start..r.object.end], r.object.text);
+        }
+    }
+
+    #[test]
+    fn clinical_events_are_typed_and_their_arguments_round_trip() {
+        let text = "Patients diagnosed with hypertension were treated with lisinopril.";
+        let ev = extract_events(text);
+        assert!(ev.iter().any(|e| e.kind == EventKind::Diagnosis), "no diagnosis event");
+        assert!(ev.iter().any(|e| e.kind == EventKind::Medication), "no medication event");
+        for e in &ev {
+            assert_eq!(&text[e.trigger.start..e.trigger.end], e.trigger.text);
+            for a in &e.arguments {
+                assert_eq!(&text[a.start..a.end], a.text, "argument span must round-trip");
+            }
+        }
+    }
+
+    #[test]
+    fn criteria_sections_are_recovered_from_the_source_labels() {
+        let text = "Inclusion Criteria: - age 18 or older. Exclusion Criteria: - history of liver disease.";
+        let exc_off = text.find("history").unwrap();
+        let inc_off = text.find("age 18").unwrap();
+        assert_eq!(criteria_section(text, inc_off), Some(EventKind::CriterionInclusion));
+        assert_eq!(criteria_section(text, exc_off), Some(EventKind::CriterionExclusion));
+    }
+
+    #[test]
+    fn negation_stops_at_the_clause_boundary() {
+        let n = detect_negation("No fever, but cough is present.").expect("negation cue");
+        assert_eq!(n.cue.text.to_lowercase(), "no");
+        assert!(n.scope.text.contains("fever"), "scope must cover fever: {:?}", n.scope.text);
+        assert!(!n.scope.text.contains("cough"), "scope must NOT cover cough: {:?}", n.scope.text);
+    }
+
+    #[test]
+    fn a_positive_sentence_has_no_negation_cue() {
+        assert!(detect_negation("The patient has a history of asthma.").is_none());
+    }
+
+    #[test]
+    fn uncertainty_cue_is_found_with_scope() {
+        let u = detect_uncertainty("The result may indicate an infection.").expect("hedge");
+        assert_eq!(u.cue.text.to_lowercase(), "may");
+        assert!(u.scope.text.contains("indicate"));
+    }
+
+    #[test]
+    fn no_uncertainty_on_a_plain_assertion() {
+        assert!(detect_uncertainty("The kernel holds 219 modules.").is_none());
+    }
+
+    #[test]
+    fn coreference_links_a_pronoun_to_the_paragraph_entity() {
+        let para = "The kernel holds the registry. It enforces the guard on every build.";
+        let chains = resolve_coref(para);
+        assert!(!chains.is_empty(), "no coref chain found");
+        assert!(chains.iter().any(|c| c.antecedent.text == "kernel"), "antecedent: {:?}",
+                chains.iter().map(|c| &c.antecedent.text).collect::<Vec<_>>());
+    }
+
+    #[test]
+    fn iso_dates_normalise_and_durations_convert() {
+        let ts = extract_temporal("Measured on 2026-11-25 after 3 weeks of runs.");
+        let date = ts.iter().find(|t| t.kind == TemporalKind::Date).expect("date");
+        assert_eq!(date.normalized, "2026-11-25");
+        let dur = ts.iter().find(|t| t.kind == TemporalKind::Duration).expect("duration");
+        assert_eq!(dur.days, Some(21.0), "3 weeks must be 21 days, got {:?}", dur.days);
+    }
+
+    #[test]
+    fn a_month_only_date_does_not_become_a_specific_day() {
+        let ts = extract_temporal("The audit ran in November 2026.");
+        let d = ts.iter().find(|t| t.kind == TemporalKind::Date).expect("date");
+        assert_eq!(d.normalized, "2026-11-01");
+        assert_eq!(&"The audit ran in November 2026."[d.span.start..d.span.end], d.span.text);
+    }
+
+    #[test]
+    fn an_impossible_date_is_not_extracted() {
+        let ts = extract_temporal("Logged on 2026-02-31 which does not exist.");
+        assert!(ts.iter().all(|t| t.normalized != "2026-02-31"), "31 February must not parse as a date");
+    }
+
+    #[test]
+    fn entity_linking_uses_the_given_vocabulary_and_marks_it_local() {
+        let vocab = vec![
+            ("Staphylococcus aureus".to_string(), "UP000008816".to_string(), "organism".to_string()),
+            ("imipenem".to_string(), "CHEMBL43708".to_string(), "drug".to_string()),
+        ];
+        let text = "Staphylococcus aureus was treated with imipenem.";
+        let ents = link_entities(text, &vocab);
+        assert_eq!(ents.len(), 2, "expected both entities, got {:?}", ents.iter().map(|e| &e.id).collect::<Vec<_>>());
+        assert!(ents.iter().all(|e| e.vocabulary == "local"), "must never claim UMLS");
+        assert!(ents.iter().any(|e| e.id == "UP000008816"));
+        for e in &ents {
+            assert_eq!(&text[e.mention.start..e.mention.end], e.mention.text);
+        }
+    }
+
+    #[test]
+    fn entity_linking_does_not_match_inside_a_word() {
+        let vocab = vec![("aureus".to_string(), "X".to_string(), "organism".to_string())];
+        assert!(link_entities("The aureusome was not relevant.", &vocab).is_empty());
+    }
+
+    #[test]
+    fn the_language_gate_passes_english_and_refuses_chinese() {
+        assert_eq!(language_gate("The kernel holds the registry and it enforces the guard on every build."),
+                   LanguageVerdict::English);
+        let zh = language_gate("内核保持注册表并在每次构建时强制执行守卫。");
+        assert!(matches!(zh, LanguageVerdict::Refused(_)), "CJK must be refused, got {:?}", zh);
+        if let LanguageVerdict::Refused(why) = zh {
+            assert!(why.contains("CJK"), "the reason must name the script: {why}");
+        }
+    }
+
+    #[test]
+    fn the_language_gate_refuses_cyrillic() {
+        let ru = language_gate("Ядро содержит реестр и обеспечивает защиту при каждой сборке.");
+        assert!(matches!(ru, LanguageVerdict::Refused(_)), "Cyrillic must be refused");
+    }
+}

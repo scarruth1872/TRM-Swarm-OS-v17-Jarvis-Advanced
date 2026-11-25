@@ -228,6 +228,66 @@
    "verdict": "BUILT",
    "why": "aggregates to FINDINGS with totals",
    "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
+  },
+  "531": {
+   "name": "relation extraction",
+   "verdict": "BUILT",
+   "why": "10/10 injected triples recovered; 0 span mismatches on a real document; 24-verb lexicon, shallow SVO",
+   "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
+  },
+  "532": {
+   "name": "event extraction",
+   "verdict": "BUILT",
+   "why": "410 events over 60 real ClinicalTrials records, 0 span mismatches; real clinical text",
+   "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
+  },
+  "533": {
+   "name": "entity linking",
+   "verdict": "BUILT_LOCAL_ONLY",
+   "why": "UMLS/SNOMED/RxNorm ABSENT on disk - linker runs over local ESKAPE organisms -> UniProt IDs and tags vocabulary=local; never claims UMLS",
+   "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
+  },
+  "534": {
+   "name": "coreference resolution",
+   "verdict": "BUILT_PARTIAL",
+   "why": "3/3 constructed antecedents, 0 span mismatches; paragraph-local only, no cross-document resolution",
+   "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
+  },
+  "535": {
+   "name": "temporal expressions",
+   "verdict": "BUILT",
+   "why": "agrees with an independent datetime parse on every ISO date; impossible dates rejected",
+   "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
+  },
+  "536": {
+   "name": "negation detection",
+   "verdict": "BUILT",
+   "why": "real ground truth from curator labels: cue-only recall 14.3% on exclusion criteria, inclusion false-negation 25.4%, section label 100% - reported as the finding",
+   "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
+  },
+  "537": {
+   "name": "uncertainty detection",
+   "verdict": "BUILT",
+   "why": "6/6 hedged caught, 0/5 false positives, 14 hedged sentences in 50 real summaries",
+   "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
+  },
+  "538": {
+   "name": "complete IE suite",
+   "verdict": "BUILT",
+   "why": "10/10 modules, 9 endpoints 200, blocked tasks listed with reasons",
+   "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
+  },
+  "539": {
+   "name": "multilingual extraction",
+   "verdict": "BLOCKED_GATE_WORKS",
+   "why": "no multilingual model/corpus; gate refuses CJK/Cyrillic/Arabic and /ie/structured returns 400 rather than tokenising",
+   "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
+  },
+  "540": {
+   "name": "structured output",
+   "verdict": "BUILT",
+   "why": "schema trm.ie.structured.v1, all required keys, 0 span mismatches",
+   "artifact": "docs/INFORMATION-EXTRACTION-RESEARCH.md + trm_uefi_kernel/src/information_extraction.rs + host_council_server/src/ie_routes.rs + tools/ie_*_verify.py"
   }
  },
  "measured_defects": [
@@ -423,5 +483,25 @@
    "consistency check treats proposal IDs (586 vs 579) as conflicting quantities - known limitation, reported"
   ],
   "boundary": "retrieval is the binding constraint: 17/27 claims abstain, 7 of them true"
+ },
+ "information_extraction_531_540": {
+  "audited": "2026-11-25",
+  "research": "docs/INFORMATION-EXTRACTION-RESEARCH.md",
+  "real_corpus": "evidence/clinicaltrials_sample.json - 200 records sampled from AllPublicXML.zip (612,025 entries), source sha256 0089cf0f",
+  "harnesses": {
+   "total": 9,
+   "passing": 9
+  },
+  "declared_blocked": {
+   "533": "UMLS absent - local vocabularies only, labelled as such",
+   "539": "multilingual - gate refuses, extraction refused with 400"
+  },
+  "key_finding": "cue-based negation catches 14.3% of real exclusion criteria; the section header carries the rest",
+  "bugs_found_in_own_code": [
+   "sentence-relative spans in relations and coref",
+   "byte-slice panic on non-ASCII in temporal extractor",
+   "harness measured with str slices and CRLF-translated reads - 54 phantom mismatches"
+  ],
+  "lesson": "an offset check compares BYTES, not characters"
  }
 }

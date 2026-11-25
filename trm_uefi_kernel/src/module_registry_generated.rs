@@ -1,7 +1,7 @@
 // =============================================================================
 // GENERATED FILE — DO NOT EDIT BY HAND.
 // Produced by tools/rebuild_module_registry.py from every LIVE source tree on this host.
-// Scan timestamp: 2026-11-25 19:23:57 UTC
+// Scan timestamp: 2026-11-25 20:40:07 UTC
 //
 // TREES BELOW ARE THE ONES THAT BUILD HERE: the UEFI kernel and the cdylib
 // (swarm_v2_rust_kernel -> target/release/swarm_rust_kernel.dll). The staged v20 snapshot is
@@ -14,9 +14,9 @@
 // =============================================================================
 
 /// Live modules across every tree that builds here.
-pub const TOTAL: u64 = 227;
+pub const TOTAL: u64 = 228;
 /// Hand-written intelligence (pub fns, real bodies).
-pub const REAL: u64 = 112;
+pub const REAL: u64 = 113;
 /// Mechanical port carrying MANUAL markers.
 pub const PORTED: u64 = 60;
 /// Constants/structs only.
@@ -26,7 +26,7 @@ pub const EXCLUDED: u64 = 9;
 /// Publishes numbers it did not measure.
 pub const FABRICATED: u64 = 0;
 /// The scan date, so a reader can see how old the claim is.
-pub const SCAN_DATE: &str = "2026-11-25 19:23:57 UTC";
+pub const SCAN_DATE: &str = "2026-11-25 20:40:07 UTC";
 
 /// (module, status)
 pub const STATUSES: &'static [(&'static str, &'static str)] = &[
@@ -121,6 +121,7 @@ pub const STATUSES: &'static [(&'static str, &'static str)] = &[
     ("human_swarm_interaction", "REAL"),
     ("hw_truth", "REAL"),
     ("hwprobe", "REAL"),
+    ("information_extraction", "REAL"),
     ("input_driver", "REAL"),
     ("instella_router", "REAL"),
     ("instella_sparse_agent_teams", "REAL"),
@@ -352,6 +353,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
     ("human_swarm_interaction", "uefi"),
     ("hw_truth", "uefi"),
     ("hwprobe", "uefi"),
+    ("information_extraction", "uefi"),
     ("input_driver", "dll"),
     ("instella_router", "uefi"),
     ("instella_sparse_agent_teams", "uefi"),
@@ -491,7 +493,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
 ];
 
 /// Modules per LIVE tree.
-pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 219), ("dll", 13)];
+pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 220), ("dll", 13)];
 /// Names compiled in more than one tree. One name resolves to one status.
 pub const TREE_COLLISIONS: u64 = 5;
 /// Source trees that exist on disk but are NOT built by the launcher (reported, never counted).
@@ -590,6 +592,7 @@ pub const FUNCTION_COUNTS: &'static [(&'static str, u64)] = &[
     ("human_swarm_interaction", 4),
     ("hw_truth", 10),
     ("hwprobe", 4),
+    ("information_extraction", 13),
     ("input_driver", 4),
     ("instella_router", 5),
     ("instella_sparse_agent_teams", 3),

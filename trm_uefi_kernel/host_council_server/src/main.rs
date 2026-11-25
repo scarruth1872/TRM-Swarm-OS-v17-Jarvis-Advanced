@@ -35,6 +35,7 @@ mod sovereign_axioms;
 mod reason_routes;
 mod reading_routes;
 mod kv_routes;
+mod ie_routes;
 mod council_ssm_pipeline;
 mod evidence_index;
 mod lexical_gate;
@@ -5983,6 +5984,26 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 response_json = json!({ "error": format!("malformed JSON body: {e}") });
             }
         }
+    } else if method == Method::Get && url.starts_with("/ie/suite") {
+        response_json = crate::ie_routes::suite();
+    } else if method == Method::Post && url.starts_with("/ie/relations") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::ie_routes::relations)
+    } else if method == Method::Post && url.starts_with("/ie/events") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::ie_routes::events)
+    } else if method == Method::Post && url.starts_with("/ie/temporal") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::ie_routes::temporal)
+    } else if method == Method::Post && url.starts_with("/ie/negation") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::ie_routes::negation)
+    } else if method == Method::Post && url.starts_with("/ie/uncertainty") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::ie_routes::uncertainty)
+    } else if method == Method::Post && url.starts_with("/ie/coref") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::ie_routes::coref)
+    } else if method == Method::Post && url.starts_with("/ie/entities") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::ie_routes::entities)
+    } else if method == Method::Post && url.starts_with("/ie/language") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::ie_routes::language)
+    } else if method == Method::Post && url.starts_with("/ie/structured") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::ie_routes::structured)
     } else if method == Method::Get && url.starts_with("/kv/suite") {
         response_json = crate::kv_routes::suite();
     } else if method == Method::Post && url.starts_with("/kv/factcheck") {
