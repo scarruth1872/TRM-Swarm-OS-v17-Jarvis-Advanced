@@ -1,0 +1,521 @@
+{
+ "checks": [
+  {
+   "name": "421 MD conserves energy",
+   "pass": true,
+   "detail": "drift 2.85694031938353e-07"
+  },
+  {
+   "name": "422 benzene eigenvalues = (-2,-1,-1,1,1,2)",
+   "pass": true,
+   "detail": "[-2.000000000000001, -1.0000000000000013, -1.0000000000000004, 0.9999999999999993, 1.0000000000000013, 2.000000000000003]"
+  },
+  {
+   "name": "422 benzene pi energy = -8 beta",
+   "pass": true,
+   "detail": "-8.000000000000005"
+  },
+  {
+   "name": "422 butadiene E = -4.472 \u03b2",
+   "pass": true,
+   "detail": "-4.4721359549995805"
+  },
+  {
+   "name": "423 exhaustive search completed (not truncated)",
+   "pass": true,
+   "detail": "True"
+  },
+  {
+   "name": "423 annealer never beats the ground state",
+   "pass": true,
+   "detail": "anneal -4 vs opt -4"
+  },
+  {
+   "name": "424 single LJ pair sits at -eps",
+   "pass": true,
+   "detail": "-0.15"
+  },
+  {
+   "name": "424 Coulomb = k q1q2/(er r)",
+   "pass": true,
+   "detail": "33.2063704000006 vs 33.206"
+  },
+  {
+   "name": "425 C(0) = dose/V = 10",
+   "pass": true,
+   "detail": "10.0"
+  },
+  {
+   "name": "425 C at one half-life = 5",
+   "pass": true,
+   "detail": "5.000000002799727"
+  },
+  {
+   "name": "425 t1/2 = ln2/k = 6.9315",
+   "pass": true,
+   "detail": "6.931471805599452"
+  },
+  {
+   "name": "426 R0 = beta/gamma = 2.5",
+   "pass": true,
+   "detail": "2.5"
+  },
+  {
+   "name": "426 final size matches independent bisection",
+   "pass": true,
+   "detail": "0.8925594267697161 vs 0.892659"
+  },
+  {
+   "name": "426 analytic agrees with RK4",
+   "pass": true,
+   "detail": "0.00010000000000465192"
+  },
+  {
+   "name": "427 fixation prob = p0 within 0.08",
+   "pass": true,
+   "detail": "0.28"
+  },
+  {
+   "name": "428 Lotka-Volterra conserves H",
+   "pass": true,
+   "detail": "drift 2.69875520396488e-12"
+  },
+  {
+   "name": "429 Poisson CV ~ 1",
+   "pass": true,
+   "detail": "1.0137779987260342"
+  },
+  {
+   "name": "429 Poisson Fano ~ 1",
+   "pass": true,
+   "detail": "1.2672750160487882"
+  },
+  {
+   "name": "429 refractory lowers CV",
+   "pass": true,
+   "detail": "0.5707488487345272 < 1.0137779987260342"
+  },
+  {
+   "name": "430 suite indexes 10 tasks",
+   "pass": true,
+   "detail": "10"
+  },
+  {
+   "name": "430 refusals are stated",
+   "pass": true,
+   "detail": "3"
+  }
+ ],
+ "results": {
+  "md": {
+   "dt": 0.001,
+   "energy_final": -76.03348171015614,
+   "energy_initial": -76.03345998785039,
+   "model": "lennard-jones + velocity verlet",
+   "not_claimed": "no force field parameterisation for a real molecule; eps/sigma are the caller's",
+   "particles": 27,
+   "reference": "energy conservation - a symplectic integrator must not drift; drift is the metric, not a promise",
+   "relative_drift": 2.85694031938353e-07,
+   "steps": 800,
+   "temperature": 0.033006040981815504,
+   "verdict": "CONSERVING"
+  },
+  "huckel": {
+   "aromatic": true,
+   "atoms": 6,
+   "eigenvalues_over_beta": [
+    -2.000000000000001,
+    -1.0000000000000013,
+    -1.0000000000000004,
+    0.9999999999999993,
+    1.0000000000000013,
+    2.000000000000003
+   ],
+   "electrons": 6,
+   "homo_lumo_gap_over_beta": 1.9999999999999998,
+   "model": "H\u00fcckel pi-electron theory (Jacobi eigensolver)",
+   "not_claimed": "NOT DFT, NOT Hartree-Fock: no basis set, no self-consistent field, no correlation functional",
+   "pi_energy_over_beta": -8.000000000000005,
+   "reference": "benzene (ring, 6, 6 electrons) must give eigenvalues -2,-1,-1,1,1,2 and E = -8 beta",
+   "topology": "ring"
+  },
+  "fold": {
+   "annealed_conformation": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     -1,
+     1
+    ],
+    [
+     -1,
+     2
+    ],
+    [
+     -2,
+     2
+    ],
+    [
+     -2,
+     1
+    ],
+    [
+     -3,
+     1
+    ],
+    [
+     -3,
+     0
+    ],
+    [
+     -2,
+     0
+    ],
+    [
+     -1,
+     0
+    ]
+   ],
+   "annealed_energy": -4,
+   "exhaustive_complete": true,
+   "exhaustive_conformation": [
+    [
+     0,
+     0
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     2,
+     2
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     0,
+     3
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     0,
+     1
+    ]
+   ],
+   "exhaustive_energy": -4,
+   "gap": 0,
+   "model": "2-D HP lattice, self-avoiding",
+   "not_claimed": "not structure prediction: HP is a toy energy model with one hydrophobic contact term",
+   "reference": "the exhaustive DFS ground state - the annealer may never beat it",
+   "residues": 10,
+   "sequence": "HPHPPHPPHH"
+  },
+  "affinity": {
+   "contact_energy_kcal": -0.15,
+   "desolvation_kcal": 0.0,
+   "dielectric": 4.0,
+   "ligand_atoms": 1,
+   "model": "Lennard-Jones + screened Coulomb + linear desolvation",
+   "not_claimed": "NO correlation with measured affinity. 4463 PDBbind complexes with pKd exist in datasets/, but they have not been extracted and scored, and docking already produced one false result here (RMSD 13.82 A frame mismatch)",
+   "pocket_atoms": 1,
+   "reference": "a single LJ pair must reach -eps at 2^(1/6)*sigma, and Coulomb must equal 332.06*q1*q2/(eps_r*r)",
+   "total_kcal": -0.15
+  },
+  "pk": {
+   "c_initial": 10.0,
+   "half_life": 6.931471805599452,
+   "model": "iv_bolus",
+   "not_claimed": "no physiological covariates, no protein binding, no patient data - parameters are the caller's",
+   "reference": "closed form: C(0) = dose/V for IV bolus, 0 for oral, and C falls by half each half-life",
+   "series": [
+    {
+     "c": 10.0,
+     "t": 0.0
+    },
+    {
+     "c": 7.07106781384518,
+     "t": 3.4657359
+    },
+    {
+     "c": 5.000000002799727,
+     "t": 6.9314718
+    }
+   ],
+   "t_max": 2.5584278811044947
+  },
+  "sir": {
+   "agreement_error": 0.00010000000000465192,
+   "analytic_final_size": 0.8926594267697208,
+   "attack_rate": 0.8926486916388799,
+   "final_size": 0.8925594267697161,
+   "herd_immunity_threshold": 0.6,
+   "model": "SIR, RK4",
+   "not_claimed": "no age structure, no waning immunity, no vaccination, no contact matrix - homogeneous mixing only",
+   "peak_day": 32.06000000000219,
+   "peak_infected": 0.2335236893765409,
+   "r0": 2.5,
+   "reference": "the transcendental final-size equation 1 - z = s0*exp(-R0*z), solved independently by bisection"
+  },
+  "drift": {
+   "error": 0.019999999999999962,
+   "expected_fixation_probability": 0.3,
+   "hardy_weinberg": {
+    "AA": 0.09,
+    "Aa": 0.42,
+    "aa": 0.48999999999999994
+   },
+   "heterozygosity_after_generations": 0.32605844075970375,
+   "measured_fixation_probability": 0.28,
+   "model": "Wright-Fisher neutral drift + haploid selection",
+   "not_claimed": "no linkage, no recombination, no mutation, no demography",
+   "p0": 0.3,
+   "population": 20,
+   "reference": "neutral theory: fixation probability equals the initial frequency - measured over replicates, not asserted",
+   "replicates": 300,
+   "seed": 42,
+   "selected_next": 0.3
+  },
+  "lotka": {
+   "conserved_quantity": -2.4120230054281455,
+   "model": "Lotka-Volterra predator-prey, RK4",
+   "not_claimed": "this is a two-species toy model; SMPDB pathway data exists on disk but no pathway is wired in yet",
+   "points": [
+    {
+     "predator": 5.0,
+     "prey": 10.0,
+     "t": 0.0
+    },
+    {
+     "predator": 16.853387538851834,
+     "prey": 12.642694814418864,
+     "t": 2.5
+    },
+    {
+     "predator": 7.540098081035376,
+     "prey": 5.392950918418259,
+     "t": 5.0
+    },
+    {
+     "predator": 6.663246279504022,
+     "prey": 15.75272576496921,
+     "t": 7.5
+    },
+    {
+     "predator": 15.174183925118943,
+     "prey": 6.2880471760420695,
+     "t": 10.0
+    },
+    {
+     "predator": 5.264667405546628,
+     "prey": 7.92307061955536,
+     "t": 12.5
+    },
+    {
+     "predator": 13.557948413349147,
+     "prey": 16.308282108979054,
+     "t": 15.0
+    },
+    {
+     "predator": 9.484192118137507,
+     "prey": 5.013816908519865,
+     "t": 17.5
+    },
+    {
+     "predator": 5.407884163545907,
+     "prey": 12.999820366669816,
+     "t": 20.0
+    },
+    {
+     "predator": 17.267263213939273,
+     "prey": 8.492697002736548,
+     "t": 22.5
+    },
+    {
+     "predator": 6.0317723732218,
+     "prey": 6.433331085417805,
+     "t": 25.0
+    },
+    {
+     "predator": 9.642991520617423,
+     "prey": 17.549144011065664,
+     "t": 27.5
+    },
+    {
+     "predator": 11.994225908739674,
+     "prey": 5.1823135905229005,
+     "t": 30.0
+    },
+    {
+     "predator": 5.005307870116301,
+     "prey": 10.329189562087535,
+     "t": 32.5
+    },
+    {
+     "predator": 17.113376811318854,
+     "prey": 12.082956307781032,
+     "t": 35.0
+    },
+    {
+     "predator": 7.320435858803333,
+     "prey": 5.48353810292845,
+     "t": 37.5
+    },
+    {
+     "predator": 6.923820567468854,
+     "prey": 16.083673482962876,
+     "t": 40.0
+    },
+    {
+     "predator": 14.803775442783191,
+     "prey": 6.087979511420463,
+     "t": 42.5
+    },
+    {
+     "predator": 5.198442825668719,
+     "prey": 8.171753559490488,
+     "t": 45.0
+    },
+    {
+     "predator": 14.105716139916119,
+     "prey": 15.908205258059638,
+     "t": 47.5
+    },
+    {
+     "predator": 9.183246936988153,
+     "prey": 5.035540918185326,
+     "t": 50.0
+    }
+   ],
+   "reference": "H = delta*x - gamma*ln(x) + beta*y - alpha*ln(y) is conserved exactly; drift measures integrator quality",
+   "relative_drift": 2.69875520396488e-12,
+   "verdict": "CONSERVING"
+  },
+  "spikes": {
+   "free": {
+    "cv": 1.0137779987260342,
+    "fano": 1.2672750160487882,
+    "mean_isi_ms": 50.17496933582736,
+    "model": "Poisson spike train + ISI statistics",
+    "not_claimed": "no spike sorting, no bursting detection, no model fitting - descriptive statistics only",
+    "rate_hz": 19.84,
+    "reference": "Poisson: CV -> 1 and Fano -> 1; a refractory period must pull CV below the Poisson value",
+    "spikes": 3968
+   },
+   "refractory": {
+    "cv": 0.5707488487345272,
+    "fano": 0.43556806133268117,
+    "mean_isi_ms": 67.99064534032914,
+    "model": "Poisson spike train + ISI statistics",
+    "not_claimed": "no spike sorting, no bursting detection, no model fitting - descriptive statistics only",
+    "rate_hz": 14.64,
+    "reference": "Poisson: CV -> 1 and Fano -> 1; a refractory period must pull CV below the Poisson value",
+    "spikes": 2928
+   }
+  },
+  "suite": {
+   "refused": [
+    "422 is H\u00fcckel, not DFT: no basis set, no SCF, no correlation functional",
+    "423 is the HP lattice toy model, not structure prediction",
+    "424 has no affinity correlation: 4463 PDBbind complexes exist but were not extracted or scored"
+   ],
+   "sram_computer": "the Ising spin-glass pattern in sram_pattern_computer is exercised by the relaxation test; lattice folding deliberately uses Metropolis rather than being forced through a 1-D nearest-neighbour pattern",
+   "suite": [
+    {
+     "capability": "WORKS",
+     "cost": "O(N^2) per step",
+     "name": "molecular dynamics",
+     "reference": "energy conservation under velocity Verlet",
+     "task": 421
+    },
+    {
+     "capability": "WORKS \u2014 NOT DFT",
+     "cost": "linear in steps",
+     "name": "quantum chemistry (H\u00fcckel)",
+     "reference": "benzene spectrum (\u22122,\u22121,\u22121,1,1,2)\u03b2",
+     "task": 422
+    },
+    {
+     "capability": "WORKS AS A SEARCH \u2014 NOT STRUCTURE PREDICTION",
+     "cost": "exponential in residues (capped at 12)",
+     "name": "protein folding (HP lattice)",
+     "reference": "exhaustive ground state on short sequences",
+     "task": 423
+    },
+    {
+     "capability": "PARTIAL \u2014 no correlation claim",
+     "cost": "linear in steps",
+     "name": "binding affinity (contact score)",
+     "reference": "analytic LJ well \u2212\u03b5 at 2^(1/6)\u03c3",
+     "task": 424
+    },
+    {
+     "capability": "WORKS",
+     "cost": "linear in steps",
+     "name": "pharmacokinetics",
+     "reference": "closed-form 1- and 2-compartment",
+     "task": 425
+    },
+    {
+     "capability": "WORKS",
+     "cost": "linear in steps",
+     "name": "epidemiology (SIR)",
+     "reference": "transcendental final-size equation",
+     "task": 426
+    },
+    {
+     "capability": "WORKS",
+     "cost": "linear in steps",
+     "name": "population genetics",
+     "reference": "neutral fixation probability = p0",
+     "task": 427
+    },
+    {
+     "capability": "WORKS",
+     "cost": "linear in steps",
+     "name": "systems biology (Lotka\u2013Volterra)",
+     "reference": "conserved quantity drift",
+     "task": 428
+    },
+    {
+     "capability": "WORKS",
+     "cost": "linear in steps",
+     "name": "spike-train analysis",
+     "reference": "Poisson \u2192 CV 1, Fano 1",
+     "task": 429
+    },
+    {
+     "capability": "WORKS",
+     "cost": "linear in steps",
+     "name": "suite",
+     "reference": "this index",
+     "task": 430
+    }
+   ],
+   "total": 10
+  }
+ }
+}

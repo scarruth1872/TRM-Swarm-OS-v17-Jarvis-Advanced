@@ -1919,3 +1919,185 @@ mod information_extraction_tests {
         assert!(matches!(ru, LanguageVerdict::Refused(_)), "Cyrillic must be refused");
     }
 }
+
+
+/// Tasks 421-430 — scientific computing.
+///
+/// Every test here compares an implementation against a reference that does not come from the implementation:
+/// a closed form, a published eigenvalue, or a conservation law. A test that only checks "it runs" would be the
+/// exact failure mode this suite exists to avoid.
+#[cfg(test)]
+mod scientific_computing_tests {
+    use trm_uefi_kernel::scientific_computing::*;
+
+    fn close(a: f64, b: f64, tol: f64) -> bool {
+        (a - b).abs() <= tol
+    }
+
+    #[test]
+    fn math_primitives_match_known_values() {
+        assert!(close(sqrt(2.0), 1.4142135623730951, 1e-12), "sqrt(2) = {}", sqrt(2.0));
+        assert!(close(exp(1.0), 2.718281828459045, 1e-9), "exp(1) = {}", exp(1.0));
+        assert!(close(ln(2.0), 0.6931471805599453, 1e-12), "ln(2) = {}", ln(2.0));
+        assert!(close(ln(exp(3.7)), 3.7, 1e-9), "ln(exp(x)) round trip failed");
+        assert!(close(powi(2.0, 10), 1024.0, 1e-9));
+        assert!(close(powf(2.0, 0.5), 1.4142135623730951, 1e-9));
+    }
+
+    #[test]
+    fn rk4_reproduces_the_harmonic_oscillator() {
+        // y' = [y1, -y0], exact solution cos(t), -sin(t) from [1, 0]
+        let tr = rk4(&[1.0, 0.0], 0.0, 0.01, 628, |_t, y| vec![y[1], -y[0]]);
+        let last = tr.y.last().unwrap();
+        // t = 6.28 exactly (628 steps of 0.01). cos(6.28) = 0.9999949275, -sin(6.28) = 0.0031853018.
+        // The first version of this test asserted cos(2π) instead of cos(6.28) — a wrong reference, not a wrong
+        // integration, and the failure message is what made that visible.
+        assert!(close(last[0], 0.999_994_927_5, 1e-7), "y0 = {}", last[0]);
+        assert!(close(last[1], 0.003_185_301_8, 1e-6), "y1 = {}", last[1]);
+    }
+
+    #[test]
+    fn md_conserves_energy_with_velocity_verlet() {
+        // two LJ particles at 1.05 sigma, moving apart: the well is steep, so a non-symplectic integrator drifts fast
+        let mut sys = MdSystem::lattice(2, 1.05, 1.0, 1.0);
+        // shift the second particle to make it a genuine pair, not a cubic lattice
+        sys.pos = vec![[0.0, 0.0, 0.0], [1.05, 0.0, 0.0]];
+        sys.vel = vec![[0.0, 0.0, 0.0], [0.0, 0.5, 0.0]];
+        sys.cutoff = 5.0;
+        let e0 = sys.total_energy();
+        for _ in 0..1000 {
+            sys.step(0.0005);
+        }
+        let e1 = sys.total_energy();
+        let drift = (e1 - e0).abs() / e0.abs().max(1e-12);
+        assert!(drift < 1e-3, "energy drift {drift} over 1000 steps (e0 = {e0}, e1 = {e1})");
+    }
+
+    #[test]
+    fn lj_well_depth_is_exactly_minus_epsilon_at_the_minimum() {
+        let eps = 1.0;
+        let sigma = 1.0;
+        let r_min = powf(2.0, 1.0 / 6.0);
+        let e = lj_energy(r_min * r_min, eps, sigma);
+        assert!(close(e, -eps, 1e-9), "LJ at r_min must be -eps, got {e}");
+    }
+
+    #[test]
+    fn benzene_huckel_spectrum_matches_the_textbook() {
+        let mut m = huckel_ring(6, 0.0, -1.0);
+        let e = jacobi_eigen(&mut m, 100);
+        // with beta = -1 the six levels are -2, -1, -1, 1, 1, 2
+        let expected = [-2.0, -1.0, -1.0, 1.0, 1.0, 2.0];
+        for (got, want) in e.iter().zip(expected.iter()) {
+            assert!(close(*got, *want, 1e-9), "benzene eigenvalues {e:?} vs {expected:?}");
+        }
+        // six pi electrons: E = 2(-2) + 2(-1) + 2(-1) = -8 beta
+        assert!(close(pi_energy(&e, 6), -8.0, 1e-9), "benzene pi energy {}", pi_energy(&e, 6));
+        assert!(close(homo_lumo_gap(&e, 6), 2.0, 1e-9));
+    }
+
+    #[test]
+    fn butadiene_pi_energy_matches_the_closed_form() {
+        // chain of 4: eigenvalues +-1.618034, +-0.618034; E = 2(-1.618) + 2(-0.618) = -4.472136
+        let mut m = huckel_chain(4, 0.0, -1.0);
+        let e = jacobi_eigen(&mut m, 100);
+        assert!(close(pi_energy(&e, 4), -4.472_135_955, 1e-6), "butadiene E = {}", pi_energy(&e, 4));
+    }
+
+    #[test]
+    fn jacobi_returns_the_diagonal_of_a_diagonal_matrix() {
+        let mut m = vec![vec![3.0, 0.0, 0.0], vec![0.0, -1.0, 0.0], vec![0.0, 0.0, 7.0]];
+        let e = jacobi_eigen(&mut m, 50);
+        assert!(close(e[0], -1.0, 1e-12) && close(e[1], 3.0, 1e-12) && close(e[2], 7.0, 1e-12));
+    }
+
+    #[test]
+    fn hp_exhaustive_finds_a_compact_fold_and_the_annealer_never_beats_the_optimum() {
+        let seq = b"HPHPPHPPHH";
+        let (opt, coords, complete) = hp_exhaustive(seq, 5_000_000);
+        assert!(complete, "exhaustive search was truncated - an incomplete search is not a ground state");
+        assert!(is_self_avoiding(&coords));
+        assert!(opt < 0, "a 10-mer with 6 H must have at least one contact, got {opt}");
+        let (annealed, ac) = hp_anneal(seq, 40_000, 7, 2.0, 0.05);
+        assert!(is_self_avoiding(&ac));
+        assert!(annealed >= opt, "annealer reported {annealed}, better than the exhaustive optimum {opt} - impossible");
+    }
+
+    #[test]
+    fn contact_energy_reproduces_the_coulomb_term() {
+        let lig = vec![Atom { pos: [0.0, 0.0, 0.0], charge: 1.0, radius: 0.5 }];
+        let poc = vec![Atom { pos: [10.0, 0.0, 0.0], charge: 1.0, radius: 0.5 }];
+        let e = contact_energy(&lig, &poc, 1.0);
+        // LJ at 10 A is negligible; Coulomb must be 332.06371/10 = 33.206
+        assert!(close(e, 33.206_371, 0.05), "contact energy {e}");
+    }
+
+    #[test]
+    fn pharmacokinetics_matches_closed_form_and_half_life() {
+        let (d, v, k) = (100.0, 10.0, 0.1);
+        assert!(close(pk_iv_bolus(d, v, k, 0.0), 10.0, 1e-12));
+        assert!(close(pk_half_life(k), 6.931_471_805_599_453, 1e-9));
+        // after one half-life the concentration is half the initial
+        assert!(close(pk_iv_bolus(d, v, k, pk_half_life(k)), 5.0, 1e-9));
+        // oral dose starts at zero
+        assert!(close(pk_oral(d, v, k, 1.0, 0.0), 0.0, 1e-12));
+        // and peaks at t_max
+        let tmax = pk_t_max(k, 1.0);
+        let c_at = pk_oral(d, v, k, 1.0, tmax);
+        let c_before = pk_oral(d, v, k, 1.0, tmax * 0.9);
+        let c_after = pk_oral(d, v, k, 1.0, tmax * 1.1);
+        assert!(c_at > c_before && c_at > c_after, "t_max {tmax} is not the peak");
+    }
+
+    #[test]
+    fn sir_final_size_agrees_with_the_transcendental_solution() {
+        let (beta, gamma, i0) = (0.5, 0.2, 1e-4);
+        let r = sir(beta, gamma, i0, 400.0, 0.01);
+        let analytic = sir_final_size(beta, gamma, 1.0 - i0);
+        assert!(close(r.r0, 2.5, 1e-9));
+        assert!((r.final_size - analytic).abs() < 0.01,
+                "RK4 final size {} vs transcendental {}", r.final_size, analytic);
+        assert!(r.peak_infected > i0);
+    }
+
+    #[test]
+    fn neutral_drift_fixes_at_its_initial_frequency() {
+        let p0 = 0.3;
+        let measured = wright_fisher_fixation(p0, 20, 200, 42);
+        assert!((measured - p0).abs() < 0.08, "fixation probability {measured} should be about {p0}");
+        // s = 0 must not change an allele frequency
+        assert!(close(selection_next(0.4, 0.0), 0.4, 1e-12));
+        // Hardy-Weinberg sums to one
+        let (aa, ab, bb) = hardy_weinberg(0.3);
+        assert!(close(aa + ab + bb, 1.0, 1e-12));
+    }
+
+    #[test]
+    fn lotka_volterra_conserves_its_invariant() {
+        let lv = lotka_volterra(1.0, 0.1, 1.0, 0.1, 10.0, 5.0, 0.01, 5000);
+        assert!(lv.h_drift < 1e-3, "conserved-quantity drift {}", lv.h_drift);
+        assert!(lv.x.iter().all(|v| *v > 0.0), "population went negative");
+    }
+
+    #[test]
+    fn poisson_spikes_have_cv_and_fano_near_one() {
+        let t = poisson_spikes(20.0, 200.0, 0.0, 99);
+        let s = spike_stats(&t, 200.0, 1.0);
+        assert!((s.cv - 1.0).abs() < 0.25, "Poisson CV {}", s.cv);
+        assert!((s.fano - 1.0).abs() < 0.35, "Poisson Fano {}", s.fano);
+        // a 50 ms absolute refractory period must regularise the train
+        let t2 = poisson_spikes(20.0, 200.0, 0.05, 99);
+        let s2 = spike_stats(&t2, 200.0, 1.0);
+        assert!(s2.cv < s.cv, "refractory CV {} should be below {}", s2.cv, s.cv);
+    }
+
+    #[test]
+    fn sram_ising_relaxes_to_the_ferromagnetic_ground_state() {
+        let n = 8;
+        let couplings = vec![1i8; n];
+        let mut spins: Vec<i8> = (0..n).map(|i| if i % 3 == 0 { 1 } else { -1 }).collect();
+        let e = ising_relax_sram(&mut spins, &couplings, 8);
+        // all-parallel chain: H = -sum J = -8
+        assert_eq!(e, -8, "ferromagnetic chain ground state should be -8, got {e} (spins {spins:?})");
+    }
+}

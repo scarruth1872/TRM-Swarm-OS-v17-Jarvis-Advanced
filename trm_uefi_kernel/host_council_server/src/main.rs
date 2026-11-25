@@ -36,6 +36,7 @@ mod reason_routes;
 mod reading_routes;
 mod kv_routes;
 mod ie_routes;
+mod sci_routes;
 mod council_ssm_pipeline;
 mod evidence_index;
 mod lexical_gate;
@@ -5984,6 +5985,26 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 response_json = json!({ "error": format!("malformed JSON body: {e}") });
             }
         }
+    } else if method == Method::Get && url.starts_with("/sci/suite") {
+        response_json = crate::sci_routes::suite();
+    } else if method == Method::Post && url.starts_with("/sci/md") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::sci_routes::md)
+    } else if method == Method::Post && url.starts_with("/sci/huckel") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::sci_routes::huckel)
+    } else if method == Method::Post && url.starts_with("/sci/fold") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::sci_routes::fold)
+    } else if method == Method::Post && url.starts_with("/sci/affinity") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::sci_routes::affinity)
+    } else if method == Method::Post && url.starts_with("/sci/pk") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::sci_routes::pk)
+    } else if method == Method::Post && url.starts_with("/sci/sir") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::sci_routes::sir)
+    } else if method == Method::Post && url.starts_with("/sci/drift") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::sci_routes::drift)
+    } else if method == Method::Post && url.starts_with("/sci/lotka") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::sci_routes::lotka)
+    } else if method == Method::Post && url.starts_with("/sci/spikes") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::sci_routes::spikes)
     } else if method == Method::Get && url.starts_with("/ie/suite") {
         response_json = crate::ie_routes::suite();
     } else if method == Method::Post && url.starts_with("/ie/relations") {

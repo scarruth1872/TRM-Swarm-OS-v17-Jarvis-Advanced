@@ -348,6 +348,66 @@
    "verdict": "BUILT",
    "why": "docs/PENETRATION-TEST-REPORT.md generated from evidence JSON by tools/pt_report.py",
    "artifact": "docs/PENETRATION-TEST-REPORT.md + tools/pt_*.py + evidence/pt_*.json"
+  },
+  "421": {
+   "name": "molecular dynamics engine",
+   "verdict": "BUILT",
+   "why": "LJ + velocity Verlet; energy drift 2.86e-7 over 800 steps",
+   "artifact": "trm_uefi_kernel/src/scientific_computing.rs + host_council_server/src/sci_routes.rs + tools/sci_verify.py"
+  },
+  "422": {
+   "name": "quantum chemistry",
+   "verdict": "BUILT_PARTIAL",
+   "why": "Huckel pi-electron theory (Jacobi eigensolver); benzene spectrum exact to 1e-15; NOT DFT",
+   "artifact": "trm_uefi_kernel/src/scientific_computing.rs + host_council_server/src/sci_routes.rs + tools/sci_verify.py"
+  },
+  "423": {
+   "name": "protein folding",
+   "verdict": "BUILT_MODEL",
+   "why": "2-D HP lattice; annealer -4 equals exhaustive optimum -4; toy energy model, not structure prediction",
+   "artifact": "trm_uefi_kernel/src/scientific_computing.rs + host_council_server/src/sci_routes.rs + tools/sci_verify.py"
+  },
+  "424": {
+   "name": "binding affinity",
+   "verdict": "BUILT_PARTIAL",
+   "why": "LJ + Coulomb + desolvation score validated against analytic well; NO correlation claim (4463 PDBbind complexes not scored)",
+   "artifact": "trm_uefi_kernel/src/scientific_computing.rs + host_council_server/src/sci_routes.rs + tools/sci_verify.py"
+  },
+  "425": {
+   "name": "pharmacokinetics",
+   "verdict": "BUILT",
+   "why": "1/2-compartment closed form; C(0)=10, C(t1/2)=5.0000, t1/2=6.9315",
+   "artifact": "trm_uefi_kernel/src/scientific_computing.rs + host_council_server/src/sci_routes.rs + tools/sci_verify.py"
+  },
+  "426": {
+   "name": "epidemiological modeling",
+   "verdict": "BUILT",
+   "why": "SIR via RK4; final size 0.89256 vs independent bisection 0.89266",
+   "artifact": "trm_uefi_kernel/src/scientific_computing.rs + host_council_server/src/sci_routes.rs + tools/sci_verify.py"
+  },
+  "427": {
+   "name": "population genetics",
+   "verdict": "BUILT",
+   "why": "Wright-Fisher; fixation 0.28 vs expected 0.30 over 300 replicates",
+   "artifact": "trm_uefi_kernel/src/scientific_computing.rs + host_council_server/src/sci_routes.rs + tools/sci_verify.py"
+  },
+  "428": {
+   "name": "systems biology",
+   "verdict": "BUILT",
+   "why": "Lotka-Volterra RK4; conserved quantity drift 2.7e-12",
+   "artifact": "trm_uefi_kernel/src/scientific_computing.rs + host_council_server/src/sci_routes.rs + tools/sci_verify.py"
+  },
+  "429": {
+   "name": "neural spike train analysis",
+   "verdict": "BUILT",
+   "why": "Poisson CV 1.014, Fano 1.267; refractory CV 0.571",
+   "artifact": "trm_uefi_kernel/src/scientific_computing.rs + host_council_server/src/sci_routes.rs + tools/sci_verify.py"
+  },
+  "430": {
+   "name": "scientific computing suite",
+   "verdict": "BUILT",
+   "why": "10 endpoints incl. GET /sci/suite with 3 refusals named; 21/21 independent checks pass",
+   "artifact": "trm_uefi_kernel/src/scientific_computing.rs + host_council_server/src/sci_routes.rs + tools/sci_verify.py"
   }
  },
  "measured_defects": [
@@ -583,5 +643,26 @@
    "326": "no off-box network tests"
   },
   "report": "docs/PENETRATION-TEST-REPORT.md"
+ },
+ "scientific_computing_421_430": {
+  "audited": "2026-11-25",
+  "research": "docs/SCIENTIFIC-COMPUTING-RESEARCH.md",
+  "prior_state": "NONE of 421-430 existed. Adjacent assets: SRAM 15-pattern computer (ising/hopfield/systolic), quantum_drug_screen (scoring hypothesis only), continuum_genomics (stub, singleton handle only), sram_fourier (HRR/DFT parity)",
+  "independent_checks": {
+   "total": 21,
+   "passing": 21
+  },
+  "kernel_tests_added": 15,
+  "refused": {
+   "422": "not DFT - no basis set/SCF/functional",
+   "423": "not structure prediction - HP toy model, capped at 12 residues",
+   "424": "no affinity correlation - PDBbind not extracted/scored"
+  },
+  "bugs_caught": [
+   "exp truncation 1.2e-4",
+   "SIR guard tested f(0)",
+   "bisection direction inverted",
+   "test reference asserted cos(2pi) for t=6.28"
+  ]
  }
 }

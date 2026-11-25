@@ -70,6 +70,7 @@ pub mod text_reading;
 pub mod claims;
 pub mod knowledge_verification;
 pub mod information_extraction;
+pub mod scientific_computing;
 pub mod spatial_reasoning;
 pub mod temporal_reasoning;
 pub mod serial;
