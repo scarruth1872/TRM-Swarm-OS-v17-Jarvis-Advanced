@@ -72,6 +72,54 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>, @builtin(num_workgroups) 
 }
 "#;
 
+const K3_DRUG_SCREEN_WGSL: &str = r#"
+struct ScreenParams {
+    num_proteins: u32,
+    num_drugs: u32,
+    hit_threshold: i32,
+    _pad: u32,
+};
+
+struct Mol64 {
+    pos_lo: u32,
+    pos_hi: u32,
+    neg_lo: u32,
+    neg_hi: u32,
+};
+
+@group(0) @binding(0) var<uniform> sp: ScreenParams;
+@group(0) @binding(1) var<storage, read> proteins: array<Mol64>;
+@group(0) @binding(2) var<storage, read> drugs: array<Mol64>;
+@group(0) @binding(3) var<storage, read_write> out_hits: array<u32>;
+
+@compute @workgroup_size(256)
+fn main(@builtin(global_invocation_id) gid: vec3<u32>, @builtin(num_workgroups) nwg: vec3<u32>) {
+    let tid = gid.x;
+    let stride = nwg.x * 256u;
+    let n_prot = sp.num_proteins;
+    let n_drug = sp.num_drugs;
+    let thresh = sp.hit_threshold;
+    var local_hits: u32 = 0u;
+
+    // Each thread screens a strided subset of proteins against ALL 10,000 drugs
+    var p_idx: u32 = tid;
+    while (p_idx < n_prot) {
+        let p = proteins[p_idx];
+        for (var d_idx: u32 = 0u; d_idx < n_drug; d_idx = d_idx + 1u) {
+            let d = drugs[d_idx];
+            let matches = countOneBits(p.pos_lo & d.pos_lo) + countOneBits(p.pos_hi & d.pos_hi);
+            let clashes = countOneBits(p.neg_lo & d.neg_lo) + countOneBits(p.neg_hi & d.neg_hi);
+            let score = i32(matches) - i32(clashes);
+            if (score >= thresh) {
+                local_hits = local_hits + 1u;
+            }
+        }
+        p_idx = p_idx + stride;
+    }
+    out_hits[tid] = local_hits;
+}
+"#;
+
 struct GpuCtx {
     adapter_name: String,
     backend: String,
@@ -84,6 +132,8 @@ struct GpuCtx {
     bind_group_layout: wgpu::BindGroupLayout,
     inf_pipeline: wgpu::ComputePipeline,
     inf_bgl: wgpu::BindGroupLayout,
+    screen_pipeline: wgpu::ComputePipeline,
+    screen_bgl: wgpu::BindGroupLayout,
 }
 
 static GPU_CTX: OnceLock<Result<GpuCtx, String>> = OnceLock::new();
@@ -225,6 +275,72 @@ fn init_gpu() -> &'static Result<GpuCtx, String> {
             cache: None,
         });
 
+        let screen_shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+            label: Some("k3_drug_screen_wgsl"),
+            source: wgpu::ShaderSource::Wgsl(K3_DRUG_SCREEN_WGSL.into()),
+        });
+
+        let screen_bgl = device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+            label: Some("k3_screen_bgl"),
+            entries: &[
+                wgpu::BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Uniform,
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 1,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 2,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: true },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+                wgpu::BindGroupLayoutEntry {
+                    binding: 3,
+                    visibility: wgpu::ShaderStages::COMPUTE,
+                    ty: wgpu::BindingType::Buffer {
+                        ty: wgpu::BufferBindingType::Storage { read_only: false },
+                        has_dynamic_offset: false,
+                        min_binding_size: None,
+                    },
+                    count: None,
+                },
+            ],
+        });
+
+        let screen_pl = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: Some("k3_screen_pl"),
+            bind_group_layouts: &[Some(&screen_bgl)],
+            immediate_size: 0,
+        });
+
+        let screen_pipeline = device.create_compute_pipeline(&wgpu::ComputePipelineDescriptor {
+            label: Some("k3_screen_pipeline"),
+            layout: Some(&screen_pl),
+            module: &screen_shader,
+            entry_point: Some("main"),
+            compilation_options: Default::default(),
+            cache: None,
+        });
+
         Ok(GpuCtx {
             adapter_name: info.name,
             backend: format!("{:?}", info.backend),
@@ -237,6 +353,8 @@ fn init_gpu() -> &'static Result<GpuCtx, String> {
             bind_group_layout,
             inf_pipeline,
             inf_bgl,
+            screen_pipeline,
+            screen_bgl,
         })
     })
 }
@@ -574,6 +692,186 @@ pub fn run_infinity_cache_bench() -> Value {
             "infinity_cache_speedup_ratio": cache_speedup_vs_spill,
             "honest_note": "Hardware-managed 96 MB Infinity Cache accelerates cache-resident Vulkan bit-sliced K3 compute; computation executes in GPU CUs, not inside SRAM cells."
         }
+    })
+}
+
+/// Live 200,000,000 protein-drug pair (20,000 proteins x 10,000 drugs) 64-trit Kleene-3
+/// pharmacophore screen on the RX 6700 XT, with CPU bit-exact verification on the first 64 proteins.
+pub fn run_drug_screen_bench() -> Value {
+    let ctx = match init_gpu() {
+        Ok(c) => c,
+        Err(e) => return json!({ "status": "GPU_UNAVAILABLE", "error": e }),
+    };
+
+    const NUM_PROTEINS: usize = 20_000;
+    const NUM_DRUGS: usize = 10_000;
+    const HIT_THRESHOLD: i32 = 16;
+
+    // Deterministic xorshift64 64-trit pharmacophore fingerprints (16 bytes/molecule = 480 KB total)
+    let mut rng: u64 = 0x5452_4D5F_4B33_0001;
+    let mut next_u32 = || -> u32 {
+        rng ^= rng << 13;
+        rng ^= rng >> 7;
+        rng ^= rng << 17;
+        (rng & 0xFFFF_FFFF) as u32
+    };
+
+    let mut proteins = vec![0u32; NUM_PROTEINS * 4];
+    for p in 0..NUM_PROTEINS {
+        let pos_lo = next_u32();
+        let pos_hi = next_u32();
+        let neg_lo = next_u32() & !pos_lo;
+        let neg_hi = next_u32() & !pos_hi;
+        proteins[p * 4] = pos_lo;
+        proteins[p * 4 + 1] = pos_hi;
+        proteins[p * 4 + 2] = neg_lo;
+        proteins[p * 4 + 3] = neg_hi;
+    }
+
+    let mut drugs = vec![0u32; NUM_DRUGS * 4];
+    for d in 0..NUM_DRUGS {
+        let pos_lo = next_u32();
+        let pos_hi = next_u32();
+        let neg_lo = next_u32() & !pos_lo;
+        let neg_hi = next_u32() & !pos_hi;
+        drugs[d * 4] = pos_lo;
+        drugs[d * 4 + 1] = pos_hi;
+        drugs[d * 4 + 2] = neg_lo;
+        drugs[d * 4 + 3] = neg_hi;
+    }
+
+    // CPU exact reference on first 64 proteins x 10,000 drugs (640,000 pairs)
+    let mut cpu_ref_first64: Vec<u32> = Vec::with_capacity(64);
+    for p in 0..64 {
+        let (plo, phi, nlo, nhi) = (proteins[p * 4], proteins[p * 4 + 1], proteins[p * 4 + 2], proteins[p * 4 + 3]);
+        let mut hits = 0u32;
+        for d in 0..NUM_DRUGS {
+            let m = (plo & drugs[d * 4]).count_ones() + (phi & drugs[d * 4 + 1]).count_ones();
+            let c = (nlo & drugs[d * 4 + 2]).count_ones() + (nhi & drugs[d * 4 + 3]).count_ones();
+            if (m as i32) - (c as i32) >= HIT_THRESHOLD {
+                hits += 1;
+            }
+        }
+        cpu_ref_first64.push(hits);
+    }
+
+    // 1 thread per protein -> 20,000 threads (79 workgroups x 256 = 20,224 threads)
+    let workgroups: u32 = (NUM_PROTEINS as u32).div_ceil(256);
+    let total_threads: usize = (workgroups as usize) * 256;
+    let out_bytes = (total_threads * std::mem::size_of::<u32>()) as u64;
+
+    let params: [u32; 4] = [NUM_PROTEINS as u32, NUM_DRUGS as u32, HIT_THRESHOLD as u32, 0];
+    let param_buf = ctx.device.create_buffer(&wgpu::BufferDescriptor {
+        label: Some("k3_screen_params"),
+        size: 16,
+        usage: wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST,
+        mapped_at_creation: false,
+    });
+    let prot_buf = ctx.device.create_buffer(&wgpu::BufferDescriptor {
+        label: Some("k3_screen_prots"),
+        size: (proteins.len() * 4) as u64,
+        usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+        mapped_at_creation: false,
+    });
+    let drug_buf = ctx.device.create_buffer(&wgpu::BufferDescriptor {
+        label: Some("k3_screen_drugs"),
+        size: (drugs.len() * 4) as u64,
+        usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_DST,
+        mapped_at_creation: false,
+    });
+    let out_buf = ctx.device.create_buffer(&wgpu::BufferDescriptor {
+        label: Some("k3_screen_out"),
+        size: out_bytes,
+        usage: wgpu::BufferUsages::STORAGE | wgpu::BufferUsages::COPY_SRC,
+        mapped_at_creation: false,
+    });
+    let staging = ctx.device.create_buffer(&wgpu::BufferDescriptor {
+        label: Some("k3_screen_staging"),
+        size: out_bytes,
+        usage: wgpu::BufferUsages::MAP_READ | wgpu::BufferUsages::COPY_DST,
+        mapped_at_creation: false,
+    });
+
+    ctx.queue.write_buffer(&param_buf, 0, bytemuck::cast_slice(&params));
+    ctx.queue.write_buffer(&prot_buf, 0, bytemuck::cast_slice(&proteins));
+    ctx.queue.write_buffer(&drug_buf, 0, bytemuck::cast_slice(&drugs));
+
+    let bg = ctx.device.create_bind_group(&wgpu::BindGroupDescriptor {
+        label: Some("k3_screen_bg"),
+        layout: &ctx.screen_bgl,
+        entries: &[
+            wgpu::BindGroupEntry { binding: 0, resource: param_buf.as_entire_binding() },
+            wgpu::BindGroupEntry { binding: 1, resource: prot_buf.as_entire_binding() },
+            wgpu::BindGroupEntry { binding: 2, resource: drug_buf.as_entire_binding() },
+            wgpu::BindGroupEntry { binding: 3, resource: out_buf.as_entire_binding() },
+        ],
+    });
+
+    // Warm-up submit so buffers are uploaded & resident in L2 / Infinity Cache before timing
+    {
+        let mut enc = ctx.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: Some("screen_warm") });
+        {
+            let mut pass = enc.begin_compute_pass(&wgpu::ComputePassDescriptor { label: Some("screen_warm_p"), timestamp_writes: None });
+            pass.set_pipeline(&ctx.screen_pipeline);
+            pass.set_bind_group(0, &bg, &[]);
+            pass.dispatch_workgroups(workgroups, 1, 1);
+        }
+        ctx.queue.submit(Some(enc.finish()));
+        let _ = ctx.device.poll(wgpu::PollType::Wait { submission_index: None, timeout: None });
+    }
+
+    // Timed 200,000,000-pair run
+    let t0 = Instant::now();
+    let mut enc = ctx.device.create_command_encoder(&wgpu::CommandEncoderDescriptor { label: Some("screen_run") });
+    {
+        let mut pass = enc.begin_compute_pass(&wgpu::ComputePassDescriptor { label: Some("screen_run_p"), timestamp_writes: None });
+        pass.set_pipeline(&ctx.screen_pipeline);
+        pass.set_bind_group(0, &bg, &[]);
+        pass.dispatch_workgroups(workgroups, 1, 1);
+    }
+    enc.copy_buffer_to_buffer(&out_buf, 0, &staging, 0, out_bytes);
+    ctx.queue.submit(Some(enc.finish()));
+
+    let slice = staging.slice(..);
+    let (tx, rx) = std::sync::mpsc::channel();
+    slice.map_async(wgpu::MapMode::Read, move |res| {
+        let _ = tx.send(res);
+    });
+    let _ = ctx.device.poll(wgpu::PollType::Wait { submission_index: None, timeout: None });
+    let _ = rx.recv();
+    let elapsed_s = t0.elapsed().as_secs_f64();
+
+    let (total_hits, cpu_match) = match slice.get_mapped_range() {
+        Ok(view) => {
+            let vals: &[u32] = bytemuck::cast_slice(&view);
+            let total: u64 = vals.iter().take(NUM_PROTEINS).map(|&x| x as u64).sum();
+            let ok = vals.iter().take(64).zip(cpu_ref_first64.iter()).all(|(a, b)| a == b);
+            (total, ok)
+        }
+        Err(_) => (0, false),
+    };
+    staging.unmap();
+
+    let pairs: f64 = (NUM_PROTEINS as f64) * (NUM_DRUGS as f64);
+    let billion_pairs_per_sec = (pairs / elapsed_s) / 1e9;
+    let trillion_trit_ops_per_sec = ((pairs * 64.0) / elapsed_s) / 1e12;
+
+    json!({
+        "status": if cpu_match { "MEASURED_VERIFIED" } else { "MISMATCH" },
+        "adapter": ctx.adapter_name,
+        "backend": ctx.backend,
+        "proteins": NUM_PROTEINS,
+        "drugs": NUM_DRUGS,
+        "pairs_screened": (NUM_PROTEINS as u64) * (NUM_DRUGS as u64),
+        "trits_per_pair": 64,
+        "working_set_kb": ((proteins.len() + drugs.len()) * 4) / 1024,
+        "hit_threshold": HIT_THRESHOLD,
+        "total_hits_found": total_hits,
+        "cpu_spotcheck_640k_pairs_exact": cpu_match,
+        "elapsed_ms": (elapsed_s * 1000.0 * 100.0).round() / 100.0,
+        "elapsed_us": (elapsed_s * 1_000_000.0).round() as u64,
+        "billion_pairs_per_sec": (billion_pairs_per_sec * 100.0).round() / 100.0,
+        "trillion_trit_ops_per_sec": (trillion_trit_ops_per_sec * 100.0).round() / 100.0,
     })
 }
 
