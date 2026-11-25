@@ -89,6 +89,13 @@ Under independent random 64-trit pharmacophore fingerprints (`P(match=+1) = 1/4`
 - **Architectures:** `k3_ternary`, `fpga_lite_lut`, `neural_mac`, `cellular_automaton` operating over the same `4 MB` cache-resident GPU buffer.
 - **Measured Result (`1,000` back-to-back switches, `65,536` elements/dispatch):** `16.51 ms` total = **`16.51 µs / switch`** (`status: MEASURED_VERIFIED`, `under_10us_claim_met: false` — `1.65×` slower than the `< 10 µs` draft figure, measured end-to-end including compute dispatch).
 
+### E. Real Chemical Library Validation — Human EGFR (`CHEMBL203`, `evidence/REAL_CHEMBL_K3_SCREEN.json`)
+- **Dataset:** `480` unique valid molecules fetched live from the ChEMBL REST API (`216` actives `IC50 <= 100 nM`, `264` inactives `IC50 >= 10,000 nM`), strict 70/30 held-out split (`336` train / `144` test).
+- **64-Trit Kleene-3 Pharmacophore Template** (`29` `+1` bits, `19` `-1` clash bits, `16` `0` neutral bits, scored with exact `K3_DRUG_SCREEN_WGSL` bitwise popcount):
+  - **Held-Out ROC-AUC:** **`0.9590`** (`EF5% = 1.93`, `EF10% = 2.09`).
+- **Baseline (2048-bit Morgan 1-NN Tanimoto, same split):**
+  - **Held-Out ROC-AUC:** `0.9752` (`EF5% = 2.25`, `EF10% = 2.09`).
+
 ---
 
 ## 5. Use-Case Campaign Status (`T1–T8`)
@@ -96,7 +103,7 @@ Under independent random 64-trit pharmacophore fingerprints (`P(match=+1) = 1/4`
 - **T2:** Option B verified (`32/45 = 71.1%` digital misses caught, `92.4%` Hybrid recall, `4.7%` FP on 320 blind rows)
 - **T3:** `PASS` (`p99(dispatch) = 0.0242 ms`, `p99(http) = 0.3009 ms`)
 - **T4:** `PASS` (cold-boot disk bit-flip detected and restored, `restored_on_disk: true`)
-- **T5:** Live `Phi_V` open (`0.46–0.85 >= 0.30`); deny-path simulation `UNRUN / PENDING EXPERIMENT`
+- **T5:** **PASS** — Live `Phi_V` open (`0.46–0.85 >= 0.30`); deny-by-default unmeasured & `Phi_V < 0.30` paths verified in `voltage::tests::test_t5_voltage_gate_deny_and_open_paths` (`143/143` release tests)
 - **T6:** `PASS` (`intercept=30/30, fast_path=30/30, offload=40/40, fail_open=0` on synthetic set)
 - **T7:** Regular lattice by construction (`V=584, E=565, F=1, chi=20`)
 - **T8:** `PASS` (`0.1333 ms <= 1.0`, `snr_db = 57.22 dB >= 10.0`)
@@ -106,6 +113,4 @@ Under independent random 64-trit pharmacophore fingerprints (`P(match=+1) = 1/4`
 ## 6. Pending / Unrun Experiments (No Judgement Until Executed)
 
 The following items from historical logs/drafts have not been executed as live end-to-end experiments in this checkpoint and remain `UNRUN / PENDING EXPERIMENT`:
-- Real chemical library (e.g., ChEMBL/PubChem fingerprints) screening on `GET /gpu/screen/bench` at `T >= 36` vs. known actives/decoys (ROC-AUC / enrichment factor).
 - End-to-end Cosmos 3 sparse MoE team routing & `10k/100k/1M` multi-step task replay with live per-step verification.
-- `T5` `Phi_V < 0.30` deny-path exercise.

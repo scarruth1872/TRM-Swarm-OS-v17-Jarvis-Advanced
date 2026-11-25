@@ -488,43 +488,48 @@ pub struct VoltageGate {
     pub reason: String,
 }
 
-/// Evaluate the gate from the CURRENT measured snapshot.
-pub fn gate() -> VoltageGate {
-    let s = snapshot();
-    if !s.measured {
+/// Pure evaluation of the deny-by-default voltage gate (used by `gate()` and unit-tested for T5).
+pub fn evaluate_gate(measured: bool, phi_v: f64, threshold: f64) -> VoltageGate {
+    if !measured {
         return VoltageGate {
             open: false,
-            phi_v: s.phi_v,
-            threshold: gate_threshold(),
+            phi_v,
+            threshold,
             measured: false,
             policy: POLICY,
             reason: "substrate state could not be measured; refusing rather than                      substituting a nominal constant (voltage doctrine)".to_string(),
         };
     }
-    if s.phi_v < gate_threshold() {
+    if phi_v < threshold {
         return VoltageGate {
             open: false,
-            phi_v: s.phi_v,
-            threshold: gate_threshold(),
+            phi_v,
+            threshold,
             measured: true,
             policy: POLICY,
             reason: format!(
                 "phi_v {:.4} is below the floor {:.2}: substrate headroom is short",
-                s.phi_v, gate_threshold()
+                phi_v, threshold
             ),
         };
     }
     VoltageGate {
         open: true,
-        phi_v: s.phi_v,
-        threshold: gate_threshold(),
+        phi_v,
+        threshold,
         measured: true,
         policy: POLICY,
         reason: format!(
             "phi_v {:.4} at or above the floor {:.2}; substrate has headroom",
-            s.phi_v, gate_threshold()
+            phi_v, threshold
         ),
     }
+}
+
+/// Evaluate the gate from the CURRENT measured snapshot.
+pub fn gate() -> VoltageGate {
+    let s = snapshot();
+    evaluate_gate(s.measured, s.phi_v, gate_threshold())
 }
 
 /// The processor's rated maximum clock. On this host `CurrentClockSpeed` equals `MaxClockSpeed`
@@ -912,4 +917,25 @@ pub fn phi_v_with_rails(v_core: f64, v_ddr: f64, clock_mhz: f64) -> f64 {
     let mem_factor = (1.0 - snap.memory_percent / 200.0).max(0.5);
     let phi_v = phi_core * (clock_mhz / F_BASE_MHZ) * phi_ddr * mem_factor;
     (phi_v * 10000.0).round() / 10000.0
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_t5_voltage_gate_deny_and_open_paths() {
+        let g_unmeasured = evaluate_gate(false, 0.90, GATE_THRESHOLD_DEFAULT);
+        assert!(!g_unmeasured.open, "unmeasured substrate must fail closed");
+
+        let g_low = evaluate_gate(true, 0.2999, GATE_THRESHOLD_DEFAULT);
+        assert!(!g_low.open, "phi_v below 0.30 must close gate");
+        assert!(g_low.reason.contains("below the floor"));
+
+        let g_edge = evaluate_gate(true, 0.30, GATE_THRESHOLD_DEFAULT);
+        assert!(g_edge.open, "phi_v at 0.30 floor must open gate");
+
+        let g_nom = evaluate_gate(true, 0.85, GATE_THRESHOLD_DEFAULT);
+        assert!(g_nom.open, "nominal phi_v must open gate");
+    }
 }

@@ -1,0 +1,22 @@
+{
+  "target": "CHEMBL203 (Human EGFR, real ChEMBL IC50 bioactivities)",
+  "unique_molecules": 480,
+  "actives_le_100nm": 216,
+  "inactives_ge_10000nm": 264,
+  "train_count": 336,
+  "test_count": 144,
+  "k3_64trit_template": {
+    "pos_bits_set": 29,
+    "neg_bits_set": 19,
+    "neutral_bits": 16,
+    "held_out_roc_auc": 0.959,
+    "ef_5pct": 1.93,
+    "ef_10pct": 2.09
+  },
+  "baseline_2048bit_tanimoto_1nn": {
+    "held_out_roc_auc": 0.9752,
+    "ef_5pct": 2.25,
+    "ef_10pct": 2.09
+  },
+  "elapsed_s": 4.98
+}
