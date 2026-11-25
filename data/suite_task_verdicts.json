@@ -1,0 +1,61 @@
+{
+ "source": "docs/CONSENSUS-TASKS-712-720.md",
+ "measured": "2026-11-24",
+ "note": "A2 in data/suite_classification.json means 'buildable and verifiable', NOT 'advised'. These nine tasks were classified A2 by keyword; this file records the engineering verdict after investigation.",
+ "tasks": {
+  "712": {
+   "name": "Raft for coordination",
+   "verdict": "BUILD_ON_TRIGGER",
+   "trigger": "ledger must survive host loss or have more than one writer",
+   "why": "majority 2 of 3 is achievable; crash-fault model matches the deployment"
+  },
+  "713": {
+   "name": "Paxos for agreement",
+   "verdict": "NO",
+   "why": "Raft covers the same ground with fewer ways to be subtly wrong; building both is duplicate work"
+  },
+  "714": {
+   "name": "complete consensus suite",
+   "verdict": "NO_INDEX_ONLY",
+   "why": "umbrella task; the audit document is its index"
+  },
+  "715": {
+   "name": "HotStuff",
+   "verdict": "NO",
+   "why": "needs >=7 replicas for f=2 plus threshold signatures; no BLS/ed25519 crate exists and n=3 gives f=0"
+  },
+  "716": {
+   "name": "asynchronous consensus",
+   "verdict": "NO",
+   "why": "safety under asynchrony requires 3f+1 replicas and reliable broadcast; f=0 here so the property cannot be exercised"
+  },
+  "717": {
+   "name": "randomized consensus",
+   "verdict": "NO",
+   "why": "a termination mechanism for an async BFT protocol that does not exist"
+  },
+  "718": {
+   "name": "complete consensus testing",
+   "verdict": "DO_NEXT",
+   "why": "harness over the real decision path (partition 3 peers, kill the kernel mid-proposal) is the only thing that makes the current claim checkable"
+  },
+  "719": {
+   "name": "consensus optimization",
+   "verdict": "NO",
+   "why": "nothing real to optimise; optimising a vote counter is meaningless"
+  },
+  "720": {
+   "name": "consensus security audit",
+   "verdict": "DONE",
+   "artifact": "docs/CONSENSUS-TASKS-712-720.md"
+  }
+ },
+ "measured_defects": [
+  "commit() accepts at COMMIT_THRESHOLD without consulting prepare_votes (test: commit_without_any_prepare_vote_is_accepted)",
+  "two conflicting proposals are both accepted (test: two_conflicting_proposals_are_both_accepted)",
+  "a reject vote is silently dropped; 14 rejections still accepted (test: disagreement_cannot_prevent_acceptance)",
+  "council server has no PBFT phases at all; decisions are a weighted tally with seeded static proposals",
+  "companion bridge ships f=33 / 67-of-100 quorum / TMR 1e-18 claims with no mechanism",
+  "federation declares threshold 4 of 5 against 3 configured peers"
+ ]
+}

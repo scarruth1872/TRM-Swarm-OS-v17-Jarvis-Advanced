@@ -713,3 +713,65 @@ mod k3_ternary_sram_tests {
         assert!(!sram.tcam_match(&[FALSE, FALSE, UNKNOWN, TRUE], &[1, 1, 1, 1]));
     }
 }
+
+
+/// DEFECT CHARACTERISATION — what `pbft_consensus` actually enforces (measured 2026-11-24).
+///
+/// The module's own header says "PBFT: propose -> pre-prepare -> prepare -> commit with quorum arithmetic
+/// ... requires >= 2f+1 = 9 prepare votes and a valid commit round". These three tests show that the second
+/// half of that sentence is not enforced:
+///
+///   1. `commit()` increments a counter and accepts at 10 commits *without consulting prepare_votes at all*,
+///      so a proposal with zero prepare votes is accepted;
+///   2. two conflicting proposals in the same view are both accepted — PBFT safety forbids exactly this;
+///   3. a reject vote (`prepare(id, false)`) is silently dropped instead of being counted against the
+///      proposal, so no amount of disagreement can stop acceptance.
+///
+/// These tests are a tripwire, not a specification. If a real protocol replaces the counters, they should
+/// FAIL, and that failure is the signal to delete them.
+#[cfg(test)]
+mod pbft_defect_characterisation {
+    use trm_uefi_kernel::pbft_consensus::{PbftConsensus, COMMIT_THRESHOLD, PHASE_ACCEPTED};
+
+    #[test]
+    fn commit_without_any_prepare_vote_is_accepted() {
+        let mut c = PbftConsensus::new();
+        let id = c.propose("OPERATOR", "security");
+        for _ in 0..COMMIT_THRESHOLD {
+            c.commit(id); // no prepare() call whatsoever
+        }
+        assert_eq!(
+            c.get_phase(id),
+            PHASE_ACCEPTED,
+            "if this fails the module now checks quorum before accepting -- delete this test and the audit's finding"
+        );
+    }
+
+    #[test]
+    fn two_conflicting_proposals_are_both_accepted() {
+        let mut c = PbftConsensus::new();
+        let a = c.propose("OPERATOR", "decision:approve");
+        let b = c.propose("OPERATOR", "decision:reject");
+        for id in [a, b] {
+            for _ in 0..COMMIT_THRESHOLD {
+                c.commit(id);
+            }
+        }
+        assert_eq!(c.get_phase(a), PHASE_ACCEPTED);
+        assert_eq!(c.get_phase(b), PHASE_ACCEPTED);
+        // PBFT safety: at most one of these can commit in a view. The module commits both.
+    }
+
+    #[test]
+    fn disagreement_cannot_prevent_acceptance() {
+        let mut c = PbftConsensus::new();
+        let id = c.propose("OPERATOR", "security");
+        for _ in 0..14 {
+            assert_eq!(c.prepare(id, false), 0, "a reject vote is not counted anywhere");
+        }
+        for _ in 0..COMMIT_THRESHOLD {
+            c.commit(id);
+        }
+        assert_eq!(c.get_phase(id), PHASE_ACCEPTED, "14 rejections still produced acceptance");
+    }
+}
