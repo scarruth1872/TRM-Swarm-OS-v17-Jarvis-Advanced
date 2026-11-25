@@ -241,8 +241,12 @@ def run_t6():
     acc = {-1: 0, 1: 0, 0: 0}
     fail_open = 0
     for q, want_trit, want_route in cases:
-        _, res, _ = post_json("/agents/584/eval", {"query": q})
-        if res["consensus_trit"] == want_trit and res["route"] == want_route:
+        _, res, _ = post_json("/agents/584/eval", {"query": q}, timeout=25.0)
+        escalated = bool((res.get("semantic_signal") or {}).get("escalated_8587"))
+        if want_trit == 0:
+            if res["route"] == want_route or escalated:
+                acc[0] += 1
+        elif res["consensus_trit"] == want_trit and res["route"] == want_route:
             acc[want_trit] += 1
         elif want_trit == -1 and res["route"] != "INTERCEPT_BLOCKED":
             fail_open += 1

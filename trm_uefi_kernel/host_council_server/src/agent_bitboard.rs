@@ -49,12 +49,17 @@ pub struct BitboardRuntime {
     pub last_consensus: i8,
     pub pos_lanes: [u32; BITBOARD_LANES],
     pub neg_lanes: [u32; BITBOARD_LANES],
+    pub last_persisted_frame: Option<Vec<u8>>,
 }
 
 impl BitboardRuntime {
     fn new() -> Self {
         let twin = DigitalTwinSingleton::new();
         let (pos_lanes, neg_lanes) = pack_bitboards(&twin);
+        let expected_len = std::mem::size_of::<SharedArenaFrame>();
+        let last_persisted_frame = arena_path()
+            .and_then(|p| std::fs::read(p).ok())
+            .filter(|b| b.len() == expected_len);
         Self {
             twin,
             eval_count: 0,
@@ -62,8 +67,20 @@ impl BitboardRuntime {
             last_consensus: 1,
             pos_lanes,
             neg_lanes,
+            last_persisted_frame,
         }
     }
+}
+
+/// Return the arena path and authoritative 760-byte in-memory frame for DDR parity verification/healing.
+pub fn authoritative_arena_bytes() -> Option<(PathBuf, Vec<u8>)> {
+    let path = arena_path()?;
+    let guard = match runtime().lock() {
+        Ok(g) => g,
+        Err(p) => p.into_inner(),
+    };
+    let bytes = guard.last_persisted_frame.clone()?;
+    Some((path, bytes))
 }
 
 static RUNTIME: OnceLock<Mutex<BitboardRuntime>> = OnceLock::new();
@@ -210,7 +227,12 @@ fn evaluate_directive_inner(input: &str, persist_arena: bool, use_semantic: bool
 
     let arena_written = if persist_arena {
         if let Some(path) = arena_path() {
-            std::fs::write(&path, frame.as_bytes()).is_ok()
+            let bytes = frame.as_bytes();
+            let ok = std::fs::write(&path, bytes).is_ok();
+            if ok {
+                guard.last_persisted_frame = Some(bytes.to_vec());
+            }
+            ok
         } else {
             false
         }

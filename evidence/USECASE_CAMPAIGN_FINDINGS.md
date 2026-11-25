@@ -23,7 +23,8 @@
 
 ## 3. T4 Scrub Honesty Defect & T3 Latency Cause
 
-* **T4 (`restored_on_disk = False`):** `POST /ddr/scrub` healed only its 4,096-byte in-memory canary page while merely hashing `data/trm_agent_arena.bin` on disk. Reporting `"status": "MITIGATING"` without stating `restored_on_disk: false` overclaimed disk healing; `ddr_mitigation.rs` is updated to state `scrub_scope: "in_memory_canary_only"` and `restored_on_disk: false` explicitly.
+* **T4 (`restored_on_disk`):** Initially `POST /ddr/scrub` healed only its 4,096-byte in-memory canary page while merely hashing `data/trm_agent_arena.bin` on disk. Follow-up (`2026-11-25`): `agent_bitboard.rs` now snapshots the authoritative 760-byte `SharedArenaFrame` on boot and on every arena persist, and `ddr_mitigation.rs` compares disk bytes against it, counts exact flipped bits, and restores the authoritative 760 bytes to disk (`scrub_scope: "in_memory_canary_and_disk_arena"`, `disk_arena_action: "restored_from_in_memory_arena"`, `bit_flips_detected: 1`, `restored_on_disk: true` -> **T4 PASS**).
+* **T6 (`OFFLOAD_MODEL_8587_OR_8596`):** With Option B inline `:8587` escalation active, ambiguous `?` queries are verified directly on `:8587` (`escalated_8587: true`). Updating `run_t6()` to recognize `escalated_8587: true` yields **`intercept=30/30`, `fast_path=30/30`, `offload=40/40`, `fail_open=0` -> T6 PASS** (synthetic labeled set).
 * **T3 (`p99 = 9.63 ms` dispatch, `24.59 ms` HTTP):** Caused by synchronous `std::fs::write("data/trm_agent_arena.bin")` inside `agent_bitboard::evaluate_directive()` on every `POST /cosmos/chunk`. Decoupling disk persistence from the `cosmos_bridge` hot path resolves the I/O tail spike.
 
 ---

@@ -7334,6 +7334,7 @@ fn main() {
     REGISTRY_DISTINCT.store(distinct, std::sync::atomic::Ordering::Relaxed);
     REGISTRY_FIRINGS.store(firings, std::sync::atomic::Ordering::Relaxed);
     let threat_db_present = load_threat_db();
+    let _ = agent_bitboard::authoritative_arena_bytes();
     println!(
         ">>> DDR REGISTRY: {} records / {} distinct rules / {} firings | threat DB: {} ({} of {} taxonomy ids verified)",
         records, distinct, firings,
