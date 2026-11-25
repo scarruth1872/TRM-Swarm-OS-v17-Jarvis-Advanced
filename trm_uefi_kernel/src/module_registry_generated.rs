@@ -1,7 +1,7 @@
 // =============================================================================
 // GENERATED FILE — DO NOT EDIT BY HAND.
 // Produced by tools/rebuild_module_registry.py from every LIVE source tree on this host.
-// Scan timestamp: 2026-11-25 17:41:48 UTC
+// Scan timestamp: 2026-11-25 18:56:10 UTC
 //
 // TREES BELOW ARE THE ONES THAT BUILD HERE: the UEFI kernel and the cdylib
 // (swarm_v2_rust_kernel -> target/release/swarm_rust_kernel.dll). The staged v20 snapshot is
@@ -14,9 +14,9 @@
 // =============================================================================
 
 /// Live modules across every tree that builds here.
-pub const TOTAL: u64 = 224;
+pub const TOTAL: u64 = 226;
 /// Hand-written intelligence (pub fns, real bodies).
-pub const REAL: u64 = 109;
+pub const REAL: u64 = 111;
 /// Mechanical port carrying MANUAL markers.
 pub const PORTED: u64 = 60;
 /// Constants/structs only.
@@ -26,7 +26,7 @@ pub const EXCLUDED: u64 = 9;
 /// Publishes numbers it did not measure.
 pub const FABRICATED: u64 = 0;
 /// The scan date, so a reader can see how old the claim is.
-pub const SCAN_DATE: &str = "2026-11-25 17:41:48 UTC";
+pub const SCAN_DATE: &str = "2026-11-25 18:56:10 UTC";
 
 /// (module, status)
 pub const STATUSES: &'static [(&'static str, &'static str)] = &[
@@ -56,6 +56,7 @@ pub const STATUSES: &'static [(&'static str, &'static str)] = &[
     ("chain_of_verification", "PORTED"),
     ("chaos_engine", "PORTED"),
     ("chaos_simulator", "PORTED"),
+    ("claims", "REAL"),
     ("cli", "REAL"),
     ("cognitive_ingestion_engine", "SKELETON"),
     ("cognitive_load_balancer", "REAL"),
@@ -235,6 +236,7 @@ pub const STATUSES: &'static [(&'static str, &'static str)] = &[
     ("telemetry_fabric", "PORTED"),
     ("temporal_reasoning", "REAL"),
     ("text_extract", "REAL"),
+    ("text_reading", "REAL"),
     ("thz_bonsai_gateway", "PORTED"),
     ("thz_wave_gateway", "REAL"),
     ("time", "SKELETON"),
@@ -284,6 +286,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
     ("chain_of_verification", "uefi"),
     ("chaos_engine", "uefi"),
     ("chaos_simulator", "uefi"),
+    ("claims", "uefi"),
     ("cli", "dll"),
     ("cognitive_ingestion_engine", "uefi"),
     ("cognitive_load_balancer", "uefi"),
@@ -463,6 +466,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
     ("telemetry_fabric", "uefi"),
     ("temporal_reasoning", "uefi"),
     ("text_extract", "uefi"),
+    ("text_reading", "uefi"),
     ("thz_bonsai_gateway", "uefi"),
     ("thz_wave_gateway", "uefi"),
     ("time", "uefi"),
@@ -485,7 +489,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
 ];
 
 /// Modules per LIVE tree.
-pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 216), ("dll", 13)];
+pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 218), ("dll", 13)];
 /// Names compiled in more than one tree. One name resolves to one status.
 pub const TREE_COLLISIONS: u64 = 5;
 /// Source trees that exist on disk but are NOT built by the launcher (reported, never counted).
@@ -519,6 +523,7 @@ pub const FUNCTION_COUNTS: &'static [(&'static str, u64)] = &[
     ("chain_of_verification", 4),
     ("chaos_engine", 10),
     ("chaos_simulator", 2),
+    ("claims", 5),
     ("cli", 2),
     ("cognitive_ingestion_engine", 2),
     ("cognitive_load_balancer", 8),
@@ -698,6 +703,7 @@ pub const FUNCTION_COUNTS: &'static [(&'static str, u64)] = &[
     ("telemetry_fabric", 9),
     ("temporal_reasoning", 12),
     ("text_extract", 4),
+    ("text_reading", 8),
     ("thz_bonsai_gateway", 12),
     ("thz_wave_gateway", 5),
     ("time", 2),

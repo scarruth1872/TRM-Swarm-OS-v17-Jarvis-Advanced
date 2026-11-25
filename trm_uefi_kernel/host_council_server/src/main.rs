@@ -33,6 +33,7 @@ mod continuum;
 mod platform_facts;
 mod sovereign_axioms;
 mod reason_routes;
+mod reading_routes;
 mod council_ssm_pipeline;
 mod evidence_index;
 mod lexical_gate;
@@ -5981,6 +5982,26 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 response_json = json!({ "error": format!("malformed JSON body: {e}") });
             }
         }
+    } else if method == Method::Get && url.starts_with("/reading/suite") {
+        response_json = crate::reading_routes::suite();
+    } else if method == Method::Post && url.starts_with("/reading/recommend") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reading_routes::recommend)
+    } else if method == Method::Post && url.starts_with("/reading/synthesis") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reading_routes::synthesis)
+    } else if method == Method::Post && url.starts_with("/reading/claim") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reading_routes::claim)
+    } else if method == Method::Post && url.starts_with("/reading/scientific") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reading_routes::scientific)
+    } else if method == Method::Post && url.starts_with("/reading/contradictions") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reading_routes::contradictions)
+    } else if method == Method::Post && url.starts_with("/reading/parse") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reading_routes::parse)
+    } else if method == Method::Post && url.starts_with("/reading/evidence") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reading_routes::evidence)
+    } else if method == Method::Post && url.starts_with("/reading/qa") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reading_routes::qa)
+    } else if method == Method::Post && url.starts_with("/reading/summarize") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reading_routes::summarize)
     } else if method == Method::Get && url.starts_with("/reason/suite") {
         // Task 579: the index, with module presence checked on disk at request time.
         response_json = crate::reason_routes::suite();

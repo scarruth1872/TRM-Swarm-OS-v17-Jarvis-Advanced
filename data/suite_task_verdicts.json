@@ -108,6 +108,66 @@
    "verdict": "BUILT",
    "why": "Derivation trees to asserted facts with per-leaf provenance (shard/record/seal), serialised by derivation_json, returned by both endpoints",
    "artifact": "docs/REASONING-TASKS-571-580.md + trm_uefi_kernel/src/reasoning_engine.rs + tools/reasoning_verify.py"
+  },
+  "581": {
+   "name": "document understanding",
+   "verdict": "BUILT",
+   "why": "council ENACTED 14/0 (2595). text_reading.rs parse_markdown; 521 units across 12 files, 0 bad bounds, 0 preview mismatches",
+   "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
+  },
+  "582": {
+   "name": "reading comprehension",
+   "verdict": "BUILT",
+   "why": "council ENACTED 14/0 (2597). extractive QA; 13/20 correct (65%) vs 7/20 baseline, 13/13 citations resolve",
+   "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
+  },
+  "583": {
+   "name": "multi-document summarization",
+   "verdict": "BUILT",
+   "why": "council ENACTED 12/2 (2596). MMR + coverage repair; less redundant on 8/8 queries, coverage preserved",
+   "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
+  },
+  "584": {
+   "name": "evidence extraction",
+   "verdict": "BUILT",
+   "why": "council ENACTED 13/1 (2598). 960 spans, 0 unresolved, 0 mismatches, hashes match",
+   "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
+  },
+  "585": {
+   "name": "claim verification",
+   "verdict": "BUILT_PARTIAL",
+   "why": "council ENACTED 12/2 (2601). Abstention perfect (3/3 UNKNOWN, 0 fabricated support, 0 silence-as-refutation) but recall 6/15 SUPPORTED and 5/15 REFUTED - limited by retrieval, not the checker",
+   "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
+  },
+  "586": {
+   "name": "complete reading suite",
+   "verdict": "BUILT",
+   "why": "council ENACTED 13/1 (2604). GET /reading/suite; 10/10 modules present, 9 endpoints 200",
+   "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
+  },
+  "587": {
+   "name": "scientific claim extraction",
+   "verdict": "BUILT",
+   "why": "council ENACTED 12/2 (2600). 411 claims / 1,038 quantities, 0 unlocatable",
+   "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
+  },
+  "588": {
+   "name": "evidence-based recommendation",
+   "verdict": "BUILT",
+   "why": "council ENACTED 12/2 (2603). refuses unsupported option; ranking flips with evidence; citations + lexical support reported",
+   "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
+  },
+  "589": {
+   "name": "contradiction detection",
+   "verdict": "BUILT",
+   "why": "council ENACTED 13/1 (2599). 12/12 constructed contradictions, 0 false positives",
+   "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
+  },
+  "590": {
+   "name": "knowledge synthesis report",
+   "verdict": "BUILT",
+   "why": "council ENACTED 13/1 (2602). 30 sentences, 0 mismatched citations, 0 untagged",
+   "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
   }
  },
  "measured_defects": [
@@ -258,5 +318,32 @@
     }
    }
   }
+ },
+ "machine_reading_581_590": {
+  "audited": "2026-11-25",
+  "artifact": "docs/MACHINE-READING-RESEARCH.md",
+  "proposals": {
+   "581": 2595,
+   "582": 2597,
+   "583": 2596,
+   "584": 2598,
+   "585": 2601,
+   "586": 2604,
+   "587": 2600,
+   "588": 2603,
+   "589": 2599,
+   "590": 2602
+  },
+  "verdicts": "all ten ENACTED",
+  "harnesses_passing": 9,
+  "partial": {
+   "585": "recall limited by retrieval; abstention discipline perfect"
+  },
+  "defects_found": [
+   "char-boundary panic in abbreviation check: 21 of 40 corpus files",
+   "proposals in EVALUATING are not persisted - a restart erased ten proposals",
+   "ten concurrent deliberations block the kernel; batches of three complete"
+  ],
+  "boundary": "all outputs are extractive with file/offset/sha256 provenance; no generated prose"
  }
 }

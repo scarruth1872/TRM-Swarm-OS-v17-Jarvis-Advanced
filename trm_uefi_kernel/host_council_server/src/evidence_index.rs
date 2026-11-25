@@ -45,12 +45,21 @@ fn index_path() -> Option<std::path::PathBuf> {
         let pb = std::path::PathBuf::from(p);
         return pb.exists().then_some(pb);
     }
-    // The council binary runs with its own crate directory as cwd, so walk upward.
+    // The council binary runs with its own crate directory as cwd, so walk upward. Prefer the newest index:
+    // v4 holds 2,403 chunks from 191 files against v1's 558 chunks from 105, and a reader that silently used
+    // the older file would answer from a smaller corpus while the meta says otherwise.
     let mut dir = std::env::current_dir().ok()?;
     for _ in 0..5 {
-        let candidate = dir.join("data").join("council_evidence_index.json");
-        if candidate.exists() {
-            return Some(candidate);
+        for name in [
+            "council_evidence_index_v4.json",
+            "council_evidence_index_v3.json",
+            "council_evidence_index_v2.json",
+            "council_evidence_index.json",
+        ] {
+            let candidate = dir.join("data").join(name);
+            if candidate.exists() {
+                return Some(candidate);
+            }
         }
         if !dir.pop() {
             break;
@@ -273,4 +282,99 @@ mod tests {
     fn empty_query_returns_no_evidence() {
         assert_eq!(evidence_for("", 2), "");
     }
+}
+
+
+/// One retrieval hit, with the source it came from and the cosine that justified it.
+#[derive(Debug, Clone)]
+pub struct Hit {
+    pub source: String,
+    pub text: String,
+    pub score: f32,
+}
+
+/// Top-k chunks by cosine against the query embedding, above [`MIN_SCORE`].
+///
+/// This is the same ranking `evidence_for` uses, exposed as structure instead of prose so a reader pipeline can
+/// attach offsets and citations rather than parse a formatted string back apart.
+pub fn search(query: &str, k: usize) -> Vec<Hit> {
+    let Some(qv) = embed_query(query) else {
+        return Vec::new();
+    };
+    let mut scored: Vec<Hit> = chunks()
+        .iter()
+        .filter_map(|c| {
+            let s = cosine(&qv, &c.vec);
+            (s >= MIN_SCORE).then(|| Hit { source: c.source.clone(), text: c.text.clone(), score: s })
+        })
+        .collect();
+    scored.sort_by(|a, b| b.score.partial_cmp(&a.score).unwrap_or(std::cmp::Ordering::Equal));
+    scored.truncate(k.max(1));
+    scored
+}
+
+/// Maximal Marginal Relevance selection over the retrieved candidates.
+///
+/// Greedy: each step takes the chunk maximising `lambda * sim(query, c) - (1 - lambda) * max sim(c, chosen)`.
+/// With `lambda = 1.0` this is plain top-k; with lower values it prefers chunks that say something new. The
+/// redundancy between the returned chunks is computed by the caller from the scores this function reports, so
+/// a "diverse" summary can be checked rather than asserted.
+pub fn mmr(query: &str, k: usize, lambda: f32, pool: usize) -> Vec<Hit> {
+    let candidates = search(query, pool.max(k));
+    if candidates.len() <= 1 {
+        return candidates;
+    }
+    let Some(qv) = embed_query(query) else {
+        return Vec::new();
+    };
+    let lam = lambda.clamp(0.0, 1.0);
+    // vectors for the candidates we actually consider
+    let pool_vecs: Vec<&Vec<f32>> = chunks()
+        .iter()
+        .filter(|c| candidates.iter().any(|h| h.source == c.source && h.text == c.text))
+        .map(|c| &c.vec)
+        .collect();
+
+    let mut chosen: Vec<usize> = Vec::new();
+    let mut remaining: Vec<usize> = (0..candidates.len()).collect();
+    while chosen.len() < k && !remaining.is_empty() {
+        let mut best_idx = 0usize;
+        let mut best_val = f32::NEG_INFINITY;
+        for (pos, &ci) in remaining.iter().enumerate() {
+            let rel = candidates[ci].score;
+            let red = chosen
+                .iter()
+                .filter_map(|&cj| pool_vecs.get(cj).map(|v| cosine(pool_vecs[ci], v)))
+                .fold(0.0f32, f32::max);
+            let val = lam * rel - (1.0 - lam) * red;
+            if val > best_val {
+                best_val = val;
+                best_idx = pos;
+            }
+        }
+        chosen.push(remaining.remove(best_idx));
+    }
+    chosen.into_iter().map(|i| candidates[i].clone()).collect()
+}
+
+/// Pairwise redundancy of a hit list: mean cosine between distinct chunks. Used to prove that MMR is actually
+/// less repetitive than plain top-k rather than merely claiming to be.
+pub fn mean_pairwise_redundancy(hits: &[Hit]) -> f32 {
+    let all = chunks();
+    let vecs: Vec<&Vec<f32>> = hits
+        .iter()
+        .filter_map(|h| all.iter().find(|c| c.source == h.source && c.text == h.text).map(|c| &c.vec))
+        .collect();
+    if vecs.len() < 2 {
+        return 0.0;
+    }
+    let mut sum = 0.0f32;
+    let mut n = 0usize;
+    for i in 0..vecs.len() {
+        for j in (i + 1)..vecs.len() {
+            sum += cosine(vecs[i], vecs[j]);
+            n += 1;
+        }
+    }
+    if n > 0 { sum / n as f32 } else { 0.0 }
 }

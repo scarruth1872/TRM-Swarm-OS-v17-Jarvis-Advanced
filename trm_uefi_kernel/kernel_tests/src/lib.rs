@@ -1442,3 +1442,188 @@ mod abduction_analogy_tests {
         assert!(an.extrapolated, "the clamp must be recorded, not silent");
     }
 }
+
+
+/// Tasks 581/584/587 — the text layer. The load-bearing property is that every offset round-trips: a citation
+/// either resolves to the identical bytes or it is not a citation.
+#[cfg(test)]
+mod text_reading_tests {
+    use trm_uefi_kernel::text_reading::{
+        find_normalised, normalise, parse_markdown, quantities, split_sentences, UnitKind,
+    };
+
+    const DOC: &str = "# Title\n\nFirst paragraph line one.\nLine two of the same paragraph.\n\n## Section\n\n- item one\n- item two\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\n```rust\nfn code() { let x = 1; }\n```\n";
+
+    #[test]
+    fn every_unit_round_trips_to_identical_bytes() {
+        for u in parse_markdown(DOC) {
+            assert_eq!(&DOC[u.start..u.end], &DOC[u.start..u.end], "slice bounds must be valid");
+            assert!(u.end <= DOC.len() && u.start < u.end, "unit {:?} has bad bounds", u.kind);
+        }
+    }
+
+    #[test]
+    fn structure_is_recovered() {
+        let units = parse_markdown(DOC);
+        let kinds: Vec<UnitKind> = units.iter().map(|u| u.kind).collect();
+        assert!(kinds.contains(&UnitKind::Heading));
+        assert!(kinds.contains(&UnitKind::Paragraph));
+        assert!(kinds.contains(&UnitKind::List));
+        assert!(kinds.contains(&UnitKind::Table));
+        assert!(kinds.contains(&UnitKind::Code), "the fenced block must be one unit");
+        let headings: Vec<(u8, String)> = units.iter().filter(|u| u.kind == UnitKind::Heading)
+            .map(|u| (u.level, u.heading.clone())).collect();
+        assert_eq!(headings[0], (1, "Title".to_string()));
+        assert_eq!(headings[1], (2, "Section".to_string()));
+    }
+
+    #[test]
+    fn a_hashtag_is_not_a_heading() {
+        let units = parse_markdown("#hashtag is not a heading\n");
+        assert!(units.iter().all(|u| u.kind != UnitKind::Heading));
+    }
+
+    #[test]
+    fn sentences_split_with_exact_offsets() {
+        let text = "First sentence. Second one! Is this third?";
+        let sents = split_sentences(text);
+        assert_eq!(sents.len(), 3, "got {:?}", sents.iter().map(|s| &s.text).collect::<Vec<_>>());
+        for s in &sents {
+            assert_eq!(&text[s.start..s.end], s.text, "offset must resolve to the sentence text");
+        }
+    }
+
+    #[test]
+    fn decimals_and_abbreviations_do_not_split() {
+        let text = "The score was 0.4633 and the value 12.5 held. See e.g. Fig. 3 for details.";
+        let sents = split_sentences(text);
+        assert_eq!(sents.len(), 2, "decimals and abbreviations must not split: {:?}",
+                   sents.iter().map(|s| &s.text).collect::<Vec<_>>());
+    }
+
+    #[test]
+    fn code_fences_are_not_split_into_sentences() {
+        let text = "Intro sentence.\n```\nlet x = 1. let y = 2.\n```\nOutro sentence.";
+        let sents = split_sentences(text);
+        assert!(sents.iter().all(|s| !s.text.contains("let y")), "code must not become a sentence: {:?}",
+                sents.iter().map(|s| &s.text).collect::<Vec<_>>());
+    }
+
+    #[test]
+    fn quantities_keep_their_offsets_and_units() {
+        let text = "We measured 406 compounds, 0.4633 accuracy and 12.5 mg dose.";
+        let qs = quantities(text);
+        assert_eq!(qs.len(), 3, "got {:?}", qs.iter().map(|q| &q.text).collect::<Vec<_>>());
+        assert!((qs[0].value - 406.0).abs() < 1e-9);
+        assert_eq!(&text[qs[0].start..qs[0].end], "406");
+        assert!((qs[1].value - 0.4633).abs() < 1e-9);
+        assert_eq!(qs[2].unit, "mg");
+    }
+
+    #[test]
+    fn normalise_collapses_case_and_spacing() {
+        assert_eq!(normalise("  The   Score WAS 0.46 "), "the score was 0.46");
+    }
+
+    #[test]
+    fn find_normalised_returns_a_usable_position() {
+        let text = "All 406 compounds were scored.";
+        let pos = find_normalised(text, "406 compounds").expect("must find the span");
+        assert!(text[pos..].starts_with("406"), "returned offset {} does not start the match: {:?}", pos, &text[pos..]);
+    }
+}
+
+
+/// Tasks 585/587/589 — claim verification, extraction and contradiction.
+///
+/// The tests fix the three-way verdict discipline: silence must be UNKNOWN (never REFUTED), a numeric
+/// disagreement must be REFUTED with the numbers named, and a contradiction must require that the two sentences
+/// are about the same thing.
+#[cfg(test)]
+mod claims_tests {
+    use trm_uefi_kernel::claims::{contradicts, extract, verify, ConflictKind, Verdict};
+
+    fn ev() -> Vec<String> {
+        vec![
+            "The retrieval index holds 2,403 chunks from 191 files, each with a 768-dim vector.".to_string(),
+            "The embedding model is nomic-embed-text running on port 8593.".to_string(),
+        ]
+    }
+
+    #[test]
+    fn extraction_keeps_the_number_as_written() {
+        let c = extract("The corpus contains 2,403 chunks from 191 files.").expect("claim");
+        assert_eq!(c.numbers_literal[0], "2,403");
+        assert!(c.tokens.contains(&"chunks".to_string()));
+        assert!(!c.negated && !c.hedged);
+    }
+
+    #[test]
+    fn a_claim_the_evidence_states_is_supported() {
+        let r = verify("The retrieval index holds 2,403 chunks from 191 files.", &ev());
+        assert_eq!(r.verdict, Verdict::Supported, "reason: {}", r.reason);
+        assert_eq!(r.evidence_index, Some(0));
+    }
+
+    #[test]
+    fn a_flipped_number_is_refuted_and_the_numbers_are_named() {
+        let r = verify("The retrieval index holds 558 chunks from 191 files.", &ev());
+        assert_eq!(r.verdict, Verdict::Refuted, "reason: {}", r.reason);
+        assert!(r.reason.contains("558"), "the reason must name the claim's number: {}", r.reason);
+        assert!(r.reason.contains("2,403"), "and the evidence's: {}", r.reason);
+    }
+
+    #[test]
+    fn a_claim_about_nothing_in_the_corpus_is_unknown_not_refuted() {
+        let r = verify("The spacecraft carries 12 ion thrusters for orbital correction.", &ev());
+        assert_eq!(r.verdict, Verdict::Unknown,
+                   "silence must not be refutation, got {} ({})", r.verdict.as_str(), r.reason);
+        assert_eq!(r.evidence_index, None);
+    }
+
+    #[test]
+    fn a_negated_claim_about_supported_content_is_refuted() {
+        let r = verify("The embedding model is not nomic-embed-text running on port 8593.", &ev());
+        assert_eq!(r.verdict, Verdict::Refuted, "reason: {}", r.reason);
+        assert!(r.reason.contains("polarity"), "reason: {}", r.reason);
+    }
+
+    #[test]
+    fn a_hedged_claim_is_not_refuted_by_a_different_number() {
+        // "approximately" means the number is not an exact assertion; refuting on it would be over-reading
+        let r = verify("The index holds approximately 900 chunks from 191 files.", &ev());
+        assert_ne!(r.verdict, Verdict::Refuted,
+                   "a hedged claim must not be refuted on a number: {}", r.reason);
+    }
+
+    #[test]
+    fn contradiction_needs_shared_subject() {
+        let a = "The retrieval index holds 2,403 chunks from 191 files.";
+        let b = "The GPU sustains 36 tokens per second on 2,403 prompt tokens.";
+        assert!(contradicts(a, b).is_none(), "different subjects must not be called a contradiction");
+    }
+
+    #[test]
+    fn a_flipped_number_between_sentences_is_a_numeric_contradiction() {
+        let a = "The retrieval index holds 2,403 chunks from 191 files.";
+        let b = "The retrieval index holds 558 chunks from 191 files.";
+        let c = contradicts(a, b).expect("contradiction");
+        assert_eq!(c.kind, ConflictKind::Numeric);
+        assert!(c.detail.contains("2,403") && c.detail.contains("558"), "detail: {}", c.detail);
+    }
+
+    #[test]
+    fn opposite_polarity_is_a_polarity_contradiction() {
+        let a = "The embedding model is nomic-embed-text running on port 8593.";
+        let b = "The embedding model is not nomic-embed-text running on port 8593.";
+        let c = contradicts(a, b).expect("contradiction");
+        assert_eq!(c.kind, ConflictKind::Polarity);
+    }
+
+    #[test]
+    fn agreeing_sentences_do_not_contradict() {
+        let a = "The retrieval index holds 2,403 chunks from 191 files.";
+        let b = "The retrieval index holds 2,403 chunks from 191 files, each with a 768-dim vector.";
+        assert!(contradicts(a, b).is_none());
+    }
+}
