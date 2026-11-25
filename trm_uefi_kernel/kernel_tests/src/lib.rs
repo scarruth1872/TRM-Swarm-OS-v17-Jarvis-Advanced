@@ -734,3 +734,114 @@ mod k3_ternary_sram_tests {
         assert!(!sram.tcam_match(&[FALSE, FALSE, UNKNOWN, TRUE], &[1, 1, 1, 1]));
     }
 }
+
+
+/// The registry must name exactly the modules that exist.
+///
+/// This is the enforcement the registry never had. On 2026-11-24 it listed 281 names for a tree of 213
+/// files: 97 names had no `.rs` file anywhere on the machine (all labelled REAL, including
+/// `cross_modality_reasoning` and `voltage_raw_reasoning_engine`), and 29 live modules were not listed at
+/// all. It also counted `dll` (93) and `trm-rust` (41) trees that do not exist on this host.
+///
+/// The fix is not "regenerate once" — a one-off regeneration drifts again the next time a module is added or
+/// deleted. This test makes that drift a build failure: the generated file and the source tree must agree.
+#[cfg(test)]
+mod registry_guard {
+    use std::collections::BTreeSet;
+    use std::path::Path;
+
+    const REGISTRY: &str = include_str!("../../src/module_registry_generated.rs");
+
+    fn names_in_registry() -> BTreeSet<String> {
+        // STATUSES is the first ("name", "STATUS") table; parse quoted names from those lines.
+        let mut out = BTreeSet::new();
+        let mut in_statuses = false;
+        for line in REGISTRY.lines() {
+            if line.contains("pub const STATUSES") {
+                in_statuses = true;
+                continue;
+            }
+            if in_statuses {
+                if line.trim().starts_with("];") {
+                    break;
+                }
+                if let Some(rest) = line.trim().strip_prefix("(\"") {
+                    if let Some(end) = rest.find('"') {
+                        out.insert(rest[..end].to_string());
+                    }
+                }
+            }
+        }
+        out
+    }
+
+    /// Every LIVE tree, not just this crate's.
+    ///
+    /// CORRECTION 2026-11-24: an earlier version of this guard looked only at `../src`. That is how an audit
+    /// came to report 97 real modules as "phantom" — they live in the cdylib tree
+    /// (`swarm_v2_rust_kernel/src`, which builds `swarm_rust_kernel.dll`) and in `staging/v20`. The guard
+    /// must cover every tree the registry claims to describe, or it will certify a lie in either direction.
+    const TREES: &[&str] = &["../src", "../../swarm_v2_rust_kernel/src"];
+
+    fn modules_on_disk() -> BTreeSet<String> {
+        let base = Path::new(env!("CARGO_MANIFEST_DIR"));
+        let mut out = BTreeSet::new();
+        for rel in TREES {
+            let dir = base.join(rel);
+            let entries = match std::fs::read_dir(&dir) {
+                Ok(e) => e,
+                Err(_) => panic!("source tree {rel} is not readable — the guard cannot certify what it cannot see"),
+            };
+            for entry in entries {
+                let path = entry.expect("dir entry").path();
+                if path.extension().and_then(|e| e.to_str()) != Some("rs") {
+                    continue;
+                }
+                let stem = path.file_stem().and_then(|s| s.to_str()).unwrap_or("").to_string();
+                // crate roots and the registry itself are not modules to be catalogued
+                if matches!(stem.as_str(), "module_registry_generated" | "lib" | "main") {
+                    continue;
+                }
+                out.insert(stem);
+            }
+        }
+        out
+    }
+
+    #[test]
+    fn registry_names_exactly_the_live_modules() {
+        let reg = names_in_registry();
+        let disk = modules_on_disk();
+        assert!(!reg.is_empty(), "parsed no names out of the registry — the guard itself is broken");
+
+        let phantom: Vec<&String> = reg.difference(&disk).collect();
+        let unlisted: Vec<&String> = disk.difference(&reg).collect();
+
+        assert!(
+            phantom.is_empty(),
+            "registry names modules with no source file ({}): {:?}\n\
+             This is the defect the guard exists for: 97 such entries claimed REAL status before 2026-11-24.\n\
+             Fix with: python tools/rebuild_module_registry.py",
+            phantom.len(), phantom
+        );
+        assert!(
+            unlisted.is_empty(),
+            "live modules missing from the registry ({}): {:?}\n\
+             A module the platform cannot name is a module it cannot recognise as its own.\n\
+             Fix with: python tools/rebuild_module_registry.py",
+            unlisted.len(), unlisted
+        );
+    }
+
+    #[test]
+    fn registry_counts_match_the_table() {
+        let reg = names_in_registry();
+        let declared: usize = REGISTRY
+            .split("pub const TOTAL: u64 = ")
+            .nth(1)
+            .and_then(|s| s.split(';').next())
+            .and_then(|s| s.trim().parse().ok())
+            .expect("TOTAL must be a parseable constant");
+        assert_eq!(declared, reg.len(), "TOTAL disagrees with STATUSES");
+    }
+}

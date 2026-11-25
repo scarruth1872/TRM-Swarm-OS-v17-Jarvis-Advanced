@@ -18,28 +18,54 @@ file read; the searches are given so they can be re-run.
 | **579** complete reasoning suite | **NOTHING TO INDEX** | it is an umbrella over 571-578; eight of the nine are absent |
 | **580** explainable reasoning reports | **PARTIAL — the only one with real substance** | each council vote carries `reason` plus its `[axis: A#]` tag; board cards carry `reason`/`reason_at`; `cadence.rs` cites samples and refuses to speak below `MIN_CITED_SAMPLES = 200`; `/council/axioms` and `/k3/rules` publish the decision framework. What is missing: any **derivation trace** (this fact, that rule, therefore this conclusion) and any endpoint that reconstructs an argument from stored evidence |
 
-## The one thing that would make "reasoning systems" honest
+## The registry, corrected: it was stale, not invented
 
-**The module registry claims reasoning capabilities that do not exist.** `src/module_registry_generated.rs`
-(scanned 2026-10-26) lists 281 module names and classifies 274 as `REAL` — "hand-written intelligence,
-verified". Checked against the tree:
+**My first pass was wrong and this section replaces it.** An audit that scanned only `trm_uefi_kernel/src`
+reported that 97 of the registry's 281 names had "no source file anywhere". That was a search failure, not a
+finding: **all 97 exist on disk.** They live in the cdylib tree and the staging snapshots —
 
-| measure | count |
-|---|---|
-| names in the registry | 281 |
-| present in `src/` | 184 |
-| present anywhere else in the kernel tree | 0 |
-| **no source file anywhere (phantom entries)** | **97** |
-| of those, labelled `REAL` | **97** |
+| tree | modules | built? |
+|---|---|---|
+| `trm_uefi_kernel/src` | 210 | yes (UEFI kernel) |
+| `swarm_v2_rust_kernel/src` | 13 | yes — `target/release/swarm_rust_kernel.dll` (302,592 B) |
+| `staging/v20/trm_uefi_kernel/src` | 189 | no — staged snapshot |
+| `staging/v20/swarm_v2_rust_kernel/src` | 110 | no |
+| `scratch/wt_verify{,2}`, `scratch/wt_models`, `scratch/wt_memory` | several | no — worktrees |
 
-Reasoning-specific examples: `cross_modality_reasoning` (REAL, no file) and `voltage_raw_reasoning_engine`
-(REAL, no file) are both phantom; `collaborative_reasoning` exists but is **23 lines** containing one function,
-`get_cra_engine()`, with none of `kleene`, `trit`, `infer`, `premise`, `conclusion` or `rule` in it.
+What was actually wrong with the registry, measured:
 
-So `REAL` overstates the compiled intelligence by at least 97 modules, i.e. **274 → at most 177**. That is the
-same defect class as the consensus labels: a number in a header that no check enforces. The fix is to
-regenerate the registry (`swarm_v2/core/build_module_registry.py`) and to make the boot path refuse a registry
-entry with no file, rather than trusting the scan's date.
+1. **Stale in both directions.** It claimed 322 modules across (uefi 188, dll 93, trm-rust 41) against 218
+   live modules today, and **34 live modules were missing from it** (`aura_spectrum`, `ddr_scan`,
+   `autonomous_cadence`, …).
+2. **Tree-blind.** It never recorded which tree a name came from, so a reader — or an audit — confined to one
+   tree would conclude the others were fabricated. That is exactly the error made above.
+3. **Per-tree counts do not reconcile** with any tree that exists now (the closest are staging/v20's 189 and
+   110), because the scan was taken on 2026-10-26 and nothing re-ran it.
+
+### Fixed
+
+- `tools/rebuild_module_registry.py` scans **every live tree** (UEFI + cdylib), records `ORIGIN` per module,
+  computes `TREES`, `TREE_COLLISIONS` (5) and reports staged trees separately in `TREES_STAGED`. Regenerated:
+  **218 modules — REAL 103, PORTED 60, SKELETON 46, EXCLUDED 9**.
+- `kernel_tests::registry_guard::registry_names_exactly_the_live_modules` fails on drift in **either** tree.
+  Proved by adding a module to the cdylib tree: the guard failed naming it, and passed again after removal.
+- The old `REAL = 274` is now `103` — not because 171 modules were removed, but because the old number counted
+  three trees including staged snapshots and did not distinguish a module from a build artefact.
+
+### What this means for reasoning specifically
+
+The three reasoning modules the registry called `REAL` exist **only outside the live trees**:
+
+| module | where it exists | compiled into the running platform? |
+|---|---|---|
+| `cross_modality_reasoning` | `staging/v20`, `staging/sovereign_kernel`, four scratch worktrees | **no** |
+| `voltage_raw_reasoning_engine` | `staging/v20`, four scratch worktrees | **no** |
+| `analog_cognition_engine` | `staging/v20`, `staging/sovereign_kernel`, four scratch worktrees | **no** |
+| `collaborative_reasoning` | `trm_uefi_kernel/src` | yes, but it is 23 lines with one function (`get_cra_engine`) |
+
+So the findings on 571-580 stand, with the wording corrected: these are not missing files, they are
+**unbuilt sources**. A module in a staging snapshot is not a capability of the running platform, and the
+registry should never have counted it as one.
 
 ## What the platform does have that a reasoning engine could use
 

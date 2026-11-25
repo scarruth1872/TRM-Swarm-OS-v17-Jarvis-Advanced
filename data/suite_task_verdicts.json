@@ -187,9 +187,11 @@
    }
   },
   "registry_defect": {
-   "measured": "281 registry names, 184 present in src/, 0 elsewhere, 97 phantom (no .rs file anywhere) and all 97 labelled REAL",
-   "consequence": "REAL=274 overstates compiled intelligence by at least 97 modules (<= 177)",
-   "fix": "regenerate via swarm_v2/core/build_module_registry.py and make the boot path refuse an entry with no file"
+   "correction": "the '97 phantom entries' claim was WRONG - a search confined to trm_uefi_kernel/src. All 97 exist on disk in swarm_v2_rust_kernel/src (cdylib, built), staging/v20 and scratch worktrees",
+   "real_defect": "the registry was stale (322 claimed vs 218 live; 34 live modules unlisted) and tree-blind (no origin per module), so an audit could misread it as fabrication",
+   "fixed": "tools/rebuild_module_registry.py scans both live trees with ORIGIN/TREES/TREE_COLLISIONS and reports staged trees separately; 218 modules, REAL 103 / PORTED 60 / SKELETON 46 / EXCLUDED 9",
+   "guard": "kernel_tests::registry_guard fails on drift in either tree (proved by injecting a module into the cdylib tree)",
+   "reasoning_modules": "cross_modality_reasoning, voltage_raw_reasoning_engine and analog_cognition_engine exist ONLY in staging/v20 and scratch worktrees - not compiled into either live tree; collaborative_reasoning is live but 23 lines with one function"
   }
  }
 }
