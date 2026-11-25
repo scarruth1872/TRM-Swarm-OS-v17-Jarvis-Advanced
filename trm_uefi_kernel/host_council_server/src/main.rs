@@ -34,6 +34,7 @@ mod platform_facts;
 mod sovereign_axioms;
 mod reason_routes;
 mod reading_routes;
+mod kv_routes;
 mod council_ssm_pipeline;
 mod evidence_index;
 mod lexical_gate;
@@ -5982,6 +5983,26 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 response_json = json!({ "error": format!("malformed JSON body: {e}") });
             }
         }
+    } else if method == Method::Get && url.starts_with("/kv/suite") {
+        response_json = crate::kv_routes::suite();
+    } else if method == Method::Post && url.starts_with("/kv/factcheck") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::kv_routes::factcheck)
+    } else if method == Method::Post && url.starts_with("/kv/consistency") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::kv_routes::consistency)
+    } else if method == Method::Post && url.starts_with("/kv/source") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::kv_routes::source)
+    } else if method == Method::Post && url.starts_with("/kv/conflict") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::kv_routes::conflict)
+    } else if method == Method::Post && url.starts_with("/kv/uncertainty") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::kv_routes::uncertainty)
+    } else if method == Method::Post && url.starts_with("/kv/peerreview") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::kv_routes::peerreview)
+    } else if method == Method::Post && url.starts_with("/kv/reproducibility") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::kv_routes::reproducibility)
+    } else if method == Method::Post && url.starts_with("/kv/retraction") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::kv_routes::retraction)
+    } else if method == Method::Post && url.starts_with("/kv/report") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::kv_routes::report)
     } else if method == Method::Get && url.starts_with("/reading/suite") {
         response_json = crate::reading_routes::suite();
     } else if method == Method::Post && url.starts_with("/reading/recommend") {

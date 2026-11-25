@@ -1627,3 +1627,143 @@ mod claims_tests {
         assert!(contradicts(a, b).is_none());
     }
 }
+
+
+/// Tasks 591-600 — knowledge verification. Each test asserts a check FIRES on a case that should fail it; a
+/// check that only ever passes is not a check.
+#[cfg(test)]
+mod knowledge_verification_tests {
+    use trm_uefi_kernel::knowledge_verification::{
+        classify, find_retractions, quantify, resolve, retraction_targets, review_document, review_verdicts,
+        verify_source, Position, Rule, Severity, Signals, SourceKind,
+    };
+
+    #[test]
+    fn an_unrecorded_source_is_not_verified() {
+        let v = verify_source("evidence/x.txt", None, "abc123");
+        assert!(!v.hash_matches, "no recorded hash must never count as verified");
+        assert!(v.detail.contains("NO RECORDED HASH"));
+    }
+
+    #[test]
+    fn a_hash_mismatch_fails_and_names_both() {
+        let v = verify_source("evidence/x.txt", Some("aaaa1111bbbb"), "cccc2222dddd");
+        assert!(!v.hash_matches);
+        assert!(v.detail.contains("MISMATCH"));
+        assert!(v.detail.contains("aaaa"), "the recorded value must be visible: {}", v.detail);
+    }
+
+    #[test]
+    fn a_matching_hash_passes() {
+        let v = verify_source("evidence/x.txt", Some("ABCDEF"), "abcdef");
+        assert!(v.hash_matches, "case-insensitive match must pass: {}", v.detail);
+    }
+
+    #[test]
+    fn source_kinds_are_classified_by_where_they_live() {
+        assert_eq!(classify("evidence/foo.txt"), SourceKind::Primary);
+        assert_eq!(classify("docs/REASONING.md"), SourceKind::Secondary);
+        assert_eq!(classify("docs/briefing-report.md"), SourceKind::Derived);
+    }
+
+    fn pos(label: &str, measured: bool, kind: SourceKind, date: &str) -> Position {
+        Position { label: label.to_string(), kind, measured, date: date.to_string(), value: String::new() }
+    }
+
+    #[test]
+    fn a_measurement_beats_a_restatement() {
+        let a = pos("ledger", true, SourceKind::Secondary, "2026-11-01");
+        let b = pos("summary", false, SourceKind::Primary, "2026-11-20");
+        let r = resolve(&a, &b);
+        assert_eq!(r.rule, Rule::MeasuredOverClaimed);
+        assert_eq!(r.winner.as_deref(), Some("ledger"));
+    }
+
+    #[test]
+    fn primary_beats_secondary_when_both_are_measured() {
+        let a = pos("evidence", true, SourceKind::Primary, "2026-11-01");
+        let b = pos("doc", true, SourceKind::Secondary, "2026-11-20");
+        let r = resolve(&a, &b);
+        assert_eq!(r.rule, Rule::PrimaryOverSecondary);
+        assert_eq!(r.winner.as_deref(), Some("evidence"), "recency must not outrank source kind");
+    }
+
+    #[test]
+    fn a_true_tie_is_unresolved_not_arbitrary() {
+        let a = pos("a", true, SourceKind::Primary, "2026-11-01");
+        let b = pos("b", true, SourceKind::Primary, "2026-11-01");
+        let r = resolve(&a, &b);
+        assert_eq!(r.rule, Rule::Unresolved);
+        assert!(r.winner.is_none(), "must not pick a winner it cannot justify");
+    }
+
+    #[test]
+    fn confidence_falls_without_evidence() {
+        let strong = quantify(&Signals {
+            coverage: 1.0, numbers_agree: true, numbers_conflict: false,
+            evidence_kind: SourceKind::Primary, no_evidence: false,
+        });
+        let none = quantify(&Signals {
+            coverage: 0.0, numbers_agree: false, numbers_conflict: false,
+            evidence_kind: SourceKind::Secondary, no_evidence: true,
+        });
+        assert!(strong.p_support.unwrap_or(0.0) > 0.8, "strong evidence must score high: {:?}", strong.p_support);
+        assert!(none.p_support.is_none(), "no evidence must ABSTAIN, not report a confident number");
+        assert!(none.abstention, "no evidence must be an abstention");
+    }
+
+    #[test]
+    fn a_numeric_conflict_drives_confidence_down() {
+        let agree = quantify(&Signals {
+            coverage: 0.9, numbers_agree: true, numbers_conflict: false,
+            evidence_kind: SourceKind::Primary, no_evidence: false,
+        });
+        let conflict = quantify(&Signals {
+            coverage: 0.9, numbers_agree: false, numbers_conflict: true,
+            evidence_kind: SourceKind::Primary, no_evidence: false,
+        });
+        let (c, a) = (conflict.p_support.unwrap_or(0.0), agree.p_support.unwrap_or(0.0));
+        assert!(c < a - 0.3, "conflict {} must be well below agreement {}", c, a);
+    }
+
+    #[test]
+    fn review_blocks_an_assertion_without_provenance() {
+        let doc = "We measured 406 compounds at R2 0.72 and it works.\nThe file tools/x.py line 12 shows the numbers.";
+        let f = review_document(doc);
+        let (b, _, _) = review_verdicts(&f);
+        assert!(b >= 1, "the unprovenanced assertion must be BLOCKING: {:?}", f);
+        assert!(f.iter().any(|x| x.severity == Severity::Blocking && x.line == 1));
+    }
+
+    #[test]
+    fn review_does_not_block_a_line_that_names_its_evidence() {
+        let doc = "Measured in tools/reasoning_verify.py: 406/406 agree.\n";
+        let f = review_document(doc);
+        let (b, _, _) = review_verdicts(&f);
+        assert_eq!(b, 0, "a line naming its evidence must not be blocked: {:?}", f);
+    }
+
+    #[test]
+    fn review_flags_placeholders() {
+        let doc = "Some prose here.\nTODO: finish this section.\n";
+        let f = review_document(doc);
+        assert!(f.iter().any(|x| x.rule == "placeholder"), "a TODO must be flagged: {:?}", f);
+    }
+
+    #[test]
+    fn retractions_are_found_with_their_body() {
+        let doc = "# Doc\n\n## ERRATUM\nThe earlier claim of 97 phantom modules was wrong; all 97 exist.\n\nMore prose.\n";
+        let r = find_retractions(doc);
+        assert_eq!(r.len(), 1);
+        assert!(r[0].body.contains("97 phantom modules"), "body: {}", r[0].body);
+        assert_eq!(r[0].marker_line, 3);
+    }
+
+    #[test]
+    fn a_retraction_only_targets_the_claim_it_names() {
+        let doc = "## ERRATUM\nThe earlier claim of 97 phantom modules was wrong.\n";
+        let r = &find_retractions(doc)[0];
+        assert!(retraction_targets(r, "97 phantom modules did not exist"));
+        assert!(!retraction_targets(r, "the GPU sustains 36 tokens per second"), "an unrelated claim must not be covered");
+    }
+}

@@ -1,7 +1,7 @@
 // =============================================================================
 // GENERATED FILE — DO NOT EDIT BY HAND.
 // Produced by tools/rebuild_module_registry.py from every LIVE source tree on this host.
-// Scan timestamp: 2026-11-25 18:56:10 UTC
+// Scan timestamp: 2026-11-25 19:23:57 UTC
 //
 // TREES BELOW ARE THE ONES THAT BUILD HERE: the UEFI kernel and the cdylib
 // (swarm_v2_rust_kernel -> target/release/swarm_rust_kernel.dll). The staged v20 snapshot is
@@ -14,9 +14,9 @@
 // =============================================================================
 
 /// Live modules across every tree that builds here.
-pub const TOTAL: u64 = 226;
+pub const TOTAL: u64 = 227;
 /// Hand-written intelligence (pub fns, real bodies).
-pub const REAL: u64 = 111;
+pub const REAL: u64 = 112;
 /// Mechanical port carrying MANUAL markers.
 pub const PORTED: u64 = 60;
 /// Constants/structs only.
@@ -26,7 +26,7 @@ pub const EXCLUDED: u64 = 9;
 /// Publishes numbers it did not measure.
 pub const FABRICATED: u64 = 0;
 /// The scan date, so a reader can see how old the claim is.
-pub const SCAN_DATE: &str = "2026-11-25 18:56:10 UTC";
+pub const SCAN_DATE: &str = "2026-11-25 19:23:57 UTC";
 
 /// (module, status)
 pub const STATUSES: &'static [(&'static str, &'static str)] = &[
@@ -139,6 +139,7 @@ pub const STATUSES: &'static [(&'static str, &'static str)] = &[
     ("kanban_board", "REAL"),
     ("kernel_instructions", "PORTED"),
     ("kernel_lora_adapter", "PORTED"),
+    ("knowledge_verification", "REAL"),
     ("lcars_render", "REAL"),
     ("llm_brain", "REAL"),
     ("llm_orchestrator", "SKELETON"),
@@ -369,6 +370,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
     ("kanban_board", "uefi"),
     ("kernel_instructions", "uefi"),
     ("kernel_lora_adapter", "uefi"),
+    ("knowledge_verification", "uefi"),
     ("lcars_render", "dll"),
     ("llm_brain", "uefi"),
     ("llm_orchestrator", "uefi"),
@@ -489,7 +491,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
 ];
 
 /// Modules per LIVE tree.
-pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 218), ("dll", 13)];
+pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 219), ("dll", 13)];
 /// Names compiled in more than one tree. One name resolves to one status.
 pub const TREE_COLLISIONS: u64 = 5;
 /// Source trees that exist on disk but are NOT built by the launcher (reported, never counted).
@@ -606,6 +608,7 @@ pub const FUNCTION_COUNTS: &'static [(&'static str, u64)] = &[
     ("kanban_board", 12),
     ("kernel_instructions", 25),
     ("kernel_lora_adapter", 2),
+    ("knowledge_verification", 12),
     ("lcars_render", 18),
     ("llm_brain", 2),
     ("llm_orchestrator", 1),

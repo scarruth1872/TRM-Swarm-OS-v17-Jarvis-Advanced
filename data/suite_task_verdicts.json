@@ -168,6 +168,66 @@
    "verdict": "BUILT",
    "why": "council ENACTED 13/1 (2602). 30 sentences, 0 mismatched citations, 0 untagged",
    "artifact": "docs/MACHINE-READING-RESEARCH.md + trm_uefi_kernel (text_reading.rs, claims.rs, reading_routes.rs) + tools/reading_*_verify.py"
+  },
+  "591": {
+   "name": "fact checking",
+   "verdict": "BUILT_PARTIAL",
+   "why": "18/27 verdict accuracy (66.7%); abstains on 17/27 of which 7 are true claims - retrieval-limited",
+   "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
+  },
+  "592": {
+   "name": "knowledge consistency checking",
+   "verdict": "BUILT",
+   "why": "190 sentences / 11,431 cross-doc pairs; ledger gaps agree with recomputation 10/10; one false positive from proposal IDs reported",
+   "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
+  },
+  "593": {
+   "name": "source verification",
+   "verdict": "BUILT",
+   "why": "hash agreement with hashlib 3/3; wrong hash rejected; unrecorded source refused; out-of-tree path refused",
+   "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
+  },
+  "594": {
+   "name": "conflict resolution",
+   "verdict": "BUILT",
+   "why": "4/4 cases on the correct rule including the tie -> UNRESOLVED",
+   "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
+  },
+  "595": {
+   "name": "uncertainty quantification",
+   "verdict": "BUILT",
+   "why": "Brier 0.0898 over scored claims after abstention became a first-class outcome (was 0.2924 when every claim got a number)",
+   "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
+  },
+  "596": {
+   "name": "complete verification suite",
+   "verdict": "BUILT",
+   "why": "10/10 modules, 9 endpoints 200",
+   "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
+  },
+  "597": {
+   "name": "peer review automation",
+   "verdict": "BUILT",
+   "why": "fires on constructed dirty doc, silent on clean; table-row false-positive class fixed after flagging its own author",
+   "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
+  },
+  "598": {
+   "name": "reproducibility checking",
+   "verdict": "BUILT",
+   "why": "referenced artifacts resolve; nonexistent document refused; does not re-run measurements",
+   "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
+  },
+  "599": {
+   "name": "retraction detection",
+   "verdict": "BUILT",
+   "why": "constructed ERRATUM applied to the named claim; 12 of 76 docs carry a real marker",
+   "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
+  },
+  "600": {
+   "name": "comprehensive verification report",
+   "verdict": "BUILT",
+   "why": "aggregates to FINDINGS with totals",
+   "artifact": "docs/KNOWLEDGE-VERIFICATION.md + trm_uefi_kernel/src/knowledge_verification.rs + host_council_server/src/kv_routes.rs + tools/kv_*_verify.py"
   }
  },
  "measured_defects": [
@@ -345,5 +405,23 @@
    "ten concurrent deliberations block the kernel; batches of three complete"
   ],
   "boundary": "all outputs are extractive with file/offset/sha256 provenance; no generated prose"
+ },
+ "knowledge_verification_591_600": {
+  "audited": "2026-11-25",
+  "research": "docs/KNOWLEDGE-VERIFICATION.md",
+  "harnesses": {
+   "passing": 9,
+   "partial": {
+    "591": "retrieval-limited",
+    "595": "calibrated when it scores, abstains 63%"
+   }
+  },
+  "defects_found": [
+   "confidence model was miscalibrated: Brier 0.2924 (worse than 0.5 baseline) because it published a probability with no evidence; fixed by making abstention first-class -> 0.0898 over scored claims",
+   "retraction detector dropped the marker line's own text, so it found corrections it could never apply to the claim they named",
+   "peer review flagged markdown table rows as blocking; false-positive class fixed, 3 real findings remain in a real doc",
+   "consistency check treats proposal IDs (586 vs 579) as conflicting quantities - known limitation, reported"
+  ],
+  "boundary": "retrieval is the binding constraint: 17/27 claims abstain, 7 of them true"
  }
 }
