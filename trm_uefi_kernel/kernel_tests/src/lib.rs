@@ -1026,3 +1026,261 @@ mod reasoning_engine_tests {
         assert!(json.contains("\"premises\":[{"), "the tree must serialise recursively");
     }
 }
+
+
+/// Tasks 577 (temporal) and 578 (spatial) — the two checks the council enacted unanimously and 10-4.
+///
+/// The temporal tests fix the semantics of all thirteen relations and of composition; the spatial tests pin
+/// the contact predicate at its boundary, because an off-by-one at `d == cutoff` is the difference between a
+/// contact map and a wish.
+#[cfg(test)]
+mod temporal_spatial_tests {
+    use trm_uefi_kernel::spatial_reasoning::{
+        atoms_within, contact_graph, near_set, relate, Atom, Ball, BallRelation, BoundingBox, Point,
+    };
+    use trm_uefi_kernel::temporal_reasoning::{
+        compose, compose_chain, relation, Allen, Interval, Seeded,
+    };
+
+    fn iv(s: i64, e: i64) -> Interval {
+        Interval::try_new(s, e).expect("valid interval")
+    }
+
+    #[test]
+    fn all_thirteen_relations_are_identified() {
+        let a = iv(10, 20);
+        // the exact thirteen, one each — a is the SUBJECT: "a <relation> b".
+        // Allen's naming is from the subject's point of view: a STARTS b when a is the shorter interval sharing
+        // b's start; a STARTS_BY b when b is the shorter one.
+        assert_eq!(relation(&a, &iv(0, 5)), Allen::After, "b ends before a starts");
+        assert_eq!(relation(&a, &iv(0, 10)), Allen::MetBy, "b ends exactly where a starts");
+        assert_eq!(relation(&a, &iv(5, 15)), Allen::OverlappedBy, "b starts earlier, ends inside a");
+        assert_eq!(relation(&a, &iv(10, 25)), Allen::Starts, "same start, a is the shorter one");
+        assert_eq!(relation(&a, &iv(10, 15)), Allen::StartedBy, "same start, b is the shorter one");
+        assert_eq!(relation(&a, &iv(12, 18)), Allen::Contains, "a strictly encloses b");
+        assert_eq!(relation(&a, &iv(8, 25)), Allen::During, "a strictly inside b");
+        assert_eq!(relation(&a, &iv(10, 20)), Allen::Equals);
+        assert_eq!(relation(&a, &iv(8, 20)), Allen::Finishes, "same end, a is the shorter one");
+        assert_eq!(relation(&a, &iv(12, 20)), Allen::FinishedBy, "same end, b is the shorter one");
+        assert_eq!(relation(&a, &iv(15, 25)), Allen::Overlaps, "a starts earlier, ends inside b");
+        assert_eq!(relation(&a, &iv(20, 30)), Allen::Meets, "a ends exactly where b starts");
+        assert_eq!(relation(&a, &iv(21, 30)), Allen::Before, "a ends before b starts");
+    }
+
+    #[test]
+    fn inverse_agrees_with_swapped_arguments() {
+        let a = iv(10, 20);
+        for b in [iv(0, 5), iv(0, 10), iv(5, 15), iv(12, 18), iv(10, 20), iv(25, 30)] {
+            assert_eq!(relation(&a, &b).inverse(), relation(&b, &a),
+                       "converse must match the swapped computation for b={b:?}");
+            assert_eq!(relation(&a, &b).inverse().inverse(), relation(&a, &b));
+        }
+    }
+
+    #[test]
+    fn composition_satisfies_the_classic_identities() {
+        // equals is the identity of composition
+        assert_eq!(compose(Allen::Equals, Allen::Before), alloc_vec_before());
+        assert_eq!(compose(Allen::Before, Allen::Equals), alloc_vec_before());
+        // before ∘ before = before
+        assert_eq!(compose(Allen::Before, Allen::Before), alloc_vec_before());
+        // meets ∘ before = before
+        assert_eq!(compose(Allen::Meets, Allen::Before), alloc_vec_before());
+        // before ∘ after is unconstrained: any relation is possible
+        assert_eq!(compose(Allen::Before, Allen::After).len(), 13,
+                   "before∘after must leave every relation possible");
+        // meets ∘ met_by can be equals (B ends where A starts and starts where C ends)
+        let forward = compose(Allen::Meets, Allen::MetBy);
+        assert!(forward.contains(&Allen::Equals), "meets∘met_by must admit equals, got {forward:?}");
+        assert!(forward.len() > 1, "meets∘met_by must not collapse to one relation");
+    }
+
+    fn alloc_vec_before() -> Vec<Allen> {
+        vec![Allen::Before]
+    }
+
+    #[test]
+    fn chains_compose_and_degrade_to_all_when_unconstrained() {
+        // before, before, before stays before
+        assert_eq!(compose_chain(&[Allen::Before, Allen::Before, Allen::Before]),
+                   alloc_vec_before());
+        // an unconstrained step admits everything — reported as such, not as a guess
+        assert_eq!(compose_chain(&[Allen::Before, Allen::After]).len(), 13);
+    }
+
+    #[test]
+    fn a_reversed_interval_is_refused_not_swapped() {
+        assert!(Interval::try_new(20, 10).is_none(), "a reversed interval is a data error");
+        assert!(Interval::try_new(10, 10).is_none(), "a zero-length interval is not an interval");
+        assert_eq!(iv(10, 20).duration(), 10);
+        assert!(iv(10, 20).contains_instant(10));
+        assert!(!iv(10, 20).contains_instant(20), "half-open: the end is not inside");
+    }
+
+    #[test]
+    fn pairwise_relations_cover_every_ordered_pair() {
+        let items = vec![
+            Seeded { name: "a".into(), interval: iv(0, 10) },
+            Seeded { name: "b".into(), interval: iv(10, 20) },
+            Seeded { name: "c".into(), interval: iv(5, 15) },
+        ];
+        let pairs = trm_uefi_kernel::temporal_reasoning::relate_all(&items);
+        assert_eq!(pairs.len(), 6, "3 items must give 6 ordered pairs");
+    }
+
+    // ---- spatial -------------------------------------------------------------------------------
+
+    fn atom(label: &str, x: f64, y: f64, z: f64, element: &str) -> Atom {
+        Atom { label: label.to_string(), position: Point::new(x, y, z), element: element.to_string() }
+    }
+
+    #[test]
+    fn distance_is_exact_on_known_geometry() {
+        let a = Point::new(0.0, 0.0, 0.0);
+        let b = Point::new(3.0, 4.0, 0.0);
+        assert!((a.distance(&b) - 5.0).abs() < 1e-12, "3-4-5 triangle");
+        assert_eq!(a.dist2(&b), 25.0);
+    }
+
+    #[test]
+    fn the_contact_predicate_includes_the_boundary() {
+        // exactly at the cutoff must count: d² <= cut², so 4.0 A is a contact at 4.0 A cutoff
+        let atoms = vec![atom("A1", 0.0, 0.0, 0.0, "C"), atom("A2", 4.0, 0.0, 0.0, "C")];
+        assert_eq!(contact_graph(&atoms, 4.0, false).len(), 1, "boundary contact must be counted");
+        assert_eq!(contact_graph(&atoms, 3.999, false).len(), 0, "just inside must not be");
+    }
+
+    #[test]
+    fn hydrogens_are_excluded_only_when_asked() {
+        let atoms = vec![
+            atom("C1", 0.0, 0.0, 0.0, "C"),
+            atom("H1", 1.0, 0.0, 0.0, "H"),
+        ];
+        assert_eq!(contact_graph(&atoms, 2.0, true).len(), 1);
+        assert_eq!(contact_graph(&atoms, 2.0, false).len(), 0);
+    }
+
+    #[test]
+    fn near_set_excludes_the_reference_atoms_themselves() {
+        let atoms = vec![
+            atom("L1", 0.0, 0.0, 0.0, "C"),   // reference
+            atom("R1", 3.0, 0.0, 0.0, "C"),   // within 4 A
+            atom("R2", 10.0, 0.0, 0.0, "C"),  // far
+        ];
+        let near = near_set(&atoms, &[0], 4.0);
+        assert_eq!(near, vec![1], "only the near atom, and never the reference itself");
+        assert!(atoms_within(&atoms, &Point::new(0.0, 0.0, 0.0), 4.0).contains(&0),
+                "a point query does include the atom at the centre");
+    }
+
+    #[test]
+    fn bounding_box_centre_and_empty_case() {
+        let atoms = vec![atom("A", 0.0, 0.0, 0.0, "C"), atom("B", 10.0, 20.0, 30.0, "C")];
+        let b = BoundingBox::of(&atoms).expect("non-empty");
+        let c = b.centre();
+        assert!((c.x - 5.0).abs() < 1e-12 && (c.y - 10.0).abs() < 1e-12 && (c.z - 15.0).abs() < 1e-12);
+        let s = b.size();
+        assert!((s.x - 10.0).abs() < 1e-12 && (s.y - 20.0).abs() < 1e-12 && (s.z - 30.0).abs() < 1e-12);
+        assert!(BoundingBox::of(&[]).is_none(), "an empty set has no box, not a box at the origin");
+        assert!(b.contains(&Point::new(5.0, 10.0, 15.0)));
+        assert!(!b.contains(&Point::new(11.0, 10.0, 15.0)));
+    }
+
+    #[test]
+    fn ball_relations_are_five_and_disjoint() {
+        let a = Ball::new(Point::new(0.0, 0.0, 0.0), 2.0);
+        assert_eq!(relate(&a, &Ball::new(Point::new(10.0, 0.0, 0.0), 2.0), 0.0), BallRelation::Disjoint);
+        assert_eq!(relate(&a, &Ball::new(Point::new(4.0, 0.0, 0.0), 2.0), 0.01), BallRelation::ExternallyConnected);
+        assert_eq!(relate(&a, &Ball::new(Point::new(3.0, 0.0, 0.0), 2.0), 0.0), BallRelation::Overlapping);
+        assert_eq!(relate(&a, &Ball::new(Point::new(0.0, 0.0, 0.0), 2.0), 0.0), BallRelation::Equal);
+        assert_eq!(relate(&a, &Ball::new(Point::new(0.0, 0.0, 0.0), 1.0), 0.0), BallRelation::Contains);
+    }
+}
+
+
+/// Task 573 — case-based reasoning, enacted by council 10-4.
+///
+/// The load-bearing tests are the last two: one requires the base to beat the mean predictor on a learnable
+/// relationship, and the other requires it to **admit** when it cannot. A CBR whose leave-one-out is never
+/// allowed to lose is not being measured.
+#[cfg(test)]
+mod case_base_tests {
+    use trm_uefi_kernel::case_base::CaseBase;
+
+    #[test]
+    fn retrieval_orders_by_standardised_distance() {
+        let mut cb = CaseBase::new(2);
+        cb.add("far", &[0.0, 0.0], 1.0).unwrap();
+        cb.add("near", &[9.9, 9.9], 2.0).unwrap();
+        cb.add("mid", &[5.0, 5.0], 3.0).unwrap();
+        let n = cb.retrieve(&[10.0, 10.0], 2, None);
+        assert_eq!(n.len(), 2);
+        assert_eq!(n[0].id, "near", "nearest must be retrieved first");
+        assert!(n[1].distance >= n[0].distance, "distances must be ordered");
+    }
+
+    #[test]
+    fn a_case_never_retrieves_itself() {
+        let mut cb = CaseBase::new(1);
+        for i in 0..5 {
+            cb.add(&format!("c{i}"), &[i as f64], i as f64).unwrap();
+        }
+        let n = cb.retrieve(&[2.0], 5, Some("c2"));
+        assert!(n.iter().all(|x| x.id != "c2"), "leave-one-out must exclude the query case");
+    }
+
+    #[test]
+    fn prediction_interpolates_rather_than_copying() {
+        // two equidistant neighbours with different outcomes: the answer is between them, not one of them
+        let mut cb = CaseBase::new(1);
+        cb.add("low", &[-1.0], 1.0).unwrap();
+        cb.add("high", &[1.0], 5.0).unwrap();
+        let p = cb.predict(&[0.0], 2).expect("prediction");
+        assert!(p > 1.0 && p < 5.0, "an interpolated answer must sit between the neighbours, got {p}");
+        assert!((p - 3.0).abs() < 1e-6, "symmetric neighbours must interpolate to the midpoint, got {p}");
+    }
+
+    #[test]
+    fn a_malformed_case_is_refused_not_padded() {
+        let mut cb = CaseBase::new(3);
+        cb.add("ok", &[1.0, 2.0, 3.0], 0.5).unwrap();
+        assert!(cb.add("short", &[1.0, 2.0], 0.5).is_err(), "a short feature vector must be refused");
+        assert!(cb.add("long", &[1.0, 2.0, 3.0, 4.0], 0.5).is_err());
+    }
+
+    #[test]
+    fn a_zero_variance_feature_does_not_produce_nan() {
+        let mut cb = CaseBase::new(2);
+        for i in 0..5 {
+            cb.add(&format!("c{i}"), &[1.0, i as f64], i as f64).unwrap();
+        }
+        let p = cb.predict(&[1.0, 2.0], 3).expect("prediction");
+        assert!(p.is_finite(), "constant feature must not divide by zero, got {p}");
+    }
+
+    #[test]
+    fn leave_one_out_beats_the_mean_on_a_learnable_relationship() {
+        let mut cb = CaseBase::new(1);
+        for i in 0..20 {
+            let x = i as f64;
+            cb.add(&format!("c{i}"), &[x], 3.0 * x).unwrap();
+        }
+        let r = cb.leave_one_out(3).expect("loo");
+        assert_eq!(r.n, 20);
+        assert!(r.r2 > 0.9, "a linear relationship must be recovered, R²={}", r.r2);
+        assert!(r.rmse < r.baseline_rmse, "rmse {} must beat baseline {}", r.rmse, r.baseline_rmse);
+        assert!(!r.worse_than_baseline);
+    }
+
+    #[test]
+    fn leave_one_out_admits_when_it_only_ties_the_baseline() {
+        // constant outcome: there is nothing to learn, so the base ties the mean and must say so
+        let mut cb = CaseBase::new(1);
+        for i in 0..10 {
+            cb.add(&format!("c{i}"), &[i as f64], 7.0).unwrap();
+        }
+        let r = cb.leave_one_out(3).expect("loo");
+        assert!((r.rmse - 0.0).abs() < 1e-9, "no error is possible on a constant, got {}", r.rmse);
+        assert!(r.worse_than_baseline, "a tie must be reported as not better than the baseline");
+    }
+}

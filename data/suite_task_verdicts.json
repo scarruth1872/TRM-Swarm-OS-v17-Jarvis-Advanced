@@ -63,21 +63,21 @@
   },
   "573": {
    "name": "case-based reasoning",
-   "verdict": "ABSENT_DEFER",
-   "why": "no case base or adaptation; fabric gives similarity retrieval only",
-   "artifact": "docs/REASONING-TASKS-571-580.md"
+   "verdict": "BUILT",
+   "why": "council ENACTED 10-4 (proposal 2591). src/case_base.rs: retrieve (z-scored kNN) + reuse (distance-weighted interpolation); revise and retain declared absent. LOO on 406 real compounds: k=5 RMSE 0.9181 vs mean predictor 1.6259, R\u00b2 0.6796",
+   "artifact": "trm_uefi_kernel/src/case_base.rs + POST /reason/case + tools/reasoning_cbr_verify.py"
   },
   "574": {
    "name": "analogical reasoning",
-   "verdict": "ABSENT_DEFER",
-   "why": "no structure-mapping; every 'analog' hit is prose or an analogue signal",
-   "artifact": "docs/REASONING-TASKS-571-580.md"
+   "verdict": "NOT_BUILT_COUNCIL_NO_CONSENSUS",
+   "why": "council proposal 2588: 8 approve / 4 abstain / 2 reject = NO_CONSENSUS, below min_approve 10. Assets researched (406 structures, matched molecular pairs) but not built, per the council",
+   "artifact": "docs/REASONING-ABSENCES-RESEARCH.md"
   },
   "575": {
    "name": "abductive reasoning",
-   "verdict": "ABSENT",
-   "why": "zero hits for abduct; no hypothesis space or cost model",
-   "artifact": "docs/REASONING-TASKS-571-580.md"
+   "verdict": "NOT_BUILT_COUNCIL_UNDECIDED",
+   "why": "council proposal 2589: 8 approve / 6 abstain = UNDECIDED, below min_approve 10. Hypothesis space (eskape_candidates/proteomes) flagged as thin in the proposal itself",
+   "artifact": "docs/REASONING-ABSENCES-RESEARCH.md"
   },
   "576": {
    "name": "default reasoning",
@@ -87,20 +87,20 @@
   },
   "577": {
    "name": "temporal reasoning",
-   "verdict": "ABSENT_SKIP",
-   "why": "time is wall-clock stamps only; no interval or LTL calculus, and no caller for one",
-   "artifact": "docs/REASONING-TASKS-571-580.md"
+   "verdict": "BUILT",
+   "why": "council ENACTED 14-0 (proposal 2590). src/temporal_reasoning.rs: Allen's 13 relations + composition by witness intervals. Verified on real ledger timings: 400/400 pair agreement vs independent Python, 300/300 triples sound",
+   "artifact": "trm_uefi_kernel/src/temporal_reasoning.rs + POST /reason/temporal + tools/reasoning_temporal_verify.py"
   },
   "578": {
    "name": "spatial reasoning",
-   "verdict": "ABSENT_SKIP",
-   "why": "zero Rust hits; no spatial or geometric data on this host",
-   "artifact": "docs/REASONING-TASKS-571-580.md"
+   "verdict": "BUILT",
+   "why": "council ENACTED 10-4 (proposal 2587). src/spatial_reasoning.rs: contact graphs + proximity queries on squared distances. Verified vs numpy on 5U39: 13,288 contacts, identical checksum 29114098492237, near-query 98/98",
+   "artifact": "trm_uefi_kernel/src/spatial_reasoning.rs + POST /reason/spatial + tools/reasoning_spatial_verify.py"
   },
   "579": {
    "name": "complete reasoning suite",
-   "verdict": "PARTIAL_4_OF_10",
-   "why": "571/572/576/580 built; 573/574/575/577/578 remain absent with stated reasons",
+   "verdict": "PARTIAL_7_OF_10",
+   "why": "571/572/573/576/577/578/580 built; 574 and 575 declined by council; 579 is the umbrella",
    "artifact": "docs/REASONING-TASKS-571-580.md + trm_uefi_kernel/src/reasoning_engine.rs + tools/reasoning_verify.py"
   },
   "580": {
@@ -203,6 +203,37 @@
    "tests": "11 unit tests pass (kernel_tests)",
    "verification": "tools/reasoning_verify.py vs RDKit: 406/406 on Lipinski profile (0 TRUE derived) and 406/406 on strict profile (5 TRUE derived); withheld-fact control PASS on both",
    "defect_found_by_the_control": "pairwise violation set was incomplete (8 of 10) - CHEMBL242031 (hbd+ghose) returned UNKNOWN where RDKit expects TRUE; fixed"
+  },
+  "council_2026_11_25": {
+   "proposals": {
+    "577": 2590,
+    "578": 2587,
+    "573": 2591,
+    "574": 2588,
+    "575": 2589
+   },
+   "verdicts": {
+    "577": "ENACTED 14/0/0",
+    "578": "ENACTED 10/4/0",
+    "573": "ENACTED 10/4/0",
+    "574": "NO_CONSENSUS 8/4/2",
+    "575": "UNDECIDED 8/6/0"
+   },
+   "min_approve": 10,
+   "built": [
+    "573",
+    "577",
+    "578"
+   ],
+   "declined": [
+    "574",
+    "575"
+   ],
+   "verification": {
+    "temporal": "400/400 pairs agree with an independent implementation; 300/300 real triples satisfy the composition algebra",
+    "spatial": "13,288 contacts and checksum 29114098492237 identical to numpy on 4,478 atoms; proximity query 98/98",
+    "cbr": "LOO k=5 RMSE 0.9181 vs mean predictor 1.6259 (R\u00b2 0.6796); held-out query error 3.67 on an outlier"
+   }
   }
  }
 }

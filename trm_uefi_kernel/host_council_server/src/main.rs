@@ -3920,6 +3920,33 @@ fn days_from_civil(y: i64, m: i32, d: i32) -> i64 {
     era * 146097 + doe - 719468
 }
 
+/// Read a JSON body and hand it to a reasoning handler. A malformed body becomes a 400 with the parse error,
+/// never a defaulted `{}` — an empty request answers UNKNOWN to everything and looks like caution.
+fn route_reason<F>(
+    request: &mut tiny_http::Request,
+    status: &mut u16,
+    out: &mut serde_json::Value,
+    handler: F,
+) where
+    F: Fn(&serde_json::Value) -> Result<serde_json::Value, String>,
+{
+    let mut body = String::new();
+    let _ = request.as_reader().take(64 * 1024 * 1024).read_to_string(&mut body);
+    match serde_json::from_str::<serde_json::Value>(&body) {
+        Ok(v) => match handler(&v) {
+            Ok(j) => *out = j,
+            Err(e) => {
+                *status = 400;
+                *out = json!({ "error": e });
+            }
+        },
+        Err(e) => {
+            *status = 400;
+            *out = json!({ "error": format!("malformed JSON body: {e}") });
+        }
+    }
+}
+
 fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilState>>) {
     let start_t = Instant::now();
     let url = request.url().to_string();
@@ -5954,6 +5981,12 @@ fn handle_request(mut request: tiny_http::Request, state: &Arc<Mutex<CouncilStat
                 response_json = json!({ "error": format!("malformed JSON body: {e}") });
             }
         }
+    } else if method == Method::Post && url.starts_with("/reason/temporal") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reason_routes::temporal)
+    } else if method == Method::Post && url.starts_with("/reason/spatial") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reason_routes::spatial)
+    } else if method == Method::Post && url.starts_with("/reason/case") {
+        route_reason(&mut request, &mut status_code, &mut response_json, crate::reason_routes::case_base)
     } else if method == Method::Post && url.starts_with("/reason/prove") {
         let mut rb = String::new();
         let _ = request.as_reader().read_to_string(&mut rb);

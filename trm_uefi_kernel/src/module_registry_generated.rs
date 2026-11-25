@@ -1,7 +1,7 @@
 // =============================================================================
 // GENERATED FILE — DO NOT EDIT BY HAND.
 // Produced by tools/rebuild_module_registry.py from every LIVE source tree on this host.
-// Scan timestamp: 2026-11-25 16:01:27 UTC
+// Scan timestamp: 2026-11-25 17:17:40 UTC
 //
 // TREES BELOW ARE THE ONES THAT BUILD HERE: the UEFI kernel and the cdylib
 // (swarm_v2_rust_kernel -> target/release/swarm_rust_kernel.dll). The staged v20 snapshot is
@@ -14,9 +14,9 @@
 // =============================================================================
 
 /// Live modules across every tree that builds here.
-pub const TOTAL: u64 = 219;
+pub const TOTAL: u64 = 222;
 /// Hand-written intelligence (pub fns, real bodies).
-pub const REAL: u64 = 104;
+pub const REAL: u64 = 107;
 /// Mechanical port carrying MANUAL markers.
 pub const PORTED: u64 = 60;
 /// Constants/structs only.
@@ -26,7 +26,7 @@ pub const EXCLUDED: u64 = 9;
 /// Publishes numbers it did not measure.
 pub const FABRICATED: u64 = 0;
 /// The scan date, so a reader can see how old the claim is.
-pub const SCAN_DATE: &str = "2026-11-25 16:01:27 UTC";
+pub const SCAN_DATE: &str = "2026-11-25 17:17:40 UTC";
 
 /// (module, status)
 pub const STATUSES: &'static [(&'static str, &'static str)] = &[
@@ -50,6 +50,7 @@ pub const STATUSES: &'static [(&'static str, &'static str)] = &[
     ("benchmark_epistemology", "REAL"),
     ("brain_ai_microkernel_bridge", "EXCLUDED"),
     ("bridge", "REAL"),
+    ("case_base", "REAL"),
     ("chain_of_verification", "PORTED"),
     ("chaos_engine", "PORTED"),
     ("chaos_simulator", "PORTED"),
@@ -217,6 +218,7 @@ pub const STATUSES: &'static [(&'static str, &'static str)] = &[
     ("small_diffusion_engine", "PORTED"),
     ("smp_trampoline", "REAL"),
     ("spatial_octree", "REAL"),
+    ("spatial_reasoning", "REAL"),
     ("spawn_subagent", "PORTED"),
     ("sram_pattern_computer", "REAL"),
     ("star_matrix", "REAL"),
@@ -229,6 +231,7 @@ pub const STATUSES: &'static [(&'static str, &'static str)] = &[
     ("task_arbiter", "REAL"),
     ("telemetry", "SKELETON"),
     ("telemetry_fabric", "PORTED"),
+    ("temporal_reasoning", "REAL"),
     ("text_extract", "REAL"),
     ("thz_bonsai_gateway", "PORTED"),
     ("thz_wave_gateway", "REAL"),
@@ -273,6 +276,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
     ("benchmark_epistemology", "uefi"),
     ("brain_ai_microkernel_bridge", "uefi"),
     ("bridge", "uefi"),
+    ("case_base", "uefi"),
     ("chain_of_verification", "uefi"),
     ("chaos_engine", "uefi"),
     ("chaos_simulator", "uefi"),
@@ -440,6 +444,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
     ("small_diffusion_engine", "uefi"),
     ("smp_trampoline", "uefi"),
     ("spatial_octree", "dll"),
+    ("spatial_reasoning", "uefi"),
     ("spawn_subagent", "uefi"),
     ("sram_pattern_computer", "uefi"),
     ("star_matrix", "uefi"),
@@ -452,6 +457,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
     ("task_arbiter", "uefi"),
     ("telemetry", "uefi"),
     ("telemetry_fabric", "uefi"),
+    ("temporal_reasoning", "uefi"),
     ("text_extract", "uefi"),
     ("thz_bonsai_gateway", "uefi"),
     ("thz_wave_gateway", "uefi"),
@@ -475,7 +481,7 @@ pub const ORIGIN: &'static [(&'static str, &'static str)] = &[
 ];
 
 /// Modules per LIVE tree.
-pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 211), ("dll", 13)];
+pub const TREES: &'static [(&'static str, u64)] = &[("uefi", 214), ("dll", 13)];
 /// Names compiled in more than one tree. One name resolves to one status.
 pub const TREE_COLLISIONS: u64 = 5;
 /// Source trees that exist on disk but are NOT built by the launcher (reported, never counted).
@@ -503,6 +509,7 @@ pub const FUNCTION_COUNTS: &'static [(&'static str, u64)] = &[
     ("benchmark_epistemology", 2),
     ("brain_ai_microkernel_bridge", 1),
     ("bridge", 4),
+    ("case_base", 9),
     ("chain_of_verification", 4),
     ("chaos_engine", 10),
     ("chaos_simulator", 2),
@@ -670,6 +677,7 @@ pub const FUNCTION_COUNTS: &'static [(&'static str, u64)] = &[
     ("small_diffusion_engine", 11),
     ("smp_trampoline", 1),
     ("spatial_octree", 8),
+    ("spatial_reasoning", 15),
     ("spawn_subagent", 8),
     ("sram_pattern_computer", 16),
     ("star_matrix", 9),
@@ -682,6 +690,7 @@ pub const FUNCTION_COUNTS: &'static [(&'static str, u64)] = &[
     ("task_arbiter", 22),
     ("telemetry", 5),
     ("telemetry_fabric", 9),
+    ("temporal_reasoning", 12),
     ("text_extract", 4),
     ("thz_bonsai_gateway", 12),
     ("thz_wave_gateway", 5),
